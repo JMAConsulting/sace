@@ -1,0 +1,57 @@
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => '2e11a07e890a0b28ffd881a7e8a8346bd36b6497',
+        'name' => '__root__',
+        'dev' => true,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => '2e11a07e890a0b28ffd881a7e8a8346bd36b6497',
+            'dev_requirement' => false,
+        ),
+        'graylog2/gelf-php' => array(
+            'pretty_version' => '1.5.5',
+            'version' => '1.5.5.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../graylog2/gelf-php',
+            'aliases' => array(),
+            'reference' => 'c4e0743ba323459b6e62222107a0898e77d2fd6e',
+            'dev_requirement' => false,
+        ),
+        'monolog/monolog' => array(
+            'pretty_version' => '1.23.0',
+            'version' => '1.23.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../monolog/monolog',
+            'aliases' => array(),
+            'reference' => 'fd8c787753b3a2ad11bc60c063cff1358a32a3b4',
+            'dev_requirement' => false,
+        ),
+        'psr/log' => array(
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
+            'aliases' => array(),
+            'reference' => '4ebe3a8bf773a19edfe0a84b6585ba3d401b724d',
+            'dev_requirement' => false,
+        ),
+        'psr/log-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '~1.0',
+                1 => '1.0.0',
+            ),
+        ),
+    ),
+);
