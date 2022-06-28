@@ -13,7 +13,7 @@ return [
       'description' => 'Checks for CiviCRM extension upgrades.',
       'run_frequency' => 'Daily',
       'api_entity' => 'Job',
-      'api_action' => 'ExtensionsUpgradeChecker',
+      'api_action' => 'extensions_upgrade_checker',
       'parameters' => '',
     ],
   ],
