@@ -1,0 +1,16 @@
+name: 'Theme Switcher Rules'
+description: 'Switches active themes on specific conditions.'
+package: User Interface
+
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+configure: theme_switcher.admin
+
+php: 7.1
+
+# Information added by Drupal.org packaging script on 2021-06-26
+version: '8.x-1.2'
+project: 'theme_switcher'
+datestamp: 1624695691

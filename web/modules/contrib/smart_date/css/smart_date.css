@@ -1,0 +1,194 @@
+/**
+ * @file
+ * Styles for TimeStamp Ranges fields.
+ *
+ */
+.field--type-smartdate .fieldset-wrapper .form-item,
+.field--type-smartdate tr.odd .fieldset-wrapper .form-item,
+.field--type-smartdate tr.even .fieldset-wrapper .form-item {
+  margin: 0.4em 0;
+}
+
+.field--type-smartdate .fieldset-wrapper h4.label,
+.field--type-smartdate .fieldset__wrapper h4.form-item__label {
+  float: left;
+  margin-right: 1em;
+  width: 5em;
+  text-align: right;
+  padding-top: 0.75em;
+}
+
+/* Adjustments for Adminimal */
+.adminimal .field--type-smartdate h4.label {
+  margin-top: 0;
+}
+
+/* Adjustments for Claro */
+.field--type-smartdate .fieldset__wrapper h4.form-item__label {
+  margin-top: 0.375rem;
+  padding-top: 0.85em;
+  display: block;
+}
+
+.field--type-smartdate .fieldset__wrapper .form-type--boolean {
+  margin-left: 0.3rem;
+}
+
+.field--type-smartdate .allday {
+  margin: 0.65em 0.5em 0 4.8em;
+}
+
+.adminimal .field--type-smartdate .allday {
+  margin: 0.125em 0.5em 0 4.5em;
+}
+
+.field--type-smartdate .fieldset__wrapper .allday {
+  margin: 1em 0.5em 0 5.2em;
+  position: relative;
+  top: -2px;
+}
+
+.field--type-smartdate .allday-label {
+  float: left;
+  margin: 0.75em 2.2em 0.75em 0;
+}
+
+.adminimal .field--type-smartdate .allday-label {
+  margin-right: 2em;
+}
+
+.field--type-smartdate .form-type-select,
+.field--type-smartdate tr.odd .form-type-select,
+.field--type-smartdate tr.even .form-type-select,
+.field--type-smartdate .form-type--select,
+.field--type-smartdate tr.odd .form-type--select,
+.field--type-smartdate tr.even .form-type--select {
+  margin: 0.6em 0;
+  display: inline-block;
+}
+
+.field--type-smartdate .form-type-select label,
+.field--type-smartdate .form-type--select label {
+  margin-right: 1em;
+  padding-top: 0.25em;
+  min-width: 5em;
+  text-align: right;
+}
+
+.field--type-smartdate tr.odd .form-type-select label,
+.field--type-smartdate tr.even .form-type-select label {
+  padding-top: 0.6em;
+  display: inline-block;
+}
+
+.field--type-smartdate tr.odd .form-type--select label,
+.field--type-smartdate tr.even .form-type--select label {
+  padding-top: 0.85em;
+  display: inline-block;
+}
+
+.field--type-smartdate .pad-left {
+  margin-left: 0.7em;
+}
+
+.field--type-smartdate .form-type-number,
+.field--type-smartdate .form-type--number {
+  display: inline-block;
+}
+
+.field--type-smartdate .form-type-number .field-suffix,
+.field--type-smartdate .form-type--number .form-item__suffix {
+  display: inline-block;
+  padding-top: 0.85em;
+  font-weight: bold;
+}
+
+.field--type-smartdate .form-type-number input,
+.field--type-smartdate .form-type--number input {
+  width: 4.5em;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.field--type-smartdate .form-type-number + .form-type-date,
+.field--type-smartdate .form-type--number + .form-type--date {
+  display: inline-block;
+}
+
+.field--type-smartdate .repeat-end-date {
+  width: 11.5em;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.field--type-smartdate .repeat-text {
+  margin-top: 0.8em;
+}
+
+/* Smart Date Recur elements */
+.field-interval--label {
+  display: inline-block;
+  padding-top: 0.85em;
+  text-align: right;
+  margin: 0.75em 0.25em 0.75em 0;
+  width: auto;
+}
+.field-interval--label.form-item__label {
+  display: inline-block;
+}
+.adminimal .field-interval--label {
+  padding-right: 0.3em;
+}
+
+.field--type-smartdate .byday-checkboxes {
+  display: inline-block;
+}
+
+.field--type-smartdate .byday-checkboxes legend {
+  float: left;
+  margin: 0.75em 0.75em 0.75em 0.1em;
+}
+
+/* Fix wrapping for Claro. */
+.field--type-smartdate .byday-checkboxes .fieldset__label,
+.field--type-smartdate .byday-checkboxes .fieldset__wrapper {
+  display: inline-block;
+}
+
+.field--type-smartdate .byday-checkboxes input {
+  display: none;
+}
+
+.field--type-smartdate .byday-checkboxes input ~ label.option {
+  color: black;
+  background: white;
+  border: 1px solid black;
+  border-radius: 50% 50%;
+  width: 1.7rem;
+  text-align: center;
+  padding: 5px 0px 0px;
+  font-size: 0;
+  line-height: 1rem;
+  position: relative;
+  top: -2px;
+  vertical-align: -3px;
+  display: inline-block;
+}
+
+.adminimal .field--type-smartdate .byday-checkboxes input ~ label.option {
+  vertical-align: -2px;
+}
+
+.field--type-smartdate .byday-checkboxes input ~ label.option:first-letter {
+  font-size: 1rem;
+}
+
+.field--type-smartdate .byday-checkboxes input ~ label.option:hover {
+  background: #ddd;
+}
+
+.field--type-smartdate .byday-checkboxes input:checked ~ label.option {
+  color: white;
+  background: black;
+  border: 1px solid #ddd;
+}

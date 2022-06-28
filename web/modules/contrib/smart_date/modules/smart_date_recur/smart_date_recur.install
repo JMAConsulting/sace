@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for smart_date_recur module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_requirements().
+ */
+function smart_date_recur_requirements($phase) {
+  $requirements = [];
+
+  if (!class_exists('\Recurr\Rule')) {
+    $requirements['smart_date_recur_dependencies'] = [
+      'title' => t('Smart date recur'),
+      'description' => \t('Smart Date Recur has unmet Composer dependencies. Read the <a href="@url">documentation</a> on how to install them.', [
+        '@url' => 'https://www.drupal.org/node/2627292',
+      ]),
+      'severity' => \REQUIREMENT_ERROR,
+    ];
+  }
+
+  return $requirements;
+}

@@ -1,0 +1,929 @@
+diff --git a/.github/workflows/main.yml b/.github/workflows/main.yml
+index 9824224..86fcec3 100644
+--- a/.github/workflows/main.yml
++++ b/.github/workflows/main.yml
+@@ -30,6 +30,9 @@ jobs:
+           - 3306
+         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+     steps:
++      - name: Setup secondary database for CiviCRM
++        run: |
++          mysql -uroot -h127.0.0.1 -P${{ job.services.mysql.ports[3306] }} -e 'CREATE DATABASE IF NOT EXISTS db_civicrm;'
+       - uses: actions/checkout@v2
+       - uses: shivammathur/setup-php@v2
+         with:
+@@ -83,6 +86,7 @@ jobs:
+         env:
+           SYMFONY_DEPRECATIONS_HELPER: weak
+           SIMPLETEST_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db
++          SIMPLETEST_CIVICRM_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db_civicrm
+           SIMPLETEST_BASE_URL: http://127.0.0.1:8080
+           MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu", "--no-sandbox", "--headless"]}}, "http://127.0.0.1:9515"]'
+           BROWSERTEST_OUTPUT_DIRECTORY: '${{ runner.temp }}/browser_output'
+diff --git a/src/CivicrmEntityViewsData.php b/src/CivicrmEntityViewsData.php
+index fe5f75e..30075c2 100644
+--- a/src/CivicrmEntityViewsData.php
++++ b/src/CivicrmEntityViewsData.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\civicrm_entity;
+ 
++use Drupal\Core\Database\Database;
+ use Drupal\Core\Field\FieldDefinitionInterface;
+ use Drupal\views\EntityViewsData;
+ use Drupal\Core\Entity\EntityTypeInterface;
+diff --git a/src/Plugin/views/query/CivicrmSql.php b/src/Plugin/views/query/CivicrmSql.php
+index 6790795..4e390ff 100644
+--- a/src/Plugin/views/query/CivicrmSql.php
++++ b/src/Plugin/views/query/CivicrmSql.php
+@@ -4,7 +4,9 @@
+ 
+ use Drupal\civicrm\Civicrm;
+ use Drupal\Core\Database\Database;
++use Drupal\Core\Database\Query\Select;
+ use Drupal\views\Plugin\views\display\DisplayPluginBase;
++use Drupal\views\Plugin\views\join\JoinPluginBase;
+ use Drupal\views\Plugin\views\query\Sql;
+ use Drupal\views\ViewExecutable;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+@@ -46,6 +48,7 @@ public function setCivicrm(Civicrm $civicrm) {
+    */
+   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
++    assert($instance instanceof self);
+     $instance->setCivicrm($container->get('civicrm'));
+     return $instance;
+   }
+@@ -67,4 +70,20 @@ public function init(ViewExecutable $view, DisplayPluginBase $display, array &$o
+     parent::init($view, $display, $options);
+   }
+ 
++  public function query($get_count = FALSE) {
++    $query = parent::query($get_count);
++    assert($query instanceof Select);
++    $connection = Database::getConnection();
++
++    foreach ($query->getTables() as &$table) {
++      // If the table is not prefixed with civicrm_, assume it is a Drupal table
++      // and convert it to a fully qualified table name. But, make sure it has
++      // not already been converted.
++      if (strpos($table['table'], 'civicrm_') !== 0 && strpos($table['table'], '.') === FALSE) {
++         $table['table'] = $connection->getFullQualifiedTableName($table['table']);
++      }
++    }
++    return $query;
++  }
++
+ }
+diff --git a/src/Plugin/views/relationship/CiviCrmBridgeRelationshipBase.php b/src/Plugin/views/relationship/CiviCrmBridgeRelationshipBase.php
+index cc7b85f..51898f0 100644
+--- a/src/Plugin/views/relationship/CiviCrmBridgeRelationshipBase.php
++++ b/src/Plugin/views/relationship/CiviCrmBridgeRelationshipBase.php
+@@ -51,7 +51,6 @@ public function query() {
+     $first_join = Views::pluginManager('join')->createInstance('standard', $first);
+     $first_alias = $this->query->addTable($this->definition['table'], $this->relationship, $first_join);
+ 
+-    // Relate the first join to the base table defined.
+     $second = [
+       'left_table' => $first_alias,
+       'left_field' => $this->definition['second field'],
+diff --git a/tests/modules/civicrm_entity_views_test/civicrm_entity_views_test.info.yml b/tests/modules/civicrm_entity_views_test/civicrm_entity_views_test.info.yml
+new file mode 100644
+index 0000000..a2763cd
+--- /dev/null
++++ b/tests/modules/civicrm_entity_views_test/civicrm_entity_views_test.info.yml
+@@ -0,0 +1,9 @@
++name: CiviCRM Entity Views Test
++type: module
++description: 'Test module for CiviCRM Entity and Views.'
++package: CiviCRM
++core_version_requirement: ^8.8 || ^9
++dependencies:
++  - drupal:views
++  - civicrm:civicrm
++  - civicrm_entity:civicrm_entity
+diff --git a/tests/modules/civicrm_entity_views_test/config/install/field.field.user.user.field_test_field.yml b/tests/modules/civicrm_entity_views_test/config/install/field.field.user.user.field_test_field.yml
+new file mode 100644
+index 0000000..e1a0131
+--- /dev/null
++++ b/tests/modules/civicrm_entity_views_test/config/install/field.field.user.user.field_test_field.yml
+@@ -0,0 +1,19 @@
++langcode: en
++status: true
++dependencies:
++  config:
++    - field.storage.user.field_test_field
++  module:
++    - user
++id: user.user.field_test_field
++field_name: field_test_field
++entity_type: user
++bundle: user
++label: 'Test Field'
++description: ''
++required: false
++translatable: false
++default_value: {  }
++default_value_callback: ''
++settings: {  }
++field_type: string
+diff --git a/tests/modules/civicrm_entity_views_test/config/install/field.storage.user.field_test_field.yml b/tests/modules/civicrm_entity_views_test/config/install/field.storage.user.field_test_field.yml
+new file mode 100644
+index 0000000..7d9b62c
+--- /dev/null
++++ b/tests/modules/civicrm_entity_views_test/config/install/field.storage.user.field_test_field.yml
+@@ -0,0 +1,20 @@
++langcode: en
++status: true
++dependencies:
++  module:
++    - user
++id: user.field_test_field
++field_name: field_test_field
++entity_type: user
++type: string
++settings:
++  max_length: 255
++  is_ascii: false
++  case_sensitive: false
++module: core
++locked: false
++cardinality: 1
++translatable: true
++indexes: {  }
++persist_with_no_fields: false
++custom_storage: false
+diff --git a/tests/modules/civicrm_entity_views_test/config/install/views.view.activity_contact_user_bug.yml b/tests/modules/civicrm_entity_views_test/config/install/views.view.activity_contact_user_bug.yml
+new file mode 100644
+index 0000000..00be6d8
+--- /dev/null
++++ b/tests/modules/civicrm_entity_views_test/config/install/views.view.activity_contact_user_bug.yml
+@@ -0,0 +1,388 @@
++langcode: en
++status: true
++dependencies:
++  config:
++    - field.storage.user.field_test_field
++  module:
++    - civicrm_entity
++    - user
++id: activity_contact_user_bug
++label: 'Activity Contact User Bug'
++module: views
++description: ''
++tag: ''
++base_table: civicrm_activity
++base_field: id
++display:
++  default:
++    display_plugin: default
++    id: default
++    display_title: Master
++    position: 0
++    display_options:
++      access:
++        type: none
++        options: {  }
++      cache:
++        type: tag
++        options: {  }
++      query:
++        type: views_query
++        options:
++          disable_sql_rewrite: false
++          distinct: false
++          replica: false
++          query_comment: ''
++          query_tags: {  }
++      exposed_form:
++        type: basic
++        options:
++          submit_button: Apply
++          reset_button: false
++          reset_button_label: Reset
++          exposed_sorts_label: 'Sort by'
++          expose_sort_order: true
++          sort_asc_label: Asc
++          sort_desc_label: Desc
++      pager:
++        type: mini
++        options:
++          items_per_page: 10
++          offset: 0
++          id: 0
++          total_pages: null
++          expose:
++            items_per_page: false
++            items_per_page_label: 'Items per page'
++            items_per_page_options: '5, 10, 25, 50'
++            items_per_page_options_all: false
++            items_per_page_options_all_label: '- All -'
++            offset: false
++            offset_label: Offset
++          tags:
++            previous: ‹‹
++            next: ››
++      style:
++        type: default
++        options:
++          grouping: {  }
++          row_class: ''
++          default_row_class: true
++          uses_fields: false
++      row:
++        type: fields
++        options:
++          inline: {  }
++          separator: ''
++          hide_empty: false
++          default_field_elements: true
++      fields:
++        subject:
++          table: civicrm_activity
++          field: subject
++          id: subject
++          entity_type: null
++          entity_field: subject
++          plugin_id: field
++          relationship: none
++          group_type: group
++          admin_label: ''
++          label: ''
++          exclude: false
++          alter:
++            alter_text: false
++            text: ''
++            make_link: false
++            path: ''
++            absolute: false
++            external: false
++            replace_spaces: false
++            path_case: none
++            trim_whitespace: false
++            alt: ''
++            rel: ''
++            link_class: ''
++            prefix: ''
++            suffix: ''
++            target: ''
++            nl2br: false
++            max_length: 0
++            word_boundary: true
++            ellipsis: true
++            more_link: false
++            more_link_text: ''
++            more_link_path: ''
++            strip_tags: false
++            trim: false
++            preserve_tags: ''
++            html: false
++          element_type: ''
++          element_class: ''
++          element_label_type: ''
++          element_label_class: ''
++          element_label_colon: true
++          element_wrapper_type: ''
++          element_wrapper_class: ''
++          element_default_classes: true
++          empty: ''
++          hide_empty: false
++          empty_zero: false
++          hide_alter_empty: true
++          click_sort_column: value
++          type: string
++          settings: {  }
++          group_column: value
++          group_columns: {  }
++          group_rows: true
++          delta_limit: 0
++          delta_offset: 0
++          delta_reversed: false
++          delta_first_last: false
++          multi_type: separator
++          separator: ', '
++          field_api_classes: false
++        display_name:
++          id: display_name
++          table: civicrm_contact
++          field: display_name
++          relationship: contact
++          group_type: group
++          admin_label: ''
++          label: ''
++          exclude: false
++          alter:
++            alter_text: false
++            text: ''
++            make_link: false
++            path: ''
++            absolute: false
++            external: false
++            replace_spaces: false
++            path_case: none
++            trim_whitespace: false
++            alt: ''
++            rel: ''
++            link_class: ''
++            prefix: ''
++            suffix: ''
++            target: ''
++            nl2br: false
++            max_length: 0
++            word_boundary: true
++            ellipsis: true
++            more_link: false
++            more_link_text: ''
++            more_link_path: ''
++            strip_tags: false
++            trim: false
++            preserve_tags: ''
++            html: false
++          element_type: ''
++          element_class: ''
++          element_label_type: ''
++          element_label_class: ''
++          element_label_colon: false
++          element_wrapper_type: ''
++          element_wrapper_class: ''
++          element_default_classes: true
++          empty: ''
++          hide_empty: false
++          empty_zero: false
++          hide_alter_empty: true
++          click_sort_column: value
++          type: string
++          settings:
++            link_to_entity: false
++          group_column: value
++          group_columns: {  }
++          group_rows: true
++          delta_limit: 0
++          delta_offset: 0
++          delta_reversed: false
++          delta_first_last: false
++          multi_type: separator
++          separator: ', '
++          field_api_classes: false
++          entity_type: civicrm_contact
++          entity_field: display_name
++          plugin_id: field
++        mail:
++          id: mail
++          table: users_field_data
++          field: mail
++          relationship: user
++          group_type: group
++          admin_label: ''
++          label: ''
++          exclude: false
++          alter:
++            alter_text: false
++            text: ''
++            make_link: false
++            path: ''
++            absolute: false
++            external: false
++            replace_spaces: false
++            path_case: none
++            trim_whitespace: false
++            alt: ''
++            rel: ''
++            link_class: ''
++            prefix: ''
++            suffix: ''
++            target: ''
++            nl2br: false
++            max_length: 0
++            word_boundary: true
++            ellipsis: true
++            more_link: false
++            more_link_text: ''
++            more_link_path: ''
++            strip_tags: false
++            trim: false
++            preserve_tags: ''
++            html: false
++          element_type: ''
++          element_class: ''
++          element_label_type: ''
++          element_label_class: ''
++          element_label_colon: false
++          element_wrapper_type: ''
++          element_wrapper_class: ''
++          element_default_classes: true
++          empty: ''
++          hide_empty: false
++          empty_zero: false
++          hide_alter_empty: true
++          click_sort_column: value
++          type: basic_string
++          settings: {  }
++          group_column: value
++          group_columns: {  }
++          group_rows: true
++          delta_limit: 0
++          delta_offset: 0
++          delta_reversed: false
++          delta_first_last: false
++          multi_type: separator
++          separator: ', '
++          field_api_classes: false
++          entity_type: user
++          entity_field: mail
++          plugin_id: field
++        field_test_field:
++          id: field_test_field
++          table: user__field_test_field
++          field: field_test_field
++          relationship: user
++          group_type: group
++          admin_label: ''
++          label: ''
++          exclude: false
++          alter:
++            alter_text: false
++            text: ''
++            make_link: false
++            path: ''
++            absolute: false
++            external: false
++            replace_spaces: false
++            path_case: none
++            trim_whitespace: false
++            alt: ''
++            rel: ''
++            link_class: ''
++            prefix: ''
++            suffix: ''
++            target: ''
++            nl2br: false
++            max_length: 0
++            word_boundary: true
++            ellipsis: true
++            more_link: false
++            more_link_text: ''
++            more_link_path: ''
++            strip_tags: false
++            trim: false
++            preserve_tags: ''
++            html: false
++          element_type: ''
++          element_class: ''
++          element_label_type: ''
++          element_label_class: ''
++          element_label_colon: false
++          element_wrapper_type: ''
++          element_wrapper_class: ''
++          element_default_classes: true
++          empty: ''
++          hide_empty: false
++          empty_zero: false
++          hide_alter_empty: true
++          click_sort_column: value
++          type: string
++          settings:
++            link_to_entity: false
++          group_column: value
++          group_columns: {  }
++          group_rows: true
++          delta_limit: 0
++          delta_offset: 0
++          delta_reversed: false
++          delta_first_last: false
++          multi_type: separator
++          separator: ', '
++          field_api_classes: false
++          plugin_id: field
++      filters: {  }
++      sorts: {  }
++      header: {  }
++      footer: {  }
++      empty: {  }
++      relationships:
++        contact:
++          id: contact
++          table: civicrm_activity
++          field: contact
++          relationship: none
++          group_type: group
++          admin_label: 'Contact (Source)'
++          required: false
++          record_type_id: '2'
++          entity_type: civicrm_activity
++          plugin_id: civicrm_entity_activity_contact
++        user:
++          id: user
++          table: civicrm_contact
++          field: user
++          relationship: contact
++          group_type: group
++          admin_label: User
++          required: false
++          entity_type: civicrm_contact
++          plugin_id: civicrm_entity_civicrm_contact_user
++      arguments: {  }
++      display_extenders: {  }
++    cache_metadata:
++      max-age: -1
++      contexts:
++        - 'languages:language_content'
++        - 'languages:language_interface'
++        - url.query_args
++      tags:
++        - 'config:field.storage.user.field_test_field'
++  page_1:
++    display_plugin: page
++    id: page_1
++    display_title: Page
++    position: 1
++    display_options:
++      display_extenders: {  }
++      path: activity-contact-user-bug
++    cache_metadata:
++      max-age: -1
++      contexts:
++        - 'languages:language_content'
++        - 'languages:language_interface'
++        - url.query_args
++      tags:
++        - 'config:field.storage.user.field_test_field'
+diff --git a/tests/src/FunctionalJavascript/CivicrmEntityViewsTestBase.php b/tests/src/FunctionalJavascript/CivicrmEntityViewsTestBase.php
+index b63332e..fb10877 100644
+--- a/tests/src/FunctionalJavascript/CivicrmEntityViewsTestBase.php
++++ b/tests/src/FunctionalJavascript/CivicrmEntityViewsTestBase.php
+@@ -82,12 +82,19 @@ protected function setUp() {
+     $this->drupalLogin($admin_user);
+     $this->enableCivicrmEntityTypes([static::$civicrmEntityTypeId]);
+ 
++    // Generate the sample data.
++    $this->createSampleData();
++
+     // Disable automatic live preview to make the sequence of calls clearer. And
+     // prevent errors on saving the view with the preview ajax load that are
+     // cancelled.
++    //
++    // We also want the advanced column to be open, so that it's easier to add
++    // relationships.
+     \Drupal::configFactory()
+       ->getEditable('views.settings')
+       ->set('ui.always_live_preview', FALSE)
++      ->set('ui.show.advanced_column', TRUE)
+       ->save();
+   }
+ 
+@@ -117,31 +124,31 @@ public function testAddWizardValues() {
+    * Tests creating a basic view with the entity type.
+    */
+   public function testCreateView() {
+-    $this->createSampleData();
+-
+-    $this->drupalGet(Url::fromRoute('views_ui.add'));
+-    $page = $this->getSession()->getPage();
+-    $page->fillField('label', static::$civicrmEntityTypeId . ' view');
+-    $this->assertJsCondition('jQuery("#edit-label-machine-name-suffix .machine-name-value").html() !== ""');
+-    $page->selectFieldOption('show[wizard_key]', 'standard:' . static::$civicrmEntityTypeId);
+-    $this->assertSession()->assertWaitOnAjaxRequest();
+-    $page->checkField('page[create]');
+-    $page->fillField('page[path]', '/' . static::$civicrmEntityTypeId);
+-    $page->pressButton('Save and edit');
+-    $this->assertSession()->pageTextContains('The view ' . static::$civicrmEntityTypeId . ' view has been saved.');
+-    $this->assertSession()->assertWaitOnAjaxRequest();
++    $this->createNewView();
+     $this->doSetupCreateView();
+-    $this->htmlOutput();
+-    $page->pressButton('Save');
++    $this->getSession()->getPage()->pressButton('Save');
+     $this->drupalGet('/' . static::$civicrmEntityTypeId);
+     $this->htmlOutput();
+     $this->assertCreateViewResults();
+   }
+ 
++  /**
++   * Tests creating a view with relationships for the entity type.
++   */
++  public function testViewWithRelationships() {
++    $this->createNewView();
++    $this->doSetupViewWithRelationships();
++    $this->getSession()->getPage()->pressButton('Save');
++    $this->drupalGet('/' . static::$civicrmEntityTypeId);
++    $this->htmlOutput();
++    $this->assertViewWithRelationshipsResults();
++  }
++
+   // @todo testCreateViewWithFilters()
+   // @todo testCreateViewWithSorts()
+   // @todo testCreateViewWithRelationships()
+ 
++
+   /**
+    * Creates sample data for each test.
+    *
+@@ -158,10 +165,43 @@ abstract protected function doSetupCreateView();
+ 
+   /**
+    * Runs assertions for the ::testCreateView test.
++   *
+    * @return void
+    */
+   abstract protected function assertCreateViewResults();
+ 
++  /**
++   * Runs setup for the ::testViewWithRelationships test.
++   *
++   * @return void
++   */
++  abstract protected function doSetupViewWithRelationships();
++
++  /**
++   * Runs assertions for the ::testViewWithRelationships test.
++   *
++   * @return void
++   */
++  abstract protected function assertViewWithRelationshipsResults();
++
++  /**
++   * Creates a new View for the tested entity type.
++   *
++   * The test lands on the Edit form for the View.
++   */
++  protected function createNewView() {
++    $this->drupalGet(Url::fromRoute('views_ui.add'));
++    $page = $this->getSession()->getPage();
++    $page->fillField('label', static::$civicrmEntityTypeId . ' view');
++    $this->assertJsCondition('jQuery("#edit-label-machine-name-suffix .machine-name-value").html() !== ""');
++    $page->selectFieldOption('show[wizard_key]', 'standard:' . static::$civicrmEntityTypeId);
++    $this->assertSession()->assertWaitOnAjaxRequest();
++    $page->checkField('page[create]');
++    $page->fillField('page[path]', '/' . static::$civicrmEntityTypeId);
++    $page->pressButton('Save and edit');
++    $this->assertSession()->pageTextContains('The view ' . static::$civicrmEntityTypeId . ' view has been saved.');
++  }
++
+   /**
+    * Adds a field to a Views display.
+    *
+@@ -174,9 +214,24 @@ abstract protected function assertCreateViewResults();
+    */
+   protected function addFieldToDisplay(string $name_locator, array $configuration = []) {
+     $this->clickAjaxLink('views-add-field');
++    $this->htmlOutput();
+     $this->getSession()->getPage()->checkField($name_locator);
+     $this->submitViewsDialog();
+-    // @todo process configuration.
++    foreach ($configuration as $field_name => $value) {
++      $field = $this->assertSession()->fieldExists($field_name);
++      $field->setValue($value);
++    }
++    $this->submitViewsDialog();
++  }
++
++  protected function addRelationshipToDisplay(string $name_locator, array $configuration = []) {
++    $this->clickAjaxLink('views-add-relationship');
++    $this->getSession()->getPage()->checkField($name_locator);
++    $this->submitViewsDialog();
++    foreach ($configuration as $field_name => $value) {
++      $field = $this->assertSession()->fieldExists($field_name);
++      $field->setValue($value);
++    }
+     $this->submitViewsDialog();
+   }
+ 
+diff --git a/tests/src/FunctionalJavascript/Views/CivicrmActivityViewsTest.php b/tests/src/FunctionalJavascript/Views/CivicrmActivityViewsTest.php
+index 786bb6f..f05ec63 100644
+--- a/tests/src/FunctionalJavascript/Views/CivicrmActivityViewsTest.php
++++ b/tests/src/FunctionalJavascript/Views/CivicrmActivityViewsTest.php
+@@ -25,22 +25,64 @@ public function testAddWizardValues() {
+    * {@inheritdoc}
+    */
+   protected function createSampleData() {
+-    // TODO: Implement createSampleData() method.
++    $civicrm_api = $this->container->get('civicrm_entity.api');
++    $result = $civicrm_api->save('Contact', [
++      'contact_type' => 'Individual',
++      'first_name' => 'Johnny',
++      'last_name' => 'Appleseed',
++      'email' => 'johnny@example.com',
++    ]);
++    $contact_id = $result['id'];
++    $civicrm_api->save('Activity', [
++      'source_contact_id' => $contact_id,
++      'activity_type_id' => 'Meeting',
++      'subject' => 'Meeting about new seeds',
++      'activity_date_time' => '2011-06-02 14:36:13',
++      'status_id' => 2,
++      'priority_id' => 1,
++      'duration' => 120,
++      'location' => 'Pennsylvania',
++      'details' => 'We need to find more seeds!',
++    ]);
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+   protected function doSetupCreateView() {
+-    // TODO: Implement addAndConfigureFields() method.
++    $this->addFieldToDisplay('name[civicrm_activity.details__value]');
++    $this->addFieldToDisplay('name[civicrm_activity.location]');
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+   protected function assertCreateViewResults() {
+-    // @todo write tests.
+-    $this->doesNotPerformAssertions();
++    $assert_session = $this->assertSession();
++    $assert_session->pageTextContains('Meeting about new seeds');
++    $assert_session->pageTextContains('We need to find more seeds!');
++    $assert_session->pageTextContains('Pennsylvania');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function doSetupViewWithRelationships() {
++    $this->addRelationshipToDisplay('name[civicrm_activity.contact]', [
++      // Set relationship to source
++      'options[record_type_id]' => '2',
++    ]);
++    $this->addRelationshipToDisplay('name[civicrm_contact.user]');
++    $this->addFieldToDisplay('name[civicrm_contact.display_name]');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function assertViewWithRelationshipsResults() {
++    $assert_session = $this->assertSession();
++    $assert_session->pageTextContains('Meeting about new seeds');
++    $assert_session->pageTextContains('Johnny Appleseed');
+   }
+ 
+ }
+diff --git a/tests/src/FunctionalJavascript/Views/CivicrmContactUserRelationshipTest.php b/tests/src/FunctionalJavascript/Views/CivicrmContactUserRelationshipTest.php
+new file mode 100644
+index 0000000..474454c
+--- /dev/null
++++ b/tests/src/FunctionalJavascript/Views/CivicrmContactUserRelationshipTest.php
+@@ -0,0 +1,129 @@
++<?php declare(strict_types=1);
++
++namespace Drupal\Tests\civicrm_entity\FunctionalJavascript\Views;
++
++use Drupal\Core\Database\Database;
++use Drupal\Tests\civicrm_entity\FunctionalJavascript\CivicrmEntityTestBase;
++
++final class CivicrmContactUserRelationshipTest extends CivicrmEntityTestBase {
++
++  /**
++   * {@inheritdoc}
++   *
++   * @todo fix config schema from this module for Views.
++   */
++  protected $strictConfigSchema = FALSE;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'views',
++    'views_ui',
++    'civicrm_entity_views_test',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  public function setUp(): void {
++    if ($this->getName() === 'testWithSeperateDatabase' && empty(getenv('SIMPLETEST_CIVICRM_DB'))) {
++      $this->markTestSkipped("Cannot run {$this->getName()} without specifying SIMPLETEST_CIVICRM_DB as a seperate database.");
++    }
++    parent::setUp();
++
++    $admin_user = $this->createUser([
++      'access content',
++      'administer civicrm entity',
++      'administer views',
++    ]);
++    $this->drupalLogin($admin_user);
++    $this->enableCivicrmEntityTypes(['civicrm_activity', 'civicrm_contact']);
++
++    // Create the contact first, so that `civicrm_user_insert` matches the
++    // created test user to this contact automatically.
++    $civicrm_api = $this->container->get('civicrm_entity.api');
++    $result = $civicrm_api->save('Contact', [
++      'contact_type' => 'Individual',
++      'first_name' => 'Johnny',
++      'last_name' => 'Appleseed',
++      'email' => 'johnny@example.com',
++    ]);
++    $contact_id = $result['id'];
++
++    $user = $this->createUser([], 'johnny');
++
++    // Verify the user and contact linked.
++    $fetched_contact_id = \CRM_Core_BAO_UFMatch::getContactId($user->id());
++    self::assertEquals($contact_id, $fetched_contact_id);
++
++    $civicrm_api->save('Activity', [
++      'source_contact_id' => $contact_id,
++      'activity_type_id' => 'Meeting',
++      'subject' => 'Meeting about new seeds',
++      'activity_date_time' => '2011-06-02 14:36:13',
++      'status_id' => 2,
++      'priority_id' => 1,
++      'duration' => 120,
++      'location' => 'Pennsylvania',
++      'details' => 'We need to find more seeds!',
++    ]);
++
++    // Disable automatic live preview to make the sequence of calls clearer. And
++    // prevent errors on saving the view with the preview ajax load that are
++    // cancelled.
++    //
++    // We also want the advanced column to be open, so that it's easier to add
++    // relationships.
++    \Drupal::configFactory()
++      ->getEditable('views.settings')
++      ->set('ui.always_live_preview', FALSE)
++      ->set('ui.show.advanced_column', TRUE)
++      ->save();
++  }
++
++    /**
++   * {@inheritdoc}
++   */
++  protected function changeDatabasePrefix() {
++    parent::changeDatabasePrefix();
++    // Change the CiviCRM connection to use the separate database.
++    if ($this->getName() === 'testWithSeperateDatabase') {
++      $db_url = getenv('SIMPLETEST_CIVICRM_DB');
++      Database::removeConnection('civicrm_test');
++      Database::removeConnection('civicrm');
++
++      $database = Database::convertDbUrlToConnectionInfo($db_url, isset($this->root) ? $this->root : DRUPAL_ROOT);
++      Database::addConnectionInfo('civicrm_test', 'default', $database);
++      Database::addConnectionInfo('civicrm', 'default', $database);
++    }
++  }
++
++  /**
++   * Test the relationship with a single database.
++   */
++  public function testRelationship() {
++    $this->doTest();
++  }
++
++  /**
++   * Test the relationship using a seperate CiviCRM database.
++   */
++  public function testWithSeperateDatabase() {
++    self::assertNotEquals(
++      Database::getConnectionInfo('civicrm_test'),
++      Database::getConnectionInfo()
++    );
++    $this->doTest();
++  }
++
++  /**
++   * Performs the test.
++   */
++  private function doTest() {
++    $this->drupalGet('/activity-contact-user-bug');
++    $assert_session = $this->assertSession();
++    $assert_session->pageTextContains('Meeting about new seeds');
++  }
++
++}
+diff --git a/tests/src/FunctionalJavascript/Views/CivicrmEventViewsTest.php b/tests/src/FunctionalJavascript/Views/CivicrmEventViewsTest.php
+index 64f24a6..5bcc8f0 100644
+--- a/tests/src/FunctionalJavascript/Views/CivicrmEventViewsTest.php
++++ b/tests/src/FunctionalJavascript/Views/CivicrmEventViewsTest.php
+@@ -74,4 +74,26 @@ protected function assertCreateViewResults() {
+     $assert_session->pageTextContainsOnce('Tue, 10/21/2008 - 00:00');
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function testViewWithRelationships() {
++    // @todo implement setup and assert, then remove this.
++    $this->markTestSkipped('Needs to be implemented');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function doSetupViewWithRelationships() {
++    // TODO: Implement doSetupViewWithRelationships() method.
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function assertViewWithRelationshipsResults() {
++    // TODO: Implement assertViewWithRelationshipsResults() method.
++  }
++
+ }

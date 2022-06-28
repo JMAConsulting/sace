@@ -1,0 +1,172 @@
+<?php
+
+/**
+ * @file
+ * Contains sace_custom.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_help().
+ */
+function sace_custom_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the sace_custom module.
+    case 'help.page.sace_custom':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('SACE custom code') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sace_custom_theme() {
+  return [
+    'sace_custom' => [
+      'render element' => 'children',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function sace_custom_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Force the form action to match the current path -- used to fix broken exposed filters when using contextual links.
+  // See: https://www.drupal.org/project/drupal/issues/2821962#comment-13191425
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($form_id == 'views_exposed_form') {
+     $form['#action'] = $current_path;
+  }
+
+}
+
+/**
+ * Implements hook_form_NAME_alter() for webform_submission_presentation_evaluation_summary__add_form.
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function sace_custom_form_webform_submission_presentation_evaluation_summary__add_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+
+  // Get activity id from query var.
+  $aid = $_GET['aid'] ?? 0;
+  if (empty($aid) || !is_numeric($aid)) {
+    return;
+  }
+
+  // Get webform form elements.
+  $elements = WebformFormHelper::flattenElements($form);
+
+  // Get student feedback from webform submitted data.
+  $feedback = sace_custom_get_ped_sace_student_feedback($aid);
+  if (empty($feedback)) {
+    return;
+  }
+
+  //
+  // Fill in default values...
+  //
+
+  // # of returned evaluations
+  $elements['civicrm_1_activity_1_cg2_custom_47']['#default_value'] = count($feedback);
+
+  // 1. I learned something new about the presentation topic
+  $q1_counts = array_count_values(array_column($feedback, 'q1'));
+  $elements['civicrm_1_activity_1_cg2_custom_48']['#default_value'] = $q1_counts[5] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_54']['#default_value'] = $q1_counts[4] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_55']['#default_value'] = $q1_counts[3] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_56']['#default_value'] = $q1_counts[2] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_57']['#default_value'] = $q1_counts[1] ?? 0;
+
+  // 2. Out of all the participants surveyed,
+  // how many very able to list one new thing they learned about the topic?
+  $new_thing_count = count(array_filter(array_column($feedback, 'feedback')));
+  $elements['civicrm_1_activity_1_cg2_custom_59']['#default_value'] = $new_thing_count;
+
+  // Q3 I learned how to support someone impacted by the presentation topic
+  $q3_counts = array_count_values(array_column($feedback, 'q3'));
+  $elements['civicrm_1_activity_1_cg2_custom_60']['#default_value'] = $q3_counts[5] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_61']['#default_value'] = $q3_counts[4] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_62']['#default_value'] = $q3_counts[3] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_63']['#default_value'] = $q3_counts[2] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_64']['#default_value'] = $q3_counts[1] ?? 0;
+
+  // 4. Out of all the participants surveyed, how many were able to list one thing they could do to support someone impacted by the topic?
+  $new_thing_count = count(array_filter(array_column($feedback, 'feedback_q4')));
+  $elements['civicrm_1_activity_1_cg2_custom_65']['#default_value'] = $new_thing_count;
+
+  // 5. I learned about resources people impacted by the topic can access for help:
+  $q5_counts = array_count_values(array_column($feedback, 'q5'));
+  $elements['civicrm_1_activity_1_cg2_custom_68']['#default_value'] = $q5_counts[5] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_69']['#default_value'] = $q5_counts[4] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_70']['#default_value'] = $q5_counts[3] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_71']['#default_value'] = $q5_counts[2] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_72']['#default_value'] = $q5_counts[1] ?? 0;
+
+  // 6. Out of all the participants surveyed, how many very able to list one resource a person impacted by the topic could access for help?
+  $new_thing_count = count(array_filter(array_column($feedback, 'feedback_q6')));
+  $elements['civicrm_1_activity_1_cg2_custom_74']['#default_value'] = $new_thing_count;
+
+  // 7. I have a greater understanding of the impact of sexual violence on my community:
+  $q7_counts = array_count_values(array_column($feedback, 'q7'));
+  $elements['civicrm_1_activity_1_cg2_custom_75']['#default_value'] = $q7_counts[5] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_76']['#default_value'] = $q7_counts[4] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_77']['#default_value'] = $q7_counts[3] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_78']['#default_value'] = $q7_counts[2] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_79']['#default_value'] = $q7_counts[1] ?? 0;
+
+  // 8. I have more knowledge to help adress this community social issue:
+  $q8_counts = array_count_values(array_column($feedback, 'q8'));
+  $elements['civicrm_1_activity_1_cg2_custom_81']['#default_value'] = $q8_counts[5] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_82']['#default_value'] = $q8_counts[4] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_83']['#default_value'] = $q8_counts[3] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_84']['#default_value'] = $q8_counts[2] ?? 0;
+  $elements['civicrm_1_activity_1_cg2_custom_85']['#default_value'] = $q8_counts[1] ?? 0;
+
+  if (!empty($_GET['rtest'])) {
+    // header('Content-type: text/plain'); print_r(count(array_filter(array_column($feedback, 'feedback')))); exit();
+  }
+}
+
+
+/**
+ * Get student feedback for evaluation summary.
+ */
+function sace_custom_get_ped_sace_student_feedback($aid) {
+  $feeback = [];
+
+  $sids = \Drupal::database()->select('webform_submission_data', 'wfd')
+    ->fields('wfd', ['sid'])
+    ->condition('wfd.webform_id', 'ped_sace_student_feedback')
+    ->condition('wfd.name', 'aid')
+    ->condition('wfd.value', $aid)
+    ->execute()
+    ->fetchAllKeyed(0,0);
+
+  if (empty($sids)) {
+    return [];
+  }
+
+  $result = \Drupal::database()->select('webform_submission_data', 'wfd')
+    ->fields('wfd', ['sid','name','value'])
+    ->condition('wfd.sid', $sids, 'IN')
+    ->execute();
+
+  foreach ($result as $row) {
+    $feedback[$row->sid][$row->name] = $row->value;
+  }
+
+  return $feedback;
+}

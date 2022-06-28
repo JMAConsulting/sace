@@ -1,0 +1,25 @@
+div.activityical-feed-url-display input{
+  width: 60em;
+  max-width: 98%;
+}
+
+div#activityical-header-rebuild-url {
+  margin-top: 2em;
+}
+
+div#activityical-activity-links {
+  margin-left: 4em;
+  display: inline-block;
+}
+
+select.activityical-settings-select {
+  height: auto !important;
+}
+
+div.crm-accordion-body.activityical-accordion-body {
+  padding: .5em;
+}
+
+div.accordion {
+  margin-top: 1em;
+}

@@ -1,0 +1,32 @@
+<?php
+
+$feedback = sace_custom_get_ped_sace_student_feedback(512); 
+
+print_r($feedback);
+
+function sace_custom_get_ped_sace_student_feedback($aid) {
+  $feeback = [];
+
+  $sids = \Drupal::database()->select('webform_submission_data', 'wfd')
+    ->fields('wfd', ['sid'])
+    ->condition('wfd.webform_id', 'ped_sace_student_feedback')
+    ->condition('wfd.name', 'aid')
+    ->condition('wfd.value', $aid)
+    ->execute()
+    ->fetchAllKeyed(0,0);
+
+  if (empty($sids)) {
+    return [];
+  }
+
+  $result = \Drupal::database()->select('webform_submission_data', 'wfd')
+    ->fields('wfd', ['sid','name','value'])
+    ->condition('wfd.sid', $sids, 'IN')
+    ->execute();
+
+  foreach ($result as $row) {
+    $feedback[$row->sid][$row->name] = $row->value;
+  }
+
+  return $feedback;
+}

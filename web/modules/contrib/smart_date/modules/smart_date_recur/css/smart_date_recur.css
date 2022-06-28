@@ -1,0 +1,11 @@
+/**
+ * @file
+ * Styles for Smart Date Recur management.
+ *
+ */
+.smart-date-instance--cancelled {
+  text-decoration: line-through;
+}
+.smart-date-instance--rescheduled {
+  font-style: italic;
+}

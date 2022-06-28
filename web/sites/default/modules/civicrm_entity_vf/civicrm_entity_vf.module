@@ -1,0 +1,161 @@
+<?php
+
+/**
+ * @file
+ * Contains civicrm_entity_vf.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_user_form_alter().
+*/
+function civicrm_entity_vf_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id){
+  $color_field = 'field_calendar_colour';
+
+  if (!empty($form[$color_field]) && $form[$color_field]['widget']['#type'] == 'radios') {
+    $form[$color_field]['widget']['#options_label_attributes'] = [];
+    foreach ($form['field_calendar_colour']['widget']['#options'] as $k => $v) {
+      if (preg_match('/^#[a-fA-F0-9]{6}$/', $v)) {
+        $form[$color_field]['widget']['#options_label_attributes'][$k] = [
+          'style' => 'color: ' . $v . ';',
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_exposed_form_alter().
+*/
+function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id){
+
+  if (!empty($form['uf_select'])) {
+
+    $view = $form_state->get('view');
+
+    // Get style options.
+    $style_options = $view->getStyle()->options;
+
+    // Check for a fullcalendar legend based on a user taxonomy.
+    $is_user_taxonomy_color_legend = FALSE;
+    if (!empty($style_options['tax_field']) && !empty($style_options['color_taxonomies'])) {
+      $user_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldDefinitions('user', 'user'));
+      if (in_array($style_options['tax_field'], $user_fields)) {
+        $is_user_taxonomy_color_legend = TRUE;
+      }
+    }
+
+    // Check for a views contextual filter with term id args in the 'user_team' taxonomy.
+    $user_team_target_ids = [];
+    foreach ($view->display_handler->getHandlers('argument') as $handler) {
+      if ('taxonomy_term.tid' == $handler->getEntityType() . $handler->getField()) {
+        $tids = explode(' ', $handler->getValue());
+	$terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
+        if (!empty($terms)) {
+          foreach ($terms as $term) {
+            if ('user_team' == $term->bundle()) {
+              $user_team_target_ids[] = $term->id();
+            }
+          }
+          if (!empty($user_team_target_ids)) {
+            break;
+          }
+        }
+      }
+    }
+
+    $contact_ids = array_keys($form['uf_select']['#options']);
+
+    $map_uid_cid = [];
+
+    $contact_tids = [];
+
+    $user_team = [];
+
+    // Map user ids to civicrm contact ids.
+    $uid_lookup = \Drupal::service('civicrm_entity.api')->get('UFMatch', [
+      'sequential' => 1,
+      'return' => ['uf_id', 'contact_id'],
+      'contact_id' => ['IN' => $contact_ids],
+      'options' => ['limit' => count($contact_ids)],
+    ]);
+    foreach ($uid_lookup as $r) {
+      $map_uid_cid[$r['uf_id']] = $r['contact_id'];
+    }
+
+    // Check user fields for team and color.
+    $users = \Drupal::entityTypeManager()->getStorage('user')->loadMultiple(array_keys($map_uid_cid));
+    foreach ($users as $user) {
+
+      if ($is_user_taxonomy_color_legend) {
+        $contact_tids[$map_uid_cid[$user->id()]] = $user->get($style_options['tax_field'])->first()->target_id;
+      }
+
+      foreach ($user_team_target_ids as $user_team_target_id) {
+        if (in_array($user_team_target_id, array_column($user->get('field_user_team')->getValue(), 'target_id'))) {
+          $user_team[$map_uid_cid[$user->id()]] = $user->id();
+        }
+      }
+    }
+
+    // Remove users who are not on our team.
+    if (!empty($user_team)) {
+      foreach ($contact_ids as $cid) {
+        if (empty($user_team[$cid])) {
+          unset($contact_ids[$cid]);
+          unset($form['uf_select']['#options'][$cid]);
+        }
+      }
+    }
+
+    //
+    // Add colors to checkboxes.
+    //
+
+    if ($is_user_taxonomy_color_legend) {
+
+      $options_attributes = [];
+      $options_label_attributes = [];
+
+      foreach ($contact_ids as $contact_id) {
+
+        $tid = $contact_tids[$contact_id];
+
+        if (!empty($style_options['color_taxonomies'][$tid])) {
+
+          $color = $style_options['color_taxonomies'][$tid];
+
+          $options_attributes[$contact_id] = [
+            'style' => 'background-color:' . $color . ';border-color:' . $color . ';' . 'color:' . $color . ';',
+            'class' => ['checkbox-colored'],
+          ];
+
+          $options_label_attributes[$contact_id] = [
+            'style' => 'color: ' . $color . ';',
+          ];
+        }
+      }
+
+      $form['uf_select']['#options_attributes'] = $options_attributes;
+      // $form['uf_select']['#options_label_attributes'] = $options_label_attributes;
+    }
+  }
+}
+
+/**
+ * Implements hook_help().
+ */
+function civicrm_entity_vf_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the civicrm_entity_vf module.
+    case 'help.page.civicrm_entity_vf':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Extra filters for CiviCRM views') . '</p>';
+      return $output;
+
+    default:
+  }
+}

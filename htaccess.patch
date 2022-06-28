@@ -1,0 +1,12 @@
+--- web/.htaccess  2022-02-22 17:11:25.464721644 +1100
++++ web/.htaccess  2022-02-22 17:10:59.128474486 +1100
+@@ -143,6 +150,9 @@
+   # Copy and adapt this rule to directly execute PHP files in contributed or
+   # custom modules or to run another PHP application in the same directory.
+   RewriteCond %{REQUEST_URI} !/core/modules/statistics/statistics\.php$
++  RewriteCond %{REQUEST_URI} !/libraries/civicrm/core/extern/rest\.php$
++  RewriteCond %{REQUEST_URI} !/libraries/civicrm/packages/kcfinder/[^/]*\.php
++  RewriteCond %{REQUEST_URI} !/libraries/civicrm/packages/kcfinder/(css|themes/default|js)/[^/]*\.php
+   # Deny access to any other PHP files that do not match the rules above.
+   # Specifically, disallow autoload.php from being served directly.
+   RewriteRule "^(.+/.*|autoload)\.php($|/)" - [F]

@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * @file
+ * Tells CiviCRM CDN Tax Receipts about Eligibility for a Tax Receipt
+ */
+
+
+/**
+ * Special formatting for CMHA Calgary tax receipts
+ */
+function my_receipts_cdntaxreceipts_writeReceipt(&$pdf, $pdf_variables, $receipt) {
+
+  // override some defaults passed in by the cdntaxreceipt extension
+  $pdf_variables['mymargin_top'] = 112; 
+  
+  // KG
+  // The rest of this code is a highly edited version of the standard cdntaxreceipt writePDF()
+
+  // Extract variables
+  $mode = $pdf_variables["mode"];
+  $mymargin_left = $pdf_variables["mymargin_left"];
+  $mymargin_top = $pdf_variables["mymargin_top"];
+  $is_duplicate = $pdf_variables["is_duplicate"];
+  $pdf_img_files_path = $pdf_variables["pdf_img_files_path"];
+  $line_1 = $pdf_variables["line_1"];
+  $source_funds = $pdf_variables["source_funds"];
+  $amount = $pdf_variables["amount"];
+  $display_date = $pdf_variables["display_date"];
+  $issued_on = $pdf_variables["issued_on"];
+  $receipt_number = $pdf_variables["receipt_number"];
+  $displayname = $pdf_variables["displayname"];
+  $address_line_1 = $pdf_variables["address_line_1"];
+  $address_line_1b = $pdf_variables["address_line_1b"];
+  $address_line_2 = $pdf_variables["address_line_2"];
+  $address_line_3 = $pdf_variables["address_line_3"];
+  $inkind_values = $pdf_variables["inkind_values"];
+  $display_year = $pdf_variables["display_year"];
+  $issue_type = $pdf_variables["issue_type"];
+  $receipt_contributions = $pdf_variables['receipt_contributions'];
+
+  $x_detailscolumn = 0;
+  $y_detailscolumnstart = 27;
+  $y2_detailscolumnstart = 103;
+  $y3_detailscolumnstart = 8;
+  $y4_detailscolumnstart = 84;
+
+  // DATE - TOP right
+  $pdf->SetFont('Helvetica', 'R', 11.4);
+  $pdf->SetXY(180, 56);
+  $pdf->Write(10, $issued_on);
+
+  // DEAR
+  $pdf->SetFont('Helvetica', 'R', 11.4);
+  $pdf->SetXY(10.6, 56);
+  $pdf->Write(10, 'Dear '.$displayname . ',');
+
+  // Middle center section
+  if ( $mode == 'CDNTAXRECEIPTS_MODE_PREVIEW' ) {
+    $pdf->Image($pdf_img_files_path . 'preview_mode.png', 81, $mymargin_top + $y_detailscolumnstart + 51, '', 45);
+  }
+  if  ( $is_duplicate ) {
+    $pdf->Image($pdf_img_files_path . 'duplicate_trans.png', 81, $mymargin_top + $y_detailscolumnstart + 51, '', 45);
+  }
+
+  $y2_detailscolumnstart = $y2_detailscolumnstart - 10;
+
+  // Left section - RECEIPT NUMBER AND ADDRESS #2
+  $pdf->SetFont('Helvetica', 'B', 8);
+  $pdf->SetY($mymargin_top + $y2_detailscolumnstart + 6);
+  $pdf->Write(10, $receipt_number);
+  $pdf->SetFont('Helvetica', 'B', 10);
+  $pdf->SetY($mymargin_top + $y2_detailscolumnstart + 18);
+  $pdf->Write(10, strtoupper($displayname), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+  $pdf->SetFont('Helvetica', '', 10);
+  $pdf->SetY($mymargin_top + $y2_detailscolumnstart + 22);
+  $pdf->Write(10, strtoupper($address_line_1), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+  $pdf->SetY($mymargin_top + $y2_detailscolumnstart + 26);
+  $pdf->Write(10, strtoupper($address_line_2), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+  $pdf->SetY($mymargin_top + $y2_detailscolumnstart + 30);
+  $pdf->Write(10, strtoupper($address_line_3), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+
+  // Right section
+  $x_detailscolumn = 120;
+  $y_detailscolumnstart = 102;
+
+  $pdf->SetXY($mymargin_left + $x_detailscolumn, $mymargin_top + $y_detailscolumnstart + 6);
+  $pdf->SetFont('Helvetica', 'B', 8);
+  $pdf->Write(10, ts("Issue Date: %1", array(1 => $issued_on, 'domain' => 'org.civicrm.cdntaxreceipts')));
+  $pdf->SetXY($mymargin_left + $x_detailscolumn, $mymargin_top + $y_detailscolumnstart + 12);
+  $pdf->Write(10, ts("Received on: %1", array(1 => $display_date, 'domain' => 'org.civicrm.cdntaxreceipts')));
+  $pdf->SetXY($mymargin_left + $x_detailscolumn, $mymargin_top + $y_detailscolumnstart + 18);
+  $pdf->Write(10, ts("Eligible Amount:  $%1", array(1 => number_format($amount, 2), 'domain' => 'org.civicrm.cdntaxreceipts')));
+  $pdf->SetXY($mymargin_left + $x_detailscolumn, $mymargin_top + $y_detailscolumnstart + 34);
+
+  if ($issue_type == 'annual') {
+        $pdf->Write(10, ts("Thank you for giving in %1!", array( 1 => $display_year)));
+  } 
+  else if (strlen($source_funds) < 36 && strlen($source_funds) > 0) {
+    $pdf->Write(10, $source_funds);
+  }
+  else if (strlen($source_funds) > 0) {
+    $source_funds_words = explode(" ", substr($source_funds, 0, 36));
+    $source_funds_lastbit = array_pop($source_funds_words);
+    $pdf->Write(10, implode(" ", $source_funds_words));
+    $source_funds_count = count($source_funds_words);
+    // $source_funds_nextline = array_splice(explode(" ", $source_funds), $source_funds_count);
+    $exploded = explode(" ", $source_funds);
+    $source_funds_nextline = array_splice($exploded, $source_funds_count);
+    $pdf->SetXY($mymargin_left + $x_detailscolumn + 16, $mymargin_top + $y_detailscolumnstart + 38);
+    $pdf->Write(10, implode(" ", $source_funds_nextline));
+  }
+
+  return array(TRUE);  
+
+}

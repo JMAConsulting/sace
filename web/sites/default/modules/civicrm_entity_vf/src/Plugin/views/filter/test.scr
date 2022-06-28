@@ -1,0 +1,41 @@
+<?php
+
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\Query\QueryInterface;
+use Drupal\civicrm_entity\CiviCrmApiInterface;
+
+$userEntityStorage = \Drupal::service('entity_type.manager')->getStorage('user');
+$userQuery = \Drupal::service('entity_type.manager')->getStorage('user')->getQuery();
+$civicrmApi = \Drupal::service('civicrm_entity.api');
+
+$valueOptions = [];
+
+      // Get active user uids.
+      $uids = $userQuery
+        ->condition('status', 1)
+        ->execute();
+
+      // Get user display names.
+      $users = $userEntityStorage->loadMultiple($uids);
+      $user_display_names = [];
+      foreach ($users as $uid => $user) {
+        $user_display_names[$uid] = $user->getDisplayName();
+      }
+
+      // Get matching list of CiviCRM contacts.
+      $user_contacts = $civicrmApi->get('UFMatch', [
+        'sequential' => 1,
+        'uf_id' => ['IN' => $uids],
+        'return' => ['uf_id', 'contact_id.id', 'contact_id.display_name'],
+        'options' => ['sort' => 'contact_id.display_name'],
+      ]);
+#print_r($user_contacts);
+
+      // Build valueOptions.
+      foreach ($user_contacts as $contact) {
+        $valueOptions[$contact['contact_id.id']] = $user_display_names[$contact['uf_id']];
+      }
+
+      natcasesort($valueOptions);
+
+print_r($valueOptions);

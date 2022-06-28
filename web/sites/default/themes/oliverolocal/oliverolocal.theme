@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Implements template_preprocess_html().
+ */
+function oliverolocal_preprocess_html(&$variables) {
+  // Get the content language, since we are not using interface translation.
+  $lang = \Drupal::languageManager()->getCurrentLanguage('language_content')->getId();
+  $variables['html_attributes']->setAttribute('lang', $lang);
+
+  // Add civicrm path for body class.
+  if ($variables['root_path'] == 'civicrm') {
+    $crm_path = \Drupal::service('path.current')->getPath();
+    $variables['crm_path'] =  str_replace('/', '-', substr($crm_path, 1));
+
+    $crm_id = \Drupal::request()->query->get('id');
+    if (!empty($crm_id)) {
+      $variables['crm_path_id'] = $variables['crm_path'] . '-' . $crm_id;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "name": "sace_custom",
+    "type": "drupal-module",
+    "description": "SACE custom code",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/sace_custom",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/sace_custom",
+        "source": "http://cgit.drupalcode.org/sace_custom",
+    },
+}
