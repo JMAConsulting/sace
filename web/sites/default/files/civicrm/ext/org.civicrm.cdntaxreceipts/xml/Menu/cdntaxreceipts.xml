@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/cdntaxreceipts/view</path>
+    <page_callback>CRM_Cdntaxreceipts_Form_ViewTaxReceipt</page_callback>
+    <title>ViewTaxReceipt</title>
+    <access_arguments>access CiviContribute</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/cdntaxreceipts/settings</path>
+    <page_callback>CRM_Cdntaxreceipts_Form_Settings</page_callback>
+    <title>Settings</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/cdntaxreceipts/imagedelete</path>
+    <page_callback>CRM_Cdntaxreceipts_Form_ImageDelete</page_callback>
+    <title>Image Delete</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/cdntaxreceipts/open</path>
+    <page_callback>CRM_Cdntaxreceipts_Page_OpenEvent</page_callback>
+    <title>OpenEvent</title>
+    <!--<access_arguments>track cdn tax receipts</access_arguments>-->
+    <access_callback>1</access_callback>
+    <is_public>true</is_public>
+  </item>
+</menu>

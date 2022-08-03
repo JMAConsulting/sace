@@ -1,0 +1,28 @@
+/**
+ * For when button is on a contribution that has a previously
+ * generated tax receipt. Slightly different class - "issue" vs. "view".
+ * And we make the icon red.
+ */
+
+/* For "regular" forms */
+#crm-container #_qf_ContributionView_submit_view_tax_receipt-top i,
+#crm-container #_qf_ContributionView_submit_view_tax_receipt-bottom i {
+  color: red;
+}
+
+/* For popup forms */
+.crm-container .ui-dialog-buttonset [data-identifier="_qf_ContributionView_submit_view_tax_receipt"] span.ui-button-icon {
+  color: red;
+}
+
+#crm-container .cdntax_summary label {
+    margin-left: 10px;
+}
+
+#crm-container .cdntax_summary label {
+    margin-left: 5px;
+}
+
+.cdntaxreceipts-imagedelete {
+  margin-left: 1em;
+}
