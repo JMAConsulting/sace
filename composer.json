@@ -64,7 +64,7 @@
         "drupal/slick_views": "^2.3",
         "drupal/smart_date": "^2.8",
         "drupal/smtp": "^1.0",
-        "drupal/super_login": "^1.6",
+        "drupal/super_login": "^2.0",
         "drupal/theme_switcher": "^1.1",
         "drupal/token": "^1.7",
         "drupal/twig_tweak": "^2.9",
