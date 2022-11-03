@@ -280,6 +280,9 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
     $isRecur = CRM_Utils_Array::value('is_recur', $params) && $params['contributionRecurID'];
     $usingCrypto = !empty($params['cryptogram']);
     $ipAddress = (function_exists('ip_address') ? ip_address() : $_SERVER['REMOTE_ADDR']);
+    if (!filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+      $ipAddress = '';
+    }
     $credentials = array(
       'merchantKey' => $this->_paymentProcessor['signature'],
       'processorId' => $this->_paymentProcessor['user_name']
