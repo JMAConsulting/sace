@@ -197,7 +197,9 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
     // after manually doing what addVars('iats', $jsVariables) would normally do
     $script = 'var iatsSettings = ' . json_encode($jsVariables) . ';';
     $script .= 'var cryptoJs = "'.$myCryptoJs.'";';
-    $script .= 'CRM.$(function ($) { $.getScript(cryptoJs); });';
+    $script .= 'CRM.$(function ($) { $.getScript(cryptoJs).fail(function( jqxhr, settings, exception) {
+      CRM.alert(\'Javascript failed to load please reload the page\', \'Javascript failed to load\');
+    }); });';
     CRM_Core_Region::instance('billing-block')->add(array(
       'script' => $script,
     ));

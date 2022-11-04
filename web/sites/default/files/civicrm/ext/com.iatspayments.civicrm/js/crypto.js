@@ -61,6 +61,8 @@ cj(function ($) {
       else {
         window.attachEvent("onmessage", fapsIframeMessage);
       }
+    }).fail(function(jqxhr, settings, exception) {
+      CRM.alert('Javascript failed to load please reload the page', 'Javascript failed to load');
     });
   }
 
