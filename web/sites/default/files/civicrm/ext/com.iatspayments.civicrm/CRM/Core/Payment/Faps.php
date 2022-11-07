@@ -197,7 +197,9 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
     // after manually doing what addVars('iats', $jsVariables) would normally do
     $script = 'var iatsSettings = ' . json_encode($jsVariables) . ';';
     $script .= 'var cryptoJs = "'.$myCryptoJs.'";';
-    $script .= 'CRM.$(function ($) { $.getScript(cryptoJs); });';
+    $script .= 'CRM.$(function ($) { $.getScript(cryptoJs).fail(function( jqxhr, settings, exception) {
+      CRM.alert(\'Failed to initiate payment gateway, please reload the page\', \'Payment gateway error\');
+    }); });';
     CRM_Core_Region::instance('billing-block')->add(array(
       'script' => $script,
     ));
