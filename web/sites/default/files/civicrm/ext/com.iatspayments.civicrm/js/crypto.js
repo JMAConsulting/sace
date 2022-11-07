@@ -62,7 +62,7 @@ cj(function ($) {
         window.attachEvent("onmessage", fapsIframeMessage);
       }
     }).fail(function(jqxhr, settings, exception) {
-      CRM.alert('Javascript failed to load please reload the page', 'Javascript failed to load');
+      CRM.alert('Failed to initiate payment gateway, please reload the page', 'Payment gateway error');
     });
   }
 
