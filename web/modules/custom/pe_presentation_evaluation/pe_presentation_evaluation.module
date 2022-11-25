@@ -1,4 +1,5 @@
 <?php
+use Drupal\webform\Utility\WebformFormHelper;
 
 /**
  * Implements hook_form_alter().
@@ -6,6 +7,9 @@
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  * @param $form_id
  */
-function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  exit;
+function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {  
+  if($form_id == 'webform_submission_ped_sace_student_feedback_add_form'){
+    $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
+    $form['#attached']['drupalSettings']['pe_presentation_evaluation']['pe_presentation_evaluation'] ['test'] = 'values';
+  }
 }
