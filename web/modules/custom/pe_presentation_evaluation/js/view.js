@@ -1,11 +1,11 @@
 (function ($, Drupal) {
   $(document).ready(function () {
-    update_q1('presentation topic');
+    //update_q1('presentation topic');
   });
   $(document).bind('change', 'select', function () {
     //Get current question value 
     let curVal = $("#edit-q1--wrapper-legend").children('span').text().substring(37);
-    update_q1(curVal);
+    //update_q1(curVal);
     //update_q2()
   });
   function update_q1(curval) {
