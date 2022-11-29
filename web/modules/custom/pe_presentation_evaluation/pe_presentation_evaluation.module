@@ -40,13 +40,13 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $result = \Civi\Api4\Activity::get()
       ->addSelect('Booking_Information.Support_Content')
       ->addWhere('id', '=', $aid)
-      ->setLimit(25)
-      ->execute();
+      ->execute()
+      ->first();
 
     if (empty($result)) {
       return;
     }
-    $support_content = $result[0]["Booking_Information.Support_Content"];
+    $support_content = $result["Booking_Information.Support_Content"];
     if ($support_content) {
       $elements['q3']['#access'] = FALSE;
       $elements['feedback_q4']['#access'] = FALSE;
