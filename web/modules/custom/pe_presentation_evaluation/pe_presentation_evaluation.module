@@ -1,4 +1,5 @@
 <?php
+use Drupal\webform\Utility\WebformFormHelper;
 
 /**
  * Implements hook_form_alter().
@@ -10,5 +11,45 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
   if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
     $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
     $form['#attached']['drupalSettings']['pe_presentation_evaluation']['pe_presentation_evaluation']['test'] = 'values';
+
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+    //Get default selected value for Presentation Topic
+    $default_val = $elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0];
+    //Get select field text based on default value
+    $topic = $elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$default_val] ?? 'presentation topic';
+    //Update Q1 presentation topic
+    //Get q1
+    $q1 = $elements["q1"]["#title"];
+    //Update text for q1
+    $elements['q1']['#title'] = str_replace('presentation topic', $topic, $q1);
+
+    //Update Q2 presentation topic
+    //Get q2
+    $q2 = $elements["feedback"]["#title"];
+    //Update text for q2
+    $elements['feedback']['#title'] = str_replace('topic', $topic, $q2);
+
+    // Get activity id from query var.
+    //get from form field TODO
+    $aid = $elements['aid']['#default_value'] ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+    // Get Booking Intake custom fields, hide Q3,Q4 if Support_Content = 1
+    $result = \Civi\Api4\Activity::get()
+      ->addSelect('Booking_Information.Support_Content')
+      ->addWhere('id', '=', $aid)
+      ->setLimit(25)
+      ->execute();
+
+    if (empty($result)) {
+      return;
+    }
+    $support_content = $result[0]["Booking_Information.Support_Content"];
+    if ($support_content) {
+      $elements['q3']['#access'] = FALSE;
+      $elements['feedback_q4']['#access'] = FALSE;
+    }
   }
 }
