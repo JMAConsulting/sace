@@ -1,0 +1,14 @@
+uuid: 1f982ffb-eb9d-4e56-850c-c81c4e92266b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.taxreceipts
+  module:
+    - user
+id: user_add_role_action.taxreceipts
+label: 'Add the TaxReceipts role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: taxreceipts

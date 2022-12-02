@@ -1,0 +1,9 @@
+uuid: c4d367a5-ace4-4977-9a09-5738465547cd
+langcode: en
+status: true
+dependencies: {  }
+id: clin_counsellor
+label: 'CLIN Counsellor'
+weight: -6
+is_admin: null
+permissions: {  }

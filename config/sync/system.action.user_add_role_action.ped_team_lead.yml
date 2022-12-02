@@ -1,0 +1,14 @@
+uuid: 29cf26b6-2b1b-4e8c-9a96-02015ae17b8e
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.ped_team_lead
+  module:
+    - user
+id: user_add_role_action.ped_team_lead
+label: 'Add the PED Team Lead role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: ped_team_lead

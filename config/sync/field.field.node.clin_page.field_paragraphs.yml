@@ -1,0 +1,41 @@
+uuid: d6518411-31ed-47c2-aea8-c1fb68a9a4ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paragraphs
+    - node.type.clin_page
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.accordions
+    - paragraphs.paragraphs_type.view_embed
+  module:
+    - entity_reference_revisions
+id: node.clin_page.field_paragraphs
+field_name: field_paragraphs
+entity_type: node
+bundle: clin_page
+label: Paragraphs
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      accordion: accordion
+      accordions: accordions
+      view_embed: view_embed
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 4
+        enabled: true
+      accordions:
+        weight: 5
+        enabled: true
+      view_embed:
+        weight: 6
+        enabled: true
+field_type: entity_reference_revisions

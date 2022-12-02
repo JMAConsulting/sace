@@ -1,0 +1,14 @@
+uuid: 23e39898-c778-4c38-89f4-54df43a3634b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_intake_worker
+  module:
+    - user
+id: user_remove_role_action.clin_intake_worker
+label: 'Remove the CLIN Intake Worker role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: clin_intake_worker

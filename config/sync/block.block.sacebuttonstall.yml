@@ -1,0 +1,39 @@
+uuid: dd9db476-d163-45ad-bc77-b0feecffd62e
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:custom:ed75daff-2e46-4d5e-b060-a4e30a1f2e41'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - oliverolocal
+id: sacebuttonstall
+theme: oliverolocal
+region: hero
+weight: 0
+provider: null
+plugin: 'block_content:ed75daff-2e46-4d5e-b060-a4e30a1f2e41'
+settings:
+  id: 'block_content:ed75daff-2e46-4d5e-b060-a4e30a1f2e41'
+  label: 'SACE buttons tall'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
+      authenticated: authenticated
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/civicrm/contribute/*\r\n/form/donate-to-sace"

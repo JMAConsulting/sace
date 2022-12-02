@@ -1,0 +1,20 @@
+uuid: a6012cac-023b-4007-b75b-ad42bfe91172
+langcode: en
+status: true
+dependencies:
+  theme:
+    - oliverolocal
+id: tabs_2
+theme: oliverolocal
+region: highlighted
+weight: -2
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary Tabs'
+  label_display: '0'
+  provider: core
+  primary: false
+  secondary: true
+visibility: {  }

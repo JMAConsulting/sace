@@ -1,0 +1,12 @@
+uuid: 008a654d-8f32-41ee-80c2-b06802c6a91e
+langcode: en
+status: true
+dependencies:
+  module:
+    - civicrm
+id: taxreceipts
+label: 'Finance - TaxReceipts'
+weight: -2
+is_admin: null
+permissions:
+  - 'issue cdn tax receipts'

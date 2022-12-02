@@ -1,0 +1,8 @@
+uuid: a90e0401-cea9-401d-9206-e91883f5b454
+langcode: en
+status: true
+dependencies: {  }
+name: 'User Team'
+vid: user_team
+description: ''
+weight: 0

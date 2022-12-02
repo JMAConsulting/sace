@@ -1,0 +1,18 @@
+uuid: c2a3b504-047f-42c3-9c5c-10a2d894b506
+langcode: en
+status: true
+dependencies:
+  theme:
+    - oliverolocal
+id: pagetitle
+theme: oliverolocal
+region: content_above
+weight: 0
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {  }

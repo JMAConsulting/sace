@@ -1,0 +1,44 @@
+uuid: 13e2b780-fbbe-4852-b3fe-5fae73ebbbe1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.ce_page.body
+    - field.field.node.ce_page.field_button
+    - field.field.node.ce_page.field_button02
+    - field.field.node.ce_page.field_button03
+    - field.field.node.ce_page.field_button04
+    - field.field.node.ce_page.field_button05
+    - field.field.node.ce_page.field_image_banner
+    - field.field.node.ce_page.field_paragraphs
+    - node.type.ce_page
+  module:
+    - text
+    - user
+id: node.ce_page.teaser
+targetEntityType: node
+bundle: ce_page
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_button: true
+  field_button02: true
+  field_button03: true
+  field_button04: true
+  field_button05: true
+  field_image_banner: true
+  field_paragraphs: true

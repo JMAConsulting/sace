@@ -1,0 +1,558 @@
+uuid: 8d515ef2-3d37-4cc3-8e35-294a5dd24437
+langcode: en
+status: open
+dependencies:
+  module:
+    - webform_civicrm
+weight: 0
+open: null
+close: null
+uid: 2
+template: false
+archive: false
+id: grant_draft
+title: 'ADMIN Grant'
+description: ''
+category: ''
+elements: |-
+  civicrm_1_contact_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': 'Primary Contact'
+    '#form_key': civicrm_1_contact_1_fieldset_fieldset
+    civicrm_1_contact_1_contact_existing:
+      '#type': civicrm_contact
+      '#search_prompt': '- Choose existing -'
+      '#widget': hidden
+      '#form_key': civicrm_1_contact_1_contact_existing
+      '#allow_create': 1
+      '#none_prompt': '+ Create new +'
+      '#default': user
+      '#contact_type': individual
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#extra': {  }
+      '#title': 'Existing Contact'
+    flexbox:
+      '#type': webform_flexbox
+      civicrm_1_contact_1_contact_first_name:
+        '#type': textfield
+        '#contact_type': individual
+        '#form_key': civicrm_1_contact_1_contact_first_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+        '#title': 'First Name'
+      civicrm_1_contact_1_contact_last_name:
+        '#type': textfield
+        '#contact_type': individual
+        '#form_key': civicrm_1_contact_1_contact_last_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+        '#title': 'Last Name'
+  civicrm_1_grant_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': Grant
+    '#form_key': civicrm_1_grant_1_fieldset_fieldset
+    flexbox_05:
+      '#type': webform_flexbox
+      civicrm_1_grant_1_grant_grant_type_id:
+        '#type': civicrm_options
+        '#title': 'Grant Type'
+        '#options':
+          1: Emergency
+          2: 'Family Support'
+          3: 'General Protection'
+          4: Impunity
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_grant_1_grant_grant_type_id
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#default_option': 0
+        '#default_value': 0
+        '#civicrm_live_options': '1'
+      civicrm_1_grant_1_grant_status_id:
+        '#type': civicrm_options
+        '#title': 'Grant Status'
+        '#civicrm_live_options': 0
+        '#options':
+          1: 'Application Submitted'
+          5: 'Awaiting Information'
+          6: Withdrawn
+          8: 'Application in Progress'
+          7: 'Approved awaiting Payment'
+          9: 'Cancelled - Temporary'
+          10: 'Cancelled - Permanent'
+          11: Received
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_grant_1_grant_status_id
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#default_option': '1'
+        '#default_value': '1'
+    flexbox_02:
+      '#type': webform_flexbox
+      civicrm_1_grant_1_cg4_custom_91:
+        '#type': civicrm_options
+        '#required': true
+        '#data_type': 0
+        '#extra':
+          aslist: 1
+          items: |
+            Public Education|Public Education
+            Police and Court Support|Police and Court Support
+            Adult Counselling|Adult Counselling
+            Child and Youth Counselling|Child and Youth Counselling
+            Community Counselling|Community Counselling
+            Group Counselling|Group Counselling
+            Volunteer Services|Volunteer Services
+            Support and Information Line|Support and Information Line
+            Diversity and Inclusion|Diversity and Inclusion
+            Community and Agency Development|Community and Agency Development
+            
+        '#form_key': civicrm_1_grant_1_cg4_custom_91
+        '#options':
+          'Public Education': 'Public Education'
+          'Police and Court Support': 'Police and Court Support'
+          'Adult Counselling': 'Adult Counselling'
+          'Child and Youth Counselling': 'Child and Youth Counselling'
+          'Community Counselling': 'Community Counselling'
+          'Group Counselling': 'Group Counselling'
+          'Volunteer Services': 'Volunteer Services'
+          'Support and Information Line': 'Support and Information Line'
+          'Diversity and Inclusion': 'Diversity and Inclusion'
+          'Community and Agency Development': 'Community and Agency Development'
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#title': 'SACE Primary Program Area'
+        '#civicrm_live_options': 1
+      civicrm_1_grant_1_cg4_custom_92:
+        '#type': civicrm_options
+        '#data_type': 0
+        '#extra':
+          aslist: 1
+          items: |
+            Public Education|Public Education
+            Police and Court Support|Police and Court Support
+            Adult Counselling|Adult Counselling
+            Child and Youth Counselling|Child and Youth Counselling
+            Community Counselling|Community Counselling
+            Group Counselling|Group Counselling
+            Volunteer Services|Volunteer Services
+            Support and Information Line|Support and Information Line
+            Diversity and Inclusion|Diversity and Inclusion
+            Community and Agency Development|Community and Agency Development
+            
+        '#form_key': civicrm_1_grant_1_cg4_custom_92
+        '#options':
+          'Public Education': 'Public Education'
+          'Police and Court Support': 'Police and Court Support'
+          'Adult Counselling': 'Adult Counselling'
+          'Child and Youth Counselling': 'Child and Youth Counselling'
+          'Community Counselling': 'Community Counselling'
+          'Group Counselling': 'Group Counselling'
+          'Volunteer Services': 'Volunteer Services'
+          'Support and Information Line': 'Support and Information Line'
+          'Diversity and Inclusion': 'Diversity and Inclusion'
+          'Community and Agency Development': 'Community and Agency Development'
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#title': 'SACE Secondary Program Area'
+        '#civicrm_live_options': 1
+    flexbox_03:
+      '#type': webform_flexbox
+      civicrm_1_grant_1_grant_amount_total:
+        '#type': number
+        '#data_type': Money
+        '#extra':
+          field_prefix: $
+          point: .
+          separator: ','
+          decimals: 2
+          min: 0
+        '#form_key': civicrm_1_grant_1_grant_amount_total
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#title': 'Amount Requested'
+      civicrm_1_grant_1_grant_amount_granted:
+        '#type': number
+        '#data_type': Money
+        '#extra':
+          field_prefix: $
+          point: .
+          separator: ','
+          decimals: 2
+          min: 0
+        '#form_key': civicrm_1_grant_1_grant_amount_granted
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#title': 'Amount Granted'
+    flexbox_04:
+      '#type': webform_flexbox
+      civicrm_1_grant_1_cg4_custom_44:
+        '#type': managed_file
+        '#data_type': File
+        '#form_key': civicrm_1_grant_1_cg4_custom_44
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#extra': {  }
+        '#title': 'Custom File 1'
+      civicrm_1_grant_1_cg4_custom_45:
+        '#type': managed_file
+        '#data_type': File
+        '#form_key': civicrm_1_grant_1_cg4_custom_45
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#extra': {  }
+        '#title': 'Custom File 2'
+      civicrm_1_grant_1_cg4_custom_46:
+        '#type': managed_file
+        '#data_type': File
+        '#form_key': civicrm_1_grant_1_cg4_custom_46
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#extra': {  }
+        '#title': 'Custom File 3'
+    flexbox_01:
+      '#type': webform_flexbox
+      civicrm_1_grant_1_cg4_custom_94:
+        '#type': datetime
+        '#data_type': Date
+        '#date_date_min': '-50 years'
+        '#date_date_max': '+50 years'
+        '#date_time_step': 60
+        '#form_key': civicrm_1_grant_1_cg4_custom_94
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#extra': {  }
+        '#title': 'LOI Deadline'
+      civicrm_1_grant_1_grant_decision_date:
+        '#type': date
+        '#form_key': civicrm_1_grant_1_grant_decision_date
+        '#parent': civicrm_1_grant_1_fieldset_fieldset
+        '#extra': {  }
+        '#title': 'Decision Date'
+    civicrm_1_grant_1_grant_note:
+      '#type': textarea
+      '#form_key': civicrm_1_grant_1_grant_note
+      '#parent': civicrm_1_grant_1_fieldset_fieldset
+      '#extra': {  }
+      '#title': 'Grant Notes'
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: /admin-grant
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: both
+  form_submit_once: false
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: false
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: message
+  confirmation_url: ''
+  confirmation_title: ''
+  confirmation_message: 'Admin Grant successfully entered!'
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  webform_civicrm:
+    id: webform_civicrm
+    handler_id: webform_civicrm
+    label: CiviCRM
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: null
+    settings:
+      nid: 1
+      number_of_contacts: '1'
+      1_contact_type: individual
+      1_webform_label: 'Contact 1'
+      civicrm_1_contact_1_contact_contact_sub_type:
+        '': ''
+      civicrm_1_contact_1_contact_existing: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_prefix_id: 0
+      civicrm_1_contact_1_contact_first_name: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_middle_name: 0
+      civicrm_1_contact_1_contact_last_name: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_suffix_id: 0
+      civicrm_1_contact_1_contact_nick_name: 0
+      civicrm_1_contact_1_contact_gender_id: 0
+      civicrm_1_contact_1_contact_job_title: 0
+      civicrm_1_contact_1_contact_birth_date: 0
+      civicrm_1_contact_1_contact_preferred_communication_method: 0
+      civicrm_1_contact_1_contact_privacy: 0
+      civicrm_1_contact_1_contact_preferred_language: 0
+      civicrm_1_contact_1_contact_contact_id: 0
+      civicrm_1_contact_1_contact_user_id: 0
+      civicrm_1_contact_1_contact_external_identifier: 0
+      civicrm_1_contact_1_contact_source: 0
+      civicrm_1_contact_1_contact_cs: 0
+      civicrm_1_contact_1_contact_employer_id: 0
+      civicrm_1_contact_1_contact_is_deceased: 0
+      civicrm_1_contact_1_contact_deceased_date: 0
+      contact_1_settings_matching_rule: Unsupervised
+      contact_1_number_of_cg5: '0'
+      contact_1_number_of_cg12: '0'
+      contact_1_number_of_other: '0'
+      contact_1_number_of_address: '0'
+      contact_1_number_of_phone: '0'
+      contact_1_number_of_email: '0'
+      contact_1_number_of_website: '0'
+      contact_1_number_of_im: '0'
+      prefix_known: ''
+      prefix_unknown: ''
+      toggle_message: 0
+      message: ''
+      activity_number_of_activity: '0'
+      participant_reg_type: '0'
+      reg_options:
+        event_type:
+          any: any
+        show_past_events: now
+        show_future_events: '1'
+        show_public_events: all
+        title_display: title
+        show_remaining: '0'
+        validate: 1
+        block_form: 0
+        disable_unregister: 0
+        allow_url_load: 0
+      membership_1_number_of_membership: '0'
+      civicrm_1_contribution_1_contribution_enable_contribution: '0'
+      grant_number_of_grant: '1'
+      civicrm_1_grant_1_grantupload_file_1: 0
+      civicrm_1_grant_1_grantupload_file_2: 0
+      civicrm_1_grant_1_grantupload_file_3: 0
+      grant_1_settings_dynamic_custom_cg4: 0
+      civicrm_1_grant_1_cg4_custom_42: '1'
+      civicrm_1_grant_1_cg4_custom_44: create_civicrm_webform_element
+      civicrm_1_grant_1_cg4_custom_45: create_civicrm_webform_element
+      civicrm_1_grant_1_cg4_custom_46: create_civicrm_webform_element
+      civicrm_1_grant_1_cg4_custom_91: create_civicrm_webform_element
+      civicrm_1_grant_1_cg4_custom_92: create_civicrm_webform_element
+      civicrm_1_grant_1_cg4_custom_94: create_civicrm_webform_element
+      grant_1_settings_existing_grant_status:
+        '': ''
+      civicrm_1_grant_1_grant_contact_id: '1'
+      civicrm_1_grant_1_grant_grant_type_id: create_civicrm_webform_element
+      civicrm_1_grant_1_grant_status_id: create_civicrm_webform_element
+      civicrm_1_grant_1_grant_application_received_date: 0
+      civicrm_1_grant_1_grant_decision_date: create_civicrm_webform_element
+      civicrm_1_grant_1_grant_money_transfer_date: 0
+      civicrm_1_grant_1_grant_grant_due_date: 0
+      civicrm_1_grant_1_grant_grant_report_received: 0
+      civicrm_1_grant_1_grant_rationale: 0
+      civicrm_1_grant_1_grant_note: create_civicrm_webform_element
+      civicrm_1_grant_1_grant_amount_total: create_civicrm_webform_element
+      civicrm_1_grant_1_grant_amount_granted: create_civicrm_webform_element
+      checksum_text: ''
+      create_fieldsets: 1
+      confirm_subscription: 1
+      block_unknown_users: 0
+      create_new_relationship: 0
+      new_contact_source: 'Grant DRAFT'
+      data:
+        contact:
+          1:
+            contact:
+              1:
+                contact_type: individual
+                contact_sub_type: {  }
+                webform_label: 'Contact 1'
+            matching_rule: Unsupervised
+            number_of_cg5: '0'
+            number_of_cg12: '0'
+            number_of_other: '0'
+            number_of_address: '0'
+            number_of_phone: '0'
+            number_of_email: '0'
+            number_of_website: '0'
+            number_of_im: '0'
+        activity:
+          number_of_activity: '0'
+        membership:
+          1:
+            number_of_membership: '0'
+        grant:
+          number_of_grant: '1'
+          1:
+            dynamic_custom_cg4: 0
+            existing_grant_status: {  }
+            cg4:
+              1:
+                custom_42: '1'
+            grant:
+              1:
+                contact_id: '1'
+        participant_reg_type: '0'
+        reg_options:
+          event_type:
+            any: any
+          show_past_events: now
+          show_future_events: '1'
+          show_public_events: all
+          title_display: title
+          show_remaining: '0'
+          validate: 1
+          block_form: 0
+          disable_unregister: 0
+          allow_url_load: 0
+variants: {  }

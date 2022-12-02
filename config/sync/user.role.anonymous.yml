@@ -1,0 +1,27 @@
+uuid: c3dd8ae6-6017-4852-8c37-030fe10217f4
+langcode: en
+status: true
+dependencies:
+  module:
+    - civicrm
+    - media
+    - system
+_core:
+  default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
+id: anonymous
+label: 'Anonymous user'
+weight: -10
+is_admin: false
+permissions:
+  - 'access CiviMail subscribe/unsubscribe pages'
+  - 'access all custom data'
+  - 'access content'
+  - 'access uploaded files'
+  - 'make online contributions'
+  - 'profile create'
+  - 'profile edit'
+  - 'profile view'
+  - 'register for events'
+  - 'view event info'
+  - 'view event participants'
+  - 'view media'

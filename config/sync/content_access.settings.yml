@@ -1,0 +1,14 @@
+_core:
+  default_config_hash: 7LkiviGITIpniIOOIzpuxR7r4XzqqYN_cwu0fb0kx1M
+content_access_roles_gids:
+  anonymous: 1
+  authenticated: 2
+  clin_team_lead: 3
+  clin_intake_worker: 4
+  clin_counsellor: 5
+  ped_team_lead: 6
+  wheel: 7
+  finance: 8
+  taxreceipts: 9
+content_access_node_type:
+  demo: 'a:2:{s:8:"view_own";a:2:{i:0;s:13:"authenticated";i:1;s:5:"wheel";}s:4:"view";a:3:{i:0;s:9:"anonymous";i:1;s:13:"authenticated";i:2;s:5:"wheel";}}'

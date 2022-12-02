@@ -1,0 +1,14 @@
+uuid: 673e8ad6-05da-41f3-9953-212ebf29309a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_counsellor
+  module:
+    - user
+id: user_add_role_action.clin_counsellor
+label: 'Add the CLIN Counsellor role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: clin_counsellor

@@ -1,0 +1,8 @@
+uuid: b7330e39-4c12-429b-ac79-8f86223771dd
+langcode: en
+status: true
+dependencies: {  }
+name: 'Calendar Colour'
+vid: calendar_colour
+description: ''
+weight: 0
