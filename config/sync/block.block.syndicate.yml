@@ -1,0 +1,21 @@
+uuid: 1e529cd5-7ba7-4e82-8c4e-88fdfcb611ae
+langcode: en
+status: false
+dependencies:
+  module:
+    - node
+  theme:
+    - oliverolocal
+id: syndicate
+theme: oliverolocal
+region: social
+weight: 0
+provider: null
+plugin: node_syndicate_block
+settings:
+  id: node_syndicate_block
+  label: 'RSS Feed'
+  label_display: '0'
+  provider: node
+  block_count: 10
+visibility: {  }

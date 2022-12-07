@@ -1,0 +1,23 @@
+uuid: ec66abe9-e7bb-4466-9791-4963e2264c1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_button02
+    - node.type.ce_page
+  module:
+    - link
+id: node.ce_page.field_button02
+field_name: field_button02
+entity_type: node
+bundle: ce_page
+label: Button02
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link

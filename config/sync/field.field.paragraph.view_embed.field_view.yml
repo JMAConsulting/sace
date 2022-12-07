@@ -1,0 +1,60 @@
+uuid: af4a67af-3a23-4757-98ec-ef2e1bb367d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_view
+    - paragraphs.paragraphs_type.view_embed
+  module:
+    - viewsreference
+id: paragraph.view_embed.field_view
+field_name: field_view
+entity_type: paragraph
+bundle: view_embed
+label: View
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:view'
+  handler_settings:
+    target_bundles: null
+    auto_create: 0
+  plugin_types:
+    page: page
+    block: block
+    default: 0
+    attachment: 0
+    chart_extension: 0
+    feed: 0
+    embed: 0
+  preselect_views:
+    activities: 0
+    block_content: 0
+    calendar: 0
+    calendar_counsellors: 0
+    clients: 0
+    content: 0
+    content_recent: 0
+    counsellor_calendar: 0
+    files: 0
+    frontpage: 0
+    grants: 0
+    his_her_calendar: 0
+    media: 0
+    media_library: 0
+    taxonomy_term: 0
+    user_admin_people: 0
+    watchdog: 0
+    webform_submissions: 0
+    who_s_new: 0
+    who_s_online: 0
+  enabled_settings:
+    argument: argument
+    limit: 0
+    offset: 0
+    pager: 0
+    title: 0
+field_type: viewsreference

@@ -1,0 +1,5 @@
+_core:
+  default_config_hash: ALrmD1SCpEpTvkP6L2jqsOPnHOGPciQIIu3lgtjGHtU
+filter_format: plain_text
+enabled_entity_types: {  }
+disable_hooks: false

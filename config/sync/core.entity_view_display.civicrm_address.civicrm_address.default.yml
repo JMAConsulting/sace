@@ -1,0 +1,520 @@
+uuid: 34f5fc6e-11ad-451d-aa89-e82a7e2c0e1b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.civicrm_address.civicrm_address.layout_builder__layout
+  module:
+    - civicrm_entity
+    - layout_builder
+    - layout_discovery
+    - text
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+        components:
+          71d0f295-1a8a-4276-b6ad-efa6a3b59dc1:
+            uuid: 71d0f295-1a8a-4276-b6ad-efa6a3b59dc1
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:city'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+          8ea6e44c-e07a-4ac4-89b2-e39588dd37d4:
+            uuid: 8ea6e44c-e07a-4ac4-89b2-e39588dd37d4
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_number_predirectional'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          ed475e5c-b9e8-43e4-bcf1-a9da3e5c0860:
+            uuid: ed475e5c-b9e8-43e4-bcf1-a9da3e5c0860
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:usps_adc'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+          f68f352b-386d-4ca3-9af2-edbca0887df0:
+            uuid: f68f352b-386d-4ca3-9af2-edbca0887df0
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:timezone'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+          6717ba2e-41db-488a-b110-57cb49fcf762:
+            uuid: 6717ba2e-41db-488a-b110-57cb49fcf762
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:supplemental_address_3'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+          71b1362a-9cf5-4a7f-b812-b1ddaeda9129:
+            uuid: 71b1362a-9cf5-4a7f-b812-b1ddaeda9129
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:supplemental_address_2'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+          582c7e16-4d90-4b30-b644-41f769967f38:
+            uuid: 582c7e16-4d90-4b30-b644-41f769967f38
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:supplemental_address_1'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+          f1646e27-0db0-4c77-8fda-399bc559fbbf:
+            uuid: f1646e27-0db0-4c77-8fda-399bc559fbbf
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_unit'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+          e42be447-7a97-46ac-b8a9-4e970f564d7d:
+            uuid: e42be447-7a97-46ac-b8a9-4e970f564d7d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_type'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+          d4bd485e-8d02-4ac0-a83f-99b272d0ec49:
+            uuid: d4bd485e-8d02-4ac0-a83f-99b272d0ec49
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_number_suffix'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 9
+            additional: {  }
+          ed69b076-7e6b-450a-8540-1e347b737514:
+            uuid: ed69b076-7e6b-450a-8540-1e347b737514
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_number_postdirectional'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+          80068f31-670e-4f76-82d9-2a13d2c92a85:
+            uuid: 80068f31-670e-4f76-82d9-2a13d2c92a85
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:county_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 11
+            additional: {  }
+          966f7b6c-6e4c-4a0c-8cce-6c300fbecce2:
+            uuid: 966f7b6c-6e4c-4a0c-8cce-6c300fbecce2
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_number'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 12
+            additional: {  }
+          daa15c8c-e8c7-4c1f-b62b-1ebd5365acaf:
+            uuid: daa15c8c-e8c7-4c1f-b62b-1ebd5365acaf
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+          6bf73262-5413-40d6-8373-734a74ebe1b0:
+            uuid: 6bf73262-5413-40d6-8373-734a74ebe1b0
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:street_address'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+          bd659bac-aff5-430b-8370-6ebbec43d01d:
+            uuid: bd659bac-aff5-430b-8370-6ebbec43d01d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:state_province_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 15
+            additional: {  }
+          98cd2e15-38de-49b3-93c1-94a381c290e4:
+            uuid: 98cd2e15-38de-49b3-93c1-94a381c290e4
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:postal_code_suffix'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 16
+            additional: {  }
+          419e744e-d19b-4945-80c9-8e08ed7a68f4:
+            uuid: 419e744e-d19b-4945-80c9-8e08ed7a68f4
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:postal_code'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 17
+            additional: {  }
+          6437c88b-5798-41cb-9052-38c7c8c529c1:
+            uuid: 6437c88b-5798-41cb-9052-38c7c8c529c1
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 18
+            additional: {  }
+          9c225ef9-1443-4e5b-a1f7-a533f25df207:
+            uuid: 9c225ef9-1443-4e5b-a1f7-a533f25df207
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:location_type_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 19
+            additional: {  }
+          0457c0c6-8188-422e-913c-a62effdd4f2a:
+            uuid: 0457c0c6-8188-422e-913c-a62effdd4f2a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_address:civicrm_address:world_region'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 20
+            additional: {  }
+        third_party_settings: {  }
+id: civicrm_address.civicrm_address.default
+targetEntityType: civicrm_address
+bundle: civicrm_address
+mode: default
+content:
+  city:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  county_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  location_type_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  name:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  postal_code:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  postal_code_suffix:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  state_province_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_address:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_name:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_number:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_number_postdirectional:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_number_predirectional:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_number_suffix:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_type:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  street_unit:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  supplemental_address_1:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  supplemental_address_2:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  supplemental_address_3:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  timezone:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  usps_adc:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  world_region:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  contact_id: true
+  country_id: true
+  fix_address: true
+  geo_code_1: true
+  geo_code_2: true
+  id: true
+  is_billing: true
+  is_primary: true
+  layout_builder__layout: true
+  manual_geo_code: true
+  master_id: true
+  skip_geocode: true
+  street_parsing: true

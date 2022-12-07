@@ -1,0 +1,21 @@
+uuid: 952740a1-da65-42c2-adfc-1f8d4b12d4a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.civicrm_activity.layout_builder__layout
+  module:
+    - civicrm_entity
+    - layout_builder
+id: civicrm_activity.civicrm_activity.layout_builder__layout
+field_name: layout_builder__layout
+entity_type: civicrm_activity
+bundle: civicrm_activity
+label: Layout
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: layout_section

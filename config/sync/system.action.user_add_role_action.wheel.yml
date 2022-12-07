@@ -1,0 +1,14 @@
+uuid: 6482935e-ffe1-4276-a05d-ee23f724c9f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.wheel
+  module:
+    - user
+id: user_add_role_action.wheel
+label: 'Add the wheel role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: wheel

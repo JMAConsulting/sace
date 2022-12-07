@@ -1,0 +1,25 @@
+uuid: 12368f73-e2d5-4fc2-a219-d48c7b36b312
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - oliverolocal
+id: breadcrumbs
+theme: oliverolocal
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: '/calendar-team/*'

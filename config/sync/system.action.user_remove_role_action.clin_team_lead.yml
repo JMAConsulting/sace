@@ -1,0 +1,14 @@
+uuid: 8d39bde8-fbb0-483c-8ad5-f0b6b1f527c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_team_lead
+  module:
+    - user
+id: user_remove_role_action.clin_team_lead
+label: 'Remove the CLIN Team Lead role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: clin_team_lead

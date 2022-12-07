@@ -1,0 +1,14 @@
+uuid: aafe4882-d6ba-46ad-b83d-2e5fcd014fe2
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.ped_team_lead
+  module:
+    - user
+id: user_remove_role_action.ped_team_lead
+label: 'Remove the PED Team Lead role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: ped_team_lead

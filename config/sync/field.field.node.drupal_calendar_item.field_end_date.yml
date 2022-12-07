@@ -1,0 +1,24 @@
+uuid: 4c69447d-e0d3-48aa-b63e-576de24b4b6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_end_date
+    - node.type.drupal_calendar_item
+  module:
+    - datetime
+id: node.drupal_calendar_item.field_end_date
+field_name: field_end_date
+entity_type: node
+bundle: drupal_calendar_item
+label: 'End Date'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_date_type: now
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,35 @@
+_core:
+  default_config_hash: W1LPEDJW6G9DHJAilfjznVJH5lZQASh7eKGCXIhH5Gg
+nagios:
+  status:
+    ok: 0
+    warning: 1
+    critical: 2
+    unknown: 3
+  min_report_severity: 2
+  ua: rzKXaEs3k56A342TCw
+  statuspage:
+    path: nagios
+    enabled: true
+    controller: '\Drupal\nagios\Controller\StatuspageController::content'
+    getparam: true
+  show_outdated_names: true
+  limit_watchdog:
+    negate: false
+    display: false
+    channel_filter: null
+  cron_duration: 60
+  elysia_cron_duration: 60
+  enable:
+    nagios: true
+  function:
+    requirements: true
+    watchdog: true
+    cron: true
+    maintenance: true
+    session_anon: false
+    session_auth: false
+    nodes: false
+    users: false
+    modules: false
+    themes: false

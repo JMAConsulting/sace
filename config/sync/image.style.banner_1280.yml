@@ -1,0 +1,15 @@
+uuid: 37551568-4678-4c3e-98dd-e1cec92828f9
+langcode: en
+status: true
+dependencies: {  }
+name: banner_1280
+label: 'Banner 1480'
+effects:
+  aaddd722-95b7-472e-903a-88e39e731e50:
+    uuid: aaddd722-95b7-472e-903a-88e39e731e50
+    id: image_scale
+    weight: 1
+    data:
+      width: 1480
+      height: null
+      upscale: false

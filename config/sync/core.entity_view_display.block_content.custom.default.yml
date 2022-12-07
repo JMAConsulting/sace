@@ -1,0 +1,58 @@
+uuid: 66962943-242d-4596-bace-1fc23731a753
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.custom
+    - field.field.block_content.custom.field_media
+    - image.style.banner_1280
+  module:
+    - blazy
+id: block_content.custom.default
+targetEntityType: block_content
+bundle: custom
+mode: default
+content:
+  field_media:
+    type: blazy_media
+    label: hidden
+    settings:
+      caption:
+        title: '0'
+        alt: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      view_mode: default
+      cache: 0
+      current_view_mode: default
+      skin: ''
+      fx: ''
+      style: ''
+      background: false
+      box_caption: ''
+      box_caption_custom: ''
+      box_media_style: ''
+      responsive_image_style: ''
+      box_style: ''
+      image_style: banner_1280
+      media_switch: ''
+      ratio: ''
+      thumbnail_style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

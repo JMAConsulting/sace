@@ -1,0 +1,23 @@
+uuid: 4cd7ca8b-0e35-4d78-bea8-d85765c9318e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.drupal_calendar_item
+  module:
+    - text
+id: node.drupal_calendar_item.body
+field_name: body
+entity_type: node
+bundle: drupal_calendar_item
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

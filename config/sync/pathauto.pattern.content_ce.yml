@@ -1,0 +1,22 @@
+uuid: 5993fb9a-0404-402d-980a-daa6d5fc61ce
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: content_ce
+label: 'Content CE'
+type: 'canonical_entities:node'
+pattern: 'ce/[node:title]'
+selection_criteria:
+  97f90d6c-6944-47d3-946e-1dc4761f89ba:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 97f90d6c-6944-47d3-946e-1dc4761f89ba
+    context_mapping:
+      node: node
+    bundles:
+      ce_page: ce_page
+selection_logic: and
+weight: -5
+relationships: {  }

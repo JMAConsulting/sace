@@ -1,0 +1,40 @@
+uuid: 2df0c5f8-3103-4f6c-a077-62c743a4fc26
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:custom:f2106abc-8bed-428e-ac3b-f7b0e2195769'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - oliverolocal
+id: sacebuttons
+theme: oliverolocal
+region: hero
+weight: 0
+provider: null
+plugin: 'block_content:f2106abc-8bed-428e-ac3b-f7b0e2195769'
+settings:
+  id: 'block_content:f2106abc-8bed-428e-ac3b-f7b0e2195769'
+  label: 'SACE buttons'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: ''
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
+      authenticated: authenticated

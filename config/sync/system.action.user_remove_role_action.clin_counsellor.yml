@@ -1,0 +1,14 @@
+uuid: 5096053a-0870-4e02-b941-d67fc2732ea5
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_counsellor
+  module:
+    - user
+id: user_remove_role_action.clin_counsellor
+label: 'Remove the CLIN Counsellor role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: clin_counsellor

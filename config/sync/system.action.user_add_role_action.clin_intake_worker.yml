@@ -1,0 +1,14 @@
+uuid: 7c40087a-cfda-49bb-8b1e-b69da23528c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_intake_worker
+  module:
+    - user
+id: user_add_role_action.clin_intake_worker
+label: 'Add the CLIN Intake Worker role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: clin_intake_worker

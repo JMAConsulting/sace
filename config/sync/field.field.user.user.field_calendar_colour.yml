@@ -1,0 +1,30 @@
+uuid: cd8e78f7-d2ac-41bc-a340-bc7dcdf064d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_calendar_colour
+    - taxonomy.vocabulary.calendar_colour
+  module:
+    - user
+id: user.user.field_calendar_colour
+field_name: field_calendar_colour
+entity_type: user
+bundle: user
+label: 'Calendar Colour'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      calendar_colour: calendar_colour
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,49 @@
+uuid: b9b932da-279a-4018-a9a1-1457c0673ba4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.field_calendar_colour
+    - field.field.user.user.field_user_team
+  module:
+    - path
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  account:
+    weight: -10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  contact:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_calendar_colour:
+    type: options_buttons
+    weight: 32
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_user_team:
+    type: options_buttons
+    weight: 34
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  language:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

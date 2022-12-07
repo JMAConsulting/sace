@@ -1,0 +1,71 @@
+uuid: aa8b293c-960b-4de5-95d2-dddce2e119fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.html
+  module:
+    - ckeditor
+format: html
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - BGColor
+            - TextColor
+            - Italic
+            - Superscript
+            - Subscript
+            - JustifyLeft
+            - JustifyCenter
+            - JustifyRight
+            - JustifyBlock
+            - Outdent
+            - Indent
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Lists
+          items:
+            - BulletedList
+            - NumberedList
+            - HorizontalRule
+        -
+          name: Media
+          items:
+            - Blockquote
+            - DrupalImage
+        -
+          name: Tools
+          items:
+            - Source
+            - Undo
+            - Redo
+            - Table
+            - Styles
+            - Format
+            - SpecialChar
+            - DrupalFontAwesome
+  plugins:
+    stylescombo:
+      styles: ''
+    colorbutton:
+      colors: '143356,a9d9bc,2E416C'
+    editoradvancedimage:
+      default_class: ''
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

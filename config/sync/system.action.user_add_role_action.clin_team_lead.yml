@@ -1,0 +1,14 @@
+uuid: 230bd57f-a36f-4df4-8d15-7dca2d309276
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_team_lead
+  module:
+    - user
+id: user_add_role_action.clin_team_lead
+label: 'Add the CLIN Team Lead role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: clin_team_lead

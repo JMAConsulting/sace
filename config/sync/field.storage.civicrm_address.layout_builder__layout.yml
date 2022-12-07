@@ -1,0 +1,19 @@
+uuid: ecf47947-e295-41f7-beaf-ee056dab113a
+langcode: en
+status: true
+dependencies:
+  module:
+    - civicrm_entity
+    - layout_builder
+id: civicrm_address.layout_builder__layout
+field_name: layout_builder__layout
+entity_type: civicrm_address
+type: layout_section
+settings: {  }
+module: layout_builder
+locked: true
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

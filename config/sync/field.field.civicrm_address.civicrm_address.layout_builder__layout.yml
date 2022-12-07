@@ -1,0 +1,21 @@
+uuid: a08a1869-13b9-486c-9bad-df0ed4a6855e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.civicrm_address.layout_builder__layout
+  module:
+    - civicrm_entity
+    - layout_builder
+id: civicrm_address.civicrm_address.layout_builder__layout
+field_name: layout_builder__layout
+entity_type: civicrm_address
+bundle: civicrm_address
+label: Layout
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: layout_section

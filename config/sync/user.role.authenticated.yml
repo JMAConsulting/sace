@@ -1,0 +1,33 @@
+uuid: 25dd5b4e-ff0f-402f-9ba3-20677284396f
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.html
+  module:
+    - civicrm
+    - filter
+    - fontawesome
+    - media
+    - system
+_core:
+  default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
+id: authenticated
+label: 'Authenticated user'
+weight: -9
+is_admin: false
+permissions:
+  - 'access CiviMail subscribe/unsubscribe pages'
+  - 'access all custom data'
+  - 'access content'
+  - 'access fontawesome additional settings'
+  - 'access uploaded files'
+  - 'make online contributions'
+  - 'profile create'
+  - 'profile edit'
+  - 'profile view'
+  - 'register for events'
+  - 'use text format html'
+  - 'view event info'
+  - 'view event participants'
+  - 'view media'

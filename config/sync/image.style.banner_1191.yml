@@ -1,0 +1,15 @@
+uuid: 3f00753a-3058-47ca-a650-0d9cc0dc2d8a
+langcode: en
+status: true
+dependencies: {  }
+name: banner_1191
+label: 'Banner 1191'
+effects:
+  1c71ef2a-8b9f-4d1d-ad5f-3bd51d42653b:
+    uuid: 1c71ef2a-8b9f-4d1d-ad5f-3bd51d42653b
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1191
+      height: 300
+      anchor: center-center

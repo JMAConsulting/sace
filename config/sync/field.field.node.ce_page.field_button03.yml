@@ -1,0 +1,23 @@
+uuid: f808f6a2-b28c-491f-9dc1-f93cdf772348
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_button03
+    - node.type.ce_page
+  module:
+    - link
+id: node.ce_page.field_button03
+field_name: field_button03
+entity_type: node
+bundle: ce_page
+label: Button03
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link

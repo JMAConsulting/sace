@@ -1,0 +1,36 @@
+uuid: fe16890d-7cfd-4ce8-8cab-7020e8eb21f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.demo.body
+    - field.field.node.demo.field_image_banner
+    - field.field.node.demo.field_paragraphs
+    - field.field.node.demo.field_webform
+    - node.type.demo
+  module:
+    - text
+    - user
+id: node.demo.teaser
+targetEntityType: node
+bundle: demo
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_image_banner: true
+  field_paragraphs: true
+  field_webform: true

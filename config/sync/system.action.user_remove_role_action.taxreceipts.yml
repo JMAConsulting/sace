@@ -1,0 +1,14 @@
+uuid: 2bbf6221-3519-4a87-bb7e-abcbde6339c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.taxreceipts
+  module:
+    - user
+id: user_remove_role_action.taxreceipts
+label: 'Remove the TaxReceipts role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: taxreceipts

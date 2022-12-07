@@ -1,0 +1,379 @@
+uuid: e19a4afe-0540-4672-8297-e8283c045a4d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.civicrm_activity.civicrm_activity.layout_builder__layout
+  module:
+    - civicrm_entity
+    - datetime
+id: civicrm_activity.civicrm_activity.default
+targetEntityType: civicrm_activity
+bundle: civicrm_activity
+mode: default
+content:
+  activity_date_time:
+    type: datetime_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  activity_type_id:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  created_date:
+    type: datetime_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_104:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_115:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_119:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_120:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_121:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_122:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_123:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_124:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_125:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_126:
+    type: string_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    rows: 5
+  custom_127:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_128:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_129:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_25:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_34:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  custom_35:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  custom_36:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  custom_37:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_38:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  custom_39:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_40:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_41:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  custom_43:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_88:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  custom_90:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  details:
+    type: civicrm_entity_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: '5'
+      placeholder: ''
+    third_party_settings: {  }
+    rows: 5
+  duration:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  engagement_level:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  is_auto:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  is_current_revision:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  is_deleted:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  is_star:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  is_test:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  location:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  medium_id:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  modified_date:
+    type: datetime_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  phone_number:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  priority_id:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  result:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  source_record_id:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  status_id:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  subject:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  weight:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  assignee_id: true
+  campaign_id: true
+  case_id: true
+  custom_24: true
+  custom_47: true
+  custom_48: true
+  custom_54: true
+  custom_55: true
+  custom_56: true
+  custom_57: true
+  custom_58: true
+  custom_59: true
+  custom_60: true
+  custom_61: true
+  custom_62: true
+  custom_63: true
+  custom_64: true
+  custom_65: true
+  custom_67: true
+  custom_68: true
+  custom_69: true
+  custom_70: true
+  custom_71: true
+  custom_72: true
+  custom_73: true
+  custom_74: true
+  custom_75: true
+  custom_76: true
+  custom_77: true
+  custom_78: true
+  custom_79: true
+  custom_80: true
+  custom_81: true
+  custom_82: true
+  custom_83: true
+  custom_84: true
+  custom_85: true
+  custom_86: true
+  custom_87: true
+  layout_builder__layout: true
+  original_id: true
+  parent_id: true
+  phone_id: true
+  relationship_id: true
+  source_contact_id: true
+  target_id: true

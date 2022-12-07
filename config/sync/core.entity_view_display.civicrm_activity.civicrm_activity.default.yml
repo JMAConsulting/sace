@@ -1,0 +1,2617 @@
+uuid: be60f936-668b-494e-8b77-cb7a0a8dee9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.civicrm_activity.civicrm_activity.layout_builder__layout
+  module:
+    - civicrm_entity
+    - datetime
+    - layout_builder
+    - layout_discovery
+    - options
+    - text
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+        components:
+          5d6a5915-d744-4edb-92e2-6b57b91f2782:
+            uuid: 5d6a5915-d744-4edb-92e2-6b57b91f2782
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:activity_date_time'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+          2951727c-5cb5-421f-9e21-8c84e7379883:
+            uuid: 2951727c-5cb5-421f-9e21-8c84e7379883
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:details'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          51e97582-618d-41f5-b870-8aa6aee8ff7c:
+            uuid: 51e97582-618d-41f5-b870-8aa6aee8ff7c
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:subject'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+          9f0889fc-666d-49b3-9b4f-2f19137d36d3:
+            uuid: 9f0889fc-666d-49b3-9b4f-2f19137d36d3
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:status_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+          95fd0c8d-a4f4-444e-8f76-2694a78a80d0:
+            uuid: 95fd0c8d-a4f4-444e-8f76-2694a78a80d0
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:source_record_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+          96ee3760-04b2-41bd-83ff-09dc5be7f19d:
+            uuid: 96ee3760-04b2-41bd-83ff-09dc5be7f19d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:result'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+          d782bbe3-1919-4974-bad4-ba33cfd2b639:
+            uuid: d782bbe3-1919-4974-bad4-ba33cfd2b639
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:priority_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+          f8e3b56b-644e-472f-b38e-97b8a07cf7bc:
+            uuid: f8e3b56b-644e-472f-b38e-97b8a07cf7bc
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:phone_number'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+          112bc076-7473-40f9-b493-0438fe381d90:
+            uuid: 112bc076-7473-40f9-b493-0438fe381d90
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:modified_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+          2c141bb1-0ad9-4029-b1e0-facb8d14a6d6:
+            uuid: 2c141bb1-0ad9-4029-b1e0-facb8d14a6d6
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:medium_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 9
+            additional: {  }
+          6478577f-bb19-4a24-b03c-658ae9a883fc:
+            uuid: 6478577f-bb19-4a24-b03c-658ae9a883fc
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:location'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+          097f768a-a686-4eb1-9216-fb71152cae96:
+            uuid: 097f768a-a686-4eb1-9216-fb71152cae96
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:engagement_level'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 11
+            additional: {  }
+          0368c1e1-3e22-4567-91d1-67ab1a240097:
+            uuid: 0368c1e1-3e22-4567-91d1-67ab1a240097
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:duration'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 12
+            additional: {  }
+          19a4b124-a315-4e6b-bd93-d137b9dce4e1:
+            uuid: 19a4b124-a315-4e6b-bd93-d137b9dce4e1
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_90'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+          2aaba6b0-54dd-48cd-b7ce-f5ea94022cd5:
+            uuid: 2aaba6b0-54dd-48cd-b7ce-f5ea94022cd5
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_88'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+          0ed3bbec-185a-4c55-93c6-db6c73d02bed:
+            uuid: 0ed3bbec-185a-4c55-93c6-db6c73d02bed
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_43'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 15
+            additional: {  }
+          ea02909c-ed00-4eea-b9ab-54e54956be8e:
+            uuid: ea02909c-ed00-4eea-b9ab-54e54956be8e
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_41'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 16
+            additional: {  }
+          fda53798-8f55-4252-a3c8-9624a96c0176:
+            uuid: fda53798-8f55-4252-a3c8-9624a96c0176
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_40'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 17
+            additional: {  }
+          a711b6f0-230b-408a-bb0b-c22f9ca6d000:
+            uuid: a711b6f0-230b-408a-bb0b-c22f9ca6d000
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_39'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 18
+            additional: {  }
+          939d1a28-fac9-4a26-9078-dee80ec9b88d:
+            uuid: 939d1a28-fac9-4a26-9078-dee80ec9b88d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_37'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 19
+            additional: {  }
+          66e38be0-5fb7-48e5-823a-aba6fcd87abd:
+            uuid: 66e38be0-5fb7-48e5-823a-aba6fcd87abd
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_25'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 20
+            additional: {  }
+          5208211e-ece9-445a-8b52-1cc02ed3a749:
+            uuid: 5208211e-ece9-445a-8b52-1cc02ed3a749
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_115'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 21
+            additional: {  }
+          2d86c5fb-e8ac-47f9-9845-abeb0d052b53:
+            uuid: 2d86c5fb-e8ac-47f9-9845-abeb0d052b53
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:created_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 22
+            additional: {  }
+          cf41d006-f838-4418-9c63-38a35a55fb02:
+            uuid: cf41d006-f838-4418-9c63-38a35a55fb02
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:activity_type_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 23
+            additional: {  }
+          5021e979-bd1b-4753-88e2-e92f51beb0f4:
+            uuid: 5021e979-bd1b-4753-88e2-e92f51beb0f4
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:weight'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 24
+            additional: {  }
+          5c0e8c52-573e-468c-a78f-aa5522ae5dfb:
+            uuid: 5c0e8c52-573e-468c-a78f-aa5522ae5dfb
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_126'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 25
+            additional: {  }
+          b1e023a3-7b77-43b0-8ff0-11834295fec7:
+            uuid: b1e023a3-7b77-43b0-8ff0-11834295fec7
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_125'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 26
+            additional: {  }
+          fca85808-fa18-4581-96ce-1fbec75e43e9:
+            uuid: fca85808-fa18-4581-96ce-1fbec75e43e9
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_124'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 27
+            additional: {  }
+          7bd8979c-6d68-48d2-86ef-acdc5f35aa5b:
+            uuid: 7bd8979c-6d68-48d2-86ef-acdc5f35aa5b
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_123'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 28
+            additional: {  }
+          405f9391-7209-4b2e-95c8-e93ad646d635:
+            uuid: 405f9391-7209-4b2e-95c8-e93ad646d635
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_122'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 29
+            additional: {  }
+          cbfc25e0-5277-42e5-bfd4-d4cfd073a464:
+            uuid: cbfc25e0-5277-42e5-bfd4-d4cfd073a464
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_121'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 30
+            additional: {  }
+          8e370df1-ec12-46fe-97a4-61503b7da723:
+            uuid: 8e370df1-ec12-46fe-97a4-61503b7da723
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_120'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 31
+            additional: {  }
+          8b4a07d6-3541-4d4b-b4f9-d86ea044bd1d:
+            uuid: 8b4a07d6-3541-4d4b-b4f9-d86ea044bd1d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_119'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 32
+            additional: {  }
+          58f60410-9ea4-471c-be86-7fe53e5cdd97:
+            uuid: 58f60410-9ea4-471c-be86-7fe53e5cdd97
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_127'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 33
+            additional: {  }
+          f22b5e0c-8f81-4fac-a889-40f0e7051ab1:
+            uuid: f22b5e0c-8f81-4fac-a889-40f0e7051ab1
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_128'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 34
+            additional: {  }
+          cca7ae05-04cc-4858-a733-c35571bf155a:
+            uuid: cca7ae05-04cc-4858-a733-c35571bf155a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_129'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 35
+            additional: {  }
+          5f81b401-d75c-48de-ab3f-b0307713af78:
+            uuid: 5f81b401-d75c-48de-ab3f-b0307713af78
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_144'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 36
+            additional: {  }
+          bf1f2e8d-63f0-44ae-99e5-77d1960082ad:
+            uuid: bf1f2e8d-63f0-44ae-99e5-77d1960082ad
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_147'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 37
+            additional: {  }
+          b4e34d8a-5e06-42e2-800e-3850cbf1d48d:
+            uuid: b4e34d8a-5e06-42e2-800e-3850cbf1d48d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_146'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 38
+            additional: {  }
+          9e78ecb4-8532-453a-9ab3-78c038117df1:
+            uuid: 9e78ecb4-8532-453a-9ab3-78c038117df1
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_152'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 39
+            additional: {  }
+          3d3a40a5-2c05-43de-a0db-834f4ec73e3b:
+            uuid: 3d3a40a5-2c05-43de-a0db-834f4ec73e3b
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_153'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 40
+            additional: {  }
+          df017d31-8b8e-4e4c-ba1c-4d5ddd180f9a:
+            uuid: df017d31-8b8e-4e4c-ba1c-4d5ddd180f9a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_154'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 41
+            additional: {  }
+          5032a324-819c-441e-b409-02bc87652626:
+            uuid: 5032a324-819c-441e-b409-02bc87652626
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_155'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 42
+            additional: {  }
+          6c94c1e1-2624-4380-8549-f784d86b4b92:
+            uuid: 6c94c1e1-2624-4380-8549-f784d86b4b92
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_156'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 43
+            additional: {  }
+          3fb7b40f-9017-427f-a4f8-4daf6b5c3995:
+            uuid: 3fb7b40f-9017-427f-a4f8-4daf6b5c3995
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_157'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 44
+            additional: {  }
+          ca96c807-1681-4bbf-9f7b-afe2e31e7801:
+            uuid: ca96c807-1681-4bbf-9f7b-afe2e31e7801
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_158'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 45
+            additional: {  }
+          87afe467-9bbe-4872-826b-8a3b75429bae:
+            uuid: 87afe467-9bbe-4872-826b-8a3b75429bae
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_159'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 46
+            additional: {  }
+          48f7494e-157f-4170-a0dd-737be901c3a7:
+            uuid: 48f7494e-157f-4170-a0dd-737be901c3a7
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_160'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 47
+            additional: {  }
+          8f681f7a-b7c3-492e-bb7f-b2ae4f6e6987:
+            uuid: 8f681f7a-b7c3-492e-bb7f-b2ae4f6e6987
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_161'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 48
+            additional: {  }
+          9053f51f-8146-44d1-b503-12ef8416e54a:
+            uuid: 9053f51f-8146-44d1-b503-12ef8416e54a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_162'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 49
+            additional: {  }
+          662ad33b-7f8a-499b-bd65-746f1b7bb124:
+            uuid: 662ad33b-7f8a-499b-bd65-746f1b7bb124
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_163'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 50
+            additional: {  }
+          d8231b63-f2e1-4f7f-8af8-e12817debfac:
+            uuid: d8231b63-f2e1-4f7f-8af8-e12817debfac
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_164'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 51
+            additional: {  }
+          872a5781-42ed-4223-893a-a41ecb077669:
+            uuid: 872a5781-42ed-4223-893a-a41ecb077669
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_165'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 52
+            additional: {  }
+          3a87bb20-5039-4754-b6f0-ef78c2b4c8e2:
+            uuid: 3a87bb20-5039-4754-b6f0-ef78c2b4c8e2
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_166'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 53
+            additional: {  }
+          61420b01-01da-40f7-819a-7319f0a03cc3:
+            uuid: 61420b01-01da-40f7-819a-7319f0a03cc3
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_167'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 54
+            additional: {  }
+          71afb9a6-ca12-4dfe-a2b9-bed6beae56f8:
+            uuid: 71afb9a6-ca12-4dfe-a2b9-bed6beae56f8
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_168'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 55
+            additional: {  }
+          603d3c66-b99c-4252-8af2-452e9e69be2f:
+            uuid: 603d3c66-b99c-4252-8af2-452e9e69be2f
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_169'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 56
+            additional: {  }
+          7f57f3a3-152c-4ce8-936c-c6d63a3fd2b3:
+            uuid: 7f57f3a3-152c-4ce8-936c-c6d63a3fd2b3
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_170'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 57
+            additional: {  }
+          a4aeb12f-fb60-4140-890c-2d078deadf96:
+            uuid: a4aeb12f-fb60-4140-890c-2d078deadf96
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_171'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 58
+            additional: {  }
+          37dfbcb5-ffbb-4898-baaa-446b75e30a1b:
+            uuid: 37dfbcb5-ffbb-4898-baaa-446b75e30a1b
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_172'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 59
+            additional: {  }
+          788b9b3b-5ade-49ae-98bf-4e6b2c218db3:
+            uuid: 788b9b3b-5ade-49ae-98bf-4e6b2c218db3
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_173'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 60
+            additional: {  }
+          34d332f5-79a5-4741-806e-1a6bf6b48212:
+            uuid: 34d332f5-79a5-4741-806e-1a6bf6b48212
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_174'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 61
+            additional: {  }
+          2d7dd9a2-267c-4888-9dd6-ed43aef44ba4:
+            uuid: 2d7dd9a2-267c-4888-9dd6-ed43aef44ba4
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_148'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: hidden
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 62
+            additional: {  }
+          9c34d84f-b596-4ff5-a506-fbfaf0bf2a2d:
+            uuid: 9c34d84f-b596-4ff5-a506-fbfaf0bf2a2d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_149'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 63
+            additional: {  }
+          b5b7ecc7-0129-450e-8715-6dbb5c4861f7:
+            uuid: b5b7ecc7-0129-450e-8715-6dbb5c4861f7
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_150'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 64
+            additional: {  }
+          6c79d1b1-6983-4f4c-b8a2-8e96ddc1e358:
+            uuid: 6c79d1b1-6983-4f4c-b8a2-8e96ddc1e358
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_151'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 65
+            additional: {  }
+          629fafc7-5ae3-4645-86cb-aa1148d4e51f:
+            uuid: 629fafc7-5ae3-4645-86cb-aa1148d4e51f
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_177'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 66
+            additional: {  }
+          02dd5003-d555-4047-98a9-4b796e2fce7a:
+            uuid: 02dd5003-d555-4047-98a9-4b796e2fce7a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_181'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 67
+            additional: {  }
+          10c29a9d-3352-4e58-a94f-6b029cd8968a:
+            uuid: 10c29a9d-3352-4e58-a94f-6b029cd8968a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_182'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 68
+            additional: {  }
+          fa530aeb-2a37-4a74-b462-1afccabd2515:
+            uuid: fa530aeb-2a37-4a74-b462-1afccabd2515
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_180'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 69
+            additional: {  }
+          bb952e7e-8cda-4254-a3c7-71b04c87a335:
+            uuid: bb952e7e-8cda-4254-a3c7-71b04c87a335
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_183'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 70
+            additional: {  }
+          cd1985de-4ad2-4976-bf22-79bc1b1dcacf:
+            uuid: cd1985de-4ad2-4976-bf22-79bc1b1dcacf
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_184'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 71
+            additional: {  }
+          81677c45-565c-448d-98c4-c5e802dd9aed:
+            uuid: 81677c45-565c-448d-98c4-c5e802dd9aed
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_185'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 72
+            additional: {  }
+          fe6897fb-1039-49b2-a360-467b06bfdb87:
+            uuid: fe6897fb-1039-49b2-a360-467b06bfdb87
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_186'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 73
+            additional: {  }
+          19da72f4-862b-4bdb-9e37-ac59522f3a27:
+            uuid: 19da72f4-862b-4bdb-9e37-ac59522f3a27
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_187'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 74
+            additional: {  }
+          165d56ee-adb6-494f-9e22-2cd23ad5ba8c:
+            uuid: 165d56ee-adb6-494f-9e22-2cd23ad5ba8c
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_188'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 75
+            additional: {  }
+          2e72aacc-7eee-4b9b-9d9c-98247b28777c:
+            uuid: 2e72aacc-7eee-4b9b-9d9c-98247b28777c
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_193'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 76
+            additional: {  }
+          c2e035c3-e57e-4341-9acc-fce5a6bbc19e:
+            uuid: c2e035c3-e57e-4341-9acc-fce5a6bbc19e
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_194'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 77
+            additional: {  }
+          610b7963-ac39-4ecd-87ae-c2f2df1de066:
+            uuid: 610b7963-ac39-4ecd-87ae-c2f2df1de066
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_195'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 78
+            additional: {  }
+          d7247dca-21d4-4bd8-8049-63dd25f1492e:
+            uuid: d7247dca-21d4-4bd8-8049-63dd25f1492e
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_196'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 79
+            additional: {  }
+          b0112a54-6c6d-4f69-93de-f153b879792f:
+            uuid: b0112a54-6c6d-4f69-93de-f153b879792f
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_198'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 80
+            additional: {  }
+          84429c2b-1193-441d-8b6b-b7e3eb1a6d00:
+            uuid: 84429c2b-1193-441d-8b6b-b7e3eb1a6d00
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_199'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 81
+            additional: {  }
+          2dfc60e2-3320-464a-873f-aa1207f02cae:
+            uuid: 2dfc60e2-3320-464a-873f-aa1207f02cae
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_189'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 82
+            additional: {  }
+          fc991399-f58b-463b-800e-7f7378e89156:
+            uuid: fc991399-f58b-463b-800e-7f7378e89156
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_200'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 83
+            additional: {  }
+          8137aac2-c065-462a-b9c5-4539a9dc4709:
+            uuid: 8137aac2-c065-462a-b9c5-4539a9dc4709
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_201'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 84
+            additional: {  }
+          5f93c81f-7c9b-43a3-acdc-d9d5e6a170ea:
+            uuid: 5f93c81f-7c9b-43a3-acdc-d9d5e6a170ea
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_202'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 85
+            additional: {  }
+          07ba71c8-3872-44f4-9d26-1148e018e2d2:
+            uuid: 07ba71c8-3872-44f4-9d26-1148e018e2d2
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_190'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 86
+            additional: {  }
+          273bd747-bccb-4eea-a68d-1b17ee4a7e1c:
+            uuid: 273bd747-bccb-4eea-a68d-1b17ee4a7e1c
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_191'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 87
+            additional: {  }
+          05996896-9f56-4fe9-bf17-fe4f5ef2f709:
+            uuid: 05996896-9f56-4fe9-bf17-fe4f5ef2f709
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_192'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 88
+            additional: {  }
+          411b607d-38e2-4611-b7cd-cc39d4ae4ade:
+            uuid: 411b607d-38e2-4611-b7cd-cc39d4ae4ade
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_203'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 89
+            additional: {  }
+          450fdfba-636c-455d-a912-ddc59a4874a0:
+            uuid: 450fdfba-636c-455d-a912-ddc59a4874a0
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_204'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 90
+            additional: {  }
+          f992a5ab-36cb-4cfd-af4e-9fa846f60325:
+            uuid: f992a5ab-36cb-4cfd-af4e-9fa846f60325
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_205'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 91
+            additional: {  }
+          fd6636e2-d2dc-463b-8f46-7a324dc64470:
+            uuid: fd6636e2-d2dc-463b-8f46-7a324dc64470
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_206'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 92
+            additional: {  }
+          fc3a2cc3-614f-407c-9124-06c2d730d813:
+            uuid: fc3a2cc3-614f-407c-9124-06c2d730d813
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_207'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 93
+            additional: {  }
+          bfac12c5-6599-4313-8222-7a3d23870d5a:
+            uuid: bfac12c5-6599-4313-8222-7a3d23870d5a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_216'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 94
+            additional: {  }
+          5d886514-aa2c-490b-b956-b11126e441fa:
+            uuid: 5d886514-aa2c-490b-b956-b11126e441fa
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_217'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 95
+            additional: {  }
+          ae68c9a3-aa3c-4280-be39-3cf796923649:
+            uuid: ae68c9a3-aa3c-4280-be39-3cf796923649
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_218'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 96
+            additional: {  }
+          e8bf75b1-f8f3-4db4-afc3-fd243999e5df:
+            uuid: e8bf75b1-f8f3-4db4-afc3-fd243999e5df
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_219'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 97
+            additional: {  }
+          68c35b24-aea2-4fac-8a5c-5e061aba839d:
+            uuid: 68c35b24-aea2-4fac-8a5c-5e061aba839d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_220'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 98
+            additional: {  }
+          1cebef8b-8141-4373-8c72-8b69d9f9326a:
+            uuid: 1cebef8b-8141-4373-8c72-8b69d9f9326a
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_221'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 99
+            additional: {  }
+          543dd390-8aaa-4b49-9615-8af9311d9b75:
+            uuid: 543dd390-8aaa-4b49-9615-8af9311d9b75
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_222'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 100
+            additional: {  }
+          6da88014-4d31-4238-806f-112f287c7141:
+            uuid: 6da88014-4d31-4238-806f-112f287c7141
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_223'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 101
+            additional: {  }
+          4c16216b-3eaa-4080-b456-46725771a5fe:
+            uuid: 4c16216b-3eaa-4080-b456-46725771a5fe
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_224'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 102
+            additional: {  }
+          dcf7cc1d-8326-45cd-bed0-e888dd47b3d9:
+            uuid: dcf7cc1d-8326-45cd-bed0-e888dd47b3d9
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_225'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 103
+            additional: {  }
+          3bd59b82-3756-4603-9f4a-45f303771b91:
+            uuid: 3bd59b82-3756-4603-9f4a-45f303771b91
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_226'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 104
+            additional: {  }
+          2f552251-c3cc-4017-8d1e-93bd7db132ef:
+            uuid: 2f552251-c3cc-4017-8d1e-93bd7db132ef
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_227'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 105
+            additional: {  }
+          37db986b-c2d0-4c87-b977-4ab7c417115d:
+            uuid: 37db986b-c2d0-4c87-b977-4ab7c417115d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_228'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 106
+            additional: {  }
+          d72cbc58-2089-4654-8e80-ec7cadd96882:
+            uuid: d72cbc58-2089-4654-8e80-ec7cadd96882
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_229'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 107
+            additional: {  }
+          3a264eeb-e458-4597-b5fc-c0a8b2e94531:
+            uuid: 3a264eeb-e458-4597-b5fc-c0a8b2e94531
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_230'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 108
+            additional: {  }
+          507baf6e-9f89-444c-84a1-38ee093357fc:
+            uuid: 507baf6e-9f89-444c-84a1-38ee093357fc
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_231'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 109
+            additional: {  }
+          d43f1711-ce13-4452-ac3e-a5d1cc3fcf5d:
+            uuid: d43f1711-ce13-4452-ac3e-a5d1cc3fcf5d
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_232'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 110
+            additional: {  }
+          93f1824a-3476-4c92-8909-818a9e97f1fd:
+            uuid: 93f1824a-3476-4c92-8909-818a9e97f1fd
+            region: content
+            configuration:
+              id: 'field_block:civicrm_activity:civicrm_activity:custom_233'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 111
+            additional: {  }
+        third_party_settings: {  }
+id: civicrm_activity.civicrm_activity.default
+targetEntityType: civicrm_activity
+bundle: civicrm_activity
+mode: default
+content:
+  activity_date_time:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  activity_type_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  created_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_104:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_115:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_119:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_120:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_121:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_122:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_123:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_124:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_125:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_126:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_127:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_128:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_129:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_144:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_146:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_147:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_148:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_149:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_150:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_151:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_152:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_153:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_154:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_155:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_156:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_157:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_158:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_159:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_160:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_161:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_162:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_163:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_164:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_165:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_166:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_167:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_168:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_169:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_170:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_171:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_172:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_173:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_174:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_177:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_180:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_181:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_182:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_183:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_184:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_185:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_186:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_187:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_188:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_189:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_190:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_191:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_192:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_193:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_194:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_195:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_196:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_198:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_199:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_200:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_201:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_202:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_203:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_204:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_205:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_206:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_207:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_216:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_217:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_218:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_219:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_220:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_221:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_222:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_223:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_224:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_225:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_226:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_227:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_228:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_229:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_230:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_231:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_232:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_233:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_25:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_37:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_39:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_40:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_41:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_43:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_88:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  custom_90:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  details:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  duration:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  engagement_level:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  location:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  medium_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  modified_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  phone_number:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  priority_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  result:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  source_record_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  status_id:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  subject:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  weight:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  assignee_id: true
+  campaign_id: true
+  case_id: true
+  custom_208: true
+  custom_211: true
+  custom_212: true
+  custom_213: true
+  custom_214: true
+  custom_215: true
+  custom_24: true
+  custom_265: true
+  custom_34: true
+  custom_35: true
+  custom_36: true
+  custom_38: true
+  custom_47: true
+  custom_48: true
+  custom_54: true
+  custom_55: true
+  custom_56: true
+  custom_57: true
+  custom_58: true
+  custom_59: true
+  custom_60: true
+  custom_61: true
+  custom_62: true
+  custom_63: true
+  custom_64: true
+  custom_65: true
+  custom_67: true
+  custom_68: true
+  custom_69: true
+  custom_70: true
+  custom_71: true
+  custom_72: true
+  custom_73: true
+  custom_74: true
+  custom_75: true
+  custom_76: true
+  custom_77: true
+  custom_78: true
+  custom_79: true
+  custom_80: true
+  custom_81: true
+  custom_82: true
+  custom_83: true
+  custom_84: true
+  custom_85: true
+  custom_86: true
+  custom_87: true
+  id: true
+  is_auto: true
+  is_current_revision: true
+  is_deleted: true
+  is_star: true
+  is_test: true
+  layout_builder__layout: true
+  original_id: true
+  parent_id: true
+  phone_id: true
+  relationship_id: true
+  source_contact_id: true
+  target_id: true

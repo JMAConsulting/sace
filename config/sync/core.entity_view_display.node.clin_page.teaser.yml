@@ -1,0 +1,36 @@
+uuid: 0292609a-c6ac-4645-a25c-83c47e83337c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.clin_page.body
+    - field.field.node.clin_page.field_button
+    - field.field.node.clin_page.field_image_banner
+    - field.field.node.clin_page.field_paragraphs
+    - node.type.clin_page
+  module:
+    - text
+    - user
+id: node.clin_page.teaser
+targetEntityType: node
+bundle: clin_page
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_button: true
+  field_image_banner: true
+  field_paragraphs: true
