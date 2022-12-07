@@ -14,22 +14,58 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
+
+    // Disable date and presentation method fields
+    $elements['civicrm_1_activity_1_activity_activity_date_time']['#disabled'] = TRUE;
+    $elements['civicrm_1_activity_1_cg2_custom_88']['#disabled'] = TRUE;
+
     //Get default selected value for Presentation Topic
-    $default_val = $elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0];
-    //Get select field text based on default value
-    $topic = $elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$default_val] ?? 'presentation topic';
+    $default_vals = $elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'];
+    $topics = [];
+    foreach ($default_vals as $val) {
+      if ($val == 'CustomSomethingDifferent' && !empty($elements['civicrm_1_activity_1_cg2_custom_340']['#default_value'])) {
+        $topics[] = $elements['civicrm_1_activity_1_cg2_custom_340']['#default_value'];
+      }
+      else {
+        $topics[] = $elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$val];
+      }
+    }
+    if (is_array($topics)) {
+      $topic = implode(', ', $topics);
+    }
+    else {
+      $topic = $topics;
+    }
+    $elements['civicrm_1_activity_1_cg2_custom_40']['#access'] = FALSE;
+    $elements['presentation_topic_markup']['#markup'] = '<label for="presentation_topic_markup" class="form-item__label">Presentation Topic(s)</label><div>' . $topic . '</div>';
+    $elements['civicrm_1_activity_1_cg2_custom_340']['#access'] = FALSE;
+
 
     //Update Q1 presentation topic
     //Get q1
     $q1 = $elements["q1"]["#title"];
     //Update text for q1
-    $elements['q1']['#title'] = str_replace('presentation topic', $topic, $q1);
+    $elements['q1']['#title'] = str_replace('the presentation topic', $topic, $q1);
 
     //Update Q2 presentation topic
     //Get q2
     $q2 = $elements["feedback"]["#title"];
     //Update text for q2
-    $elements['feedback']['#title'] = str_replace('topic', $topic, $q2);
+    $elements['feedback']['#title'] = str_replace('the topic', $topic, $q2);
+
+    $q3 = $elements["q3"]["#title"];
+    $elements['q3']['#title'] = str_replace('the presentation topic', $topic, $q3);
+
+    $q4 = $elements["feedback_q4"]["#title"];
+    //Update text for q4
+    $elements['feedback_q4']['#title'] = str_replace('the topic', $topic, $q4);
+
+    $q5 = $elements["q5"]["#title"];
+    $elements['q5']['#title'] = str_replace('the presentation topic', $topic, $q5);
+
+    $q6 = $elements["feedback_q6"]["#title"];
+    //Update text for q6
+    $elements['feedback_q6']['#title'] = str_replace('the topic', $topic, $q6);
 
     // Get activity id from query var.
     //get from form field TODO
@@ -56,14 +92,9 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
 
     // Q5 - q6 based on Community Resources or SACE Services toggled
-    if (empty($result["Booking_Information.Presentation_topics"])) {
-      return;
-    }
-    if ($result["Booking_Information.Presentation_topics"] != 'SACEServices') {
-      if ($result["Booking_Information.Resources_Content"] != 1) {
-        $elements['q5']['#access'] = FALSE;
-        $elements['feedback_q6']['#access'] = FALSE;
-      }
+    if ($result["Booking_Information.Resources_Content"] != 1) {
+      $elements['q5']['#access'] = FALSE;
+      $elements['feedback_q6']['#access'] = FALSE;
     }
 
     // Q9 - q11 toggle based on Safer Spaces Content toggled
