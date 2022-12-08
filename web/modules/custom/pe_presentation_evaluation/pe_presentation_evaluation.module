@@ -44,28 +44,17 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     //Update Q1 presentation topic
     //Get q1
     $q1 = $elements["q1"]["#title"];
-    //Update text for q1
-    $elements['q1']['#title'] = str_replace('the presentation topic', $topic, $q1);
 
-    //Update Q2 presentation topic
-    //Get q2
-    $q2 = $elements["feedback"]["#title"];
-    //Update text for q2
-    $elements['feedback']['#title'] = str_replace('the topic', $topic, $q2);
+    //insert presentation topic in question title
+    foreach(array('q1', 'feedback', 'q3', 'feedback_q4', 'q5', 'feedback_q6', 'feedback_q15') as $question){
+      $elements[$question]['#title'] = str_replace('[the presentation topic]', $topic, $elements[$question]['#title']);
+    }
 
-    $q3 = $elements["q3"]["#title"];
-    $elements['q3']['#title'] = str_replace('the presentation topic', $topic, $q3);
-
-    $q4 = $elements["feedback_q4"]["#title"];
-    //Update text for q4
-    $elements['feedback_q4']['#title'] = str_replace('the topic', $topic, $q4);
-
-    $q5 = $elements["q5"]["#title"];
-    $elements['q5']['#title'] = str_replace('the presentation topic', $topic, $q5);
-
-    $q6 = $elements["feedback_q6"]["#title"];
-    //Update text for q6
-    $elements['feedback_q6']['#title'] = str_replace('the topic', $topic, $q6);
+    //insert presentation method in question title
+    foreach(array('q19', 'q20') as $question){
+      $elements[$question]['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $elements['civicrm_1_activity_1_cg2_custom_88']['#default_value'], $elements[$question]['#title']);
+    }
+    
 
     // Get activity id from query var.
     //get from form field TODO
@@ -132,7 +121,6 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
     $form['elements']['q19']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q19']['#title']);
     $form['elements']['q20']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q20']['#title']);
-    // exit('<pre>'. print_r($form['elements']['q20']['#title'], TRUE).'</pre>');k
 
   }
 }
