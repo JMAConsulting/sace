@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Userteamactivity</base>
+  <class>UserTeamActivityEntity</class>
+  <name>civicrm_user_team_activity_entity</name>
+  <comment>FIXME</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique UserTeamActivityEntity ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>activity_type_id</name>
+    <type>int unsigned</type>
+    <comment>Activity Type ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+
+  <field>
+    <name>user_team</name>
+    <type>int unsigned</type>
+    <comment>User Team</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  
+
+</table>
