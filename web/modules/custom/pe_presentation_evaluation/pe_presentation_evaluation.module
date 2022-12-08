@@ -76,7 +76,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
     // Get Booking Intake custom fields
     $result = \Civi\Api4\Activity::get()
-      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus')
+      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus', 'Booking_Information.Presentation_Method')
       ->addWhere('id', '=', $aid)
       ->execute()
       ->first();
@@ -120,23 +120,19 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     if ($result['Booking_Information.Presentation_topics'] != 'BystanderIntervention') {
       $elements['q16']['#access'] = FALSE;
     }
+
     //Q17 toggle show when presentation topic is Privilege and Oppression
-    if ($result['Booking_Information.Presentation_topics'] !== 'PrivilegeandOppression') {
+    if ($result['Booking_Information.Presentation_topics'] != 'PrivilegeandOppression') {
       $elements['q17']['#access'] = FALSE;
     }
-  }
 
-  // Move to new module for booking update
-  if ($form_id == "webform_submission_update_ped_booking_add_form") {
-    //Get webform form elements
-    $elements = WebformFormHelper::flattenElements($form);
-
-    if (empty($elements)) {
+    //Q19-20 update presentation method
+    if(empty($result['Booking_Information.Presentation_Method'])) {
       return;
     }
-    //exit('<pre>'. print_r($form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'], TRUE).'</pre>');
-    if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
-      $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";
-    }
+    $form['elements']['q19']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q19']['#title']);
+    $form['elements']['q20']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q20']['#title']);
+    // exit('<pre>'. print_r($form['elements']['q20']['#title'], TRUE).'</pre>');k
+
   }
 }
