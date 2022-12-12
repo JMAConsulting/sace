@@ -132,21 +132,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
     $form['elements']['q19']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q19']['#title']);
     $form['elements']['q20']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q20']['#title']);
-    
-    //  Get all questions
-    $questions = [];    
-    foreach(array_keys($form['elements']) as $q){
-      if(preg_match('/q[0-9]+/i',$q) || preg_match('/feedback(_q[0-9]+)?/i',$q)){
-        $questions[] = $q;
-      }
-    }
-    //  Remove leading Qxx from all questions
-    foreach($questions as $question){
-      $form['elements'][$question]['#title'] = preg_replace("/Q[0-9]+\s/", '', $form['elements'][$question]['#title']);
-    }
-    
-    // exit('<pre>'. print_r($questions, TRUE).'</pre>');
-    
+    // exit('<pre>'. print_r($form['elements']['q20']['#title'], TRUE).'</pre>');k
 
   }
 }
