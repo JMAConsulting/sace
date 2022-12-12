@@ -1,0 +1,24 @@
+<?php
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Move to new module for booking update
+  if ($form_id == "webform_submission_update_ped_booking_add_form") {
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+
+    if (empty($elements)) {
+      return;
+    }
+    // //Togglew text field if Presentation Topic is Custom/Something Different
+    // if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
+    //   $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";
+    // }
+  }
+}

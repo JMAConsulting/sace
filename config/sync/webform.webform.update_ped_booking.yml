@@ -585,6 +585,38 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Safer Spaces Content'
       '#civicrm_live_options': 0
+    civicrm_1_activity_1_cg2_custom_333:
+      '#type': civicrm_options
+      '#title': 'Presentation Population of Focus'
+      '#civicrm_live_options': 0
+      '#options':
+        Adults: Adults
+        professionals: Professionals
+        serviceProviders: 'Service providers'
+        educators: Educators
+        guardians: Guardians
+        volunteers: Volunteers
+        Indigenous: Indigenous
+        Newcomers: Newcomers
+        2SLGBTQ+: 2SLGBTQ+
+        'People With Disabilities': PeopleWithDisabilities
+        OlderAdults: 'Older Adults'
+      '#form_key': civicrm_1_activity_1_cg2_custom_333
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+    civicrm_1_activity_1_cg2_custom_332:
+      '#type': civicrm_options
+      '#title': 'Facilitating Program'
+      '#civicrm_live_options': 0
+      '#default_value': ''
+      '#form_key': civicrm_1_activity_1_cg2_custom_332
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#options':
+        PublicEducation: 'Public Education'
+        InstitutionalSupport: 'Institutional Support'
+        DiversityInclusion: 'Diversity & Inclusion'
 css: ''
 javascript: ''
 settings:
