@@ -79,6 +79,42 @@ function appointment_colours_civicrm_entityTypes(&$entityTypes): void {
   _appointment_colours_civix_civicrm_entityTypes($entityTypes);
 }
 
+function appointment_colours_civicrm_buildForm($formName, &$form) {
+  if($formName == "CRM_Admin_Form_Options"){    
+    if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE){
+      //$decode_values = unserialize($result['values'][0]['value']);
+      $form->add('color', 'activitycolor', ts('Activity Color'));
+    CRM_Core_Region::instance('page-body')->add([
+      'template' => 'activitycolor.tpl'
+     ]);     
+    }
+
+  }  
+}
+
+function appointment_colours_civicrm_postProcess($formName, &$form) {
+  if($formName == "CRM_Admin_Form_Options"){    
+    if ($form->getAction() == CRM_Core_Action::ADD){
+      $submitted = $form->getVar('_submitValues');
+      // die('<pre>'.print_r($default_values,true));
+      
+      $results = \Civi\Api4\AppointmentColours::create()        
+        ->addValue('activity_type_id', $default_values['value'])
+        ->addValue('colour_hex', $default_values['color'])        
+        ->execute();      
+    }
+    if($form->getAction() == CRM_Core_Action::UPDATE){
+      $submitted = $form->getVar('_submitValues');
+      $default_values = $form->getVar('_defaultValues');
+      
+      $results = \Civi\Api4\AppointmentColours::update()                
+        ->addValue('colour_hex', $default_values['color'])
+        ->addWhere('activity_type_id', '=', $default_values['value'])   
+        ->execute();
+    }
+  }
+}
+
 // --- Functions below this ship commented out. Uncomment as required. ---
 
 /**
