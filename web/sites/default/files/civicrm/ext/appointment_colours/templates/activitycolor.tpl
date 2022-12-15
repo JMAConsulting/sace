@@ -5,13 +5,16 @@
 {literal}
   <script type="text/javascript">
     CRM.$(function($) {
+      //Add Colour Picker field to form
       $('.form-layout-compressed tr:last').after(`
         <tr id="colour-tr">
           <td class='label'><label for="activitycolor   ">Activity Color</label></td>
           <td>{/literal}{$form.activitycolor.html}{literal}</td>
         </tr>
       `);
-      //$("#activitycolor-tr").appendTo(".form-layout-compressed")
+      //Update colour picker value
+      var hex = '#{/literal}{$activity_col_hex}{literal}';
+      $('#activitycolor').val(hex);
     });
   </script>
 {/literal}
