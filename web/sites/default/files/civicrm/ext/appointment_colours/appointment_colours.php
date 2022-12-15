@@ -80,36 +80,45 @@ function appointment_colours_civicrm_entityTypes(&$entityTypes): void {
 }
 
 function appointment_colours_civicrm_buildForm($formName, &$form) {
-  if($formName == "CRM_Admin_Form_Options"){    
-    if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE){
-      //$decode_values = unserialize($result['values'][0]['value']);
+  if ($formName == "CRM_Admin_Form_Options") {
+    if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE) {
+      //Get colour from AppointmentColours Entity
+      $appointmentColourses = \Civi\Api4\AppointmentColours::get()
+        ->addSelect('colour_hex')
+        ->addWhere('activity_type_id', '=', $form->getVar('_defaultValues')['value'])
+        ->execute();
+      //Pass colour to tpl
+      $form->assign( 'activity_col_hex', $appointmentColourses[0]['colour_hex'] );
+      //Add field to form
       $form->add('color', 'activitycolor', ts('Activity Color'));
-    CRM_Core_Region::instance('page-body')->add([
-      'template' => 'activitycolor.tpl'
-     ]);     
+      CRM_Core_Region::instance('page-body')->add([
+        'template' => 'activitycolor.tpl',
+      ]);
     }
-
-  }  
+  }
 }
 
 function appointment_colours_civicrm_postProcess($formName, &$form) {
-  if($formName == "CRM_Admin_Form_Options"){    
-    if ($form->getAction() == CRM_Core_Action::ADD){
-      $submitted = $form->getVar('_submitValues');
-      // die('<pre>'.print_r($default_values,true));
-      
-      $results = \Civi\Api4\AppointmentColours::create()        
-        ->addValue('activity_type_id', $default_values['value'])
-        ->addValue('colour_hex', $default_values['color'])        
-        ->execute();      
+  if ($formName == "CRM_Admin_Form_Options") {
+    //Get form values
+    $submitted = $form->getVar('_submitValues');
+    $default_values = $form->getVar('_defaultValues');
+
+    if(!$default_values['value'] || !$submitted['activitycolor']){
+      return;
     }
-    if($form->getAction() == CRM_Core_Action::UPDATE){
-      $submitted = $form->getVar('_submitValues');
-      $default_values = $form->getVar('_defaultValues');
-      
-      $results = \Civi\Api4\AppointmentColours::update()                
-        ->addValue('colour_hex', $default_values['color'])
-        ->addWhere('activity_type_id', '=', $default_values['value'])   
+
+    //Create / Update AppointmenColours Entity to save Colour 
+    if ($form->getAction() == CRM_Core_Action::ADD) {
+      $results = \Civi\Api4\AppointmentColours::create()
+        ->addValue('activity_type_id', $default_values['value'])
+        ->addValue('colour_hex', ltrim($submitted['activitycolor'], '#'))
+        ->execute();
+    }
+    if ($form->getAction() == CRM_Core_Action::UPDATE) {
+      $results = \Civi\Api4\AppointmentColours::update()
+        ->addValue('colour_hex', ltrim($submitted['activitycolor'], '#'))
+        ->addWhere('activity_type_id', '=', $default_values['value'])
         ->execute();
     }
   }
