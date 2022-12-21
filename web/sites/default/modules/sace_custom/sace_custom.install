@@ -1,0 +1,32 @@
+<?php
+
+function sace_custom_update_9001() {
+  $menu_link_parents = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+    ->loadByProperties([
+      'title' => 'Calendars',
+      'menu_name' => 'main',
+    ]);
+
+  $menu_link_parent = reset($menu_link_parents);
+
+  if ($menu_link_parent) {
+    $menu_link_storage = Drupal::entityTypeManager()->getStorage('menu_link_content');
+    $taxonomyTerms = Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'user_team']);
+    foreach ($taxonomyTerms as $taxonomyTerm) {
+      $menu_check = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+        ->loadByProperties([
+          'title' => $taxonomyTerm->label() . '  - User Team',
+          'menu_name' => 'main',
+        ]);
+      if (count($menu_check) > 0) {
+        continue;
+      }
+      $menu_link_storage->create([
+        'title' => $taxonomyTerm->label() . '  - User Team',
+        'menu_name' => 'main',
+        'link' => ['uri' => 'internal:/calendar-team/' . $taxonomyTerm->id()],
+        'parent' => $menu_link_parent->getPluginId(),
+      ])->save();
+    }
+  }
+}

@@ -46,10 +46,95 @@ function sace_custom_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
   // Force the form action to match the current path -- used to fix broken exposed filters when using contextual links.
   // See: https://www.drupal.org/project/drupal/issues/2821962#comment-13191425
   $current_path = \Drupal::service('path.current')->getPath();
+  if ('/webform/staff_update_profile' == $current_path) {
+    //print_r(\Drupal::service('extension.list.module')->getPath('sace_custom') . '/js/view.js');
+    //$form['#attached']['js'][] = \Drupal::service('extension.list.module')->getPath('sace_custom') . '/js/view.js';
+//    $form['#attached']['library'][] = 'webform_custom/webform_custom'; 
+    $elements = \Drupal\webform\Utility\WebformFormHelper::flattenElements($form['elements']);
+    $roles = \Drupal::currentUser()->getRoles();
+    if (!in_array('supervisors', $roles)) {
+      $elements['civicrm_1_contact_1_fieldset_fieldset']['#access'] = FALSE;
+    }
+  }
   if ($form_id == 'views_exposed_form') {
      $form['#action'] = $current_path;
   }
+}
 
+function sace_custom_civicrm_post($op, $objectName, $objectId, &$objectRef) {
+//  if ($objectName == 'Activity') {print_r($_POST);print_r($objectRef);exit;}
+if ($objectName == 'Activity') {
+CRM_Core_Error::debug_var('P', $_POST);
+    if (!empty($_POST['unit'])) {
+			$mapping = [
+				'unit' => 'repetition_frequency_interval',
+				'frequency' => 'repetition_frequency_unit',
+				'repeats_on' => 'start_action_condition',
+				'start_date' => 'repetition_frequency_interval',
+				'after' => 'start_action_offset',
+                                'on' => 'repeat_absolute_date',
+				'start_date' => 'repetition_start_date',
+				'exclude_dates' => 'exclude_date_list',
+			];
+			$params = [
+				'entity_id' => $objectRef->id,
+				'parent_entity_id' => $objectRef->id,
+				'entity_table' => 'civicrm_activity',				
+                                'limit_to' => TRUE,
+                                'repeats_by' => TRUE,
+                                'dateColumns' => ['activity_date_time'],
+                                'allowRepeatConfigToSubmit' => TRUE,
+			];
+			$linkedEntities = [
+				[
+					'table' => 'civicrm_activity_contact',
+					'findCriteria' => [
+						'activity_id' => $objectRef->id,
+					],
+					'linkedColumns' => ['activity_id'],
+				],
+			];
+			foreach ($mapping as $element => $civiKey) {
+			  if ($element == 'start_date' && !empty($_POST['start_date']['date'])) {
+					$params[$civiKey] = $_POST['start_date']['date'];
+				}
+                                elseif ($element == 'on' && !empty($_POST['on']['date'])) {
+                                        $params[$civiKey] = $_POST['on']['date'];
+                                }
+				elseif ($element == 'exclude_dates') {
+				  $dates = [];
+					foreach ($_POST[$element]['items'] as $values) {
+						$dates[] = $values['exclude'];
+					}
+					$params[$civiKey] = implode(',', $dates);
+				}
+				elseif (!empty($_POST[$element])) {
+					$params[$civiKey] = $_POST[$element];
+				}
+			}
+                        $params = array_merge($objectRef->toArray(), $params);
+if (!empty($params['start_action_offset'])) {
+  $params['ends'] = 1;
+}
+if (!empty($params['repeat_absolute_date'])) { 
+  $params['ends'] = 2;
+}
+
+//print_r($params);exit;
+			CRM_Core_Form_RecurringEntity::postProcess($params, 'civicrm_activity', $linkedEntities);
+//print_r($params);exit;
+		}
+}
+}
+
+function sace_custom_webform_submission_insert($submission) {
+  //print_r($submission->getData());exit;
+  $aid = $_GET['aid'] ?? 0;
+  if (empty($aid) || !is_numeric($aid)) {
+    return;
+  }
+
+  //print_r(sace_custom_get_ped_sace_student_feedback($aid));exit;
 }
 
 /**
@@ -170,3 +255,70 @@ function sace_custom_get_ped_sace_student_feedback($aid) {
 
   return $feedback;
 }
+
+function sace_custom_taxonomy_term_insert(Drupal\Core\Entity\EntityInterface $entity) {
+ $menu_link_parents = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+    ->loadByProperties([
+      'title' => 'Calendars',
+      'menu_name' => 'main',
+    ]);
+
+  $menu_link_parent = reset($menu_link_parents);
+
+  if ($menu_link_parent) {
+    \Drupal::entityTypeManager()->getStorage('menu_link_content')
+      ->create([
+        'title' => $entity->label() . '  - User Team',
+        'menu_name' => 'main',
+        'link' => ['uri' => 'internal:/calendar-team/' . $entity->id()],
+        'parent' => $menu_link_parent->getPluginId(),
+      ])->save();
+  }
+  _clear_menu_caches();
+}
+
+function sace_custom_taxonomy_term_update(Drupal\Core\Entity\EntityInterface $entity) {
+  $calendarMenu = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+    ->loadByProperties([
+      'link' => ['uri' => 'internal:/calendar-team/' . $entity->id()],
+      'menu_name' => 'main',
+    ]);
+
+  $menuItem = reset($calendarMenu);
+  if ($menuItem) {
+    $menuItem->setName($entity->label() . '  - User Team');
+    $menuItem->save();
+  }
+  _clear_menu_caches();
+}
+
+function sace_custom_taxonomy_term_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  $calendarMenu = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+    ->loadByProperties([
+      'link' => ['uri' => 'internal:/calendar-team/' . $entity->id()],
+      'menu_name' => 'main',
+    ]);
+  $menuItem = reset($calendarMenu);
+  if ($menuItem) {
+    $menuItem->delete();
+  }
+  _clear_menu_caches();
+}
+
+function sace_custom_user_update(Drupal\Core\Entity\EntityInterface $entity) {
+  _clear_menu_caches();
+}
+
+function sace_custom_user_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  _clear_menu_caches();
+}
+
+function _clear_menu_caches() {
+  \Drupal::cache('menu')->invalidateAll(); // for clearing the menu cache
+  \Drupal::service('plugin.manager.menu.link')->rebuild(); // rebuild the menu
+}
+
+function sace_custom_views_pre_render(Drupal\views\ViewExecutable $view) {
+  $view->element['#attached']['library'][] = 'sace_custom/sace_custom';
+}
+

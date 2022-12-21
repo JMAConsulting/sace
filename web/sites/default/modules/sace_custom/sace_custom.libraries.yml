@@ -1,0 +1,9 @@
+sace_custom:
+  version: 1.0
+  js:
+    js/view.js: {}
+
+webform_custom:
+  version: 1.0
+  js:
+    js/webform_custom.js: {}
