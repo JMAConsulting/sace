@@ -9,9 +9,6 @@ use Drupal\webform\Utility\WebformFormHelper;
  */
 function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
-    $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
-    $form['#attached']['drupalSettings']['pe_presentation_evaluation']['pe_presentation_evaluation']['test'] = 'values';
-
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
 
@@ -40,32 +37,19 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements['presentation_topic_markup']['#markup'] = '<label for="presentation_topic_markup" class="form-item__label">Presentation Topic(s)</label><div>' . $topic . '</div>';
     $elements['civicrm_1_activity_1_cg2_custom_340']['#access'] = FALSE;
 
-
     //Update Q1 presentation topic
     //Get q1
     $q1 = $elements["q1"]["#title"];
-    //Update text for q1
-    $elements['q1']['#title'] = str_replace('the presentation topic', $topic, $q1);
 
-    //Update Q2 presentation topic
-    //Get q2
-    $q2 = $elements["feedback"]["#title"];
-    //Update text for q2
-    $elements['feedback']['#title'] = str_replace('the topic', $topic, $q2);
+    //insert presentation topic in question title
+    foreach (['q1', 'feedback', 'q3', 'feedback_q4', 'q5', 'feedback_q6', 'feedback_q15'] as $question) {
+      $elements[$question]['#title'] = str_replace('[the presentation topic]', $topic, $elements[$question]['#title']);
+    }
 
-    $q3 = $elements["q3"]["#title"];
-    $elements['q3']['#title'] = str_replace('the presentation topic', $topic, $q3);
-
-    $q4 = $elements["feedback_q4"]["#title"];
-    //Update text for q4
-    $elements['feedback_q4']['#title'] = str_replace('the topic', $topic, $q4);
-
-    $q5 = $elements["q5"]["#title"];
-    $elements['q5']['#title'] = str_replace('the presentation topic', $topic, $q5);
-
-    $q6 = $elements["feedback_q6"]["#title"];
-    //Update text for q6
-    $elements['feedback_q6']['#title'] = str_replace('the topic', $topic, $q6);
+    //insert presentation method in question title
+    foreach (['q19', 'q20'] as $question) {
+      $elements[$question]['#title'] = str_replace('[the presentation method]', $elements['civicrm_1_activity_1_cg2_custom_88']['#default_value'], $elements[$question]['#title']);
+    }
 
     // Get activity id from query var.
     //get from form field TODO
@@ -76,7 +60,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
     // Get Booking Intake custom fields
     $result = \Civi\Api4\Activity::get()
-      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus')
+      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus', 'Booking_Information.Presentation_Method')
       ->addWhere('id', '=', $aid)
       ->execute()
       ->first();
@@ -120,23 +104,29 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     if ($result['Booking_Information.Presentation_topics'] != 'BystanderIntervention') {
       $elements['q16']['#access'] = FALSE;
     }
+
     //Q17 toggle show when presentation topic is Privilege and Oppression
-    if ($result['Booking_Information.Presentation_topics'] !== 'PrivilegeandOppression') {
+    if ($result['Booking_Information.Presentation_topics'] != 'PrivilegeandOppression') {
       $elements['q17']['#access'] = FALSE;
     }
-  }
 
-  // Move to new module for booking update
-  if ($form_id == "webform_submission_update_ped_booking_add_form") {
-    //Get webform form elements
-    $elements = WebformFormHelper::flattenElements($form);
-
-    if (empty($elements)) {
+    //Q19-20 update presentation method
+    if (empty($result['Booking_Information.Presentation_Method'])) {
       return;
     }
-    //exit('<pre>'. print_r($form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'], TRUE).'</pre>');
-    if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
-      $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";
+    $form['elements']['q19']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q19']['#title']);
+    $form['elements']['q20']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q20']['#title']);
+
+    //  Get all questions
+    $questions = [];
+    foreach (array_keys($form['elements']) as $q) {
+      if (preg_match('/q[0-9]+/i', $q) || preg_match('/feedback(_q[0-9]+)?/i', $q)) {
+        $questions[] = $q;
+      }
+    }
+    //  Remove leading Qxx from all questions
+    foreach ($questions as $question) {
+      $form['elements'][$question]['#title'] = preg_replace("/Q[0-9]+\s/", '', $form['elements'][$question]['#title']);
     }
   }
 }
