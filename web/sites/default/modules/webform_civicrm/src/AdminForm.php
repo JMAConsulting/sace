@@ -91,6 +91,7 @@ class AdminForm implements AdminFormInterface {
 
     // Sort fields by set
     foreach ($this->fields as $fid => $field) {
+      $fid = $field['fid'] ?? $fid;
       if (isset($field['set'])) {
         $set = $field['set'];
       }
@@ -427,7 +428,7 @@ class AdminForm implements AdminFormInterface {
         $rule_field =& $this->form['contact_' . $n]['contact_subtype_wrapper']["contact_{$n}_settings_matching_rule"];
         // Reset to default if selected rule doesn't exist or isn't valid for this contact type
         if (!array_key_exists($rule_field['#default_value'], $rule_field['#options'])) {
-          $rule_field['#default_value'] = $this->form_state['input']["contact_{$n}_settings_matching_rule"] = 'Unsupervised';
+          $rule_field['#default_value'] = $this->form_state->getUserInput()["contact_{$n}_settings_matching_rule"] = 'Unsupervised';
         }
         $this->help($rule_field, 'matching_rule');
       }
@@ -1092,6 +1093,12 @@ class AdminForm implements AdminFormInterface {
     // Make sure webform is set-up to prevent credit card abuse.
     $this->checkSubmissionLimit();
     $financialType = wf_crm_aval($this->data, 'contribution:1:contribution:1:financial_type_id');
+    if (!$financialType && $this->settings['civicrm_1_contribution_1_contribution_financial_type_id'] != 'create_civicrm_webform_element') {
+      $financialType = current($this->utils->wf_crm_apivalues('FinancialType', 'get', [
+        'return' => 'id',
+        'name' => 'Donation',
+      ], 'id')) ?? NULL;
+    }
     // Add contribution fields
     foreach ($this->sets as $sid => $set) {
       if ($set['entity_type'] == 'contribution' && (empty($set['sub_types']) || in_array($financialType, $set['sub_types']) )) {
@@ -1126,17 +1133,6 @@ class AdminForm implements AdminFormInterface {
         }
       }
     }
-    //Add financial type config.
-    $ft_options = (array) $this->utils->wf_crm_apivalues('Contribution', 'getoptions', [
-      'field' => "financial_type_id",
-    ]);
-    $this->form['contribution']['sets']['contribution']['civicrm_1_contribution_1_contribution_financial_type_id'] = [
-      '#type' => 'select',
-      '#title' => t('Financial Type'),
-      '#default_value' => $financialType,
-      '#options' => $ft_options,
-      '#required' => TRUE,
-    ];
     $this->addAjaxItem("contribution:sets:contribution", "civicrm_1_contribution_1_contribution_financial_type_id", "..:custom");
 
     //Add Currency.
@@ -1583,8 +1579,8 @@ class AdminForm implements AdminFormInterface {
         $item['#default_value'] = self::$method($fid, $options);
       }
       // 4: From field default
-      elseif (isset($field['value'])) {
-        $item['#default_value'] = $field['value'];
+      elseif (isset($field['value']) || isset($field['default_value'])) {
+        $item['#default_value'] = $field['value'] ?? $field['default_value'];
       }
       // 5: For required fields like phone type, default to the first option
       elseif (empty($field['extra']['multiple']) && !isset($field['empty_option'])) {
@@ -1756,7 +1752,7 @@ class AdminForm implements AdminFormInterface {
       }
     }
     // Enable billing address by default when contribution is enabled.
-    if ($this->settings['civicrm_1_contribution_1_contribution_enable_contribution'] && empty($this->data['billing'])) {
+    if (!empty($this->settings['civicrm_1_contribution_1_contribution_enable_contribution']) && empty($this->data['billing'])) {
       $this->data['billing'] = ['number_number_of_billing' => 1];
       $billingFields = ['first_name', 'last_name', 'street_address', 'city', 'postal_code', 'state_province_id', 'country_id'];
       foreach ($billingFields as $field) {
@@ -1940,7 +1936,7 @@ class AdminForm implements AdminFormInterface {
               ];
               // Cannot use isNewFieldset effectively.
               $previous_data = $handler_configuration['settings'];
-              list(, $c, $ent) =  $this->utils->wf_crm_explode_key($key);
+              list(, $c, $ent, $n, $table, $name) =  $this->utils->wf_crm_explode_key($key);
               $type = in_array($ent, self::$fieldset_entities) ? $ent : 'contact';
               $create = !isset($previous_data['data'][$type][$c]);
               /*
@@ -1951,7 +1947,10 @@ class AdminForm implements AdminFormInterface {
               // @todo Properly handle fieldset creation.
               // self::insertComponent($field, $enabled, $this->settings, !isset($previous_data['data'][$type][$c]));
               self::insertComponent($field, $enabled, $this->settings, TRUE, $this->webform);
-              $created[] = $field['name'];
+              // Enable Contribution is an optional page break added on the form.
+              if ($name != 'enable_contribution') {
+                $created[] = $field['name'];
+              }
               if (isset($field['civicrm_condition'])) {
                 $this->addConditionalRule($field, $enabled);
               }
@@ -2001,6 +2000,9 @@ class AdminForm implements AdminFormInterface {
     \Drupal::messenger()->addStatus(
       \Drupal::translation()->formatPlural(count($created), 'Added one field to the form', 'Added @count fields to the form')
     );
+    foreach ($created as $field_name) {
+      \Drupal::messenger()->addStatus(t('Added field: %name', ['%name' => $field_name]));
+    }
 
     // Create record
     $handler_configuration['settings'] = $this->settings;

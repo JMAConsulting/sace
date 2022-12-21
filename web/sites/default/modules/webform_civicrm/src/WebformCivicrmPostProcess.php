@@ -800,6 +800,9 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     // Check which location_type_id is to be set as is_primary=1;
     $is_primary_address_location_type = wf_crm_aval($contact, 'address:1:location_type_id');
     $is_primary_email_location_type = wf_crm_aval($contact, 'email:1:location_type_id');
+    $billingLocTypeID = $this->utils->wf_civicrm_api('LocationType', 'get', [
+      'name' => "Billing",
+    ])['id'] ?? NULL;
 
     foreach ($this->utils->wf_crm_location_fields() as $location) {
       if (!empty($contact[$location])) {
@@ -815,8 +818,12 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
           $existing = array_merge([[]], $result['values']);
         }
         foreach ($contact[$location] as $i => $params) {
+          $stateIsID = FALSE;
+          if (!empty($existing[$i]['state_province_id']) && $existing[$i]['state_province_id'] == $params['state_province_id']) {
+            $stateIsID = TRUE;
+          }
           // Translate state/prov abbr to id
-          if (!empty($params['state_province_id'])) {
+          if (!$stateIsID && !empty($params['state_province_id']) && $params['location_type_id'] != $billingLocTypeID) {
             $default_country = $this->utils->wf_crm_get_civi_setting('defaultContactCountry', 1228);
             if (!($params['state_province_id'] = $this->utils->wf_crm_state_abbr($params['state_province_id'], 'id', wf_crm_aval($params, 'country_id', $default_country)))) {
               $params['state_province_id'] = '';
@@ -1676,7 +1683,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     if (isset($this->enabled[$fid])) {
       foreach ($this->data['lineitem'][1]['contribution'] as $n => $lineitem) {
         $fid = "civicrm_1_lineitem_{$n}_contribution_line_total";
-        if ($this->getData($fid) > 0) {
+        if ($this->getData($fid) != 0) {
           $this->line_items[] = [
             'qty' => 1,
             'unit_price' => $lineitem['line_total'],
@@ -1711,11 +1718,21 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
             };
 
             if ($price) {
+              if (!empty($this->data['contact'][$c]['contact'][$n])) {
+                $member_contact = $this->data['contact'][$c]['contact'][$n];
+                if (!empty($member_contact['first_name']) && !empty($member_contact['last_name'])) {
+                  $member_name = "{$member_contact['first_name']} {$member_contact['last_name']}";
+                }
+              }
+              // If member name is not entered on the form, retrieve it from civicrm.
+              if (empty($member_name)) {
+                $member_name = $this->utils->wf_crm_display_name($this->existing_contacts[$c]);
+              }
               $this->line_items[] = [
                 'qty' => $membership_item['num_terms'],
                 'unit_price' => $price,
                 'financial_type_id' => $membership_financialtype,
-                'label' => $this->getMembershipTypeField($type, 'name') . ": " . $this->utils->wf_crm_display_name($this->existing_contacts[$c]),
+                'label' => $this->getMembershipTypeField($type, 'name') . ": " . $member_name,
                 'element' => "civicrm_{$c}_membership_{$n}",
                 'entity_table' => 'civicrm_membership',
               ];
@@ -1875,6 +1892,8 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       'location_type_id' => 'Billing',
     ];
     if (!$cid) {
+      // Current employer must wait for ContactRef ids to be filled
+      unset($contact['contact'][1]['employer_id']);
       $cid = $this->createContact($contact);
       $this->billing_contact = $cid;
     }
@@ -1918,6 +1937,8 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       $result = $this->contributionRecur($contributionParams);
     }
     else {
+      // Not a recur payment, remove any recur fields if present.
+      unset($contributionParams['frequency_unit'], $contributionParams['frequency_interval'], $contributionParams['is_recur']);
       $result = $this->utils->wf_civicrm_api('contribution', 'transact', $contributionParams);
     }
 
@@ -1993,7 +2014,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     ];
 
     $APIAction = 'transact';
-    if ($paymentType === 'deferred') {
+    if (in_array($paymentType, ['deferred', 'ipn'], TRUE)) {
       $APIAction = 'create';
     }
     $result = $this->utils->wf_civicrm_api('contribution', $APIAction, $contributionParams + $additionalParams);
@@ -2040,10 +2061,15 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
 
     $numInstallments = wf_crm_aval($params, 'installments', NULL, TRUE);
     $frequencyInterval = wf_crm_aval($params, 'frequency_unit');
-    if ($numInstallments != 1 && !empty($frequencyInterval) && $this->contributionIsPayLater) {
-      $result = $this->contributionRecur($params, 'deferred');
+    if ($numInstallments != 1 && !empty($frequencyInterval)) {
+      if ($this->contributionIsPayLater) {
+        $result = $this->contributionRecur($params, 'deferred');
+      }
+      elseif (empty($this->isLivePaymentProcessor())) {
+        $result = $this->contributionRecur($params, 'ipn');
+      }
     }
-    else {
+    if (empty($result['id'])) {
       $result = $this->utils->wf_civicrm_api('contribution', 'create', $params);
     }
 
@@ -2066,6 +2092,10 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $contact = $this->utils->wf_civicrm_api('contact', 'getsingle', ['id' => $this->ent['contact'][1]['id']]);
     $params += $contact;
     $params['contributionID'] = $params['id'] = $this->ent['contribution'][1]['id'];
+    if (!empty($this->ent['contribution_recur'][1]['id'])) {
+      $params['is_recur'] = TRUE;
+      $params['contributionRecurID'] = $this->ent['contribution_recur'][1]['id'];
+    }
     // Generate a fake qfKey in case payment processor redirects to contribution thank-you page
     $params['qfKey'] = $this->getQfKey();
 
@@ -2074,6 +2104,11 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $params['total_amount'] = round($this->totalContribution, 2);
     // Some processors want this one way, some want it the other
     $params['amount'] = $params['total_amount'];
+    $numInstallments = wf_crm_aval($params, 'installments', NULL, TRUE);
+    $frequencyInterval = wf_crm_aval($params, 'frequency_unit');
+    if ($numInstallments == 1 || empty($frequencyInterval)) {
+      unset($params['frequency_unit'], $params['frequency_interval'], $params['is_recur']);
+    }
 
     $params['financial_type_id'] = wf_crm_aval($this->data, 'contribution:1:contribution:1:financial_type_id');
 
@@ -2081,19 +2116,11 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $params['item_name'] = $params['description'] = t('Webform Payment: @title', ['@title' => $this->node->label()]);
 
     if (method_exists($paymentProcessor, 'setSuccessUrl')) {
-      $paymentProcessor->setSuccessUrl($this->getIpnRedirectUrl('success'));
-      $paymentProcessor->setCancelUrl($this->getIpnRedirectUrl('cancel'));
+      $params['successURL'] = $this->getIpnRedirectUrl('success');
+      $params['cancelURL'] = $this->getIpnRedirectUrl('cancel');
     }
 
-    try {
-      $paymentProcessor->doPayment($params);
-    }
-    catch (\Civi\Payment\Exception\PaymentProcessorException $e) {
-      \Drupal::messenger()->addError(ts('Payment approval failed with message: %error ', [
-        '%error' =>  $e->getMessage(),
-      ]));
-      \CRM_Utils_System::redirect($this->getIpnRedirectUrl('cancel'));
-    }
+    $this->form_state->set(['civicrm', 'doPayment'], $params);
 
   }
 
@@ -2469,6 +2496,11 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
           if ($table !== 'other' && $name !== 'event_id' && $name !== 'relationship_type_id' && $table !== 'contact' && $dataType != 'ContactReference' && strpos($name, 'tag') !== 0) {
             $val = \CRM_Utils_Array::implodePadded($val);
           }
+        }
+        // If this is a single-static radio button, set it to a non array value
+        // since civicrm api doesn't expect array for a radio field.
+        elseif (empty($component['#extra']['multiple']) && $this->utils->hasMultipleValues($component)) {
+          $val = $val[0] ?? NULL;
         }
         elseif ($name === 'image_url') {
           if (empty($val[0]) || !($val = $this->getDrupalFileUrl($val[0]))) {

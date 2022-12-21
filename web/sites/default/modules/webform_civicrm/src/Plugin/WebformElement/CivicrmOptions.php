@@ -193,7 +193,7 @@ class CivicrmOptions extends OptionsBase {
       $element['#options'] = $new;
     }
 
-    if (!empty($element['#default_option'])) {
+    if (empty($element['#default_value']) && !empty($element['#default_option'])) {
       $element['#default_value'] = $element['#default_option'];
     }
 
@@ -265,11 +265,7 @@ class CivicrmOptions extends OptionsBase {
    * {@inheritdoc}
    */
   public function hasMultipleValues(array $element) {
-    if (!empty($element['#extra']['multiple']) ||
-      (empty($element['#civicrm_live_options']) && !empty($element['#options']) && count($element['#options']) === 1)) {
-      return TRUE;
-    }
-    return FALSE;
+    return \Drupal::service('webform_civicrm.utils')->hasMultipleValues($element);
   }
 
   /**

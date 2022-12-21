@@ -53,7 +53,7 @@ abstract class WebformCivicrmTestBase extends CiviCrmTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->utils = \Drupal::service('webform_civicrm.utils');
 
@@ -219,8 +219,8 @@ abstract class WebformCivicrmTestBase extends CiviCrmTestBase {
     $this->getSession()->getPage()->selectFieldOption('Financial Type', $params['financial_type_id'] ?? 1);
     $this->assertSession()->assertWaitOnAjaxRequest();
 
-    if (!empty($params['pp'])) {
-      $this->getSession()->getPage()->selectFieldOption('Payment Processor', $params['pp']);
+    if (!empty($params['payment_processor_id'])) {
+      $this->getSession()->getPage()->selectFieldOption('Payment Processor', $params['payment_processor_id']);
     }
 
     if (!empty($params['receipt'])) {
@@ -484,6 +484,9 @@ abstract class WebformCivicrmTestBase extends CiviCrmTestBase {
       }
     }
     $this->htmlOutput();
+    if (!empty($params['results_display'])) {
+      $this->addFieldValue('properties[results_display][]', $params['results_display']);
+    }
 
     if (!empty($params['default'])) {
       $this->assertSession()->elementExists('css', '[data-drupal-selector="edit-contact-defaults"]')->click();
@@ -499,14 +502,21 @@ abstract class WebformCivicrmTestBase extends CiviCrmTestBase {
 
     // Apply contact filter.
     if (!empty($params['filter'])) {
+      $this->assertSession()->elementExists('css', '[data-drupal-selector="edit-filters"]')->click();
       if (!empty($params['filter']['group'])) {
-        $this->assertSession()->elementExists('css', '[data-drupal-selector="edit-filters"]')->click();
         $this->getSession()->getPage()->selectFieldOption('Groups', $params['filter']['group']);
+      }
+      if (isset($params['filter']['check_permissions']) && empty($params['filter']['check_permissions'])) {
+        $this->getSession()->getPage()->uncheckField('properties[check_permissions]');
       }
     }
 
     if (!empty($params['remove_default_url'])) {
       $this->getSession()->getPage()->uncheckField('properties[allow_url_autofill]');
+    }
+    if (!empty($params['required'])) {
+      $this->assertSession()->elementExists('css', '[data-drupal-selector="edit-validation"]')->click();
+      $this->getSession()->getPage()->checkField('properties[required]');
     }
 
     $this->getSession()->getPage()->pressButton('Save');
