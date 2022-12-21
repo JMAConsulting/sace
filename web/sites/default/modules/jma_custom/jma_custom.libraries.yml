@@ -1,0 +1,4 @@
+jma_custom:
+  version: 1.0
+  js:
+    js/custom.js: {}
