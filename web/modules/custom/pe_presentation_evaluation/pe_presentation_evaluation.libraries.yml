@@ -1,0 +1,4 @@
+pe_presentation_evaluation:
+  version: 1.0
+  js:
+    js/view.js: {}
