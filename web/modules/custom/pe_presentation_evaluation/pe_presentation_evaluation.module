@@ -16,8 +16,18 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements['civicrm_1_activity_1_activity_activity_date_time']['#disabled'] = TRUE;
     $elements['civicrm_1_activity_1_cg2_custom_88']['#disabled'] = TRUE;
 
-    //Get default selected value for Presentation Topic
+    //Hide Fields
+    // die('<pre>'.print_r($elements,true));
+    //$elements['civicrm_2_contact_1_contact_existing']['#access'] = FALSE; // School/Organization
+    $elements['civicrm_1_contact_1_contact_first_name']['#access'] = FALSE;
+    $elements['civicrm_1_contact_1_contact_last_name']['#access'] = FALSE;
+    // Presentation topic
+    $elements['civicrm_1_activity_1_cg2_custom_40']['#access'] = FALSE;
+    // Activity ID
+    $elements['civicrm_1_activity_1_fieldset_fieldset']['#access'] = $elements['aid']['#access'] = FALSE;
+
     $default_vals = $elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'];
+    //Replace presentaition topics
     $topics = [];
     foreach ($default_vals as $val) {
       if ($val == 'CustomSomethingDifferent' && !empty($elements['civicrm_1_activity_1_cg2_custom_340']['#default_value'])) {
@@ -33,9 +43,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     else {
       $topic = $topics;
     }
-    $elements['civicrm_1_activity_1_cg2_custom_40']['#access'] = FALSE;
     $elements['presentation_topic_markup']['#markup'] = '<label for="presentation_topic_markup" class="form-item__label">Presentation Topic(s)</label><div>' . $topic . '</div>';
-    $elements['civicrm_1_activity_1_cg2_custom_340']['#access'] = FALSE;
 
     //Update Q1 presentation topic
     //Get q1
