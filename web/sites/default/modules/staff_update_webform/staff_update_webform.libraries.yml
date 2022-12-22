@@ -1,0 +1,4 @@
+staff_update_webform:
+  version: 1.0
+  js:
+    js/custom.js: {}

@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function staff_update_webform_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ('/webform/staff_update_profile' == $current_path) {
+    $form['#attached']['library'][] = 'staff_update_webform/staff_update_webform';
+  }
+}
