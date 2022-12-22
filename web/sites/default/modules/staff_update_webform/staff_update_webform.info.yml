@@ -1,0 +1,5 @@
+name: 'Staff Update Webform Customisation'
+type: module
+description: 'Staff Update Webform customisation'
+core_version_requirement: ^8.8 || ^9
+package: 'Custom'
