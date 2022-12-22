@@ -10,13 +10,16 @@ use Drupal\webform\Utility\WebformFormHelper;
 function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   // Move to new module for booking update
   if ($form_id == "webform_submission_update_ped_booking_add_form") {
+    //Attach library
+    $form['#attached']['library'][] = 'pe_update_booking/pe_update_booking';
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
 
     if (empty($elements)) {
       return;
     }
-    //Togglew text field if Presentation Topic is Custom/Something Different
+    //die('<pre>'.print_r($form['#attached'],true));
+    //Toggle text field if Presentation Topic is Custom/Something Different
     if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
       $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";
     }

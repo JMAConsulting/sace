@@ -115,10 +115,6 @@ elements: |-
     '#title': 'Presentation custom'
     '#size': 60
     '#placeholder': 'Please specify'
-    '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_40[Custom/something different]"]':
-          checked: true
     '#data_type': String
     '#form_key': civicrm_1_activity_1_cg2_custom_41
     '#extra':
@@ -232,6 +228,14 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg2_custom_127:
+      '#type': textfield
+      '#title': 'Preferred Dates'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_127
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
   flexbox_04:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_activity_date_time:
@@ -585,6 +589,33 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Safer Spaces Content'
       '#civicrm_live_options': 0
+  civicrm_1_activity_1_cg2_custom_333:
+    '#type': civicrm_options
+    '#title': 'Special Population of Focus'
+    '#options':
+      SexualAssaultConsent: 'Sexual Assault & Consent'
+      SexualHarassment: 'Sexual Harassment'
+      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
+      TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
+      SACEServices: 'SACE Services'
+      BystanderIntervention: 'Bystander Intervention'
+      CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
+      SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
+      SexualViolenceTrauma: 'Sexual Violence Trauma'
+      DomesticViolence: 'Domestic Violence'
+      ChildSexualAbuse: 'Child Sexual Abuse'
+      PrivilegeandOppression: 'Privilege & Oppression'
+      TheIntersectionofRacismandSexualViolence: 'The Intersection of Racism & Sexual Violence'
+      CustomSomethingDifferent: 'Custom/ Something Different'
+    '#format_items': ul
+    '#extra':
+      aslist: 1
+      multiple: 0
+    '#form_key': civicrm_1_activity_1_cg2_custom_333
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': ''
+    '#default_value': ''
+    '#civicrm_live_options': '1'
 css: ''
 javascript: ''
 settings:
