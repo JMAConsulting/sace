@@ -1,0 +1,6 @@
+pe_update_booking:
+  version: 1
+  js:
+    js/pe_update_booking.js: {}
+  dependencies:
+    - core/jquery
