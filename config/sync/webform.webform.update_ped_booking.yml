@@ -112,13 +112,9 @@ elements: |-
     '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_41:
     '#type': textfield
-    '#title': 'Presentation custom'
+    '#title': 'Topic Details'
     '#size': 60
     '#placeholder': 'Please specify'
-    '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_40[Custom/something different]"]':
-          checked: true
     '#data_type': String
     '#form_key': civicrm_1_activity_1_cg2_custom_41
     '#extra':
@@ -277,6 +273,17 @@ elements: |-
     '#extra':
       width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_1_activity_1_cg2_custom_127:
+    '#type': textfield
+    '#data_type': String
+    '#counter_type': character
+    '#counter_maximum': 255
+    '#counter_maximum_message': ' '
+    '#form_key': civicrm_1_activity_1_cg2_custom_127
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Preferred Dates'
   civicrm_1_activity_1_cg2_custom_25:
     '#type': civicrm_options
     '#title': 'Grades and Ages'
@@ -467,25 +474,21 @@ elements: |-
     '#form_key': civicrm_2_contact_1_fieldset_fieldset
     civicrm_2_contact_1_relationship_relationship_type_id:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        items: |-
-          5_b|Employer of
-          6_b|Volunteer is
-          18_r|Emergency Contact
-          21_b|Committee Member
-          22_b|Board Member
-        aslist: false
-      '#form_key': civicrm_2_contact_1_relationship_relationship_type_id
+      '#title': 'Relationship to Primary Contact Relationship Type(s)'
       '#options':
         5_b: 'Employer of'
         6_b: 'Volunteer is'
         18_r: 'Emergency Contact'
         21_b: 'Committee Member'
         22_b: 'Board Member'
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_2_contact_1_relationship_relationship_type_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#title': 'Relationship to Primary Contact Relationship Type(s)'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
   civicrm_1_activity_1_fieldset_fieldset:
     '#type': fieldset
     '#title': Activity
@@ -585,6 +588,59 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Safer Spaces Content'
       '#civicrm_live_options': 0
+    civicrm_1_activity_1_cg2_custom_333:
+      '#type': civicrm_options
+      '#title': 'Presentation Population of Focus'
+      '#options':
+        Adults: Adults
+        professionals: Professionals
+        serviceProviders: 'Service Providers'
+        educators: Educators
+        guardians: Guardians
+        volunteers: Volunteers
+        Indigenous: Indigenous
+        Newcomers: Newcomers
+        2SLGBTQ+: 2SLGBTQ+
+        'People With Disabilities': 'People With Disabilities'
+        OlderAdults: 'Older Adults'
+      '#form_key': civicrm_1_activity_1_cg2_custom_333
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg2_custom_332:
+      '#type': civicrm_options
+      '#title': 'Facilitating Program'
+      '#options':
+        PublicEducation: 'Public Education'
+        InstitutionalSupport: 'Institutional Support'
+        DiversityInclusion: 'Diversity & Inclusion/Outreach'
+        WiseGuyz: WiseGuyz
+      '#form_key': civicrm_1_activity_1_cg2_custom_332
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': PublicEducation
+      '#default_value': PublicEducation
+      '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg2_custom_341:
+      '#type': civicrm_options
+      '#title': Audience
+      '#options':
+        Adults: Adults
+        professionals: Professionals
+        serviceProviders: 'Service providers'
+        educators: Educators
+        guardians: Guardians
+        volunteers: Volunteers
+        Indigenous: Indigenous
+        Newcomers: Newcomers
+        2SLGBTQ+: 2SLGBTQ+
+        'People With Disabilities': PeopleWithDisabilities
+        OlderAdults: 'Older Adults'
+      '#form_key': civicrm_1_activity_1_cg2_custom_341
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
 css: ''
 javascript: ''
 settings:
@@ -795,6 +851,7 @@ handlers:
       civicrm_1_contact_1_contact_preferred_communication_method: create_civicrm_webform_element
       civicrm_1_contact_1_contact_privacy: 0
       civicrm_1_contact_1_contact_preferred_language: 0
+      civicrm_1_contact_1_contact_image_url: 0
       civicrm_1_contact_1_contact_contact_id: 0
       civicrm_1_contact_1_contact_user_id: 0
       civicrm_1_contact_1_contact_external_identifier: 0
@@ -804,11 +861,20 @@ handlers:
       civicrm_1_contact_1_contact_is_deceased: 0
       civicrm_1_contact_1_contact_deceased_date: 0
       contact_1_settings_matching_rule: Unsupervised
+      contact_1_number_of_cg10: '0'
+      contact_1_number_of_cg14: '0'
       contact_1_number_of_cg5: '1'
       contact_1_settings_dynamic_custom_cg5: 0
       civicrm_1_contact_1_cg5_custom_89: create_civicrm_webform_element
       civicrm_1_contact_1_cg5_custom_93: 0
       contact_1_number_of_cg12: '0'
+      contact_1_number_of_cg19: '0'
+      contact_1_number_of_cg21: '0'
+      contact_1_number_of_cg22: '0'
+      contact_1_number_of_cg23: '0'
+      contact_1_number_of_cg24: '0'
+      contact_1_number_of_cg25: '0'
+      contact_1_number_of_cg29: '0'
       contact_1_number_of_other: '0'
       contact_1_number_of_address: '0'
       contact_1_number_of_phone: '1'
@@ -816,9 +882,11 @@ handlers:
       civicrm_1_contact_1_phone_phone_ext: 0
       civicrm_1_contact_1_phone_phone_type_id: '1'
       civicrm_1_contact_1_phone_location_type_id: '3'
+      civicrm_1_contact_1_phone_is_primary: '1'
       contact_1_number_of_email: '1'
       civicrm_1_contact_1_email_email: create_civicrm_webform_element
       civicrm_1_contact_1_email_location_type_id: '3'
+      civicrm_1_contact_1_email_is_primary: '1'
       contact_1_number_of_website: '0'
       contact_1_number_of_im: '0'
       2_contact_type: organization
@@ -833,6 +901,7 @@ handlers:
       civicrm_2_contact_1_contact_preferred_communication_method: 0
       civicrm_2_contact_1_contact_privacy: 0
       civicrm_2_contact_1_contact_preferred_language: 0
+      civicrm_2_contact_1_contact_image_url: 0
       civicrm_2_contact_1_contact_contact_id: 0
       civicrm_2_contact_1_contact_user_id: 0
       civicrm_2_contact_1_contact_external_identifier: 0
@@ -858,6 +927,7 @@ handlers:
       civicrm_2_contact_1_address_county_id: 0
       civicrm_2_contact_1_address_master_id: 0
       civicrm_2_contact_1_address_location_type_id: '3'
+      civicrm_2_contact_1_address_is_primary: '1'
       contact_2_number_of_phone: '0'
       contact_2_number_of_email: '0'
       contact_2_number_of_website: '0'
@@ -890,6 +960,7 @@ handlers:
       civicrm_3_contact_1_contact_preferred_communication_method: 0
       civicrm_3_contact_1_contact_privacy: 0
       civicrm_3_contact_1_contact_preferred_language: 0
+      civicrm_3_contact_1_contact_image_url: 0
       civicrm_3_contact_1_contact_contact_id: 0
       civicrm_3_contact_1_contact_user_id: 0
       civicrm_3_contact_1_contact_external_identifier: 0
@@ -899,8 +970,17 @@ handlers:
       civicrm_3_contact_1_contact_is_deceased: 0
       civicrm_3_contact_1_contact_deceased_date: 0
       contact_3_settings_matching_rule: Unsupervised
+      contact_3_number_of_cg10: '0'
+      contact_3_number_of_cg14: '0'
       contact_3_number_of_cg5: '0'
       contact_3_number_of_cg12: '0'
+      contact_3_number_of_cg19: '0'
+      contact_3_number_of_cg21: '0'
+      contact_3_number_of_cg22: '0'
+      contact_3_number_of_cg23: '0'
+      contact_3_number_of_cg24: '0'
+      contact_3_number_of_cg25: '0'
+      contact_3_number_of_cg29: '0'
       contact_3_number_of_other: '0'
       contact_3_number_of_address: '0'
       contact_3_number_of_phone: '0'
@@ -925,6 +1005,7 @@ handlers:
       civicrm_4_contact_1_contact_preferred_communication_method: 0
       civicrm_4_contact_1_contact_privacy: 0
       civicrm_4_contact_1_contact_preferred_language: 0
+      civicrm_4_contact_1_contact_image_url: 0
       civicrm_4_contact_1_contact_contact_id: 0
       civicrm_4_contact_1_contact_user_id: 0
       civicrm_4_contact_1_contact_external_identifier: 0
@@ -934,8 +1015,17 @@ handlers:
       civicrm_4_contact_1_contact_is_deceased: 0
       civicrm_4_contact_1_contact_deceased_date: 0
       contact_4_settings_matching_rule: Unsupervised
+      contact_4_number_of_cg10: '0'
+      contact_4_number_of_cg14: '0'
       contact_4_number_of_cg5: '0'
       contact_4_number_of_cg12: '0'
+      contact_4_number_of_cg19: '0'
+      contact_4_number_of_cg21: '0'
+      contact_4_number_of_cg22: '0'
+      contact_4_number_of_cg23: '0'
+      contact_4_number_of_cg24: '0'
+      contact_4_number_of_cg25: '0'
+      contact_4_number_of_cg29: '0'
       contact_4_number_of_other: '0'
       contact_4_number_of_address: '0'
       contact_4_number_of_phone: '0'
@@ -960,6 +1050,7 @@ handlers:
       civicrm_5_contact_1_contact_preferred_communication_method: 0
       civicrm_5_contact_1_contact_privacy: 0
       civicrm_5_contact_1_contact_preferred_language: 0
+      civicrm_5_contact_1_contact_image_url: 0
       civicrm_5_contact_1_contact_contact_id: 0
       civicrm_5_contact_1_contact_user_id: 0
       civicrm_5_contact_1_contact_external_identifier: 0
@@ -969,8 +1060,17 @@ handlers:
       civicrm_5_contact_1_contact_is_deceased: 0
       civicrm_5_contact_1_contact_deceased_date: 0
       contact_5_settings_matching_rule: Unsupervised
+      contact_5_number_of_cg10: '0'
+      contact_5_number_of_cg14: '0'
       contact_5_number_of_cg5: '0'
       contact_5_number_of_cg12: '0'
+      contact_5_number_of_cg19: '0'
+      contact_5_number_of_cg21: '0'
+      contact_5_number_of_cg22: '0'
+      contact_5_number_of_cg23: '0'
+      contact_5_number_of_cg24: '0'
+      contact_5_number_of_cg25: '0'
+      contact_5_number_of_cg29: '0'
       contact_5_number_of_other: '0'
       contact_5_number_of_address: '0'
       contact_5_number_of_phone: '0'
@@ -1009,12 +1109,35 @@ handlers:
         '': ''
       civicrm_1_activity_1_activity_engagement_level: 0
       civicrm_1_activity_1_activity_campaign_id: 0
+      activity_1_settings_dynamic_custom_cg31: 0
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
+      activity_1_settings_dynamic_custom_cg30: 0
+      civicrm_1_activity_1_cg30_custom_343: 0
+      civicrm_1_activity_1_cg30_custom_352: 0
+      civicrm_1_activity_1_cg30_custom_353: 0
+      civicrm_1_activity_1_cg30_custom_354: 0
+      civicrm_1_activity_1_cg30_custom_355: 0
+      civicrm_1_activity_1_cg30_custom_356: 0
+      civicrm_1_activity_1_cg30_custom_357: 0
+      civicrm_1_activity_1_cg30_custom_358: 0
+      civicrm_1_activity_1_cg30_custom_359: 0
+      civicrm_1_activity_1_cg30_custom_360: 0
+      civicrm_1_activity_1_cg30_custom_361: 0
+      civicrm_1_activity_1_cg30_custom_362: 0
+      civicrm_1_activity_1_cg30_custom_363: 0
+      civicrm_1_activity_1_cg30_custom_364: 0
+      civicrm_1_activity_1_cg30_custom_365: 0
+      civicrm_1_activity_1_cg30_custom_366: 0
+      civicrm_1_activity_1_cg30_custom_367: 0
+      civicrm_1_activity_1_cg30_custom_368: 0
+      civicrm_1_activity_1_cg30_custom_369: 0
+      civicrm_1_activity_1_cg30_custom_370: 0
+      civicrm_1_activity_1_cg30_custom_371: 0
       activity_1_settings_dynamic_custom_cg2: 0
-      civicrm_1_activity_1_cg2_custom_333: 0
-      civicrm_1_activity_1_cg2_custom_332: 0
+      civicrm_1_activity_1_cg2_custom_333: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_332: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_334: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_331: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_330: create_civicrm_webform_element
@@ -1044,7 +1167,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_35: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_37: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_41: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_127: 0
+      civicrm_1_activity_1_cg2_custom_127: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_128: 0
       civicrm_1_activity_1_cg2_custom_129: 0
       civicrm_1_activity_1_cg2_custom_47: 0
@@ -1081,6 +1204,8 @@ handlers:
       civicrm_1_activity_1_cg2_custom_84: 0
       civicrm_1_activity_1_cg2_custom_85: 0
       civicrm_1_activity_1_cg2_custom_86: 0
+      civicrm_1_activity_1_cg2_custom_340: 0
+      civicrm_1_activity_1_cg2_custom_341: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1171,6 +1296,8 @@ handlers:
         show_future_events: '1'
         show_public_events: all
         title_display: title
+        show_full_events: 1
+        event_sort_field: start_date
         show_remaining: '0'
         validate: 1
         block_form: 0
@@ -1200,9 +1327,18 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Primary Contact'
             matching_rule: Unsupervised
+            number_of_cg10: '0'
+            number_of_cg14: '0'
             number_of_cg5: '1'
             dynamic_custom_cg5: 0
             number_of_cg12: '0'
+            number_of_cg19: '0'
+            number_of_cg21: '0'
+            number_of_cg22: '0'
+            number_of_cg23: '0'
+            number_of_cg24: '0'
+            number_of_cg25: '0'
+            number_of_cg29: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '1'
@@ -1213,9 +1349,11 @@ handlers:
               1:
                 phone_type_id: '1'
                 location_type_id: '3'
+                is_primary: '1'
             email:
               1:
                 location_type_id: '3'
+                is_primary: '1'
           2:
             contact:
               1:
@@ -1234,6 +1372,7 @@ handlers:
             address:
               1:
                 location_type_id: '3'
+                is_primary: '1'
             relationship:
               1:
                 is_active: '1'
@@ -1244,8 +1383,17 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: Presenter
             matching_rule: Unsupervised
+            number_of_cg10: '0'
+            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
+            number_of_cg19: '0'
+            number_of_cg21: '0'
+            number_of_cg22: '0'
+            number_of_cg23: '0'
+            number_of_cg24: '0'
+            number_of_cg25: '0'
+            number_of_cg29: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
@@ -1260,8 +1408,17 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Presenter 2'
             matching_rule: Unsupervised
+            number_of_cg10: '0'
+            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
+            number_of_cg19: '0'
+            number_of_cg21: '0'
+            number_of_cg22: '0'
+            number_of_cg23: '0'
+            number_of_cg24: '0'
+            number_of_cg25: '0'
+            number_of_cg29: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
@@ -1276,8 +1433,17 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Presenter 3'
             matching_rule: Unsupervised
+            number_of_cg10: '0'
+            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
+            number_of_cg19: '0'
+            number_of_cg21: '0'
+            number_of_cg22: '0'
+            number_of_cg23: '0'
+            number_of_cg24: '0'
+            number_of_cg25: '0'
+            number_of_cg29: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
@@ -1290,6 +1456,8 @@ handlers:
           1:
             existing_activity_status: {  }
             details: {  }
+            dynamic_custom_cg31: 0
+            dynamic_custom_cg30: 0
             dynamic_custom_cg2: 0
             dynamic_custom_cg9: 0
             dynamic_custom_cg17: 0
@@ -1325,6 +1493,8 @@ handlers:
           show_future_events: '1'
           show_public_events: all
           title_display: title
+          show_full_events: 1
+          event_sort_field: start_date
           show_remaining: '0'
           validate: 1
           block_form: 0
