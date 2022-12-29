@@ -19,4 +19,6 @@ jQuery(document).ready(function ($) {
       }
     }
   );
+
+  $("#edit-civicrm-2-contact-1-fieldset-fieldset").hide(); // Hide organisation section
 });
