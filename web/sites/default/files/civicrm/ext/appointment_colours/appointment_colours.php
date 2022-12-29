@@ -90,7 +90,7 @@ function appointment_colours_civicrm_buildForm($formName, &$form) {
       //Pass colour to tpl
       $form->assign( 'activity_col_hex', $appointmentColourses[0]['colour_hex'] );
       //Add field to form
-      $form->add('color', 'activitycolor', ts('Activity Color'));
+      $form->add('color', 'activitycolor', ts('Activity Colour'));
       CRM_Core_Region::instance('page-body')->add([
         'template' => 'activitycolor.tpl',
       ]);
@@ -103,22 +103,25 @@ function appointment_colours_civicrm_postProcess($formName, &$form) {
     //Get form values
     $submitted = $form->getVar('_submitValues');
     $default_values = $form->getVar('_defaultValues');
-
-    if(!$default_values['value'] || !$submitted['activitycolor']){
+    if(!$submitted['activitycolor']){
       return;
     }
 
-    //Create / Update AppointmenColours Entity to save Colour 
-    if ($form->getAction() == CRM_Core_Action::ADD) {
-      $results = \Civi\Api4\AppointmentColours::create()
-        ->addValue('activity_type_id', $default_values['value'])
+    $activityTypeID = $form->ajaxResponse['optionValue']['value'] ?: \Civi\Api4\OptionValue::get()->addSelect('value')->addWhere('id', '=',  $form->ajaxResponse['optionValue']['id'])->execute()->first()['value'];
+    $id = \Civi\Api4\AppointmentColours::get(FALSE)
+      ->addWhere('activity_type_id', '=', $activityTypeID)
+      ->execute()->first()['id'];
+
+    if (!$id) {
+      \Civi\Api4\AppointmentColours::create()
+        ->addValue('activity_type_id', $activityTypeID)
         ->addValue('colour_hex', ltrim($submitted['activitycolor'], '#'))
         ->execute();
     }
-    if ($form->getAction() == CRM_Core_Action::UPDATE) {
-      $results = \Civi\Api4\AppointmentColours::update()
+    else {
+      \Civi\Api4\AppointmentColours::update(FALSE)
+        ->addWhere('id', '=', $id)
         ->addValue('colour_hex', ltrim($submitted['activitycolor'], '#'))
-        ->addWhere('activity_type_id', '=', $default_values['value'])
         ->execute();
     }
   }
