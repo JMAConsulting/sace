@@ -1,6 +1,6 @@
-name: Clin Waitlist
+name: PE-Presentation Evaluation
 type: module
-description: 'Clin Waitlist View modifications'
+description: 'Presentation Evaluation'
 package: Custom
 version: 1.0
 core_version_requirement: ^8 || ^9
