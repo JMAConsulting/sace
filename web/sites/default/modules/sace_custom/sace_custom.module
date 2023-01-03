@@ -170,3 +170,65 @@ function sace_custom_get_ped_sace_student_feedback($aid) {
 
   return $feedback;
 }
+
+function sace_custom_taxonomy_term_insert(Drupal\Core\Entity\EntityInterface $entity) {
+ $menu_link_parents = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+    ->loadByProperties([
+      'title' => 'Calendars',
+      'menu_name' => 'main',
+    ]);
+
+  $menu_link_parent = reset($menu_link_parents);
+
+  if ($menu_link_parent) {
+    \Drupal::entityTypeManager()->getStorage('menu_link_content')
+      ->create([
+        'title' => $entity->label() . '  - User Team',
+        'menu_name' => 'main',
+        'link' => ['uri' => 'internal:/calendar-team/' . $entity->id()],
+        'parent' => $menu_link_parent->getPluginId(),
+      ])->save();
+  }
+  _clear_menu_caches();
+}
+
+function sace_custom_taxonomy_term_update(Drupal\Core\Entity\EntityInterface $entity) {
+  $calendarMenu = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+    ->loadByProperties([
+      'link' => ['uri' => 'internal:/calendar-team/' . $entity->id()],
+      'menu_name' => 'main',
+    ]);
+
+  $menuItem = reset($calendarMenu);
+  if ($menuItem) {
+    $menuItem->setName($entity->label() . '  - User Team');
+    $menuItem->save();
+  }
+  _clear_menu_caches();
+}
+
+function sace_custom_taxonomy_term_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  $calendarMenu = \Drupal::entityTypeManager()->getStorage('menu_link_content')
+    ->loadByProperties([
+      'link' => ['uri' => 'internal:/calendar-team/' . $entity->id()],
+      'menu_name' => 'main',
+    ]);
+  $menuItem = reset($calendarMenu);
+  if ($menuItem) {
+    $menuItem->delete();
+  }
+  _clear_menu_caches();
+}
+
+function sace_custom_user_update(Drupal\Core\Entity\EntityInterface $entity) {
+  _clear_menu_caches();
+}
+
+function sace_custom_user_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  _clear_menu_caches();
+}
+
+function _clear_menu_caches() {
+  \Drupal::cache('menu')->invalidateAll(); // for clearing the menu cache
+  \Drupal::service('plugin.manager.menu.link')->rebuild(); // rebuild the menu
+}
