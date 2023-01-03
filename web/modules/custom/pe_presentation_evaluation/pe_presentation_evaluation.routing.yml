@@ -1,0 +1,7 @@
+pe_presentation_evaluation.welcome:
+  path: '/test/page'
+  defaults:
+    _controller: '\Drupal\pe_presentation_evaluation\Controller\TestController::test'
+    _title: 'Presentation Evaluation Module Test'
+  requirements: 
+    _permission: 'access content'

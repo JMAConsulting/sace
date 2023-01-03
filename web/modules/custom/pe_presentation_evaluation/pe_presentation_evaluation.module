@@ -1,0 +1,111 @@
+<?php
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
+    $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
+    $form['#attached']['drupalSettings']['pe_presentation_evaluation']['pe_presentation_evaluation']['test'] = 'values';
+
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+    //Get default selected value for Presentation Topic
+    $default_val = $elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0];
+    //Get select field text based on default value
+    $topic = $elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$default_val] ?? 'presentation topic';
+
+    //Update Q1 presentation topic
+    //Get q1
+    $q1 = $elements["q1"]["#title"];
+    //Update text for q1
+    $elements['q1']['#title'] = str_replace('presentation topic', $topic, $q1);
+
+    //Update Q2 presentation topic
+    //Get q2
+    $q2 = $elements["feedback"]["#title"];
+    //Update text for q2
+    $elements['feedback']['#title'] = str_replace('topic', $topic, $q2);
+
+    // Get activity id from query var.
+    //get from form field TODO
+    $aid = $elements['aid']['#default_value'] ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    // Get Booking Intake custom fields
+    $result = \Civi\Api4\Activity::get()
+      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus')
+      ->addWhere('id', '=', $aid)
+      ->execute()
+      ->first();
+
+    if (empty($result)) {
+      return;
+    }
+
+    // Q3-4 based on support content toggled
+    if ($result["Booking_Information.Support_Content"] != 1) {
+      $elements['q3']['#access'] = FALSE;
+      $elements['feedback_q4']['#access'] = FALSE;
+    }
+
+    // Q5 - q6 based on Community Resources or SACE Services toggled
+    if (empty($result["Booking_Information.Presentation_topics"])) {
+      return;
+    }
+    if ($result["Booking_Information.Presentation_topics"] != 'SACEServices') {
+      if ($result["Booking_Information.Resources_Content"] != 1) {
+        $elements['q5']['#access'] = FALSE;
+        $elements['feedback_q6']['#access'] = FALSE;
+      }
+    }
+
+    // Q9 - q11 toggle based on Safer Spaces Content toggled
+    if ($result['Booking_Information.Safer_Spaces_Content'] != 1) {
+      $elements['q9']['#access'] = FALSE;
+      $elements['q10']['#access'] = FALSE;
+      $elements['q11']['#access'] = FALSE;
+    }
+
+    //Q12 toggle based on facilitating program is Institutional Support
+    if ($result['Booking_Information.Facilitating_Program'] != 'InstitutionalSupport') {
+      $elements['q12']['#access'] = FALSE;
+    }
+
+    // Q13-15 toggle based on Demographic   information
+    if ($result['Booking_Information.Presentation_Population_of_Focus'] != NULL) {
+      $elements['q13']['#access'] = FALSE;
+      $elements['q14']['#access'] = FALSE;
+      $elements['q15']['#access'] = FALSE;
+    }
+
+    //Q16 toggle show when presentation topic is Bystander Intervention
+    if ($result['Booking_Information.Presentation_topics'] != 'BystanderIntervention') {
+      $elements['q16']['#access'] = FALSE;
+    }
+    //Q17 toggle show when presentation topic is Privilege and Oppression
+    if ($result['Booking_Information.Presentation_topics'] !== 'PrivilegeandOppression') {
+      $elements['q17']['#access'] = FALSE;
+    }
+  }
+
+  // Move to new module for booking update
+  if ($form_id == "webform_submission_update_ped_booking_add_form") {
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+
+    if (empty($elements)) {
+      return;
+    }
+    //exit('<pre>'. print_r($form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'], TRUE).'</pre>');
+    if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
+      $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";
+    }
+  }
+}
