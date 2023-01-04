@@ -1,0 +1,21 @@
+<?php
+
+function add_client_to_waitlist_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  $field = $variables['field'];
+  $row = $variables['row'];
+  $waiting = 'here';
+  if ($view->storage->id() == 'clin_waitlist' && $view->current_display == 'page_1') {
+    if ($field->field == 'end_date') {      
+      foreach ($view->field as $fieldId => $field) {
+        if ($fieldId === 'start_date') {
+          if (date_create($view->style_plugin->getFieldValue($row->index, $fieldId))) {
+            $today = date_create(date('Y/m/d'));
+          }
+          $variables['output'] = date_diff(date_create($view->style_plugin->getFieldValue($row->index, $fieldId)), $today)->format(('%a days'));
+        }
+      }
+    }
+  }
+}
+
