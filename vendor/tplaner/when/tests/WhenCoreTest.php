@@ -433,9 +433,9 @@ class WhenCoreTest extends TestCase {
     public function testValidbyDay()
     {
         $test = new When;
-        $test->byday(array("+5MO", "-20MO", "31TU", "SA"));
+        $test->byday(array("+5MO", "-20MO", "31TU", "SA", "0TU"));
 
-        $this->assertEquals($test->bydays, array("5mo", "-20mo", "31tu", "0sa"));
+        $this->assertEquals($test->bydays, array("5mo", "-20mo", "31tu", "0sa", "0tu"));
 
         $test = new When;
         $test->byday(array("+5mo", "-20MO", "31tU", "SA"));
@@ -725,6 +725,17 @@ class WhenCoreTest extends TestCase {
         {
             $this->assertEquals($result, $occurrences[$key]);
         }
+    }
+
+    public function testToRrule()
+    {
+        $finalRrule = "DTSTART=19970902T090000Z;FREQ=daily;COUNT=5;INTERVAL=10";
+
+        $r = new When();
+        $r->startDate(new DateTime("19970902T090000"))
+            ->rrule("FREQ=DAILY;INTERVAL=10;COUNT=5");
+
+        $this->assertEquals($r->torrule(), $finalRrule);
     }
 }
 

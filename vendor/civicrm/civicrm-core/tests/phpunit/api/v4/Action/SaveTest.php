@@ -19,18 +19,19 @@
 
 namespace api\v4\Action;
 
-use api\v4\UnitTestCase;
+use api\v4\Api4TestBase;
 use Civi\Api4\Contact;
+use Civi\Test\TransactionalInterface;
 
 /**
  * @group headless
  */
-class SaveTest extends UnitTestCase {
+class SaveTest extends Api4TestBase implements TransactionalInterface {
 
   /**
    * @dataProvider getMatchingCriteriaDataProvider
    * @return void
-   * @throws \API_Exception
+   * @throws \CRM_Core_Exception
    * @throws \Civi\API\Exception\UnauthorizedException
    */
   public function testSaveWithMatchingCriteria($matchCriteria, $records, $changes, $expected) {

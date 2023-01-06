@@ -194,12 +194,14 @@ class Styles extends BaseParserClass
         $diagonalUp = self::boolean($diagonalUp);
         $diagonalDown = $this->getAttribute($borderStyleXml, 'diagonalDown');
         $diagonalDown = self::boolean($diagonalDown);
-        if (!$diagonalUp && !$diagonalDown) {
-            $borderStyle->setDiagonalDirection(Borders::DIAGONAL_NONE);
-        } elseif ($diagonalUp && !$diagonalDown) {
+        if ($diagonalUp === false) {
+            if ($diagonalDown === false) {
+                $borderStyle->setDiagonalDirection(Borders::DIAGONAL_NONE);
+            } else {
+                $borderStyle->setDiagonalDirection(Borders::DIAGONAL_DOWN);
+            }
+        } elseif ($diagonalDown === false) {
             $borderStyle->setDiagonalDirection(Borders::DIAGONAL_UP);
-        } elseif (!$diagonalUp && $diagonalDown) {
-            $borderStyle->setDiagonalDirection(Borders::DIAGONAL_DOWN);
         } else {
             $borderStyle->setDiagonalDirection(Borders::DIAGONAL_BOTH);
         }
@@ -276,7 +278,7 @@ class Styles extends BaseParserClass
      */
     public function readStyle(Style $docStyle, $style): void
     {
-        if ($style->numFmt instanceof SimpleXMLElement) {
+        if ($style instanceof SimpleXMLElement) {
             $this->readNumberFormat($docStyle->getNumberFormat(), $style->numFmt);
         } else {
             $docStyle->getNumberFormat()->setFormatCode(self::formatGeneral((string) $style->numFmt));
@@ -363,11 +365,12 @@ class Styles extends BaseParserClass
             return (string) $attr['rgb'];
         }
         if (isset($attr['indexed'])) {
-            if (empty($this->workbookPalette)) {
-                return Color::indexedColor((int) ($attr['indexed'] - 7), $background)->getARGB() ?? '';
+            $indexedColor = (int) $attr['indexed'];
+            if ($indexedColor >= count($this->workbookPalette)) {
+                return Color::indexedColor($indexedColor - 7, $background)->getARGB() ?? '';
             }
 
-            return Color::indexedColor((int) ($attr['indexed']), $background, $this->workbookPalette)->getARGB() ?? '';
+            return Color::indexedColor($indexedColor, $background, $this->workbookPalette)->getARGB() ?? '';
         }
         if (isset($attr['theme'])) {
             if ($this->theme !== null) {

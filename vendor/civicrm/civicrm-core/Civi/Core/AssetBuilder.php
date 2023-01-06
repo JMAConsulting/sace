@@ -7,6 +7,7 @@ use Civi\Core\Exception\UnknownAssetException;
 /**
  * Class AssetBuilder
  * @package Civi\Core
+ * @service asset_builder
  *
  * The AssetBuilder is used to manage semi-dynamic assets.
  * In normal production use, these assets are built on first
@@ -70,7 +71,7 @@ use Civi\Core\Exception\UnknownAssetException;
  * secure it (e.g. alternative digest() calculations), but the
  * current implementation is KISS.
  */
-class AssetBuilder {
+class AssetBuilder extends \Civi\Core\Service\AutoService {
 
   /**
    * @return array
@@ -368,7 +369,18 @@ class AssetBuilder {
   public static function pageRender($get) {
     // Beg your pardon, sir. Please may I have an HTTP response class instead?
     try {
+      /** @var Assetbuilder $assets */
       $assets = \Civi::service('asset_builder');
+
+      $expectDigest = $assets->digest($get['an'], $assets->decode($get['ap']));
+      if ($expectDigest !== $get['ad']) {
+        return [
+          'statusCode' => 500,
+          'mimeType' => 'text/plain',
+          'content' => 'Invalid digest',
+        ];
+      }
+
       return $assets->render($get['an'], $assets->decode($get['ap']));
     }
     catch (UnknownAssetException $e) {
