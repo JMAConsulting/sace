@@ -31,6 +31,7 @@ class When extends DateTime
     public $bymonths;
     public $bysetpos;
     public $wkst;
+    public $shouldadjustmonthend = false;
 
     public $occurrences = [];
     public $rangeLimit = 200;
@@ -62,7 +63,7 @@ class When extends DateTime
             return $this;
         }
 
-        throw new InvalidArgumentException("freq: Accepts " . rtrim(implode(Valid::$frequencies, ", "), ","));
+        throw new InvalidArgumentException("freq: Accepts " . rtrim(implode(", ", Valid::$frequencies), ","));
     }
 
     public function until($endDate)
@@ -153,7 +154,7 @@ class When extends DateTime
             return $this;
         }
 
-        throw new InvalidArgumentException("bydays: Accepts (optional) positive and negative values between 1 and 53 followed by a valid week day");
+        throw new InvalidArgumentException("bydays: Accepts (optional) positive and negative values between -53 and 53 followed by a valid week day");
     }
 
     public function exclusions($exclusionList, $delimiter = ",")
@@ -244,7 +245,12 @@ class When extends DateTime
             return $this;
         }
 
-        throw new InvalidArgumentException("wkst: Accepts " . rtrim(implode(Valid::$weekDays, ", "), ","));
+        throw new InvalidArgumentException("wkst: Accepts " . rtrim(implode(", ", Valid::$weekDays), ","));
+    }
+
+    public function adjustmonthend($adjust)
+    {
+        $this->shouldadjustmonthend = !!$adjust;
     }
 
     public function rrule($rrule)
@@ -278,6 +284,7 @@ class When extends DateTime
                 case "COUNT":
                 case "INTERVAL":
                 case "WKST":
+                case "ADJUSTMONTHEND":
                     $this->{$rule}($param);
                     break;
                 case "BYDAY":
@@ -298,7 +305,7 @@ class When extends DateTime
         return $this;
     }
 
-    public function occursOn(DateTime $date)
+    public function occursOn(\DateTimeInterface $date)
     {
         if (!Valid::dateTimeObject($date))
         {
@@ -374,11 +381,30 @@ class When extends DateTime
 
         if (isset($this->bymonthdays))
         {
+            $realMonthDays = false;
+            if ($this->shouldadjustmonthend) {
+                $monthLen = $date->format("t");
+                $realMonthDays = $this->bymonthdays;
+                foreach ($this->bymonthdays as &$dayOffset) {
+                    if ($dayOffset > $monthLen) {
+                        $dayOffset = $monthLen;
+                    }
+                }
+            }
+
             if (!in_array($day, $this->bymonthdays) &&
                 !in_array($dayFromEndOfMonth, $this->bymonthdays))
             {
-                return false;
+                $ok = false;
+            } else {
+                $ok = true;
             }
+
+            if ($realMonthDays) {
+                $this->bymonthdays = $realMonthDays;
+            }
+
+            return $ok;
         }
 
         if (isset($this->byyeardays))
@@ -541,11 +567,6 @@ class When extends DateTime
         {
             $thisClone->startDate = clone $last_occurrence;
 
-            if (isset($thisClone->limit))
-            {
-                $thisClone->limit = $thisClone->limit - 200;
-            }
-
             // clear all occurrences before our start date
             foreach ($thisClone->occurrences as $key => $occurrence)
             {
@@ -593,6 +614,37 @@ class When extends DateTime
         return $occurrences;
     }
 
+    public function toRrule($glue = ';')
+    {
+        $rrule = [];
+
+        if (isset($this->startDate)) $rrule['DTSTART'] = $this->startDate->format('Ymd\THis\Z');
+        if (isset($this->freq)) $rrule['FREQ'] = $this->freq;
+        if (isset($this->until)) $rrule['UNTIL'] = $this->until->format('Ymd\THis\Z');
+        if (isset($this->count)) $rrule['COUNT'] = $this->count;
+        if (isset($this->interval)) $rrule['INTERVAL'] = $this->interval;
+        if (isset($this->bydays)) $rrule['BYDAY'] = implode(',', $this->bydays);
+        if (isset($this->byhours)) $rrule['BYHOUR'] = implode(',', $this->byhours);
+        if (isset($this->byminutes)) $rrule['BYMINUTE'] = implode(',', $this->byminutes);
+        if (isset($this->byseconds)) $rrule['BYSECOND'] = implode(',', $this->byseconds);
+        if (isset($this->bymonthdays)) $rrule['BYMONTHDAY'] = implode(',', $this->bymonthdays);
+        if (isset($this->byyeardays)) $rrule['BYYEARDAY'] = implode(',', $this->byyeardays);
+        if (isset($this->byweeknos)) $rrule['BYWEEKNO'] = implode(',', $this->byweeknos);
+        if (isset($this->bymonths)) $rrule['BYMONTH'] = implode(',', $this->bymonths);
+        if (isset($this->bysetpos)) $rrule['BYSETPOS'] = implode(',', $this->bysetpos);
+        if (isset($this->wkst)) $rrule['WKST'] = $this->wkst;
+
+        $data = [];
+        foreach ($rrule as $key => $val)
+        {
+            $data[] = $key . "=" . (string)$val;
+        }
+
+        $data = implode($glue, $data);
+
+        return $data;
+    }
+
     private function findDateRangeOverlap($startDate, $endDate)
     {
         // Trim to the defined range of this When:
@@ -614,14 +666,15 @@ class When extends DateTime
 
     private static function abbrevToDayName($abbrev)
     {
-        $daynames = array('su' => 'Sunday',
+        $daynames = [
+            'su' => 'Sunday',
             'mo' => 'Monday',
             'tu' => 'Tuesday',
             'we' => 'Wednesday',
             'th' => 'Thursday',
             'fr' => 'Friday',
-            'sa' => 'Saturyday',
-        );
+            'sa' => 'Saturday',
+        ];
         return $daynames[strtolower($abbrev)];
     }
 
@@ -959,7 +1012,10 @@ class When extends DateTime
                 {
                     $occurrence = clone $dateLooper;
                     $occurrence->setTime($hour, $minute, $second);
-                    $occurrences[] = $occurrence;
+
+                    if ($occurrence <= $this->until) {
+                        $occurrences[] = $occurrence;
+                    }
                 }
             }
         }
@@ -1062,6 +1118,7 @@ class When extends DateTime
                 !isset($this->bysetpos))
             {
                 $this->bymonth($this->startDate->format('n'));
+                $this->bymonthdays = [$this->startDate->format('j')];
             }
         }
 

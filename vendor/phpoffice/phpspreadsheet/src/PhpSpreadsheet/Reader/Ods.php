@@ -20,6 +20,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Shared\File;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Throwable;
 use XMLReader;
 use ZipArchive;
@@ -51,7 +52,7 @@ class Ods extends BaseReader
             if ($zip->open($filename) === true) {
                 // check if it is an OOXML archive
                 $stat = $zip->statName('mimetype');
-                if ($stat && ($stat['size'] <= 255)) {
+                if (!empty($stat) && ($stat['size'] <= 255)) {
                     $mimeType = $zip->getFromName($stat['name']);
                 } elseif ($zip->statName('META-INF/manifest.xml')) {
                     $xml = simplexml_load_string(
@@ -63,6 +64,7 @@ class Ods extends BaseReader
                     if (isset($namespacesContent['manifest'])) {
                         $manifest = $xml->children($namespacesContent['manifest']);
                         foreach ($manifest as $manifestDataSet) {
+                            /** @scrutinizer ignore-call */
                             $manifestAttributes = $manifestDataSet->attributes($namespacesContent['manifest']);
                             if ($manifestAttributes && $manifestAttributes->{'full-path'} == '/') {
                                 $mimeType = (string) $manifestAttributes->{'media-type'};
@@ -310,7 +312,7 @@ class Ods extends BaseReader
 
                 // Check loadSheetsOnly
                 if (
-                    isset($this->loadSheetsOnly)
+                    $this->loadSheetsOnly !== null
                     && $worksheetName
                     && !in_array($worksheetName, $this->loadSheetsOnly)
                 ) {
@@ -325,7 +327,7 @@ class Ods extends BaseReader
                 }
                 $spreadsheet->setActiveSheetIndex($worksheetID);
 
-                if ($worksheetName) {
+                if ($worksheetName || is_numeric($worksheetName)) {
                     // Use false for $updateFormulaCellReferences to prevent adjustment of worksheet references in
                     // formula cells... during the load, all formulae should be correct, and we're simply
                     // bringing the worksheet name in line with the formula, not the reverse
@@ -373,7 +375,15 @@ class Ods extends BaseReader
                             foreach ($childNode->childNodes as $cellData) {
                                 if ($this->getReadFilter() !== null) {
                                     if (!$this->getReadFilter()->readCell($columnID, $rowID, $worksheetName)) {
-                                        ++$columnID;
+                                        if ($cellData->hasAttributeNS($tableNs, 'number-columns-repeated')) {
+                                            $colRepeats = (int) $cellData->getAttributeNS($tableNs, 'number-columns-repeated');
+                                        } else {
+                                            $colRepeats = 1;
+                                        }
+
+                                        for ($i = 0; $i < $colRepeats; ++$i) {
+                                            ++$columnID;
+                                        }
 
                                         continue;
                                     }
@@ -506,7 +516,7 @@ class Ods extends BaseReader
 
                                             $dataValue = Date::PHPToExcel(
                                                 strtotime(
-                                                    '01-01-1970 ' . implode(':', sscanf($timeValue, 'PT%dH%dM%dS') ?? [])
+                                                    '01-01-1970 ' . implode(':', /** @scrutinizer ignore-type */ sscanf($timeValue, 'PT%dH%dM%dS') ?? [])
                                                 )
                                             );
                                             $formatting = NumberFormat::FORMAT_DATE_TIME4;
@@ -588,6 +598,7 @@ class Ods extends BaseReader
                             break;
                     }
                 }
+                $pageSettings->setVisibilityForWorksheet($spreadsheet->getActiveSheet(), $worksheetStyleName);
                 $pageSettings->setPrintSettingsForWorksheet($spreadsheet->getActiveSheet(), $worksheetStyleName);
                 ++$worksheetID;
             }
@@ -628,7 +639,7 @@ class Ods extends BaseReader
         foreach ($settings->getElementsByTagNameNS($configNs, 'config-item') as $t) {
             if ($t->getAttributeNs($configNs, 'name') === 'ActiveTable') {
                 try {
-                    $spreadsheet->setActiveSheetIndexByName($t->nodeValue ?: '');
+                    $spreadsheet->setActiveSheetIndexByName($t->nodeValue ?? '');
                 } catch (Throwable $e) {
                     // do nothing
                 }
@@ -666,10 +677,9 @@ class Ods extends BaseReader
     private function setSelected(Spreadsheet $spreadsheet, string $wsname, string $setCol, string $setRow): void
     {
         if (is_numeric($setCol) && is_numeric($setRow)) {
-            try {
-                $spreadsheet->getSheetByName($wsname)->setSelectedCellByColumnAndRow($setCol + 1, $setRow + 1);
-            } catch (Throwable $e) {
-                // do nothing
+            $sheet = $spreadsheet->getSheetByName($wsname);
+            if ($sheet !== null) {
+                $sheet->setSelectedCells([(int) $setCol + 1, (int) $setRow + 1]);
             }
         }
     }
@@ -691,6 +701,7 @@ class Ods extends BaseReader
 
                 // Multiple spaces?
                 /** @var DOMAttr $cAttr */
+                /** @scrutinizer ignore-call */
                 $cAttr = $child->attributes->getNamedItem('c');
                 $multiplier = self::getMultiplier($cAttr);
                 $str .= str_repeat(' ', $multiplier);
@@ -758,7 +769,7 @@ class Ods extends BaseReader
                 }
 
                 $cellRange = $columnID . $rowID . ':' . $columnTo . $rowTo;
-                $spreadsheet->getActiveSheet()->mergeCells($cellRange);
+                $spreadsheet->getActiveSheet()->mergeCells($cellRange, Worksheet::MERGE_CELL_CONTENT_HIDE);
             }
         }
     }
