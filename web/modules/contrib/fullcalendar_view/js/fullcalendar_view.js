@@ -268,6 +268,30 @@
       calendarOptions.eventClick = eventClick;
       // Bind the drop event handler.
       calendarOptions.eventDrop = eventDrop;
+      calendarOptions.editable = true;
+      calendarOptions.eventStartEditable = true;
+      calendarOptions.eventDurationEditable = true;
+
+      calendarOptions.selectable = true;
+      calendarOptions.selectHelper = true;
+      calendarOptions.selectMirror = true;
+      calendarOptions.slotDuration = '00:15:00';
+      calendarOptions.slotLabelInterval = '01:00:00';
+      calendarOptions.select = function(info, el) {
+        if (info.allDay) {
+          var dateParts = info.startStr.split('T');
+          $('#edit-civicrm-1-activity-1-activity-activity-date-time-date').val(dateParts[0]);
+          $('#edit-civicrm-1-activity-1-activity-activity-date-time-time').val('00:00');
+          $('#edit-civicrm-1-activity-1-activity-duration').val(1440);
+        }
+        else {
+         var start = new Date(info.startStr).getTime(), end = new Date(info.endStr).getTime(), diff = (end - start)/ (1000 * 60);
+         var dateParts = info.startStr.split('T');
+          $('#edit-civicrm-1-activity-1-activity-activity-date-time-date').val(dateParts[0]); 
+          $('#edit-civicrm-1-activity-1-activity-activity-date-time-time').val(dateParts[1]);
+          $('#edit-civicrm-1-activity-1-activity-duration').val(diff);
+        }
+      }
       // Language select element.
       var localeSelectorEl = document.getElementById('locale-selector-' + viewIndex);
       // Initial the calendar.
