@@ -29,15 +29,16 @@
  *
  * @package CRM
  * @copyright CiviCRM LLC (c) 2004-2013
- * $Id$
- *
  */
+
+use Civi\Api4\Note;
 
 /**
  * This class gets the name of the file to upload
  */
-class CRM_Csvimport_Import_Form_DataSource extends CRM_Csvimport_Import_Form_DataSourceBaseClass {
+class CRM_Csvimport_Import_Form_DataSource extends CRM_Import_Form_DataSource {
 
+  use CRM_Csvimport_Import_Form_CSVImportFormTrait;
   public $_parser = 'CRM_Csvimport_Import_Parser_Api';
 
   protected $_enableContactOptions = FALSE;
@@ -46,7 +47,16 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Csvimport_Import_Form_Dat
 
   protected $_mappingType = 'Import Participant';//@todo make this vary depending on api - need to create option values
 
-  protected $_entity;
+  const IMPORT_ENTITY = 'Api Entity';
+
+  /**
+   * Get the name of the type to be stored in civicrm_user_job.type_id.
+   *
+   * @return string
+   */
+  public function getUserJobType(): string {
+    return 'csv_api_importer';
+  }
 
   /**
    * Include duplicate options
@@ -56,10 +66,9 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Csvimport_Import_Form_Dat
   /**
    * Function to actually build the form - this appears to be entirely code that should be in a shared base class in core
    *
-   * @return None
-   * @access public
+   * @throws \CRM_Core_Exception
    */
-  public function buildQuickForm() {
+  public function buildQuickForm(): void {
     //We are gathering this as a text field for now. I tried to put it into the URL but for some reason
     //adding &x=y in the url causes it not to load at all.
     $allEntities = civicrm_api3('entity', 'get', []);
@@ -76,18 +85,62 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Csvimport_Import_Form_Dat
         // Ignore entities that raise an exception
       }
     }
-    $this->add('select', 'entity', ts('Entity To Import'), ['' => ts('- select -')] + $creatableEntities);
+    $this->add('select', 'entity', ts('Entity To Import'), ['' => ts('- select -')] + $creatableEntities, TRUE, ['class' => 'crm-select2']);
 
     // handle 'Note' entity
-    $noteEntities = \Civi\Api4\Note::getFields()
+    $noteEntities = Note::getFields()
       ->setLoadOptions(TRUE)
       ->addSelect('options')
       ->addWhere('name', '=', 'entity_table')
       ->execute()[0]['options'];
 
-    $this->add('select', 'noteEntity', ts('Which entity are you importing "Notes" to'), $noteEntities + ['0' => ts('Set this in CSV')]);
+    $this->add('select', 'noteEntity', ts('Which entity are you importing "Notes" to'), $noteEntities + ['0' => ts('Set this in CSV')], FALSE, ['class' => 'crm-select2']);
+    if ($this->isDuplicateOptions) {
+      $duplicateOptions = [];
+      $duplicateOptions[] = $this->createElement('radio',
+        NULL, NULL, ts('Skip'), CRM_Import_Parser::DUPLICATE_SKIP
+      );
+      $duplicateOptions[] = $this->createElement('radio',
+        NULL, NULL, ts('Update'), CRM_Import_Parser::DUPLICATE_UPDATE
+      );
+      $duplicateOptions[] = $this->createElement('radio',
+        NULL, NULL, ts('No Duplicate Checking'), CRM_Import_Parser::DUPLICATE_NOCHECK
+      );
+
+      $this->addGroup($duplicateOptions, 'onDuplicate',
+        ts('On Duplicate Entries')
+      );
+    }
+
+    $this->setDefaults([
+      'onDuplicate' =>
+        CRM_Import_Parser::DUPLICATE_SKIP,
+    ]);
+
+    if ($this->_enableContactOptions) {
+      $this->addContactOptions();
+    }
+
+    $this->setDefaults([
+        'contactType' => 'Individual',
+      ]
+    );
+    $this->addElement('checkbox', 'allowEntityUpdate', ts('Allow Updating An Entity Using Unique Fields'));
+    $this->addElement('checkbox', 'ignoreCase', ts('Ignore Case For Field Option Values'));
 
     parent::buildQuickForm();
+
+    $this->removeElement('savedMapping');
+    //get the saved mapping details
+    $mappingArray = CRM_Core_BAO_Mapping::getMappings(
+      CRM_Core_PseudoConstant::getKey('CRM_Core_BAO_Mapping', 'mapping_type_id', $this->_mappingType)
+    );
+    $this->assign('savedMapping', $mappingArray);
+    $this->add('select', 'savedMapping', ts('Mapping Option'), ['' => ts('- select -')] + $mappingArray);
+
+    if ($loadedMapping = $this->get('loadedMapping')) {
+      $this->setDefaults(['savedMapping' => $loadedMapping]);
+    }
   }
 
   /**
@@ -95,13 +148,45 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Csvimport_Import_Form_Dat
    *
    * @return array
    */
-  public function setDefaultValues() {
+  public function setDefaultValues(): array {
     $defaults = parent::setDefaultValues();
     $entity = CRM_Utils_Request::retrieve('entity', 'String', $this, FALSE);
     //potentially we need to convert entity to full camel
     $defaults['entity'] = empty($entity) ? '' : ucfirst($entity);
     return $defaults;
-
   }
+
+  /**
+   * Function to set variables up before form is built
+   *
+   * @return void
+   * @access public
+   */
+  public function preProcess(): void {
+    $session = CRM_Core_Session::singleton();
+    $session->pushUserContext(CRM_Utils_System::url($this->_userContext, 'reset=1'));
+  }
+
+  public function addContactOptions(): void {
+    //contact types option
+    $contactOptions = [];
+    if (CRM_Contact_BAO_ContactType::isActive('Individual')) {
+      $contactOptions[] = $this->createElement('radio',
+        NULL, NULL, ts('Individual'), CRM_Import_Parser::CONTACT_INDIVIDUAL
+      );
+    }
+    if (CRM_Contact_BAO_ContactType::isActive('Household')) {
+      $contactOptions[] = $this->createElement('radio',
+        NULL, NULL, ts('Household'), CRM_Import_Parser::CONTACT_HOUSEHOLD
+      );
+    }
+    if (CRM_Contact_BAO_ContactType::isActive('Organization')) {
+      $contactOptions[] = $this->createElement('radio',
+        NULL, NULL, ts('Organization'), CRM_Import_Parser::CONTACT_ORGANIZATION
+      );
+    }
+    $this->addGroup($contactOptions, 'contactType', ts('Contact Type'));
+  }
+
 }
 

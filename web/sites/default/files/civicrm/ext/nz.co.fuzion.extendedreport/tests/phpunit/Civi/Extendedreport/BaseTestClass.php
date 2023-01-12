@@ -8,9 +8,12 @@ use Civi\Test\CiviEnvBuilder;
 use Civi\Test\HeadlessInterface;
 use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
+use CiviCRM_API3_Exception;
+use CRM_Core_BAO_CustomField;
 use CRM_Core_DAO;
 use CRM_Core_PseudoConstant;
 use PHPUnit\Framework\TestCase;
+use function civicrm_api3;
 
 /**
  * FIXME - Add test description.
@@ -43,6 +46,11 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
   protected $ids = [];
 
   /**
+   * @var mixed
+   */
+  protected $customGroup;
+
+  /**
    * Set up for headless tests.
    *
    * @return \Civi\Test\CiviEnvBuilder
@@ -52,7 +60,14 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
   public function setUpHeadless(): CiviEnvBuilder {
     // Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().
     // See: https://github.com/civicrm/org.civicrm.testapalooza/blob/master/civi-test.md
+    // For some reason the group doesn't get rolled back - but if you try to delete it
+    // then that WILL get rolled back - just make it go away.
+    CRM_Core_DAO::executeQuery('DELETE FROM civicrm_group');
+    CRM_Core_DAO::executeQuery('DELETE FROM civicrm_contribution');
+    CRM_Core_DAO::executeQuery('DELETE FROM civicrm_note');
     return Test::headless()
+      ->install('org.civicrm.search_kit')
+      ->install(['org.civicrm.afform', 'civigrant'])
       ->installMe(__DIR__)
       ->apply();
   }
@@ -60,7 +75,6 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
   /**
    * Clean up after test.
    *
-   * @throws \CRM_Core_Exception
    */
   public function tearDown(): void {
     foreach ($this->ids as $entity => $entityIDs) {
@@ -73,7 +87,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
             civicrm_api3($entity, 'delete', ['id' => $entityID]);
           }
         }
-        catch (\CiviCRM_API3_Exception $e) {
+        catch (CiviCRM_API3_Exception $e) {
           // No harm done - it was a best effort cleanup
         }
       }
@@ -85,9 +99,8 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    *
    * @param int $contactId
    *
-   * @throws \CRM_Core_Exception
    */
-  public function cleanUpContact(int $contactId) {
+  public function cleanUpContact(int $contactId): void {
     $contributions = $this->callAPISuccess('Contribution', 'get', [
       'contact_id' => $contactId,
     ])['values'];
@@ -114,15 +127,13 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    * @param array $params
    *
    * @return array|int
-   * @throws \CRM_Core_Exception
    */
   protected function getRows(array $params) {
     $params['options']['metadata'] = ['title', 'labels', 'sql'];
     $rows = $this->callAPISuccess('ReportTemplate', 'getrows', $params);
     $this->sql = $rows['metadata']['sql'];
     $this->labels = $rows['metadata']['labels'] ?? [];
-    $rows = $rows['values'];
-    return $rows;
+    return $rows['values'];
   }
 
   /**
@@ -139,7 +150,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    *
    * @throws \CRM_Core_Exception
    */
-  protected function createCustomGroupWithField($inputParams = [], $entity = 'Contact'): array {
+  protected function createCustomGroupWithField(array $inputParams = [], string $entity = 'Contact'): array {
     $params = ['title' => $entity];
     $params['extends'] = $entity;
     CRM_Core_PseudoConstant::flush();
@@ -191,9 +202,8 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    * @param array $params
    *
    * @return array
-   * @throws \CRM_Core_Exception
    */
-  public function customGroupCreate($params = []) {
+  public function customGroupCreate(array $params = []): array {
     $defaults = [
       'title' => 'new custom group',
       'extends' => 'Contact',
@@ -228,7 +238,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    * @throws \CRM_Core_Exception
    * @throws \Exception
    */
-  protected function customFieldCreate($params) {
+  protected function customFieldCreate(array $params): array {
     $params = array_merge([
       'label' => 'Custom Field',
       'data_type' => 'String',
@@ -240,7 +250,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
 
     $result = $this->callAPISuccess('custom_field', 'create', $params);
     // these 2 functions are called with force to flush static caches
-    \CRM_Core_BAO_CustomField::getTableColumnGroup($result['id'], 1);
+    CRM_Core_BAO_CustomField::getTableColumnGroup($result['id'], 1);
     \CRM_Core_Component::getEnabledComponents(1);
     return $result;
   }
@@ -253,7 +263,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    *
    * @return array
    */
-  public function getContactData($contactType, $quantity): array {
+  public function getContactData(string $contactType, int $quantity): array {
     switch ($contactType) {
       case 'Individual':
         $contacts = $this->getIndividuals();
@@ -273,7 +283,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
     return array_intersect_key($contacts, range(0, ($quantity - 1)));
   }
 
-  public function getIndividuals() {
+  public function getIndividuals(): array {
     return [
       ['first_name' => 'Nelson', 'last_name' => 'Mandela'],
       ['first_name' => 'William', 'last_name' => 'Wallace'],
@@ -288,7 +298,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
     ];
   }
 
-  public function getHouseholds() {
+  public function getHouseholds(): array {
     return [
       ['household_name' => 'The Shaw household'],
       ['household_name' => 'The Brady bunch'],
@@ -303,7 +313,7 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
     ];
   }
 
-  public function getOrganizations() {
+  public function getOrganizations(): array {
     return [
       ['organization_name' => 'Shady Inc'],
       ['organization_name' => 'Dodgey Corp'],
@@ -321,7 +331,6 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
   /**
    * Enable all components.
    *
-   * @throws \CRM_Core_Exception
    */
   protected function enableAllComponents() {
     $components = [];
@@ -352,8 +361,25 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    * @return array
    */
   public function getAllReports(): array {
+    if (!defined('ASSUME_GRANT_INSTALLED') || !ASSUME_GRANT_INSTALLED) {
+      define('ASSUME_GRANT_INSTALLED', TRUE);
+    }
     $reports = [];
-    extendedreport_civicrm_managed($reports);
+    require_once __DIR__ . '/../../../../extendedreport.civix.php';
+    $mgdFiles = \CRM_Utils_File::findFiles(\CRM_Extendedreport_ExtensionUtil::path(), '*.mgd.php');
+    sort($mgdFiles);
+    foreach ($mgdFiles as $file) {
+      $es = include $file;
+      foreach ($es as $e) {
+        if (empty($e['module'])) {
+          $e['module'] = \CRM_Extendedreport_ExtensionUtil::LONG_NAME;
+        }
+        if (empty($e['params']['version'])) {
+          $e['params']['version'] = '3';
+        }
+      }
+      $reports[] = $e;
+    }
     return $reports;
   }
 
@@ -363,11 +389,9 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    * @param int $quantity
    * @param string $type
    *
-   * @return array|int
-   *
-   * @throws \CRM_Core_Exception
+   * @return array
    */
-  protected function createContacts($quantity = 1, $type = 'Individual') {
+  protected function createContacts(int $quantity = 1, string $type = 'Individual'): array {
     $data = $this->getContactData($type, $quantity);
     $contacts = [];
     foreach ($data as $params) {
@@ -386,7 +410,6 @@ class BaseTestClass extends TestCase implements HeadlessInterface, HookInterface
    *  - started just now $80,000 for Cat Woman, no payments made
    *  - started one month ago $100000 for Heros Inc, no payments made
    *
-   * @throws \CRM_Core_Exception
    */
   public function setUpPledgeData() {
     $contacts = [
