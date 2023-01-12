@@ -14,21 +14,29 @@ declare(strict_types=1);
 namespace League\Csv;
 
 use function count;
+use function sprintf;
 
 /**
  * Validates column consistency when inserting records into a CSV document.
  */
 class ColumnConsistency
 {
-    protected int $columns_count;
+    /**
+     * The number of column per record.
+     *
+     * @var int
+     */
+    protected $columns_count;
 
     /**
-     * @throws InvalidArgument if the column count is lesser than -1
+     * New Instance.
+     *
+     * @throws Exception if the column count is lesser than -1
      */
     public function __construct(int $columns_count = -1)
     {
         if ($columns_count < -1) {
-            throw InvalidArgument::dueToInvalidColumnCount($columns_count, __METHOD__);
+            throw new Exception(sprintf('%s() expects the column count to be greater or equal to -1 %s given', __METHOD__, $columns_count));
         }
 
         $this->columns_count = $columns_count;

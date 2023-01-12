@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP Version 5 and 7                                                  |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2019 Jon Parise and Chuck Hagenbuch               |
+// | Copyright (c) 1997-2021 Jon Parise and Chuck Hagenbuch               |
 // | All rights reserved.                                                 |
 // |                                                                      |
 // | Redistribution and use in source and binary forms, with or without   |
@@ -151,6 +151,18 @@ class Net_SMTP
     protected $esmtp = array();
 
     /**
+     * GSSAPI principal.
+     * @var string
+     */
+    protected $gssapi_principal = null;
+
+    /**
+     * GSSAPI principal.
+     * @var string
+     */
+    protected $gssapi_cname = null;
+
+    /**
      * Instantiates a new Net_SMTP object, overriding any defaults
      * with parameters that are passed in.
      *
@@ -174,7 +186,7 @@ class Net_SMTP
      */
     public function __construct($host = null, $port = null, $localhost = null,
         $pipelining = false, $timeout = 0, $socket_options = null,
-        $gssapi_principal=null, $gssapi_cname=null
+        $gssapi_principal = null, $gssapi_cname = null
     ) {
         if (isset($host)) {
             $this->host = $host;
@@ -487,22 +499,32 @@ class Net_SMTP
     /**
      * Attempt to disconnect from the SMTP server.
      *
+     * @param bool $force Forces a disconnection of the socket even if
+     *                    the QUIT command fails
+     *
      * @return mixed Returns a PEAR_Error with an error message on any
      *               kind of failure, or true on success.
      * @since 1.0
      */
-    public function disconnect()
+    public function disconnect($force = false)
     {
-        if (PEAR::isError($error = $this->put('QUIT'))) {
-            return $error;
+        /* parseResponse is only needed if put QUIT is successful */
+        if (!PEAR::isError($error = $this->put('QUIT'))) {
+            $error = $this->parseResponse(221);
         }
-        if (PEAR::isError($error = $this->parseResponse(221))) {
-            return $error;
+
+        /* disconnecting socket if there is no error on the QUIT
+         * command or force disconnecting is requested */
+        if (!PEAR::isError($error) || $force) {
+            if (PEAR::isError($error_socket = $this->socket->disconnect())) {
+                return PEAR::raiseError(
+                    'Failed to disconnect socket: ' . $error_socket->getMessage()
+                );
+            }
         }
-        if (PEAR::isError($error = $this->socket->disconnect())) {
-            return PEAR::raiseError(
-                'Failed to disconnect socket: ' . $error->getMessage()
-            );
+
+        if (PEAR::isError($error)) {
+            return $error;
         }
 
         return true;
@@ -570,7 +592,59 @@ class Net_SMTP
 
         return PEAR::raiseError('No supported authentication methods');
     }
-
+    
+    /**
+     * Establish STARTTLS Connection.
+     *
+     * @return mixed Returns a PEAR_Error with an error message on any
+     *               kind of failure, true on success, or false if SSL/TLS
+     *               isn't available.
+     * @since 1.10.0
+     */
+    public function starttls()
+    {
+        /* We can only attempt a TLS connection if one has been requested,
+         * we're running PHP 5.1.0 or later, have access to the OpenSSL
+         * extension, are connected to an SMTP server which supports the
+         * STARTTLS extension, and aren't already connected over a secure
+         * (SSL) socket connection. */
+        if (version_compare(PHP_VERSION, '5.1.0', '>=')
+            && extension_loaded('openssl') && isset($this->esmtp['STARTTLS'])
+            && strncasecmp($this->host, 'ssl://', 6) !== 0
+            ) {
+                /* Start the TLS connection attempt. */
+                if (PEAR::isError($result = $this->put('STARTTLS'))) {
+                    return $result;
+                }
+                if (PEAR::isError($result = $this->parseResponse(220))) {
+                    return $result;
+                }
+                if (isset($this->socket_options['ssl']['crypto_method'])) {
+                    $crypto_method = $this->socket_options['ssl']['crypto_method'];
+                } else {
+                    /* STREAM_CRYPTO_METHOD_TLS_ANY_CLIENT constant does not exist
+                     * and STREAM_CRYPTO_METHOD_SSLv23_CLIENT constant is
+                     * inconsistent across PHP versions. */
+                    $crypto_method = STREAM_CRYPTO_METHOD_TLS_CLIENT
+                    | @STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT
+                    | @STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+                }
+                if (PEAR::isError($result = $this->socket->enableCrypto(true, $crypto_method))) {
+                    return $result;
+                } elseif ($result !== true) {
+                    return PEAR::raiseError('STARTTLS failed');
+                }
+                
+                /* Send EHLO again to recieve the AUTH string from the
+                 * SMTP server. */
+                $this->negotiate();
+            } else {
+                return false;
+            }
+            
+            return true;
+    }
+        
     /**
      * Attempt to do SMTP authentication.
      *
@@ -593,36 +667,11 @@ class Net_SMTP
          * extension, are connected to an SMTP server which supports the
          * STARTTLS extension, and aren't already connected over a secure
          * (SSL) socket connection. */
-        if ($tls && version_compare(PHP_VERSION, '5.1.0', '>=')
-            && extension_loaded('openssl') && isset($this->esmtp['STARTTLS'])
-            && strncasecmp($this->host, 'ssl://', 6) !== 0
-        ) {
+        if ($tls) {
             /* Start the TLS connection attempt. */
-            if (PEAR::isError($result = $this->put('STARTTLS'))) {
-                return $result;
+            if (PEAR::isError($starttls = $this->starttls())) {
+                return $starttls;
             }
-            if (PEAR::isError($result = $this->parseResponse(220))) {
-                return $result;
-            }
-            if (isset($this->socket_options['ssl']['crypto_method'])) {
-                $crypto_method = $this->socket_options['ssl']['crypto_method'];
-            } else {
-                /* STREAM_CRYPTO_METHOD_TLS_ANY_CLIENT constant does not exist
-                 * and STREAM_CRYPTO_METHOD_SSLv23_CLIENT constant is
-                 * inconsistent across PHP versions. */
-                $crypto_method = STREAM_CRYPTO_METHOD_TLS_CLIENT
-                                 | @STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT
-                                 | @STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-            }
-            if (PEAR::isError($result = $this->socket->enableCrypto(true, $crypto_method))) {
-                return $result;
-            } elseif ($result !== true) {
-                return PEAR::raiseError('STARTTLS failed');
-            }
-
-            /* Send EHLO again to recieve the AUTH string from the
-             * SMTP server. */
-            $this->negotiate();
         }
 
         if (empty($this->esmtp['AUTH'])) {
@@ -982,8 +1031,29 @@ class Net_SMTP
     public function authXOAuth2($uid, $token, $authz, $conn)
     {
         $auth = base64_encode("user=$uid\1auth=$token\1\1");
-        if (PEAR::isError($error = $this->put('AUTH', 'XOAUTH2 ' . $auth))) {
-            return $error;
+
+        // Maximum length of the base64-encoded token to be sent in the initial response is 497 bytes, according to
+        // RFC 4954 (https://datatracker.ietf.org/doc/html/rfc4954); for longer tokens an empty initial
+        // response MUST be sent and the token must be sent separately
+        // (497 bytes = 512 bytes /SMTP command length limit/ - 13 bytes /"AUTH XOAUTH2 "/ - 2 bytes /CRLF/)
+        if (strlen($auth) <= 497) {
+            if (PEAR::isError($error = $this->put('AUTH', 'XOAUTH2 ' . $auth))) {
+                return $error;
+            }
+        } else {
+            if (PEAR::isError($error = $this->put('AUTH', 'XOAUTH2'))) {
+                return $error;
+            }
+
+            // server is expected to respond with 334
+            if (PEAR::isError($error = $this->parseResponse(334))) {
+                return $error;
+            }
+
+            // then follows the token
+            if (PEAR::isError($error = $this->put($auth))) {
+                return $error;
+            }
         }
 
         /* 235: Authentication successful or 334: Continue authentication */

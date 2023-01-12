@@ -25,43 +25,54 @@ class XMLConverter
 {
     /**
      * XML Root name.
+     *
+     * @var string
      */
-    protected string $root_name = 'csv';
+    protected $root_name = 'csv';
 
     /**
      * XML Node name.
+     *
+     * @var string
      */
-    protected string $record_name = 'row';
+    protected $record_name = 'row';
 
     /**
      * XML Item name.
+     *
+     * @var string
      */
-    protected string $field_name = 'cell';
+    protected $field_name = 'cell';
 
     /**
      * XML column attribute name.
+     *
+     * @var string
      */
-    protected string $column_attr = '';
+    protected $column_attr = '';
 
     /**
      * XML offset attribute name.
+     *
+     * @var string
      */
-    protected string $offset_attr = '';
-
-    public static function create(): self
-    {
-        return new self();
-    }
+    protected $offset_attr = '';
 
     /**
-     * DEPRECATION WARNING! This method will be removed in the next major point release.
+     * Conversion method list.
      *
-     * @deprecated since version 9.7.0
-     * @see XMLConverter::create()
+     * @var array
      */
-    public function __construct()
-    {
-    }
+    protected $encoder = [
+        'field' => [
+            true => 'fieldToElementWithAttribute',
+            false => 'fieldToElement',
+        ],
+        'record' => [
+            true => 'recordToElementWithAttribute',
+            false => 'recordToElement',
+        ],
+    ];
 
     /**
      * Convert a Record collection into a DOMDocument.
@@ -82,9 +93,11 @@ class XMLConverter
      */
     public function import(iterable $records, DOMDocument $doc): DOMElement
     {
+        $field_encoder = $this->encoder['field']['' !== $this->column_attr];
+        $record_encoder = $this->encoder['record']['' !== $this->offset_attr];
         $root = $doc->createElement($this->root_name);
         foreach ($records as $offset => $record) {
-            $node = $this->recordToElement($doc, $record, $offset);
+            $node = $this->$record_encoder($doc, $record, $field_encoder, $offset);
             $root->appendChild($node);
         }
 
@@ -95,16 +108,27 @@ class XMLConverter
      * Convert a CSV record into a DOMElement and
      * adds its offset as DOMElement attribute.
      */
-    protected function recordToElement(DOMDocument $doc, array $record, int $offset): DOMElement
+    protected function recordToElementWithAttribute(
+        DOMDocument $doc,
+        array $record,
+        string $field_encoder,
+        int $offset
+    ): DOMElement {
+        $node = $this->recordToElement($doc, $record, $field_encoder);
+        $node->setAttribute($this->offset_attr, (string) $offset);
+
+        return $node;
+    }
+
+    /**
+     * Convert a CSV record into a DOMElement.
+     */
+    protected function recordToElement(DOMDocument $doc, array $record, string $field_encoder): DOMElement
     {
         $node = $doc->createElement($this->record_name);
         foreach ($record as $node_name => $value) {
-            $item = $this->fieldToElement($doc, (string) $value, $node_name);
+            $item = $this->$field_encoder($doc, (string) $value, $node_name);
             $node->appendChild($item);
-        }
-
-        if ('' !== $this->offset_attr) {
-            $node->setAttribute($this->offset_attr, (string) $offset);
         }
 
         return $node;
@@ -118,14 +142,23 @@ class XMLConverter
      *
      * @param int|string $node_name
      */
-    protected function fieldToElement(DOMDocument $doc, string $value, $node_name): DOMElement
+    protected function fieldToElementWithAttribute(DOMDocument $doc, string $value, $node_name): DOMElement
+    {
+        $item = $this->fieldToElement($doc, $value);
+        $item->setAttribute($this->column_attr, (string) $node_name);
+
+        return $item;
+    }
+
+    /**
+     * Convert Cell to Item.
+     *
+     * @param string $value Record item value
+     */
+    protected function fieldToElement(DOMDocument $doc, string $value): DOMElement
     {
         $item = $doc->createElement($this->field_name);
         $item->appendChild($doc->createTextNode($value));
-
-        if ('' !== $this->column_attr) {
-            $item->setAttribute($this->column_attr, (string) $node_name);
-        }
 
         return $item;
     }

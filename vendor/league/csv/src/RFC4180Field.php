@@ -33,34 +33,47 @@ use const STREAM_FILTER_WRITE;
  *
  * DEPRECATION WARNING! This class will be removed in the next major point release
  *
- * @deprecated since version 9.2.0
+ * @deprecated deprecated since version 9.2.0
  * @see AbstractCsv::setEscape
  *
  * @see https://tools.ietf.org/html/rfc4180#section-2
  */
 class RFC4180Field extends php_user_filter
 {
-    public const FILTERNAME = 'convert.league.csv.rfc4180';
+    const FILTERNAME = 'convert.league.csv.rfc4180';
+
+    /**
+     * the filter name used to instantiate the class with.
+     *
+     * @var string
+     */
+    public $filtername;
+
+    /**
+     * @var mixed value passed to passed to stream_filter_append or stream_filter_prepend functions.
+     */
+    public $params;
 
     /**
      * The value being search for.
      *
      * @var string[]
      */
-    protected array $search;
+    protected $search;
 
     /**
      * The replacement value that replace found $search values.
      *
      * @var string[]
      */
-    protected array $replace;
+    protected $replace;
 
     /**
      * Characters that triggers enclosure with PHP fputcsv.
      *
+     * @var string
      */
-    protected static string $force_enclosure = "\n\r\t ";
+    protected static $force_enclosure = "\n\r\t ";
 
     /**
      * Static method to add the stream filter to a {@link AbstractCsv} object.
@@ -93,11 +106,19 @@ class RFC4180Field extends php_user_filter
             throw new InvalidArgumentException('The sequence contains a character that enforces enclosure or is a CSV control character or is the empty string.');
         }
 
-        $mapper = fn ($value) => is_string($value)
-            ? str_replace(' ', $whitespace_replace, $value)
-            : $value;
+        $mapper = static function ($value) use ($whitespace_replace) {
+            if (is_string($value)) {
+                return str_replace(' ', $whitespace_replace, $value);
+            }
 
-        return $csv->addFormatter(fn (array $record): array => array_map($mapper, $record));
+            return $value;
+        };
+
+        $formatter = static function (array $record) use ($mapper): array {
+            return array_map($mapper, $record);
+        };
+
+        return $csv->addFormatter($formatter);
     }
 
     /**
@@ -126,7 +147,7 @@ class RFC4180Field extends php_user_filter
      */
     public function filter($in, $out, &$consumed, $closing): int
     {
-        while (null !== ($bucket = stream_bucket_make_writeable($in))) {
+        while ($bucket = stream_bucket_make_writeable($in)) {
             $bucket->data = str_replace($this->search, $this->replace, $bucket->data);
             $consumed += $bucket->datalen;
             stream_bucket_append($out, $bucket);
@@ -135,6 +156,9 @@ class RFC4180Field extends php_user_filter
         return PSFS_PASS_ON;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onCreate(): bool
     {
         if (!$this->isValidParams($this->params)) {

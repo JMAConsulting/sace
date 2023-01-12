@@ -19,12 +19,12 @@ class CRM_Contribute_Form_CancelSubscriptionTest extends CiviUnitTestCase {
   /**
    * Test the mail sent on update.
    *
-   * @throws \CRM_Core_Exception|\API_Exception
+   * @throws \CRM_Core_Exception
    */
   public function testMail(): void {
     $mut = new CiviMailUtils($this, TRUE);
     $this->addContribution();
-    /* @var CRM_Contribute_Form_CancelSubscription $form */
+    /** @var CRM_Contribute_Form_CancelSubscription $form */
     $form = $this->getFormObject('CRM_Contribute_Form_CancelSubscription', ['is_notify' => TRUE]);
     $form->set('crid', $this->getContributionRecurID());
     $form->buildForm();
@@ -56,13 +56,15 @@ class CRM_Contribute_Form_CancelSubscriptionTest extends CiviUnitTestCase {
   }
 
   /**
-   * Test if the full fledged form is displayed on cancelling the Recurring Contribution with a payment processor which does not support cancelling a Recurring Contribution
+   * Test if the full fledged form is displayed on cancelling the Recurring
+   * Contribution with a payment processor which does not support cancelling a
+   * Recurring Contribution
    *
-   * @throws \CRM_Core_Exception|\API_Exception
+   * @throws \CRM_Core_Exception
    */
   public function testCancelSubscriptionForm(): void {
     $this->addContribution();
-    /* @var CRM_Contribute_Form_CancelSubscription $form */
+    /** @var CRM_Contribute_Form_CancelSubscription $form */
     $form = $this->getFormObject('CRM_Contribute_Form_CancelSubscription', ['is_notify' => TRUE]);
     $form->set('crid', $this->getContributionRecurID());
     $form->buildForm();
@@ -74,10 +76,8 @@ class CRM_Contribute_Form_CancelSubscriptionTest extends CiviUnitTestCase {
     ]);
 
     $actions = CRM_Contribute_Page_Tab::recurLinks($this->getContributionRecurID());
-    // Using "crm-enable-disable"
-    $this->assertEquals($actions[CRM_Core_Action::DISABLE]['ref'], 'crm-enable-disable');
     // Using "Cancel Recurring" form
-    // $this->assertEquals($actions[CRM_Core_Action::DISABLE]['url'], 'civicrm/contribute/unsubscribe');
+    $this->assertEquals('civicrm/contribute/unsubscribe', $actions[CRM_Core_Action::DISABLE]['url']);
   }
 
 }
