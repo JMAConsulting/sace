@@ -1,7 +1,7 @@
 <?php
 
-class CRM_Csvimport_Import_Form_Preview extends CRM_Csvimport_Import_Form_PreviewBaseClass {
+class CRM_Csvimport_Import_Form_Preview extends CRM_Import_Form_Preview  {
 
-  public $_parser = 'CRM_Csvimport_Import_Parser_Api';
+  use CRM_Csvimport_Import_Form_CSVImportFormTrait;
 
 }

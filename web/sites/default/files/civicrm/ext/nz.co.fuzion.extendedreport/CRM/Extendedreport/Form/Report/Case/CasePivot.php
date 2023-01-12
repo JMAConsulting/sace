@@ -7,8 +7,6 @@ class CRM_Extendedreport_Form_Report_Case_CasePivot extends CRM_Extendedreport_F
 
   protected $_baseTable = 'civicrm_case';
 
-  protected $skipACL = FALSE;
-
   protected $_skipACLContactDeletedClause = TRUE;
 
   protected $_customGroupAggregates = TRUE;
@@ -85,7 +83,7 @@ class CRM_Extendedreport_Form_Report_Case_CasePivot extends CRM_Extendedreport_F
    *
    * @return array
    */
-  public function fromClauses() {
+  public function fromClauses(): array {
     return [
       'contact_from_case',
     ];

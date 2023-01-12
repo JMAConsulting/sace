@@ -1,14 +1,10 @@
 <?php
 
-class CRM_Csvimport_Import_Parser_Api extends CRM_Csvimport_Import_Parser_BaseClass {
+class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
 
-  protected $_entity = '';// for now - set in form
+  protected $_entity = '';
 
-  protected $_fields = [];
-
-  protected $_requiredFields = [];
-
-  protected $_dateFields = [];
+  protected $requiredFields = [];
 
   /**
    * Params for the current entity being prepared for the api
@@ -17,134 +13,337 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Csvimport_Import_Parser_BaseCl
    */
   protected $_params = [];
 
-  protected $_refFields = [];
-
-  protected $_importQueueBatch = [];
-
   protected $_allowEntityUpdate = FALSE;
 
   protected $_ignoreCase = FALSE;
 
   /**
-   * Can be removed once removed from CRM_Import_Parser.
+   * Get user job information.
    *
-   * @return bool
+   * @return \string[][]
    */
-  public function mapField(&$values) {
-    return CRM_Import_Parser::VALID;
-  }
-
-  function setFields() {
-    $fields = civicrm_api3($this->_entity, 'getfields', ['action' => 'create']);
-    $this->_fields = $fields['values'];
-    foreach ($this->_fields as $field => $values) {
-      if (!empty($values['api.required'])) {
-        $this->_requiredFields[] = $field;
-      }
-      if (empty($values['title']) && !empty($values['label'])) {
-        $this->_fields[$field]['title'] = $values['label'];
-      }
-      if (!empty($values['custom_group_id'])) {
-        $this->_fields[$field]['title'] = $values["groupTitle"] . ': ' . $values["title"];
-      }
-      // date is 4 & time is 8. Together they make 12 - in theory a binary operator makes sense here but as it's not a common pattern it doesn't seem worth the confusion
-      if (CRM_Utils_Array::value('type', $values) == 12
-        || CRM_Utils_Array::value('type', $values) == 4) {
-        $this->_dateFields[] = $field;
-      }
-    }
-    foreach ($this->_refFields as $field => $values) {
-      if (isset($this->_fields[$values->id])) {
-        $this->_fields[$field] = $this->_fields[$values->id];
-        $this->_fields[$values->id]['_refField'] = $values->entity_field_name;
-      }
-    }
-    $this->_fields = array_merge(['do_not_import' => ['title' => ts('- do not import -')]], $this->_fields);
+  public static function getUserJobInfo(): array {
+    return [[
+      'name' => 'csv_api_importer',
+      'id' => 'csv_api_importer',
+      'title' => 'Api Import',
+    ]];
   }
 
   /**
-   * The summary function is a magic & mystical function I have only partially made sense of but note that
-   * it makes a call to setActiveFieldValues - without which import won't work - so it's more than just a presentation
-   * function
-   *
-   * @param array $values the array of values belonging to this line
-   *
-   * @return boolean      the result of this processing
-   * It is called from both the preview & the import actions
-   * (non-PHP doc)
-   * @see CRM_Csvimport_Import_Parser_BaseClass::summary()
+   * @throws \CiviCRM_API3_Exception
    */
-  function summary(&$values) {
-    $erroneousField = NULL;
-    $response = $this->setActiveFieldValues($values, $erroneousField);
-    $errorRequired = FALSE;
-    $missingField = '';
-    $this->_params = &$this->getActiveFieldParams();
+  public function setFieldMetadata(): void {
+    $this->importableFieldsMetadata = array_merge(
+      ['' => ['title' => ts('- do not import -')]],
+      civicrm_api3($this->_entity, 'getfields', ['action' => 'create'])['values']
+    );
+    foreach ($this->importableFieldsMetadata as $field => $values) {
+      if (empty($values['entity'])) {
+        $this->importableFieldsMetadata[$field]['entity'] = $this->_entity;
+      }
+      if (empty($values['title']) && !empty($values['label'])) {
+        $this->importableFieldsMetadata[$field]['title'] = $values['label'];
+      }
+      if (!empty($values['custom_group_id'])) {
+        $this->importableFieldsMetadata[$field]['title'] = $values["groupTitle"] . ': ' . $values["title"];
+      }
+    }
+    foreach ($this->getReferenceFields() ?? [] as $field => $values) {
+      $fieldName = $values['referenced_field'];
+      if (isset($this->importableFieldsMetadata[$values['referenced_field']])) {
+        $this->importableFieldsMetadata[$field] = array_merge($this->importableFieldsMetadata[$fieldName], $values);
+      }
+    }
+  }
 
-    foreach ($this->_requiredFields as $requiredField) {
-      if (empty($this->_params['id']) && empty($this->_params[$requiredField])) {
-        $errorRequired = TRUE;
-        $missingField .= ' ' . $requiredField;
-        CRM_Contact_Import_Parser_Contact::addToErrorMsg($this->_entity, $requiredField);
+  /**
+   *
+   * @return array
+   */
+  public function getUniqueFields(): array {
+    $params = [];
+    if ($noteEntity = $this->getSubmittedValue('noteEntity')) {
+      $params[$this->getSubmittedValue('entity')] = $noteEntity;
+    }
+    $refFields = $this->findAllReferenceFields($this->getSubmittedValue('entity'), $params);
+
+    // get all unique fields for above entities
+    $uniqueFields = [];
+    foreach ($refFields as $k => $rfield) {
+      // handle reference fields in custom fields (only contacts for now)
+      if ($k === 'custom_fields') {
+        foreach ($rfield as $each) {
+          if ($each['data_type'] === 'ContactReference') {
+            $uniqueFields['Contact'][$each['name']] = civicrm_api3('Contact', 'getunique', [])['values'];
+          }
+        }
+      }
+      else {
+        $uf = civicrm_api3($rfield['entity'], 'getunique', [])['values'];
+
+        $uniqueFields[$rfield['entity']][$rfield['name']] = $uf;
+        $extraFields = $this->getSpecialCaseFields($rfield['entity']);
+        if ($extraFields) {
+          foreach ($extraFields as $k => $extraField) {
+            if (is_array($extraField)) {
+              foreach ($extraField as $each) {
+                $uniqueFields[$rfield['entity']][$k][] = [$each];
+              }
+            }
+            else {
+              $uniqueFields[$rfield['entity']][$k][] = [$extraField];
+            }
+          }
+        }
+      }
+    }
+    return $uniqueFields;
+  }
+
+  /**
+   *
+   * @return array
+   */
+  protected function getReferenceFields(): array {
+    $refFields = [];
+    foreach ($this->getUniqueFields() as $entityName => $entity) {
+      foreach ($entity as $referenceField => $entityRefFields) {
+        try {
+          $entityFieldMetadata = civicrm_api4($entityName, 'getfields', [], 'name');
+
+          foreach ($entityRefFields as $fieldsInUniqueIndex) {
+            // skip if field name is 'id' as it would be available by default
+            if ($fieldsInUniqueIndex === ['id']) {
+              continue;
+            }
+
+            if (count($fieldsInUniqueIndex) === 1) {
+              $indexFieldName = $fieldsInUniqueIndex[0];
+
+              $indexFieldMetadata = array_merge(
+                $entityFieldMetadata[$indexFieldName], [
+                  'referenced_field' => $referenceField,
+                  'entity_name' => $entityName,
+                  'entity_field_name' => $indexFieldName,
+                  'name' => $referenceField . '#' . $indexFieldName,
+                ]
+              );
+              $indexFieldMetadata['html']['label'] = $indexFieldMetadata['title'] . ' (' . ts('Match using') . ' ' . $indexFieldName . ')';
+              $refFields[$referenceField . '#' . $indexFieldName] = $indexFieldMetadata;
+            }
+            else {
+              if (count($fieldsInUniqueIndex) > 1) {
+                // handle combination indexes
+                if ($refFields[$referenceField]) {
+                  $label = $refFields[$referenceField];
+                }
+                else {
+                  $label = $referenceField;
+                }
+                $indexKey = '';
+                foreach ($fieldsInUniqueIndex as $col) {
+                  $indexKey .= '#' . $col;
+                }
+                foreach ($fieldsInUniqueIndex as $col) {
+                  $refFields[$referenceField . '#' . $col] = [
+                    'title' => $label,
+                    'name' => $indexFieldName,
+                    'html' => ['label' => $label . ' - ' . $col . ' (' . ts('Match using a combination of') . str_replace('#', ' ', $indexKey) . ')'],
+                    'extends' => $referenceField,
+                    'entity_name' => $entityName,
+                    'entity_field_name' => array_values($fieldsInUniqueIndex) + ['active' => $col],
+                  ];
+                }
+              }
+            }
+          }
+        }
+        catch (Exception $e) {
+        // Fix this - we get an exception if campaign is not enabled.... should be filtered
+        // in getUniqueFields if not available.
+        }
+      }
+    }
+    return $refFields;
+  }
+
+  /**
+   * Returns all unique fields of given entity
+   * (this is added to core as an api 'getuique' but not available in a stable release)
+   *
+   * @param string $entity
+   *
+   * @return array
+   */
+  protected  function findAllUniqueFields(string $entity): array {
+    $uniqueFields = [];
+
+    $dao = _civicrm_api3_get_DAO($entity);
+    $uFields = $dao::indices();
+
+    foreach ($uFields as $fieldKey => $field) {
+      if (!isset($field['unique']) || !$field['unique']) {
+        continue;
+      }
+      $uniqueFields[$fieldKey] = $field['field'];
+    }
+
+    return $uniqueFields;
+  }
+
+  /**
+   * Finds all reference fields for a given entity
+   *
+   * @param string $entity
+   * @param array $params
+   *
+   * @return array
+   */
+  protected function findAllReferenceFields(string $entity, array $params) {
+    $referenceFields = [];
+    $allEntities = civicrm_api3('Entity', 'get', [
+      'sequential' => 1,
+    ])['values'];
+    if (!in_array($entity, $allEntities)) {
+      return $referenceFields;
+    }
+
+    // Get all fields for this entity type
+    $entityFields = civicrm_api3($entity, 'getfields', [
+      'api_action' => "",
+    ]);
+    if ($entityFields['count'] > 0) {
+      foreach ($entityFields['values'] as $k => $val) {
+        //todo: Improve logic to find reference fields
+        if (isset($val['FKApiName']) && $entity !== 'Note') {
+          // this is a reference field
+          $referenceFields[$k]['label'] = $val['title'];
+          $referenceFields[$k]['name'] = $val['name'];
+          $referenceFields[$k]['entity'] = $val['FKApiName'];
+        }
+        // spl handling for 'Note' as it can reference multiple entity types
+        else {
+          if ($entity === 'Note' && $val['name'] === 'entity_id' && isset($params[$entity])) {
+            // this is a reference field
+            $referenceFields[$k]['label'] = $val['title'];
+            $referenceFields[$k]['name'] = $val['name'];
+            $referenceFields[$k]['entity'] = $params[$entity];
+          }
+        }
       }
     }
 
-    if ($errorRequired) {
-      array_unshift($values, ts('Missing required field(s) :') . $missingField);
-      return CRM_Import_Parser::ERROR;
+    // Get all custom fields for this entity of type, contactReference
+    $customFields = civicrm_api3('CustomField', 'get', [
+      'sequential' => 1,
+      'custom_group_id.extends' => $entity,
+      'data_type' => "ContactReference",
+    ]);
+    if ($customFields['count'] > 0) {
+      $referenceFields['custom_fields'] = $customFields['values'];
     }
 
-    $errorMessage = NULL;
-    //@todo add a validate fn to the apis so that we can dry run against them to check
-    // pseudoconstants
-    if ($errorMessage) {
-      $tempMsg = "Invalid value for field(s) : $errorMessage";
-      array_unshift($values, $tempMsg);
-      $errorMessage = NULL;
-      return CRM_Import_Parser::ERROR;
+    return $referenceFields;
+  }
+
+  protected function getSpecialCaseFields($entity) {
+    $specialCaseFields = [
+      'MembershipType' => [
+        'membership_type_id' => 'name',
+      ],
+      'Address' => [
+        'master_id' => [
+          'contact_id',
+          'external_identifier', // special case; handled in import task
+        ],
+      ],
+      'County' => [
+        'county_id' => 'name',
+      ],
+      'StateProvince' => [
+        'state_province_id' => 'name',
+      ],
+    ];
+    return $specialCaseFields[$entity] ?? NULL;
+  }
+
+  /**
+   * @return array
+   */
+  protected function getRequiredFields(): array {
+    if (!isset($this->requiredFields)) {
+      $this->requiredFields = [];
+      foreach ($this->importableFieldsMetadata as $field) {
+        if (!empty($field['api.required'])) {
+          $this->requiredFields[] = $field['name'];
+        }
+      }
     }
-    return CRM_Import_Parser::VALID;
+    return $this->requiredFields;
   }
 
   /**
    * handle the values in import mode
    *
-   * @param int $onDuplicate the code for what action to take on duplicates
    * @param array $values the array of values belonging to this line
    *
-   * @return boolean      the result of this processing
    * @access public
    */
-  function import($onDuplicate, &$values) {
-    $response = $this->summary($values);
-    $this->_params = $this->getActiveFieldParams(TRUE);
-    $this->formatDateParams();
-    $this->_params['skipRecentView'] = TRUE;
-    $this->_params['check_permissions'] = TRUE;
+  public function import(array $values): void {
+    $rowNumber = (int) ($values[array_key_last($values)]);
+    $entity = $this->getSubmittedValue('entity');
+    try {
+      $params = $this->getMappedRow($values);
+      foreach ($params as $key => $value) {
+        $fieldMetadata = $this->getFieldMetadata($key);
+        if ($fieldMetadata['referenced_field'] ?? NULL) {
+          $refEntity = $fieldMetadata['entity_name'];
+          // special case: handle 'Master Address Belongs To' field using contact external_id
+          if ($refEntity === 'Address' && isset($value[$key]['external_identifier'])) {
+            $refEntity = 'Contact';
+          }
+          try {
+            $params['contact_id'] = (int) civicrm_api3($refEntity, 'getsingle', [$fieldMetadata['entity_field_name'] => $value])['id'];
+          }
+          catch (CiviCRM_API3_Exception $e) {
+            throw new CRM_Core_Exception('Failed to find referenced entity');
+          }
+        }
+      }
+      if ($this->getSubmittedValue('allowEntityUpdate')) {
+        $uniqueFields = $this->findAllUniqueFields($this->getSubmittedValue('entity'));
+        foreach ($uniqueFields as $uniqueField) {
+          $fieldCount = 0;
+          $tmp = [];
 
-    if (count($this->_importQueueBatch) >= $this->getImportQueueBatchSize()) {
-      $this->addBatchToQueue();
+          foreach ($uniqueField as $name) {
+            if (isset($params[$name])) {
+              $fieldCount++;
+              $tmp[$name] = $params[$name];
+            }
+          }
+        }
+
+        if (count($uniqueField) === $fieldCount) {
+          $tmp['sequential'] = 1;
+          $tmp['return'] = ['id'];
+          $existingEntity = civicrm_api3($this->getSubmittedValue('entity'), 'get', $tmp);
+
+          if (isset($existingEntity['values'][0]['id'])) {
+            $params['id'] = $existingEntity['values'][0]['id'];
+          }
+        }
+      }
+      $params['skipRecentView'] = TRUE;
+      $params['check_permissions'] = TRUE;
+      $result = civicrm_api3($entity, 'create', $params);
     }
-    $this->addToBatch($this->_params, $values);
-
-  }
-
-  /**
-   * Format Date params
-   *
-   * Although the api will accept any strtotime valid string CiviCRM accepts at least one date format
-   * not supported by strtotime so we should run this through a conversion
-   *
-   * @internal param \unknown $params
-   */
-  function formatDateParams() {
-    $session = CRM_Core_Session::singleton();
-    $dateType = $session->get('dateTypes');
-    $setDateFields = array_intersect_key($this->_params, array_flip($this->_dateFields));
-    foreach ($setDateFields as $key => $value) {
-      CRM_Utils_Date::convertToDefaultDate($this->_params, $dateType, $key);
-      $this->_params[$key] = CRM_Utils_Date::processDate($this->_params[$key]);
+    catch (Exception $e) {
+      $this->setImportStatus($rowNumber, 'ERROR', $e->getMessage());
+      return;
     }
+    $this->setImportStatus($rowNumber, 'IMPORTED', '', $result['id']);
   }
 
   /**
@@ -152,89 +351,36 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Csvimport_Import_Parser_BaseCl
    *
    * @param string $entity
    */
-  function setEntity($entity) {
+  public function setEntity(string $entity): void {
     $this->_entity = $entity;
-  }
-
-  /**
-   * Set reference fields; array of ReferenceField objects
-   *
-   * @param string $entity
-   */
-  function setRefFields($val) {
-    $this->_refFields = $val;
-  }
-
-  /**
-   * Set batch size for import queue
-   *
-   * @param $size
-   */
-  function setImportQueueBatchSize($size) {
-    $this->_importQueueBatchSize = $size;
-  }
-
-  /**
-   * Get batch size for import queue
-   *
-   * @return int
-   */
-  function getImportQueueBatchSize() {
-    if ($this->_importQueueBatchSize) {
-      return $this->_importQueueBatchSize;
-    }
-    return 1;
-  }
-
-  /**
-   * Add an item to current import batch
-   *
-   * @param $item
-   */
-  function addToBatch($item, $values) {
-    $item['rowValues'] = $values;
-    $item['allowUpdate'] = $this->_allowEntityUpdate;
-    $item['ignoreCase'] = $this->_ignoreCase;
-    $this->_importQueueBatch[] = $item;
-  }
-
-  /**
-   * Add all items in current batch to queue
-   */
-  function addBatchToQueue() {
-    if (count($this->_importQueueBatch) == 0) {
-      return;
-    }
-    $queueParams = [
-      'entity' => $this->_entity,
-      'params' => $this->_importQueueBatch,
-      'errorFileName' => $this->_errorFileName,
-    ];
-    $task = new CRM_Queue_Task(
-      ['CRM_Csvimport_Task_Import', 'ImportEntity'],
-      $queueParams,
-      ts('Importing entity') . ': ' . $this->_lineCount
-    );
-    $this->_importQueue->createItem($task);
-    $this->_importQueueBatch = [];
   }
 
   /**
    * Set if entities can be updated using unique fields
    *
-   * @param $size
+   * @param bool $update
    */
-  function setAllowEntityUpdate($update) {
+  public function setAllowEntityUpdate(bool $update): void {
     $this->_allowEntityUpdate = $update;
   }
 
   /**
    * Set if letter-case needs to be ignored for field option values
    *
-   * @param $size
+   * @param bool $ignoreCase
    */
-  function setIgnoreCase($ignoreCase) {
+  public function setIgnoreCase(bool $ignoreCase): void {
     $this->_ignoreCase = $ignoreCase;
+  }
+
+  /**
+   * the initializer code, called before the processing
+   *
+   * @throws \CiviCRM_API3_Exception
+   */
+  public function init(): void {
+    $this->setEntity($this->getSubmittedValue('entity'));
+    $this->setFieldMetadata();
   }
 
 }
