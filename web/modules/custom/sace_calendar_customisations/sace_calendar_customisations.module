@@ -1,9 +1,9 @@
 <?php
 
 function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAssetsInterface $assets) {
-  if (isset($settings['fullCalendarView']) {
+  if (isset($settings['fullCalendarView'])) {
     foreach ($settings['fullCalendarView'] as $key => $setting) {
-      $settings['fullCalendarView'][$key]['select'] = 'function(info, el) {
+      $settings['fullCalendarView'][$key]['select'] = "function(info, el) {
         if (info.allDay) {
           var dateParts = info.startStr.split('T');
           $('#edit-civicrm-1-activity-1-activity-activity-date-time-date').val(dateParts[0]);
@@ -17,7 +17,7 @@ function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAsse
           $('#edit-civicrm-1-activity-1-activity-activity-date-time-time').val(dateParts[1]);
           $('#edit-civicrm-1-activity-1-activity-duration').val(diff);
         }
-      }';
+      }";
     }
   }
 } 
