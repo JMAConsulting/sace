@@ -129,12 +129,12 @@
         });
     }
   }
-  
+
   // Day entry click call back function.
   function dayClickCallback(info) {
     slotDate = info.dateStr;
   }
-  
+
   // Event click call back function.
   function eventClick(info) {
     slotDate = null;
@@ -149,7 +149,7 @@
       if ( des == '') {
         return false;
       }
-      
+
       const jsFrame = new JSFrame({
         parentElement:info.el,//Set the parent element to which the jsFrame is attached here
       });
@@ -163,7 +163,7 @@
       dialogOptions.html = des;
       //Create window
       dialogs[dialogIndex] = jsFrame.create(dialogOptions);
-      
+
       dialogs[dialogIndex].show();
       dialogIndex++;
 
@@ -190,7 +190,7 @@
 
     return false;
   }
-  
+
   // Event drop call back function.
   function eventDrop(info) {
     const end = info.event.end;
@@ -279,7 +279,7 @@
   // Build the calendar objects.
   function buildCalendars() {
     $('.js-drupal-fullcalendar')
-    .each(function() {              
+    .each(function() {
       let calendarEl = this;
       let viewIndex = parseInt(calendarEl.getAttribute("calendar-view-index"));
       let viewSettings = drupalSettings.fullCalendarView[viewIndex];
@@ -294,10 +294,15 @@
       calendarOptions.eventClick = eventClick;
       // Bind the drop event handler.
       calendarOptions.eventDrop = eventDrop;
-      // Trigger Drupal behaviors when calendar events are updated.
-      calendarOptions.datesRender = datesRender;
-      // Trigger Drupal behaviors when calendar events are destroyed.
-      calendarOptions.datesDestroy = datesDestroy;
+      calendarOptions.editable = true;
+      calendarOptions.eventStartEditable = true;
+      calendarOptions.eventDurationEditable = true;
+
+      calendarOptions.selectable = true;
+      calendarOptions.selectHelper = true;
+      calendarOptions.selectMirror = true;
+      calendarOptions.slotDuration = '00:15:00';
+      calendarOptions.slotLabelInterval = '01:00:00';
       // Language select element.
       var localeSelectorEl = document.getElementById('locale-selector-' + viewIndex);
       // Initial the calendar.
@@ -324,7 +329,7 @@
           // when the selected option changes, dynamically change the calendar option
           localeSelectorEl.addEventListener('change', function() {
             if (this.value) {
-              let viewIndex = parseInt(this.getAttribute("calendar-view-index")); 
+              let viewIndex = parseInt(this.getAttribute("calendar-view-index"));
               drupalSettings.calendar[viewIndex].setOption('locale', this.value);
             }
           });
@@ -332,7 +337,7 @@
         else if (localeSelectorEl){
           localeSelectorEl.style.display = "none";
         }
-        
+
         // Double click event.
         calendarEl.addEventListener('dblclick' , function(e) {
           let viewIndex = parseInt(this.getAttribute("calendar-view-index"));
@@ -365,7 +370,7 @@
       }
     });
   }
-  
+
   // document.ready event does not work with BigPipe.
   // The workaround is to ckeck the document state
   // every 100 milliseconds until it is completed.
@@ -380,10 +385,10 @@
       buildCalendars();
     }
   }, 100);
-  
+
   // After an Ajax call, the calendar objects need to rebuild,
   // to reflect the changes, such as Ajax filter.
-  $( document ).ajaxComplete(function( event, request, settings ) {    
+  $( document ).ajaxComplete(function( event, request, settings ) {
     // Remove the existing calendars except updating Ajax events.
     if (
         drupalSettings.calendar &&
@@ -398,5 +403,5 @@
       buildCalendars();
     }
   });
-  
+
 })(jQuery, Drupal);

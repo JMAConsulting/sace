@@ -1,0 +1,4 @@
+sace_calendar_customisations:
+  version: 1.0
+  js:
+    js/sace_calendar_customisations.js: {}
