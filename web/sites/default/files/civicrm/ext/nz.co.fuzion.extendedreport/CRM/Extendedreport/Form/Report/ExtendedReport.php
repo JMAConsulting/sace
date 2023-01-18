@@ -31,6 +31,11 @@ class CRM_Extendedreport_Form_Report_ExtendedReport extends CRM_Report_Form {
   protected $metaData = [];
 
   /**
+   * @var array
+   */
+  protected $activeCampaigns = [];
+
+  /**
    * All available filter fields with metadata.
    *
    * @var array
@@ -2589,7 +2594,20 @@ LEFT JOIN civicrm_contact {$prop['alias']} ON {$prop['alias']}.id = {$this->_ali
       return '';
     }
     $value = trim(($value ?? ''), CRM_Core_DAO::VALUE_SEPARATOR);
-    return (string) ($this->getCustomFieldOptions($specs)[$value] ?? $value);
+    // Convert $value, which is a string, to an array, passing in the VALUE_SEPARATOR.
+    $valueArr = explode(CRM_Core_DAO::VALUE_SEPARATOR, $value);
+    $options = $this->getCustomFieldOptions($specs);
+    $optionsArr = [];
+    // Loop through the array and check if $value is a key in $options.
+    foreach ($valueArr as $value) {
+      if (array_key_exists($value, $options)) {
+        // If it is, append the value of the option with a key of $value to an array.
+        $optionsArr[] = $options[$value];
+      }
+    }
+    // Convert the array of options into a comma separated string.
+    $value = implode(', ', $optionsArr);
+    return $value;
   }
 
   /**
@@ -2706,6 +2724,7 @@ WHERE cg.extends IN ('" . implode("','", $extends) . "') AND
             $criteriaQueryParams = CRM_Report_Utils_Report::getPreviewCriteriaQueryParams($this->_defaults, $this->_params);
             $groupByCriteria = $this->getGroupByCriteria($tableCol, $row);
 
+            $val = ($val == NULL) ? '' : $val;
             $url = CRM_Report_Utils_Report::getNextUrl($baseUrl,
               "reset=1&force=1&$criteriaQueryParams&" .
               $fieldName . "_op=in&{$fieldName}_value=" . $this->commaSeparateCustomValues($val) . $groupByCriteria,
@@ -2728,11 +2747,11 @@ WHERE cg.extends IN ('" . implode("','", $extends) . "') AND
   /**
    * Reformat custom value, removing first & last separator and using commas for the rest.
    *
-   * @param string $value
+   * @param ?string $value
    *
    * @return string
    */
-  protected function commaSeparateCustomValues(string $value): string {
+  protected function commaSeparateCustomValues(?string $value): string {
     if (empty($value)) {
       return '';
     }
@@ -3986,7 +4005,7 @@ WHERE cg.extends IN ('" . implode("','", $extends) . "') AND
    */
   protected function getCampaignColumns(): array {
 
-    if (!CRM_Campaign_BAO_Campaign::isCampaignEnable()) {
+    if (!CRM_Campaign_BAO_Campaign::isComponentEnabled()) {
       return ['civicrm_campaign' => ['fields' => [], 'metadata' => []]];
     }
     $specs = [
@@ -6321,6 +6340,21 @@ ON ({$this->_aliases['civicrm_event']}.id = {$this->_aliases['civicrm_participan
    *   Event label.
    */
   protected function alterEventType($value): string {
+    // Check if $value is comma separated.
+    $separator = ',';
+    if (strpos($value, $separator) !== FALSE) {
+      // If yes, convert to array.
+      $valueArr = explode($separator, $value);
+      // Iterate through the array.
+      foreach ($valueArr as $value) {
+        // Look up the event type for each $value.
+        $eventTypeArr[] = CRM_Event_PseudoConstant::eventType($value);
+        // Then set the $value to a comma-space separated string of event types.
+        $value = implode(', ', $eventTypeArr);
+      }
+      return $value;
+    }
+    // If not comma separated, just look up single event type.
     return $value ? CRM_Event_PseudoConstant::eventType($value) : '';
   }
 
@@ -6500,7 +6534,7 @@ ON ({$this->_aliases['civicrm_event']}.id = {$this->_aliases['civicrm_participan
    */
   protected function alterPaymentProcessor(?int $value): string {
     $paymentProcessors = CRM_Contribute_PseudoConstant::paymentProcessor(TRUE);
-    return CRM_Utils_Array::value($value, $paymentProcessors);
+    return CRM_Utils_Array::value($value, $paymentProcessors) ?? '';
   }
 
   /**
@@ -6635,7 +6669,7 @@ ON ({$this->_aliases['civicrm_event']}.id = {$this->_aliases['civicrm_participan
       $html .= "<tr><td>" . $locationTypes[$keys[1]] . $phoneTypeString . " : " . $keys[0] . "</td></tr>";
     }
 
-    if (in_array($this->_outputMode, ['print'])) {
+    if ($this->_outputMode === 'print') {
       return implode('<br>', $return);
     }
 
