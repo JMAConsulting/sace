@@ -1,7 +1,7 @@
 <?php
 
 use Drupal\views\ViewExecutable;
-use Drupal\Core\Asset\AssetResolverInterface;
+use Drupal\Core\Asset\AttachedAssetsInterface;
 
 function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'clin_calendar') {
