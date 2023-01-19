@@ -268,15 +268,6 @@
       calendarOptions.eventClick = eventClick;
       // Bind the drop event handler.
       calendarOptions.eventDrop = eventDrop;
-      calendarOptions.editable = true;
-      calendarOptions.eventStartEditable = true;
-      calendarOptions.eventDurationEditable = true;
-
-      calendarOptions.selectable = true;
-      calendarOptions.selectHelper = true;
-      calendarOptions.selectMirror = true;
-      calendarOptions.slotDuration = '00:15:00';
-      calendarOptions.slotLabelInterval = '01:00:00';
       // Language select element.
       var localeSelectorEl = document.getElementById('locale-selector-' + viewIndex);
       // Initial the calendar.
