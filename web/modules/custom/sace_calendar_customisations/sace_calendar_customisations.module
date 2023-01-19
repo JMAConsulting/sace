@@ -1,9 +1,27 @@
 <?php
 
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Asset\AssetResolverInterface;
 
 function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'clin_calendar') {
     $view->element['#attached']['library'][] = 'sace_calendar_customisations/sace_calendar_customisations';
+  }
+}
+
+function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAssetsInterface $assets) {
+  if (isset($settings['fullCalendarView']) {
+    foreach ($settings['fullCalendarView'] as $key => $setting) {
+      $calender_view_settings = json_decode($setting['calendar_options'], TRUE);
+      $calender_view_settings['editable'] = TRUE;
+      $calender_view_settings['eventStartEditable'] = TRUE;
+      $calender_view_settings['eventDurationEditable'] = TRUE;
+      $calender_view_settings['selectable'] = TRUE;
+      $calender_view_settings['selectHelper'] = TRUE;
+      $calender_view_settings['selectMirror'] = TRUE;
+      $calender_view_settings['slotDuration'] = '00:15:00';
+      $calender_view_settings['slotLabelInterval'] = '01:00:00';
+      $settings['fullCalendarView'][$key]['calendar_options'] = json_encode($calender_view_settings);
+    }
   }
 }
