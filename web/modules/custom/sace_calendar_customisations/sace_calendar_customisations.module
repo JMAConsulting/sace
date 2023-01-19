@@ -10,7 +10,7 @@ function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
 }
 
 function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAssetsInterface $assets) {
-  if (isset($settings['fullCalendarView']) {
+  if (isset($settings['fullCalendarView'])) {
     foreach ($settings['fullCalendarView'] as $key => $setting) {
       $calender_view_settings = json_decode($setting['calendar_options'], TRUE);
       $calender_view_settings['editable'] = TRUE;
