@@ -11,6 +11,18 @@ function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
 
 function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAssetsInterface $assets) {
   if (isset($settings['fullCalendarView'])) {
+    $settings['sace_calender_customisations']['fields'] = [
+      'date' => 'edit-civicrm-1-activity-1-activity-activity-date-time-date',
+      'time' => 'edit-civicrm-1-activity-1-activity-activity-date-time-time',
+      'duration' => 'edit-civicrm-1-activity-1-activity-duration',
+    ];
+    if (\Drupal::request()->getPathInfo() === '/clin-update-appointment') {
+      $settings['sace_calender_customisations']['fields'] = [
+        'date' => 'edit-rescheduled-activity-date-date',
+        'time' => 'edit-rescheduled-activity-date-time',
+        'duration' => 'edit-recheduled-activity-duration',
+      ];
+    }
     foreach ($settings['fullCalendarView'] as $key => $setting) {
       $calender_view_settings = json_decode($setting['calendar_options'], TRUE);
       $calender_view_settings['editable'] = TRUE;
