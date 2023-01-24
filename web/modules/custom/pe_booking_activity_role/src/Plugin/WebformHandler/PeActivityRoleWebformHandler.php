@@ -65,10 +65,10 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
           }
           $role = FALSE;
           if (!empty($webform_submission_data['contact_' . $key . '_shadowing'])) {
-            $role = 'shadowing';
+            $role = 'Shadowing';
           }
           elseif (!empty($webform_submission_data['contact_' . $key . '_facilitator'])) {
-            $role = 'facilitatot';
+            $role = 'Facilitator';
           }
           if (!empty($role)) {
             ActivtiyRole::create(FALSE)->addValue('assignee_contact_id', $contactId)->addValue('activity_id', $data['activity'][1]['id'])->addValue('role_id:name', $role)->execute();
