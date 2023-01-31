@@ -58,7 +58,7 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
     if ($civicrm_submission_data) {
       while ($row = $civicrm_submission_data->fetchAssoc()) {
         $data = unserialize($row['civicrm_data']);
-        foreach ($data['contacts'] as $key => $contactId) {
+        foreach ($data['contact'] as $key => $contactId) {
           // Contact 1 on the PE Appointment Create and PE Update Booking are the Organisation and organisation contact that the booking is for not staff members
           if ($key == 1 || $key == 2) {
             continue;
@@ -71,7 +71,7 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
             $role = 'Facilitator';
           }
           if (!empty($role)) {
-            ActivtiyRole::create(FALSE)->addValue('assignee_contact_id', $contactId)->addValue('activity_id', $data['activity'][1]['id'])->addValue('role_id:name', $role)->execute();
+            ActivityRole::create(FALSE)->addValue('assignee_contact_id', $contactId['id'])->addValue('activity_id', $data['activity'][1]['id'])->addValue('role_id:name', $role)->execute();
           }
         }
       }

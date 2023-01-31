@@ -35,9 +35,11 @@ SET FOREIGN_KEY_CHECKS=1;
 -- *******************************************************/
 CREATE TABLE `civicrm_activity_role` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique ActivityRole ID',
-  `assignee_contact_id` int unsigned COMMENT 'FK to Contact',
-  `role_id` varchar(255),
+  `assignee_contact_id` int unsigned NOT NULL COMMENT 'FK to Contact',
+  `role_id` varchar(255) NOT NULL,
+  `activity_id` int unsigned NOT NULL COMMENT 'FK to Activity',
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_civicrm_activity_role_assignee_contact_id FOREIGN KEY (`assignee_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
+  CONSTRAINT FK_civicrm_activity_role_assignee_contact_id FOREIGN KEY (`assignee_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,
+  CONSTRAINT FK_civicrm_activity_role_activity_id FOREIGN KEY (`activity_id`) REFERENCES `civicrm_activity`(`id`) ON DELETE CASCADE
 )
 ENGINE=InnoDB;
