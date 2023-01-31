@@ -28,6 +28,7 @@
     <html>
       <type>EntityRef</type>
     </html>
+    <required>true</required>
   </field>
   <foreignKey>
     <name>assignee_contact_id</name>
@@ -45,5 +46,21 @@
     <pseudoconstant>
       <optionGroupName>appointment_role</optionGroupName>
     </pseudoconstant>
+    <required>true</required>
   </field>
+  <field>
+    <name>activity_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Activity</comment>
+    <html>
+      <type>EnttiyRef</type>
+    </html>
+    <required>true</required>
+  </field>
+  <foreignKey>
+    <name>activity_id</name>
+    <table>civicrm_activity</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
 </table>
