@@ -54,8 +54,8 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
 
     //insert presentation method in question title
-    foreach (['q19', 'q20'] as $question) {
-      $elements[$question]['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $elements['civicrm_1_activity_1_cg2_custom_88']['#default_value'], $elements[$question]['#title']);
+    foreach (['feedback_q19', 'feedback_q20'] as $question) {
+      $elements[$question]['#title'] = str_replace('[the presentation method]', $elements['civicrm_1_activity_1_cg2_custom_88']['#default_value'], $elements[$question]['#title']);
     }
 
     // Get activity id from query var.
