@@ -1,0 +1,6 @@
+name: CLIN Intake Booking Customisations
+type: module
+description: 'A module to customise the CLIN Schedule Intake Booking form'
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
