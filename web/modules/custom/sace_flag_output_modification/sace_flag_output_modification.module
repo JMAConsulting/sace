@@ -53,7 +53,7 @@ function _get_flags_for_contact(int $client_contact_id): array {
     ->addJoin('AppointmentColours AS appointment_colours', 'INNER', ['appointment_colours.activity_type_id', '=', 'activity_type_id'])
     ->addWhere('activity_type_id:name', 'IN', $flag_activity_types)
     ->addWhere('activity_contact.contact_id', '=', $client_contact_id)
-    ->addWhere('activity_status_id:name', '!=', 'Deactivated')
+    ->addWhere('status_id:name', '!=', 'Deactivated')
     ->execute() ?? [];
 }
 
