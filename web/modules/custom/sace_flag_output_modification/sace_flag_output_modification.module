@@ -48,9 +48,9 @@ function _get_flags_for_contact(int $client_contact_id): array {
   // @todo make this user configurable in case more flags are added in the future
   $flag_activity_types = ['Client Assessment Required', 'Update File Data', 'Booking', 'Playroom', 'Privacy Concern'];
   return Activity::get(FALSE)
-    ->setSelect(['id', 'activity_type_id', 'activity_colours.colour_hex', 'activity_type_id:label'])
+    ->setSelect(['id', 'activity_type_id', 'appointment_colours.colour_hex', 'activity_type_id:label'])
     ->addJoin('ActivityContact AS activity_contact', 'INNER', ['activity_contact.activity_id', '=', 'id'], ['activity_contact.record_type_id', '=', 3])
-    ->addJoin('ActivityColours AS activity_colours', 'INNER', ['activity_colours.activity_type_id', '=', 'activity_type_id'])
+    ->addJoin('AppointmentColours AS appointment_colours', 'INNER', ['appointment_colours.activity_type_id', '=', 'activity_type_id'])
     ->addWhere('activity_type_id:name', 'IN', $flag_activity_types)
     ->addWhere('activity_contact.contact_id', '=', $client_contact_id)
     ->addWhere('activity_status_id:name', '!=', 'Deactivated')
@@ -60,7 +60,7 @@ function _get_flags_for_contact(int $client_contact_id): array {
 function modify_views_field_output($activities, $current_output) {
   $flag_html = '';
   foreach ($activities as $activity) {
-    $flag_html .= '<i class="fa fa-flag" alt="' . $activity['activity_type_id:label'] . '" title="' . $activity['activity_type_id:label'] . '" style="color:' . $activity['activity_colours.colour_hex'] . ';">&nbsp;</i>';
+    $flag_html .= '<i class="fa fa-flag" alt="' . $activity['activity_type_id:label'] . '" title="' . $activity['activity_type_id:label'] . '" style="color:' . $activity['appointment_colours.colour_hex'] . ';">&nbsp;</i>';
   }
   if (!empty($flag_html)) {
     return Markup::create($flag_html . $current_output);
