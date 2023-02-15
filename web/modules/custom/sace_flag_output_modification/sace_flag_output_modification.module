@@ -1,0 +1,69 @@
+<?php
+
+use Drupal\Core\Render\Markup;
+use Civi\Api4\Activity;
+
+function sace_flag_output_modification_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  $field = $variables['field'];
+  $row = $variables['row'];
+  // This is the client list view, here we modify the first name not the sort name
+  if ($view->storage->id() === 'activities' && $view->current_display === 'page_1' && !empty($view->args[0])) {
+    if ($field->field === 'first_name' && !empty($variables['output'])) {
+      $client_contact_id = $view->args[0];
+      $activities = _get_flags_for_contact($client_contact_id);
+      $variables['output'] = modify_views_field_output($activities, $variables['output']);
+    }
+  }
+  // This is the all client list view so we modify the sort name here.
+  if ($view->storage->id() === 'clients' && $view->current_display == 'page_2') {
+    if ($field->field === 'sort_name') {
+      $activities = _get_flags_for_contact($row->id);
+      $variables['output'] = modify_views_field_output($activities, $variables['output']);
+    }
+  }
+  // This is for the popup on the Clinical Team calendar
+  if ($view->storage->id() === 'team_calendar' && $view->current_display === 'page_1') {
+    if ($field->field === 'sort_name' && !empty($view->args[0]) && $view->args[0] == '13') {
+      $activities = _get_flags_for_contact($row->civicrm_contact_civicrm_activity_contact_2_id);
+      $variables['output'] = modify_views_field_output($activities, $variables['output']);
+    }
+  }
+  // This is for the popup on the Clinical calendar view
+  if ($view->storage->id() === 'clin_calendar' && $view->current_display === 'page_1') {
+    if ($field->field === 'sort_name') {
+      $activities = _get_flags_for_contact($row->civicrm_contact_civicrm_activity_contact_2_id);
+      $variables['output'] = modify_views_field_output($activities, $variables['output']);
+    }
+  }
+}
+
+/**
+ * Get Flag Activities for a contact
+ * @param int $client_contact_id
+ * @return array
+ */
+function _get_flags_for_contact(int $client_contact_id): array {
+  \Drupal::service('civicrm')->initialize();
+  // @todo make this user configurable in case more flags are added in the future
+  $flag_activity_types = ['Client Assessment Required', 'Update File Data', 'Booking', 'Playroom', 'Privacy Concern'];
+  return Activity::get(FALSE)
+    ->setSelect(['id', 'activity_type_id', 'activity_colours.colour_hex', 'activity_type_id:label'])
+    ->addJoin('ActivityContact AS activity_contact', 'INNER', ['activity_contact.activity_id', '=', 'id'], ['activity_contact.record_type_id', '=', 3])
+    ->addJoin('ActivityColours AS activity_colours', 'INNER', ['activity_colours.activity_type_id', '=', 'activity_type_id'])
+    ->addWhere('activity_type_id:name', 'IN', $flag_activity_types)
+    ->addWhere('activity_contact.contact_id', '=', $client_contact_id)
+    ->addWhere('activity_status_id:name', '!=', 'Deactivated')
+    ->execute() ?? [];
+}
+
+function modify_views_field_output($activities, $current_output) {
+  $flag_html = '';
+  foreach ($activities as $activity) {
+    $flag_html .= '<i class="fa fa-flag" alt="' . $activity['activity_type_id:label'] . '" title="' . $activity['activity_type_id:label'] . '" style="color:' . $activity['activity_colours.colour_hex'] . ';">&nbsp;</i>';
+  }
+  if (!empty($flag_html)) {
+    return Markup::create($flag_html . $current_output);
+  }
+  return $current_output;
+}

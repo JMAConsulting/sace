@@ -1,0 +1,6 @@
+name: Sace Flag Output Customisations
+description: Customisations to views and webforms to alter the display of names to include flags
+package: Custom
+type: module
+version: '1.0'
+core_version_requirement: ^8 || ^9
