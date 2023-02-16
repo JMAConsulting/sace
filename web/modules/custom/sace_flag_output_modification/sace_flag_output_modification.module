@@ -54,7 +54,7 @@ function _get_flags_for_contact(int $client_contact_id): array {
     ->addWhere('activity_type_id:name', 'IN', $flag_activity_types)
     ->addWhere('activity_contact.contact_id', '=', $client_contact_id)
     ->addWhere('status_id:name', '!=', 'Deactivated')
-    ->execute() ?? [];
+    ->execute()->getArrayCopy() ?? [];
 }
 
 function modify_views_field_output($activities, $current_output) {
