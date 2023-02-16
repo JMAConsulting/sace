@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d6c126edab17237071ed4cdbd339c3f",
+    "content-hash": "0c248a9859a88580b47c359e8620605f",
     "packages": [
         {
             "name": "adrienrn/php-mimetyper",
@@ -435,16 +435,16 @@
         },
         {
             "name": "civicrm/civicrm-core",
-            "version": "5.57.1",
+            "version": "5.58.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-core.git",
-                "reference": "c8c56978a794cbe0a83cc13199281c6423b93c0a"
+                "reference": "755314ae9e46286a587e1138a15b92aaaa0278a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/civicrm/civicrm-core/zipball/c8c56978a794cbe0a83cc13199281c6423b93c0a",
-                "reference": "c8c56978a794cbe0a83cc13199281c6423b93c0a",
+                "url": "https://api.github.com/repos/civicrm/civicrm-core/zipball/755314ae9e46286a587e1138a15b92aaaa0278a1",
+                "reference": "755314ae9e46286a587e1138a15b92aaaa0278a1",
                 "shasum": ""
             },
             "require": {
@@ -456,7 +456,7 @@
                 "civicrm/composer-downloads-plugin": "^3.0",
                 "composer-runtime-api": "~2.0",
                 "cweagans/composer-patches": "~1.0",
-                "dompdf/dompdf": "~2.0.1",
+                "dompdf/dompdf": "~2.0.2",
                 "ext-fileinfo": "*",
                 "ext-intl": "*",
                 "ext-json": "*",
@@ -476,7 +476,7 @@
                 "pear/net_smtp": "1.10.*",
                 "pear/net_socket": "1.0.*",
                 "pear/validate_finance_creditcard": "0.7.0",
-                "php": "~7.2.5 || ~7.3 || ~8",
+                "php": "~7.3 || ~8",
                 "phpoffice/phpspreadsheet": "^1.18",
                 "phpoffice/phpword": "^0.18.0",
                 "psr/container": "~1.0",
@@ -917,7 +917,7 @@
             ],
             "description": "Open source constituent relationship management for non-profits, NGOs and advocacy organizations.",
             "support": {
-                "source": "https://github.com/civicrm/civicrm-core/tree/5.57.1"
+                "source": "https://github.com/civicrm/civicrm-core/tree/5.58.1"
             },
             "funding": [
                 {
@@ -925,7 +925,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-01-12T10:24:36+00:00"
+            "time": "2023-02-15T22:46:41+00:00"
         },
         {
             "name": "civicrm/civicrm-cxn-rpc",
@@ -970,7 +970,7 @@
         },
         {
             "name": "civicrm/civicrm-drupal-8",
-            "version": "5.57.1",
+            "version": "5.58.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-drupal-8.git",
@@ -1019,7 +1019,7 @@
             ],
             "description": "Open source constituent relationship management for non-profits, NGOs and advocacy organizations.",
             "support": {
-                "source": "https://github.com/civicrm/civicrm-drupal-8/tree/5.57.1"
+                "source": "https://github.com/civicrm/civicrm-drupal-8/tree/5.58.1"
             },
             "funding": [
                 {
@@ -1031,25 +1031,25 @@
         },
         {
             "name": "civicrm/civicrm-packages",
-            "version": "5.57.1",
+            "version": "5.58.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-packages.git",
-                "reference": "f48cb665f35641fe9dcfe977d3086e30f1457a55"
+                "reference": "49c9feb53c2d47318a3284f75c9f3634df32961a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/civicrm/civicrm-packages/zipball/f48cb665f35641fe9dcfe977d3086e30f1457a55",
-                "reference": "f48cb665f35641fe9dcfe977d3086e30f1457a55",
+                "url": "https://api.github.com/repos/civicrm/civicrm-packages/zipball/49c9feb53c2d47318a3284f75c9f3634df32961a",
+                "reference": "49c9feb53c2d47318a3284f75c9f3634df32961a",
                 "shasum": ""
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "description": "Legacy third party dependencies for CiviCRM",
             "support": {
-                "source": "https://github.com/civicrm/civicrm-packages/tree/5.57.1"
+                "source": "https://github.com/civicrm/civicrm-packages/tree/5.58.1"
             },
-            "time": "2022-12-06T23:29:10+00:00"
+            "time": "2023-01-02T01:58:52+00:00"
         },
         {
             "name": "civicrm/composer-compile-lib",
@@ -2557,16 +2557,16 @@
         },
         {
             "name": "dompdf/dompdf",
-            "version": "v2.0.1",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "c5310df0e22c758c85ea5288175fc6cd777bc085"
+                "reference": "e8d2d5e37e8b0b30f0732a011295ab80680d7e85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/c5310df0e22c758c85ea5288175fc6cd777bc085",
-                "reference": "c5310df0e22c758c85ea5288175fc6cd777bc085",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/e8d2d5e37e8b0b30f0732a011295ab80680d7e85",
+                "reference": "e8d2d5e37e8b0b30f0732a011295ab80680d7e85",
                 "shasum": ""
             },
             "require": {
@@ -2613,9 +2613,9 @@
             "homepage": "https://github.com/dompdf/dompdf",
             "support": {
                 "issues": "https://github.com/dompdf/dompdf/issues",
-                "source": "https://github.com/dompdf/dompdf/tree/v2.0.1"
+                "source": "https://github.com/dompdf/dompdf/tree/v2.0.3"
             },
-            "time": "2022-09-22T13:43:41+00:00"
+            "time": "2023-02-07T12:51:48+00:00"
         },
         {
             "name": "drupal-ckeditor-libraries-group/codesnippet",
@@ -9497,16 +9497,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.26.0",
+            "version": "1.27.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "5b6ceea9705b068f993e268e4debc566c2637063"
+                "reference": "ef4e6ef74990239946d3983451a9bbed5ef1be5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/5b6ceea9705b068f993e268e4debc566c2637063",
-                "reference": "5b6ceea9705b068f993e268e4debc566c2637063",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/ef4e6ef74990239946d3983451a9bbed5ef1be5d",
+                "reference": "ef4e6ef74990239946d3983451a9bbed5ef1be5d",
                 "shasum": ""
             },
             "require": {
@@ -9533,7 +9533,7 @@
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
             },
             "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
+                "dealerdirect/phpcodesniffer-composer-installer": "dev-main",
                 "dompdf/dompdf": "^1.0 || ^2.0",
                 "friendsofphp/php-cs-fixer": "^3.2",
                 "mitoteam/jpgraph": "^10.2.4",
@@ -9596,9 +9596,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.26.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.27.1"
             },
-            "time": "2022-12-21T12:22:06+00:00"
+            "time": "2023-02-08T07:02:13+00:00"
         },
         {
             "name": "phpoffice/phpword",
@@ -13528,16 +13528,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.4.17",
+            "version": "v5.4.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "ad74890513d07060255df2575703daf971de92c7"
+                "reference": "2944bbc23f5f8da2b962fbcbf7c4a6109b2f4b7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/ad74890513d07060255df2575703daf971de92c7",
-                "reference": "ad74890513d07060255df2575703daf971de92c7",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/2944bbc23f5f8da2b962fbcbf7c4a6109b2f4b7b",
+                "reference": "2944bbc23f5f8da2b962fbcbf7c4a6109b2f4b7b",
                 "shasum": ""
             },
             "require": {
@@ -13597,7 +13597,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v5.4.17"
+                "source": "https://github.com/symfony/var-dumper/tree/v5.4.19"
             },
             "funding": [
                 {
@@ -13613,7 +13613,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-22T10:31:03+00:00"
+            "time": "2023-01-16T10:52:33+00:00"
         },
         {
             "name": "symfony/yaml",
