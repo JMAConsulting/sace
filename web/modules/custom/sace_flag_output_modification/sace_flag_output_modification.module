@@ -43,24 +43,24 @@ function sace_flag_output_modification_preprocess_views_view_field(&$variables) 
  * @param int $client_contact_id
  * @return array
  */
-function _get_flags_for_contact(int $client_contact_id): array {
+function _get_flags_for_contact(int $client_contact_id) {
   \Drupal::service('civicrm')->initialize();
   // @todo make this user configurable in case more flags are added in the future
   $flag_activity_types = ['Client Assessment Required', 'Update File Data', 'Booking', 'Playroom', 'Privacy Concern'];
   return Activity::get(FALSE)
-    ->setSelect(['id', 'activity_type_id', 'appointment_colours.colour_hex', 'activity_type_id:label'])
-    ->addJoin('ActivityContact AS activity_contact', 'INNER', ['activity_contact.activity_id', '=', 'id'], ['activity_contact.record_type_id', '=', 3])
-    ->addJoin('AppointmentColours AS appointment_colours', 'INNER', ['appointment_colours.activity_type_id', '=', 'activity_type_id'])
+    ->setSelect(['id', 'activity_type_id', 'appointment_colours.colour_hex', 'activity_type_id:label', 'activity_contact.record_type_id'])
+    ->addJoin('ActivityContact AS activity_contact', 'INNER', ['activity_contact.activity_id', '=', 'id'])
+    ->addJoin('AppointmentColours AS appointment_colours', 'LEFT', ['appointment_colours.activity_type_id', '=', 'activity_type_id'])
     ->addWhere('activity_type_id:name', 'IN', $flag_activity_types)
     ->addWhere('activity_contact.contact_id', '=', $client_contact_id)
     ->addWhere('status_id:name', '!=', 'Deactivated')
-    ->execute()->getArrayCopy() ?? [];
+    ->execute();
 }
 
 function modify_views_field_output($activities, $current_output) {
   $flag_html = '';
   foreach ($activities as $activity) {
-    $flag_html .= '<i class="fa fa-flag" alt="' . $activity['activity_type_id:label'] . '" title="' . $activity['activity_type_id:label'] . '" style="color:' . $activity['appointment_colours.colour_hex'] . ';">&nbsp;</i>';
+    $flag_html .= '<i class="fa fa-flag" alt="' . $activity['activity_type_id:label'] . '" title="' . $activity['activity_type_id:label'] . (!empty($activity['appointment_colours.colour_hex']) ? '" style="color:' . $activity['appointment_colours.colour_hex'] . ';">' : '">') . '&nbsp;</i>';
   }
   if (!empty($flag_html)) {
     return Markup::create($flag_html . $current_output);
