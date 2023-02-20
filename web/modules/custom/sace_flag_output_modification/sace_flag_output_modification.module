@@ -75,7 +75,7 @@ function modify_views_field_output($activities, $current_output) {
     $flag_html .= '<i class="fa fa-flag" alt="' . $activity['activity_type_id:label'] . '" title="' . $activity['activity_type_id:label'] . (!empty($activity['appointment_colours.colour_hex']) ? '" style="color:' . $activity['appointment_colours.colour_hex'] . ';">' : '">') . '&nbsp;</i>';
   }
   if (!empty($flag_html)) {
-    return Markup::create($flag_html . $current_output);
+    return Markup::create($flag_html . '&nbsp;' . $current_output);
   }
   return $current_output;
 }
