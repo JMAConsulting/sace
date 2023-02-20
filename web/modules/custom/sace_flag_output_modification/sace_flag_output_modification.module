@@ -2,7 +2,12 @@
 
 use Drupal\Core\Render\Markup;
 use Civi\Api4\Activity;
+use Drupal\webform\Utility\WebformFormHelper;
 
+/**
+ * Modify the views field output of the relevant name field
+ * @param array $variables
+ */
 function sace_flag_output_modification_preprocess_views_view_field(&$variables) {
   $view = $variables['view'];
   $field = $variables['field'];
@@ -57,6 +62,13 @@ function _get_flags_for_contact(int $client_contact_id) {
     ->execute();
 }
 
+/**
+ * Alter the views content
+ * @param array $activities
+ * @param string $current_output
+ * 
+ * @return Drupal\Core\Render\Markup
+ */
 function modify_views_field_output($activities, $current_output) {
   $flag_html = '';
   foreach ($activities as $activity) {
@@ -66,4 +78,8 @@ function modify_views_field_output($activities, $current_output) {
     return Markup::create($flag_html . $current_output);
   }
   return $current_output;
+}
+
+function sace_flag_output_modification_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  \Drupal::messenger()->addMessage($form_id);
 }
