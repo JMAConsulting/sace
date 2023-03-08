@@ -2,6 +2,11 @@
 
 class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
 
+  /**
+   * @deprecated
+   *
+   * @var string
+   */
   protected $_entity = '';
 
   protected $requiredFields = [];
@@ -27,6 +32,7 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
       'name' => 'csv_api_importer',
       'id' => 'csv_api_importer',
       'title' => 'Api Import',
+      'entity' => 'Unknown',
     ]];
   }
 
@@ -36,11 +42,11 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
   public function setFieldMetadata(): void {
     $this->importableFieldsMetadata = array_merge(
       ['' => ['title' => ts('- do not import -')]],
-      civicrm_api3($this->_entity, 'getfields', ['action' => 'create'])['values']
+      civicrm_api3($this->getEntity(), 'getfields', ['action' => 'create'])['values']
     );
     foreach ($this->importableFieldsMetadata as $field => $values) {
       if (empty($values['entity'])) {
-        $this->importableFieldsMetadata[$field]['entity'] = $this->_entity;
+        $this->importableFieldsMetadata[$field]['entity'] = $this->getEntity();
       }
       if (empty($values['title']) && !empty($values['label'])) {
         $this->importableFieldsMetadata[$field]['title'] = $values['label'];
@@ -349,10 +355,20 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
   /**
    * Set import entity
    *
+   * @deprecated
    * @param string $entity
    */
   public function setEntity(string $entity): void {
     $this->_entity = $entity;
+  }
+
+  /**
+   * Get the entity being imported.
+   *
+   * @return string
+   */
+  public function getEntity(): string {
+    return $this->getSubmittedValue('entity');
   }
 
   /**
@@ -374,13 +390,13 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
   }
 
   /**
-   * the initializer code, called before the processing
-   *
-   * @throws \CiviCRM_API3_Exception
+   * Override parent to make assignee work.
    */
-  public function init(): void {
-    $this->setEntity($this->getSubmittedValue('entity'));
-    $this->setFieldMetadata();
+  protected function getOddlyMappedMetadataFields(): array {
+    $fields = parent::getOddlyMappedMetadataFields();
+    $fields['assignee_id'] = 'assignee_contact_id';
+    $fields['target_id'] = 'target_contact_id';
+    return $fields;
   }
 
 }
