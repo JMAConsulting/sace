@@ -99,13 +99,10 @@ final class SupportedEntities {
       'label property' => 'subject',
       'permissions' => [
         'view' => ['access all cases and activities'],
-        'edit' => ['access all cases and activities'],
-        'update' => ['access all cases and activities'],
-        'create' => ['add cases', 'access all cases and activities'],
-        'delete' => [
-          'delete in CiviCase',
-          'access all cases and activities',
-        ],
+        'edit' => ['add cases'],
+        'update' => ['add cases'],
+        'create' => ['add cases'],
+        'delete' => ['delete in CiviCase'],
       ],
       'required' => [
         'contact_id' => TRUE,
@@ -116,10 +113,11 @@ final class SupportedEntities {
       'civicrm entity name' => 'case_type',
       'label property' => 'title',
       'permissions' => [
-        'view' => [],
-        'update' => [],
-        'create' => [],
-        'delete' => [],
+        'view' => ['access all cases and activities'],
+        'edit' => ['add cases'],
+        'update' => ['add cases'],
+        'create' => ['add cases'],
+        'delete' => ['delete in CiviCase'],
       ],
     ];
     $civicrm_entity_info['civicrm_contact'] = [
@@ -705,7 +703,18 @@ $civicrm_entity_info['civicrm_group_contact'] = [
     ];
 
     static::alterEntityInfo($civicrm_entity_info);
-
+    // Check if API finds each entity type.
+    // Necessary for tests/civi upgrade after CiviGrant moved to extension in 5.47.
+    $civicrm_api = \Drupal::service('civicrm_entity.api');
+    $api_entity_types = $civicrm_api->get('entity', ['sequential' => FALSE]);
+    array_walk($api_entity_types, function(&$value) {
+      $value = static::getEntityNameFromCamel($value);
+    });
+    foreach ($civicrm_entity_info as $entity_type => $entity_info) {
+      if (!in_array($entity_info['civicrm entity name'], $api_entity_types)) {
+        unset($civicrm_entity_info[$entity_type]);
+      }
+    }
     return $civicrm_entity_info;
   }
 

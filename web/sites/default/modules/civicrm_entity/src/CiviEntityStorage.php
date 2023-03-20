@@ -171,37 +171,47 @@ class CiviEntityStorage extends SqlContentEntityStorage {
       $field_names[] = $field['name'];
     }
 
-    $options = [
-      'id' => ['IN' => $ids],
-      'return' => $field_names,
-      'options' => ['limit' => 0],
-    ];
+    $ids = $this->cleanIds($ids);
 
-    if ($this->entityType->get('civicrm_entity') === 'participant') {
-      unset($options['return']);
-    }
+    if (!empty($ids)) {
+      $options = [
+        'id' => ['IN' => $ids],
+        'return' => $field_names,
+        'options' => ['limit' => 0],
+      ];
 
-    $civicrm_entities = $this->getCiviCrmApi()->get($this->entityType->get('civicrm_entity'), $options);
-
-    foreach ($civicrm_entities as $civicrm_entity) {
       if ($this->entityType->get('civicrm_entity') === 'participant') {
-        // Massage the values.
-        $temporary = [];
-        foreach ($civicrm_entity as $key => $value) {
-          if (strpos($key, 'participant_') === 0) {
-            $temporary[str_replace('participant_', '', $key)] = $value;
-          }
-          else {
-            $temporary[$key] = $value;
-          }
-        }
-
-        $civicrm_entity = $temporary;
+        unset($options['return']);
       }
 
-      $entity = $this->prepareLoadedEntity($civicrm_entity);
-      $entities[$entity->id()] = $entity;
+      try {
+        $civicrm_entities = $this->getCiviCrmApi()->get($this->entityType->get('civicrm_entity'), $options);
+
+        foreach ($civicrm_entities as $civicrm_entity) {
+          if ($this->entityType->get('civicrm_entity') === 'participant') {
+            // Massage the values.
+            $temporary = [];
+            foreach ($civicrm_entity as $key => $value) {
+              if (strpos($key, 'participant_') === 0) {
+                $temporary[str_replace('participant_', '', $key)] = $value;
+              }
+              else {
+                $temporary[$key] = $value;
+              }
+            }
+
+            $civicrm_entity = $temporary;
+          }
+
+          $entity = $this->prepareLoadedEntity($civicrm_entity);
+          $entities[$entity->id()] = $entity;
+        }
+      }
+      catch (\Exception $e) {
+        watchdog_exception('civicrm_entity', $e);
+      }
     }
+
     return $entities;
   }
 
@@ -411,11 +421,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
           }
           else {
             $datetime_format = $definition->getSetting('datetime_type') === DateTimeItem::DATETIME_TYPE_DATE ? DateTimeItemInterface::DATE_STORAGE_FORMAT : DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
-            // CiviCRM gives us the datetime in the users timezone (or no
-            // timezone at all) but Drupal expects it in UTC. So, we need to
-            // convert from the users timezone into UTC.
-            // $datetime_value = (new \DateTime($item[$main_property_name], new \DateTimeZone(date_default_timezone_get())))->setTimezone(new \DateTimeZone('UTC'))->format($datetime_format);
-	    $default_timezone = \Drupal::config('system.date')->get('timezone.default') ?? date_default_timezone_get();
+            $default_timezone = \Drupal::config('system.date')->get('timezone.default') ?? date_default_timezone_get();
             $datetime_value = (new \DateTime($item[$main_property_name], new \DateTimeZone($default_timezone)))->setTimezone(new \DateTimeZone('UTC'))->format($datetime_format);
             $item_values[$delta][$main_property_name] = $datetime_value;
           }

@@ -1,0 +1,30 @@
+<?php
+
+use Drupal\views\ViewExecutable;
+
+
+function sace_customizations_views_pre_render (ViewExecutable $view ) { 
+  /// check to make sure the view has a classname
+//  if ( $view->display_handler  ) {
+//    $cln = $view->display_handler->options['css_class'];
+//    $cls = 'CLASS GOES HERE';
+    /// test that the classname contains our class
+//    if ( preg_match('/(^|\s+)' . preg_quote($cls) . '(\s+|$)/i', $cln) ) {
+      /// build the path to the js, which is local to my module, js/view.js
+      //$sep = DIRECTORY_SEPARATOR;
+      //$dir = rtrim(drupal_get_path('module', 'sace_customizations'), $sep);
+      //$path = "{$dir}{$sep}js{$sep}view.js";
+//print_r($path);exit;
+      //drupal_add_js($path);
+//    }
+//  }
+}
+
+/*function sace_customizations_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+if ($form_id == 'webform_submission_sace_public_ed_teacher_feedback__add_form') {
+	$sep = DIRECTORY_SEPARATOR;
+      $dir = rtrim(drupal_get_path('module', 'sace_customizations'), $sep);
+      $path = "{$dir}{$sep}js{$sep}test.js";
+}
+
+}*/

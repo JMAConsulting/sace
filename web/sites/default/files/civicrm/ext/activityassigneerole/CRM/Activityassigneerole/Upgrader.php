@@ -71,7 +71,7 @@ class CRM_Activityassigneerole_Upgrader extends CRM_Activityassigneerole_Upgrade
     $this->ctx->log->info('Applying update 1000 Ensure that fields are required and there is activity_id column');
     $this->addTask('Add activity_id column', 'addColumn', 'civicrm_activity_role', 'activity_id', "int unsigned NOT NULL COMMENT 'FK to Activity'");
     CRM_Core_DAO::executeQuery("ALTER TABLE civicrm_activity_role CHANGE role_id role_id varchar(255) NOT NULL");
-    CRM_Core_DAO::executeQuery("ALTER TABLE civicrm_activity_role CHANGE assignee_contact_id assignee_contact_id int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique ActivityRole ID'");
+    CRM_Core_DAO::executeQuery("ALTER TABLE civicrm_activity_role CHANGE assignee_contact_id assignee_contact_id int unsigned NOT NULL COMMENT 'Unique ActivityRole ID'");
     CRM_Core_DAO::executeQuery("ALTER TABLE civicrm_activity_role ADD CONSTRAINT `FK_civicrm_activity_role_activity_id` FOREIGN KEY (`activity_id`) REFERENCES `civicrm_activity`(`id`) ON DELETE CASCADE");
     return TRUE;
   }

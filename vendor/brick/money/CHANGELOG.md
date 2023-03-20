@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0](https://github.com/brick/money/releases/tag/0.8.0) - 2023-01-16
+
+💥 **Breaking changes**
+
+- Minimum PHP version is now 8.0
+- Due to Croatia's adoption of the Euro on January 1st, 2023:
+  - the `HRK` currency (Kuna) has been removed from the ISO currency provider
+  - the `HR` country (Croatia) is now mapped to `EUR` (Euro)
+- `PDOProviderConfiguration` now has a proper constructor, and its properties are no longer public
+- `PDOProviderConfiguration` now throws exceptions in the constructor when configuration is invalid
+- All documented union types are now strongly typed:
+  - If you have a custom `ExchangeRateProvider` implementation, you will need to update your `getExchangeRate()` method signature
+  - If you were passing `Stringable` objects to `of()` or any of the methods internally calling `of()`, and have `strict_types` enabled, you will need to explicitly cast these objects to `string` first
+
 ## [0.7.1](https://github.com/brick/money/releases/tag/0.7.1) - 2023-01-16
 
 👌 **Improvements**

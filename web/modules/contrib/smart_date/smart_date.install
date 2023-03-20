@@ -45,7 +45,7 @@ function smart_date_update_8202() {
       'label' => t('RRule Index'),
       'unsigned' => TRUE,
       'not null' => FALSE,
-    ]
+    ],
   ];
 
   _smart_date_field_columns_add($field_type, $specs);
@@ -90,6 +90,20 @@ function smart_date_update_8202() {
         ->condition($field_name . '_rrule_index', NULL, 'IS NULL')
         ->execute();
     }
+  }
+}
+
+/**
+ * Set site_time_toggle value on Smart Date Formats to match previous behaviour.
+ */
+function smart_date_update_8301() {
+  $format_storage = \Drupal::entityTypeManager()
+    ->getStorage('smart_date_format');
+  $formats = $format_storage
+    ->loadMultiple(NULL);
+  foreach ($formats as $format) {
+    $format->set('site_time_toggle', 1);
+    $format->save();
   }
 }
 

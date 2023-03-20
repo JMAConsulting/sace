@@ -18,7 +18,6 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
     if (empty($elements)) {
       return;
     }
-    //die('<pre>'.print_r($form['#attached'],true));
     //Toggle text field if Presentation Topic is Custom/Something Different
     if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
       $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";

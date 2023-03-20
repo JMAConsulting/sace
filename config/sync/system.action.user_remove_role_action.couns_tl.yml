@@ -1,0 +1,14 @@
+uuid: 555f281e-fee4-4bb6-9f48-ec68274be65f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.couns_tl
+  module:
+    - user
+id: user_remove_role_action.couns_tl
+label: 'Remove the COUNS TL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: couns_tl

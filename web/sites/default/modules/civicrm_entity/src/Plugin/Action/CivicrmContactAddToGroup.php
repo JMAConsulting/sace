@@ -11,6 +11,10 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\civicrm_entity\CiviCrmApi;
 
+if (!class_exists('Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase')) {
+  return;
+}
+
 /**
  * Action to add CiviCRM Contact to a CiviCRM group
  *
@@ -80,7 +84,7 @@ class CivicrmContactAddToGroup extends ViewsBulkOperationsActionBase implements 
   /**
    * {@inheritdoc}
    */
-  public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state) {
+  public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state): array {
     $groups = $this->fetchGroups();
 
     $form['allowed_groups'] = [

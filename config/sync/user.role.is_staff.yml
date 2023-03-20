@@ -1,0 +1,9 @@
+uuid: 5e8202ae-9b63-4b68-9923-2d4fd15750e2
+langcode: en
+status: true
+dependencies: {  }
+id: is_staff
+label: 'IS Staff'
+weight: 15
+is_admin: null
+permissions: {  }

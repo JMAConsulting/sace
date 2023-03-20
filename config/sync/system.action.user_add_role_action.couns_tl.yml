@@ -1,0 +1,14 @@
+uuid: 4910e219-4c8b-4877-9d58-448358563b33
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.couns_tl
+  module:
+    - user
+id: user_add_role_action.couns_tl
+label: 'Add the COUNS TL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: couns_tl

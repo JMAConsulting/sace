@@ -19,22 +19,9 @@ elements: |-
     '#type': webform_wizard_page
     '#form_key': contact_pagebreak
     '#title': 'Contact Information'
-    '#webform': sace_invoice_payments
-    '#webform_id': sace_invoice_payments--contact_pagebreak
-    '#webform_key': contact_pagebreak
-    '#webform_parent_key': ''
-    '#webform_parent_flexbox': false
-    '#webform_depth': 0
-    '#webform_children': {  }
-    '#webform_multiple': false
-    '#webform_composite': false
-    '#webform_parents':
-      - contact_pagebreak
-    '#admin_title': 'Contact Information'
-    '#webform_plugin_id': webform_wizard_page
     processed_text:
       '#type': processed_text
-      '#title': 'Please note:'
+      '#title': Intro
       '#text': |
         <p>If you have reached this page in error and are interested in making a donation, please visit&nbsp;<br />
         <a class="button button--secondary" href="https://secure.sace.ca/civicrm/contribute/transact?reset=1&amp;id=1">Donate to SACE</a></p>
@@ -299,13 +286,9 @@ elements: |-
         - contact_pagebreak
         - civicrm_1_contribution_1_cg28_custom_328
       '#webform_plugin_id': textarea
-  contribution_pagebreak:
-    '#type': webform_wizard_page
-    '#form_key': contribution_pagebreak
-    '#title': Payment
     '#webform': sace_invoice_payments
-    '#webform_id': sace_invoice_payments--contribution_pagebreak
-    '#webform_key': contribution_pagebreak
+    '#webform_id': sace_invoice_payments--contact_pagebreak
+    '#webform_key': contact_pagebreak
     '#webform_parent_key': ''
     '#webform_parent_flexbox': false
     '#webform_depth': 0
@@ -313,9 +296,13 @@ elements: |-
     '#webform_multiple': false
     '#webform_composite': false
     '#webform_parents':
-      - contribution_pagebreak
-    '#admin_title': Payment
+      - contact_pagebreak
+    '#admin_title': 'Contact Information'
     '#webform_plugin_id': webform_wizard_page
+  contribution_pagebreak:
+    '#type': webform_wizard_page
+    '#form_key': contribution_pagebreak
+    '#title': Payment
     flexbox_02:
       '#type': webform_flexbox
       '#webform': sace_invoice_payments
@@ -546,6 +533,19 @@ elements: |-
         '#admin_title': State/Province
         '#webform_plugin_id': textfield
         '#required': true
+    '#webform': sace_invoice_payments
+    '#webform_id': sace_invoice_payments--contribution_pagebreak
+    '#webform_key': contribution_pagebreak
+    '#webform_parent_key': ''
+    '#webform_parent_flexbox': false
+    '#webform_depth': 0
+    '#webform_children': {  }
+    '#webform_multiple': false
+    '#webform_composite': false
+    '#webform_parents':
+      - contribution_pagebreak
+    '#admin_title': Payment
+    '#webform_plugin_id': webform_wizard_page
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -682,7 +682,7 @@ settings:
   confirmation_type: message
   confirmation_url: ''
   confirmation_title: ''
-  confirmation_message: 'Thank you for your payment to SACE. A confirmation will be sent to the email address provided.'
+  confirmation_message: "Thank you for your payment.&nbsp;<br />\r\nA confirmation will be sent to the email address provided in the Contact Information."
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''

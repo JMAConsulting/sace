@@ -109,26 +109,30 @@ class InOperator extends BaseInOperator {
     // If this is a multi-value field in CiviCRM, we use 'LIKE' and 'NOT LIKE'
     // instead.
     else {
+
+      $values = array_map(function($value) {
+        return \CRM_Core_DAO::VALUE_SEPARATOR . $value . \CRM_Core_DAO::VALUE_SEPARATOR;
+      }, $values);
+
       switch ($this->operator) {
         case 'in':
-          $values = array_map(function($value) {
-            return \CRM_Core_DAO::VALUE_SEPARATOR . $value . \CRM_Core_DAO::VALUE_SEPARATOR;
-          }, $values);
-
-          $this
-            ->query
-            ->addWhereExpression($this->options['group'], "CAST({$field} AS BINARY) RLIKE BINARY :arg1", [':arg1' => implode('|', $values)]);
+          $this->query
+            ->addWhereExpression(
+              $this->options['group'],
+              "CAST({$field} AS BINARY) RLIKE BINARY :" . $this->realField,
+              [':' . $this->realField => implode('|', $values)]
+            );
 
           break;
 
         case 'not in':
-          $condition = new Condition('AND');
+          $this->query
+            ->addWhereExpression(
+              $this->options['group'],
+              "CAST({$field} AS BINARY) NOT RLIKE BINARY :" . $this->realField,
+              [':' . $this->realField => implode('|', $values)]
+            );
 
-          foreach ($values as $value) {
-            $condition->condition($field, '%' . $this->connection->escapeLike($value) . '%', 'NOT LIKE');
-          }
-
-          $this->query->addWhere($this->options['group'], $condition);
           break;
       }
     }

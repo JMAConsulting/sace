@@ -1,0 +1,14 @@
+uuid: 56bf0bae-ad5d-4b5d-b9c1-4efd2585db68
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.indigenous_cl
+  module:
+    - user
+id: user_remove_role_action.indigenous_cl
+label: 'Remove the Indigenous CL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: indigenous_cl

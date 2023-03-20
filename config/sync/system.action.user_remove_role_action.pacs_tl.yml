@@ -1,0 +1,14 @@
+uuid: bddb05a4-9983-4438-bb1b-6f02e530bdf7
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pacs_tl
+  module:
+    - user
+id: user_remove_role_action.pacs_tl
+label: 'Remove the PACS TL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: pacs_tl

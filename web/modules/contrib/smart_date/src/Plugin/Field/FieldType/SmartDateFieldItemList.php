@@ -33,25 +33,7 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
 
       unset($element['default_time_type']);
 
-      $description = '<p>' . $this->t('The possible durations this field can contain. Enter one value per line, in the format key|label.');
-      $description .= '<br/>' . $this->t('The key is the stored value, and must be numeric or "custom" to allow an arbitrary length. The label will be used in edit forms.');
-      $description .= '<br/>' . $this->t('The label is optional: if a line contains a single number, it will be used as key and label.') . '</p>';
-
-      $element['default_duration_increments'] = [
-        '#type' => 'textarea',
-        '#title' => $this->t('Allowed duration increments'),
-        '#description' => $description,
-        '#default_value' => isset($default_value['default_duration_increments']) ? $default_value['default_duration_increments'] : "30\n60|1 hour\n90\n120|2 hours\ncustom",
-        '#required' => TRUE,
-      ];
-
-      $element['default_duration'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Default duration'),
-        '#description' => $this->t('Set which of the duration increments provided above that should be selected by default.'),
-        '#default_value' => isset($default_value['default_duration']) ? $default_value['default_duration'] : '60',
-        '#required' => TRUE,
-      ];
+      $this->addDurationConfig($element, $default_value);
 
       return $element;
     }
@@ -60,9 +42,43 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
   /**
    * {@inheritdoc}
    */
+  public static function addDurationConfig(array &$element, array $default_value) {
+    $description = '<p>' . t('The possible durations this field can contain. Enter one value per line, in the format key|label.');
+    $description .= '<br/>' . t('The key is the stored value, and must be numeric or "custom" to allow an arbitrary length. The label will be used in edit forms.');
+    $description .= '<br/>' . t('The label is optional: if a line contains a single number, it will be used as key and label.') . '</p>';
+
+    $element['default_duration_increments'] = [
+      '#type' => 'textarea',
+      '#title' => t('Allowed duration increments'),
+      '#description' => $description,
+      '#default_value' => isset($default_value['default_duration_increments']) ? $default_value['default_duration_increments'] : "30\n60|1 hour\n90\n120|2 hours\ncustom",
+      '#required' => TRUE,
+    ];
+
+    $element['default_duration'] = [
+      '#type' => 'textfield',
+      '#title' => t('Default duration'),
+      '#description' => t('Set which of the duration increments provided above that should be selected by default.'),
+      '#default_value' => isset($default_value['default_duration']) ? $default_value['default_duration'] : '60',
+      '#required' => TRUE,
+    ];
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function defaultValuesFormValidate(array $element, array &$form, FormStateInterface $form_state) {
-    if ($duration = $form_state->getValue(['default_value_input', 'default_duration'])) {
-      $increments = SmartDateListItemBase::parseValues($form_state->getValue(['default_value_input', 'default_duration_increments']));
+    $duration = $form_state->getValue([
+      'default_value_input',
+      'default_duration',
+    ]) ?? '';
+    if ($duration) {
+      $increments = SmartDateListItemBase::parseValues($form_state->getValue([
+        'default_value_input',
+        'default_duration_increments',
+      ]));
       // Handle a false result: will display the proper error later.
       if (!$increments) {
         $increments = [];
@@ -99,11 +115,19 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
    * {@inheritdoc}
    */
   public function defaultValuesFormSubmit(array $element, array &$form, FormStateInterface $form_state) {
-    if (strlen((string) $form_state->getValue(['default_value_input', 'default_duration'])) && strlen((string) $form_state->getValue(['default_value_input', 'default_duration_increments']))) {
-      if ($duration = $form_state->getValue(['default_value_input', 'default_duration'])) {
+    $duration = $form_state->getValue([
+      'default_value_input',
+      'default_duration',
+    ]) ?? '';
+    $duration_increments = $form_state->getValue([
+      'default_value_input',
+      'default_duration_increments',
+    ]) ?? '';
+    if (strlen((string) $duration) && strlen((string) $duration_increments)) {
+      if ($duration) {
         $form_state->setValueForElement($element['default_duration'], $duration);
       }
-      if ($duration_increments = $form_state->getValue(['default_value_input', 'default_duration_increments'])) {
+      if ($duration_increments) {
         $form_state->setValueForElement($element['default_duration_increments'], $duration_increments);
       }
       return [$form_state->getValue('default_value_input')];
@@ -129,7 +153,6 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
     // A default date+time value should be in the format and timezone used
     // for date storage.
     $date = new DrupalDateTime($default_value[0]['default_date'], DateTimeItemInterface::STORAGE_TIMEZONE);
-    $format = DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
 
     // If using 'next_hour' for 'default_date_type', do custom processing.
     if ($default_value[0]['default_date_type'] == 'next_hour') {

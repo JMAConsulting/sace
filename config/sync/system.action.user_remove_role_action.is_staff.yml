@@ -1,0 +1,14 @@
+uuid: d0ad7e39-fe92-4b89-94a6-7aa9404585c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.is_staff
+  module:
+    - user
+id: user_remove_role_action.is_staff
+label: 'Remove the IS Staff role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: is_staff

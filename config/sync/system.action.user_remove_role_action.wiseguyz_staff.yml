@@ -1,0 +1,14 @@
+uuid: 3d01b013-7423-4624-8e14-e83b6e0108d3
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.wiseguyz_staff
+  module:
+    - user
+id: user_remove_role_action.wiseguyz_staff
+label: 'Remove the WiseGuyz Staff role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: wiseguyz_staff

@@ -1,0 +1,14 @@
+uuid: 6ca0d168-d30a-423f-8cee-70709c76a367
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.indigenous_cl
+  module:
+    - user
+id: user_add_role_action.indigenous_cl
+label: 'Add the Indigenous CL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: indigenous_cl

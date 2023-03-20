@@ -15,12 +15,19 @@ use Drupal\datetime\DateTimeComputed;
  *   id = "smartdate",
  *   label = @Translation("Smart date range"),
  *   description = @Translation("Create and store timestamp ranges, with an intelligent UI."),
- *   default_widget = "smartdate_default",
+ *   default_widget = "smartdate_inline",
  *   default_formatter = "smartdate_default",
  *   list_class = "\Drupal\smart_date\Plugin\Field\FieldType\SmartDateFieldItemList"
  * )
  */
 class SmartDateItem extends TimestampItem {
+
+  /**
+   * The stored field delta.
+   *
+   * @var int
+   */
+  public $delta;
 
   /**
    * {@inheritdoc}
@@ -50,7 +57,7 @@ class SmartDateItem extends TimestampItem {
 
     $properties['duration'] = DataDefinition::create('integer')
       ->setLabel(t('Duration, in minutes'))
-      // TODO: figure out a way to validate as required but accept zero.
+      // @todo figure out a way to validate as required but accept zero.
       ->setRequired(FALSE);
 
     $properties['rrule'] = DataDefinition::create('integer')

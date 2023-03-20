@@ -9,7 +9,7 @@ smtp_autotls: false
 smtp_timeout: 30
 smtp_username: AKIARIKRJIOTWSGBCAGE
 smtp_password: BGmM1G6clsqYoiqbpH3fFseFFlU/SIaQ6/+hHP4Gt2pQ
-smtp_from: ''
+smtp_from: info@sace.ca
 smtp_fromname: ''
 smtp_client_hostname: ''
 smtp_client_helo: ''

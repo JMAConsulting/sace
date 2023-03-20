@@ -138,6 +138,32 @@ class CivicrmEntityViewsData extends EntityViewsData {
               'field field' => $field_name,
             ];
           }
+          elseif ($field_definition->getType() === 'datetime') {
+            $arguments = [
+              'year' => $this->t('Date in the form of YYYY.'),
+              'month' => $this->t('Date in the form of MM (01 - 12).'),
+              'day' => $this->t('Date in the form of DD (01 - 31).'),
+              'week' => $this->t('Date in the form of WW (01 - 53).'),
+              'year_month' => $this->t('Date in the form of YYYYMM.'),
+              'full_date' => $this->t('Date in the form of CCYYMMDD.'),
+            ];
+
+            foreach ($arguments as $argument_type => $help_text) {
+              $data[$base_table][$field_definition->getName() . '_' . $argument_type] = [
+                'title' => t('@label (@argument)', [
+                  '@label' => $field_definition->getLabel(),
+                  '@argument' => $argument_type,
+                ]),
+                'help' => $help_text,
+                'argument' => [
+                  'field' => $field_definition->getName(),
+                  'id' => 'datetime_' . $argument_type,
+                  'entity_type' => $field_definition->getTargetEntityTypeId(),
+                  'field_name' => $field_definition->getName(),
+                ],
+              ];
+            }
+          }
         }
         else if ($table_mapping->requiresDedicatedTableStorage($field_definition->getFieldStorageDefinition())) {
           $table = $table_mapping->getDedicatedDataTableName($field_definition->getFieldStorageDefinition());
@@ -445,6 +471,13 @@ class CivicrmEntityViewsData extends EntityViewsData {
           ],
         ];
 
+        if (isset($views_field['civicrm_contact']['contact_sub_type'])) {
+          $views_field['civicrm_contact']['contact_sub_type']['filter']['id'] = 'civicrm_entity_in_operator';
+          $views_field['civicrm_contact']['contact_sub_type']['filter']['options callback'] = '\CRM_Contact_DAO_Contact::buildOptions';
+          $views_field['civicrm_contact']['contact_sub_type']['filter']['options arguments'] = 'contact_sub_type';
+          $views_field['civicrm_contact']['contact_sub_type']['filter']['multi'] = TRUE;
+        }
+
         break;
 
       case 'civicrm_phone':
@@ -512,6 +545,15 @@ class CivicrmEntityViewsData extends EntityViewsData {
           ],
         ];
 
+        break;
+
+      case 'civicrm_relationship':
+        if (isset($views_field['civicrm_contact']['reverse__civicrm_relationship__contact_id_a']['relationship'])) {
+          $views_field['civicrm_contact']['reverse__civicrm_relationship__contact_id_a']['relationship']['id'] = 'civicrm_entity_civicrm_relationship';
+        }
+        if (isset($views_field['civicrm_contact']['reverse__civicrm_relationship__contact_id_b']['relationship'])) {
+          $views_field['civicrm_contact']['reverse__civicrm_relationship__contact_id_b']['relationship']['id'] = 'civicrm_entity_civicrm_relationship';
+        }
         break;
 
       case 'civicrm_case':
@@ -618,6 +660,12 @@ class CivicrmEntityViewsData extends EntityViewsData {
           'left_field' => 'id',
           'field' => 'entity_id',
         ];
+
+        break;
+
+      case 'civicrm_participant':
+        $views_field[$base_table]['transferred_to_contact_id']['help'] = $this->t('FK to "Transferred to" Contact ID');
+        break;
     }
   }
 
@@ -697,7 +745,11 @@ class CivicrmEntityViewsData extends EntityViewsData {
         return $filter;
 
       case 'ContactReference':
-        return ['id' => 'civicrm_entity_contact_reference'];
+        return [
+          'id' => 'civicrm_entity_contact_reference',
+          'allow empty' => TRUE,
+          'multi' => TRUE,
+        ];
     }
 
     $type = !empty($field_metadata['pseudoconstant']) ? 'pseudoconstant' :
@@ -797,6 +849,7 @@ class CivicrmEntityViewsData extends EntityViewsData {
           'base' => 'civicrm_contact',
           'base field' => 'id',
           'label' => $this->t('@label', ['@label' => $field_metadata['label']]),
+          'join_id' => isset($field_metadata['serialize']) && $field_metadata['serialize'] ? 'civicrm_entity_contact_reference' : 'standard',
         ];
 
       default:
@@ -813,7 +866,7 @@ class CivicrmEntityViewsData extends EntityViewsData {
     }
 
     if ($field_column_name === 'format') {
-      $views_field = NULL;
+      $views_field = [];
     }
   }
 

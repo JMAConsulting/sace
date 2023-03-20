@@ -1,0 +1,14 @@
+uuid: 8236230c-672d-49bc-9368-3620b996115f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_tl
+  module:
+    - user
+id: user_add_role_action.clin_tl
+label: 'Add the CLIN TL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: clin_tl

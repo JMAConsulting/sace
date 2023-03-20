@@ -1,0 +1,14 @@
+uuid: 0f39c464-0635-49b7-b7bc-b4e05d5744de
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pacsa
+  module:
+    - user
+id: user_add_role_action.pacsa
+label: 'Add the PACSA role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: pacsa

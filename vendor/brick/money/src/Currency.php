@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Brick\Money;
 
 use Brick\Money\Exception\UnknownCurrencyException;
+use Stringable;
 
 /**
  * A currency. This class is immutable.
  */
-final class Currency
+final class Currency implements Stringable
 {
     /**
      * The currency code.
@@ -74,11 +75,9 @@ final class Currency
      *
      * @param string|int $currencyCode The 3-letter or numeric ISO 4217 currency code.
      *
-     * @return Currency
-     *
      * @throws UnknownCurrencyException If an unknown currency code is given.
      */
-    public static function of($currencyCode) : Currency
+    public static function of(string|int $currencyCode) : Currency
     {
         return ISOCurrencyProvider::getInstance()->getCurrency($currencyCode);
     }
@@ -157,7 +156,7 @@ final class Currency
      *
      * @return bool
      */
-    public function is($currency) : bool
+    public function is(Currency|string|int $currency) : bool
     {
         if ($currency instanceof Currency) {
             return $this->currencyCode === $currency->currencyCode;
@@ -169,8 +168,6 @@ final class Currency
 
     /**
      * Returns the currency code.
-     *
-     * @return string
      */
     public function __toString() : string
     {

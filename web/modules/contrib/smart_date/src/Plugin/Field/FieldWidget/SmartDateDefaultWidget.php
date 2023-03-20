@@ -7,6 +7,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\smart_date\Plugin\Field\FieldType\SmartDateFieldItemList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -14,9 +15,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @FieldWidget(
  *   id = "smartdate_default",
- *   label = @Translation("Date and time range"),
+ *   label = @Translation("Smart Date and time range"),
  *   field_types = {
- *     "smartdate"
+ *     "smartdate",
+ *     "daterange"
  *   }
  * )
  */
@@ -35,6 +37,8 @@ class SmartDateDefaultWidget extends SmartDateWidgetBase implements ContainerFac
   public static function defaultSettings() {
     return [
       'modal' => FALSE,
+      'default_duration' => 60,
+      'default_duration_increments' => "30\n60|1 hour\n90\n120|2 hours\ncustom",
     ] + parent::defaultSettings();
   }
 
@@ -44,11 +48,21 @@ class SmartDateDefaultWidget extends SmartDateWidgetBase implements ContainerFac
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element = parent::settingsForm($form, $form_state);
 
-    $element['modal'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Use modal for managing instances'),
-      '#default_value' => $this->getSetting('modal'),
-    ];
+    $field_def = $this->fieldDefinition;
+    $field_type = $field_def->getType();
+    if ($field_type == 'daterange') {
+      // For core fields, add the option to configure allowed durations.
+      $defaults = [];
+      $default_duration = $this->getSetting('default_duration');
+      if ($default_duration || $default_duration === 0 || $default_duration === '0') {
+        $defaults['default_duration'] = $default_duration;
+      }
+      $default_duration_increments = $this->getSetting('default_duration_increments');
+      if ($default_duration_increments) {
+        $defaults['default_duration_increments'] = $default_duration_increments;
+      }
+      SmartDateFieldItemList::addDurationConfig($element, $defaults);
+    }
 
     return $element;
   }
@@ -58,8 +72,8 @@ class SmartDateDefaultWidget extends SmartDateWidgetBase implements ContainerFac
    */
   public function settingsSummary() {
     $summary = parent::settingsSummary();
-    if ($this->getSetting('modal')) {
-      $summary[] = $this->t('Use modal for managing instances');
+    if ($this->fieldDefinition->getType() == 'daterange' && $this->getSetting('default_duration')) {
+      $summary[] = $this->t('The default duration is @def_dur minutes.', ['@def_dur' => $this->getSetting('default_duration')]);
     }
     return $summary;
   }

@@ -1,0 +1,14 @@
+uuid: 4ebcd3b1-4499-42bc-83b3-8c63191676fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pe_tl
+  module:
+    - user
+id: user_remove_role_action.pe_tl
+label: 'Remove the PE TL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: pe_tl

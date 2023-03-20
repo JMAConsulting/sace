@@ -1,0 +1,14 @@
+uuid: dc0d05cb-ec02-47b7-91b4-92cf7cef4021
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.reception
+  module:
+    - user
+id: user_add_role_action.reception
+label: 'Add the Reception role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: reception

@@ -1,0 +1,14 @@
+uuid: 68466911-2581-40bf-ae20-1ad6ed74520f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cad_tl
+  module:
+    - user
+id: user_add_role_action.cad_tl
+label: 'Add the CAD TL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cad_tl

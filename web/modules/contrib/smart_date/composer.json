@@ -8,10 +8,20 @@
   "support": {
     "issues": "https://www.drupal.org/project/issues/smart_date",
     "documentation": "https://www.drupal.org/docs/contributed-modules/smart-date",
-    "source": "http://cgit.drupalcode.org/smart_date"
+    "source": "https://git.drupalcode.org/project/smart_date"
   },
   "require": {
-    "php": "^7.1",
+    "php": ">=7.1",
     "simshaun/recurr": "^4"
+  },
+  "suggest": {
+    "drupal/multiple_fields_remove_button": "Provides a button for editors to remove unwanted rows."
+  },
+  "extra": {
+    "drush": {
+      "services": {
+        "drush.services.yml": "^9"
+      }
+    }
   }
 }

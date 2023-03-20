@@ -19,16 +19,11 @@ function smart_date_post_update_translatable_separator() {
  * Migrate smartdate_default field formatter settings to smartdate_custom.
  */
 function smart_date_post_update_translatable_config() {
-  /** @var \Drupal\Core\Entity\EntityStorageInterface $smartDateFormatStorage */
-  $smartDateFormatStorage = \Drupal::getContainer()
-    ->get('entity_type.manager')
-    ->getStorage('smart_date_format');
 
   // Loop through all configured entity view displays, and compile information
   // about the smartdate_default field settings.
-  $oldFormatterSettings = [];
   $displays = EntityViewDisplay::loadMultiple();
-  foreach ($displays as $key => $display) {
+  foreach ($displays as $display) {
     if ($display instanceof EntityViewDisplay) {
       $components = $display->getComponents();
       foreach ($components as $fieldName => $component) {
@@ -53,7 +48,7 @@ function smart_date_post_update_translatable_config() {
   }
 
   // Obtain configuration from yaml files.
-  $config_path = drupal_get_path('module', 'smart_date') . '/config/install/';
+  $config_path = \Drupal::service('extension.list.module')->getPath('smart_date') . '/config/install/';
   $source      = new FileStorage($config_path);
 
   // Load the provided default entities.

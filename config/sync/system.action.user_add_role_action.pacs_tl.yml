@@ -1,0 +1,14 @@
+uuid: 9bc19ff5-d0a9-417d-9e8f-3c2aa1799d3e
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pacs_tl
+  module:
+    - user
+id: user_add_role_action.pacs_tl
+label: 'Add the PACS TL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: pacs_tl

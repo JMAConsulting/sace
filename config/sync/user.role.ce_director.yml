@@ -1,0 +1,9 @@
+uuid: 947f9aa0-273e-45cd-9fac-c3f43f4a9577
+langcode: en
+status: true
+dependencies: {  }
+id: ce_director
+label: 'CE Director'
+weight: 8
+is_admin: null
+permissions: {  }

@@ -1,0 +1,14 @@
+uuid: d8c336e5-6a54-478c-ba74-88fb4494762b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cad_tl
+  module:
+    - user
+id: user_remove_role_action.cad_tl
+label: 'Remove the CAD TL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cad_tl

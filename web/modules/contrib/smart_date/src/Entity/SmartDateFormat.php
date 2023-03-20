@@ -49,6 +49,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "join",
  *     "ampm_reduce",
  *     "date_first",
+ *     "site_time_toggle",
  *   },
  * )
  */
@@ -123,6 +124,13 @@ class SmartDateFormat extends ConfigEntityBase implements SmartDateFormatInterfa
    * @var int
    */
   protected $date_first;
+
+  /**
+   * Whether or not to show the time in the site's timezone, if overridden.
+   *
+   * @var bool
+   */
+  protected $site_time_toggle;
 
   /**
    * {@inheritdoc}
@@ -247,6 +255,21 @@ class SmartDateFormat extends ConfigEntityBase implements SmartDateFormatInterfa
   /**
    * {@inheritdoc}
    */
+  public function getSiteTimeToggle() {
+    return $this->get('site_time_toggle')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setSiteTimeToggle($site_time_toggle) {
+    $this->set('site_time_toggle', $site_time_toggle);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getOptions() {
     $keys = $this->getAllKeys();
     $values = [];
@@ -282,6 +305,7 @@ class SmartDateFormat extends ConfigEntityBase implements SmartDateFormatInterfa
       'join',
       'ampm_reduce',
       'date_first',
+      'site_time_toggle',
     ];
   }
 

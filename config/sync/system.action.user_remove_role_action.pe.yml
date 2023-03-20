@@ -1,0 +1,14 @@
+uuid: 5a9cc259-2647-4b3e-8fb3-e8237216074f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pe
+  module:
+    - user
+id: user_remove_role_action.pe
+label: 'Remove the PE Staff role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: pe

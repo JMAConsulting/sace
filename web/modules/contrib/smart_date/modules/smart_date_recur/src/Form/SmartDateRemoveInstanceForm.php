@@ -83,7 +83,6 @@ class SmartDateRemoveInstanceForm extends ConfirmFormBase {
     $instanceController = new Instances();
     $instanceController->setSmartDateRule($this->rrule);
     $instanceController->setUseAjax(TRUE);
-    $instanceController->setUpdateButton(FALSE);
     $response = new AjaxResponse();
     $response->addCommand(new ReplaceCommand('#manage-instances', $instanceController->listInstancesOutput()));
     return $response;
@@ -145,7 +144,13 @@ class SmartDateRemoveInstanceForm extends ConfirmFormBase {
     $instanceController->setSmartDateRule($this->rrule);
     $instanceController->removeInstance($this->index, $this->oid);
 
-    // TODO: Update parent entity field value.
+    if (!isset($form['actions']['cancel'])) {
+      $instanceController = new Instances();
+      // Force refresh of parent entity.
+      $instanceController->applyChanges($this->rrule);
+      // Output message about operation performed.
+      $this->messenger()->addMessage($this->t('The instance has been removed.'));
+    }
     $form_state
       ->setRedirectUrl($this
         ->getCancelUrl());

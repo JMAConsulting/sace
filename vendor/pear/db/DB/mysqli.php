@@ -877,6 +877,9 @@ class DB_mysqli extends DB_common
      */
     function escapeSimple($str)
     {
+if (is_array($str) && empty($str)) {
+return;
+}
         return @mysqli_real_escape_string($this->connection, $str);
     }
 

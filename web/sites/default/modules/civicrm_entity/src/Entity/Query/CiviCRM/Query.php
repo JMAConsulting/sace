@@ -48,15 +48,21 @@ class Query extends QueryBase implements QueryInterface {
       }
     }
 
+    $sort = [];
+    foreach ($this->sort as $s) {
+      $sort[] = $s['field'] . ' ' . $s['direction'];
+    }
+
+    $params['options']['sort'] = implode(',', $sort);
+
     $this->initializePager();
     if ($this->range) {
-      $params['options'] = [
-        'limit' => $this->range['length'],
-        'offset' => $this->range['start'],
-      ];
+      $params['options']['limit'] = $this->range['length'];
+      $params['options']['offset'] = $this->range['start'];
     }
 
     if ($this->count) {
+      unset($params['options']['sort']);
       return $this->civicrmApi->getCount($this->entityType->get('civicrm_entity'), $params);
     }
     else {

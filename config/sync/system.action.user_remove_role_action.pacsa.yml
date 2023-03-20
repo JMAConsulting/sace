@@ -1,0 +1,14 @@
+uuid: bdb43817-6edf-475a-9d15-9c3449032f2e
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pacsa
+  module:
+    - user
+id: user_remove_role_action.pacsa
+label: 'Remove the PACSA role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: pacsa

@@ -1435,6 +1435,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface, 
 
     // Get items.
     $items = [];
+    $value = is_array($value) ? $value : [];
     foreach (array_keys($value) as $delta) {
       $item = $this->formatHtmlItem($element, $webform_submission, ['delta' => $delta] + $options);
       if ($item) {

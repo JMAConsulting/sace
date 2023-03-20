@@ -5,6 +5,7 @@ namespace Drupal\smart_date_recur\Form;
 use Drupal\Core\Entity\ContentEntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\smart_date_recur\Controller\Instances;
 
 /**
  * Provides a deletion confirmation form for Smart Date Overrides.
@@ -39,10 +40,19 @@ class SmartDateOverrideDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // TODO: Delete override entity, if it exists.
+    // @todo Delete override entity, if it exists.
     $this->entity
       ->delete();
-    // TODO: Update parent entity field value.
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
+    $entityTypeManager = \Drupal::service('entity_type.manager');
+    $rrid = $this->entity->rrule->getString();
+    /** @var \Drupal\smart_date_recur\Entity\SmartDateRule $rrule */
+    $rrule = $entityTypeManager->getStorage('smart_date_rule')->load($rrid);
+    $instanceController = new Instances();
+    // Force refresh of parent entity.
+    $instanceController->applyChanges($rrule);
+    // Output message about operation performed.
+    $this->messenger()->addMessage($this->t('The instance has been reverted to default.'));
     $form_state
       ->setRedirectUrl($this
         ->getCancelUrl());

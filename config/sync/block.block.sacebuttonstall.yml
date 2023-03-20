@@ -7,7 +7,6 @@ dependencies:
   module:
     - block_content
     - system
-    - user
   theme:
     - oliverolocal
 id: sacebuttonstall
@@ -25,15 +24,8 @@ settings:
   info: ''
   view_mode: full
 visibility:
-  user_role:
-    id: user_role
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'
-    roles:
-      anonymous: anonymous
-      authenticated: authenticated
   request_path:
     id: request_path
     negate: false
+    context_mapping: {  }
     pages: "/civicrm/contribute/*\r\n/form/donate-to-sace"

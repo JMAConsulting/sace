@@ -282,6 +282,74 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+  repeat_activity:
+    '#type': fieldset
+    '#title': 'Repeat Appointment'
+    repeats_every:
+      '#type': fieldset
+      '#title': 'Repeats every'
+      unit:
+        '#type': number
+        '#title': Interval
+        '#max': 30
+      frequency:
+        '#type': select
+        '#title': Frequency
+        '#options':
+          minute: minute
+          hour: hour
+          day: day
+          week: week
+          month: month
+          year: year
+    repeats_on:
+      '#type': checkboxes
+      '#title': 'Repeats on'
+      '#description_display': invisible
+      '#options':
+        sunday: sunday
+        monday: monday
+        tuesday: tuesday
+        wednesday: wednesday
+        thursday: thursday
+        friday: friday
+        saturday: saturday
+      '#options_display': side_by_side
+    start_date:
+      '#type': datetime
+      '#title': 'Start Date'
+      '#date_date_format': ''
+      '#date_time_format': ''
+    ends:
+      '#type': fieldset
+      '#title': Ends
+      after:
+        '#type': number
+        '#title': After
+        '#field_suffix': occurences
+        '#states':
+          disabled:
+            - ':input[name="on[date]"]':
+                filled: true
+            - or
+            - ':input[name="on[time]"]':
+                filled: true
+      'on':
+        '#type': datetime
+        '#title': 'On'
+        '#states':
+          disabled:
+            ':input[name="after"]':
+              filled: true
+        '#date_date_format': ''
+        '#date_time_format': ''
+    exclude_dates:
+      '#type': webform_custom_composite
+      '#title': 'Exclude Dates'
+      '#element':
+        exclude:
+          '#type': date
+          '#title': Date(s)
 css: ''
 javascript: ''
 settings:

@@ -6,6 +6,13 @@ smart_date:
   js:
     js/smart_date.js: {}
   dependencies:
-    - core/jquery
     - core/drupal
-    - core/jquery.once
+date_only:
+  version: 1.x
+  css:
+    component:
+      css/smart_date.css: {}
+  js:
+    js/date_only.js: {}
+  dependencies:
+    - core/drupal

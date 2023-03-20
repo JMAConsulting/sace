@@ -29,6 +29,7 @@ use Drupal\field\FieldConfigInterface;
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\Core\Database\Database;
 
 /**
  * Implements hook_theme().
@@ -213,9 +214,12 @@ function civicrm_entity_entity_view_display_alter(EntityViewDisplayInterface $di
   if ($entity_type->get('civicrm_entity') && $entity_type->hasKey('bundle')) {
     $entity_display_repository = \Drupal::service('entity_display.repository');
     assert($entity_display_repository instanceof EntityDisplayRepositoryInterface);
+    $entity_view_mode_ids = array_keys($entity_display_repository->getViewModeOptions($entity_type->id()));
+    $view_mode = !empty($context['view_mode']) && in_array($context['view_mode'], $entity_view_mode_ids) ? $context['view_mode'] : $entity_display_repository::DEFAULT_DISPLAY_MODE;
     $root_display = $entity_display_repository->getViewDisplay(
       $entity_type->id(),
-      $entity_type->id()
+      $entity_type->id(),
+      $view_mode
     );
     $display->set('content', $root_display->get('content'));
     $display->set('hidden', $root_display->get('hidden'));
@@ -224,6 +228,12 @@ function civicrm_entity_entity_view_display_alter(EntityViewDisplayInterface $di
       $layout_builder_settings = $root_display->getThirdPartySettings('layout_builder');
       foreach ($layout_builder_settings as $setting_key => $setting) {
         $display->setThirdPartySetting('layout_builder', $setting_key, $setting);
+      }
+    }
+    $ds_settings = $root_display->getThirdPartySettings('ds');
+    if (!empty($ds_settings) && is_array($ds_settings)) {
+      foreach ($ds_settings as $setting_key => $setting) {
+        $display->setThirdPartySetting('ds', $setting_key, $setting);
       }
     }
   }
@@ -490,6 +500,23 @@ function _civicrm_entity_post_invoke($op, $storage, $entity) {
 }
 
 function civicrm_entity_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // Provide fully qualified table name in all Views queries.
+  // If CiviCRM tables in a separate database.
+  $civicrm_connection_name = drupal_valid_test_ua() ? 'civicrm_test' : 'civicrm';
+  $civicrm_database_info = Database::getConnectionInfo($civicrm_connection_name);
+  if (isset($civicrm_database_info['default'])) {
+    $civicrm_connection = Database::getConnection('default', $civicrm_connection_name);
+    $table_queue =& $query->getTableQueue();
+    foreach ($table_queue as $alias => &$table_info) {
+      if (strpos($table_info['table'], 'civicrm_') === 0 && strpos($table_info['table'], '.') === FALSE && strpos($table_info['table'], '__') === FALSE) {
+        $table_info['table'] = $civicrm_connection->getFullQualifiedTableName($table_info['table']);
+      }
+      if (!empty($table_info['join']->table) && strpos($table_info['join']->table, 'civicrm_') === 0 && strpos($table_info['join']->table, '.') === FALSE && strpos($table_info['join']->table, '__') === FALSE) {
+        $table_info['join']->table = $civicrm_connection->getFullQualifiedTableName($table_info['join']->table);
+      }
+    }
+  }
+
   \Drupal::service('civicrm')->initialize();
   $multilingual = \CRM_Core_I18n::isMultilingual();
 
@@ -502,7 +529,13 @@ function civicrm_entity_views_query_alter(ViewExecutable $view, QueryPluginBase 
         $affectedColumns[] = "{$table}.{$column}";
       }
     }
-    foreach ($query->where as &$condition_group) {
+    $class = get_class($query);
+    if ($class == 'Drupal\search_api\Plugin\views\query\SearchApiQuery') {
+      $where = $query->getWhere();
+    } else {
+      $where = $query->where;
+    }
+    foreach ($where as &$condition_group) {
       foreach ($condition_group['conditions'] as &$condition) {
         if (!is_object($condition['field'])) {
           foreach ($affectedColumns as $aff_column) {
@@ -514,9 +547,11 @@ function civicrm_entity_views_query_alter(ViewExecutable $view, QueryPluginBase 
       }
     }
 
-    foreach ($query->fields as &$field) {
-      if (array_key_exists($field['table'], $columns) && array_key_exists($field['field'], $columns[$field['table']])) {
-        $field['field'] .= $dbLocale;
+    if ($query->fields) {
+      foreach ($query->fields as &$field) {
+        if (array_key_exists($field['table'], $columns) && array_key_exists($field['field'], $columns[$field['table']])) {
+          $field['field'] .= $dbLocale;
+        }
       }
     }
   }
@@ -561,5 +596,22 @@ function civicrm_entity_rebuild() {
  * Implements hook_rules_action_info_alter().
  */
 function civicrm_entity_rules_action_info_alter(&$rules_actions) {
-  $rules_actions['civicrm_entity_user_create']['context']['format']->setDescription(t('Format of the username. Use <a href="@url">Twig style</a> tokens for using the available data.', ['@url' => 'https://www.drupal.org/docs/8/modules/typed-data-api-enhancements/typeddata-tokens']));
+  $definitions = \Drupal::service('plugin.manager.typed_data_filter')->getDefinitions();
+  $filters = "";
+  foreach ($definitions as $key) {
+    if ($key['provider'] == 'civicrm_entity') {
+      $filters .= ($filters == '' ? '' : ', ') . $key['id'];
+    }
+  }
+  if (array_key_exists('format', $rules_actions['civicrm_entity_user_create']['context_definitions'])) {
+    // Drupal 9 use 'context_definitions' instead of 'context'
+    $rules_actions['civicrm_entity_user_create']['context_definitions']['format']->setDescription(t('Format of the username. Use <a href="@url">Twig style</a> tokens for using the available data.<br>Civicrm Entity filter available : @filters.',
+      ['@url' => 'https://www.drupal.org/docs/8/modules/typed-data-api-enhancements/typeddata-tokens',
+      '@filters' => $filters]));
+  }
+  else {
+    $rules_actions['civicrm_entity_user_create']['context']['format']->setDescription(t('Format of the username. Use <a href="@url">Twig style</a> tokens for using the available data.<br>Civicrm Entity filter available : @filters.',
+      ['@url' => 'https://www.drupal.org/docs/8/modules/typed-data-api-enhancements/typeddata-tokens',
+      '@filters' => $filters]));
+  }
 }

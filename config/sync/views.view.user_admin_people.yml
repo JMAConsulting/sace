@@ -5,7 +5,35 @@ dependencies:
   config:
     - field.storage.user.field_calendar_colour
     - field.storage.user.field_user_team
+    - taxonomy.vocabulary.user_team
+  content:
+    - 'taxonomy_term:user_team:07174558-cea7-4383-893b-ae5d9926813e'
+    - 'taxonomy_term:user_team:165fa767-4afe-4664-96d6-838f98a636d0'
+    - 'taxonomy_term:user_team:174182b4-8bae-4578-8cab-749588ad8521'
+    - 'taxonomy_term:user_team:1b8aafcc-4678-4463-9a2e-9440f2fc78a8'
+    - 'taxonomy_term:user_team:212073fb-cf52-4c79-b9ab-bf0ff88a8cd2'
+    - 'taxonomy_term:user_team:2600b814-4d66-4e6e-828d-df4dfca4e0d4'
+    - 'taxonomy_term:user_team:2b28eb55-be3e-470f-8b4a-084036f1f65c'
+    - 'taxonomy_term:user_team:349b6cac-07ab-4b4b-a9aa-7a784d5bebc6'
+    - 'taxonomy_term:user_team:4c5b1129-54b5-4fbc-9b81-2e8a2c73ca5f'
+    - 'taxonomy_term:user_team:51704fc8-24c3-4bc9-b372-ad8e6a7b17db'
+    - 'taxonomy_term:user_team:6593bd2e-8c7b-4852-8089-7c83b46aba39'
+    - 'taxonomy_term:user_team:7ef01169-4720-4222-a4d5-37aadb6b64ef'
+    - 'taxonomy_term:user_team:81e57286-1ec1-47ca-b27d-a2c001d5fed9'
+    - 'taxonomy_term:user_team:834b47b5-ce6c-48e7-92cf-e5ea28a31d8f'
+    - 'taxonomy_term:user_team:8bd10ee6-4747-46d8-93e2-9dd4a0f73249'
+    - 'taxonomy_term:user_team:9601a7ec-8e27-41d0-a25e-cd518cacd43f'
+    - 'taxonomy_term:user_team:989632c3-68c8-41b4-8cc1-3368561ee448'
+    - 'taxonomy_term:user_team:afaa91b3-cb8a-4d68-8922-5421567ccef2'
+    - 'taxonomy_term:user_team:b4f9254a-b62e-4e65-8c38-94fbdbb4e0b6'
+    - 'taxonomy_term:user_team:c686c22e-9172-4d4f-8657-82ab86b6a30e'
+    - 'taxonomy_term:user_team:e0fd7a41-48d4-407f-89c8-d7e3b1af9289'
+    - 'taxonomy_term:user_team:ecbe3b95-1d30-45ec-acd4-7ca88c61f73e'
+    - 'taxonomy_term:user_team:f3d54740-3875-4a30-9beb-8d18c26be40d'
+    - 'taxonomy_term:user_team:f7b6e7a0-0a8a-42ea-bad0-66701e7d2cae'
+    - 'taxonomy_term:user_team:feeecad5-05da-4ff2-910d-037a4fa3a0db'
   module:
+    - taxonomy
     - user
 _core:
   default_config_hash: J5EbGNdz0YUaSIYKwomyFSOtZjsV9TrBA3qdb3ZwBS0
@@ -913,6 +941,84 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_user_team_target_id:
+          id: field_user_team_target_id
+          table: user__field_user_team
+          field: field_user_team_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            12: 12
+            13: 13
+            38: 38
+            16: 16
+            53: 53
+            54: 54
+            52: 52
+            43: 43
+            39: 39
+            40: 40
+            41: 41
+            55: 55
+            57: 57
+            42: 42
+            44: 44
+            56: 56
+            58: 58
+            47: 47
+            48: 48
+            45: 45
+            49: 49
+            46: 46
+            51: 51
+            50: 50
+            14: 14
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_user_team_target_id_op
+            label: 'User Team (field_user_team)'
+            description: ''
+            use_operator: false
+            operator: field_user_team_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_user_team_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              wheel: '0'
+              finance: '0'
+              taxreceipts: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: user_team
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -1019,6 +1125,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.permissions
       tags:
         - 'config:field.storage.user.field_calendar_colour'
@@ -1054,6 +1161,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.permissions
       tags:
         - 'config:field.storage.user.field_calendar_colour'

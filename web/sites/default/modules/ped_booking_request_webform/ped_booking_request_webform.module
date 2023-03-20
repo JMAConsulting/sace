@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function ped_booking_request_webform_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ('/webform/ped_booking_request_query_params' == $current_path) {
+    $form['#attached']['library'][] = 'ped_booking_request_webform/ped_booking_request_webform';
+  }
+}

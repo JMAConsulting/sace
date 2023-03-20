@@ -1,21 +1,10 @@
 _core:
   default_config_hash: hQu_5Svi0TQ5SE3dzjC55vecrEOKTYurvK-K7IJ8oXk
 admin_css: true
-nojs:
-  lazy: '0'
-  polyfill: '0'
-  classlist: '0'
-  promise: '0'
-  raf: '0'
-  webp: '0'
 fx: ''
-blur_client: false
-blur_storage: false
-blur_minwidth: 0
 noscript: false
 one_pixel: true
 placeholder: ''
-unstyled_extensions: ''
 responsive_image: false
 blazy:
   loadInvisible: false

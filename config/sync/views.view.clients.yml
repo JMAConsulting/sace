@@ -24,6 +24,69 @@ display:
     display_options:
       title: 'My Clients'
       fields:
+        pronouns_89:
+          id: pronouns_89
+          table: civicrm_value_contact_data_5
+          field: pronouns_89
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_contact
+          entity_field: custom_89
+          plugin_id: civicrm_entity_custom_field
+          label: Pronouns
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          type: string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: 0
         sort_name:
           id: sort_name
           table: civicrm_contact
@@ -34,7 +97,7 @@ display:
           entity_type: civicrm_contact
           entity_field: sort_name
           plugin_id: field
-          label: 'Sort Name'
+          label: 'Client Name'
           exclude: false
           alter:
             alter_text: false
@@ -77,8 +140,7 @@ display:
           hide_alter_empty: true
           click_sort_column: value
           type: string
-          settings:
-            link_to_entity: false
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -554,7 +616,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: 'Client File'
+            text: 'View File'
             make_link: true
             path: 'activities/{{ id }}'
             absolute: false
@@ -591,6 +653,70 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
+        phone:
+          id: phone
+          table: civicrm_phone
+          field: phone
+          relationship: reverse__civicrm_phone__contact_id
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_phone
+          entity_field: phone
+          plugin_id: field
+          label: 'Primary Phone #'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
       pager:
         type: none
         options:
@@ -626,7 +752,7 @@ display:
           entity_type: user
           entity_field: uid
           plugin_id: user_uid
-          default_action: default
+          default_action: ignore
           exception:
             value: ''
             title_enable: false
@@ -749,11 +875,9 @@ display:
           entity_type: civicrm_relationship
           entity_field: relationship_type_id
           plugin_id: numeric
-          operator: '='
+          operator: or
           value:
-            min: ''
-            max: ''
-            value: '17'
+            17: '17'
           group: 1
           exposed: false
           expose:
@@ -773,6 +897,57 @@ display:
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: 0
+        is_active:
+          id: is_active
+          table: civicrm_relationship
+          field: is_active
+          relationship: reverse__civicrm_relationship__contact_id_b
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_relationship
+          entity_field: is_active
+          plugin_id: boolean
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Relationship Is Active'
+            description: ''
+            use_operator: false
+            operator: is_active_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: is_active
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              wheel: '0'
+              finance: '0'
+              taxreceipts: '0'
+              supervisors: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -890,6 +1065,19 @@ display:
           entity_type: civicrm_contact
           plugin_id: civicrm_entity_civicrm_contact_user
           required: true
+        reverse__civicrm_phone__contact_id:
+          id: reverse__civicrm_phone__contact_id
+          table: civicrm_contact
+          field: reverse__civicrm_phone__contact_id
+          relationship: contact_id_a
+          group_type: group
+          admin_label: Phone
+          entity_type: civicrm_contact
+          plugin_id: civicrm_entity_reverse_location
+          required: false
+          location_type: '0'
+          is_billing: 0
+          is_primary: 1
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -932,7 +1120,7 @@ display:
           id: sort_name
           table: civicrm_contact
           field: sort_name
-          relationship: none
+          relationship: contact_id_a
           group_type: group
           admin_label: ''
           entity_type: civicrm_contact
@@ -957,20 +1145,38 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
               wheel: '0'
+              finance: '0'
+              taxreceipts: '0'
             placeholder: ''
           is_grouped: false
           group_info:
-            label: ''
+            label: 'Sort Name'
             description: ''
-            identifier: ''
+            identifier: sort_name
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1:
+                title: ''
+                operator: contains
+                value: ''
+              2:
+                title: ''
+                operator: contains
+                value: ''
+              3:
+                title: ''
+                operator: contains
+                value: ''
         contact_sub_type:
           id: contact_sub_type
           table: civicrm_contact
@@ -1024,11 +1230,9 @@ display:
           entity_type: civicrm_relationship
           entity_field: relationship_type_id
           plugin_id: numeric
-          operator: '='
+          operator: or
           value:
-            min: ''
-            max: ''
-            value: '17'
+            17: '17'
           group: 2
           exposed: false
           expose:
@@ -1048,6 +1252,7 @@ display:
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1060,40 +1265,44 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        relationship_type_id_1:
-          id: relationship_type_id_1
+          reduce_duplicates: 0
+        is_active:
+          id: is_active
           table: civicrm_relationship
-          field: relationship_type_id
+          field: is_active
           relationship: reverse__civicrm_relationship__contact_id_b
           group_type: group
           admin_label: ''
           entity_type: civicrm_relationship
-          entity_field: relationship_type_id
-          plugin_id: numeric
-          operator: empty
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 2
-          exposed: false
+          entity_field: is_active
+          plugin_id: boolean
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: true
           expose:
             operator_id: ''
-            label: ''
+            label: 'Relationship Is Active'
             description: ''
             use_operator: false
-            operator: ''
+            operator: is_active_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: ''
+            identifier: is_active
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              wheel: '0'
+              finance: '0'
+              taxreceipts: '0'
+              supervisors: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -1139,6 +1348,19 @@ display:
           entity_field: contact_id_a
           plugin_id: standard
           required: false
+        reverse__civicrm_phone__contact_id:
+          id: reverse__civicrm_phone__contact_id
+          table: civicrm_contact
+          field: reverse__civicrm_phone__contact_id
+          relationship: contact_id_a
+          group_type: group
+          admin_label: Phone
+          entity_type: civicrm_contact
+          plugin_id: civicrm_entity_reverse_location
+          required: false
+          location_type: '0'
+          is_billing: 0
+          is_primary: 1
       display_description: ''
       display_extenders: {  }
       path: all-clients

@@ -166,6 +166,7 @@ trait WebformTableTrait {
       }
 
       // Add #title to the table's options.
+$choice = (array) $choice;
       if (empty($element[$key]['#title'])) {
         if ($title = static::getTableSelectOptionTitle($choice)) {
           $element[$key]['#title'] = $title;

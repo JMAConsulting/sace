@@ -1,0 +1,14 @@
+uuid: 4926cadc-232e-4eee-baac-2f02d381b747
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.fund_development_officer
+  module:
+    - user
+id: user_add_role_action.fund_development_officer
+label: 'Add the Fund Development Officer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: fund_development_officer

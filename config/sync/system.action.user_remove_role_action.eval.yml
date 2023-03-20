@@ -1,0 +1,14 @@
+uuid: de7e8b5e-2ccd-4160-995d-f4e6c1298115
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.eval
+  module:
+    - user
+id: user_remove_role_action.eval
+label: 'Remove the Eval role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: eval

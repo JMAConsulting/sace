@@ -1,0 +1,14 @@
+uuid: 6f0a3ab4-9ac7-4cf4-82b2-654772f0d71c
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.intake
+  module:
+    - user
+id: user_remove_role_action.intake
+label: 'Remove the INTAKE role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: intake

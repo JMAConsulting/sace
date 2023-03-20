@@ -1,0 +1,14 @@
+uuid: 5cf095f3-d3d5-4d38-8348-1689032ed8b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pe_tl
+  module:
+    - user
+id: user_add_role_action.pe_tl
+label: 'Add the PE TL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: pe_tl

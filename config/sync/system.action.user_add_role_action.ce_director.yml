@@ -1,0 +1,14 @@
+uuid: 96b9c314-7faa-4019-ae7c-74acc95d9be7
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.ce_director
+  module:
+    - user
+id: user_add_role_action.ce_director
+label: 'Add the CE Director role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: ce_director

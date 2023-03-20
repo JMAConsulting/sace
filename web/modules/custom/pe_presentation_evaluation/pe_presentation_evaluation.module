@@ -8,6 +8,14 @@ use Drupal\webform\Utility\WebformFormHelper;
  * @param $form_id
  */
 function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_presentation_evaluation_summary__add_form') {
+    $elements = WebformFormHelper::flattenElements($form);
+    $elements['civicrm_1_activity_1_cg2_custom_458']['#default_value'] = TRUE;
+    $elements['civicrm_1_activity_1_cg2_custom_459']['#default_value'] = 1;
+    $query = \Drupal::entityQuery('webform_submission')
+      ->condition('webform_id', 'webform_submission_presentation_evaluation_summary__add_form');
+
+  }
   if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
@@ -37,10 +45,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements['presentation_topic_markup']['#markup'] = '<label for="presentation_topic_markup" class="form-item__label">Presentation Topic(s)</label><div>' . $topic . '</div>';
     $elements['civicrm_1_activity_1_cg2_custom_340']['#access'] = FALSE;
 
-    //Update Q1 presentation topic
-    //Get q1
-    $q1 = $elements["q1"]["#title"];
-
+    
     //insert presentation topic in question title
     foreach (['q1', 'feedback', 'q3', 'feedback_q4', 'q5', 'feedback_q6', 'feedback_q15'] as $question) {
       $elements[$question]['#title'] = str_replace('[the presentation topic]', $topic, $elements[$question]['#title']);
@@ -48,7 +53,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
     //insert presentation method in question title
     foreach (['q19', 'q20'] as $question) {
-      $elements[$question]['#title'] = str_replace('[the presentation method]', $elements['civicrm_1_activity_1_cg2_custom_88']['#default_value'], $elements[$question]['#title']);
+      // $elements[$question]['#title'] = str_replace('[the presentation method]', $elements['civicrm_1_activity_1_cg2_custom_88']['#default_value'], $elements[$question]['#title']);
     }
 
     // Get activity id from query var.
@@ -92,30 +97,39 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     if ($result['Booking_Information.Facilitating_Program'] != 'InstitutionalSupport') {
       $elements['q12']['#access'] = FALSE;
     }
-
-    // Q13-15 toggle based on Demographic   information
-    if ($result['Booking_Information.Presentation_Population_of_Focus'] != NULL) {
+      
+    // Toggle based on Demographic information
+    //Q13
+    $q13_population_of_focus = ['adults', 'professionals', 'guardians', 'serviceproviders', 'educators'];
+    if(empty(array_intersect(array_map( 'strtolower', $result['Booking_Information.Presentation_Population_of_Focus']), $q13_population_of_focus))) {
       $elements['q13']['#access'] = FALSE;
+    } 
+    
+    // Q14
+    if(empty(array_intersect(array_map( 'strtolower', $result['Booking_Information.Presentation_Population_of_Focus']), ['volunteers']))) {
       $elements['q14']['#access'] = FALSE;
-      $elements['q15']['#access'] = FALSE;
     }
 
-    //Q16 toggle show when presentation topic is Bystander Intervention
-    if ($result['Booking_Information.Presentation_topics'] != 'BystanderIntervention') {
+    //Q15    
+    if(empty(array_intersect(array_map( 'strtolower', $result['Booking_Information.Presentation_Population_of_Focus']), ['serviceproviders']))) {
+      $elements['feedback_q15']['#access'] = FALSE;
+    }    
+    //Q16 toggle show when presentation topic is Bystander Intervention    
+    if(empty(array_intersect(array_map( 'strtolower', $result['Booking_Information.Presentation_Population_of_Focus']), ['professionals'])) || empty(array_intersect(array_map( 'strtolower', $result['Booking_Information.Presentation_topics']), ['bystanderintervention']))) {    
       $elements['q16']['#access'] = FALSE;
     }
 
     //Q17 toggle show when presentation topic is Privilege and Oppression
-    if ($result['Booking_Information.Presentation_topics'] != 'PrivilegeandOppression') {
+    if (empty(array_intersect(array_map( 'strtolower', $result['Booking_Information.Presentation_topics']), ['privilegeandoppression']))) {
       $elements['q17']['#access'] = FALSE;
     }
 
-    //Q19-20 update presentation method
+    //Q19-20 update presentation method    
     if (empty($result['Booking_Information.Presentation_Method'])) {
       return;
     }
-    $form['elements']['q19']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q19']['#title']);
-    $form['elements']['q20']['#title'] = str_replace('[INSERT PRESENTATION METHOD]', $result['Booking_Information.Presentation_Method'], $form['elements']['q20']['#title']);
+    $form['elements']['feedback_q19']['#title'] = str_replace('[the presentation method]', $result['Booking_Information.Presentation_Method'], $form['elements']['feedback_q20']['#title']);
+    $form['elements']['feedback_q20']['#title'] = str_replace('[the presentation method]', $result['Booking_Information.Presentation_Method'], $form['elements']['feedback_q20']['#title']);
 
     //  Get all questions
     $questions = [];

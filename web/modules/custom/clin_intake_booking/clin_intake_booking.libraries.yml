@@ -1,0 +1,4 @@
+clin_intake_booking:
+  version: 1.0
+  js:
+    js/clin_intake_booking.js: {}

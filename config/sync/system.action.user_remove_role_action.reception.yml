@@ -1,0 +1,14 @@
+uuid: 9294b021-07e6-4e3f-af90-25412f760491
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.reception
+  module:
+    - user
+id: user_remove_role_action.reception
+label: 'Remove the Reception role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: reception

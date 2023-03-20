@@ -118,6 +118,7 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
       '#title': 'Presentation Method'
+      '#prepopulate': true
       '#empty_option': '-Select-'
       '#options':
         Presentation: 'In-person Presentation'
@@ -132,9 +133,13 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
+  presentation_topic_markup:
+    '#type': webform_markup
+    '#markup': test
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
-    '#title': 'Presentation topics'
+    '#title': 'Presentation topics:'
+    '#title_display': inline
     '#disabled': true
     '#options':
       SexualAssaultConsent: 'Sexual Assault & Consent'
@@ -170,54 +175,55 @@ elements: |-
     '#extra':
       width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-  presentation_topic_markup:
-    '#type': webform_markup
-    '#markup': test
   q1:
     '#type': radios
-    '#title': 'Q1 I learned something new about the presentation topic'
-    '#options':
-      5: 'Strongly Agree'
-      4: Agree
-      3: Neutral
-      2: Disagree
-      1: 'Strongly Disagree'
-    '#required': true
-  feedback:
-    '#type': textarea
-    '#title': 'Q2 List one new thing you learned about the topic'
-    '#required': true
-  q3:
-    '#type': radios
-    '#title': 'Q3 I learned how to support someone impacted by the presentation topic'
+    '#title': 'Q1 I learned something new about [the presentation topic]'
     '#options':
       'Strongly Agree': 'Strongly Agree'
       Agree: Agree
-      Neutral: Neutral
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+    '#required': true
+  feedback:
+    '#type': textarea
+    '#title': 'Q2 List one new thing you learned about [the presentation topic]'
+    '#required': true
+  q3:
+    '#type': radios
+    '#title': 'Q3 I learned how to support someone impacted by [the presentation topic]'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
       Disagree: Disagree
       'Strongly Disagree': 'Strongly Disagree'
   feedback_q4:
     '#type': textarea
-    '#title': 'Q4 List one thing you could do to support someone impacted by the topic'
+    '#title': 'Q4 List one thing you could do to support someone impacted by [the presentation topic]'
   q5:
     '#type': radios
-    '#title': 'Q5 I learned about resources people impacted by the topic can access for help'
+    '#title': 'Q5 I learned about resources people impacted by [the presentation topic] can access for help'
     '#options':
       'Strongly Agree': 'Strongly Agree'
       Agree: Agree
-      Neutral: Neutral
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
       Disagree: Disagree
       'Strongly Disagree': 'Strongly Disagree'
   feedback_q6:
     '#type': textarea
-    '#title': 'Q6 List one resource a person impacted by the topic could access for help'
+    '#title': 'Q6 List one resource a person impacted by [the presentation topic] could access for help'
   q7:
     '#type': radios
     '#title': 'Q7 I have a greater understanding of the impact of sexual violence on my community'
     '#options':
       'Strongly Agree': 'Strongly Agree'
       Agree: Agree
-      Neutral: Neutral
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
       Disagree: Disagree
       'Strongly Disagree': 'Strongly Disagree'
   q8:
@@ -226,9 +232,117 @@ elements: |-
     '#options':
       'Strongly Agree': 'Strongly Agree'
       Agree: Agree
-      Neutral: Neutral
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
       Disagree: Disagree
       'Strongly Disagree': 'Strongly Disagree'
+  q9:
+    '#type': radios
+    '#title': 'Q9 I feel more clear on what values guide my organization''s response to sexual violence'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  q10:
+    '#type': radios
+    '#title': 'Q10 This session was a valuable opportunity to think collaboratively with my team about our response to sexual violence'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  q11:
+    '#type': radios
+    '#title': 'Q11 The scenarios helped me understand how to operationalize our safer spaces values and program'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  q12:
+    '#type': radios
+    '#title': 'Q12 I think this session will help my organization develop and execute better safer spaces policies and practices'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  q13:
+    '#type': radios
+    '#title': 'Q13 I learned something new about how to respond to a disclosure'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  q14:
+    '#type': radios
+    '#title': 'Q14 I believe the information we discussed today will help me support someone on the SACE SIL'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  feedback_q15:
+    '#type': textarea
+    '#title': 'Q15 What information did you find most helpful and/or relevant for your work related to the [presentation topic]?'
+  q16:
+    '#type': radios
+    '#title': 'Q16 I feel more prepared to intervene in a situation where sexual violence has occurred or may occur'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  q17:
+    '#type': radios
+    '#title': 'Q17 I have gained a better understanding of what it means to be an ally'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  q18:
+    '#type': radios
+    '#title': 'Q18 The presenter(s) were effective'
+    '#options':
+      'Strongly Agree': 'Strongly Agree'
+      Agree: Agree
+      'Somewhat Agree': 'Somewhat Agree'
+      'Somewhat Disagree': 'Somewhat Disagree'
+      Disagree: Disagree
+      'Strongly Disagree': 'Strongly Disagree'
+  feedback_q19:
+    '#type': textarea
+    '#title': 'Q19 What did you like most about [the presentation method]'
+  feedback_q20:
+    '#type': textarea
+    '#title': 'Q20 What did you like least about [the presentation method]? Is there anything you would change, or anything missing you would like to learn about?'
+  q21:
+    '#type': checkboxes
+    '#title': 'Q21 Are any of the following statements true for you?'
+    '#options':
+      1: 'I am a member of the Canadian Armed Forces, or have been a member in the past'
+      2: '  Members of my family or household are members of the Canadian Armed Forces'
+      3: '  I work on a Canadian Armed Forces base'
+    '#options_none': true
   aid:
     '#type': number
     '#title': aid

@@ -1,0 +1,14 @@
+uuid: a4c62aa2-2e3d-4048-95c5-64692969a11e
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_director
+  module:
+    - user
+id: user_remove_role_action.clin_director
+label: 'Remove the CLIN Director role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: clin_director

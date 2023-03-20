@@ -2,7 +2,6 @@
 
 namespace Drupal\smart_date\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\datetime\Plugin\Field\FieldFormatter\DateTimeDefaultFormatter;
 use Drupal\smart_date\Entity\SmartDateFormat;
@@ -17,9 +16,13 @@ use Drupal\smart_date\SmartDateTrait;
  *
  * @FieldFormatter(
  *   id = "smartdate_default",
- *   label = @Translation("Default"),
+ *   label = @Translation("Smart Date Formatter"),
  *   field_types = {
- *     "smartdate"
+ *     "smartdate",
+ *     "daterange",
+ *     "datetime",
+ *     "timestamp",
+ *     "published_at"
  *   }
  * )
  */
@@ -34,6 +37,8 @@ class SmartDateDefaultFormatter extends DateTimeDefaultFormatter {
     return [
       'format' => 'default',
       'force_chronological' => 0,
+      'add_classes' => 0,
+      'time_wrapper' => 1,
     ] + parent::defaultSettings();
   }
 
@@ -67,9 +72,25 @@ class SmartDateDefaultFormatter extends DateTimeDefaultFormatter {
     // Provide an option to force a chronological display.
     $form['force_chronological'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Force chronogical'),
+      '#title' => $this->t('Force chronological'),
       '#description' => $this->t('Override any manual sorting or other differences.'),
       '#default_value' => $this->getSetting('force_chronological'),
+    ];
+
+    // Provide an option to add spans around the date and time values.
+    $form['add_classes'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Add classes'),
+      '#description' => $this->t('Add classed spans around the time and date values.'),
+      '#default_value' => $this->getSetting('add_classes'),
+    ];
+
+    // Provide an option to add spans around the date and time values.
+    $form['time_wrapper'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Add time wrapper'),
+      '#description' => $this->t('Include an HTML5 time wrapper in the markup. Start and end dates will be individually wrapped.'),
+      '#default_value' => $this->getSetting('time_wrapper'),
     ];
 
     return $form;

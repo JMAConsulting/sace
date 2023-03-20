@@ -1,0 +1,14 @@
+uuid: 2a93a479-ce56-495d-b256-e7974705c2d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.supervisors
+  module:
+    - user
+id: user_add_role_action.supervisors
+label: 'Add the Supervisors role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: supervisors

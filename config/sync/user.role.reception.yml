@@ -1,0 +1,9 @@
+uuid: 0dbc3496-5aea-49da-9630-c86e83b31430
+langcode: en
+status: true
+dependencies: {  }
+id: reception
+label: Reception
+weight: 7
+is_admin: null
+permissions: {  }

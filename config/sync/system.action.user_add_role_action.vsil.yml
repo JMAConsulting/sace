@@ -1,0 +1,14 @@
+uuid: cd3d123f-23d4-451f-a279-84a12f8182da
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.vsil
+  module:
+    - user
+id: user_add_role_action.vsil
+label: 'Add the VSIL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: vsil

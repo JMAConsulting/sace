@@ -1,0 +1,14 @@
+uuid: 22924f1e-01e3-49bc-88d6-e1e587feaafc
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.vsil_tl
+  module:
+    - user
+id: user_remove_role_action.vsil_tl
+label: 'Remove the VSIL TL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: vsil_tl

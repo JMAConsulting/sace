@@ -1,0 +1,14 @@
+uuid: 9938a644-052d-463f-b9cb-4d5b6bc7a94a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.volunteer_supervisor
+  module:
+    - user
+id: user_add_role_action.volunteer_supervisor
+label: 'Add the Volunteer Supervisor role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: volunteer_supervisor
