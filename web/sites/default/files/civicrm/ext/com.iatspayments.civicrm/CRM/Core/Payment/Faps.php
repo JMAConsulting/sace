@@ -191,15 +191,13 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
     $markup = '<link type="text/css" rel="stylesheet" href="'.$cryptoCss.'" media="all" />'; // <script type="text/javascript" src="'.$cryptojs.'"></script>';
     CRM_Core_Region::instance('billing-block')->add(array(
       'markup' => $markup,
-    )); 
+    ));
     // the cryptojs above is the one on the 1pay server, now I load and invoke the extension's crypto.js
     $myCryptoJs = $resources->getUrl('com.iatspayments.civicrm', 'js/crypto.js');
     // after manually doing what addVars('iats', $jsVariables) would normally do
     $script = 'var iatsSettings = ' . json_encode($jsVariables) . ';';
     $script .= 'var cryptoJs = "'.$myCryptoJs.'";';
-    $script .= 'CRM.$(function ($) { $.getScript(cryptoJs).fail(function( jqxhr, settings, exception) {
-      CRM.alert(\'Failed to initiate payment gateway, please reload the page\', \'Payment gateway error\');
-    }); });';
+    $script .= 'CRM.$(function ($) { $.getScript(cryptoJs); });';
     CRM_Core_Region::instance('billing-block')->add(array(
       'script' => $script,
     ));
@@ -270,21 +268,17 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    */
   public function doPayment(&$params, $component = 'contribute') {
     // CRM_Core_Error::debug_var('doPayment params', $params);
+    if (empty($params['amount'])) {
+      return _iats_payment_status_complete();
+    }
 
-    // Check for valid currency [todo: we have C$ support, but how do we check,
-    // or should we?]
-    if (
-        'USD' != $params['currencyID']
-     && 'CAD' != $params['currencyID']
-    ) {
-      return self::error('Invalid currency selection: ' . $params['currencyID']);
+    $isRecur = CRM_Utils_Array::value('is_recur', $params);
+    if ($isRecur && empty($params['contributionRecurID'])) {
+      return self::error('Invalid call to doPayment with is_recur and no contributionRecurID');
     }
-    $isRecur = CRM_Utils_Array::value('is_recur', $params) && $params['contributionRecurID'];
     $usingCrypto = !empty($params['cryptogram']);
-    $ipAddress = (function_exists('ip_address') ? ip_address() : $_SERVER['REMOTE_ADDR']);
-    if (!filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-      $ipAddress = '';
-    }
+    // FAPS only allows ipv4 addresses
+    $ipAddress = CRM_Iats_Transaction::remote_ip_address(FILTER_FLAG_IPV4);
     $credentials = array(
       'merchantKey' => $this->_paymentProcessor['signature'],
       'processorId' => $this->_paymentProcessor['user_name']
