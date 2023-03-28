@@ -1,0 +1,62 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use \Drupal\Core\Datetime\DrupalDateTime;
+
+require_once 'ped_online_course_booking_update.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function ped_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {  
+  if($form_id == "webform_submission__ped_youth_online_course_booking_add_form"){
+
+    $elements = WebformFormHelper::flattenElements($form);
+
+    if (empty($elements)) {
+      return;
+    }
+    //Activity ID
+    $aid = $elements['aid']['#default_value'];
+    if(!$aid) {
+      return;
+    }
+    // Get custom field constants
+    $constants = get_defined_constants(FALSE);
+
+    //Get Activity data
+    $activities = \Civi\Api4\Activity::get()
+    ->addSelect('Booking_Information.Online_Courses', 'Booking_Information.Youth_Online_Course_Optional_Add_Ons', 'Booking_Information.This_booking_is_for_a_smaller_group_program_department_or_commit', 'Booking_Information.Preferred_Dates', 'Booking_Information.Number_Participants', 'Booking_Information.Number_of_classes', 'Booking_Information.Grades_and_Ages', 'Booking_Information.Participant_Needs')
+    ->addWhere('id', '=', 7815)
+    ->setLimit(0)
+    ->execute();
+    
+    //Set Defaults
+    //Online_Courses
+    $elements[$constants['Online_Courses']]['#default_value'] = $activities[0]['Booking_Information.Online_Courses'];
+
+    //Youth_Online_Course_Optional_Add_Ons
+    $elements[$constants['Youth_Online_Course_Optional_Add_Ons']]['#default_value'] = $activities[0]['Booking_Information.Youth_Online_Course_Optional_Add_Ons'];
+
+    //This_booking_is_for_a_smaller_group_program_department_or_commit
+    $elements[$constants['This_booking_is_for_a_smaller_group_program_department_or_commit']]['#default_value'] = $activities[0]['Booking_Information.This_booking_is_for_a_smaller_group_program_department_or_commit'];
+
+    //Preferred_Dates
+    $elements[$constants['Preferred_Dates']]['#default_value'] = $activities[0]['Booking_Information.Preferred_Dates'];
+
+    //Number_Participants
+    $elements[$constants['Number_Participants']]['#default_value'] = $activities[0]['Booking_Information.Number_Participants'];
+
+    //Number_of_classes
+    $elements[$constants['Number_of_classes']]['#default_value'] = $activities[0]['Booking_Information.Number_of_classes'];
+
+    //Grades_and_Ages
+    $elements[$constants['Grades_and_Ages']]['#default_value'] = $activities[0]['Booking_Information.Grades_and_Ages'];
+
+    //Participant_Needs
+    $elements[$constants['Participant_Needs']]['#default_value'] = $activities[0]['Booking_Information.Participant_Needs'];
+  }
+}
