@@ -19,6 +19,7 @@ use Eluceo\iCal\Property\Event\RecurrenceRule;
 use Eluceo\iCal\Property\Event\ExDate;
 use Drupal\smart_date_recur\Entity\SmartDateRule;
 use Drupal\smart_date\SmartDateTrait;
+use Drupal\views_ical\ViewsIcalHelper;
 
 
 /**
@@ -38,7 +39,11 @@ use Drupal\smart_date\SmartDateTrait;
  * )
  */
 class IcalFieldsWizard extends Fields {
-  // What is the point of this?
+
+  /**
+   * @var \Drupal\views_ical\ViewsIcalHelperInterface
+   */
+  private $helper;
 
   /**
    * Render a row object. This usually passes through to a theme template
@@ -53,9 +58,10 @@ class IcalFieldsWizard extends Fields {
   public function render($row) {
     $renderer = $this->getRenderer();
     $style = $this->view->getStyle();
+    $this->helper = $style->getHelper();
     $style_options = $style->options;
      /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_storage_definitions */
-//    $field_storage_definitions = $style->entityFieldManager->getFieldStorageDefinitions($this->view->field[$options['date_field']]->definition['entity_type']);
+    // $field_storage_definitions = $style->entityFieldManager->getFieldStorageDefinitions($this->view->field[$options['date_field']]->definition['entity_type']);
     $entity_field_manager = $style->getEntityFieldManager();
 
     if(!isset($style_options['date_field'])) {
@@ -85,6 +91,8 @@ class IcalFieldsWizard extends Fields {
       $timezone = new \DateTimeZone($user_timezone);
     }
 
+    // Provide an opportunity to
+
     // Use date_recur's API to generate the events.
     // Recurring events will be automatically handled here.
     if ($date_field_type === 'date_recur') {
@@ -104,7 +112,6 @@ class IcalFieldsWizard extends Fields {
     // This field type is actually deprecated by the date_all_day module.
     else if ($date_field_type === 'daterange_all_day') {
       throw new \Exception('daterange_all_day fields not supported.');
-      //$this->helper->addEvent($events, $row , $timezone, $this->options);
     }
     else if($date_field_type === 'smartdate') {
       $this->addSmartDateEvent($events, $row, $timezone, $style_options);
@@ -236,9 +243,9 @@ class IcalFieldsWizard extends Fields {
         $event->addRecurrenceRule($rrule);
       }
       else {
-        $helper = $entity->field_recur[0]->getHelper();
-        $rrules = $helper->getRules();
-        $exdates = $helper->getExcluded();
+        $rruleHelper = $entity->field_recur[0]->getHelper();
+        $rrules = $rruleHelper->getRules();
+        $exdates = $rruleHelper->getExcluded();
 
         // Parse EXDATEs.
         if ($exdates) {
@@ -296,7 +303,10 @@ class IcalFieldsWizard extends Fields {
     }
 
     // Location field
-    if (isset($field_mapping['location_field']) && isset($this->view->field[$field_mapping['location_field']])) {
+    if (isset($field_mapping['location_field'])
+      && isset($this->view->field[$field_mapping['location_field']])
+      && isset($entity->{$field_mapping['location_field']})) {
+
       $locationField = $entity->{$field_mapping['location_field']}->view();
       if ($renderer->hasRenderContext()) {
         $html = $renderer->render($locationField);
@@ -361,6 +371,7 @@ class IcalFieldsWizard extends Fields {
       $start_datetime = new \DateTime($date_entry['value'], $utc_timezone);
       $start_datetime->setTimezone($timezone);
       $event->setDtStart($start_datetime);
+      $this->helper->addTimezone($timezone, $start_datetime);
 
       // Loop over field values so we can support daterange fields with multiple cardinality.
       if (!empty($date_entry['end_value'])) {
@@ -368,6 +379,7 @@ class IcalFieldsWizard extends Fields {
         $end_datetime->setTimezone($timezone);
 
         $event->setDtEnd($end_datetime);
+        $this->helper->addTimezone($timezone, $end_datetime);
 
         // If this is a date_all_day field, pull the all day option from that.
         if($date_all_day = false) {
@@ -421,6 +433,7 @@ class IcalFieldsWizard extends Fields {
       $start_datetime = new \DateTime($date_entry['value'], $utc_timezone);
       $start_datetime->setTimezone($timezone);
       $event->setDtStart($start_datetime);
+      $this->helper->addTimezone($timezone, $start_datetime);
 
       // Set the end time
       $end_date_field_values = $entity->get($field_mapping['end_date_field'])->getValue();
@@ -428,6 +441,7 @@ class IcalFieldsWizard extends Fields {
       $end_datetime = new \DateTime($end_date_entry['value'], $utc_timezone);
       $end_datetime->setTimezone($timezone);
       $event->setDtEnd($end_datetime);
+      $this->helper->addTimezone($timezone, $end_datetime);
 
       // All day events.
       if (isset($field_mapping['no_time_field']) && $field_mapping['no_time_field'] != 'none') {
@@ -479,12 +493,14 @@ class IcalFieldsWizard extends Fields {
       $startDatetime->setTimestamp(trim($dateValue));
       $startDatetime->setTimezone($dateTZ);
       $event->setDtStart($startDatetime);
+      $this->helper->addTimezone($timezone, $startDatetime);
 
       // Set the end time.
       $endDatetime = new \DateTime();
       $endDatetime->setTimestamp(trim($dateEndValue));
       $endDatetime->setTimezone($dateTZ);
       $event->setDtEnd($endDatetime);
+      $this->helper->addTimezone($timezone, $endDatetime);
 
       // Can the date be considered all-day?
       if (SmartDateTrait::isAllDay($startDatetime->getTimestamp(), $endDatetime->getTimestamp(), $dateTZ)) {
@@ -566,12 +582,13 @@ class IcalFieldsWizard extends Fields {
         $start_datetime = $occurrence->getStart();
         $start_datetime->setTimezone($timezone);
         $event->setDtStart($start_datetime);
+        $this->helper->addTimezone($timezone, $start_datetime);
 
         /** @var \DateTime $end_datetime */
         $end_datetime = $occurrence->getEnd();
         $end_datetime->setTimezone($timezone);
         $event->setDtEnd($end_datetime);
-
+        $this->helper->addTimezone($timezone, $end_datetime);
         $current_date = date_create();
 
         // Only include future occurrences and only the first one because we will rely on rrules.
@@ -603,7 +620,7 @@ class IcalFieldsWizard extends Fields {
       $entity = $row->_object->getValue();
     }
     else {
-      throw new Exception('Base table type not supported. At the moment, Views iCal only supports nodes and Search API indexes');
+      throw new \Exception('Base table type not supported. At the moment, Views iCal only supports nodes and Search API indexes');
     }
 
     return $entity;
