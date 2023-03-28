@@ -5,8 +5,6 @@
 dblazy:
   js:
     js/dblazy.min.js: { minified: true, weight: -6 }
-  dependencies:
-    - core/jquery
 
 # This library appears to be unmaintained, yet it is great and stable for 2KB.
 # Forked it as a module asset to expose private function/methods and minimize
