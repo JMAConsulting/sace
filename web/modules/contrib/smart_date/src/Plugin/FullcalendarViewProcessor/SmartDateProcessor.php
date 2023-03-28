@@ -49,6 +49,10 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
       return;
     }
     $calendar_options = json_decode($variables['#attached']['drupalSettings']['fullCalendarView'][$view_index]['calendar_options'], TRUE);
+    // Nothing to do if there are no events to process.
+    if (empty($calendar_options['events'])) {
+      return;
+    }
     $entries = $calendar_options['events'];
     $mappings = $this->getIdMappings($entries);
     foreach ($view->result as $key => $row) {

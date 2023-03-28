@@ -97,7 +97,18 @@ function nagios_invoke_all($hook = 'nagios') {
   $args = func_get_args();
   $moduleHandler = Drupal::moduleHandler();
   $config = Drupal::config('nagios.settings');
-  foreach ($moduleHandler->getImplementations($hook) as $module) {
+  if (method_exists($moduleHandler, 'getImplementations')) {
+    // Drupal 8,9
+    $modules = $moduleHandler->getImplementations($hook);
+  }
+  else {
+    // Drupal 10
+    $modules = [];
+    $moduleHandler->invokeAllWith($hook, function (callable $hook, string $module) use (&$modules) {
+      $modules[] = $module;
+    });
+  }
+  foreach ($modules as $module) {
     // If we're running the checks, see if the checks for that module
     // are enabled, otherwise just continue:
     if ($hook == 'nagios' && !SettingsForm::getModuleHookEnabled($module, $config)) {
@@ -148,6 +159,28 @@ function nagios_nagios_settings() {
     '#title' => t('Show outdated module/theme name'),
     '#default_value' => $config->get('nagios.show_outdated_names'),
     '#configname' => 'show_outdated_names',
+    '#states' => ['disabled' => ['#edit-nagios-func-requirements' => ['checked' => FALSE]]],
+  ];
+
+  $form['nagios_experimental_modules'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Show “experimental modules enabled“ message'),
+    '#default_value' => $config->get('nagios.experimental_modules'),
+    '#configname' => 'experimental_modules',
+    '#states' => ['disabled' => ['#edit-nagios-func-requirements' => ['checked' => FALSE]]],
+  ];
+  $form['nagios_deprecated_modules'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Show “deprecated modules enabled“ message'),
+    '#default_value' => $config->get('nagios.deprecated_modules'),
+    '#configname' => 'deprecated_modules',
+    '#states' => ['disabled' => ['#edit-nagios-func-requirements' => ['checked' => FALSE]]],
+  ];
+  $form['nagios_deprecated_themes'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Show “deprecated themes enabled” message'),
+    '#default_value' => $config->get('nagios.deprecated_themes'),
+    '#configname' => 'deprecated_themes',
     '#states' => ['disabled' => ['#edit-nagios-func-requirements' => ['checked' => FALSE]]],
   ];
 

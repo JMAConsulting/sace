@@ -1,12 +1,11 @@
 name: Nagios Monitoring
 description: Exposes a page that Nagios or Icinga can monitor.
-package: Custom
+package: Monitoring
 type: module
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 configure: nagios.settings
 
-# Information added by Drupal.org packaging script on 2022-02-03
-version: '8.x-1.15'
+# Information added by Drupal.org packaging script on 2022-12-29
+version: '8.x-1.17'
 project: 'nagios'
-datestamp: 1643893893
+datestamp: 1672318273

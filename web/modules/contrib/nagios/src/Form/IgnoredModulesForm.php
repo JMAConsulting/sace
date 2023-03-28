@@ -135,7 +135,13 @@ class IgnoredModulesForm extends ConfigFormBase {
 
     // Sort all modules by their names.
     $modules = \Drupal::service('extension.list.module')->getList();
-    uasort($modules, 'system_sort_modules_by_info_name');
+    // Drupal 8,9
+    $callback = 'system_sort_modules_by_info_name';
+    if (!function_exists($callback)) {
+      // Drupal 10
+      $callback = '\Drupal\Core\Extension\ExtensionList::sortByName';
+    }
+    uasort($modules, $callback);
 
     // Build the rows
     foreach ($modules as $filename => $module) {

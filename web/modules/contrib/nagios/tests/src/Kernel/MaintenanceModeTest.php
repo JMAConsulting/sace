@@ -8,8 +8,9 @@ use Drupal\nagios\Controller\StatuspageController;
 use Drupal\nagios\EventSubscriber\MaintenanceModeSubscriber;
 use Drupal\system\Form\SiteMaintenanceModeForm;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * Tests the functionality to monitor cron.
@@ -17,6 +18,8 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  * @group nagios
  */
 class MaintenanceModeTest extends EntityKernelTestBase {
+
+  use ProphecyTrait;
 
   /**
    * Modules to install.
@@ -36,7 +39,7 @@ class MaintenanceModeTest extends EntityKernelTestBase {
 
   public function testSubscriber() {
     $subscriber = new MaintenanceModeSubscriber();
-    $get_response_event = $this->prophesize(GetResponseEvent::class);
+    $get_response_event = $this->prophesize(RequestEvent::class);
     $request = $this->prophesize(Request::class);
 
     /** @noinspection PhpUndefinedMethodInspection */
@@ -82,4 +85,5 @@ class MaintenanceModeTest extends EntityKernelTestBase {
     $form_object->submitForm($form, $form_state->setValue('maintenance_mode', 1));
     self::assertSame(NAGIOS_STATUS_CRITICAL, nagios_check_maintenance()['data']['status']);
   }
+
 }

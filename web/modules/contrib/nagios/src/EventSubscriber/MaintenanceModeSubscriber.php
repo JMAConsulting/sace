@@ -2,9 +2,9 @@
 
 namespace Drupal\nagios\EventSubscriber;
 
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Drupal\nagios\Controller\StatuspageController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class MaintenanceModeSubscriber implements EventSubscriberInterface {
@@ -12,10 +12,10 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface {
   /**
    * Make the status page available when Drupal is in maintenance mode.
    *
-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
    *   The event to process.
    */
-  public function onKernelRequestMaintenance(GetResponseEvent $event) {
+  public function onKernelRequestMaintenance(RequestEvent $event) {
     $config = \Drupal::config('nagios.settings');
     $request = $event->getRequest();
     $nagios_path = '/' . $config->get('nagios.statuspage.path');

@@ -97,14 +97,22 @@ class Date extends Formula implements ContainerFactoryPluginInterface {
    */
   public function summaryName($data) {
     $created = $data->{$this->name_alias};
-    return $this->dateFormatter->format(strtotime($created . " 00:00:00 UTC"), 'custom', $this->options['format'], 'UTC');
+    $when = strtotime($created . " 00:00:00 UTC");
+    if (!$when) {
+      return "Invalid Date";
+    }
+    return $this->dateFormatter->format($when, 'custom', $this->options['format'], 'UTC');
   }
 
   /**
    * {@inheritdoc}
    */
   public function title() {
-    return $this->dateFormatter->format(strtotime($this->argument . " 00:00:00 UTC"), 'custom', $this->options['format'], 'UTC');
+    $when = strtotime($this->argument . " 00:00:00 UTC");
+    if (!$when) {
+      return "Invalid Date";
+    }
+    return $this->dateFormatter->format($when, 'custom', $this->options['format'], 'UTC');
   }
 
   protected function defineOptions() {

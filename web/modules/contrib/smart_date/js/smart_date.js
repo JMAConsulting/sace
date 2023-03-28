@@ -175,7 +175,7 @@
         // Store the numeric value in a property so it can be used programmatically.
         duration_select.dataset.duration = duration;
         // Update the select to show the appropriate value.
-        if (duration_select.querySelectorAll('option[value="' + duration + '"]').length != 0){
+        if (duration_select.querySelectorAll('option[value="' + duration + '"]').length != 0) {
           duration_select.value = duration;
         } else {
           duration_select.value = 'custom';
@@ -216,6 +216,8 @@
         let start_time = wrapper.querySelector('.time-start.form-time');
         let end_time = wrapper.querySelector('.time-end.form-time');
         let duration = wrapper.querySelector('select.field-duration');
+        let start_date = wrapper.querySelector('input.time-start.form-date');
+        let end_date = wrapper.querySelector('input.time-end.form-date');
         // Set initial state of checkbox based on initial values.
         if (start_time.value == '00:00:00' && end_time.value == '23:59:00') {
           checkbox.checked = true;
@@ -228,6 +230,10 @@
         }
         else {
           checkbox.dataset.duration = duration.value;
+        }
+        if (start_date.value !== '' && end_date.value !== '' && checkbox.checked == true) {
+          duration.parentElement.style.visibility = 'hidden';
+          duration.parentElement.style.display = '';
         }
         checkEndDate(wrapper);
       }
@@ -334,4 +340,4 @@
       }
     }
   };
-} (Drupal, drupalSettings, once));
+}(Drupal, drupalSettings, once));

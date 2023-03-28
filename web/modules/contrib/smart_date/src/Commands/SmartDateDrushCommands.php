@@ -3,6 +3,9 @@
 namespace Drupal\smart_date\Commands;
 
 use Drush\Commands\DrushCommands;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * A drush command file.
@@ -10,6 +13,37 @@ use Drush\Commands\DrushCommands;
  * @package Drupal\smart_date\Commands
  */
 class SmartDateDrushCommands extends DrushCommands {
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
+   * Information about the entity type.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(ConfigFactoryInterface $configFactory,
+  Connection $database, EntityTypeManagerInterface $entityTypeManager) {
+    $this->configFactory = $configFactory;
+    $this->database = $database;
+    $this->entityTypeManager = $entityTypeManager;
+  }
 
   /**
    * Drush command to migrate core fields to Smart Date fields.
@@ -43,20 +77,20 @@ class SmartDateDrushCommands extends DrushCommands {
     $entity = $options['entity'];
     $dest_table = $entity . '__' . $dest;
     $def_duration = (int) $options['default_duration'];
-    $site_tz_name = \Drupal::config('system.date')->get('timezone.default');
+    $site_tz_name = $this->configFactory->get('system.date')->get('timezone.default');
 
-    $connection = \Drupal::service('database');
+    $connection = $this->database;
     if ($options['clear']) {
       $this->output()->writeln('Clearing existing values.');
       $connection->truncate($dest_table)->execute();
     }
     $this->output()->writeln('Starting date migration.');
 
-    $definition = \Drupal::service('entity_type.manager')->getDefinition($options['entity']);
+    $definition = $this->entityTypeManager->getDefinition($options['entity']);
     $bundle_key = $definition->getKey('bundle');
 
     // Get all events.
-    $events = \Drupal::entityTypeManager()->getStorage($entity)
+    $events = $this->entityTypeManager->getStorage($entity)
       ->loadByProperties([$bundle_key => $bundle]);
 
     $utc = new \DateTimeZone('UTC');

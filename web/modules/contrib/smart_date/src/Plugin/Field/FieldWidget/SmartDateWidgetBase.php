@@ -175,11 +175,19 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
         'default_duration' => 60,
       ];
     }
+    $limits_to_check = ['min', 'max'];
+    foreach ($limits_to_check as $check) {
+      if (!empty($defaults[$check]) && $limit = static::validateLimit($defaults[$check])) {
+        $element['value']['#attributes'][$check] = $limit;
+        $element['end_value']['#attributes'][$check] = $limit;
+      }
+    }
     // Wrap all of the select elements with a fieldset.
     $element['#theme_wrappers'][] = 'fieldset';
 
     $element['#element_validate'][] = [static::class, 'validateStartEnd'];
     $element['value']['#title'] = t('Start');
+    // @todo Remove #date_year_range as of Drupal 10.1 when BIGINT will be used.
     $element['value']['#date_year_range'] = '1902:2037';
     if (isset($values['start'])) {
       // Ensure values always display relative to the site.
@@ -306,7 +314,8 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
       if ($item['duration'] == 'custom') {
         // If using a custom duration, calculate based on start and end times.
         if (!empty($item['end_value']) && !empty($item['value'])) {
-          $item['duration'] = (int) ((int) $item['end_value'] - (int) $item['value']) / 60;
+          $duration = ((int) $item['end_value'] - (int) $item['value']) / 60;
+          $item['duration'] = round($duration);
         }
       }
     }
@@ -531,7 +540,7 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
         $elements['add_more'] = [
           '#type' => 'submit',
           '#name' => strtr($id_prefix, '-', '_') . '_add_more',
-          '#value' => t('Add another item'),
+          '#value' => $this->t('Add another item'),
           '#attributes' => [
             'class' => [
               'field-add-more-submit',
@@ -580,6 +589,49 @@ class SmartDateWidgetBase extends DateTimeWidgetBase {
     $date->sub(new \DateInterval('PT' . $date->format('s') . 'S'));
 
     return $date;
+  }
+
+  /**
+   * Check if the user-provided value can be resolved to a valid date string.
+   *
+   * @param string $value
+   *   The user-provided input string.
+   *
+   * @return bool|string
+   *   The validated/converted string, or FALSE.
+   */
+  protected static function validateLimit($value) {
+    // If a simple date string, pass validation.
+    if (static::validateDate($value)) {
+      return $value;
+    }
+    // Check for a token.
+    if (preg_match('|^\[.+(?::.+)+]$|', $value)) {
+      $token_service = \Drupal::token();
+      $value = $token_service->replace($value, [], ['clear' => TRUE]);
+      // Consider a token valid if it returns a date string or empty value.
+      if (empty($value) || static::validateDate($value)) {
+        return $value;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Validate that a date string follows the expected YYYY-MM-DD format.
+   *
+   * @param string $value
+   *   The string to validate.
+   *
+   * @return bool
+   *   Whether or not the string matches the expected format.
+   */
+  protected static function validateDate($value) {
+    // If a simple date string, pass validation.
+    if (preg_match('|\d{4}-\d{2}-\d{2}|', $value)) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
 }

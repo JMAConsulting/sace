@@ -33,7 +33,7 @@ class ColorbuttonTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     NodeType::create([
@@ -93,7 +93,7 @@ class ColorbuttonTest extends WebDriverTestBase {
     $json_encode = function ($html) {
       return trim(Json::encode($html), '"');
     };
-    $markup = $json_encode(file_url_transform_relative(file_create_url('libraries/colorbutton/icons/textcolor.png')));
+    $markup = $json_encode(\Drupal::service('file_url_generator')->generateString('libraries/colorbutton/icons/textcolor.png'));
     $this->assertSession()->responseContains($markup);
 
     // Asserts color buttons is present in the toolbar.

@@ -65,6 +65,7 @@ function smart_date_recur_entity_delete($entity) {
   $query_result = $query->getQuery()
     ->condition('entity_type', $entity_type)
     ->condition('bundle', $bundle)
+    ->accessCheck(TRUE)
     ->execute();
 
   // If none exist, nothing to do.
@@ -108,8 +109,9 @@ function smart_date_recur_entity_delete($entity) {
     }
     // Delete any rules found.
     foreach ($rules as $rule) {
-      $rrule = SmartDateRule::load($rule);
-      $rrule->delete();
+      if ($rrule = SmartDateRule::load($rule)) {
+        $rrule->delete();
+      }
     }
   }
 }
@@ -178,6 +180,9 @@ function smart_date_recur_widget_extra_fields(&$element, $item, $context) {
         '#value' => $default_end_date,
       ];
       if ($rule_text = $rrule->getTextRule()) {
+        if (is_array($rule_text)) {
+          $rule_text = \Drupal::service('renderer')->render($rule_text);
+        }
         $element['repeat-text'] = [
           '#markup' => '<span class="clearfix"></span>
             <h4 class="label">' . t('Repeats') . '</h4>

@@ -105,8 +105,11 @@ class ColorButton extends CKEditorPluginBase implements CKEditorPluginConfigurab
 
   /**
    * Ensure values entered for color hex values contain no unsafe characters.
-   * @param $element
+   *
+   * @param array $element
+   *   The Shorthand story storage.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
    */
   public function validateInput(array $element, FormStateInterface $form_state) {
     $input = $form_state->getValue([

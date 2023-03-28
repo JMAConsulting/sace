@@ -9,21 +9,21 @@ nagios.settings:
       label: 'Nagios'
       mapping:
         status:
-            type: mapping
-            label: 'Error levels'
-            mapping:
-                ok:
-                    type: integer
-                    label: 'Status OK'
-                warning:
-                    type: integer
-                    label: 'Status WARNING'
-                critical:
-                    type: integer
-                    label: 'Status CRITICAL'
-                unknown:
-                    type: integer
-                    label: 'STATUS UNKNOWN'
+          type: mapping
+          label: 'Error levels'
+          mapping:
+            ok:
+              type: integer
+              label: 'Status OK'
+            warning:
+              type: integer
+              label: 'Status WARNING'
+            critical:
+              type: integer
+              label: 'Status CRITICAL'
+            unknown:
+              type: integer
+              label: 'STATUS UNKNOWN'
         min_report_severity:
           type: integer
           label: 'Mininum report severity'
@@ -49,6 +49,15 @@ nagios.settings:
         show_outdated_names:
           type: boolean
           label: 'Show outdated module/theme name?'
+        experimental_modules:
+          type: boolean
+          label: 'Show “experimental modules enabled“ message'
+        deprecated_modules:
+          type: boolean
+          label: 'Show “deprecated modules enabled” message'
+        deprecated_themes:
+          type: boolean
+          label: 'Show “deprecated themes enabled” message'
         limit_watchdog:
           type: mapping
           label: 'Watchdog settings'

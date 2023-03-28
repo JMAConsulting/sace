@@ -6,6 +6,8 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Url;
 use Drupal\smart_date\SmartDateTrait;
 use Drupal\smart_date_recur\Entity\SmartDateOverride;
@@ -14,6 +16,7 @@ use Drupal\smart_date_recur\Form\SmartDateOverrideDeleteAjaxForm;
 use Drupal\smart_date_recur\Form\SmartDateOverrideForm;
 use Drupal\smart_date_recur\Form\SmartDateRemoveInstanceForm;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides listings of instances (with overrides) for a specified rule.
@@ -56,6 +59,36 @@ class Instances extends ControllerBase {
    * @var bool
    */
   private $useAjax;
+
+  /**
+   * Form builder will be used via Dependency Injection.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(FormBuilderInterface $form_builder, EntityTypeManagerInterface $entityTypeManager) {
+    $this->formBuilder = $form_builder;
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The Drupal service container.
+   *
+   * @return static
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('form_builder'),
+      $container->get('entity_type.manager'),
+    );
+  }
 
   /**
    * Provide a list of rule items with operations to change rule items.
@@ -196,8 +229,7 @@ class Instances extends ControllerBase {
   public function buildRow(array $instance) {
     // Get format settings.
     // @todo make the choice of format configurable?
-    $format = \Drupal::getContainer()
-      ->get('entity_type.manager')
+    $format = $this->entityTypeManager
       ->getStorage('smart_date_format')
       ->load('compact');
     $settings = $format->getOptions();
@@ -336,7 +368,7 @@ class Instances extends ControllerBase {
   private function returnError() {
     return [
       '#type' => 'markup',
-      '#markup' => t('An invalid value was received.'),
+      '#markup' => $this->t('An invalid value was received.'),
     ];
   }
 
@@ -427,7 +459,7 @@ class Instances extends ControllerBase {
   public function removeAjax(SmartDateRule $rrule, int $index) {
     $this->setSmartDateRule($rrule);
     $this->setUseAjax(TRUE);
-    $content = \Drupal::formBuilder()
+    $content = $this->formBuilder
       ->getForm(SmartDateRemoveInstanceForm::class, $rrule, $index, TRUE);
     $content['title']['#markup'] = '<p>' . $content['#title'] . '</p>';
     $form['#attached']['library'][] = 'core/drupal.ajax';
@@ -455,7 +487,7 @@ class Instances extends ControllerBase {
     $instancesList = $this->listInstancesOutput();
     if ($modal) {
       $response = new AjaxResponse();
-      $response->addCommand(new OpenModalDialogCommand('Manage Instances', $instancesList, ['width' => '800']));
+      $response->addCommand(new OpenModalDialogCommand($this->t('Manage Instances'), $instancesList, ['width' => '800']));
       return $response;
     }
     else {
@@ -486,7 +518,7 @@ class Instances extends ControllerBase {
       $content = $this->listInstancesOutput();
     }
     else {
-      $content = \Drupal::formBuilder()
+      $content = $this->formBuilder
         ->getForm(SmartDateOverrideDeleteAjaxForm::class, $entity);
     }
     $form['#attached']['library'][] = 'core/drupal.ajax';
@@ -507,7 +539,7 @@ class Instances extends ControllerBase {
    *   The AJAX response object.
    */
   public function reschedule(SmartDateRule $rrule, string $index) {
-    $content = \Drupal::formBuilder()
+    $content = $this->formBuilder
       ->getForm(SmartDateOverrideForm::class, $rrule, $index, TRUE);
     $form['#attached']['library'][] = 'core/drupal.ajax';
     $response = new AjaxResponse();

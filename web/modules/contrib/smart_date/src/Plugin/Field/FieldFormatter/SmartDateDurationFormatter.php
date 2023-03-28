@@ -98,16 +98,16 @@ class SmartDateDurationFormatter extends SmartDateDefaultFormatter {
    */
   public function settingsSummary() {
     $summary[] = $this->getSetting('timezone_override') === ''
-      ? t('No timezone override.')
-      : t('Timezone overridden to %timezone.', [
+      ? $this->t('No timezone override.')
+      : $this->t('Timezone overridden to %timezone.', [
         '%timezone' => $this->getSetting('timezone_override'),
       ]);
 
-    $summary[] = t('Smart date format: %format.', [
+    $summary[] = $this->t('Smart date format: %format.', [
       '%format' => $this->getSetting('format'),
     ]);
 
-    $summary[] = t('Duration separator: %duration_separator.', [
+    $summary[] = $this->t('Duration separator: %duration_separator.', [
       '%duration_separator' => $this->getSetting('duration_separator'),
     ]);
 
