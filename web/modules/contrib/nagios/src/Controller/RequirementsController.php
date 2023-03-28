@@ -58,8 +58,17 @@ class RequirementsController {
   public function findMostSevereProblem(): array {
     $descriptions = [];
     $min_severity = $this->config->get('nagios.min_report_severity');
+    $experimental_modules = $this->config->get('nagios.experimental_modules');
+    $deprecated_modules = $this->config->get('nagios.deprecated_modules');
+    $deprecated_themes = $this->config->get('nagios.deprecated_themes');
     foreach ($this->reqs as $key => $requirement) {
       if (isset($requirement['severity'])) {
+        if (($key == 'experimental_modules' && !$experimental_modules) 
+        || ($key == 'deprecated_modules' && !$deprecated_modules) 
+        || ($key == 'deprecated_themes' && !$deprecated_themes)) {
+          continue;
+        }
+
         // Ignore update_core warning if update check is pending:
         if (($key == 'update_core' || $key == 'update_contrib') && $requirement['severity'] == REQUIREMENT_ERROR && $requirement['reason'] == UpdateFetcherInterface::FETCH_PENDING) {
           continue;

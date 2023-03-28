@@ -32,7 +32,7 @@ class NagiosCheckTest extends EntityKernelTestBase {
 
   public function testElysiaCronCheck() {
     $conn = Database::getConnection();
-    $conn->query('CREATE TABLE {elysia_cron} (last_aborted int(11), name varchar(8), last_abort_function varchar(8))');
+    $conn->query('CREATE TABLE {elysia_cron} (last_aborted bigint, name varchar(8), last_abort_function varchar(8))');
     $status = nagios_check_elysia_cron()['data']['status'];
     self::assertEquals(NAGIOS_STATUS_OK, $status);
 
