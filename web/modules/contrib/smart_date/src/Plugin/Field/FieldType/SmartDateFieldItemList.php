@@ -9,11 +9,14 @@ use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeFieldItemList;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\smart_date\SmartDateDurationConfigTrait;
 
 /**
  * Represents a configurable entity smartdate field.
  */
 class SmartDateFieldItemList extends DateTimeFieldItemList {
+
+  use SmartDateDurationConfigTrait;
 
   /**
    * {@inheritdoc}
@@ -29,29 +32,11 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
 
       $element = parent::defaultValuesForm($form, $form_state);
 
-      $element['default_date_type']['#options']['next_hour'] = t('Next hour');
+      $element['default_date_type']['#options']['next_hour'] = $this->t('Next hour');
 
       unset($element['default_time_type']);
 
-      $description = '<p>' . $this->t('The possible durations this field can contain. Enter one value per line, in the format key|label.');
-      $description .= '<br/>' . $this->t('The key is the stored value, and must be numeric or "custom" to allow an arbitrary length. The label will be used in edit forms.');
-      $description .= '<br/>' . $this->t('The label is optional: if a line contains a single number, it will be used as key and label.') . '</p>';
-
-      $element['default_duration_increments'] = [
-        '#type' => 'textarea',
-        '#title' => $this->t('Allowed duration increments'),
-        '#description' => $description,
-        '#default_value' => isset($default_value['default_duration_increments']) ? $default_value['default_duration_increments'] : "30\n60|1 hour\n90\n120|2 hours\ncustom",
-        '#required' => TRUE,
-      ];
-
-      $element['default_duration'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Default duration'),
-        '#description' => $this->t('Set which of the duration increments provided above that should be selected by default.'),
-        '#default_value' => isset($default_value['default_duration']) ? $default_value['default_duration'] : '60',
-        '#required' => TRUE,
-      ];
+      $this->addDurationConfig($element, $default_value);
 
       return $element;
     }
@@ -61,8 +46,15 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
    * {@inheritdoc}
    */
   public function defaultValuesFormValidate(array $element, array &$form, FormStateInterface $form_state) {
-    if ($duration = $form_state->getValue(['default_value_input', 'default_duration'])) {
-      $increments = SmartDateListItemBase::parseValues($form_state->getValue(['default_value_input', 'default_duration_increments']));
+    $duration = $form_state->getValue([
+      'default_value_input',
+      'default_duration',
+    ]) ?? '';
+    if ($duration) {
+      $increments = SmartDateListItemBase::parseValues($form_state->getValue([
+        'default_value_input',
+        'default_duration_increments',
+      ]));
       // Handle a false result: will display the proper error later.
       if (!$increments) {
         $increments = [];
@@ -91,19 +83,94 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
         $form_state->setErrorByName('default_value_input][default_duration', $this->t('Please specify a default duration that is one of the provided options.'));
       }
     }
+    // Validate that if min and max are both set max >= min.
+    $limits_to_check = ['min', 'max'];
+    $limits = [];
+    foreach ($limits_to_check as $check) {
+      $user_val = $form_state->getValue([
+        'default_value_input',
+        $check,
+      ]) ?? '';
+      if (empty($user_val)) {
+        continue;
+      }
+      $user_val = $this->validateLimit($user_val);
+      if ($user_val !== FALSE) {
+        $limits[$check] = $user_val;
+      }
+      else {
+        $form_state->setErrorByName('default_value_input][' . $check, $this->t('Invalid limit value provided. Please use either a date string in the format or YYYY-MM-DD or token.'));
+      }
+    }
+    if (count($limits) == 2) {
+      if ($limits['min'] > $limits['max']) {
+        $form_state->setErrorByName('default_value_input][min', $this->t('The maximum date limit cannot be before the minimum.'));
+      }
+    }
     // Use the parent class method to validate relative dates.
     DateTimeFieldItemList::defaultValuesFormValidate($element, $form, $form_state);
+  }
+
+  /**
+   * Check if the user-provided value can be resolved to a valid date string.
+   *
+   * @param string $value
+   *   The user-provided input string.
+   *
+   * @return bool|string
+   *   The validated/converted string, or FALSE.
+   */
+  protected static function validateLimit($value) {
+    // If a simple date string, pass validation.
+    if (static::validateDate($value)) {
+      return $value;
+    }
+    // Check for a token.
+    if (preg_match('|^\[.+(?::.+)+]$|', $value)) {
+      $token_service = \Drupal::token();
+      $value = $token_service->replace($value, [], ['clear' => TRUE]);
+      // Consider a token valid if it returns a date string or empty value.
+      if (empty($value) || static::validateDate($value)) {
+        return $value;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Validate that a date string follows the expected YYYY-MM-DD format.
+   *
+   * @param string $value
+   *   The string to validate.
+   *
+   * @return bool
+   *   Whether or not the string matches the expected format.
+   */
+  protected static function validateDate($value) {
+    // If a simple date string, pass validation.
+    if (preg_match('|\d{4}-\d{2}-\d{2}|', $value)) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function defaultValuesFormSubmit(array $element, array &$form, FormStateInterface $form_state) {
-    if (strlen((string) $form_state->getValue(['default_value_input', 'default_duration'])) && strlen((string) $form_state->getValue(['default_value_input', 'default_duration_increments']))) {
-      if ($duration = $form_state->getValue(['default_value_input', 'default_duration'])) {
+    $duration = $form_state->getValue([
+      'default_value_input',
+      'default_duration',
+    ]) ?? '';
+    $duration_increments = $form_state->getValue([
+      'default_value_input',
+      'default_duration_increments',
+    ]) ?? '';
+    if (strlen((string) $duration) && strlen((string) $duration_increments)) {
+      if ($duration) {
         $form_state->setValueForElement($element['default_duration'], $duration);
       }
-      if ($duration_increments = $form_state->getValue(['default_value_input', 'default_duration_increments'])) {
+      if ($duration_increments) {
         $form_state->setValueForElement($element['default_duration_increments'], $duration_increments);
       }
       return [$form_state->getValue('default_value_input')];
@@ -129,7 +196,6 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
     // A default date+time value should be in the format and timezone used
     // for date storage.
     $date = new DrupalDateTime($default_value[0]['default_date'], DateTimeItemInterface::STORAGE_TIMEZONE);
-    $format = DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
 
     // If using 'next_hour' for 'default_date_type', do custom processing.
     if ($default_value[0]['default_date_type'] == 'next_hour') {
@@ -137,6 +203,20 @@ class SmartDateFieldItemList extends DateTimeFieldItemList {
       // After conversion to timestamp, we round up, so offset for this.
       $min = (int) $date->format('i') + 1;
       $date->modify('-' . $min . ' minutes');
+      // If min or max values set, apply to default value.
+      $limits_to_check = ['min', 'max'];
+      $limits = [];
+      foreach ($limits_to_check as $check) {
+        if (!empty($default_value[0][$check]) && $limit = static::validateLimit($default_value[0][$check])) {
+          $limits[$check] = new DrupalDateTime($limit, DateTimeItemInterface::STORAGE_TIMEZONE);
+        }
+      }
+      if (!empty($limits['min']) && $date < $limits['min']) {
+        $date->setDate($limits['min']->format('Y'), $limits['min']->format('n'), $limits['min']->format('j'));
+      }
+      elseif (!empty($limits['max']) && $date > $limits['max']) {
+        $date->setDate($limits['max']->format('Y'), $limits['max']->format('n'), $limits['max']->format('j'));
+      }
     }
 
     $value = $date->getTimestamp();

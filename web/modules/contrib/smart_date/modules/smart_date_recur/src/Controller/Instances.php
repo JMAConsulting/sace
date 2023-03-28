@@ -6,7 +6,8 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Link;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Url;
 use Drupal\smart_date\SmartDateTrait;
 use Drupal\smart_date_recur\Entity\SmartDateOverride;
@@ -15,11 +16,14 @@ use Drupal\smart_date_recur\Form\SmartDateOverrideDeleteAjaxForm;
 use Drupal\smart_date_recur\Form\SmartDateOverrideForm;
 use Drupal\smart_date_recur\Form\SmartDateRemoveInstanceForm;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides listings of instances (with overrides) for a specified rule.
  */
 class Instances extends ControllerBase {
+
+  use SmartDateTrait;
 
   /**
    * The rrule object whose instances are being listed.
@@ -50,18 +54,41 @@ class Instances extends ControllerBase {
   protected $entityTypeManager;
 
   /**
-   * Indicating whether update button (Apply changes) should be provided.
-   *
-   * @var bool
-   */
-  private $updateButton;
-
-  /**
    * Indicating whether current controller instance uses Ajax.
    *
    * @var bool
    */
   private $useAjax;
+
+  /**
+   * Form builder will be used via Dependency Injection.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(FormBuilderInterface $form_builder, EntityTypeManagerInterface $entityTypeManager) {
+    $this->formBuilder = $form_builder;
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The Drupal service container.
+   *
+   * @return static
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('form_builder'),
+      $container->get('entity_type.manager'),
+    );
+  }
 
   /**
    * Provide a list of rule items with operations to change rule items.
@@ -74,10 +101,9 @@ class Instances extends ControllerBase {
     if (!$entity = $this->rrule->getParentEntity()) {
       return $this->returnError();
     }
-    $field_name = $this->rrule->field_name->getString();
 
     if ($this->rrule->limit->isEmpty()) {
-      $month_limit = $this->rrule->getFieldSettings('month_limit');
+      $month_limit = SmartDateRule::getMonthsLimit($this->rrule);
       $before = strtotime('+' . (int) $month_limit . ' months');
     }
     else {
@@ -103,7 +129,6 @@ class Instances extends ControllerBase {
     // Build headers.
     // Iterate through rows and check for existing overrides.
     foreach ($instances as $index => &$instance) {
-      $row_class = '';
 
       // Check for an override.
       if (isset($overrides[$index])) {
@@ -115,14 +140,13 @@ class Instances extends ControllerBase {
           $override_type = 'overridden';
           $override = $entity_storage
             ->load($override->entity_id->getString());
-          $field = $override->get($field_name);
-          // TODO: drill down and retrieve, replace values.
-          // TODO: drop in the URL to edit.
+          // @todo drill down and retrieve, replace values.
+          // @todo drop in the URL to edit.
         }
         elseif ($override->value->getString()) {
           // Rescheduled, use values from override.
           $override_type = 'rescheduled';
-          // TODO: drill down and retrieve, replace values.
+          // @todo drill down and retrieve, replace values.
           $instance['value'] = $override->value->getString();
           $instance['end_value'] = $override->end_value->getString();
         }
@@ -154,9 +178,6 @@ class Instances extends ControllerBase {
    * @see \Drupal\Core\Entity\EntityListBuilder::render()
    */
   private function render(array $instances) {
-    if ($this->updateButton) {
-      $build['action'] = $this->buildUpdateButton();
-    }
     $build['table'] = [
       '#type' => 'table',
       '#attributes' => [
@@ -179,26 +200,6 @@ class Instances extends ControllerBase {
     $build['table']['#attached']['library'][] = 'smart_date_recur/smart_date_recur';
 
     return $build;
-  }
-
-  /**
-   * Add a link to update the parent entity.
-   *
-   * @return array
-   *   A render array of the button link.
-   */
-  private function buildUpdateButton() {
-    // Also insert a link to the interface for managing interfaces.
-    $url = Url::fromRoute('smart_date_recur.apply_changes', ['rrule' => $this->rrule->id()]);
-    $instances_link = Link::fromTextAndUrl(t('Apply Changes'), $url);
-    $instances_link = $instances_link->toRenderable();
-    // Add some attributes.
-    $instances_link['#attributes'] = [
-      'class' => ['button', 'button--primary'],
-    ];
-
-    $instances_link['#weight'] = 100;
-    return $instances_link;
   }
 
   /**
@@ -227,15 +228,14 @@ class Instances extends ControllerBase {
    */
   public function buildRow(array $instance) {
     // Get format settings.
-    // TODO: make the choice of format configurable?
-    $format = \Drupal::getContainer()
-      ->get('entity_type.manager')
+    // @todo make the choice of format configurable?
+    $format = $this->entityTypeManager
       ->getStorage('smart_date_format')
       ->load('compact');
     $settings = $format->getOptions();
 
     // Format range for this instance.
-    $row['label']['data'] = SmartDateTrait::formatSmartDate($instance['value'], $instance['end_value'], $settings);
+    $row['label']['data'] = $this->formatSmartDate($instance['value'], $instance['end_value'], $settings);
 
     if (isset($instance['class'])) {
       $row['label']['class'][] = 'smart-date-instance--' . $instance['class'];
@@ -323,14 +323,16 @@ class Instances extends ControllerBase {
             ]),
           ];
           if ($this->useAjax) {
-            $operations['edit']['url'] = Url::fromRoute('smart_date_recur.instance.reschedule.ajax',
-              ['rrule' => $instance['rrule'], 'index' => $instance['rrule_index']]);
+            $operations['edit']['url'] = Url::fromRoute('smart_date_recur.instance.reschedule.ajax', [
+              'rrule' => $instance['rrule'],
+              'index' => $instance['rrule_index'],
+            ]);
             $operations['edit']['attributes']['class'][] = 'use-ajax';
           }
 
         case 'overriden':
           // Removal handled by the delete action already defined.
-          // TODO: Update the URL of the Edit button above to point to the
+          // @todo Update the URL of the Edit button above to point to the
           // entity form of the referenced entity.
           break;
 
@@ -366,7 +368,7 @@ class Instances extends ControllerBase {
   private function returnError() {
     return [
       '#type' => 'markup',
-      '#markup' => t('An invalid value was received.'),
+      '#markup' => $this->t('An invalid value was received.'),
     ];
   }
 
@@ -456,9 +458,8 @@ class Instances extends ControllerBase {
    */
   public function removeAjax(SmartDateRule $rrule, int $index) {
     $this->setSmartDateRule($rrule);
-    $this->setUpdateButton(FALSE);
     $this->setUseAjax(TRUE);
-    $content = \Drupal::formBuilder()
+    $content = $this->formBuilder
       ->getForm(SmartDateRemoveInstanceForm::class, $rrule, $index, TRUE);
     $content['title']['#markup'] = '<p>' . $content['#title'] . '</p>';
     $form['#attached']['library'][] = 'core/drupal.ajax';
@@ -480,15 +481,13 @@ class Instances extends ControllerBase {
    */
   public function listInstances(SmartDateRule $rrule, bool $modal = FALSE) {
     $this->setSmartDateRule($rrule);
-    $this->setUpdateButton(TRUE);
     if ($modal) {
-      $this->setUpdateButton(FALSE);
       $this->setUseAjax(TRUE);
     }
     $instancesList = $this->listInstancesOutput();
     if ($modal) {
       $response = new AjaxResponse();
-      $response->addCommand(new OpenModalDialogCommand('Manage Instances', $instancesList, ['width' => '800']));
+      $response->addCommand(new OpenModalDialogCommand($this->t('Manage Instances'), $instancesList, ['width' => '800']));
       return $response;
     }
     else {
@@ -514,13 +513,12 @@ class Instances extends ControllerBase {
     if ($confirm) {
       $rrule = $this->entityTypeManager()->getStorage('smart_date_rule')->load($entity->rrule->value);
       $this->setSmartDateRule($rrule);
-      $this->setUpdateButton(FALSE);
       $this->setUseAjax(TRUE);
       $this->revertInstance($entity);
       $content = $this->listInstancesOutput();
     }
     else {
-      $content = \Drupal::formBuilder()
+      $content = $this->formBuilder
         ->getForm(SmartDateOverrideDeleteAjaxForm::class, $entity);
     }
     $form['#attached']['library'][] = 'core/drupal.ajax';
@@ -541,7 +539,7 @@ class Instances extends ControllerBase {
    *   The AJAX response object.
    */
   public function reschedule(SmartDateRule $rrule, string $index) {
-    $content = \Drupal::formBuilder()
+    $content = $this->formBuilder
       ->getForm(SmartDateOverrideForm::class, $rrule, $index, TRUE);
     $form['#attached']['library'][] = 'core/drupal.ajax';
     $response = new AjaxResponse();
@@ -569,16 +567,6 @@ class Instances extends ControllerBase {
    */
   public function setSmartDateRule(SmartDateRule $rrule) {
     $this->rrule = $rrule;
-  }
-
-  /**
-   * Setting the update button setting on the controller.
-   *
-   * @param bool $update_button
-   *   The value of the button.
-   */
-  public function setUpdateButton(bool $update_button) {
-    $this->updateButton = $update_button;
   }
 
   /**

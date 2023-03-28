@@ -35,11 +35,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "uuid" = "uuid",
  *   },
  *   links = {
- *     "canonical" = "/admin/content/smart_date_recur/overrides/{smart_date_override}",
- *     "add-form" = "/admin/content/smart_date_recur/overrides/add",
- *     "edit-form" = "/admin/content/smart_date_recur/overrides/{smart_date_override}/edit",
- *     "delete-form" = "/admin/content/smart_date_recur/overrides/{smart_date_override}/delete",
- *     "collection" = "/admin/content/smart_date_recur/overrides",
+ *     "delete-form" = "/admin/content/smart_date_recur/overrides/{smart_date_override}/delete"
  *   }
  * )
  */
@@ -75,7 +71,7 @@ class SmartDateOverride extends ContentEntityBase {
       ->setLabel(t('Duration, in minutes'))
       ->setRequired(FALSE);
 
-    // TODO: figure out a way to validate as required but accept zero.
+    // @todo figure out a way to validate as required but accept zero.
     // Allow an instance to be overridden by a full entity.
     // NOTE: entity_type is skipped here because it will always match the rule.
     $fields['entity_id'] = BaseFieldDefinition::create('entity_reference')

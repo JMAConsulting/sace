@@ -86,6 +86,7 @@ class SmartDateFormatForm extends EntityForm {
         'allday_label' => 'All day',
         'date_first' => '1',
         'ampm_reduce' => '1',
+        'site_time_toggle' => '1',
       ];
     }
     else {
@@ -117,7 +118,7 @@ class SmartDateFormatForm extends EntityForm {
     $form['date_format'] = [
       '#type' => 'textfield',
       '#title' => $this->t('PHP Date Format'),
-      '#description' => $this->t('The PHP date code to use for formatting dates.'),
+      '#description' => $this->t('The <a href="@php-date-reference">PHP date code</a> to use for formatting dates.', ['@php-date-reference' => 'https://www.php.net/manual/en/datetime.format.php#refsect1-datetime.format-parameters']),
       '#default_value' => $options['date_format'],
       '#size' => 20,
     ];
@@ -125,7 +126,7 @@ class SmartDateFormatForm extends EntityForm {
     $form['time_format'] = [
       '#type' => 'textfield',
       '#title' => $this->t('PHP Time Format'),
-      '#description' => $this->t('The PHP date code to use for formatting times.'),
+      '#description' => $this->t('The <a href="@php-date-reference">PHP date code</a> to use for formatting times.', ['@php-date-reference' => 'https://www.php.net/manual/en/datetime.format.php#refsect1-datetime.format-parameters']),
       '#default_value' => $options['time_format'],
       '#size' => 20,
     ];
@@ -133,7 +134,7 @@ class SmartDateFormatForm extends EntityForm {
     $form['time_hour_format'] = [
       '#type' => 'textfield',
       '#title' => $this->t('PHP Time Format - on the hour'),
-      '#description' => $this->t('The PHP date code to use for formatting times that fall on the hour. Examples might be 2pm or 14h. Leave this blank to always use the standard format specified above.'),
+      '#description' => $this->t('The <a href="@php-date-reference">PHP date code</a> to use for formatting times that fall on the hour. Examples might be 2pm or 14h. Leave this blank to always use the standard format specified above.', ['@php-date-reference' => 'https://www.php.net/manual/en/datetime.format.php#refsect1-datetime.format-parameters']),
       '#default_value' => $options['time_hour_format'],
       '#size' => 20,
     ];
@@ -181,9 +182,17 @@ class SmartDateFormatForm extends EntityForm {
       '#default_value' => $options['ampm_reduce'],
     ];
 
+    $form['site_time_toggle'] = [
+      '#type' => 'checkbox',
+      '#return_value' => '1',
+      '#title' => $this->t('"Site Time" display'),
+      '#description' => $this->t("Show times in the user's preferred timezone (defaults to the site's timezone) in parentheses at end of the value if the timezone is overridden. ex. (12:00pm - 1:00pm UTC)"),
+      '#default_value' => $options['site_time_toggle'],
+    ];
+
     $form['langcode'] = [
       '#type' => 'language_select',
-      '#title' => t('Language'),
+      '#title' => $this->t('Language'),
       '#languages' => LanguageInterface::STATE_ALL,
       '#default_value' => $entity->language()->getId(),
     ];
