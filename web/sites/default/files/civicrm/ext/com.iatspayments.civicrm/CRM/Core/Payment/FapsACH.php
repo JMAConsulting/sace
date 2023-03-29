@@ -133,7 +133,7 @@ class CRM_Core_Payment_FapsACH extends CRM_Core_Payment_Faps {
       return self::error('Invalid call to doPayment with is_recur and no contributionRecurID');
     }
     // FAPS only allows ipv4 addresses
-    $ipAddress = CRM_Iats_Transaction::remote_ip_address($FILTER_FLAG_IPV4);
+    $ipAddress = CRM_Iats_Transaction::remote_ip_address(FILTER_FLAG_IPV4);
     $credentials = [
       'merchantKey' => $this->_paymentProcessor['signature'],
       'processorId' => $this->_paymentProcessor['user_name']
