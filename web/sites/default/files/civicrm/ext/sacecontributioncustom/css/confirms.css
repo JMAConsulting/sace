@@ -1,0 +1,222 @@
+@media screen and (max-width: 991px) {
+    .layout--pass--content-medium > * {
+        grid-column: 1 / 18;
+    }
+}
+
+/* Globals */
+@font-face {
+    font-family: 'Century Gothic';
+    src:
+     url('./GOTHICB.TTF') format('truetype');
+     font-weight: 700;
+     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Century Gothic';
+    src:
+     url('./GOTHICBI.TTF') format('truetype');
+     font-weight: 700;
+     font-style: italic;
+}
+
+@font-face {
+    font-family: 'Century Gothic';
+    src:
+     url('./GOTHIC.TTF') format('truetype');
+     font-weight: 400;
+     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Century Gothic';
+    src:
+     url('./GOTHICI.TTF') format('truetype');
+     font-weight: 400;
+     font-style: italic;
+}
+
+
+:root {
+
+    --color-primary: #87CCA3;
+    --color-secondary: #A5489B;
+    --color-heading: #2e416c;
+    --color-accent: #57A59D;
+    --color-dark: #1f263b;
+    --color-light: #ffffff;
+    /* --color-bg: #CDD5E4; */
+    --color-bg: #cdd5e463;
+
+    --font: 'Century Gothic' , 'metropolis', sans-serif;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font);
+    font-weight: 700;
+    color: var(--color-heading);
+}
+
+@media (min-width: 43.75rem) {
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+body {
+    font-family: var(--font);
+    color: var(--color-dark);
+    background-color: white;
+    background-image: none !important;
+}
+
+
+
+p a {
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+p a:hover,
+p a:active,
+p a:focus {
+    color: var(--color-dark);
+}
+
+.page-wrapper {
+    overflow-x: hidden;
+}
+
+.site-header__initial {
+    width: 66px !important;
+}
+
+@media (min-width: 75rem) {
+    .main-content {
+        width: calc(100% - 66px);
+    }
+
+
+    .social-bar,
+    .sticky-header-toggle 
+    {
+        width: 66px;
+    }
+}
+
+@media (min-width: 43.75rem) {
+    .main-content__container.container {
+        padding-top: 4rem;
+        padding-left: 3.75rem;
+        padding-right: 3.75rem;
+    }
+}
+
+
+
+.region--hero .block__content img {
+    width: 100%;
+}
+
+.main-content__container .region.region--highlighted.grid-full {
+    display: block;
+}
+
+
+.region.region--breadcrumb.grid-full {
+    display: block;
+}
+
+#block-breadcrumbs {
+    margin-bottom: 0;
+}
+
+#block-breadcrumbs  a:hover, 
+#block-breadcrumbs  a:active, 
+#block-breadcrumbs  a:focus {
+    color: var(--color-dark);
+    text-decoration: none;
+}
+
+
+@media screen and (max-width: 991px)  {
+    #block-breadcrumbs .breadcrumb__list {
+        padding-bottom: 0;
+        padding-left: 1.425rem;
+    }
+}
+
+.main-content__container.container main .grid-full {
+    display: block;
+}
+
+#block-pagetitle {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+@media screen and (min-width: 992px) {
+    h1.title.page-title {
+        font-size: 3.4rem;
+    }
+}
+
+/* Buttons */
+.crm-submit-buttons {
+    height: auto !important;
+    display: flex;
+    margin-bottom: 2rem !important;
+}
+
+.sace-btn, a.sace-btn,
+.crm-container .crm-button.crm-form-submit
+ {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    color: var(--color-light);
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 2em;
+    margin-top: 20px;
+    border: none;
+    text-shadow: none;
+    font-family: var(--font);
+    font-size: 16px;
+    float: none !important;
+}
+
+.sace-btn:hover, a.sace-btn:hover,
+.sace-btn:active, a.sace-btn:active,
+.sace-btn:focus, a.sace-btn:focus,
+
+.crm-container .crm-button.crm-form-submit:hover,
+.crm-container .crm-button.crm-form-submit:active,
+.crm-container .crm-button.crm-form-submit:focus
+ {
+    text-decoration: none;
+    color: var(--color-light);
+    background-color: var(--color-dark);
+    border: none;
+}
+
+/* Headers */
+.crm-container .header-dark {
+    background-color: var(--color-dark);
+}
