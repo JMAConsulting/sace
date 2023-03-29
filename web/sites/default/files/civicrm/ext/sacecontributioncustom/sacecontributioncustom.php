@@ -106,3 +106,17 @@ function sacecontributioncustom_civicrm_entityTypes(&$entityTypes) {
 //  ]);
 //  _sacecontributioncustom_civix_navigationMenu($menu);
 //}
+
+
+function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
+ 
+  if($formName == 'CRM_Contribute_Form_Contribution_Main' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
+    Civi::resources()->addScriptFile('sacecontributioncustom', 'js/community.js');
+    Civi::resources()->addStyleFile('sacecontributioncustom', 'css/forms.css');
+  }
+
+  if($formName == 'CRM_Contribute_Form_Contribution_Confirm' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
+    Civi::resources()->addStyleFile('sacecontributioncustom', 'css/confirms.css');
+    Civi::resources()->addScriptFile('sacecontributioncustom', 'js/confirms.js');
+  }
+}

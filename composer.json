@@ -108,7 +108,11 @@
              "+include": ["extern/**"]
 	   }
         },
-
+        "patches": {
+	    "civicrm/civicrm-core": {
+                "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
+            }
+	},
         "installer-paths": {
             "web/core": [
                 "type:drupal-core"

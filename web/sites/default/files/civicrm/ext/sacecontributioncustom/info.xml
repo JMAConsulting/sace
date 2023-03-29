@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="sacecontributioncustom" type="module">
   <file>sacecontributioncustom</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
+  <name>SACE Contribution Customization</name>
+  <description>Extension that holds customization for all the contribution pages associated with the Capital Campaign</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Edsel Lopez</author>
