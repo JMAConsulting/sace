@@ -37,6 +37,7 @@ class SmartDateCustomFormatter extends TimestampFormatter {
       'allday_label' => 'All day',
       'date_first' => '1',
       'ampm_reduce' => '1',
+      'site_time_toggle' => '1',
     ] + parent::defaultSettings();
   }
 
@@ -106,6 +107,13 @@ class SmartDateCustomFormatter extends TimestampFormatter {
       '#title' => $this->t('Reduce AM/PM display'),
       '#description' => $this->t("Don't show am/pm in the start time if it's the same as the value for the end time, in the same day. Note that this is recommended by the Associated Press style guide."),
       '#default_value' => $this->getSetting('ampm_reduce'),
+    ];
+
+    $form['site_time_toggle'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Turn off site time display'),
+      '#description' => $this->t("Don't show default site time in parentheses at end of the value."),
+      '#default_value' => $this->getSetting('site_time_toggle'),
     ];
 
     return $form;

@@ -33,7 +33,7 @@ class SmartDate extends FieldTargetBase {
   protected function prepareValue($delta, array &$values) {
     if (isset($values)) {
       if (isset($values['value']) && !isset($values['end_value'])) {
-          $values['end_value'] = $values['value'];
+        $values['end_value'] = $values['value'];
       }
       return $values;
     }

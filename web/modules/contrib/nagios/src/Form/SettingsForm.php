@@ -258,23 +258,23 @@ class SettingsForm extends ConfigFormBase {
     $getParam = (int) $config->get('nagios.statuspage.getparam');
     $uniqueId = $config->get('nagios.ua');
     $routeParameters = $getParam ? ['unique_id' => $uniqueId] : [];
-    $aUrlInfo = [
+    $aUrl = [
       ':url' => Url::fromRoute(
         'nagios.statuspage',
         $routeParameters,
         ['absolute' => TRUE]
       )->toString(),
     ];
-    $aUrlInfo += parse_url(reset($aUrlInfo));
+    $aUrlInfo = parse_url(reset($aUrl));
 
-    $urlForCli = "'" . reset($aUrlInfo) . "'";
+    $urlForCli = "'" . reset($aUrl) . "'";
     $commands[] = 'curl --no-progress-meter --url ' . $urlForCli . ($getParam ? '' : " --user-agent '$uniqueId'");
     $commands[] = 'wget --no-verbose -O -' . ($getParam ? '' : " -U '$uniqueId'") . ' ' . $urlForCli;
     $commands[] = realpath(__DIR__ . '/../../nagios-plugin/check_drupal') . ' -H ' . $aUrlInfo['host'] . ' -P ' . $config->get('nagios.statuspage.path') . ($getParam ? '?' . $aUrlInfo['query'] : " -U '$uniqueId'") . ($aUrlInfo['scheme'] == 'https' ? ' -S' : '');
     $commands[] = 'drush nagios # ' . $this->t('no HTTP status page needed');
 
     return $this->t('If enabled the $_GET variable "unique_id" is used for checking the correct Unique ID instead of "User Agent" ($_SERVER[\'HTTP_USER_AGENT\']).') . ' ' .
-      ($getParam ? $this->t('You need to call the following URL from Nagios / Icinga / cURL: <a href=":url">:url</a>.', $aUrlInfo) . ' ' : '') .
+      ($getParam ? $this->t('You need to call the following URL from Nagios / Icinga / cURL: <a href=":url">:url</a>.', $aUrl) . ' ' : '') .
       $this->t('This feature is useful to avoid webserver stats with the Unique ID as "User Agent" and helpful for human testing.') . '<br><br>' .
       $this->t('Here are a few example Bash commands you can use to query the status:') . '<ul><li>' . join('<li>', $commands) . '</ul>';
   }

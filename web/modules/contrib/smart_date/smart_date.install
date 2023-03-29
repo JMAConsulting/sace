@@ -45,7 +45,7 @@ function smart_date_update_8202() {
       'label' => t('RRule Index'),
       'unsigned' => TRUE,
       'not null' => FALSE,
-    ]
+    ],
   ];
 
   _smart_date_field_columns_add($field_type, $specs);
@@ -94,6 +94,20 @@ function smart_date_update_8202() {
 }
 
 /**
+ * Set site_time_toggle value on Smart Date Formats to match previous behaviour.
+ */
+function smart_date_update_8301() {
+  $format_storage = \Drupal::entityTypeManager()
+    ->getStorage('smart_date_format');
+  $formats = $format_storage
+    ->loadMultiple(NULL);
+  foreach ($formats as $format) {
+    $format->set('site_time_toggle', 1);
+    $format->save();
+  }
+}
+
+/**
  * Helper function to find all instances of our field type and add a column.
  *
  * @param string $field_type
@@ -127,10 +141,8 @@ function _smart_date_field_columns_add($field_type, array $specs, $update_defini
       $field_name => $field_storage_definition,
     ]);
     $table_names = $table_mapping->getDedicatedTableNames();
-    $columns = $table_mapping->getColumnNames($field_name);
 
     foreach ($table_names as $table_name) {
-      $field_schema = $field_storage_definition->getSchema();
       $schema = \Drupal::database()->schema();
       // If the table doesn't exist, no need to go any further.
       $table_exists = $schema->tableExists($table_name);

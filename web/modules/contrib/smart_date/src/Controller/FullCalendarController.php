@@ -2,9 +2,13 @@
 
 namespace Drupal\smart_date\Controller;
 
+use Drupal\Core\Access\CsrfTokenGenerator;
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\fullcalendar_view\Controller\CalendarEventController;
 use Drupal\smart_date_recur\Controller\Instances;
 use Drupal\smart_date_recur\Entity\SmartDateOverride;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,15 +16,62 @@ use Symfony\Component\HttpFoundation\Response;
  * Calendar Event Controller, overridden to handle Smart Date events.
  */
 class FullCalendarController extends CalendarEventController {
+  /**
+   * The class resolver service.
+   *
+   * @var \Drupal\Core\DependencyInjection\ClassResolverInterface
+   */
+  protected $classResolver;
 
   // Fullcalendar is using defaultTimedEventDuration parameter
   // for event objects without a specified end value:
   // see https://fullcalendar.io/docs/v4/defaultTimedEventDuration -
   // so taking the value of 1 hour in seconds here,
-  // not sure how to get this from the JS here
-  // TODO: Get this from the configuration of Fullcalendar somehow.
-  protected $defaultTimedEventDuration = 60*60;
+  // not sure how to get this from the JS here.
+  // @todo Get this from the configuration of Fullcalendar somehow.
+  /**
+   * The default duration for a new event.
+   *
+   * @var int
+   */
+  protected $defaultTimedEventDuration = 60 * 60;
 
+  /**
+   * Construct a FullCalendar controller.
+   *
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
+   *   Logger factory object.
+   * @param \Drupal\Core\Access\CsrfTokenGenerator $csrfToken
+   *   CSRF token factory object.
+   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $classResolver
+   *   The class resolver service.
+   */
+  public function __construct(LoggerChannelFactoryInterface $loggerFactory, CsrfTokenGenerator $csrfToken, ClassResolverInterface $classResolver) {
+    parent::__construct($loggerFactory, $csrfToken);
+
+    $this->classResolver = $classResolver;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('logger.factory'),
+      $container->get('csrf_token'),
+      $container->get('class_resolver'),
+    );
+  }
+
+  /**
+   * Update the event entity based on information passed in request.
+   *
+   * @param Symfony\Component\HttpFoundation\Request $request
+   *   The Symfony-processed request from the user to update entity data.
+   *
+   * @return Symfony\Component\HttpFoundation\Response
+   *   An HTTP reponse based on the outcome of the operation.
+   */
   public function updateEvent(Request $request) {
 
     $user = $this->currentUser();
@@ -52,7 +103,7 @@ class FullCalendarController extends CalendarEventController {
         $delta = $id[2];
       }
       elseif ($id[1] == 'R') {
-        /* @var \Drupal\smart_date_recur\Entity\SmartDateRule $rule */
+        /** @var \Drupal\smart_date_recur\Entity\SmartDateRule $rule */
         $rule = $this->entityTypeManager()
           ->getStorage('smart_date_rule')
           ->load($id[2]);
@@ -62,7 +113,6 @@ class FullCalendarController extends CalendarEventController {
         $instance = $instances[$rruleindex];
         $recurring = TRUE;
       }
-
     }
 
     if (empty($entity) || !$entity->access('update')) {
@@ -71,7 +121,7 @@ class FullCalendarController extends CalendarEventController {
 
     if (!$entity->hasField($start_field)) {
       // Can't process without $start_field.
-      return;
+      return new Response($this->t('Invalid start date.'));
     }
 
     // Field definitions.
@@ -80,51 +130,33 @@ class FullCalendarController extends CalendarEventController {
 
     if ($start_type != 'smartdate') {
       parent::updateEvent($request);
-      return;
+      return new Response(1);
     }
 
     if ($recurring) {
-      $endDate = strtotime($end_date);
-      $duration = (strtotime($end_date) - strtotime($start_date)) / 60;
-      $starttime = (date('H:i:s', strtotime($start_date)));
-      // Check if allday event (one day or multiple days long)
-      if ($starttime == '00:00:00') {
-        if (empty($endDate)) {
-          // this is a regular event becoming all day
-          $endDate = strtotime($start_date) + 1439*60;
-          $duration = 0;
-        }
-        elseif ((strtotime($end_date) - strtotime($start_date)) % 86400 == 0) {
-          $endDate = strtotime($end_date) + 1439*60;
-          $duration = 0;
-        }
-      }
-      elseif (empty($endDate)) {
-        // this is allday event becoming regular event
-        $endDate = strtotime($start_date) + $this->defaultTimedEventDuration;
-        $duration = $this->defaultTimedEventDuration/60;
-      }
+      // $endDate = strtotime($end_date);
+      $duration = !empty($instance['end_value']) ? ($instance['end_value'] - $instance['value']) / 60 : 0;
+      $this->calculateEndDateFromDuration($duration, $end_date, $start_date);
+      $start_date = strtotime($start_date);
       if (isset($instance['oid'])) {
         $override = SmartDateOverride::load($instance['oid']);
-        $override
-          ->set('value', strtotime($start_date));
-        $override
-          ->set('end_value', $endDate);
-        $override
-          ->set('duration', $duration);
+        $override->set('value', $start_date);
+        $override->set('end_value', $end_date);
+        $override->set('duration', $duration);
       }
       else {
         $values = [
           'rrule'       => $rule->id(),
           'rrule_index' => $rruleindex,
-          'value'       => strtotime($start_date),
-          'end_value'   => $endDate,
+          'value'       => $start_date,
+          'end_value'   => $end_date,
           'duration'    => $duration,
         ];
         $override = SmartDateOverride::create($values);
       }
       $override->save();
-      $instancesController = new Instances();
+      /** @var \Drupal\smart_date_recur\Controller\Instances $instancesController */
+      $instancesController = $this->classResolver->getInstanceFromDefinition(Instances::class);
       $instancesController->applyChanges($rule);
     }
     else {
@@ -139,8 +171,8 @@ class FullCalendarController extends CalendarEventController {
     }
     // Log the content changed.
     $this->loggerFactory->get($entity_type)->notice('%entity_type: updated %title', [
-      '%entity_type' => $entity->getType(),
-      '%title' => $entity->getTitle(),
+      '%entity_type' => $entity->bundle(),
+      '%title' => $entity->label(),
     ]);
     return new Response(1);
   }
@@ -150,26 +182,30 @@ class FullCalendarController extends CalendarEventController {
    *
    * @param int $duration
    *   Duration in minutes.
-   * @param timestamp $endDate
+   * @param string|null $endDate
    *   End value to populate.
-   * @param timestamp $startDate
+   * @param string $startDate
    *   Start value of the date.
    */
-  protected function calculateEndDateFromDuration(&$duration, &$endDate, $startDate) {
+  protected function calculateEndDateFromDuration(int &$duration, ?string &$endDate, string $startDate) {
     if ($duration % 1440 == '1439') {
-      // This means an allday event is to become a regular event.
       if (empty($endDate)) {
+        // This means an allday event is to become a regular event.
         $endDate = strtotime($startDate) + $this->defaultTimedEventDuration;
-        $duration = $this->defaultTimedEventDuration/60;
+        $duration = $this->defaultTimedEventDuration / 60;
       }
       else {
         $endDate = strtotime($endDate) + 1439 * 60;
       }
     }
     else {
-      // This means an regular event is to become an allday event.
-      if (empty($endDate)) {
-        // This is assuming that https://fullcalendar.io/docs/defaultAllDayEventDuration setting is 1 day.
+      if ($duration === "0" || $duration === 0) {
+        // Can't distinguish all day vs moved, so assume still zero duration.
+        $endDate = strtotime($startDate);
+      }
+      elseif (empty($endDate)) {
+        // Dragged to be all day.
+        // If https://fullcalendar.io/docs/defaultAllDayEventDuration = 1 day.
         $endDate = strtotime($startDate) + 1439 * 60;
         $duration = 1439;
       }

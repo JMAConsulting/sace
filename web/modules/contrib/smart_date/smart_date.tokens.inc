@@ -9,7 +9,6 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\smart_date\Entity\SmartDateFormat;
 use Drupal\smart_date\Plugin\Field\FieldType\SmartDateFieldItemList;
-use Drupal\smart_date\SmartDateTrait;
 
 /**
  * Implements hook_token_info().
@@ -93,15 +92,13 @@ function smart_date_tokens($type, $tokens, array $data, array $options, Bubbleab
       continue;
     }
 
-    $delta = 0;
     $parts = explode(':', $token, 2);
     // Test for a delta as the first part.
     if (is_numeric($parts[0])) {
       if (count($parts) > 1) {
-        $delta = $parts[0];
         $parts = explode(':', $parts[1], 2);
         $property_name = $parts[0];
-        $format_value = $parts[1];
+        $format_value = isset($parts[1]) ? $parts[1] : NULL;
       }
       else {
         continue;
@@ -123,7 +120,7 @@ function smart_date_tokens($type, $tokens, array $data, array $options, Bubbleab
       // Get the requested property and apply the provided format.
       if ($name_parts && $prop_needed = array_pop($name_parts)) {
         $field_ts = $field->get($prop_needed)->getValue();
-        $replacements[$original] = \Drupal::service('date.formatter')->format($field_ts, '', $format_value);;
+        $replacements[$original] = \Drupal::service('date.formatter')->format($field_ts, '', $format_value);
       }
     }
     elseif ($approach == 'format') {
@@ -137,13 +134,13 @@ function smart_date_tokens($type, $tokens, array $data, array $options, Bubbleab
       // If a property was specified, only use that.
       if ($name_parts && $prop_needed = array_pop($name_parts)) {
         $field_ts = $field->get($prop_needed)->getValue();
-        $replacements[$original] = SmartDateTrait::formatSmartDate($field_ts, $field_ts, $settings, NULL, 'string');
+        $replacements[$original] = \Drupal::service('smart_date.manager')->formatSmartDate($field_ts, $field_ts, $settings, NULL, 'string');
       }
       // Otherise, format the whole range.
       else {
         $start = $field->get('value')->getValue();
         $end = $field->get('end_value')->getValue();
-        $replacements[$original] = SmartDateTrait::formatSmartDate($start, $end, $settings, NULL, 'string');
+        $replacements[$original] = \Drupal::service('smart_date.manager')->formatSmartDate($start, $end, $settings, NULL, 'string');
       }
     }
   }

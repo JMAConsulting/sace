@@ -12,6 +12,9 @@ nagios:
     controller: '\Drupal\nagios\Controller\StatuspageController::content'
     getparam: FALSE
   show_outdated_names: TRUE
+  experimental_modules: TRUE
+  deprecated_modules: TRUE
+  deprecated_themes: TRUE
   limit_watchdog:
     display: FALSE
     channel_filter:

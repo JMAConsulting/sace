@@ -92,6 +92,7 @@ class IcalWizard extends StylePluginBase {
     $options['no_time_field'] = ['default' => 'none'];
     $options['uid_field'] = ['default' => 'none'];
     $options['default_transparency'] = ['default' => 'transparent'];
+    $options['use_vtimezone'] = ['default' => true];
 
     return $options;
   }
@@ -136,6 +137,14 @@ class IcalWizard extends StylePluginBase {
       '#default_value' => $this->options['no_time_field'],
       '#description' => $this->t('Please identify the field to use to indicate an event will be all-day. If the date field uses the "Date all day" module, this option does not need to be set, and will be pulled automatically from the date field. TODO: Implement this.'),
     );
+
+    $form['use_vtimezone'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use VTIMEZONE'),
+      '#default_value' => $this->options['use_vtimezone'] ?? true,
+      '#description' => $this->t('Use a VTIMEZONE entry. Enabling this may fix any issues with times not showing correctly for daylight savings. This was added relatively recently in the module, even though it is a part of the <a href="https://www.rfc-editor.org/rfc/rfc5545#section-3.6.5" target="_blank" rel="noopener noreferrer">iCal spec</a> so it can be toggled off if it breaks any installations here. VTIMEZONE objects are important for any dates showing as recurring, which cross daylight savings boundries. Future recurring events may not show up as the correct time. Also Outlook desktop client calendars have shown issues with single events not showing the correct time without these, regardless of recurring status.'),
+    );
+
 
     $form['summary_field'] = array(
       '#type' => 'select',
@@ -211,11 +220,16 @@ class IcalWizard extends StylePluginBase {
 
 
   /**
-   * @return Calendar
+   * @return Eluceo\iCal\Component\Calendar
    */
   public function getCalendar(){
     return $this->calendar;
   }
+
+  public function getHelper() {
+    return $this->helper;
+  }
+
 
   /**
    * {@inheritdoc}
@@ -234,6 +248,7 @@ class IcalWizard extends StylePluginBase {
     $this->calendar = $calendar;
 
     $parent_render = parent::render();
+    $this->calendar->setTimezone($this->vTimezone);
 
     // Sets the 'X-WR-CALNAME" property. Just use the View name here.
     if ($this->view->getTitle()) {

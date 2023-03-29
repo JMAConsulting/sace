@@ -7,13 +7,17 @@ use Drupal\Core\Ajax\PrependCommand;
 use Drupal\Core\Ajax\RemoveCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\smart_date\Plugin\Field\FieldWidget\SmartDateWidgetBase;
 use Drupal\smart_date_recur\Controller\Instances;
 use Drupal\smart_date_recur\Entity\SmartDateOverride;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form controller for Smart Date Recur instace override edit forms.
@@ -21,6 +25,51 @@ use Drupal\smart_date_recur\Entity\SmartDateOverride;
  * @ingroup smart_date_recur
  */
 class SmartDateOverrideForm extends FormBase {
+  /**
+   * The class resolver service.
+   *
+   * @var \Drupal\Core\DependencyInjection\ClassResolverInterface
+   */
+  protected $classResolver;
+
+  /**
+   * Definition of form entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Drupal\Core\Render\RendererInterface definition.
+   *
+   * @var Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, RendererInterface $renderer, ClassResolverInterface $classResolver) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->renderer = $renderer;
+    $this->classResolver = $classResolver;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The Drupal service container.
+   *
+   * @return static
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('renderer'),
+      $container->get('class_resolver'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -34,7 +83,7 @@ class SmartDateOverrideForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $rrule = NULL, $index = NULL, $ajax = FALSE) {
 
-    // TODO: Show some kind of entity summary? Title at least?
+    // @todo Show some kind of entity summary? Title at least?
     $instances = $rrule->getRuleInstances();
     if ($ajax) {
       $form['#prefix'] = '<div id="manage-instances">';
@@ -59,7 +108,7 @@ class SmartDateOverrideForm extends FormBase {
     ];
     SmartDateWidgetBase::createWidget($element, $values, $defaults);
     // Add the wrapper class for the Smart Date field so JS and CSS apply.
-    $element['#attributes']['class'][] = 'field--type-smartdate';
+    $element['#attributes']['class'][] = 'smartdate--widget';
     $form['override'] = $element;
     $form['#attached']['library'][] = 'smart_date/smart_date';
 
@@ -87,7 +136,10 @@ class SmartDateOverrideForm extends FormBase {
           'callback' => '::ajaxSubmit',
         ],
       ];
-      $cancelurl = new Url('smart_date_recur.instances', ['rrule' => (int) $rrule->id(), 'modal' => TRUE]);;
+      $cancelurl = new Url('smart_date_recur.instances', [
+        'rrule' => (int) $rrule->id(),
+        'modal' => TRUE,
+      ]);
       $form['ajaxcancel'] = [
         '#type' => 'link',
         '#title' => $this->t('Cancel'),
@@ -121,8 +173,8 @@ class SmartDateOverrideForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // TODO: check that end > start.
-    // TODO: check that values != default.
+    // @todo check that end > start.
+    // @todo check that values != default.
   }
 
   /**
@@ -142,21 +194,21 @@ class SmartDateOverrideForm extends FormBase {
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
     $status_messages = ['#type' => 'status_messages'];
-    $messages = \Drupal::service('renderer')->renderRoot($status_messages);
+    $messages = $this->renderer->renderRoot($status_messages);
     if (!empty($messages)) {
       $response->addCommand(new RemoveCommand('.messages-list'));
       $response->addCommand(new PrependCommand('#manage-instances', $messages));
       return $response;
     }
     $form_state->disableRedirect();
-    /* @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
-    $entityTypeManager = \Drupal::service('entity_type.manager');
-    /* @var \Drupal\smart_date_recur\Entity\SmartDateRule $rrule */
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
+    $entityTypeManager = $this->entityTypeManager;
+    /** @var \Drupal\smart_date_recur\Entity\SmartDateRule $rrule */
     $rrule = $entityTypeManager->getStorage('smart_date_rule')->load($form_state->getValue('rrule'));
-    $instanceController = new Instances();
+    /** @var \Drupal\smart_date_recur\Controller\Instances $instanceController */
+    $instanceController = $this->classResolver->getInstanceFromDefinition(Instances::class);
     $instanceController->setSmartDateRule($rrule);
     $instanceController->setUseAjax(TRUE);
-    $instanceController->setUpdateButton(FALSE);
     $response = new AjaxResponse();
     $response->addCommand(new ReplaceCommand('#manage-instances', $instanceController->listInstancesOutput()));
     return $response;
@@ -168,8 +220,18 @@ class SmartDateOverrideForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     $this->override($form_state);
-    // TODO: force refresh of parent entity.
-    // TODO: output message about operation performed.
+    if (!isset($form['ajaxcancel'])) {
+      /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
+      $entityTypeManager = $this->entityTypeManager;
+      /** @var \Drupal\smart_date_recur\Entity\SmartDateRule $rrule */
+      $rrule = $entityTypeManager->getStorage('smart_date_rule')->load($form_state->getValue('rrule'));
+      /** @var \Drupal\smart_date_recur\Controller\Instances $instanceController */
+      $instanceController = $this->classResolver->getInstanceFromDefinition(Instances::class);
+      // Force refresh of parent entity.
+      $instanceController->applyChanges($rrule);
+      // Output message about operation performed, if not using AJAX.
+      $this->messenger()->addMessage($this->t('The instance has been rescheduled.'));
+    }
     // Redirect to rrule instance listing.
     $form_state->setRedirect('smart_date_recur.instances', ['rrule' => $form_state->getValue('rrule')]);
   }

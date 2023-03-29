@@ -3,6 +3,7 @@
 namespace Drupal\views_ical;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\feeds\Feeds\Target\DateTime;
 use Eluceo\iCal\Component\Event;
 use Drupal\views\ResultRow;
 
@@ -321,6 +322,173 @@ final class ViewsIcalHelper implements ViewsIcalHelperInterface {
     $email_auth = $token_service->replace($value, array('node' => $entity));
 
     return $value;
+  }
+
+
+  /**
+   * Timezones, with daylight savings transitions must be added as objects to the calendar object itself.
+   * Not adding these can lead to events being 1 hour off for outlook client app calenders during daylight savings periods.
+   *
+   * Found this SO after writing the below method, consider adapting this to work with eluceo/iCal.
+   * https://stackoverflow.com/questions/6682304/generating-an-icalender-vtimezone-component-from-phps-timezone-value
+   * @param $timezone
+   * @return void
+   * @throws \Exception
+   */
+  public function addTimezone($timezone, $datetime) {
+    $style = $this->view->getStyle();
+    $options = $style->options;
+    if (!$options['use_vtimezone']) {
+      return;
+    }
+    // Initialize the used timezone transitions.
+    if (!isset($style->usedTimezoneTransitions)) {
+      $style->usedTimezoneTransitions = [];
+    }
+
+    if ($style->checktransitions = false) {
+      return;
+    }
+    // This will get the timezone transition prior to the current.
+    // getTransitions will return the first item in the array starting with the passed minimum time. We'd like to get the
+    // actual start time instead. This simplifies logic later.
+    $secondsInYear = 18410000;
+    $transitions = $timezone->getTransitions(
+      // Subtract two years (probably only need 18 months, just to be sure we include all of the previous transition, so we can start THIS one at the right time)
+      $datetime->getTimestamp() - $secondsInYear - $secondsInYear,
+      $datetime->getTimestamp() + $secondsInYear) ;
+
+    // Do a binary search for the current "transition"
+    // binary search was written before realizing that getTransitions() could be passed arguments... Just kept it though.
+    $high = count($transitions) -1;
+    $low = 0;
+    $found = false;
+    $loops = 0;
+
+    while(!$found) {
+      $midpoint = (int) floor(($low + $high) / 2);
+      $transition = $transitions[$midpoint];
+      $transitionDate = new \DateTime($transition['time']);
+      if (isset($transitions[$midpoint+1])) {
+        $transitionPlus = $transitions[$midpoint+1];
+      }
+      else {
+        // If there is no $start+1, then we are on the last transition, assume the current transition is the one we are
+        // looking for.
+        $found = true;
+        $prevTransition = $transitions[$midpoint-1];
+        $transition['index'] = $midpoint;
+        break;
+      }
+      $transitionDatePlus = new \DateTime($transitionPlus['time']);
+      // If this transition is within 9 months in the past
+      if ($datetime >= $transitionDate && $datetime < $transitionDatePlus) {
+        $found = true;
+        $prevTransition = $transitions[$midpoint - 1];
+        $transition['index'] = $midpoint;
+        break;
+      }
+      else if ($datetime < $transitionDate && $datetime < $transitionDatePlus) {
+        // if we went too high, we need to pick a value between the current start and previous one.
+        $high = $midpoint - 1;
+      }
+      else {
+        // We are too low, go higher.
+        $low = $midpoint + 1;
+      }
+      // Safety bail in case there is no result.
+      $loops = $loops++;
+      if ($loops > 10) {
+        return;
+      }
+    }
+
+    $tz  = $timezone->getName();
+    $dtz = $timezone;
+    if (!isset($style->vTimezone)) {
+      $style->vTimezone = new \Eluceo\iCal\Component\Timezone($tz);
+    }
+
+    // This timezone transition was already added, so skip to not add a duplicate.
+    if (in_array($transition['time'], $style->usedTimezoneTransitions)) {
+      return;
+    }
+
+    // Create timezone rules
+    if ($transition['isdst']) {
+      $vTimezoneRule = new \Eluceo\iCal\Component\TimezoneRule(\Eluceo\iCal\Component\TimezoneRule::TYPE_DAYLIGHT);
+    }
+    else {
+      $vTimezoneRule = new \Eluceo\iCal\Component\TimezoneRule(\Eluceo\iCal\Component\TimezoneRule::TYPE_STANDARD);
+    }
+    $vTimezoneRule->setTzName($transition['abbr']);
+    $vTimezoneRule->setDtStart(new \DateTime($transition['time'], $dtz));
+    $vTimezoneRule->setTzOffsetFrom($this->convertOffset($prevTransition['offset']));
+    $vTimezoneRule->setTzOffsetTo($this->convertOffset($transition['offset']));
+
+    // We aren't bothering with recurrance rules, we just add an entry for every timezone rule.
+    // Add this
+    $style->vTimezone->addComponent($vTimezoneRule);
+
+    // For good measure, we also add the timezone transition for the prior transition.
+    $transitionPrev = $transitions[$transition['index'] - 1];
+    if (!in_array($transitionPrev['time'], $style->usedTimezoneTransitions)) {
+      if ($transitionPrev['isdst']) {
+        $vTimezoneRulePrev = new \Eluceo\iCal\Component\TimezoneRule(\Eluceo\iCal\Component\TimezoneRule::TYPE_DAYLIGHT);
+      }
+      else {
+        $vTimezoneRulePrev = new \Eluceo\iCal\Component\TimezoneRule(\Eluceo\iCal\Component\TimezoneRule::TYPE_STANDARD);
+      }
+      $vTimezoneRulePrev->setTzName($transitionPrev['abbr']);
+      $vTimezoneRulePrev->setDtStart(new \DateTime($transitionPrev['time'], $dtz));
+      $vTimezoneRulePrev->setTzOffsetFrom($this->convertOffset($transitions[$transition['index'] - 2]['offset']));
+      $vTimezoneRulePrev->setTzOffsetTo($this->convertOffset($transitionPrev['offset']));
+      $style->vTimezone->addComponent($vTimezoneRulePrev);
+      $style->usedTimezoneTransitions[$transitionPrev['time']] = $transitionPrev['time'];
+    }
+
+    $style->usedTimezoneTransitions[$transition['time']] = $transition['time'];
+  }
+
+  /**
+   * Converts a numerical timezone offset in seconds to a string based one in minutes
+   * e.g. -14400 becomes "-0400"
+   *
+   * TODO: Move this and related methods to a helper, it has no business being in this class.
+   * @param $transition
+   * @return void
+   */
+  public function convertOffset($offset) {
+    // determine whether this has a leading or
+    $hours = abs($offset / 60 / 60);
+    if ($offset > 0) {
+      $direction = '+';
+    }
+    else if ($offset < 0) {
+      $direction = '-';
+    }
+    else {
+      $direction = '';
+    }
+
+    // Determine if it should have any leading zeros.
+    if ($hours < 10) {
+      $leadingZero = "0";
+    }
+    else {
+      $leadingZero = "";
+    }
+
+    // If it's between hours.
+    if ($hours % 1 !== 0) {
+      // TODO: Are there any timezones not at the hour or halfs?
+      $trailing = '30';
+    }
+    else {
+      $trailing = '00';
+    }
+
+    return $direction . $leadingZero . $hours . $trailing;
   }
 
 

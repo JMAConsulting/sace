@@ -18,42 +18,43 @@ use Drupal\smart_date\SmartDateTrait;
  */
 class SmartDateProcessor extends FullcalendarViewProcessorBase {
 
+  use SmartDateTrait;
+
   /**
-   * @inheritDoc
+   * Process retrieved values before being passed to Fullcalendar.
    *
-   * processing view results of fullcalendar_view for a smart date field
+   * Processing view results of fullcalendar_view for a smart date field.
    *
-   * ToDo:
-   * - handling of drag and drop updates full calendar
-   * - timezone handling
-   * - smart date recurring events handling (should be roughly working)
-   * - fullcalender_view recurring events handling (not considered yet, maybe
-   * this is not to be supported by smart date anyway
+   * @todo timezone handling.
    */
   public function process(array &$variables) {
-    /* @var \Drupal\views\ViewExecutable $view */
+    /** @var \Drupal\views\ViewExecutable $view */
     $view = $variables['view'];
     $view_index = key($variables['#attached']['drupalSettings']['fullCalendarView']);
 
     $fields = $view->field;
-    $options =  $view->style_plugin->options;
+    $options = $view->style_plugin->options;
     $start_field = $options['start'];
     $start_field_options = $fields[$start_field]->options;
+    // If no format set, may be the wrong field type.
+    if (empty($start_field_options['settings']['format'])) {
+      return;
+    }
     $format_label = $start_field_options['settings']['format'];
     // Load the format specified in the View.
-    $format = SmartDateTrait::loadSmartDateFormat($format_label);
+    $format = $this->loadSmartDateFormat($format_label);
     $multiple = $fields[$start_field]->multiple;
     // If not a Smart Date field or not existing config, nothing to do.
     if (strpos($start_field_options['type'], 'smartdate') !== 0 || empty($variables['#attached']['drupalSettings']['fullCalendarView'][$view_index]['calendar_options'])) {
       return;
     }
     $calendar_options = json_decode($variables['#attached']['drupalSettings']['fullCalendarView'][$view_index]['calendar_options'], TRUE);
+    // Nothing to do if there are no events to process.
+    if (empty($calendar_options['events'])) {
+      return;
+    }
     $entries = $calendar_options['events'];
     $mappings = $this->getIdMappings($entries);
-    if ($multiple && $start_field_options['group_rows'] == FALSE) {
-      $messenger = \Drupal::messenger();
-      $messenger->addMessage('Please group the rows', $messenger::TYPE_WARNING);
-    }
     foreach ($view->result as $key => $row) {
       $current_entity = $row->_entity;
       $values = $current_entity->get($start_field)->getValue();
@@ -65,13 +66,17 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
           $value['id'] = $row->_entity->id();
           $lookup_key = $value['id'] . '-' . $delta;
           $entries_index = $mappings[$lookup_key];
-          $this->updateEntry($entries[$entries_index], $value, $format);
+          if (!empty($entries[$entries_index])) {
+            $this->updateEntry($entries[$entries_index], $value, $format);
+          }
         }
       }
       else {
-        $values[0]['delta'] = $key;
+        $values[0]['delta'] = 0;
         $values[0]['id'] = $row->_entity->id();
-        $this->updateEntry($entries[$key], $values[0], $format);
+        if (!empty($entries[$key])) {
+          $this->updateEntry($entries[$key], $values[0], $format);
+        }
       }
     }
     // Update the entries.
@@ -86,7 +91,8 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
    *
    * @param array $entries
    *   The entries as created by Fullcalendar View.
-   * @return array $ids
+   *
+   * @return array
    *   An array to map
    */
   private function getIdMappings(array $entries) {
@@ -112,12 +118,15 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
   private function updateEntry(array &$entry, array $row_data, array $format) {
     $start = $row_data['value'];
     $end = $row_data['end_value'];
-    $timezone = $row_data['timezone'] ?: NULL;
-    if (empty($entry) || empty($start) || empty($end)) {
+    if (empty($entry) || empty($start) || empty($end) || !ctype_digit($start) || !ctype_digit($end)) {
       return FALSE;
     }
+    $timezone = NULL;
+    if (isset($row_data['timezone']) && $row_data['timezone']) {
+      $timezone = $row_data['timezone'];
+    }
     // Check for all day events.
-    if (SmartDateTrait::isAllDay($start, $end)) {
+    if ($this->isAllDay($start, $end, $timezone)) {
       $entry['start'] = date('Y-m-d', $start);
       // The end date is inclusive for a all day event in full calendar,
       // which is not what we want. So we need one day offset.
@@ -125,15 +134,15 @@ class SmartDateProcessor extends FullcalendarViewProcessorBase {
       $entry['allDay'] = TRUE;
     }
     else {
-      $entry['start'] = date(DATE_ATOM, $start);
-      $entry['end'] = date(DATE_ATOM, $end);
+      $entry['start'] = date('Y-m-d\TH:i:s', $start);
+      $entry['end'] = date('Y-m-d\TH:i:s', $end);
       $entry['allDay'] = FALSE;
     }
     // Append the id with necessary additional data.
     if (!empty($row_data['rrule'])) {
       $entry['eid'] = $row_data['id'] . '-R-' . $row_data['rrule'] . '-I-' . $row_data['rrule_index'];
     }
-    else if (isset($row_data['delta'])) {
+    elseif (isset($row_data['delta'])) {
       $entry['eid'] = $row_data['id'] . '-D-' . $row_data['delta'];
     }
   }

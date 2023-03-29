@@ -17,7 +17,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
  *   }
  * )
  */
-class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements ContainerFactoryPluginInterface {
+class SmartDateTimezoneWidget extends SmartDateInlineWidget implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritdoc}
@@ -26,6 +26,8 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
     return [
       'default_tz' => '',
       'custom_tz' => '',
+      'allowed_timezones' => [],
+      'add_abbreviations' => '',
     ] + parent::defaultSettings();
   }
 
@@ -36,7 +38,7 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
     // Set default, based on field config.
-    $default_label = t('- default: @tz_label -', ['@tz_label' => $this->getSiteTimezone()]);
+    $default_label = $this->t('- default: @tz_label -', ['@tz_label' => $this->getSiteTimezone()]);
     switch ($this->getSetting('default_tz')) {
       case '':
         $default_timezone = '';
@@ -51,8 +53,20 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
         break;
     }
 
+    if ($this->getSetting('allowed_timezones')) {
+      $allowed_timezone_values = $this->getSetting('allowed_timezones');
+      $allowed_timezone_options = array_combine($allowed_timezone_values, $allowed_timezone_values);
+      $timezones = $this->formatTimezoneOptions($allowed_timezone_options);
+    }
+    elseif ($this->getSetting('add_abbreviations')) {
+      $timezones = $this->formatTimezoneOptions($this->getTimezones(FALSE));
+    }
+    else {
+      $timezones = $this->getTimezones();
+    }
+
     $element['timezone']['#type'] = 'select';
-    $element['timezone']['#options'] = ['' => $default_label] + $this->getTimezones();
+    $element['timezone']['#options'] = ['' => $default_label] + $timezones;
 
     $element['timezone']['#default_value'] = $items[$delta]->timezone ? $items[$delta]->timezone : $default_timezone;
 
@@ -79,6 +93,18 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
       ],
     ];
 
+    $element['add_abbreviations'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Add abbreviations'),
+      '#description' => $this->t('Optionally add the time abbreviations.'),
+      '#default_value' => $this->getSetting('add_abbreviations'),
+      '#options' => [
+        '' => $this->t('Never'),
+        'before' => $this->t('Before the name'),
+        'after' => $this->t('After the name'),
+      ],
+    ];
+
     $custom_tz = $this->getSetting('custom_tz') ? $this->getSetting('custom_tz') : $this->getSiteTimezone();
 
     $element['custom_tz'] = [
@@ -93,6 +119,14 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
         ],
       ],
     ];
+
+    $element['allowed_timezones']['#type'] = 'select';
+    $element['allowed_timezones']['#multiple'] = TRUE;
+    $element['allowed_timezones']['#options'] = $this->getTimezones();
+
+    $element['allowed_timezones']['#default_value'] = $this->getSetting('allowed_timezones');
+
+    $element['allowed_timezones']['#weight'] = 100;
 
     return $element;
   }
@@ -117,14 +151,84 @@ class SmartDateTimezoneWidget extends SmartDateDefaultWidget implements Containe
         break;
     }
 
+    if ($allowed_tz = $this->getSetting('allowed_timezones')) {
+      $summary[] = $this->t('Allowed timezones: @timezones', ['@timezones' => implode(', ', $allowed_tz)]);
+    }
+
     return $summary;
   }
 
   /**
    * Helper function to retrieve available timezones.
    */
-  public function getTimezones() {
-    return system_time_zones(FALSE, TRUE);
+  public function getTimezones($grouped = TRUE) {
+    return system_time_zones(FALSE, $grouped);
+  }
+
+  /**
+   * Helper function to format allowed timezone as a grouped list.
+   */
+  public function formatTimezoneOptions(array $zonelist, $grouped = TRUE) {
+    $prepend = '';
+    $append = '';
+    $add_abbr = $this->getSetting('add_abbreviations');
+
+    $zones = [];
+    foreach ($zonelist as $value => $zone) {
+      if (!is_string($zone)) {
+        $zone = $zone->render();
+      }
+      // Because many time zones exist in PHP only for backward compatibility
+      // reasons and should not be used, the list is filtered by a regular
+      // expression.
+      if (preg_match('!^((Africa|America|Antarctica|Arctic|Asia|Atlantic|Australia|Europe|Indian|Pacific)/|UTC$)!', $zone)) {
+        $zones[$value] = $this->t('@zone', [
+          '@zone' => $this->t(str_replace('_', ' ', $zone)),
+        ]);
+      }
+    }
+
+    $now = time();
+
+    // Sort the translated time zones alphabetically.
+    asort($zones);
+    if ($grouped) {
+      $grouped_zones = [];
+      foreach ($zones as $key => $value) {
+        $split = explode('/', $value);
+        $city = array_pop($split);
+        $region = array_shift($split);
+
+        // If configured, add the timezone abbreviation.
+        if ($add_abbr) {
+          $tz = new \DateTimeZone(str_replace(' ', '_', $key));
+          $transition = $tz->getTransitions($now, $now);
+          $abbr = $transition[0]['abbr'];
+          if ($add_abbr == 'before') {
+            $prepend = $abbr . ' ';
+          }
+          elseif ($add_abbr == 'after') {
+            $append = ' ' . $abbr;
+          }
+        }
+
+        if (!empty($region)) {
+          $label = empty($split) ? $city : $city . ' (' . implode('/', $split) . ')';
+          $grouped_zones[$region][$key] = $prepend . $label . $append;
+        }
+        else {
+          $grouped_zones[$key] = $prepend . $value . $append;
+        }
+      }
+      foreach ($grouped_zones as $key => $value) {
+        if (is_array($grouped_zones[$key])) {
+          asort($grouped_zones[$key]);
+        }
+      }
+      $zones = $grouped_zones;
+    }
+    return $zones;
+
   }
 
   /**
