@@ -9,3 +9,6 @@ define('Number_Participants', 'civicrm_1_activity_1_cg2_custom_24');
 define('Number_of_classes', 'civicrm_1_activity_1_cg2_custom_656');
 define('Grades_and_Ages', 'civicrm_1_activity_1_cg2_custom_25');
 define('Participant_Needs', 'civicrm_1_activity_1_cg2_custom_126');
+define('End_Date', 'civicrm_1_activity_1_cg2_custom_661');
+define('Start_Date', 'civicrm_1_activity_1_activity_activity_date_time');
+define('Activity_Duration', 'civicrm_1_activity_1_activity_duration');

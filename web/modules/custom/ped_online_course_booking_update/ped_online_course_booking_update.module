@@ -29,8 +29,8 @@ function ped_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\F
 
     //Get Activity data
     $activities = \Civi\Api4\Activity::get()
-    ->addSelect('Booking_Information.Online_Courses', 'Booking_Information.Youth_Online_Course_Optional_Add_Ons', 'Booking_Information.This_booking_is_for_a_smaller_group_program_department_or_commit', 'Booking_Information.Preferred_Dates', 'Booking_Information.Number_Participants', 'Booking_Information.Number_of_classes', 'Booking_Information.Grades_and_Ages', 'Booking_Information.Participant_Needs')
-    ->addWhere('id', '=', 7815)
+    ->addSelect('Booking_Information.Online_Courses', 'Booking_Information.Youth_Online_Course_Optional_Add_Ons', 'Booking_Information.This_booking_is_for_a_smaller_group_program_department_or_commit', 'Booking_Information.Preferred_Dates', 'Booking_Information.Number_Participants', 'Booking_Information.Number_of_classes', 'Booking_Information.Grades_and_Ages', 'Booking_Information.Participant_Needs', 'Booking_Information.End_Date', 'activity_date_time', 'duration')
+    ->addWhere('id', '=', $aid)
     ->setLimit(0)
     ->execute();
     
@@ -58,5 +58,20 @@ function ped_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\F
 
     //Participant_Needs
     $elements[$constants['Participant_Needs']]['#default_value'] = $activities[0]['Booking_Information.Participant_Needs'];
+
+    //Start_Date (Activity Date Time)
+    $elements[$constants['Start_Date']]['#default_value'] = $activities[0]['activity_date_time'];
+
+    //End_Date
+    $elements[$constants['End_Date']]['#default_value'] = $activities[0]['Booking_Information.End_Date'];
+
+    //Activity Duration
+    $start_date = $elements['civicrm_1_activity_1_activity_activity_date_time']['#default_value'];
+    $end_date = $activities[0]['Booking_Information.End_Date'];
+
+    // $elements[$constants['Activity_Duration']]['#default_value'] = date_diff(date_create($end_date), date_create($start_date));
+    // \Drupal::logger('ped_online_course_booking_update')->error(print_r($elements[$constants['Activity_Duration']],true));
+    // \Drupal::logger('ped_online_course_booking_update')->error(print_r(date_diff(date_create($end_date), date_create($start_date))->format(('%a days')),true));
+
   }
 }
