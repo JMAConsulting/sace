@@ -42,6 +42,10 @@
                 }
             ],
             "description": "PHP mime type and extension mapping library: compatible with Symfony, powered by jshttp/mime-db",
+            "support": {
+                "issues": "https://github.com/adrienrn/php-mimetyper/issues",
+                "source": "https://github.com/adrienrn/php-mimetyper/tree/0.2.2"
+            },
             "install-path": "../adrienrn/php-mimetyper"
         },
         {
@@ -872,7 +876,10 @@
                 ],
                 "compile-whitelist": [
                     "civicrm/composer-compile-lib"
-                ]
+                ],
+                "patches_applied": {
+                    "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
+                }
             },
             "installation-source": "dist",
             "autoload": {
