@@ -61,8 +61,6 @@ cj(function ($) {
       else {
         window.attachEvent("onmessage", fapsIframeMessage);
       }
-    }).fail(function(jqxhr, settings, exception) {
-      CRM.alert('Failed to initiate payment gateway, please reload the page', 'Payment gateway error');
     });
   }
 
