@@ -1,0 +1,119 @@
+digraph A {
+  graph [fontname="Lato", bgcolor="#eeeeee"]
+  node [fontname="Lato", shape=rectangle, style="filled" fillcolor="white", color="#444444"]
+  edge [fontname="Lato", labeldistance=2]
+
+  start [label="Start Fetch", style="filled,rounded", fillcolor="#ffee88"]
+
+  start->lockCheck
+  lockCheck [label="Check audience not locked and obtain lock"]
+
+  lockCheck->processFetchMailchimp
+  processFetchMailchimp [label="Fetch Mailchimp data for list\nUpdate existing/create new cache rows based on email hash\nSet sync_status: todo"]
+
+  processFetchMailchimp->process2
+  process2 [label="check pre-existing contact_ids\nset them NULL if they belong to deleted contacts or no longer exist.\nSet sync_status: todo"]
+
+  process2->process3
+  process3 [label="populate missing contactID by email matching first of:\n1. email owned by one unique not-deleted contact\n2. lowest contact ID of not-deleted contact in the group\n3. lowest contact ID of not-deleted contact previously in group\n4. lowest contact ID of not-deleted contact who has never been in group"]
+
+  process3->process4
+  process4 [label="create new CiviCRM contacts for any remaining mailchimp emails"]
+
+  process4->process5
+  process5 [label="Add in subscribers at CiviCRM not found in Mailchimp data\nSet sync_status:todo"]
+
+  process5->process6
+  process6 [label="Now we have all *contacts* that need to be processed"]
+
+  process6->process6b
+  process6b [label="Copy CiviCRM group subscription status and update date to cache"]
+
+  process6b->process7
+  process7 [label="Release audience lock"]
+
+  process7 ->end1
+  end1 [label="End fetch", style="filled,rounded", fillcolor="#ffee88"]
+
+  start2 [label="Start Reconciliation", style="filled,rounded", fillcolor="#ffee88"]
+  start2->p8
+  p8 [label="Process each 'todo' row in turn"]
+
+  p8->onlyCiviUpdates
+  onlyCiviUpdates [label="CiviCRM\nupdates\nneeded?", shape=diamond]
+
+    onlyCiviUpdates->p9 [taillabel="Yes" labeldistance=2]
+    p9 [label="Make CiviCRM updates\nSet sync_status:ok"]
+
+    p9->mailchimpupdates1
+    mailchimpupdates1 [label="Mailchimp\nupdates\nneeded?", shape=diamond]
+
+      mailchimpupdates1->p10 [taillabel="Yes" labeldistance=2]
+      p10 [label="Store update\nSet sync_status: live"]
+
+
+    onlyCiviUpdates->mailchimpupdates1 [taillabel="No" labeldistance=2]
+
+  p10->loop1
+  mailchimpupdates1->loop1 [taillabel="No" labeldistance=2]
+
+  loop1 [label="Repeat next row,\nor stop and do another batch later"]
+  loop1:e->p8:e [weight=0]
+  loop1 -> end2
+
+  end2 [label="End Reconciliation", style="filled,rounded", fillcolor="#ffee88"]
+
+
+  start3 [label="Start Batch updates", style="filled,rounded", fillcolor="#ffee88"]
+  start3->p11
+  p11 [label="Take up to 1,000 items from batch"]
+
+  p11->p12
+  p12 [label="Submit batch, create row in batches table,\nstore ID in updates table rows"]
+
+  p12->loop2
+  loop2 [label="Repeat next batch,\nor stop and do another batch later"]
+  loop2->end3
+
+  end3 [label="End Batch updates", style="filled,rounded", fillcolor="#ffee88"]
+
+  start4 [label="Batches webhook", style="filled,rounded", fillcolor="#ffee88"]
+
+  start4->bwh1
+  bwh1 [label="Uncompress; untar"]
+  bwh1->bwh2
+
+  bwh2 [label="Loop responses."]
+  bwh2->bwh3
+
+  bwh3 [label="Success?" shape=diamond]
+
+    bwh3:w->bwh4 [taillabel="Yes"]
+    bwh4 [label="Set cache table status 'ok'"]
+    bwh4->bwh9:n [dir="none"]
+
+    bwh3:e->bwh5a [taillabel="No"]
+    bwh5a [label="Store response in updates table"]
+    bwh5a->bwh5b
+    bwh5b [label="Manual\nunsubscribe?" shape=diamond]
+      bwh5b->bwh6 [taillabel="Yes"]
+      bwh6 [label="Set cache table status 'redo' ??"]
+      bwh6->bwh7
+      bwh7 [label="Add alternate update to batch table."]
+      bwh7 ->bwh9:n [dir="none"]
+
+      bwh5b->bwh8 [taillabel="No"]
+      bwh8 [label="Set cache table status 'fail'"]
+      bwh8->bwh9:n [dir="none"]
+
+
+
+  bwh9 [label="Loop until done"]
+  bwh9:s->end4b:n
+  bwh9:w->bwh2:w [style="dashed"]
+  end4b [label="Batches webhook end", style="filled,rounded", fillcolor="#ffee88"]
+
+  { rank=same; start; start2; start3; start4}
+  { rank=same; end1; end2; end3; end4b}
+  { rank=same; p11; lockCheck; p8}
+}

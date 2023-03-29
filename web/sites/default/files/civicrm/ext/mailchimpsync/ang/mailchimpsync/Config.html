@@ -1,0 +1,259 @@
+<div class="crm-container mcs-config">
+  <!--
+    Add ?angularDebug=1
+  <h1 crm-page-title>{{ts('About %1', {1: myContact.first_name + ' ' + myContact.last_name})}}</h1>
+-->
+  <h1 crm-page-title>{{ts('Mailchimpsync Config')}}</h1>
+  <div crm-ui-debug="mcsConfig"></div>
+  <div crm-ui-debug="mailingGroups"></div>
+  <form name="myForm" crm-ui-id-scope>
+
+    <!-- Overview ========================================================== -->
+    <div ng-show="view === 'overview'" >
+
+      <h2>{{ts('Groups to sync')}}</h2>
+      <p>{{ts('The following CiviCRM groups and Mailchimp Audiences are to be kept in sync')}}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>{{ts('CiviCRM Group')}}</th>
+            <th>{{ts('Mailchimp Audience')}}</th>
+            <th>{{ts('Mailchimp Interest')}}</th>
+            <th>{{ts('Actions')}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="row in syncRows" >
+            <td>{{ row.groupName }}
+              <span ng-if="row.listName && !row.webhookFound" class="mcs-status-pill meh" >Webhook missing</span>
+            </td>
+
+            <td>{{ row.listName }}</td>
+
+            <td><!-- interest name, or link for new interest -->
+              <a href
+                 ng-if="row.interestName === '_new_'"
+                 ng-click="interestEdit(row.listId, row.interestId)"
+                 >{{ts('Add new interest sync')}}
+              </a>
+              <span ng-if="row.interestName !== '_new_'">{{ row.interestName }}</span>
+            </td>
+
+            <td class="mcs-actions"><!-- actions -->
+              <span ng-if="row.interestName">
+                <span ng-if="row.interestName !== '_new_'">
+                  <a href ng-click="interestEdit(row.listId, row.interestId)">{{ts('Edit')}}</a>
+                  | <a href ng-click="interestDelete(row.listId, row.interestId)">{{ts('Delete')}}</a>
+                </span>
+              </span>
+              <span ng-if="!row.interestName"><!-- Audience -->
+                <a href ng-click="listEdit(row.listId)">{{ts('Edit')}}</a> |
+                <a href ng-click="listDelete(row.listId)">{{ts('Delete')}}</a>
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td></td><td><a href ng-click="listEdit()" >{{ts('Add new subscription sync')}}</a></td>
+            <td></td><td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>{{ts('Mailchimp Accounts')}}</h2>
+      <table>
+        <thead><tr><th>{{ts('Name')}}</th><th>{{ts('Username')}}</th><th>{{ts('Actions')}}</th></tr></thead>
+        <tbody>
+          <tr ng-repeat="(apiKey, details) in mcsConfig.accounts" >
+            <td>{{details.account_name}}
+              <span ng-if="!details.batchWebhookFound"
+                class="mcs-status-pill bad">Batch webhook missing</span>
+            </td>
+            <td>{{details.username}}</td>
+            <td><a href ng-click="accountEdit(apiKey)">{{ts('Edit')}}</a>
+              |
+              <a href ng-click="accountDelete(apiKey)">{{ts('Delete')}}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <a href ng-click="accountEdit()" >{{ts('Add new account')}}</a>
+
+    </div><!-- ends main overview-->
+
+    <!-- Edit account ========================================================== -->
+    <div ng-show="view === 'editAccount'" >
+      <h2>{{ts('Edit Account')}}</h2>
+      <div crm-ui-debug="editData"></div>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.apiKey" >{{ts('Mailchimp API Key')}}</label>
+        <input
+          crm-ui-id="editData.apiKey"
+          name="api_key"
+          ng-model="editData.apiKey"
+          class="crm-form-text"
+          placeholder="{{ts('Mailchimp API Key')}}"
+          />
+      </div>
+
+      <button ng-click="accountSave()" >{{ts('Save Account')}}</button>
+      <br />
+      <br />
+      <a href ng-click="view='overview'" tabstop="-1">{{ts('Cancel Edits')}}</a>
+      <br />
+      <br />
+
+      <div ng-if="mcsConfig.accounts[editData.apiKey].batchWebhook" >
+        <!-- account is saved -->
+
+        <div ng-if="mcsConfig.accounts[editData.apiKey].batchWebhookFound" >
+          <span class="mcs-status-pill good">Batch webhook</span> correctly registered.
+          <br />
+          <code class="mcs-webhook-url">{{}}</code>
+        </div>
+        <div ng-if="!mcsConfig.accounts[editData.apiKey].batchWebhookFound" >
+          <span class="mcs-status-pill meh">Batch webhook</span> not registered, sync cannot complete automatically.<br />
+          <p>The correct URL for this site is<br />
+          <code class="mcs-webhook-url">{{mcsConfig.accounts[editData.apiKey].batchWebhook}}</code>
+          <br /><a href ng-click="bwhAdd()">Add webhook</a> (Don't add if on a development site!)</p>
+        </div>
+
+        <br/>
+        <div ng-if="mcsConfig.accounts[editData.apiKey].batchWebhooks.length > 0" >
+          The following batch webhooks exist:
+          <ul>
+            <li ng-repeat="hook in mcsConfig.accounts[editData.apiKey].batchWebhooks">
+              <span ng-if="mcsConfig.accounts[editData.apiKey].batchWebhook === hook.url">✔ </span>
+              <code class="mcs-webhook-url">{{hook.url}}</code><br />
+              <a href ng-click="bwhDelete(editData.apiKey, hook.id)">Delete</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <!-- Edit audience/list ========================================================== -->
+    <div ng-show="view === 'editAudience'" >
+      <h2>{{ts('Edit Audience-Group subscription sync')}}</h2>
+      <div crm-ui-debug="editData"></div>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.apiKey" >{{ts('Mailchimp account')}}</label>
+        <select
+          crm-ui-id="editData.apiKey"
+          ng-model="editData.apiKey"
+          crm-ui-select="{allowClear:false, width: '100%'}"
+          name="api_key"
+          class="crm-form-text"
+          placeholder="{{ts('Mailchimp API Key')}}"
+          >
+            <option ng-repeat="(apiKey, account) in mcsConfig.accounts"
+                    value="{{apiKey}}"
+                    >{{account.account_name}} ({{account.username}})</select>
+        </select>
+      </div>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.groupId" >{{ts('CiviCRM Group')}}</label>
+        <select
+          crm-ui-id="editData.groupId"
+          ng-model="editData.groupId"
+          crm-ui-select="{allowClear:false, width: '100%'}"
+          name="group_id"
+          class="crm-form-text"
+          placeholder="{{ts('CiviCRM Group')}}"
+          >
+          <option ng-repeat="group in mailingGroups"
+                  value="{{group.id}}">
+            {{group.title}}
+          </option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.listId" >{{ts('Mailchimp List/Audience ID')}}</label>
+        <select
+          crm-ui-id="editData.listId"
+          ng-model="editData.listId"
+          crm-ui-select="{allowClear:false, width: '100%'}"
+          name="api_key"
+          class="crm-form-text"
+          placeholder="{{ts('Mailchimp List/Audience')}}"
+          >
+            <option ng-repeat="(listId, list) in mcsConfig.accounts[editData.apiKey].audiences || {}"
+                    value="{{listId}}"
+                    >{{list.name}} ({{listId}})</select>
+        </select>
+      </div>
+
+      <a href ng-click="view='overview'" tabstop="-1">{{ts('Cancel Edits')}}</a>
+      <button ng-click="listSave()" >{{ts('Save')}}</button>
+      <br/>
+      <br/>
+
+      <!-- webhooks -->
+      <h3>Webhooks for {{mcsConfig.accounts[editData.apiKey].audiences[editData.listId].name}}</h3>
+      <ul>
+        <li ng-repeat="wh in mcsConfig.accounts[editData.apiKey].audiences[editData.listId].webhooks">
+          <span ng-if="wh.url === mcsConfig.accounts[editData.apiKey].webhookUrl"
+                class="mcs-status-pill good">Valid</span>
+          <span ng-if="wh.url !== mcsConfig.accounts[editData.apiKey].webhookUrl"
+                class="mcs-status-pill meh">Invalid</span>
+            {{wh.url}} <a href ng-click="webhookDelete(wh.id)">Delete</a>
+        </li>
+        <li ng-if="!mcsConfig.accounts[editData.apiKey].audiences[editData.listId].webhookFound">
+          <span class="mcs-status-pill meh">Missing</span> <a href ng-click="webhookCreate()">Create correct webhook</a>
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- Edit interest ========================================================== -->
+    <div ng-show="view === 'editInterest'" >
+      <h2>{{ts('Edit Interest-Group sync')}}</h2>
+      <div crm-ui-debug="editData"></div>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.interestId" >{{ts('Mailchimp interest')}}</label>
+        <select
+          crm-ui-id="editData.interestId"
+          ng-model="editData.interestId"
+          crm-ui-select="{allowClear:false, width: '100%'}"
+          name="interestId"
+          class="crm-form-text"
+          placeholder="{{ts('Mailchimp Interest')}}"
+          >
+            <option ng-repeat="(interestId, name) in editData.options"
+                    value="{{interestId}}"
+                    >{{name}}</select>
+        </select>
+      </div>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.groupId" >{{ts('CiviCRM Group')}}</label>
+        <select
+          crm-ui-id="editData.groupId"
+          ng-model="editData.groupId"
+          crm-ui-select="{allowClear:false, width: '100%'}"
+          name="group_id"
+          class="crm-form-text"
+          placeholder="{{ts('CiviCRM Group')}}"
+          >
+          <option ng-repeat="group in mailingGroups"
+                  value="{{group.id}}">
+            {{group.title}}
+          </option>
+        </select>
+      </div>
+
+      <a href ng-click="view='overview'" tabstop="-1">{{ts('Cancel Edits')}}</a>
+      <button ng-click="interestSave()" >{{ts('Save')}}</button>
+    </div>
+
+  </form>
+
+</div>

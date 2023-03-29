@@ -1,0 +1,37 @@
+site_name: Mailchimp Sync
+repo_url: https://github.com/artfulrobot/mailchimpsync
+theme: 
+  name: material
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - def_list
+  - codehilite
+  - toc:
+      permalink: True
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tilde
+  - pymdownx.betterem
+  - pymdownx.mark
+
+nav:
+- Home: index.md
+- Tutorial: tutorial.md
+- How Tos:
+    - 'Install/uninstall': howto/install.md
+    - 'How to sync an existing audience': howto/sync-existing.md
+    - 'How to run a sync': howto/run-sync.md
+    - 'Sync single contact': howto/sync-single.md
+    - 'Sync extra data': howto/data-sync.md
+- Discussions:
+    - 'Mailchimp Issues': discussion/mailchimp-issues.md
+    - 'Optimisation': discussion/sql-optimisation.md
+    - 'FAQ': discussion/faq.md
+    - 'Sync failures': discussion/fails.md
+- Reference:
+    - 'API Reference': reference/api.md
+    - 'Table Reference': reference/tables.md
+    - 'Sync Details': reference/sync-detail.md
+
