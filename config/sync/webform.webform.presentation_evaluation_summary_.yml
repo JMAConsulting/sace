@@ -192,34 +192,44 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Number of staff entered evaluations'
-  civicrm_1_activity_1_cg2_custom_43:
+  civicrm_1_activity_1_cg2_custom_333:
     '#type': civicrm_options
-    '#title': 'Demographic information'
-    '#civicrm_live_options': 0
-    '#options':
-      Adults: Adults
-      'At-Risk Youth': 'At-Risk Youth'
-      'English Language Learners': 'English Language Learners'
-      'First Nation Reserves': 'First Nation Reserves'
-      Incarcerated: Incarcerated
-      Indigenous: Indigenous
-      LGBT2QS+: LGBT2QS+
-      'Métis Settlements': 'Métis Settlements'
-      'Newcomers and Refugees': 'Newcomers and Refugees'
-      'Older Adults': 'Older Adults'
-      'Persons with Disability': 'Persons with Disability'
-      Rural: Rural
-      Youth: Youth
-    '#default_value': false
-    '#format_items': ul
-    '#format_items_html': ''
-    '#format_items_text': ''
     '#extra':
-      aslist: 0
       multiple: 1
-    '#form_key': civicrm_1_activity_1_cg2_custom_43
+      aslist: 0
+      items: |-
+        2SLGBTQ+|2SLGBTQ+
+        Adults|Adults
+        Deaf & Hard of Hearing|Deaf & Hard of Hearing
+        Educators|Educators
+        Guardians|Guardians
+        Indigenous|Indigenous
+        Newcomers|Newcomers
+        OlderAdults|Older Adults
+        People With Disabilities|People With Disabilities
+        Professionals|Professionals
+        Racialized|Racialized
+        serviceProviders|Service Providers
+        volunteers|Volunteers
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_333
+    '#options':
+      2SLGBTQ+: 2SLGBTQ+
+      Adults: Adults
+      'Deaf & Hard of Hearing': 'Deaf & Hard of Hearing'
+      Educators: Educators
+      Guardians: Guardians
+      Indigenous: Indigenous
+      Newcomers: Newcomers
+      OlderAdults: 'Older Adults'
+      'People With Disabilities': 'People With Disabilities'
+      Professionals: Professionals
+      Racialized: Racialized
+      serviceProviders: 'Service Providers'
+      volunteers: Volunteers
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': false
+    '#title': 'Presentation Population of Focus'
+    '#civicrm_live_options': 1
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation Topics'
@@ -1168,7 +1178,7 @@ handlers:
       civicrm_1_activity_1_cg30_custom_370: 0
       civicrm_1_activity_1_cg30_custom_371: 0
       activity_1_settings_dynamic_custom_cg2: 0
-      civicrm_1_activity_1_cg2_custom_333: 0
+      civicrm_1_activity_1_cg2_custom_333: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_332: 0
       civicrm_1_activity_1_cg2_custom_334: 0
       civicrm_1_activity_1_cg2_custom_331: 0
