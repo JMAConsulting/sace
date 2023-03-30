@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * Implements hook_form_NAME_alter() for webform_submission_presentation_evaluation_summary__add_form.
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function ped_evaluation_summary_form_webform_submission_presentation_evaluation_summary__add_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  // Get activity id from query var.
+  $aid = \Drupal::request()->query->get('aid') ?? 0;
+  if (empty($aid) || !is_numeric($aid)) {
+    return;
+  }
+
+  // Get webform form elements.
+  $elements = WebformFormHelper::flattenElements($form);
+
+  // Get student feedback from webform submitted data.
+  $feedback = sace_custom_get_ped_sace_student_feedback($aid);
+  $feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid]);
+  $participant_feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, "activity_type_id" => "PED - Participant Presentation Feedback"]);
+  $staff_feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, "activity_type_id" => "PED - Teacher Presentation Feedback"]);
+
+  // # of returned evaluations
+  $elements['civicrm_1_activity_1_cg2_custom_24']['#default_value'] = $feedback;
+  $elements['civicrm_1_activity_1_cg2_custom_458']['#default_value'] = $participant_feedback;
+  $elements['civicrm_1_activity_1_cg2_custom_459']['#default_value'] = $staff_feedback;
+
+  $mapping = [
+  'custom_665' => [
+    'Strongly Agree' => 'custom_48',
+    'Agree' => 'custom_54',
+    'Somewhat Agree' => 'custom_55',
+    'Somewhat Disagree' => 'custom_707',
+    'Disagree' => 'custom_56',
+    'Strongly Disagree' => 'custom_57',
+  ],
+  'custom_669' => [
+    'Strongly Agree' => 'custom_60',
+    'Agree' => 'custom_61',
+    'Somewhat Agree' => 'custom_62',
+    'Somewhat Disagree' => 'custom_709',
+    'Disagree' => 'custom_63',
+    'Strongly Disagree' => 'custom_64',
+  ],
+  'custom_673' => [
+    'Strongly Agree' => 'custom_68',
+    'Agree' => 'custom_69',
+    'Somewhat Agree' => 'custom_70',
+    'Somewhat Disagree' => 'custom_711',
+    'Disagree' => 'custom_71',
+    'Strongly Disagree' => 'custom_72',
+  ],
+  'custom_675' => [
+    'Strongly Agree' => 'custom_75',
+    'Agree' => 'custom_76',
+    'Somewhat Agree' => 'custom_77',
+    'Somewhat Disagree' => 'custom_712',
+    'Disagree' => 'custom_78',
+    'Strongly Disagree' => 'custom_79',
+  ],
+  'custom_676' => [
+    'Strongly Agree' => 'custom_75',
+    'Agree' => 'custom_76',
+    'Somewhat Agree' => 'custom_77',
+    'Somewhat Disagree' => 'custom_713',
+    'Disagree' => 'custom_78',
+    'Strongly Disagree' => 'custom_79',
+  ],];
+
+ foreach ($mapping as $cf => $values) {
+   foreach ($values as $option => $element) {
+     $elements['civicrm_1_activity_1_cg2_' . $element]['#default_value'] = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, $cf => $option]);
+   }
+ }
+
+ $mapping = [
+    'q2_markup_detail' => 'custom_666',
+    'q4_markup_detail' => 'custom_668',
+    'q6_markup_detail' => 'custom_670',
+  ];
+
+  foreach ($mapping as $element => $cf) {
+    $result = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$cf], $cf => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
+    $texts = [];
+    foreach ($result as $value) {
+      $texts[] = sprintf('<li>%s</li>', $value[$cf]);
+    }
+    $elements[$element]['#text'] = sprintf('<ul>%s</ul>', implode(' ', $texts));
+  }
+
+
+  $elements['civicrm_3_contact_1_contact_existing']['#default_value'] = CRM_Core_Session::getLoggedInContactID();
+}
