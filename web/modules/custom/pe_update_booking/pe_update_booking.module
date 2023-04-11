@@ -1,7 +1,7 @@
 <?php
 
 use Drupal\webform\Utility\WebformFormHelper;
-
+require_once 'pe_update_booking_variables.php';
 /**
  * Implements hook_form_alter().
  * @param $form
@@ -10,18 +10,28 @@ use Drupal\webform\Utility\WebformFormHelper;
  */
 function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == "webform_submission_update_ped_booking_add_form") {
+    
+    // Get custom field constants
+    $constants = get_defined_constants(FALSE); 
+
     //Attach library
     $form['#attached']['library'][] = 'pe_update_booking/pe_update_booking';
+    $form['#attached']['drupalSettings']['pe_update_booking']['Presentation_Topics'] = $constants['Presentation_Topics'];
+
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
-
     if (empty($elements)) {
       return;
-    }
-    //die('<pre>'.print_r($form['#attached'],true));
+    }        
+    
     //Toggle text field if Presentation Topic is Custom/Something Different
-    if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
-      $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";
+    if ($elements[$constants['Presentation_Topics']]['#default_value'][0] == "CustomSomethingDifferent") {
+      $elements[$constants['Other_Presentation_Topics']]['#wrapper_attributes']['class'][0] = "";
+    }
+
+    //Hide Virtual Session fields if Presentation Method is not Online Presentaion
+    if($elements[$constants['Presentation_Method']]['#default_value'] !=   'Online Presentation'){
+      $elements[$constants['Virtual_Session_Fieldset']]['#access'] = FALSE;
     }
   }
 }

@@ -4,3 +4,4 @@ pe_update_booking:
     js/pe_update_booking.js: {}
   dependencies:
     - core/jquery
+    - core/drupalSettings
