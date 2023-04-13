@@ -308,7 +308,7 @@ elements: |-
   questions_1_markup:
     '#type': processed_text
     '#text': |
-      <p><strong>1. I learned something new about the presentation topic:</strong></p>
+      <p><strong>1. I learned something new about the [presentation topic]:</strong></p>
     '#format': html
   flexbox_05:
     '#type': webform_flexbox
@@ -406,7 +406,7 @@ elements: |-
   question_3_markup:
     '#type': processed_text
     '#text': |
-      <p><strong>3. I learned how to support someone impacted by the presentation topic:</strong></p>
+      <p><strong>3. I am able to identify consent versus problematic behaviors or abuse (not consent):</strong></p>
     '#format': html
   flexbox_06:
     '#type': webform_flexbox
@@ -485,27 +485,7 @@ elements: |-
   question_4_markup:
     '#type': processed_text
     '#text': |
-      <p><strong>4. List one thing you can do to support someone impacted by [the presentation topic]</strong></p>
-    '#format': html
-  q4_markup_detail:
-    '#type': processed_text
-    '#text': |
-      <p></p>
-    '#format': html
-  civicrm_1_activity_1_cg2_custom_65:
-    '#type': textfield
-    '#title': Total
-    '#field_prefix': '#'
-    '#placeholder': '0'
-    '#data_type': Float
-    '#form_key': civicrm_1_activity_1_cg2_custom_65
-    '#extra':
-      width: 20
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-  question_5_markup:
-    '#type': processed_text
-    '#text': |
-      <p><strong>5. I learned about resources people impacted by the topic can access for help:</strong></p>
+      <p><strong>4. I learned something new about how to support someone</strong></p>
     '#format': html
   flexbox_07:
     '#type': webform_flexbox
@@ -580,30 +560,30 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-  question_6_markup:
+  question_5_markup:
     '#type': processed_text
     '#text': |
-      <p><strong>6. List one resource people can access for help.</strong></p>
+      <p><strong>5. List one thing you can do to support someone impacted by the [presentation topic]:</strong></p>
     '#format': html
-  q6_markup_detail:
+  q4_markup_detail:
     '#type': processed_text
     '#text': |
       <p></p>
     '#format': html
-  civicrm_1_activity_1_cg2_custom_74:
+  civicrm_1_activity_1_cg2_custom_65:
     '#type': textfield
     '#title': Total
     '#field_prefix': '#'
     '#placeholder': '0'
     '#data_type': Float
-    '#form_key': civicrm_1_activity_1_cg2_custom_74
+    '#form_key': civicrm_1_activity_1_cg2_custom_65
     '#extra':
       width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-  question_7_markup:
+  question_6_markup:
     '#type': processed_text
     '#text': |
-      <p><strong>7. I have a greater understanding of the impact of sexual violence on my community:</strong></p>
+      <p><strong>6. I learned something new about how to respond to a disclosure.</strong></p>
     '#format': html
   flexbox_08:
     '#type': webform_flexbox
@@ -678,10 +658,10 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-  question_markup_8:
+  question_7_markup:
     '#type': processed_text
     '#text': |
-      <p><strong>8. I have more knowledge to help adress this community social issue:</strong></p>
+      <p><strong>7. I feel more prepared to support someone who has experienced sexual violence:</strong></p>
     '#format': html
   flexbox_09:
     '#type': webform_flexbox
@@ -756,6 +736,1249 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_8:
+    '#type': processed_text
+    '#text': |
+      <p><strong>8. I learned about resources people can access for help</strong><strong>:</strong></p>
+    '#format': html
+  flexbox_11:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_716:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_716
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_717:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_717
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_718:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_718
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_719:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_719
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_720:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_720
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_721:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_721
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_722:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_716|default(0) + data.civicrm_1_activity_1_cg2_custom_717|default(0) + data.civicrm_1_activity_1_cg2_custom_718|default(0) + data.civicrm_1_activity_1_cg2_custom_719|default(0) + data.civicrm_1_activity_1_cg2_custom_720|default(0) + data.civicrm_1_activity_1_cg2_custom_721|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_722
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  q6_markup_detail:
+    '#type': processed_text
+    '#text': |
+      <p></p>
+    '#format': html
+    '#access': false
+  question_9_markup:
+    '#type': processed_text
+    '#text': |
+      <p><strong>9. List one resource people can access for help:</strong></p>
+    '#format': html
+  q9_markup_detail:
+    '#type': processed_text
+    '#text': |
+      <p></p>
+    '#format': html
+  civicrm_1_activity_1_cg2_custom_724:
+    '#type': textfield
+    '#title': Total
+    '#field_prefix': '#'
+    '#placeholder': '0'
+    '#data_type': Float
+    '#form_key': civicrm_1_activity_1_cg2_custom_724
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_10:
+    '#type': processed_text
+    '#text': |
+      <p><strong>10. If I were to receive a disclosure of sexual violence and needed support and/or resources, I would reach out to SACE.</strong></p>
+    '#format': html
+  flexbox_12:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_725:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_725
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_726:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_726
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_727:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_727
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_728:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_728
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_729:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_729
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_730:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_730
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_731:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_725|default(0) + data.civicrm_1_activity_1_cg2_custom_726|default(0) + data.civicrm_1_activity_1_cg2_custom_727|default(0) + data.civicrm_1_activity_1_cg2_custom_728|default(0) + data.civicrm_1_activity_1_cg2_custom_729|default(0) + data.civicrm_1_activity_1_cg2_custom_730|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_731
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_11:
+    '#type': processed_text
+    '#text': |
+      <p><strong>11. I have a greater understanding of the impact of this community social issue.</strong></p>
+    '#format': html
+  flexbox_13:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_732:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_732
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_733:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_733
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_734:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_734
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_735:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_735
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_736:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_736
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_737:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_737
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_738:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_732|default(0) + data.civicrm_1_activity_1_cg2_custom_733|default(0) + data.civicrm_1_activity_1_cg2_custom_734|default(0) + data.civicrm_1_activity_1_cg2_custom_735|default(0) + data.civicrm_1_activity_1_cg2_custom_736|default(0) + data.civicrm_1_activity_1_cg2_custom_737|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_738
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_12:
+    '#type': processed_text
+    '#text': |
+      <p><strong>12. I have more knowledge to help address this community social issue.</strong></p>
+    '#format': html
+  flexbox_14:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_739:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_739
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_740:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_740
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_741:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_741
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_742:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_742
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_743:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_743
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_744:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_744
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_745:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_739|default(0) + data.civicrm_1_activity_1_cg2_custom_740|default(0) + data.civicrm_1_activity_1_cg2_custom_741|default(0) + data.civicrm_1_activity_1_cg2_custom_742|default(0) + data.civicrm_1_activity_1_cg2_custom_743|default(0) + data.civicrm_1_activity_1_cg2_custom_744|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_745
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_13:
+    '#type': processed_text
+    '#text': |
+      <p><strong>13. Education on sexual violence and consent is essential for the well-being of my students/participants.</strong></p>
+    '#format': html
+  flexbox_15:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_746:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_746
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_750:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_750
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_747:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_747
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_751:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_751
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_748:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_748
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_749:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_749
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_752:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_746|default(0) + data.civicrm_1_activity_1_cg2_custom_750|default(0) + data.civicrm_1_activity_1_cg2_custom_747|default(0) + data.civicrm_1_activity_1_cg2_custom_751|default(0) + data.civicrm_1_activity_1_cg2_custom_748|default(0) + data.civicrm_1_activity_1_cg2_custom_749|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_752
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_14:
+    '#type': processed_text
+    '#text': |
+      <p><strong>14. I feel more clear on what values guide my organization's response to sexual violence.</strong></p>
+    '#format': html
+  flexbox_16:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_753:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_753
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_754:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_754
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_755:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_755
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_756:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_756
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_757:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_757
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_758:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_758
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_759:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_753|default(0) + data.civicrm_1_activity_1_cg2_custom_754|default(0) + data.civicrm_1_activity_1_cg2_custom_755|default(0) + data.civicrm_1_activity_1_cg2_custom_756|default(0) + data.civicrm_1_activity_1_cg2_custom_757|default(0) + data.civicrm_1_activity_1_cg2_custom_758|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_759
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_15:
+    '#type': processed_text
+    '#text': |
+      <p><strong>15. This session was a valuable opportunity to think collaboratively with my team about our response to sexual violence.</strong></p>
+    '#format': html
+  flexbox_17:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_760:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_760
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_761:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_761
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_762:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_762
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_763:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_763
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_764:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_764
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_765:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_765
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_766:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_760|default(0) + data.civicrm_1_activity_1_cg2_custom_761|default(0) + data.civicrm_1_activity_1_cg2_custom_762|default(0) + data.civicrm_1_activity_1_cg2_custom_763|default(0) + data.civicrm_1_activity_1_cg2_custom_764|default(0) + data.civicrm_1_activity_1_cg2_custom_765|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_766
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_16:
+    '#type': processed_text
+    '#text': |
+      <p><strong>16. The scenarios helped me practice responding to sexual violence.</strong></p>
+    '#format': html
+  flexbox_18:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_767:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_767
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_768:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_768
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_769:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_769
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_770:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_770
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_771:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_771
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_772:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_772
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_773:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_767|default(0) + data.civicrm_1_activity_1_cg2_custom_768|default(0) + data.civicrm_1_activity_1_cg2_custom_769|default(0) + data.civicrm_1_activity_1_cg2_custom_770|default(0) + data.civicrm_1_activity_1_cg2_custom_771|default(0) + data.civicrm_1_activity_1_cg2_custom_772|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_773
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_17:
+    '#type': processed_text
+    '#text': |
+      <p><strong>17. I think this session will help improve my organization's response to sexual violence.</strong></p>
+    '#format': html
+  flexbox_19:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_774:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_774
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_775:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_775
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_776:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_776
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_777:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_777
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_778:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_778
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_779:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_779
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_780:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_774|default(0) + data.civicrm_1_activity_1_cg2_custom_775|default(0) + data.civicrm_1_activity_1_cg2_custom_776|default(0) + data.civicrm_1_activity_1_cg2_custom_777|default(0) + data.civicrm_1_activity_1_cg2_custom_778|default(0) + data.civicrm_1_activity_1_cg2_custom_779|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_780
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_18:
+    '#type': processed_text
+    '#text': |
+      <p><strong>18. What information did you find most helpful and/or relevant for your work related to the [presentation topic]?</strong></p>
+    '#format': html
+  q18_markup_detail:
+    '#type': processed_text
+    '#text': |
+      <p></p>
+    '#format': html
+  civicrm_1_activity_1_cg2_custom_787:
+    '#type': textfield
+    '#title': Total
+    '#field_prefix': '#'
+    '#placeholder': '0'
+    '#data_type': Float
+    '#form_key': civicrm_1_activity_1_cg2_custom_787
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_19:
+    '#type': processed_text
+    '#text': |
+      <p><strong>19. I feel more prepared to intervene in a situation where sexual violence has occurred or may occur.</strong></p>
+    '#format': html
+  flexbox_20:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_781:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_781
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_782:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_782
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_783:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_783
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_784:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_784
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_785:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_785
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_786:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_786
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_788:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_781|default(0) + data.civicrm_1_activity_1_cg2_custom_782|default(0) + data.civicrm_1_activity_1_cg2_custom_783|default(0) + data.civicrm_1_activity_1_cg2_custom_784|default(0) + data.civicrm_1_activity_1_cg2_custom_785|default(0) + data.civicrm_1_activity_1_cg2_custom_786|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_788
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_20:
+    '#type': processed_text
+    '#text': |
+      <p><strong>20. I have gained a better understanding of what it means to be an ally</strong></p>
+    '#format': html
+  flexbox_21:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_789:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_789
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_790:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_790
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_791:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_791
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_792:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_792
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_793:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_793
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_794:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_794
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_795:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_789|default(0) + data.civicrm_1_activity_1_cg2_custom_790|default(0) + data.civicrm_1_activity_1_cg2_custom_791|default(0) + data.civicrm_1_activity_1_cg2_custom_792|default(0) + data.civicrm_1_activity_1_cg2_custom_793|default(0) + data.civicrm_1_activity_1_cg2_custom_794|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_795
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_21:
+    '#type': processed_text
+    '#text': |
+      <p><strong>21. % of participants who felt the presenters were effective</strong></p>
+    '#format': html
+  flexbox_22:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_796:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_796
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_797:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_797
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_798:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_798
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_799:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_799
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_800:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_800
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_801:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_801
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_802:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_796|default(0) + data.civicrm_1_activity_1_cg2_custom_797|default(0) + data.civicrm_1_activity_1_cg2_custom_798|default(0) + data.civicrm_1_activity_1_cg2_custom_799|default(0) + data.civicrm_1_activity_1_cg2_custom_800|default(0) + data.civicrm_1_activity_1_cg2_custom_801|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_802
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_22:
+    '#type': processed_text
+    '#text': |
+      <p><strong>22. Positive feedback on service offering</strong></p>
+    '#format': html
+  q22_markup_detail:
+    '#type': processed_text
+    '#text': |
+      <p></p>
+    '#format': html
+  civicrm_1_activity_1_cg2_custom_803:
+    '#type': textfield
+    '#title': Total
+    '#field_prefix': '#'
+    '#placeholder': '0'
+    '#data_type': Float
+    '#form_key': civicrm_1_activity_1_cg2_custom_803
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_23:
+    '#type': processed_text
+    '#text': |
+      <p><strong>23. Areas for improvement feedback on service offering</strong></p>
+    '#format': html
+  q23_markup_detail:
+    '#type': processed_text
+    '#text': |
+      <p></p>
+    '#format': html
+  civicrm_1_activity_1_cg2_custom_804:
+    '#type': textfield
+    '#title': Total
+    '#field_prefix': '#'
+    '#placeholder': '0'
+    '#data_type': Float
+    '#form_key': civicrm_1_activity_1_cg2_custom_804
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_24:
+    '#type': processed_text
+    '#text': |
+      <p><strong>24. I would use SACE services again</strong></p>
+    '#format': html
+  flexbox_23:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_805:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_805
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_806:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_806
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_807:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_807
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_808:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_808
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_809:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_809
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_810:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_810
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg2_custom_811:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg2_custom_805|default(0) + data.civicrm_1_activity_1_cg2_custom_806|default(0) + data.civicrm_1_activity_1_cg2_custom_807|default(0) + data.civicrm_1_activity_1_cg2_custom_808|default(0) + data.civicrm_1_activity_1_cg2_custom_809|default(0) + data.civicrm_1_activity_1_cg2_custom_810|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_811
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
   flexbox_04:
     '#type': webform_flexbox
   completed:
@@ -794,6 +2017,56 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Number of returned evaluations'
+    civicrm_1_activity_1_cg2_custom_43:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 1
+        items: |-
+          Indigenous|Indigenous
+          First Nation Reserves|First Nation Reserves
+          Métis Settlements|Métis Settlements
+          Newcomers|Newcomers
+          English Language Learners|English Language Learners
+          2SLGBTQ+|2SLGBTQ+
+          PeopleWithDisabilities|People With Disabilities
+          Older Adults|Older Adults
+          At-Risk Youth|At-Risk Youth
+          Incarcerated|Incarcerated
+          Rural|Rural
+          MedicalStudentsProfessionals|Medical Students/ Professionals
+          JusticeStudentsProfessionals|Justice Students/ Professionals
+          NightlifeProfessionals|Nightlife Professionals
+          ServiceProviders|Service Providers
+          Educators|Educators
+          OtherProfessionals|Other Professionals
+          ParentsGuardians|Parents/ Guardians
+          Volunteers|Volunteers
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_43
+      '#options':
+        Indigenous: Indigenous
+        'First Nation Reserves': 'First Nation Reserves'
+        'Métis Settlements': 'Métis Settlements'
+        Newcomers: Newcomers
+        'English Language Learners': 'English Language Learners'
+        2SLGBTQ+: 2SLGBTQ+
+        PeopleWithDisabilities: 'People With Disabilities'
+        'Older Adults': 'Older Adults'
+        'At-Risk Youth': 'At-Risk Youth'
+        Incarcerated: Incarcerated
+        Rural: Rural
+        MedicalStudentsProfessionals: 'Medical Students/ Professionals'
+        JusticeStudentsProfessionals: 'Justice Students/ Professionals'
+        NightlifeProfessionals: 'Nightlife Professionals'
+        ServiceProviders: 'Service Providers'
+        Educators: Educators
+        OtherProfessionals: 'Other Professionals'
+        ParentsGuardians: 'Parents/ Guardians'
+        Volunteers: Volunteers
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Demographic information'
+      '#civicrm_live_options': 1
 css: ''
 javascript: ''
 settings:
@@ -1232,13 +2505,11 @@ handlers:
       civicrm_1_activity_1_cg2_custom_77: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_78: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_79: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_80: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_81: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_82: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_83: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_84: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_85: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_86: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_340: 0
       civicrm_1_activity_1_cg2_custom_341: 0
       civicrm_1_activity_1_cg2_custom_458: create_civicrm_webform_element
@@ -1260,6 +2531,12 @@ handlers:
       civicrm_1_activity_1_cg2_custom_713: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_714: '3'
       civicrm_1_activity_1_cg2_custom_715: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_716: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_717: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_718: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_719: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_720: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_721: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
