@@ -28,6 +28,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   $elements['civicrm_1_activity_1_cg2_custom_459']['#default_value'] = $staff_feedback;
 
   $mapping = [
+    // q1
   'custom_665' => [
     'Strongly Agree' => 'custom_48',
     'Agree' => 'custom_54',
@@ -36,7 +37,8 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Disagree' => 'custom_56',
     'Strongly Disagree' => 'custom_57',
   ],
-  'custom_669' => [
+  //g3
+  'custom_667' => [
     'Strongly Agree' => 'custom_60',
     'Agree' => 'custom_61',
     'Somewhat Agree' => 'custom_62',
@@ -44,7 +46,8 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Disagree' => 'custom_63',
     'Strongly Disagree' => 'custom_64',
   ],
-  'custom_673' => [
+  // q4
+  'custom_669' => [
     'Strongly Agree' => 'custom_68',
     'Agree' => 'custom_69',
     'Somewhat Agree' => 'custom_70',
@@ -52,7 +55,8 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Disagree' => 'custom_71',
     'Strongly Disagree' => 'custom_72',
   ],
-  'custom_675' => [
+  //q6
+  'custom_671' => [
     'Strongly Agree' => 'custom_75',
     'Agree' => 'custom_76',
     'Somewhat Agree' => 'custom_77',
@@ -60,14 +64,133 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Disagree' => 'custom_78',
     'Strongly Disagree' => 'custom_79',
   ],
-  'custom_676' => [
-    'Strongly Agree' => 'custom_75',
-    'Agree' => 'custom_76',
-    'Somewhat Agree' => 'custom_77',
+  //q7
+  'custom_672' => [
+    'Strongly Agree' => 'custom_81',
+    'Agree' => 'custom_82',
+    'Somewhat Agree' => 'custom_83',
     'Somewhat Disagree' => 'custom_713',
-    'Disagree' => 'custom_78',
-    'Strongly Disagree' => 'custom_79',
-  ],];
+    'Disagree' => 'custom_84',
+    'Strongly Disagree' => 'custom_85',
+  ],
+  //q8
+  'custom_673' => [
+    'Strongly Agree' => 'custom_716',
+    'Agree' => 'custom_717',
+    'Somewhat Agree' => 'custom_718',
+    'Somewhat Disagree' => 'custom_719',
+    'Disagree' => 'custom_720',
+    'Strongly Disagree' => 'custom_721',
+  ],
+  //q10
+  'custom_674' => [
+    'Strongly Agree' => 'custom_725',
+    'Agree' => 'custom_726',
+    'Somewhat Agree' => 'custom_727',
+    'Somewhat Disagree' => 'custom_728',
+    'Disagree' => 'custom_729',
+    'Strongly Disagree' => 'custom_730',
+  ],
+  //q11
+  'custom_675' => [
+    'Strongly Agree' => 'custom_732',
+    'Agree' => 'custom_733',
+    'Somewhat Agree' => 'custom_734',
+    'Somewhat Disagree' => 'custom_735',
+    'Disagree' => 'custom_736',
+    'Strongly Disagree' => 'custom_737',
+  ],
+  //q12
+  'custom_676' => [
+    'Strongly Agree' => 'custom_739',
+    'Agree' => 'custom_740',
+    'Somewhat Agree' => 'custom_741',
+    'Somewhat Disagree' => 'custom_742',
+    'Disagree' => 'custom_743',
+    'Strongly Disagree' => 'custom_744',
+  ],
+  //q13
+  'custom_677' => [
+    'Strongly Agree' => 'custom_746',
+    'Agree' => 'custom_750',
+    'Somewhat Agree' => 'custom_747',
+    'Somewhat Disagree' => 'custom_751',
+    'Disagree' => 'custom_748',
+    'Strongly Disagree' => 'custom_749',
+  ],
+  //q14
+  'custom_705' => [
+    'Strongly Agree' => 'custom_753',
+    'Agree' => 'custom_754',
+    'Somewhat Agree' => 'custom_755',
+    'Somewhat Disagree' => 'custom_756',
+    'Disagree' => 'custom_757',
+    'Strongly Disagree' => 'custom_758',
+  ],
+  //q15
+  'custom_681' => [
+    'Strongly Agree' => 'custom_760',
+    'Agree' => 'custom_761',
+    'Somewhat Agree' => 'custom_762',
+    'Somewhat Disagree' => 'custom_763',
+    'Disagree' => 'custom_764',
+    'Strongly Disagree' => 'custom_765',
+  ],
+  //q16
+  'custom_682' => [
+    'Strongly Agree' => 'custom_767',
+    'Agree' => 'custom_768',
+    'Somewhat Agree' => 'custom_769',
+    'Somewhat Disagree' => 'custom_770',
+    'Disagree' => 'custom_771',
+    'Strongly Disagree' => 'custom_772',
+  ],
+  //q17
+  'custom_680' => [
+    'Strongly Agree' => 'custom_774',
+    'Agree' => 'custom_775',
+    'Somewhat Agree' => 'custom_776',
+    'Somewhat Disagree' => 'custom_778',
+    'Disagree' => 'custom_779',
+    'Strongly Disagree' => 'custom_780',
+  ],
+  //q19
+  'custom_699' => [
+    'Strongly Agree' => 'custom_781',
+    'Agree' => 'custom_782',
+    'Somewhat Agree' => 'custom_783',
+    'Somewhat Disagree' => 'custom_784',
+    'Disagree' => 'custom_785',
+    'Strongly Disagree' => 'custom_786',
+  ],
+  //q20
+  'custom_700' => [
+    'Strongly Agree' => 'custom_789',
+    'Agree' => 'custom_790',
+    'Somewhat Agree' => 'custom_791',
+    'Somewhat Disagree' => 'custom_792',
+    'Disagree' => 'custom_793',
+    'Strongly Disagree' => 'custom_794',
+  ],
+  //q21
+  'custom_701' => [
+    'Strongly Agree' => 'custom_796',
+    'Agree' => 'custom_797',
+    'Somewhat Agree' => 'custom_798',
+    'Somewhat Disagree' => 'custom_799',
+    'Disagree' => 'custom_800',
+    'Strongly Disagree' => 'custom_801',
+  ],
+  //q24
+  'custom_813' => [
+    'Strongly Agree' => 'custom_805',
+    'Agree' => 'custom_806',
+    'Somewhat Agree' => 'custom_807',
+    'Somewhat Disagree' => 'custom_808',
+    'Disagree' => 'custom_809',
+    'Strongly Disagree' => 'custom_810',
+  ],
+];
 
  foreach ($mapping as $cf => $values) {
    foreach ($values as $option => $element) {
@@ -76,18 +199,40 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
  }
 
  $mapping = [
-    'q2_markup_detail' => 'custom_666',
-    'q4_markup_detail' => 'custom_668',
-    'q6_markup_detail' => 'custom_670',
+    'q2_markup_detail' => [
+      'text' => 'custom_666',
+      'count' => 'custom_59',
+    ],
+    'q5_markup_detail' => [
+      'text' => 'custom_668',
+      'count' => 'custom_73',
+    ],
+    'q9_markup_detail' => [
+      'text' => 'custom_670',
+      'count' => 'custom_724',
+    ],
+    'q18_markup_detail' => [
+      'text' => 'custom_678',
+      'count' => 'custom_787',
+    ],
+    'q22_markup_detail' => [
+      'text' => 'custom_678',
+      'count' => 'custom_803',
+    ],
+    'q23_markup_detail' => [
+      'text' => 'custom_812',
+      'count' => 'custom_804',
+    ],
   ];
 
   foreach ($mapping as $element => $cf) {
-    $result = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$cf], $cf => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
+    $result = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$cf['text']], $cf['text'] => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
     $texts = [];
     foreach ($result as $value) {
-      $texts[] = sprintf('<li>%s</li>', $value[$cf]);
+      $texts[] = sprintf('<li>%s</li>', $value[$cf['text']]);
     }
     $elements[$element]['#text'] = sprintf('<ul>%s</ul>', implode(' ', $texts));
+    $elements['civicrm_1_activity_1_cg2_' . $cf['count']]['#default_value'] = count($texts);
   }
 
 
