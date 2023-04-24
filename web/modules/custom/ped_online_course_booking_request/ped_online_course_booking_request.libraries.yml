@@ -1,0 +1,4 @@
+ped_online_course_booking_request:
+  version: 1.0
+  js:
+    js/custom.js: {}
