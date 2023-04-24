@@ -22,7 +22,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
   if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
 
     // Get custom field constants
-    $constants = get_defined_constants(FALSE);   
+    $constants = get_defined_constants(FALSE);
 
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
@@ -34,7 +34,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
     // Get Booking Intake custom fields
     $result = \Civi\Api4\Activity::get()
-      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus', 'Booking_Information.Presentation_Method','Booking_Information.Presentation_custom', 'Booking_Information.Audience')
+      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus', 'Booking_Information.Presentation_Method','Booking_Information.Presentation_custom', 'Booking_Information.Audience')
       ->addWhere('id', '=', $aid)
       ->execute()
       ->first();
@@ -48,30 +48,27 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements[$constants['Presentation_Method']]['#disabled'] = TRUE;
 
     //Get default selected value for Presentation Topic
-    $topics = $result['Booking_Information.Presentation_topics'];
+    $topics = $result['Booking_Information.Presentation_topics:label'];
     if (is_array($topics)) {
       $topic = implode(', ', $topics);
-      if(in_array('CustomSomethingDifferent',$topics))        
+      if(in_array('Custom/ Something Different',$topics))
         $topic .= $result['Booking_Information.Presentation_custom'];
     }
     else {
       $topic = $topics;
     }
     $elements['presentation_topic_markup']['#markup'] = '<label for="presentation_topic_markup" class="form-item__label">Presentation Topic(s)</label><div>' . $topic . '</div>';
-    
+
     //Hide other_presentation_topic
     $elements[$constants['Presentaion_Custom']]['#access'] = FALSE;
 
-    // Remove leading Qxx from all questions    
-    foreach (array_keys($constants) as $q) {      
-      if (preg_match('/Q\d{1}/', $q)) {        
+    // Remove leading Qxx from all questions
+    foreach (array_keys($constants) as $q) {
+      if (preg_match('/Q\d{1}/', $q)) {
         $elements[$constants[$q]]['#title'] = preg_replace("/Q[0-9]+\s/", '', $elements[$constants[$q]]['#title']);
+        //insert presentation topic in question title
+        $elements[$constants[$q]]['#title'] = str_replace('[the presentation topic]', $topic, $elements[$constants[$q]]['#title']);
       }
-    } 
-
-    //insert presentation topic in question title
-    foreach (['Q1','Q2','Q4','Q5'] as $q) {
-      $elements[$constants[$q]]['#title'] = str_replace('[the presentation topic]', $topic, $elements[$constants[$q]]['#title']);
     }
 
     //Hide Q4 Q5 Q7 if Support content covered is NO
@@ -82,20 +79,20 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
 
     //Hide Q6 if Audience not in list
-    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals","Service Providers","Guardians","Older Adults"]);    
+    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals","Service Providers","Guardians","Older Adults"]);
     if(empty($intersect)){
       $elements[$constants['Q6']]['#access'] = FALSE;
     }
 
     //Hide Q8 Q9 if Presentation Topic not in list
-    $intersect = array_intersect($result["Booking_Information.Presentation_topics"], ["SACEServices","CommunityResources"]);        
+    $intersect = array_intersect($result["Booking_Information.Presentation_topics"], ["SACEServices","CommunityResources"]);
     if(empty($intersect)){
       $elements[$constants['Q8']]['#access'] = FALSE;
       $elements[$constants['Q9']]['#access'] = FALSE;
     }
 
     //Hide Q13 if Audience not in list
-    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals","Service Providers","Educators"]);    
+    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals","Service Providers","Educators"]);
     if(empty($intersect)){
       $elements[$constants['Q13']]['#access'] = FALSE;
       $elements[$constants['Q18']]['#access'] = FALSE;
@@ -113,27 +110,27 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
       $elements[$constants['Q17']]['#access'] = FALSE;
     }
 
-    //Hide Q19 if Presentation Topic is not Bystander Intervention    
-    if(!in_array('BystanderIntervention',$result["Booking_Information.Presentation_topics"])){      
+    //Hide Q19 if Presentation Topic is not Bystander Intervention
+    if(!in_array('BystanderIntervention',$result["Booking_Information.Presentation_topics"])){
       $elements[$constants['Q19']]['#access'] = FALSE;
     }
-    
-    //Hide Q20 if Presentation Topic is not Privilege and Oppression Covered    
-    if(!in_array('PrivilegeandOppression',$result["Booking_Information.Presentation_topics"])){      
+
+    //Hide Q20 if Presentation Topic is not Privilege and Oppression Covered
+    if(!in_array('PrivilegeandOppression',$result["Booking_Information.Presentation_topics"])){
       $elements[$constants['Q20']]['#access'] = FALSE;
     }
-    
-    //Hide Q21 if Presentation Method is not Online Course else hide Q22    
-    if($result['Booking_Information.Presentation_Method'] == 'Online Course'){      
-      $elements[$constants['Q21']]['#access'] = FALSE;      
+
+    //Hide Q21 if Presentation Method is not Online Course else hide Q22
+    if($result['Booking_Information.Presentation_Method'] == 'Online Course'){
+      $elements[$constants['Q21']]['#access'] = FALSE;
     }
     else {
       $elements[$constants['Q22']]['#access'] = FALSE;
-    }   
-    
-    //Hide Q25 if Youth or Adult is not Adult    
-    if($result['Booking_Information.Youth_or_Adult'] != 'Adult'){      
-      $elements[$constants['Q25']]['#access'] = FALSE;      
+    }
+
+    //Hide Q25 if Youth or Adult is not Adult
+    if($result['Booking_Information.Youth_or_Adult'] != 'Adult'){
+      $elements[$constants['Q25']]['#access'] = FALSE;
     }
   }
 }

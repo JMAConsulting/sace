@@ -285,7 +285,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_666
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q2 List one new thing you learned about [the presentation topic].'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q2 List one new thing you learned about [the presentation topic].</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_667:
       '#type': civicrm_options
@@ -349,7 +349,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_668
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q5 List one thing you can do to support someone impacted by [the presentation topic]'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q5 List one thing you can do to support someone impacted by [the presentation topic]</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_671:
       '#type': civicrm_options
@@ -439,7 +439,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_670
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q9 List one resource people can access for help.'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q9 List one resource people can access for help.</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_674:
       '#type': civicrm_options
@@ -660,7 +660,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_678
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q18 What information did you find most helpful and/or relevant to your work?'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q18 What information did you find most helpful and/or relevant to your work?</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_699:
       '#type': civicrm_options
@@ -740,7 +740,32 @@ elements: |-
       '#title': 'Q21 The presenter(s) were effective'
       '#civicrm_live_options': 1
       '#default_value': ''
-    civicrm_1_activity_1_cg49_custom_702:
+    civicrm_1_activity_1_cg49_custom_679:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+        description: ''
+        description_above: null
+      '#form_key': civicrm_1_activity_1_cg49_custom_679
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q22 What did you like most about the presentation/course?</strong>'
+      '#default_value': ''
+      '#required': '0'
+    civicrm_1_activity_1_cg49_custom_812:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+        description: ''
+        description_above: null
+      '#form_key': civicrm_1_activity_1_cg49_custom_812
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q23 What did you like least about the presentation/course? Is there anything you would change, or anything missing you would like to learn about?</strong>'
+      '#default_value': ''
+    civicrm_1_activity_1_cg49_custom_813:
       '#type': civicrm_options
       '#extra':
         aslist: 0
@@ -754,7 +779,8 @@ elements: |-
         description: ''
         description_above: null
       '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_702
+      '#nid': ped_sace_student_feedback
+      '#form_key': civicrm_1_activity_1_cg49_custom_813
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -763,32 +789,9 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q22 The course content was effective'
+      '#title': 'Q24 I would use SACE services again'
       '#civicrm_live_options': 1
-      '#default_value': ''
-    civicrm_1_activity_1_cg49_custom_679:
-      '#type': textarea
-      '#data_type': Memo
-      '#extra':
-        cols: '60'
-        rows: '4'
-        description: ''
-        description_above: null
-      '#form_key': civicrm_1_activity_1_cg49_custom_679
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q23 What did you like most about the presentation/course?'
-      '#default_value': ''
-    civicrm_1_activity_1_cg49_custom_683:
-      '#type': textarea
-      '#data_type': Memo
-      '#extra':
-        cols: '60'
-        rows: '4'
-        description: ''
-        description_above: null
-      '#form_key': civicrm_1_activity_1_cg49_custom_683
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q24 What did you like least about the presentation/course? Is there anything you would change, or anything missing you would like to learn about?'
+      '#required': '0'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_703:
       '#type': civicrm_options
