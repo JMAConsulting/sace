@@ -13,6 +13,17 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     return;
   }
 
+  // Get Booking Intake custom fields
+  $result = \Civi\Api4\Activity::get()
+    ->addSelect( 'Booking_Information.Presentation_topics')
+    ->addWhere('id', '=', $aid)
+    ->execute()
+    ->first();
+
+  foreach (['questions_1_markup', 'question_2_markup', 'question_5_markup', 'question_markup_18'] as $element) {
+    $elements[$element]['#text'] = str_replace('[presentation topic]', $topic, $elements[$element]['#text']);
+  }
+
   // Get webform form elements.
   $elements = WebformFormHelper::flattenElements($form);
 
@@ -229,9 +240,17 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     $result = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$cf['text']], $cf['text'] => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
     $texts = [];
     foreach ($result as $value) {
-      $texts[] = sprintf('<li>%s</li>', $value[$cf['text']]);
+      $texts[] = sprintf('<li>%s</li>', );
     }
-    $elements[$element]['#text'] = sprintf('<ul>%s</ul>', implode(' ', $texts));
+    $elements[$element]['#text'] = sprintf('
+    <details class="package-listing js-form-wrapper form-wrapper claro-details claro-details--package-listing">
+      <summary role="button" aria-controls="edit-modules-core" aria-expanded="false" aria-pressed="false" class="claro-details__summary claro-details__summary--package-listing">
+        Click for more details<span class="claro-details__summary-summary"></span>
+      </summary>
+      <div class="claro-details__wrapper details-wrapper claro-details__wrapper--package-listing">
+        <ul>%s</ul>
+      </div>
+    </details>', implode(' ', $texts));
     $elements['civicrm_1_activity_1_cg2_' . $cf['count']]['#default_value'] = count($texts);
   }
 
