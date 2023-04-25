@@ -1,5 +1,9 @@
 <?php
 
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Utility\WebformFormHelper;
+
 /**
  * Implements hook_form_NAME_alter() for webform_submission_presentation_evaluation_summary__add_form.
  * @param $form
@@ -28,18 +32,17 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   $elements = WebformFormHelper::flattenElements($form);
 
   // Get student feedback from webform submitted data.
-  $feedback = sace_custom_get_ped_sace_student_feedback($aid);
-  $feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid]);
+  $feedback = get_ped_sace_student_feedback($aid);
   $participant_feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, "activity_type_id" => "PED - Participant Presentation Feedback"]);
   $staff_feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, "activity_type_id" => "PED - Teacher Presentation Feedback"]);
 
   // # of returned evaluations
-  $elements['civicrm_1_activity_1_cg2_custom_24']['#default_value'] = $feedback;
-  $elements['civicrm_1_activity_1_cg2_custom_458']['#default_value'] = $participant_feedback;
-  $elements['civicrm_1_activity_1_cg2_custom_459']['#default_value'] = $staff_feedback;
+  $elements['civicrm_1_activity_1_cg54_custom_24']['#default_value'] = $feedback;
+  $elements['civicrm_1_activity_1_cg54_custom_458']['#default_value'] = $participant_feedback;
+  $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $staff_feedback;
 
   $mapping = [
-    // q1
+  // q1
   'custom_665' => [
     'Strongly Agree' => 'custom_48',
     'Agree' => 'custom_54',
@@ -205,7 +208,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
 
  foreach ($mapping as $cf => $values) {
    foreach ($values as $option => $element) {
-     $elements['civicrm_1_activity_1_cg2_' . $element]['#default_value'] = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, $cf => $option]);
+     $elements['civicrm_1_activity_1_cg54_' . $element]['#default_value'] = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, $cf => $option]);
    }
  }
 
@@ -242,18 +245,50 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     foreach ($result as $value) {
       $texts[] = sprintf('<li>%s</li>', );
     }
+    if (!empty($texts)) {
     $elements[$element]['#text'] = sprintf('
-    <details class="package-listing js-form-wrapper form-wrapper claro-details claro-details--package-listing">
-      <summary role="button" aria-controls="edit-modules-core" aria-expanded="false" aria-pressed="false" class="claro-details__summary claro-details__summary--package-listing">
-        Click for more details<span class="claro-details__summary-summary"></span>
-      </summary>
-      <div class="claro-details__wrapper details-wrapper claro-details__wrapper--package-listing">
-        <ul>%s</ul>
-      </div>
-    </details>', implode(' ', $texts));
-    $elements['civicrm_1_activity_1_cg2_' . $cf['count']]['#default_value'] = count($texts);
+      <details class="package-listing js-form-wrapper form-wrapper claro-details claro-details--package-listing">
+        <summary role="button" aria-controls="edit-modules-core" aria-expanded="false" aria-pressed="false" class="claro-details__summary claro-details__summary--package-listing">
+          Click for more details<span class="claro-details__summary-summary"></span>
+        </summary>
+        <div class="claro-details__wrapper details-wrapper claro-details__wrapper--package-listing">
+          <ul>%s</ul>
+        </div>
+      </details>', implode(' ', $texts));
+    }
+    $elements['civicrm_1_activity_1_cg54_' . $cf['count']]['#default_value'] = count($texts);
   }
 
 
   $elements['civicrm_3_contact_1_contact_existing']['#default_value'] = CRM_Core_Session::getLoggedInContactID();
+}
+
+/**
+ * Get student feedback for evaluation summary.
+ */
+function get_ped_sace_student_feedback($aid) {
+  $feeback = [];
+
+  $sids = \Drupal::database()->select('webform_submission_data', 'wfd')
+    ->fields('wfd', ['sid'])
+    ->condition('wfd.webform_id', 'ped_sace_student_feedback')
+    ->condition('wfd.name', 'aid')
+    ->condition('wfd.value', $aid)
+    ->execute()
+    ->fetchAllKeyed(0,0);
+
+  if (empty($sids)) {
+    return [];
+  }
+
+  $result = \Drupal::database()->select('webform_submission_data', 'wfd')
+    ->fields('wfd', ['sid','name','value'])
+    ->condition('wfd.sid', $sids, 'IN')
+    ->execute();
+
+  foreach ($result as $row) {
+    $feedback[$row->sid][$row->name] = $row->value;
+  }
+
+  return $feedback;
 }
