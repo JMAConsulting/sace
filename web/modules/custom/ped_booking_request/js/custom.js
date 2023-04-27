@@ -8,14 +8,16 @@
       $(`${fieldset}`).hide();
       $('#existing-org').on('click', function (e) {
         e.preventDefault();
-        $(field).show();
-        $(fieldset).hide();
+        $(`${field}`).show();
+        $(`${fieldset}`).hide();
+        $(`${field} .token-input-delete-token`).trigger('click');
       });
 
-      $('#new-org').on('click', function (e) {
+      $('#new-org-block').on('click', function (e) {
           e.preventDefault();
-          $(fieldset).show();
-          $(field).hide();
+          $(`${fieldset}`).show();
+          $(`${field}`).hide();
+          $(`${field} .token-input-delete-token`).trigger('click');
       });
     });
 })(jQuery, Drupal);
