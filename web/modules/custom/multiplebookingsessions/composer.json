@@ -1,0 +1,13 @@
+{
+    "name": "multiplebookingsessions",
+    "type": "drupal-module",
+    "description": "Support for Booking Multiple Sessions",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/multiplebookingsessions",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/multiplebookingsessions",
+        "source": "http://cgit.drupalcode.org/multiplebookingsessions",
+    }
+}
