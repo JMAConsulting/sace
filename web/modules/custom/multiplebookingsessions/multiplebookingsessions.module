@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains multiplebookingsessions.module.
+ */
+function multiplebookingsessions_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
+  $civicrm_entity_info['civicrm_multiple_booking'] = [
+    'civicrm entity label' => t('Multiple Booking'),
+    'civicrm entity name' => 'multiple_booking',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+}
