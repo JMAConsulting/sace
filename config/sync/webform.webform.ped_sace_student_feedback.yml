@@ -151,9 +151,6 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
-  presentation_topic_markup:
-    '#type': webform_markup
-    '#markup': test
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation topics:'
@@ -845,7 +842,7 @@ elements: |-
     '#counter_type': character
     '#counter_maximum': 255
     '#counter_maximum_message': ' '
-    '#default_value': '[current-page:query:aid]'
+    '#default_value': '[current-page:query:bid]'
     '#data_type': String
     '#form_key': civicrm_1_activity_1_cg50_custom_696
     '#extra':

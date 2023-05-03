@@ -28,7 +28,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements = WebformFormHelper::flattenElements($form);
 
     // Get activity id from query var.
-    $aid = \Drupal::request()->query->get('aid');
+    $aid = \Drupal::request()->query->get('bid');
     if (empty($aid) || !is_numeric($aid)) {
       return;
     }
@@ -46,6 +46,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     // Disable date and presentation method fields
     $elements[$constants['Activity_Date']]['#disabled'] = TRUE;
     $elements[$constants['Presentation_Method']]['#disabled'] = TRUE;
+    $elements[$constants['Presentation_Method']]['#default_value'] = $result['Booking_Information.Presentation_Method'];
 
     //Get default selected value for Presentation Topic
     $topics = $result['Booking_Information.Presentation_topics:label'];
