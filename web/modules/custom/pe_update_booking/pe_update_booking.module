@@ -1,7 +1,7 @@
 <?php
 
 use Drupal\webform\Utility\WebformFormHelper;
-require_once 'pe_update_booking_variables.php';
+@require_once 'pe_update_booking_variables.php';
 /**
  * Implements hook_form_alter().
  * @param $form

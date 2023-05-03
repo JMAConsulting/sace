@@ -1,25 +1,22 @@
-jQuery(document).ready(function ($, settings) {
-  Drupal.behaviors.pe_update_booking = {
-    attach: function(context, settings) {
-      var Presentation_Topics = settings.pe_update_booking.Presentation_Topics;
-      console.log(Presentation_Topics);
-    }
-  };
-  if (!$("#edit-civicrm-1-activity-1-cg2-custom-40-customsomethingdifferent").is(
-      ":checked")) {
-
-    $("#edit-civicrm-1-activity-1-cg2-custom-41").hide();
-    $('label[for="edit-civicrm-1-activity-1-cg2-custom-41"]').hide();
+jQuery(document).ready(function ($, settings) {  
+  //Presentation Topic Custom/SOmething Different toggle text field
+  let checkbox = "#edit-civicrm-1-activity-1-cg2-custom-40-customsomethingdifferent";
+  let field = "#edit-civicrm-1-activity-1-cg2-custom-41";
+  let lable = 'label[for="edit-civicrm-1-activity-1-cg2-custom-41"]';
+  
+  if (!$(`${checkbox}`).is(":checked")) {
+    $(`${field}`).hide();
+    $(`${lable}`).hide();
   }
 
-  $("#edit-civicrm-1-activity-1-cg2-custom-40-customsomethingdifferent").click(
+  $(`${checkbox}`).click(
     function () {
       if ($(this).is(":checked")) {
-        $("#edit-civicrm-1-activity-1-cg2-custom-41").show();
-        $('label[for="edit-civicrm-1-activity-1-cg2-custom-41"]').show();
+        $(`${field}`).show();
+        $(`${lable}`).show();
       } else {
-        $("#edit-civicrm-1-activity-1-cg2-custom-41").hide();
-        $('label[for="edit-civicrm-1-activity-1-cg2-custom-41"]').hide();
+        $(`${field}`).hide();
+        $(`${lable}`).hide();
       }
     }
   );
