@@ -1,4 +1,7 @@
 <?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
 /**
  * Implements hook_form_alter().
  * @param $form
@@ -9,5 +12,15 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
   //attach js
   if($form_id == "webform_submission_ped_booking_request_query_params_add_form"){
     $form['#attached']['library'][] = 'ped_booking_request/ped_booking_request';
+    $elements = WebformFormHelper::flattenElements($form);
+    $bt = \Drupal::request()->query->get('booking_type') ?? 0;
+    if (in_array($bt, [58, 55])) {
+      $elements['civicrm_3_contact_1_contact_existing']['#title'] = 'Your School';
+      $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup'] = str_replace('organization', 'school', $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup']);
+      $elements['civicrm_3_contact_1_contact_organization_name']['#title'] = 'School Name';
+      $elements['civicrm_3_contact_1_email_email']['#description']['#markup'] = str_replace('organization', 'school', $elements['civicrm_3_contact_1_email_email']['#description']['#markup']);
+      $elements['civicrm_3_contact_1_fieldset_fieldset']['#title'] = 'New School';
+      $elements['civicrm_3_contact_1_contact_contact_sub_type']['#default_value'] = $elements['civicrm_3_contact_1_contact_contact_sub_type']['#options'];
+    }
   }
 }
