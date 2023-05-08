@@ -1,6 +1,8 @@
 <?php
 use Drupal\webform\Utility\WebformFormHelper;
+
 require_once 'pe_presentation_evaluation.variables.php';
+
 /**
  * Implements hook_form_alter().
  * @param $form
@@ -34,7 +36,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
     // Get Booking Intake custom fields
     $result = \Civi\Api4\Activity::get()
-      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus', 'Booking_Information.Presentation_Method','Booking_Information.Presentation_custom', 'Booking_Information.Audience')
+      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
       ->addWhere('id', '=', $aid)
       ->execute()
       ->first();
@@ -52,8 +54,9 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $topics = $result['Booking_Information.Presentation_topics:label'];
     if (is_array($topics)) {
       $topic = implode(', ', $topics);
-      if(in_array('Custom/ Something Different',$topics))
+      if (in_array('Custom/ Something Different', $topics)) {
         $topic .= $result['Booking_Information.Presentation_custom'];
+      }
     }
     else {
       $topic = $topics;
@@ -72,57 +75,59 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
       }
     }
 
+    $result["Booking_Information.Presentation_topics"] = $result["Booking_Information.Presentation_topics"] ?: [];
+
     //Hide Q4 Q5 Q7 if Support content covered is NO
-    if($result["Booking_Information.Support_Content"] != 1){
+    if ($result["Booking_Information.Support_Content"] != 1) {
       $elements[$constants['Q4']]['#access'] = FALSE;
       $elements[$constants['Q5']]['#access'] = FALSE;
       $elements[$constants['Q7']]['#access'] = FALSE;
     }
 
     //Hide Q6 if Audience not in list
-    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals","Service Providers","Guardians","Older Adults"]);
-    if(empty($intersect)){
+    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Guardians", "Older Adults"]);
+    if (empty($intersect)) {
       $elements[$constants['Q6']]['#access'] = FALSE;
     }
 
     //Hide Q8 Q9 if Presentation Topic not in list
-    $intersect = array_intersect($result["Booking_Information.Presentation_topics"], ["SACEServices","CommunityResources"]);
-    if(empty($intersect)){
+    $intersect = array_intersect($result["Booking_Information.Presentation_topics"], ["SACEServices", "CommunityResources"]);
+    if (empty($intersect)) {
       $elements[$constants['Q8']]['#access'] = FALSE;
       $elements[$constants['Q9']]['#access'] = FALSE;
     }
 
     //Hide Q13 if Audience not in list
-    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals","Service Providers","Educators"]);
-    if(empty($intersect)){
+    $intersect = array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]);
+    if (empty($intersect)) {
       $elements[$constants['Q13']]['#access'] = FALSE;
       $elements[$constants['Q18']]['#access'] = FALSE;
     }
 
     //Hide Q14 Q15 Q16 if Safer Spaces Content is NO
-    if(!$result['Booking_Information.Safer_Spaces_Content'])  {
+    if (!$result['Booking_Information.Safer_Spaces_Content']) {
       $elements[$constants['Q14']]['#access'] = FALSE;
       $elements[$constants['Q15']]['#access'] = FALSE;
       $elements[$constants['Q16']]['#access'] = FALSE;
     }
 
     //Hide Q17 if Facilitating Program is not Institutional Support
-    if($result['Booking_Information.Facilitating_Program'] != "InstitutionalSupport") {
+    if ($result['Booking_Information.Facilitating_Program'] != "InstitutionalSupport") {
       $elements[$constants['Q17']]['#access'] = FALSE;
     }
 
     //Hide Q19 if Presentation Topic is not Bystander Intervention
-    if(!in_array('BystanderIntervention',$result["Booking_Information.Presentation_topics"])){
+    if (!in_array('BystanderIntervention', $result["Booking_Information.Presentation_topics"])) {
       $elements[$constants['Q19']]['#access'] = FALSE;
     }
 
     //Hide Q20 if Presentation Topic is not Privilege and Oppression Covered
-    if(!in_array('PrivilegeandOppression',$result["Booking_Information.Presentation_topics"])){
+    if (!in_array('PrivilegeandOppression', $result["Booking_Information.Presentation_topics"])) {
       $elements[$constants['Q20']]['#access'] = FALSE;
     }
 
     //Hide Q21 if Presentation Method is not Online Course else hide Q22
-    if($result['Booking_Information.Presentation_Method'] == 'Online Course'){
+    if ($result['Booking_Information.Presentation_Method'] == 'Online Course') {
       $elements[$constants['Q21']]['#access'] = FALSE;
     }
     else {
@@ -130,7 +135,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
 
     //Hide Q25 if Youth or Adult is not Adult
-    if($result['Booking_Information.Youth_or_Adult'] != 'Adult'){
+    if ($result['Booking_Information.Youth_or_Adult'] != 'Adult') {
       $elements[$constants['Q25']]['#access'] = FALSE;
     }
   }
