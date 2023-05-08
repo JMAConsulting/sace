@@ -12,17 +12,11 @@ use Drupal\webform\Utility\WebformFormHelper;
  */
 function ped_evaluation_summary_form_webform_submission_presentation_evaluation_summary__add_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
   // Get activity id from query var.
-  $aid = \Drupal::request()->query->get('aid') ?? 0;
+  $aid = \Drupal::request()->query->get('bid') ?? 0;
   if (empty($aid) || !is_numeric($aid)) {
     return;
   }
 
-  // Get Booking Intake custom fields
-  $result = \Civi\Api4\Activity::get()
-    ->addSelect( 'Booking_Information.Presentation_topics')
-    ->addWhere('id', '=', $aid)
-    ->execute()
-    ->first();
   // APIv4 doesn't fetch assignee and target contact ids, so relying on api v3
   $contacts = civicrm_api3('Activity', 'get', [
     'return' => ["target_contact_id", "assignee_contact_id"],
@@ -38,6 +32,19 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     $i++;
   }
   $elements['civicrm_2_contact_1_contact_existing']['#value'] = $contacts[0]['target_contact_id'];
+
+  // Get Booking Intake custom fields
+  $result = \Civi\Api4\Activity::get()
+    ->addSelect( 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
+    ->addWhere('id', '=', $aid)
+    ->execute()
+    ->first();
+
+  $topics = $result['Booking_Information.Presentation_topics:label'] ?? [];
+  $topic = implode(', ', $topics);
+  if (in_array('Custom/ Something Different', $topics)) {
+   $topic = str_replace('Custom/ Something Different', $result['Booking_Information.Presentation_custom'], $topic);
+  }
 
   foreach (['questions_1_markup', 'question_2_markup', 'question_5_markup', 'question_markup_18'] as $element) {
     $elements[$element]['#text'] = str_replace('[presentation topic]', $topic, $elements[$element]['#text']);
