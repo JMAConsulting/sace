@@ -55,7 +55,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     if (is_array($topics)) {
       $topic = implode(', ', $topics);
       if (in_array('Custom/ Something Different', $topics)) {
-        $topic .= $result['Booking_Information.Presentation_custom'];
+        $topic = str_replace('Custom/ Something Different', $result['Booking_Information.Presentation_custom'], $topic);
       }
     }
     else {
