@@ -45,7 +45,6 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
-    $keys = [2, 3, 4, 5, 6, 7];
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
     $civicrm_submission_data = $this->database->query("SELECT civicrm_data FROM {webform_civicrm_submissions} WHERE sid = :sid", [
@@ -56,11 +55,11 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
         $civicrm_data = unserialize($row['civicrm_data']);
         $activity = $this->api('Activity', 'get', ['id' => $civicrm_data['activity'][1]['id']])['values'][$civicrm_data['activity'][1]['id']];
         $activityContacts = $this->api('ActivityContact', 'get', ['activity_id' => $civicrm_data['activity'][1]['id']])['values'];
-        foreach ($keys as $key) {
+        for ($key = 1; $key <= 10; $key++) {
           if (!empty($webform_submission['followup_activity_date_' . $key])) {
             $newActivity = $activity;
             unset($newActivity[id]);
-            $newActivity['activity_date_time'] = $webform_submission['followup_activity_date_' . $key];
+            $newActivity['activity_date_time'] = $webform_submission['additional_appointment_' . $key];
             $newActivityRecord = $this->api('Activity', 'create', $newActivity);
             foreach ($activityContacts as $contact) {
               $this->api('ActivityContact', 'create', [
