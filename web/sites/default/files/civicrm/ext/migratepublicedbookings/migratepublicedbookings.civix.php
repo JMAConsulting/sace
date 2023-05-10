@@ -304,5 +304,11 @@ function _migratepublicedbookings_civix_fixNavigationMenuItems(&$nodes, &$maxNav
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
 function _migratepublicedbookings_civix_civicrm_entityTypes(&$entityTypes) {
-  $entityTypes = array_merge($entityTypes, []);
+  $entityTypes = array_merge($entityTypes, [
+    'CRM_Migratepublicedbookings_DAO_BookingImportLog' => [
+      'name' => 'BookingImportLog',
+      'class' => 'CRM_Migratepublicedbookings_DAO_BookingImportLog',
+      'table' => 'civicrm_booking_import_log',
+    ],
+  ]);
 }

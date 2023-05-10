@@ -11,6 +11,8 @@ use CRM_Migratepublicedbookings_ExtensionUtil as E;
  */
 function _civicrm_api3_public_ed_bookings_Migratepublicedbookings_spec(&$spec) {
   $spec['table_name']['api.required'] = 1;
+  $spec['year']['api.required'] = 1;
+
 }
 
 /**
@@ -26,8 +28,8 @@ function _civicrm_api3_public_ed_bookings_Migratepublicedbookings_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_public_ed_bookings_Migratepublicedbookings($params) {
-  if (!empty($params['table_name'])) {
-    $returnValues = CRM_Migratepublicedbookings_Utils::importBookings($params['table_name']);
+  if (!empty($params['table_name']) && !empty($params['year'])) {
+    $returnValues = CRM_Migratepublicedbookings_Utils::importBookings($params['table_name'], $params['year']);
     return civicrm_api3_create_success($returnValues, $params, 'PublicEdBookings', 'migratepublicedbookings');
   }
   else {

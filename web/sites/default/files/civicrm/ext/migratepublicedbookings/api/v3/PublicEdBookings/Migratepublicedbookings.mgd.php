@@ -14,7 +14,8 @@ return [
       'run_frequency' => 'Daily',
       'api_entity' => 'PublicEdBookings',
       'api_action' => 'Migratepublicedbookings',
-      'parameters' => 'table_name=public_ed_bookings_2019',
+      'parameters' => 'table_name=public_ed_bookings_2019
+year=2019',
     ],
   ],
 ];

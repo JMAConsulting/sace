@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Migratepublicedbookings</base>
+  <class>BookingImportLog</class>
+  <name>civicrm_booking_import_log</name>
+  <comment>FIXME</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type> 
+    <required>true</required>
+    <comment>Unique BookingImportLog ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>activity_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Activity</comment>
+  </field>
+  <foreignKey>
+    <name>activity_id</name>
+    <table>civicrm_activity</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>table_name</name>
+    <type>varchar</type>
+    <length>255</length>
+  </field>
+
+  <field>
+    <name>legacy_id</name>
+    <type>int unsigned</type>
+    <comment>Spreadsheet Row number</comment>
+  </field>
+</table>
