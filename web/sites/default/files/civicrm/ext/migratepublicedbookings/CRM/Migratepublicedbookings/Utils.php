@@ -14,15 +14,11 @@ class CRM_Migratepublicedbookings_Utils {
     $bookings = CRM_Core_DAO::executeQuery("SELECT * FROM $table")->fetchAll();
 
     foreach ($bookings as $key => $booking) {
-        CRM_Core_Error::Debug('key', $key);
-        CRM_Core_Error::Debug('legacy', $legacy_id);
-      //Testing
-      if ($legacy_id >= 5) {
-        exit;
+      if ($booking['id'] >= 5) {
+        CRM_Core_Error::Debug('bookings', $booking);exit;
       }
       //End Testing
 
-      $legacy_id = $key + 1;
       $record = [];
       // Create Record object with all fields to migrate
       self::createRecord($booking, $record, $constants);
@@ -43,7 +39,7 @@ class CRM_Migratepublicedbookings_Utils {
       self::setQ1toQ8($booking, $record, $constants);
 
       // Create Activities
-      self::createActivities($activities, $constants, $record, $table, $legacy_id);
+      self::createActivities($activities, $constants, $record, $table);
     }
     // return $results;
   }
@@ -70,6 +66,7 @@ class CRM_Migratepublicedbookings_Utils {
     $record['number_of_participants'] = $booking['Number_of_Participants'];
     $record['number_of_returned_evaluations'] = $booking['Number_of_Returned_Evaluations'];
     $record['facilitating_program'] = $booking['Facilitating_Program'];
+    $record['legacy_id'] = $booking['id'];
   }
 
   private static function findStaffAssigned($booking, &$record, &$constants) {
@@ -196,7 +193,7 @@ class CRM_Migratepublicedbookings_Utils {
     }
   }
 
-  private static function createActivities(&$activities, &$constants, &$record, $table, $legacy_id) {
+  private static function createActivities(&$activities, &$constants, &$record, $table) {
     $options = array_keys($record[$constants['Q1']]);
     $activities = [];
     if ($year >= 2018) {
@@ -263,13 +260,16 @@ class CRM_Migratepublicedbookings_Utils {
       $result = \Civi\Api4\BookingImportLog::create()
         ->addValue('activity_id', $created[0]["id"])
         ->addValue('table_name', $table)
-        ->addValue('legacy_id', $legacy_id)
+        ->addValue('legacy_id', $record['legacy_id'])
         ->execute();
+
+        CRM_Core_Error::Debug('result', $result);
+
+        $results[] = $result;
     }
-    $results[] = $result;
-    if ($legacy_id >= 3) {
-      return $results;
+    if ($record['legacy_id'] >= 3) {
+        CRM_Core_Error::Debug('test', $results);exit;
+        // return $results;
     }
   }
-
 }
