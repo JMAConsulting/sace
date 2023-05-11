@@ -6,20 +6,13 @@ require_once 'migratepublicedbookings.variables.php';
 
 class CRM_Migratepublicedbookings_Utils {
 
-  /**
-   * static $results = [];
-   */
   public static function importBookings($table, $year) {
     $constants = get_defined_constants(FALSE);
     $bookings = CRM_Core_DAO::executeQuery("SELECT * FROM $table")->fetchAll();
 
-    foreach ($bookings as $key => $booking) {
-      if ($booking['id'] >= 5) {
-        CRM_Core_Error::Debug('bookings', $booking);exit;
-      }
-      //End Testing
-
-      $record = [];
+    $results = [];
+    $record = [];
+    foreach ($bookings as $booking) {
       // Create Record object with all fields to migrate
       self::createRecord($booking, $record, $constants);
 
@@ -38,10 +31,13 @@ class CRM_Migratepublicedbookings_Utils {
       // Q1 - Q8
       self::setQ1toQ8($booking, $record, $constants);
 
+      // Create Booking Activity
+      $booking = self::createBookingActivity($constants, $record, $table);
+
       // Create Activities
-      self::createActivities($activities, $constants, $record, $table);
+      $results[] = self::createActivities($booking->first()['id'], $constants, $record, $table);
     }
-    // return $results;
+    return $results;
   }
 
   private static function createRecord($booking, &$record, &$constants) {
@@ -193,7 +189,25 @@ class CRM_Migratepublicedbookings_Utils {
     }
   }
 
-  private static function createActivities(&$activities, &$constants, &$record, $table) {
+  private static function createBookingActivity(&$constants, &$record, $table) {
+    $booking = \Civi\Api4\Activity::create()
+      ->addValue($constants['Youth_or_Adult'], $record['youth_or_adult'])
+      ->addValue($constants['Presentation_Method'], $record['presentation_method'])
+      ->addValue($constants['Presentation_Topics'], $record['presentation_topic'])
+      ->addValue($constants['Activity_Date'], $record['date'])
+      ->addValue($constants['Activity_Duration'], $record['activity_duration'])
+      ->addValue($constants['Activity_Type_Id'], $record['activity_type_id'])
+      ->addValue($constants['Number_Participants'], $record['number_of_participants'])
+      ->addValue($constants['Staff_Assigned'], $record['staff_assigned'])
+      ->addValue($constants['Facilitating_Program'], $record['facilitating_program'])
+      ->addValue($constants['Audience'], $record['audience_type'])
+      ->addValue($constants['Target_Contact_Id'], $record['organization'])
+      ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
+      ->execute();
+    return $booking;
+  }
+
+  private static function createActivities($booking, &$constants, &$record, $table) {
     $options = array_keys($record[$constants['Q1']]);
     $activities = [];
     if ($year >= 2018) {
@@ -234,17 +248,9 @@ class CRM_Migratepublicedbookings_Utils {
     // Create Activities
     foreach ($activities as $activity) {
       $created = \Civi\Api4\Activity::create()
-        ->addValue($constants['Target_Contact_Id'], $record['organization'])
-        ->addValue($constants['Youth_or_Adult'], $record['youth_or_adult'])
-        ->addValue($constants['Presentation_Method'], $record['presentation_method'])
-        ->addValue($constants['Presentation_Topics'], $record['presentation_topic'])
-        ->addValue($constants['Activity_Date'], $record['date'])
-        ->addValue($constants['Activity_Duration'], $record['activity_duration'])
-        ->addValue($constants['Activity_Type_Id'], $record['activity_type_id'])
-        ->addValue($constants['Number_Participants'], $record['number_of_participants'])
-        ->addValue($constants['Staff_Assigned'], $record['staff_assigned'])
-        ->addValue($constants['Facilitating_Program'], $record['facilitating_program'])
-        ->addValue($constants['Audience'], $record['audience_type'])
+        ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
+        ->addValue($constants['Booking_Reference_Field'], $booking)
+        ->addValue($constants['Activity_Type_Id'], $constants['Eval_Activity'])
         ->addValue($constants['Q1_Field'], $activity[$constants['Q1']])
         ->addValue($constants['Q2_Field'], $activity[$constants['Q2']])
         ->addValue($constants['Q3_Field'], $activity[$constants['Q3']])
@@ -253,7 +259,6 @@ class CRM_Migratepublicedbookings_Utils {
         ->addValue($constants['Q6_Field'], $activity[$constants['Q6']])
         ->addValue($constants['Q7_Field'], $activity[$constants['Q7']])
         ->addValue($constants['Q8_Field'], $activity[$constants['Q8']])
-        ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
         ->execute();
 
       //Add log
@@ -263,13 +268,9 @@ class CRM_Migratepublicedbookings_Utils {
         ->addValue('legacy_id', $record['legacy_id'])
         ->execute();
 
-        CRM_Core_Error::Debug('result', $result);
-
-        $results[] = $result;
+      $results[] = $result;
     }
-    if ($record['legacy_id'] >= 3) {
-        CRM_Core_Error::Debug('test', $results);exit;
-        // return $results;
-    }
+    return $results;
   }
+
 }
