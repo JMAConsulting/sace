@@ -22,6 +22,7 @@ function multiplebookingsessions_views_data_alter(&$data) {
   $data['civicrm_multiple_booking']['activity_type_id']['relationship'] = [
     'base' => 'civicrm_activity',
     'base_field' => 'activity_type_id',
+    'base field' => 'activity_type_id',
     'field' => 'activity_type_id',
     'id' => 'standard',
     'label' => t('Activty Multiple Booking Join'),
@@ -32,6 +33,7 @@ function multiplebookingsessions_views_data_alter(&$data) {
     'relationship' => [
       'base' => 'civicrm_multiple_booking',
       'base_field' => 'activity_type_id',
+      'base field' => 'activity_type_id',
       'field' => 'activity_type_id',
       'id' => 'standard',
       'label' => t('Multiple Booking Join'),
@@ -43,6 +45,7 @@ function multiplebookingsessions_views_data_alter(&$data) {
     'relationship' => [
       'base' => 'civicrm_multiple_booking',
       'base_field' => 'activity_type_id',
+      'base field' => 'activity_type_id',
       'field' => 'value',
       'id' => 'standard',
       'label' => t('Multiple Booking Join Option Value'),
