@@ -8,13 +8,13 @@ class CRM_Migratepublicedbookings_Utils {
 
   public static function importBookings($table, $year) {
     $constants = get_defined_constants(FALSE);
-    $bookings = CRM_Core_DAO::executeQuery("SELECT * FROM $table")->fetchAll();
+    $bookings = CRM_Core_DAO::executeQuery("SELECT * FROM $table limit 1")->fetchAll();    
 
     $results = [];
     $record = [];
     foreach ($bookings as $booking) {
       // Create Record object with all fields to migrate
-      self::createRecord($booking, $record, $constants);
+      self::createRecord($year, $booking, $record, $constants);
 
       // Find staff assigned contact id
       self::findStaffAssigned($booking, $record, $constants);
@@ -33,16 +33,18 @@ class CRM_Migratepublicedbookings_Utils {
 
       // Create Booking Activity
       $booking = self::createBookingActivity($constants, $record, $table);
-
+      
       // Create Activities
-      $results[] = self::createActivities($booking->first()['id'], $constants, $record, $table);
+      $results[] = self::createActivities($booking->first()['id'], $constants, $record, $table);  
     }
     return $results;
   }
 
-  private static function createRecord($booking, &$record, &$constants) {
+  private static function createRecord($year, $booking, &$record, &$constants) {
     // Activity Date
-    $record['date'] = date_format(date_create("2019-$booking[Month]-$booking[Date]"), 'Y-m-d');
+    $record['date'] = date_format(date_create("$year-$booking[Month]-$booking[Date]"), 'Y-m-d');
+    // CRM_Core_Error::Debug('date', $record['date']);exit;
+
     // Presentation Topic
     $record['presentation_topic'] = $booking['Presentation_Topic'];
 
@@ -204,7 +206,7 @@ class CRM_Migratepublicedbookings_Utils {
       ->addValue($constants['Target_Contact_Id'], $record['organization'])
       ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
       ->execute();
-    return $booking;
+      return $booking;
   }
 
   private static function createActivities($booking, &$constants, &$record, $table) {
@@ -268,9 +270,9 @@ class CRM_Migratepublicedbookings_Utils {
         ->addValue('legacy_id', $record['legacy_id'])
         ->execute();
 
-      $results[] = $result;
-    }
-    return $results;
+        $results[] = $result;
+      }
+      return $results;
   }
 
 }
