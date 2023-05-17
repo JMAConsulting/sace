@@ -1,0 +1,7 @@
+name: External Appointment Booking
+type: module
+description: 'External Appointment booking webform modifications'
+version: 1.0
+core_version_requirement: ^8 || ^9
+dependencies:
+  - webform:webform

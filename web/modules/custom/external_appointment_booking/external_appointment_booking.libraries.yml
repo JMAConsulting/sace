@@ -1,0 +1,4 @@
+external_appointment_booking:
+  version: 1.0
+  js:
+    js/view.js: {}
