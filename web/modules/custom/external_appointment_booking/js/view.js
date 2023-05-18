@@ -3,7 +3,7 @@
 
       // Dynamic Your Organization / School fields
       field = '.form-item-civicrm-1-contact-1-contact-existing';
-      fieldset = '#edit-contact-1-fieldset-fieldset';
+      fieldset = '#edit-civicrm-1-contact-1-fieldset-fieldset';
       description = '#edit-civicrm-1-contact-1-contact-existing--description';
       $(`${fieldset}`).hide();
       $('#new-org').on('click', function (e) {
