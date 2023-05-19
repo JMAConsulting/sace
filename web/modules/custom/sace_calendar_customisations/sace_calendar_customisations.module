@@ -9,6 +9,13 @@ function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
   }
 }
 
+function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
+  if (in_array($view->id(), ['kg_duplicate_of_ped_booking_calendar', 'ped_update_online_booking'])) {
+    $view->build_info['query']->groupby('civicrm_activity_contact3.id');
+    $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
+  }
+}
+
 function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAssetsInterface $assets) {
   if (isset($settings['fullCalendarView'])) {
     foreach ($settings['fullCalendarView'] as $key => $setting) {
