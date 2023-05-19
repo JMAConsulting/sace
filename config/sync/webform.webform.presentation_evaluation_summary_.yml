@@ -41,7 +41,7 @@ elements: |-
   flexbox_10:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_24:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -52,7 +52,7 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Number of participants'
     civicrm_1_activity_1_cg54_custom_458:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -63,7 +63,7 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Number of online evaluations'
     civicrm_1_activity_1_cg54_custom_459:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -92,18 +92,21 @@ elements: |-
   flexbox_05:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_48:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
-      '#placeholder': '0'
       '#data_type': Float
       '#form_key': civicrm_1_activity_1_cg54_custom_48
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_54:
-      '#type': textfield
+      '#type': number
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -112,8 +115,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_55:
-      '#type': textfield
+      '#type': number
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -122,7 +127,7 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_707:
-      '#type': textfield
+      '#type': number
       '#data_type': Float
       '#counter_type': character
       '#counter_maximum': 255
@@ -132,9 +137,13 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
     civicrm_1_activity_1_cg54_custom_56:
-      '#type': textfield
+      '#type': number
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -143,8 +152,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_57:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -173,7 +184,7 @@ elements: |-
       <p></p>
     '#format': html
   civicrm_1_activity_1_cg54_custom_59:
-    '#type': textfield
+    '#type': number
     '#title': Total
     '#field_prefix': '#'
     '#placeholder': '0'
@@ -190,8 +201,10 @@ elements: |-
   flexbox_06:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_60:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -200,8 +213,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_61:
-      '#type': textfield
+      '#type': number
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -210,8 +225,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_62:
-      '#type': textfield
+      '#type': number
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -220,7 +237,7 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_709:
-      '#type': textfield
+      '#type': number
       '#data_type': Int
       '#counter_type': character
       '#counter_maximum': 255
@@ -230,9 +247,13 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#title_display': invisible
+      '#description': 'Somewhat Disagree'
     civicrm_1_activity_1_cg54_custom_63:
-      '#type': textfield
+      '#type': number
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -241,8 +262,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_64:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -269,8 +292,10 @@ elements: |-
   flexbox_07:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_68:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -279,8 +304,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_69:
-      '#type': textfield
+      '#type': number
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -289,8 +316,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_70:
-      '#type': textfield
+      '#type': number
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -299,7 +328,7 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_711:
-      '#type': textfield
+      '#type': number
       '#data_type': Int
       '#counter_type': character
       '#counter_maximum': 255
@@ -309,9 +338,12 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Strongly Disagree'
     civicrm_1_activity_1_cg54_custom_71:
-      '#type': textfield
+      '#type': number
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -320,8 +352,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_72:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -350,7 +384,7 @@ elements: |-
       <p></p>
     '#format': html
   civicrm_1_activity_1_cg54_custom_65:
-    '#type': textfield
+    '#type': number
     '#title': Total
     '#field_prefix': '#'
     '#placeholder': '0'
@@ -367,8 +401,10 @@ elements: |-
   flexbox_08:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_75:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -377,8 +413,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_76:
-      '#type': textfield
+      '#type': number
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -387,8 +425,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_77:
-      '#type': textfield
+      '#type': number
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -397,7 +437,7 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_712:
-      '#type': textfield
+      '#type': number
       '#data_type': Int
       '#counter_type': character
       '#counter_maximum': 255
@@ -407,9 +447,12 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Strongly Disagree'
     civicrm_1_activity_1_cg54_custom_78:
-      '#type': textfield
+      '#type': number
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -418,8 +461,9 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_79:
-      '#type': textfield
-      '#title': 'Strongly Disagree'
+      '#type': number
+      '#title': 'Strongly Disagree '
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -445,8 +489,10 @@ elements: |-
   flexbox_09:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_81:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -455,8 +501,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_82:
-      '#type': textfield
+      '#type': number
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -465,8 +513,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_83:
-      '#type': textfield
+      '#type': number
       '#title': 'Somewhat Agree'
+      '#title_display': invisible
+      '#description': 'Somewhat Agree'
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -475,7 +525,7 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_713:
-      '#type': textfield
+      '#type': number
       '#data_type': Int
       '#counter_type': character
       '#counter_maximum': 255
@@ -485,9 +535,12 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Strongly Disagree'
     civicrm_1_activity_1_cg54_custom_84:
-      '#type': textfield
+      '#type': number
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -496,8 +549,10 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_85:
-      '#type': textfield
+      '#type': number
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
@@ -523,7 +578,7 @@ elements: |-
   flexbox_11:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_716:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -533,9 +588,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_717:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -545,9 +602,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_718:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -557,9 +616,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#title_display': invisible
+      '#description': 'Somewhat Agree'
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_719:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -569,9 +630,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_720:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -581,9 +644,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_721:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -593,6 +658,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_722:
       '#type': webform_computed_twig
@@ -621,7 +688,7 @@ elements: |-
       <p></p>
     '#format': html
   civicrm_1_activity_1_cg54_custom_724:
-    '#type': textfield
+    '#type': number
     '#title': Total
     '#field_prefix': '#'
     '#placeholder': '0'
@@ -638,7 +705,7 @@ elements: |-
   flexbox_12:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_725:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -648,9 +715,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_726:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -660,9 +729,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_727:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -672,9 +743,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_728:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -684,9 +757,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_729:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -696,9 +771,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_730:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -708,6 +785,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_731:
       '#type': webform_computed_twig
@@ -727,7 +806,7 @@ elements: |-
   flexbox_13:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_732:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -737,9 +816,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_733:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -749,9 +830,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_734:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -761,9 +844,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_735:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -773,9 +858,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_736:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -785,9 +872,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_737:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -797,6 +886,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_738:
       '#type': webform_computed_twig
@@ -816,7 +907,7 @@ elements: |-
   flexbox_14:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_739:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -826,9 +917,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_740:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -838,9 +931,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_741:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -850,9 +945,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_742:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -862,9 +959,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_743:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -874,9 +973,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_744:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -886,6 +987,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_745:
       '#type': webform_computed_twig
@@ -905,7 +1008,7 @@ elements: |-
   flexbox_15:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_746:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -915,9 +1018,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_750:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -927,9 +1032,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_747:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -939,9 +1046,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_751:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -951,9 +1060,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_748:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -963,9 +1074,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_749:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -975,6 +1088,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_752:
       '#type': webform_computed_twig
@@ -994,7 +1109,7 @@ elements: |-
   flexbox_16:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_753:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1004,9 +1119,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_754:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1016,9 +1133,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_755:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1028,9 +1147,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_756:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1040,9 +1161,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_757:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1052,9 +1175,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_758:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1064,6 +1189,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_759:
       '#type': webform_computed_twig
@@ -1083,7 +1210,7 @@ elements: |-
   flexbox_17:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_760:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1093,9 +1220,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_761:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1105,9 +1234,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_762:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1117,9 +1248,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_763:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1129,9 +1262,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_764:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1141,9 +1276,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_765:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1153,6 +1290,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_766:
       '#type': webform_computed_twig
@@ -1172,7 +1311,7 @@ elements: |-
   flexbox_18:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_767:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1182,9 +1321,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_768:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1194,9 +1335,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_769:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1206,9 +1349,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_770:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1218,9 +1363,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_771:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1230,9 +1377,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_772:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1242,6 +1391,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_773:
       '#type': webform_computed_twig
@@ -1261,7 +1412,7 @@ elements: |-
   flexbox_19:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_774:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1271,9 +1422,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_775:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1283,9 +1436,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_776:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1295,9 +1450,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_777:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1307,9 +1464,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_778:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1319,9 +1478,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_779:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1331,6 +1492,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_780:
       '#type': webform_computed_twig
@@ -1353,7 +1516,7 @@ elements: |-
       <p></p>
     '#format': html
   civicrm_1_activity_1_cg54_custom_787:
-    '#type': textfield
+    '#type': number
     '#title': Total
     '#field_prefix': '#'
     '#placeholder': '0'
@@ -1370,7 +1533,7 @@ elements: |-
   flexbox_20:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_781:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1380,9 +1543,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_782:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1392,9 +1557,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_783:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1404,9 +1571,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_784:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1416,9 +1585,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_785:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1428,9 +1599,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_786:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1440,6 +1613,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_788:
       '#type': webform_computed_twig
@@ -1459,7 +1634,7 @@ elements: |-
   flexbox_21:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_789:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1469,9 +1644,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_790:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1481,9 +1658,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_791:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1493,9 +1672,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_792:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1505,9 +1686,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_793:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1517,9 +1700,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_794:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1529,6 +1714,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_795:
       '#type': webform_computed_twig
@@ -1548,7 +1735,7 @@ elements: |-
   flexbox_22:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_796:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1558,9 +1745,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_797:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1570,9 +1759,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_798:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1582,9 +1773,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_799:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1594,9 +1787,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_800:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1606,9 +1801,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_801:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1618,6 +1815,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_802:
       '#type': webform_computed_twig
@@ -1640,7 +1839,7 @@ elements: |-
       <p></p>
     '#format': html
   civicrm_1_activity_1_cg54_custom_803:
-    '#type': textfield
+    '#type': number
     '#title': Total
     '#field_prefix': '#'
     '#placeholder': '0'
@@ -1660,7 +1859,7 @@ elements: |-
       <p></p>
     '#format': html
   civicrm_1_activity_1_cg54_custom_804:
-    '#type': textfield
+    '#type': number
     '#title': Total
     '#field_prefix': '#'
     '#placeholder': '0'
@@ -1677,7 +1876,7 @@ elements: |-
   flexbox_23:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_805:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1687,9 +1886,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_806:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1699,9 +1900,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_807:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1711,9 +1914,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_808:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1723,9 +1928,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_809:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1735,9 +1942,11 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_810:
-      '#type': textfield
+      '#type': number
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -1747,6 +1956,8 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
       '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_811:
       '#type': webform_computed_twig
@@ -1774,7 +1985,7 @@ elements: |-
     '#parent': civicrm_3_contact_1_fieldset_fieldset
     '#extra': {  }
   civicrm_1_activity_1_cg53_custom_706:
-    '#type': textfield
+    '#type': number
     '#data_type': Int
     '#counter_type': character
     '#counter_maximum': 255
