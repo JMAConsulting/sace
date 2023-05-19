@@ -1,16 +1,66 @@
 <?php
+//Feedback
 define('Q1', 'q1');
 define('Q2', 'feedback');
 define('Q3', 'q5');
 define('Q4', 'feedback_q4');
-define('Q5', 'feedback_q6');
-define('Q6', 'q9');
+define('Q5', 'q9');
+define('Q6', 'feedback_q6');
 define('Q7', 'q11');
 define('Q8', 'q12');
+
+// Eval
+define('Eval_1SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1SA');
+define('Eval_1A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1A');
+define('Eval_1SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1SWA');
+define('Eval_1D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1D');
+define('Eval_1SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1SD');
+define('Eval_1SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_1');
+
+define('Eval_2SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_2');
+
+define('Eval_3SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4SA');
+define('Eval_3A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4A');
+define('Eval_3SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4SWA');
+define('Eval_3D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4D');
+define('Eval_3SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4SD');
+define('Eval_3SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_4');
+
+define('Eval_4SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_5');
+
+define('Eval_5SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8A');
+define('Eval_5A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8A');
+define('Eval_5SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8SWA');
+define('Eval_5D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8D');
+define('Eval_5SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8SD');
+define('Eval_5SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_8');
+
+define('Eval_6SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_9');
+
+define('Eval_7SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11SA');
+define('Eval_7A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11A');
+define('Eval_7SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11SWA');
+define('Eval_7D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11D');
+define('Eval_7SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11SD');
+define('Eval_7SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_11');
+
+define('Eval_8SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12SA');
+define('Eval_8A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12A');
+define('Eval_8SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12SWA');
+define('Eval_8D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12D');
+define('Eval_8SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12SD');
+define('Eval_8SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_12');
+
+define('Eval_Number_Participants', 'PED_Presentation_Evaluation_Summary_Score.Number_Participants');
+define('Eval_Number_Online_Evals', 'PED_Presentation_Evaluation_Summary_Score.Number of online evaluations');
+define('Eval_Number_Staff_Evals', 'PED_Presentation_Evaluation_Summary_Score.Number of staff entered evaluations');
+
 define('Youth_Activity', 57);
 define('Adult_Activity', 59);
-define('Eval_Activity', 197);
+define('Feedback_Activity', 197);
 define('SACE_Contact', 1486);
+
+// Staff emails
 define('Staff', [
   'Annette' => 'annettek@sace.ca',
   'Hala' => 'halak@sace.ca',
@@ -59,7 +109,7 @@ define('Number_Participants', 'Booking_Information.Number_Participants');
 define('Facilitating_Program', 'Booking_Information.Facilitating_Program');
 define('Audience', 'Booking_Information.Audience:label');
 define('Target_Contact_Id', 'target_contact_id');
-define('Activity_Date', 'activity_date_time');
+define('Activity_Date_Time', 'activity_date_time');
 define('Staff_Assigned', 'assignee_contact_id');
 define('Presentation_Method', 'Booking_Information.Presentation_Method');
 define('Booking_Reference_Field', 'PED_Booking_Reference.Booking_Reference_ID');
