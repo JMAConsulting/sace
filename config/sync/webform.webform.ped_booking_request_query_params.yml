@@ -145,15 +145,6 @@ elements: |-
       '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
       '#parent': civicrm_1_contact_1_fieldset_fieldset
       '#default_option': '2'
-  civicrm_2_contact_1_contact_organization_name:
-    '#type': textfield
-    '#title': 'School Name'
-    '#title_display': none
-    '#contact_type': organization
-    '#form_key': civicrm_2_contact_1_contact_organization_name
-    '#extra':
-      width: 20
-    '#parent': civicrm_2_contact_1_fieldset_fieldset
   civicrm_3_contact_1_contact_existing:
     '#type': civicrm_contact
     '#title': 'Your Organization'
@@ -401,7 +392,7 @@ elements: |-
   flexbox_04:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_128:
-      '#type': textfield
+      '#type': number
       '#title': 'How many sessions would you like?'
       '#field_prefix': '#'
       '#data_type': String
@@ -409,12 +400,12 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg2_custom_24:
-      '#type': textfield
+    civicrm_1_activity_1_cg2_custom_815:
+      '#type': number
       '#title': 'Approximate number of participants per session'
       '#field_prefix': '#'
       '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg2_custom_24
+      '#form_key': civicrm_1_activity_1_cg2_custom_815
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -439,7 +430,7 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
   civicrm_1_activity_1_cg2_custom_126:
     '#type': textarea
-    '#title': 'Participant needs or considerations (please specify)'
+    '#title': 'Additional needs or considerations (please specify)'
     '#data_type': Memo
     '#extra':
       cols: '60'
@@ -450,9 +441,9 @@ elements: |-
     '#type': fieldset
     '#title': 'In-Person Session Details'
     '#states':
-      visible:
+      invisible:
         ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
-          value: Presentation
+          '!value': 'In-Person Presentation'
     civicrm_1_activity_1_cg2_custom_37:
       '#type': textfield
       '#title': 'Parking Instructions'
@@ -493,7 +484,7 @@ elements: |-
     '#states':
       visible:
         ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
-          value: OnlinePresentation
+          value: 'Online Presentation'
     civicrm_1_activity_1_cg2_custom_119:
       '#type': civicrm_options
       '#title': 'Which virtual platform would you like to use?'
@@ -647,7 +638,7 @@ elements: |-
       '#default_relationship_to': '1'
       '#default_relationship':
         '': ''
-      '#default_contact_id': '1'
+      '#default_contact_id': '1492'
       '#tag':
         19: '19'
       '#filter_relationship_contact': ''
@@ -934,8 +925,8 @@ handlers:
       2_webform_label: School
       civicrm_2_contact_1_contact_contact_sub_type:
         '': ''
-      civicrm_2_contact_1_contact_existing: create_civicrm_webform_element
-      civicrm_2_contact_1_contact_organization_name: create_civicrm_webform_element
+      civicrm_2_contact_1_contact_existing: 0
+      civicrm_2_contact_1_contact_organization_name: 0
       civicrm_2_contact_1_contact_legal_name: 0
       civicrm_2_contact_1_contact_sic_code: 0
       civicrm_2_contact_1_contact_nick_name: 0
@@ -1163,6 +1154,8 @@ handlers:
       civicrm_1_activity_1_cg2_custom_662: 0
       civicrm_1_activity_1_cg2_custom_697: 0
       civicrm_1_activity_1_cg2_custom_698: 0
+      civicrm_1_activity_1_cg2_custom_815: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_816: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1569,7 +1562,6 @@ handlers:
       civicrm_1_activity_1_cg50_custom_693: 0
       civicrm_1_activity_1_cg50_custom_694: 0
       civicrm_1_activity_1_cg50_custom_695: 0
-      civicrm_1_activity_1_cg50_custom_696: 0
       activity_1_settings_dynamic_custom_cg53: 0
       civicrm_1_activity_1_cg53_custom_706: 0
       activity_1_settings_dynamic_custom_cg54: 0
