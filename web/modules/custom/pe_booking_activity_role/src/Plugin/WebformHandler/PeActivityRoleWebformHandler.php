@@ -58,6 +58,10 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
     if ($civicrm_submission_data) {
       while ($row = $civicrm_submission_data->fetchAssoc()) {
         $data = unserialize($row['civicrm_data']);
+
+        // delete all old records
+        ActivityRole::delete(FALSE)->addWhere('activity_id', '=', $data['activity'][1]['id'])->execute();
+
         foreach ($data['contact'] as $key => $contactId) {
           // Contact 1 on the PE Appointment Create and PE Update Booking are the Organisation and organisation contact that the booking is for not staff members
           if ($key == 1 || $key == 2) {
