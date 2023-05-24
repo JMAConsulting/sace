@@ -505,7 +505,7 @@ class CRM_Mailchimpsync_Audience
     $emails = \Civi\Api4\Email::get()
       ->addSelect('contact_id')
       ->addWhere('email', '=',$cache_entry->mailchimp_email)
-      ->addWhere('contact.is_deleted', '=', FALSE)
+      ->addWhere('contact_id.is_deleted', '=', FALSE)
       ->setCheckPermissions(FALSE)
       ->execute();
     $uniqueContacts = [];
