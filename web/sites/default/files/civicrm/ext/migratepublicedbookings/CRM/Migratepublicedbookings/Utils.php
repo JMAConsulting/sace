@@ -142,7 +142,7 @@ class CRM_Migratepublicedbookings_Utils {
     $record[$constants['Q1']] = [
       "Strongly Agree" => $booking['STRONGLY_AGREE1'],
       "Agree" => $booking['AGREE1'],
-      "Somewhat Agree" => $booking['DONT_KNOW1'],
+      "Dont Know" => $booking['DONT_KNOW1'],
       "Disagree" => $booking['DISAGREE1'],
       "Strongly Disagree" => $booking['STRONGLY_DISAGREE1'],
     ];
@@ -154,7 +154,7 @@ class CRM_Migratepublicedbookings_Utils {
     $record[$constants['Q3']] = [
       "Strongly Agree" => $booking['STRONGLY_AGREE3'],
       "Agree" => $booking['AGREE3'],
-      "Somewhat Agree" => $booking['DONT_KNOW3'],
+      "Dont Know" => $booking['DONT_KNOW3'],
       "Disagree" => $booking['DISAGREE3'],
       "Strongly Disagree" => $booking['STRONGLY_DISAGREE3'],
     ];
@@ -166,7 +166,7 @@ class CRM_Migratepublicedbookings_Utils {
     $record[$constants['Q5']] = [
       "Strongly Agree" => $booking['STRONGLY_AGREE5'],
       "Agree" => $booking['AGREE5'],
-      "Somewhat Agree" => $booking['DONT_KNOW5'],
+      "Dont Know" => $booking['DONT_KNOW5'],
       "Disagree" => $booking['DISAGREE5'],
       "Strongly Disagree" => $booking['STRONGLY_DISAGREE5'],
     ];
@@ -179,7 +179,7 @@ class CRM_Migratepublicedbookings_Utils {
       $record[$constants['Q7']] = [
         "Strongly Agree" => $booking['STRONGLY_AGREE7'],
         "Agree" => $booking['AGREE7'],
-        "Somewhat Agree" => $booking['DONT_KNOW7'],
+        "Dont Know" => $booking['DONT_KNOW7'],
         "Disagree" => $booking['DISAGREE7'],
         "Strongly Disagree" => $booking['STRONGLY_DISAGREE7'],
       ];
@@ -188,7 +188,7 @@ class CRM_Migratepublicedbookings_Utils {
       $record[$constants['Q8']] = [
         "Strongly Agree" => $booking['STRONGLY_AGREE8'],
         "Agree" => $booking['AGREE8'],
-        "Somewhat Agree" => $booking['DONT_KNOW8'],
+        "Dont Know" => $booking['DONT_KNOW8'],
         "Disagree" => $booking['DISAGREE8'],
         "Strongly Disagree" => $booking['STRONGLY_DISAGREE8'],
       ];
@@ -211,7 +211,7 @@ class CRM_Migratepublicedbookings_Utils {
       ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
       ->execute();
       return $booking;
-  }
+  } 
 
   private static function createFeedbackActivities($booking, &$constants, &$record) {
     $options = array_keys($record[$constants['Q1']]);
@@ -244,7 +244,7 @@ class CRM_Migratepublicedbookings_Utils {
       for ($j = $record[$constants[$q]]; $j > 0; $j--) {
         for ($k = 1; $k <= $record['number_of_returned_evaluations']; $k++) {
           if (empty($activities[$k][$constants[$q]])) {
-            $activities[$k][$constants[$q]] = "Migrated Booking, able to answer";
+            $activities[$k][$constants[$q]] = "Able to answer";
             break;
           }
         }

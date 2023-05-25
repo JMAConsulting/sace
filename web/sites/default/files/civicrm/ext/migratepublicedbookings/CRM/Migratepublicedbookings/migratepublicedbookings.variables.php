@@ -12,7 +12,7 @@ define('Q8', 'q12');
 // Eval
 define('Eval_1SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1SA');
 define('Eval_1A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1A');
-define('Eval_1SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1SWA');
+define('Eval_1DK_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1DK');
 define('Eval_1D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1D');
 define('Eval_1SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_1SD');
 define('Eval_1SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_1');
@@ -21,7 +21,7 @@ define('Eval_2SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_2'
 
 define('Eval_3SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4SA');
 define('Eval_3A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4A');
-define('Eval_3SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4SWA');
+define('Eval_3DK_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4DK');
 define('Eval_3D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4D');
 define('Eval_3SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_4SD');
 define('Eval_3SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_4');
@@ -30,7 +30,7 @@ define('Eval_4SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_5'
 
 define('Eval_5SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8A');
 define('Eval_5A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8A');
-define('Eval_5SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8SWA');
+define('Eval_5DK_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8DK');
 define('Eval_5D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8D');
 define('Eval_5SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_8SD');
 define('Eval_5SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_8');
@@ -39,14 +39,14 @@ define('Eval_6SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_9'
 
 define('Eval_7SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11SA');
 define('Eval_7A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11A');
-define('Eval_7SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11SWA');
+define('Eval_7DK_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11DK');
 define('Eval_7D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11D');
 define('Eval_7SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_11SD');
 define('Eval_7SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_11');
 
 define('Eval_8SA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12SA');
 define('Eval_8A_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12A');
-define('Eval_8SWA_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12SWA');
+define('Eval_8DK_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12DK');
 define('Eval_8D_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12D');
 define('Eval_8SD_Field', 'PED_Presentation_Evaluation_Summary_Score.SUM_12SD');
 define('Eval_8SUM_Field', 'PED_Presentation_Evaluation_Summary_Score.EVAL_SUM_12');
