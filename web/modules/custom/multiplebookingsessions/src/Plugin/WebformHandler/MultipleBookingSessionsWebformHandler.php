@@ -58,12 +58,14 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
         ->addWhere('id', '=', $webform_submission_data['activity_id'])
         ->execute()
         ->first();
-      $activityContacts = $this->api('ActivityContact', 'get', ['activity_id' => $webform_submission_data['activity_id']])['values'];
+      $activityContacts = $this->api('ActivityContact', 'get', ['activity_id' => $webform_submission_data['activity_id'], 'record_type_id' => ['!=' => 'Activity Source']])['values'];
+      $source_contact_id = $this->api('ActivityContact', 'get', ['activity_id' => $webform_submission_data['activity_id'], 'record_type_id' => "Activity Source", 'sequential' => 1])['values'][0]['contact_id'];
       for ($key = 1; $key <= 10; $key++) {
-        if (!empty($webform_submission['additional_appointment_' . $key])) {
+        if (!empty($webform_submission_data['additional_appointment_' . $key])) {
           $newActivity = $activity;
+          $activity['source_contact_id'] = $source_contact_id;
           unset($newActivity['id']);
-          $newActivity['activity_date_time'] = $webform_submission['additional_appointment_' . $key];
+          $newActivity['activity_date_time'] = $webform_submission_data['additional_appointment_' . $key];
           $newActivityRecord = Activity::create(FALSE)
             ->setValues($newActivity)
             ->execute()
@@ -86,7 +88,7 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
     if (empty($request->query->get('activity1')) && !empty($request->query->get('aid'))) {
       $request->query->set('activity1', $request->query->get('aid'));
     }
-    if (!empty($request->query->get('activity1'))) {
+    if (!empty($request->query->get('activity1')) && empty($form['elements']['activity_id']['#value'])) {
       $form['activity_id']['#default_value'] = $request->query->get('activity1');
     }
   }
