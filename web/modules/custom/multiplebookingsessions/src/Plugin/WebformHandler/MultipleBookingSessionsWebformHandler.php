@@ -89,7 +89,7 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
       $request->query->set('activity1', $request->query->get('aid'));
     }
     if (!empty($request->query->get('activity1')) && empty($form['elements']['activity_id']['#value'])) {
-      $form['activity_id']['#default_value'] = $request->query->get('activity1');
+      $form['elements']['activity_id']['#value'] = $request->query->get('activity1');
     }
   }
 
