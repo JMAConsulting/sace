@@ -57,10 +57,10 @@ class CRM_Migratepublicedbookings_Utils {
 
     // Activity type based on youth or adult
     if ($booking['Youth_or_Adult'] == 'Youth') {
-      $record['activity_type_id'] = $constants['Youth_Activity'];
+      $record['activity_type_id'] = $constants['Booking_Activity_Youth'];
     }
     elseif ($booking['Youth_or_Adult'] == 'Adult') {
-      $record['activity_type_id'] = $constants['Adult_Activity'];
+      $record['activity_type_id'] = $constants['Booking_Activity_Adult'];
     }
 
     $record['postal_code'] = $booking['Postal_Code'];
@@ -281,7 +281,7 @@ class CRM_Migratepublicedbookings_Utils {
 
   private static function createEvalActivity($booking, $constants, $record){
     $evals = \Civi\Api4\Activity::create()
-      ->addValue($constants['Activity_Type_Id'], $record['activity_type_id'])      
+      ->addValue($constants['Activity_Type_Id'], $constants['Eval_Activity'])      
       ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
       ->addValue($constants['Activity_Date_Time'], $record['date'])
       ->addValue($constants['Eval_Number_Participants'], $record['number_of_participants'])
@@ -289,38 +289,39 @@ class CRM_Migratepublicedbookings_Utils {
       ->addValue($constants['Eval_Number_Staff_Evals'], $record['number_of_returned_evaluations'])
       ->addValue($constants['Eval_1SA_Field'], $record[$constants['Q1']]['Strongly Agree'])
       ->addValue($constants['Eval_1A_Field'], $record[$constants['Q1']]['Agree'])
-      ->addValue($constants['Eval_1SWA_Field'], $record[$constants['Q1']]['Somewhat Agree'])
+      ->addValue($constants['Eval_1DK_Field'], $record[$constants['Q1']]['Somewhat Agree'])
       ->addValue($constants['Eval_1D_Field'], $record[$constants['Q1']]['Disagree'])
       ->addValue($constants['Eval_1SD_Field'], $record[$constants['Q1']]['Strongly Disagree'])
       ->addValue($constants['Eval_1SUM_Field'], $record[$constants['Q1']]['Strongly Agree']+$record[$constants['Q1']]['Agree']+$record[$constants['Q1']]['Somewhat Agree']+$record[$constants['Q1']]['Disagree']+$record[$constants['Q1']]['Strongly Disagree'])
       ->addValue($constants['Eval_2SUM_Field'], $record[$constants['Q2']])
       ->addValue($constants['Eval_3SA_Field'], $record[$constants['Q3']]['Strongly Agree'])
       ->addValue($constants['Eval_3A_Field'], $record[$constants['Q3']]['Agree'])
-      ->addValue($constants['Eval_3SWA_Field'], $record[$constants['Q3']]['Somewhat Agree'])
+      ->addValue($constants['Eval_3DK_Field'], $record[$constants['Q3']]['Somewhat Agree'])
       ->addValue($constants['Eval_3D_Field'], $record[$constants['Q3']]['Disagree'])
       ->addValue($constants['Eval_3SD_Field'], $record[$constants['Q3']]['Strongly Disagree'])
       ->addValue($constants['Eval_3SUM_Field'], $record[$constants['Q3']]['Strongly Agree']+$record[$constants['Q3']]['Agree']+$record[$constants['Q3']]['Somewhat Agree']+$record[$constants['Q3']]['Disagree']+$record[$constants['Q3']]['Strongly Disagree'])
       ->addValue($constants['Eval_4SUM_Field'], $record[$constants['Q4']])
       ->addValue($constants['Eval_5SA_Field'], $record[$constants['Q5']]['Strongly Agree'])
       ->addValue($constants['Eval_5A_Field'], $record[$constants['Q5']]['Agree'])
-      ->addValue($constants['Eval_5SWA_Field'], $record[$constants['Q5']]['Somewhat Agree'])
+      ->addValue($constants['Eval_5DK_Field'], $record[$constants['Q5']]['Somewhat Agree'])
       ->addValue($constants['Eval_5D_Field'], $record[$constants['Q5']]['Disagree'])
       ->addValue($constants['Eval_5SD_Field'], $record[$constants['Q5']]['Strongly Disagree'])
       ->addValue($constants['Eval_5SUM_Field'], $record[$constants['Q5']]['Strongly Agree']+$record[$constants['Q5']]['Agree']+$record[$constants['Q5']]['Somewhat Agree']+$record[$constants['Q5']]['Disagree']+$record[$constants['Q5']]['Strongly Disagree'])
       ->addValue($constants['Eval_6SUM_Field'], $record[$constants['Q6']])
       ->addValue($constants['Eval_7SA_Field'], $record[$constants['Q7']]['Strongly Agree'])
       ->addValue($constants['Eval_7A_Field'], $record[$constants['Q7']]['Agree'])
-      ->addValue($constants['Eval_7SWA_Field'], $record[$constants['Q7']]['Somewhat Agree'])
+      ->addValue($constants['Eval_7DK_Field'], $record[$constants['Q7']]['Somewhat Agree'])
       ->addValue($constants['Eval_7D_Field'], $record[$constants['Q7']]['Disagree'])
       ->addValue($constants['Eval_7SD_Field'], $record[$constants['Q7']]['Strongly Disagree'])
       ->addValue($constants['Eval_7SUM_Field'], $record[$constants['Q7']]['Strongly Agree']+$record[$constants['Q7']]['Agree']+$record[$constants['Q7']]['Somewhat Agree']+$record[$constants['Q7']]['Disagree']+$record[$constants['Q7']]['Strongly Disagree'])
       ->addValue($constants['Eval_8SA_Field'], $record[$constants['Q8']]['Strongly Agree'])
       ->addValue($constants['Eval_8A_Field'], $record[$constants['Q8']]['Agree'])
-      ->addValue($constants['Eval_8SWA_Field'], $record[$constants['Q8']]['Somewhat Agree'])
+      ->addValue($constants['Eval_8DK_Field'], $record[$constants['Q8']]['Somewhat Agree'])
       ->addValue($constants['Eval_8D_Field'], $record[$constants['Q8']]['Disagree'])
       ->addValue($constants['Eval_8SD_Field'], $record[$constants['Q8']]['Strongly Disagree'])
       ->addValue($constants['Eval_8SUM_Field'], $record[$constants['Q8']]['Strongly Agree']+$record[$constants['Q8']]['Agree']+$record[$constants['Q8']]['Somewhat Agree']+$record[$constants['Q8']]['Disagree']+$record[$constants['Q8']]['Strongly Disagree'])
-      ->execute();      
+      ->execute();
+      CRM_Core_Error::Debug('evals', $evals);exit;
   }
 
 }
