@@ -79,7 +79,3 @@ function modify_views_field_output($activities, $current_output) {
   }
   return $current_output;
 }
-
-function sace_flag_output_modification_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  \Drupal::messenger()->addMessage($form_id);
-}
