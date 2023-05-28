@@ -1,13 +1,13 @@
 <?php
 //Feedback
-define('Q1', 'q1');
-define('Q2', 'feedback');
-define('Q3', 'q5');
-define('Q4', 'feedback_q4');
-define('Q5', 'q9');
-define('Q6', 'feedback_q6');
-define('Q7', 'q11');
-define('Q8', 'q12');
+define('Migrate_Q1', 'q1');
+define('Migrate_Q2', 'feedback');
+define('Migrate_Q3', 'q5');
+define('Migrate_Q4', 'feedback_q4');
+define('Migrate_Q5', 'q9');
+define('Migrate_Q6', 'feedback_q6');
+define('Migrate_Q7', 'q11');
+define('Migrate_Q8', 'q12');
 
 // Eval
 define('Eval_1SA_Field', 'PED_Presentation_Evaluation_Summary_Score_1.SUM_1SA');

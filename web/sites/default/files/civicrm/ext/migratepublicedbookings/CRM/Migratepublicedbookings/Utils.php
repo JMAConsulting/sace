@@ -8,7 +8,7 @@ class CRM_Migratepublicedbookings_Utils {
 
   public static function importBookings($table, $year) {
     $constants = get_defined_constants(FALSE);
-    $bookings = CRM_Core_DAO::executeQuery("SELECT * FROM $table limit 1")->fetchAll();    
+    $bookings = CRM_Core_DAO::executeQuery("SELECT * FROM $table")->fetchAll();
 
     $results = [];
     $record = [];
@@ -20,7 +20,7 @@ class CRM_Migratepublicedbookings_Utils {
       self::findStaffAssigned($booking, $record, $constants);
 
       // Presentation Method
-      self::setPresentationMethod($year, $record);
+      self::setPresentationMethod($year, $record, $booking);
 
       // Organization
       self::setOrganization($booking, $record);
@@ -29,16 +29,18 @@ class CRM_Migratepublicedbookings_Utils {
       self::setAudienceType($booking, $record);
 
       // Q1 - Q8
-      self::setQ1toQ8($booking, $record, $constants);
+      self::setQ1toQ8($year, $booking, $record, $constants);
 
       // Create Booking Activity
       $booking_activity = self::createBookingActivity($constants, $record);
 
       // Create Eval Activity
-      self::createEvalActivity($booking_activity->first()['id'], $constants, $record);
-      
+      $eval = self::createEvalActivity($year, $booking_activity->first()['id'], $constants, $record);
+
       // Create Feedback Activities
-      $results[] = self::createFeedbackActivities($booking_activity->first()['id'], $constants, $record);
+      $results[] = self::createFeedbackActivities($year, $booking_activity->first()['id'], $constants, $record, $table);
+      $results['booking_id'] = $booking_activity->first()['id'];
+      $results['eval'] = $eval->first()['id'];
 
     }
     return $results;
@@ -47,7 +49,6 @@ class CRM_Migratepublicedbookings_Utils {
   private static function createRecord($year, $booking, &$record, &$constants) {
     // Activity Date
     $record['date'] = date_format(date_create("$year-$booking[Month]-$booking[Date]"), 'Y-m-d');
-    
 
     // Presentation Topic
     $record['presentation_topic'] = $booking['Presentation_Topic'];
@@ -88,7 +89,7 @@ class CRM_Migratepublicedbookings_Utils {
     }
   }
 
-  private static function setPresentationMethod($year, &$record) {
+  private static function setPresentationMethod($year, &$record, $booking) {
     // if year between 2014 - 2019, In Person
     if ($year >= 2014 && $year <= 2019) {
       $record['presentation_method'] = "In-Person Presentation";
@@ -137,9 +138,9 @@ class CRM_Migratepublicedbookings_Utils {
     }
   }
 
-  private static function setQ1toQ8($booking, &$record, &$constants) {
+  private static function setQ1toQ8($year, $booking, &$record, &$constants) {
     // Q1
-    $record[$constants['Q1']] = [
+    $record[$constants['Migrate_Q1']] = [
       "Strongly Agree" => $booking['STRONGLY_AGREE1'],
       "Agree" => $booking['AGREE1'],
       "Dont Know" => $booking['DONT_KNOW1'],
@@ -148,10 +149,10 @@ class CRM_Migratepublicedbookings_Utils {
     ];
 
     // Q2
-    $record[$constants['Q2']] = $booking["Number_Surveyed_Able_to_List_Something_Learned"];
+    $record[$constants['Migrate_Q2']] = $booking["Number_Surveyed_Able_to_List_Something_Learned"];
 
     // Q3
-    $record[$constants['Q3']] = [
+    $record[$constants['Migrate_Q3']] = [
       "Strongly Agree" => $booking['STRONGLY_AGREE3'],
       "Agree" => $booking['AGREE3'],
       "Dont Know" => $booking['DONT_KNOW3'],
@@ -160,10 +161,10 @@ class CRM_Migratepublicedbookings_Utils {
     ];
 
     // Q4
-    $record[$constants['Q4']] = $booking["Number_Surveyed_Able_to_List_Something_To_Do_to_Support"];
+    $record[$constants['Migrate_Q4']] = $booking["Number_Surveyed_Able_to_List_Something_To_Do_to_Support"];
 
     // Q5
-    $record[$constants['Q5']] = [
+    $record[$constants['Migrate_Q5']] = [
       "Strongly Agree" => $booking['STRONGLY_AGREE5'],
       "Agree" => $booking['AGREE5'],
       "Dont Know" => $booking['DONT_KNOW5'],
@@ -173,10 +174,10 @@ class CRM_Migratepublicedbookings_Utils {
 
     if ($year >= 2018) {
       // Q6
-      $record[$constants['Q6']] = $booking["Number_Surveyed_Able_to_List_a_Resource"];
+      $record[$constants['Migrate_Q6']] = $booking["Number_Surveyed_Able_to_List_a_Resource"];
 
       // Q7
-      $record[$constants['Q7']] = [
+      $record[$constants['Migrate_Q7']] = [
         "Strongly Agree" => $booking['STRONGLY_AGREE7'],
         "Agree" => $booking['AGREE7'],
         "Dont Know" => $booking['DONT_KNOW7'],
@@ -185,7 +186,7 @@ class CRM_Migratepublicedbookings_Utils {
       ];
 
       // Q8
-      $record[$constants['Q8']] = [
+      $record[$constants['Migrate_Q8']] = [
         "Strongly Agree" => $booking['STRONGLY_AGREE8'],
         "Agree" => $booking['AGREE8'],
         "Dont Know" => $booking['DONT_KNOW8'],
@@ -195,7 +196,7 @@ class CRM_Migratepublicedbookings_Utils {
     }
   }
 
-  private static function createBookingActivity(&$constants, &$record) {    
+  private static function createBookingActivity(&$constants, &$record) {
     $booking = \Civi\Api4\Activity::create()
       ->addValue($constants['Youth_or_Adult'], $record['youth_or_adult'])
       ->addValue($constants['Presentation_Method'], $record['presentation_method'])
@@ -210,17 +211,17 @@ class CRM_Migratepublicedbookings_Utils {
       ->addValue($constants['Target_Contact_Id'], $record['organization'])
       ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
       ->execute();
-      return $booking;
-  } 
+    return $booking;
+  }
 
-  private static function createFeedbackActivities($booking, &$constants, &$record) {
-    $options = array_keys($record[$constants['Q1']]);
+  private static function createFeedbackActivities($year, $booking_id, &$constants, &$record, $table) {
+    $options = array_keys($record[$constants['Migrate_Q1']]);
     $activities = [];
     if ($year >= 2018) {
-      $likert_questions = ['Q1', 'Q3', 'Q6', 'Q7', 'Q8'];
+      $likert_questions = ['Migrate_Q1', 'Migrate_Q3', 'Migrate_Q5', 'Migrate_Q7', 'Migrate_Q8'];
     }
     else {
-      $likert_questions = ['Q1', 'Q3', 'Q6'];
+      $likert_questions = ['Migrate_Q1', 'Migrate_Q3', 'Migrate_Q5'];
     }
     foreach ($options as $o) {
       foreach ($likert_questions as $q) {
@@ -235,10 +236,10 @@ class CRM_Migratepublicedbookings_Utils {
       }
     }
     if ($year >= 2018) {
-      $feedback_questions = ['Q2', 'Q4', 'Q5'];
+      $feedback_questions = ['Migrate_Q2', 'Migrate_Q4', 'Migrate_Q6'];
     }
     else {
-      $feedback_questions = ['Q2', 'Q4'];
+      $feedback_questions = ['Migrate_Q2', 'Migrate_Q4'];
     }
     foreach ($feedback_questions as $q) {
       for ($j = $record[$constants[$q]]; $j > 0; $j--) {
@@ -253,75 +254,121 @@ class CRM_Migratepublicedbookings_Utils {
     $results = [];
     // Create Activities
     foreach ($activities as $activity) {
-      $created = \Civi\Api4\Activity::create()
-        ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
-        ->addValue($constants['Booking_Reference_Field'], $booking_activity[0]['id'])
-        ->addValue($constants['Activity_Type_Id'], $constants['Feedback_Activity'])
-        ->addValue($constants['Activity_Date_Time'], $record['date'])
-        ->addValue($constants['Q1_Field'], $activity[$constants['Q1']])
-        ->addValue($constants['Q2_Field'], $activity[$constants['Q2']])
-        ->addValue($constants['Q3_Field'], $activity[$constants['Q3']])
-        ->addValue($constants['Q4_Field'], $activity[$constants['Q4']])
-        ->addValue($constants['Q5_Field'], $activity[$constants['Q5']])
-        ->addValue($constants['Q6_Field'], $activity[$constants['Q6']])
-        ->addValue($constants['Q7_Field'], $activity[$constants['Q7']])
-        ->addValue($constants['Q8_Field'], $activity[$constants['Q8']])
-        ->execute();
-
+      if ($year >= 2018) {
+        $created = \Civi\Api4\Activity::create()
+          ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
+          ->addValue($constants['Booking_Reference_Field'], $booking_id)
+          ->addValue($constants['Activity_Type_Id'], $constants['Feedback_Activity'])
+          ->addValue($constants['Activity_Date_Time'], $record['date'])
+          ->addValue($constants['Q1_Field'], $activity[$constants['Migrate_Q1']])
+          ->addValue($constants['Q2_Field'], $activity[$constants['Migrate_Q2']])
+          ->addValue($constants['Q3_Field'], $activity[$constants['Migrate_Q3']])
+          ->addValue($constants['Q4_Field'], $activity[$constants['Migrate_Q4']])
+          ->addValue($constants['Q5_Field'], $activity[$constants['Migrate_Q5']])
+          ->addValue($constants['Q6_Field'], $activity[$constants['Migrate_Q6']])
+          ->addValue($constants['Q7_Field'], $activity[$constants['Migrate_Q7']])
+          ->addValue($constants['Q8_Field'], $activity[$constants['Migrate_Q8']])
+          ->execute();
+      }
+      elseif ($year < 2018) {
+        $created = \Civi\Api4\Activity::create()
+          ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
+          ->addValue($constants['Booking_Reference_Field'], $booking_id)
+          ->addValue($constants['Activity_Type_Id'], $constants['Feedback_Activity'])
+          ->addValue($constants['Activity_Date_Time'], $record['date'])
+          ->addValue($constants['Q1_Field'], $activity[$constants['Migrate_Q1']])
+          ->addValue($constants['Q2_Field'], $activity[$constants['Migrate_Q2']])
+          ->addValue($constants['Q3_Field'], $activity[$constants['Migrate_Q3']])
+          ->addValue($constants['Q4_Field'], $activity[$constants['Migrate_Q4']])
+          ->addValue($constants['Q5_Field'], $activity[$constants['Migrate_Q5']])
+          ->execute();
+      }
       //Add log
       $result = \Civi\Api4\BookingImportLog::create()
         ->addValue('activity_id', $created[0]["id"])
         ->addValue('table_name', $table)
         ->addValue('legacy_id', $record['legacy_id'])
         ->execute();
-        $results[] = $result;
-      }
-      return $results;
+      $results[] = $result;
+    }
+    return $results;
   }
 
-  private static function createEvalActivity($booking, $constants, $record){
-    $evals = \Civi\Api4\Activity::create()
-      ->addValue($constants['Activity_Type_Id'], $constants['Eval_Activity'])      
-      ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
-      ->addValue($constants['Activity_Date_Time'], $record['date'])
-      ->addValue($constants['Eval_Number_Participants'], $record['number_of_participants'])
-      ->addValue($constants['Eval_Number_Online_Evals'], 0)
-      ->addValue($constants['Eval_Number_Staff_Evals'], $record['number_of_returned_evaluations'])
-      ->addValue($constants['Eval_1SA_Field'], $record[$constants['Q1']]['Strongly Agree'])
-      ->addValue($constants['Eval_1A_Field'], $record[$constants['Q1']]['Agree'])
-      ->addValue($constants['Eval_1DK_Field'], $record[$constants['Q1']]['Somewhat Agree'])
-      ->addValue($constants['Eval_1D_Field'], $record[$constants['Q1']]['Disagree'])
-      ->addValue($constants['Eval_1SD_Field'], $record[$constants['Q1']]['Strongly Disagree'])
-      ->addValue($constants['Eval_1SUM_Field'], $record[$constants['Q1']]['Strongly Agree']+$record[$constants['Q1']]['Agree']+$record[$constants['Q1']]['Somewhat Agree']+$record[$constants['Q1']]['Disagree']+$record[$constants['Q1']]['Strongly Disagree'])
-      ->addValue($constants['Eval_2SUM_Field'], $record[$constants['Q2']])
-      ->addValue($constants['Eval_3SA_Field'], $record[$constants['Q3']]['Strongly Agree'])
-      ->addValue($constants['Eval_3A_Field'], $record[$constants['Q3']]['Agree'])
-      ->addValue($constants['Eval_3DK_Field'], $record[$constants['Q3']]['Somewhat Agree'])
-      ->addValue($constants['Eval_3D_Field'], $record[$constants['Q3']]['Disagree'])
-      ->addValue($constants['Eval_3SD_Field'], $record[$constants['Q3']]['Strongly Disagree'])
-      ->addValue($constants['Eval_3SUM_Field'], $record[$constants['Q3']]['Strongly Agree']+$record[$constants['Q3']]['Agree']+$record[$constants['Q3']]['Somewhat Agree']+$record[$constants['Q3']]['Disagree']+$record[$constants['Q3']]['Strongly Disagree'])
-      ->addValue($constants['Eval_4SUM_Field'], $record[$constants['Q4']])
-      ->addValue($constants['Eval_5SA_Field'], $record[$constants['Q5']]['Strongly Agree'])
-      ->addValue($constants['Eval_5A_Field'], $record[$constants['Q5']]['Agree'])
-      ->addValue($constants['Eval_5DK_Field'], $record[$constants['Q5']]['Somewhat Agree'])
-      ->addValue($constants['Eval_5D_Field'], $record[$constants['Q5']]['Disagree'])
-      ->addValue($constants['Eval_5SD_Field'], $record[$constants['Q5']]['Strongly Disagree'])
-      ->addValue($constants['Eval_5SUM_Field'], $record[$constants['Q5']]['Strongly Agree']+$record[$constants['Q5']]['Agree']+$record[$constants['Q5']]['Somewhat Agree']+$record[$constants['Q5']]['Disagree']+$record[$constants['Q5']]['Strongly Disagree'])
-      ->addValue($constants['Eval_6SUM_Field'], $record[$constants['Q6']])
-      ->addValue($constants['Eval_7SA_Field'], $record[$constants['Q7']]['Strongly Agree'])
-      ->addValue($constants['Eval_7A_Field'], $record[$constants['Q7']]['Agree'])
-      ->addValue($constants['Eval_7DK_Field'], $record[$constants['Q7']]['Somewhat Agree'])
-      ->addValue($constants['Eval_7D_Field'], $record[$constants['Q7']]['Disagree'])
-      ->addValue($constants['Eval_7SD_Field'], $record[$constants['Q7']]['Strongly Disagree'])
-      ->addValue($constants['Eval_7SUM_Field'], $record[$constants['Q7']]['Strongly Agree']+$record[$constants['Q7']]['Agree']+$record[$constants['Q7']]['Somewhat Agree']+$record[$constants['Q7']]['Disagree']+$record[$constants['Q7']]['Strongly Disagree'])
-      ->addValue($constants['Eval_8SA_Field'], $record[$constants['Q8']]['Strongly Agree'])
-      ->addValue($constants['Eval_8A_Field'], $record[$constants['Q8']]['Agree'])
-      ->addValue($constants['Eval_8DK_Field'], $record[$constants['Q8']]['Somewhat Agree'])
-      ->addValue($constants['Eval_8D_Field'], $record[$constants['Q8']]['Disagree'])
-      ->addValue($constants['Eval_8SD_Field'], $record[$constants['Q8']]['Strongly Disagree'])
-      ->addValue($constants['Eval_8SUM_Field'], $record[$constants['Q8']]['Strongly Agree']+$record[$constants['Q8']]['Agree']+$record[$constants['Q8']]['Somewhat Agree']+$record[$constants['Q8']]['Disagree']+$record[$constants['Q8']]['Strongly Disagree'])
-      ->execute();
-      CRM_Core_Error::Debug('evals', $evals);exit;
+  private static function createEvalActivity($year, $booking, $constants, $record) {
+    if ($year >= 2018) {
+      $eval = \Civi\Api4\Activity::create()
+        ->addValue($constants['Activity_Type_Id'], $constants['Eval_Activity'])
+        ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
+        ->addValue($constants['Activity_Date_Time'], $record['date'])
+        ->addValue($constants['Eval_Number_Participants'], $record['number_of_participants'])
+        ->addValue($constants['Eval_Number_Online_Evals'], 0)
+        ->addValue($constants['Eval_Number_Staff_Evals'], $record['number_of_returned_evaluations'])
+        ->addValue($constants['Eval_1SA_Field'], $record[$constants['Migrate_Q1']]['Strongly Agree'])
+        ->addValue($constants['Eval_1A_Field'], $record[$constants['Migrate_Q1']]['Agree'])
+        ->addValue($constants['Eval_1DK_Field'], $record[$constants['Migrate_Q1']]['Dont Know'])
+        ->addValue($constants['Eval_1D_Field'], $record[$constants['Migrate_Q1']]['Disagree'])
+        ->addValue($constants['Eval_1SD_Field'], $record[$constants['Migrate_Q1']]['Strongly Disagree'])
+        ->addValue($constants['Eval_1SUM_Field'], $record[$constants['Migrate_Q1']]['Strongly Agree'] + $record[$constants['Migrate_Q1']]['Agree'] + $record[$constants['Migrate_Q1']]['Dont Know'] + $record[$constants['Migrate_Q1']]['Disagree'] + $record[$constants['Migrate_Q1']]['Strongly Disagree'])
+        ->addValue($constants['Eval_2SUM_Field'], $record[$constants['Migrate_Q2']])
+        ->addValue($constants['Eval_3SA_Field'], $record[$constants['Migrate_Q3']]['Strongly Agree'])
+        ->addValue($constants['Eval_3A_Field'], $record[$constants['Migrate_Q3']]['Agree'])
+        ->addValue($constants['Eval_3DK_Field'], $record[$constants['Migrate_Q3']]['Dont Know'])
+        ->addValue($constants['Eval_3D_Field'], $record[$constants['Migrate_Q3']]['Disagree'])
+        ->addValue($constants['Eval_3SD_Field'], $record[$constants['Migrate_Q3']]['Strongly Disagree'])
+        ->addValue($constants['Eval_3SUM_Field'], $record[$constants['Migrate_Q3']]['Strongly Agree'] + $record[$constants['Migrate_Q3']]['Agree'] + $record[$constants['Migrate_Q3']]['Dont Know'] + $record[$constants['Migrate_Q3']]['Disagree'] + $record[$constants['Migrate_Q3']]['Strongly Disagree'])
+        ->addValue($constants['Eval_4SUM_Field'], $record[$constants['Migrate_Q4']])
+        ->addValue($constants['Eval_5SA_Field'], $record[$constants['Migrate_Q5']]['Strongly Agree'])
+        ->addValue($constants['Eval_5A_Field'], $record[$constants['Migrate_Q5']]['Agree'])
+        ->addValue($constants['Eval_5DK_Field'], $record[$constants['Migrate_Q5']]['Dont Know'])
+        ->addValue($constants['Eval_5D_Field'], $record[$constants['Migrate_Q5']]['Disagree'])
+        ->addValue($constants['Eval_5SD_Field'], $record[$constants['Migrate_Q5']]['Strongly Disagree'])
+        ->addValue($constants['Eval_5SUM_Field'], $record[$constants['Migrate_Q5']]['Strongly Agree'] + $record[$constants['Migrate_Q5']]['Agree'] + $record[$constants['Migrate_Q5']]['Dont Know'] + $record[$constants['Migrate_Q5']]['Disagree'] + $record[$constants['Migrate_Q5']]['Strongly Disagree'])
+        ->addValue($constants['Eval_6SUM_Field'], $record[$constants['Migrate_Q6']])
+        ->addValue($constants['Eval_7SA_Field'], $record[$constants['Migrate_Q7']]['Strongly Agree'])
+        ->addValue($constants['Eval_7A_Field'], $record[$constants['Migrate_Q7']]['Agree'])
+        ->addValue($constants['Eval_7DK_Field'], $record[$constants['Migrate_Q7']]['Dont Know'])
+        ->addValue($constants['Eval_7D_Field'], $record[$constants['Migrate_Q7']]['Disagree'])
+        ->addValue($constants['Eval_7SD_Field'], $record[$constants['Migrate_Q7']]['Strongly Disagree'])
+        ->addValue($constants['Eval_7SUM_Field'], $record[$constants['Migrate_Q7']]['Strongly Agree'] + $record[$constants['Migrate_Q7']]['Agree'] + $record[$constants['Migrate_Q7']]['Dont Know'] + $record[$constants['Migrate_Q7']]['Disagree'] + $record[$constants['Migrate_Q7']]['Strongly Disagree'])
+        ->addValue($constants['Eval_8SA_Field'], $record[$constants['Migrate_Q8']]['Strongly Agree'])
+        ->addValue($constants['Eval_8A_Field'], $record[$constants['Migrate_Q8']]['Agree'])
+        ->addValue($constants['Eval_8DK_Field'], $record[$constants['Migrate_Q8']]['Dont Know'])
+        ->addValue($constants['Eval_8D_Field'], $record[$constants['Migrate_Q8']]['Disagree'])
+        ->addValue($constants['Eval_8SD_Field'], $record[$constants['Migrate_Q8']]['Strongly Disagree'])
+        ->addValue($constants['Eval_8SUM_Field'], $record[$constants['Migrate_Q8']]['Strongly Agree'] + $record[$constants['Migrate_Q8']]['Agree'] + $record[$constants['Migrate_Q8']]['Dont Know'] + $record[$constants['Migrate_Q8']]['Disagree'] + $record[$constants['Migrate_Q8']]['Strongly Disagree'])
+        ->execute();
+    }
+    elseif ($year < 2018) {
+      $eval = \Civi\Api4\Activity::create()
+        ->addValue($constants['Activity_Type_Id'], $constants['Eval_Activity'])
+        ->addValue($constants['Source_Contact_Id'], $constants['SACE_Contact'])
+        ->addValue($constants['Activity_Date_Time'], $record['date'])
+        ->addValue($constants['Eval_Number_Participants'], $record['number_of_participants'])
+        ->addValue($constants['Eval_Number_Online_Evals'], 0)
+        ->addValue($constants['Eval_Number_Staff_Evals'], $record['number_of_returned_evaluations'])
+        ->addValue($constants['Eval_1SA_Field'], $record[$constants['Migrate_Q1']]['Strongly Agree'])
+        ->addValue($constants['Eval_1A_Field'], $record[$constants['Migrate_Q1']]['Agree'])
+        ->addValue($constants['Eval_1DK_Field'], $record[$constants['Migrate_Q1']]['Dont Know'])
+        ->addValue($constants['Eval_1D_Field'], $record[$constants['Migrate_Q1']]['Disagree'])
+        ->addValue($constants['Eval_1SD_Field'], $record[$constants['Migrate_Q1']]['Strongly Disagree'])
+        ->addValue($constants['Eval_1SUM_Field'], $record[$constants['Migrate_Q1']]['Strongly Agree'] + $record[$constants['Migrate_Q1']]['Agree'] + $record[$constants['Migrate_Q1']]['Dont Know'] + $record[$constants['Migrate_Q1']]['Disagree'] + $record[$constants['Migrate_Q1']]['Strongly Disagree'])
+        ->addValue($constants['Eval_2SUM_Field'], $record[$constants['Migrate_Q2']])
+        ->addValue($constants['Eval_3SA_Field'], $record[$constants['Migrate_Q3']]['Strongly Agree'])
+        ->addValue($constants['Eval_3A_Field'], $record[$constants['Migrate_Q3']]['Agree'])
+        ->addValue($constants['Eval_3DK_Field'], $record[$constants['Migrate_Q3']]['Dont Know'])
+        ->addValue($constants['Eval_3D_Field'], $record[$constants['Migrate_Q3']]['Disagree'])
+        ->addValue($constants['Eval_3SD_Field'], $record[$constants['Migrate_Q3']]['Strongly Disagree'])
+        ->addValue($constants['Eval_3SUM_Field'], $record[$constants['Migrate_Q3']]['Strongly Agree'] + $record[$constants['Migrate_Q3']]['Agree'] + $record[$constants['Migrate_Q3']]['Dont Know'] + $record[$constants['Migrate_Q3']]['Disagree'] + $record[$constants['Migrate_Q3']]['Strongly Disagree'])
+        ->addValue($constants['Eval_4SUM_Field'], $record[$constants['Migrate_Q4']])
+        ->addValue($constants['Eval_5SA_Field'], $record[$constants['Migrate_Q5']]['Strongly Agree'])
+        ->addValue($constants['Eval_5A_Field'], $record[$constants['Migrate_Q5']]['Agree'])
+        ->addValue($constants['Eval_5DK_Field'], $record[$constants['Migrate_Q5']]['Dont Know'])
+        ->addValue($constants['Eval_5D_Field'], $record[$constants['Migrate_Q5']]['Disagree'])
+        ->addValue($constants['Eval_5SD_Field'], $record[$constants['Migrate_Q5']]['Strongly Disagree'])
+        ->addValue($constants['Eval_5SUM_Field'], $record[$constants['Migrate_Q5']]['Strongly Agree'] + $record[$constants['Migrate_Q5']]['Agree'] + $record[$constants['Migrate_Q5']]['Dont Know'] + $record[$constants['Migrate_Q5']]['Disagree'] + $record[$constants['Migrate_Q5']]['Strongly Disagree'])
+        ->execute();
+    }
+    return $eval;
   }
 
 }
