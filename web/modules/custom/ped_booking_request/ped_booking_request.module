@@ -1,0 +1,80 @@
+<?php
+use Drupal\webform\Utility\WebformFormHelper;
+require_once 'ped_booking_request.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_public_education_presentation_bo_add_form') {
+    $elements = WebformFormHelper::flattenElements($form);
+    $roles = \Drupal::currentUser()->getRoles();
+
+    if (!in_array('pe', $roles) && !in_array('pe_tl', $roles)) {
+      $elements['markup_01']['#access'] = FALSE;
+      $elements['markup_02']['#access'] = TRUE;
+    }
+    else {
+      $elements['markup_01']['#access'] = TRUE;
+      $elements['markup_02']['#access'] = FALSE;
+    }
+  }
+  if ($form_id == "webform_submission_ped_booking_request_query_params_add_form") {
+    //attach js
+    $form['#attached']['library'][] = 'ped_booking_request/ped_booking_request';
+
+    $bt = \Drupal::request()->query->get('booking_type');
+    $elements = WebformFormHelper::flattenElements($form);  
+
+    if (in_array($bt, [203, 204, 201])) {
+      unset($elements[PED_BOOKING_REQUEST_DELIVERY_FORMAT]['#options']['Online Course']);
+      if ($bt == 203) {
+        $elements[PED_BOOKING_REQUEST_NUMBER_PARTICIPANTS]['#title'] = 'Approximate number of attendees';
+        $elements[PED_BOOKING_REQUEST_PREFERRED_DATES]['#description']['#markup'] = '<p>Please list your event date if known, and note that bookings are subject to staff availability. We will make every effort to meet requests, but if you are flexible with your dates, please provide this detail.</p>';
+      }
+    }
+    if ($bt == 58) {
+      $elements[PED_BOOKING_REQUEST_YOUR_ORGANIZATION]['#title'] = 'Your School';
+      $elements[PED_BOOKING_REQUEST_YOUR_ORGANIZATION]['#description']['#markup'] = str_replace('organization', 'school', $elements[PED_BOOKING_REQUEST_YOUR_ORGANIZATION]['#description']['#markup']);
+      $elements[PED_BOOKING_REQUEST_ORGANIZATION_NAME]['#title'] = 'School Name';
+      $elements[PED_BOOKING_REQUEST_ORGANIZATION_EMAIL]['#description']['#markup'] = str_replace('organization', 'school', $elements[PED_BOOKING_REQUEST_ORGANIZATION_EMAIL]['#description']['#markup']);
+      $elements[PED_BOOKING_REQUEST_NEW_ORGANIZATION_FIELDSET]['#title'] = 'New School';
+      $elements[PED_BOOKING_REQUEST_NEW_ORGANIZATION_TYPE]['#default_value'] = $elements['civicrm_3_contact_1_contact_contact_sub_type']['#options'];
+      //print_r($elements['civicrm_3_contact_1_contact_contact_sub_type']);
+    }
+    if($bt == 55) {
+      //  Presentation topic dropdown options
+      $elements[PED_BOOKING_REQUEST_PRESENTATION_TOPIC]['#options'] = [
+        'SexualHarassment' => 'Sexual Harassment',
+        'SexualAssaultConsent' => 'Sexual Assault & Consent',
+        'NonConsensualPhotoSharing' => 'Non-Consensual Photo Sharing',
+        'SACEServices' => 'SACE Services',
+        'CustomSomethingDifferent' => 'Custom/Something Different'
+      ];
+    }
+    if (in_array($bt, [55,59])){
+      $elements[PED_BOOKING_REQUEST_SESSIONS_MARKUP]['#text'] = str_replace('Your Session(s)', 'Presentation Details', $elements[PED_BOOKING_REQUEST_SESSIONS_MARKUP]['#text']);      
+      
+      //  Presentation method dropdown options
+      $elements[PED_BOOKING_REQUEST_DELIVERY_FORMAT]['#options'] = [
+        'In-Person Presentation' => 'In-Person Presentation',
+        'Online Presentation' => 'Online Presentation',
+      ];
+      //  Grades and ages
+      $elements[PED_BOOKING_REQUEST_GRADES_AND_AGES]['#options'] = [
+        'Grade 7 (ages 12-13)' => 'Grade 7 (ages 12-13)',
+        'Grade 8 (ages 13-14)' => 'Grade 8 (ages 13-14)',
+        'Grade 9 (ages 14-15)' => 'Grade 9 (ages 14-15)',
+        'High School (ages 15-18)' => 'High School (ages 15-18)'
+       ];
+       // update title for approx number of participants
+       $elements[PED_BOOKING_REQUEST_NUMBER_PARTICIPANTS]['#title'] = 'Approximate number of participants per presentation';
+
+       // update title for how many presentations
+       $elements[PED_BOOKING_REQUEST_NUMBER_SESSIONS]['#title'] = 'How many presentations would you like?';        
+    }
+  }
+}
