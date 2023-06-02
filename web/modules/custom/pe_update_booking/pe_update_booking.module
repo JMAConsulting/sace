@@ -1,7 +1,10 @@
 <?php
 
 use Drupal\webform\Utility\WebformFormHelper;
-@require_once 'pe_update_booking_variables.php';
+
+@require_once 'pe_update_booking.variables.php';
+//@require_once __DIR__ . '/../ped_online_course_booking_update/ped_online_course_booking_update.variables.php';
+
 /**
  * Implements hook_form_alter().
  * @param $form
@@ -10,28 +13,59 @@ use Drupal\webform\Utility\WebformFormHelper;
  */
 function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == "webform_submission_update_ped_booking_add_form") {
-    
+
     // Get custom field constants
-    $constants = get_defined_constants(FALSE); 
+    $constants = get_defined_constants(FALSE);
 
     //Attach library
     $form['#attached']['library'][] = 'pe_update_booking/pe_update_booking';
-    $form['#attached']['drupalSettings']['pe_update_booking']['Presentation_Topics'] = $constants['Presentation_Topics'];
+    $form['#attached']['drupalSettings']['pe_update_booking']['Presentation_Topics'] = PE_UPDATE_BOOKING_PRESENTATION_TOPICS;
 
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
     if (empty($elements)) {
       return;
-    }        
-    
+    }    
+
     //Toggle text field if Presentation Topic is Custom/Something Different
-    if ($elements[$constants['Presentation_Topics']]['#default_value'][0] == "CustomSomethingDifferent") {
-      $elements[$constants['Other_Presentation_Topics']]['#wrapper_attributes']['class'][0] = "";
+    if ($elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#default_value'][0] == "CustomSomethingDifferent") {
+      $elements[PE_UPDATE_BOOKING_OTHER_PRESENTATION_TOPICS]['#wrapper_attributes']['class'][0] = "";
     }
 
     //Hide Virtual Session fields if Presentation Method is not Online Presentaion
-    if($elements[$constants['Presentation_Method']]['#default_value'] !=   'Online Presentation'){
-      $elements[$constants['Virtual_Session_Fieldset']]['#access'] = FALSE;
+    if ($elements[PE_UPDATE_BOOKING_PRESENTATION_METHOD]['#default_value'] != 'Online Presentation') {
+      $elements[PE_UPDATE_BOOKING_VIRTUAL_SESSION_FIELDSET]['#access'] = FALSE;
     }
+    //Get booking type
+    $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];    
+
+    //Youth presentation
+    if($bt == 57) {
+      //  Presentation topic dropdown options
+      $elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#options'] = [
+        'SexualHarassment' => 'Sexual Harassment',
+        'SexualAssaultConsent' => 'Sexual Assault & Consent',
+        'NonConsensualPhotoSharing' => 'Non-Consensual Photo Sharing',
+        'SACEServices' => 'SACE Services',
+        'CustomSomethingDifferent' => 'Custom/Something Different'
+      ];
+    }
+    if (in_array($bt, [57, 55, 59])){      
+
+      //  Presentation method dropdown options
+      $elements[PE_UPDATE_BOOKING_DELIVERY_FORMAT]['#options'] = [
+        'In-Person Presentation' => 'In-Person Presentation',
+        'Online Presentation' => 'Online Presentation',
+      ];
+      //  Grades and ages
+      $elements[PE_UPDATE_BOOKING_GRADES_AND_AGES]['#options'] = [
+        'Grade 7 (ages 12-13)' => 'Grade 7 (ages 12-13)',
+        'Grade 8 (ages 13-14)' => 'Grade 8 (ages 13-14)',
+        'Grade 9 (ages 14-15)' => 'Grade 9 (ages 14-15)',
+        'High School (ages 15-18)' => 'High School (ages 15-18)'
+       ];     
+    }
+
+
   }
 }
