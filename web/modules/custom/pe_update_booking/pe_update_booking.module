@@ -40,7 +40,7 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
     $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];    
 
     //Youth presentation
-    if($bt == 57) {
+    if($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
       //  Presentation topic dropdown options
       $elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#options'] = [
         'SexualHarassment' => 'Sexual Harassment',
@@ -63,9 +63,37 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
         'Grade 8 (ages 13-14)' => 'Grade 8 (ages 13-14)',
         'Grade 9 (ages 14-15)' => 'Grade 9 (ages 14-15)',
         'High School (ages 15-18)' => 'High School (ages 15-18)'
-       ];     
+       ];
     }
+  }
+}
 
-
+function pe_update_booking_preprocess_page_title(&$variables, $hook) {
+  //Activity ID
+  $aid = \Drupal::request()->query->get('aid') ?? 0;
+  if (empty($aid) || !is_numeric($aid)) {
+    return;
+  }
+  
+  //Get booking type from activity
+  $activity = \Civi\Api4\Activity::get()
+  ->addSelect('activity_type_id')
+  ->addWhere('id', '=', $aid)
+  ->setLimit(1)
+  ->execute();
+  $bt = $activity->first()['activity_type_id'];
+  
+  $current_path = \Drupal::service('path.current')->getPath();
+  if($current_path == '/webform/update_ped_booking') {
+    if($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Youth Presentation Booking Update',
+      ];
+    }
+    elseif($bt == PE_UPDATE_BOOKING_ADULT_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Adult Presentation Booking Update',
+      ];
+    }
   }
 }

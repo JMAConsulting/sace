@@ -9,3 +9,6 @@ define('PE_UPDATE_BOOKING_VIRTUAL_SESSION_FIELDSET', 'virtual_session');
 define('PE_UPDATE_BOOKING_BOOKING_TYPE', 'civicrm_1_activity_1_activity_activity_type_id');
 define('PE_UPDATE_BOOKING_DELIVERY_FORMAT','civicrm_1_activity_1_cg2_custom_88');
 define('PE_UPDATE_BOOKING_GRADES_AND_AGES', 'civicrm_1_activity_1_cg2_custom_25');
+define('PE_UPDATE_BOOKING_YOUTH_ACTIVITY', '55');
+define('PE_UPDATE_BOOKING_ADULT_ACTIVITY', '59');
+

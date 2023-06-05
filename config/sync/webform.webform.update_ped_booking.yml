@@ -28,90 +28,10 @@ elements: |-
     '#form_key': civicrm_1_contact_1_contact_existing
     '#parent': civicrm_1_contact_1_fieldset_fieldset
     '#extra': {  }
-  civicrm_3_contact_1_contact_existing:
-    '#type': civicrm_contact
-    '#title': 'Staff Assigned 1'
-    '#widget': autocomplete
-    '#search_prompt': '- Choose existing -'
-    '#none_prompt': '+ Create new +'
-    '#show_hidden_contact': 1
-    '#results_display':
-      display_name: display_name
-    '#default_relationship_to': '1'
-    '#default_relationship':
-      '': ''
-    '#contact_sub_type': Staff
-    '#group':
-      18: '18'
-    '#filter_relationship_contact': ''
-    '#allow_create': 1
-    '#contact_type': individual
-    '#form_key': civicrm_3_contact_1_contact_existing
-    '#parent': civicrm_3_contact_1_fieldset_fieldset
-    '#extra': {  }
-  civicrm_4_contact_1_contact_existing:
-    '#type': civicrm_contact
-    '#title': 'Staff Assigned 2'
-    '#widget': autocomplete
-    '#search_prompt': '- Choose existing -'
-    '#none_prompt': '+ Create new +'
-    '#show_hidden_contact': 1
-    '#results_display':
-      display_name: display_name
-    '#default_relationship_to': '1'
-    '#default_relationship':
-      '': ''
-    '#contact_sub_type': Staff
-    '#group':
-      18: '18'
-    '#filter_relationship_contact': ''
-    '#allow_create': 1
-    '#contact_type': individual
-    '#form_key': civicrm_4_contact_1_contact_existing
-    '#parent': civicrm_4_contact_1_fieldset_fieldset
-    '#extra': {  }
-  civicrm_1_activity_1_cg2_custom_119:
-    '#type': civicrm_options
-    '#title': 'Which virtual platform would you like to use?'
-    '#extra':
-      aslist: 1
-      multiple: 0
-    '#data_type': String
-    '#form_key': civicrm_1_activity_1_cg2_custom_119
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': ''
-    '#default_value': ''
-    '#civicrm_live_options': '1'
-    '#options':
-      'Google Meets': 'Google Meets'
-      'Microsoft Teams': 'Microsoft Teams'
-      Zoom: Zoom
-      Other: Other
   processed_text:
     '#type': processed_text
     '#text': '<h2><span style="color:#2e416c;">General Information</span></h2>'
     '#format': html
-  civicrm_5_contact_1_contact_existing:
-    '#type': civicrm_contact
-    '#title': 'Staff Assigned 3'
-    '#widget': autocomplete
-    '#search_prompt': '- Choose existing -'
-    '#none_prompt': '+ Create new +'
-    '#show_hidden_contact': 1
-    '#results_display':
-      display_name: display_name
-    '#default_relationship_to': '1'
-    '#default_relationship':
-      '': ''
-    '#contact_sub_type': Staff
-    '#group':
-      18: '18'
-    '#filter_relationship_contact': ''
-    '#allow_create': 1
-    '#contact_type': individual
-    '#form_key': civicrm_5_contact_1_contact_existing
-    '#parent': civicrm_5_contact_1_fieldset_fieldset
-    '#extra': {  }
   flexbox:
     '#type': webform_flexbox
     civicrm_1_contact_1_contact_first_name:
@@ -568,22 +488,30 @@ elements: |-
       rows: '4'
     '#form_key': civicrm_1_activity_1_cg2_custom_126
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-  processed_text_05:
-    '#type': processed_text
-    '#text': |
-      <h3><span style="color:#2e416c;">Assigned Staff</span></h3>
-    '#format': html
-  duplicate_of_ped_booking_calendar:
-    '#type': view
-    '#name': duplicate_of_ped_booking_calendar
-    '#display_id': page_2
   flexbox_09:
     '#type': fieldset
-    '#title': 'Virtual Session'
+    '#title': 'Online Presentation Details'
     '#states':
       visible:
         ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
           value: 'Online Presentation'
+    civicrm_1_activity_1_cg2_custom_119:
+      '#type': civicrm_options
+      '#title': 'Which virtual platform would you like to use?'
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_119
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
+      '#options':
+        'Google Meets': 'Google Meets'
+        'Microsoft Teams': 'Microsoft Teams'
+        Zoom: Zoom
+        Other: Other
     civicrm_1_activity_1_cg2_custom_121:
       '#type': civicrm_options
       '#title': 'Will we be able to see the students?'
@@ -676,6 +604,15 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
+  processed_text_05:
+    '#type': processed_text
+    '#text': |
+      <h3><span style="color:#2e416c;">Assigned Staff</span></h3>
+    '#format': html
+  duplicate_of_ped_booking_calendar:
+    '#type': view
+    '#name': duplicate_of_ped_booking_calendar
+    '#display_id': page_2
   flexbox_04:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_activity_date_time:
@@ -716,6 +653,27 @@ elements: |-
     '#title': 'Staff Assigned 1'
     flexbox_05:
       '#type': webform_flexbox
+      civicrm_3_contact_1_contact_existing:
+        '#type': civicrm_contact
+        '#title': 'Staff Assigned 1'
+        '#widget': autocomplete
+        '#search_prompt': '- Choose existing -'
+        '#none_prompt': '+ Create new +'
+        '#show_hidden_contact': 1
+        '#results_display':
+          display_name: display_name
+        '#default_relationship_to': '1'
+        '#default_relationship':
+          '': ''
+        '#contact_sub_type': Staff
+        '#group':
+          18: '18'
+        '#filter_relationship_contact': ''
+        '#allow_create': 1
+        '#contact_type': individual
+        '#form_key': civicrm_3_contact_1_contact_existing
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#extra': {  }
       civicrm_3_contact_1_contact_first_name:
         '#type': textfield
         '#contact_type': individual
@@ -737,12 +695,33 @@ elements: |-
         '#title': Shadowing
       contact_3_facilitator:
         '#type': checkbox
-        '#title': Facilitator
+        '#title': Facilitating
   staff_assigned_2:
     '#type': fieldset
     '#title': 'Staff Assigned 2'
     flexbox_06:
       '#type': webform_flexbox
+      civicrm_4_contact_1_contact_existing:
+        '#type': civicrm_contact
+        '#title': 'Staff Assigned 2'
+        '#widget': autocomplete
+        '#search_prompt': '- Choose existing -'
+        '#none_prompt': '+ Create new +'
+        '#show_hidden_contact': 1
+        '#results_display':
+          display_name: display_name
+        '#default_relationship_to': '1'
+        '#default_relationship':
+          '': ''
+        '#contact_sub_type': Staff
+        '#group':
+          18: '18'
+        '#filter_relationship_contact': ''
+        '#allow_create': 1
+        '#contact_type': individual
+        '#form_key': civicrm_4_contact_1_contact_existing
+        '#parent': civicrm_4_contact_1_fieldset_fieldset
+        '#extra': {  }
       civicrm_4_contact_1_contact_first_name:
         '#type': textfield
         '#contact_type': individual
@@ -764,12 +743,33 @@ elements: |-
         '#title': Shadowing
       contact_4_facilitator:
         '#type': checkbox
-        '#title': Facilitator
+        '#title': Facilitating
   staff_assigned_3:
     '#type': fieldset
     '#title': 'Staff Assigned 3'
     flexbox_07:
       '#type': webform_flexbox
+      civicrm_5_contact_1_contact_existing:
+        '#type': civicrm_contact
+        '#title': 'Staff Assigned 3'
+        '#widget': autocomplete
+        '#search_prompt': '- Choose existing -'
+        '#none_prompt': '+ Create new +'
+        '#show_hidden_contact': 1
+        '#results_display':
+          display_name: display_name
+        '#default_relationship_to': '1'
+        '#default_relationship':
+          '': ''
+        '#contact_sub_type': Staff
+        '#group':
+          18: '18'
+        '#filter_relationship_contact': ''
+        '#allow_create': 1
+        '#contact_type': individual
+        '#form_key': civicrm_5_contact_1_contact_existing
+        '#parent': civicrm_5_contact_1_fieldset_fieldset
+        '#extra': {  }
       civicrm_5_contact_1_contact_first_name:
         '#type': textfield
         '#contact_type': individual
@@ -791,7 +791,7 @@ elements: |-
         '#title': Shadowing
       contact_5_facilitator:
         '#type': checkbox
-        '#title': Facilitator
+        '#title': Facilitating
   processed_text_06:
     '#type': processed_text
     '#text': |
