@@ -108,9 +108,8 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '55'
     '#text': |
-      <h2><span style="color:#2e416c;">Youth School Presentation Booking</span></h2>
-
       <p><img alt="Classroom" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/classroom-2093744_1920.jpg?itok=m-_qj8lg" title="" /></p>
+
       <h2>General Information</h2>
     '#format': html
   youth_presentation_booking_html:
@@ -120,9 +119,8 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '57'
     '#text': |
-      <h2><span style="color:#2e416c;">Youth Presentation Booking</span></h2>
-
       <p><img alt="Team" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/team-386673_1920.jpg?itok=y7zfLISW" title="" /></p>
+
       <h2>General Information</h2>
     '#format': html
   post_secondary_school_booking_html:
@@ -143,9 +141,8 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '59'
     '#text': |
-      <h2><span style="color:#2e416c;">Adult or Professional Booking</span></h2>
-
       <p><img alt="Workshop" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/workshop-1425446_1920.jpg?itok=pJQcarMR" title="" /></p>
+
       <h2>General Information</h2>
     '#format': html
   general_information:
@@ -425,6 +422,7 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation Topic'
+    '#title_display': none
     '#civicrm_live_options': 0
     '#options':
       SexualHarassment: 'Sexual Harassment'
@@ -475,6 +473,9 @@ elements: |-
     '#states':
       invisible:
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '59'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '55'
         - or
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -497,9 +498,12 @@ elements: |-
   processed_text_04:
     '#type': processed_text
     '#states':
-      invisible:
-        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-          '!value': '55'
+      visible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '59'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '55'
     '#text': |
       <h2><span style="color:#2e416c;"><strong>Presentation Details</strong></span></h2>
 
@@ -569,9 +573,6 @@ elements: |-
       'Adults (ages 18+)': 'Adults (ages 18+)'
     '#states':
       visible:
-        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '59'
-        - xor
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '57'
         - xor

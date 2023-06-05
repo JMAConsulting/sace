@@ -36,16 +36,25 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         $elements[PED_BOOKING_REQUEST_PREFERRED_DATES]['#description']['#markup'] = '<p>Please list your event date if known, and note that bookings are subject to staff availability. We will make every effort to meet requests, but if you are flexible with your dates, please provide this detail.</p>';
       }
     }
-    if ($bt == 58) {
+    if ($bt == 58 || $bt == PED_BOOKING_REQUEST_YOUTH_ACTIVITY) {
       $elements[PED_BOOKING_REQUEST_YOUR_ORGANIZATION]['#title'] = 'Your School';
       $elements[PED_BOOKING_REQUEST_YOUR_ORGANIZATION]['#description']['#markup'] = str_replace('organization', 'school', $elements[PED_BOOKING_REQUEST_YOUR_ORGANIZATION]['#description']['#markup']);
       $elements[PED_BOOKING_REQUEST_ORGANIZATION_NAME]['#title'] = 'School Name';
       $elements[PED_BOOKING_REQUEST_ORGANIZATION_EMAIL]['#description']['#markup'] = str_replace('organization', 'school', $elements[PED_BOOKING_REQUEST_ORGANIZATION_EMAIL]['#description']['#markup']);
       $elements[PED_BOOKING_REQUEST_NEW_ORGANIZATION_FIELDSET]['#title'] = 'New School';
       $elements[PED_BOOKING_REQUEST_NEW_ORGANIZATION_TYPE]['#default_value'] = $elements['civicrm_3_contact_1_contact_contact_sub_type']['#options'];
-      //print_r($elements['civicrm_3_contact_1_contact_contact_sub_type']);
+      $elements[PED_BOOKING_REQUEST_TOPICS_MARKUP]['#text'] = '<h2><span style="color:#2e416c;"><strong>Booking Details</strong></span></h2>
+        <h3><span style="color:#2e416c;"><strong>Presentation Topic(s)</strong></span></h3>
+        <p>The typical presentation topics by approximate age range are listed below. For more information about each presentation topic, please visit <a href="https://www.sace.ca/services/public-education">www.sace.ca/services/public-education</a>.</p>
+        <ul>
+          <li>Gr 7/12-13 years - Sexual Harassment</li>
+          <li>Gr 8/13-14 years&nbsp;- Sexual Assault &amp; Consent</li>
+          <li>Gr 9/14-15 years - Non-Consensual Photo Sharing</li>
+          <li>High School/15-18 years - Sexual Assault &amp; Consent and/or Non-Consensual Photo Sharing  </li>
+        </ul>      
+        <div class="notranslate" style="all: initial;">&nbsp;</div>';
     }
-    if($bt == 55) {
+    if($bt == PED_BOOKING_REQUEST_YOUTH_ACTIVITY) {
       //  Presentation topic dropdown options
       $elements[PED_BOOKING_REQUEST_PRESENTATION_TOPIC]['#options'] = [
         'SexualHarassment' => 'Sexual Harassment',
@@ -55,7 +64,7 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         'CustomSomethingDifferent' => 'Custom/Something Different'
       ];
     }
-    if (in_array($bt, [55,59])){
+    if (in_array($bt, [PED_BOOKING_REQUEST_YOUTH_ACTIVITY, PED_BOOKING_REQUEST_ADULT_ACTIVITY])){
       $elements[PED_BOOKING_REQUEST_SESSIONS_MARKUP]['#text'] = str_replace('Your Session(s)', 'Presentation Details', $elements[PED_BOOKING_REQUEST_SESSIONS_MARKUP]['#text']);      
       
       //  Presentation method dropdown options
@@ -75,6 +84,43 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
 
        // update title for how many presentations
        $elements[PED_BOOKING_REQUEST_NUMBER_SESSIONS]['#title'] = 'How many presentations would you like?';        
+    }
+
+    if($bt == PED_BOOKING_REQUEST_ADULT_ACTIVITY) {
+      // update presentation topics dropdown options
+      $elements[PED_BOOKING_REQUEST_PRESENTATION_TOPIC]['#options'] = [
+        'SexualHarassment' => 'Sexual Harassment',
+        'SexualAssaultConsent' => 'Sexual Assault & Consent',
+        'NonConsensualPhotoSharing' => 'Non-Consensual Photo Sharing',
+        'TechnologyFacilitatedSexualViolence' => 'Technology-Facilitated Sexual Violence',
+        'SACEServices' => 'SACE Services',
+        'BystanderIntervention' => 'Bystander Intervention',
+        'CreatingSaferSpacesandRespondingtoSexualViolence' => 'Creating Safer Spaces & Responding to Sexual Violence',
+        'SupportiveResponsestoSexualViolence' => 'Supportive Responses to Sexual Violence',
+        'SexualViolenceTrauma' => 'Sexual Violence Trauma',
+        'DomesticViolence' => 'Domestic Violence',
+        'ChildSexualAbuse' => 'Child Sexual Abuse',
+        'CustomSomethingDifferent' => 'Custom/Something Different'
+
+      ];
+    }
+  }
+}
+
+function ped_booking_request_preprocess_page_title(&$variables, $hook) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  
+  if($current_path == '/webform/ped_booking_request_query_params') {
+    $bt = \Drupal::request()->query->get('booking_type') ?? 0;
+    if($bt == PED_BOOKING_REQUEST_YOUTH_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Youth Presentation Booking Request',
+      ];
+    }
+    elseif($bt == PED_BOOKING_REQUEST_ADULT_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Adult Presentation Booking Request',
+      ];
     }
   }
 }
