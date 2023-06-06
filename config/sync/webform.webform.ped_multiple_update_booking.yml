@@ -13,7 +13,7 @@ uid: 53
 template: false
 archive: false
 id: ped_multiple_update_booking
-title: 'PED Multiple Update Booking'
+title: 'Multiple Bookings'
 description: ''
 category: ''
 elements: |-
@@ -29,8 +29,12 @@ elements: |-
     '#form_key': civicrm_1_contact_1_contact_existing
     '#parent': civicrm_1_contact_1_fieldset_fieldset
     '#extra': {  }
+  markup:
+    '#type': webform_markup
+    '#markup': '<h2>General Information</h2>'
   flexbox:
     '#type': webform_flexbox
+    '#title': 'General Information'
     civicrm_1_contact_1_contact_first_name:
       '#type': textfield
       '#contact_type': individual
@@ -148,17 +152,9 @@ elements: |-
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
       '#title': State/Province
-  civicrm_1_contact_1_contact_preferred_communication_method:
-    '#type': civicrm_options
-    '#title': 'Preferred Communication Method'
-    '#civicrm_live_options': 0
-    '#options':
-      1: Phone
-      2: Email
-    '#default_value': 0
-    '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
-    '#parent': civicrm_1_contact_1_fieldset_fieldset
-    '#default_option': 0
+  markup_01:
+    '#type': webform_markup
+    '#markup': '<h2>Additional Bookings</h2>'
   duplicate_of_ped_booking_calendar:
     '#type': view
     '#name': duplicate_of_ped_booking_calendar
@@ -169,79 +165,79 @@ elements: |-
     '#open': true
     additional_appointment_1:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_09:
     '#type': details
-    '#title': 'Additional Appointment 2'
+    '#title': 'Additional Booking Date 2'
     additional_appointment_2:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_10:
     '#type': details
-    '#title': 'Additional Appointment 3'
+    '#title': 'Additional Booking Date 3'
     additional_appointment_3:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_11:
     '#type': details
-    '#title': 'Additional Appointment 4'
+    '#title': 'Additional Booking Date 4'
     additional_appointment_4:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_12:
     '#type': details
-    '#title': 'Additional Appointment 5'
+    '#title': 'Additional Booking Date 5'
     additional_appointment_5:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_13:
     '#type': details
-    '#title': 'Additional Appointment 6'
+    '#title': 'Additional Booking Date 6'
     additional_appointment_6:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_14:
     '#type': details
-    '#title': 'Additional Appointment 7'
+    '#title': 'Additional Booking Date 7'
     additional_appointment_7:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_15:
     '#type': details
-    '#title': 'Additional Appointment 8'
+    '#title': 'Additional Booking Date 8'
     additional_appointment_8:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_16:
     '#type': details
-    '#title': 'Additional Appointment 9'
+    '#title': 'Additional Booking Date 9'
     additional_appointment_9:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   flexbox_17:
     '#type': details
-    '#title': 'Additional Appointment 10'
+    '#title': 'Additional Booking Date 10'
     additional_appointment_10:
       '#type': datetime
-      '#title': 'Additional Appointment Date'
+      '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
   activity_id:
@@ -440,8 +436,6 @@ handlers:
     conditions: {  }
     weight: -50
     settings:
-      disable: 'Leave Fields and Save Settings'
-      antibot_key: ''
       nid: 1
       number_of_contacts: '2'
       1_contact_type: individual
@@ -458,7 +452,7 @@ handlers:
       civicrm_1_contact_1_contact_gender_id: 0
       civicrm_1_contact_1_contact_job_title: 0
       civicrm_1_contact_1_contact_birth_date: 0
-      civicrm_1_contact_1_contact_preferred_communication_method: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_preferred_communication_method: 0
       civicrm_1_contact_1_contact_privacy: 0
       civicrm_1_contact_1_contact_preferred_language: 0
       civicrm_1_contact_1_contact_image_url: 0
@@ -505,7 +499,7 @@ handlers:
       2_contact_type: organization
       2_webform_label: Organisation
       civicrm_2_contact_1_contact_contact_sub_type:
-        '': ''
+        School: School
       civicrm_2_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_2_contact_1_contact_organization_name: create_civicrm_webform_element
       civicrm_2_contact_1_contact_legal_name: 0
@@ -588,6 +582,7 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: 'Create PED Booking'
+      antibot_key: ''
       data:
         contact:
           1:
@@ -629,7 +624,8 @@ handlers:
             contact:
               1:
                 contact_type: organization
-                contact_sub_type: {  }
+                contact_sub_type:
+                  School: School
                 webform_label: Organisation
             matching_rule: Unsupervised
             number_of_cg27: '0'
