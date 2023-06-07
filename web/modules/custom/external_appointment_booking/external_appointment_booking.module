@@ -1,0 +1,39 @@
+<?php
+use Drupal\webform\Utility\WebformFormHelper;
+require_once 'external_appointment_booking.variables.php';
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function external_appointment_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_externalappointmentbookingupdate_add_form') {
+    
+    $form['#attached']['library'][] = 'external_appointment_booking/external_appointment_booking';
+    $form['#attached']['drupalSettings']['external_appointment_booking']['start_date'] = '#edit-' . str_replace('_', '-', EXTERNAL_APPOINTMENT_BOOKING_START_DATE);
+    $form['#attached']['drupalSettings']['external_appointment_booking']['end_date'] = '#edit-' . str_replace('_', '-', EXTERNAL_APPOINTMENT_BOOKING_END_DATE);
+    
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    //End Date
+    $activity = \Civi\Api4\Activity::get()
+    ->addSelect('Booking_Information.End_Date')
+    ->addWhere('id', '=', $aid)
+    ->setLimit(1)
+    ->execute();
+    $end_date = $activity->first()['Booking_Information.End_Date'];
+    if($end_date) {
+      $elements[EXTERNAL_APPOINTMENT_BOOKING_END_DATE]['#default_value'] = date_create_from_format('YmdH',$end_date)->format('Y-m-d');    
+    }
+
+
+  }
+}
