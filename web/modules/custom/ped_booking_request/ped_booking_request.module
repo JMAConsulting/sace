@@ -29,9 +29,9 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     $bt = \Drupal::request()->query->get('booking_type');
     $elements = WebformFormHelper::flattenElements($form);  
 
-    if (in_array($bt, [203, 204, 201])) {
+    if (in_array($bt, [PED_BOOKING_REQUEST_COMMUNITY_ENGAGEMENT_ACTIVITY, PED_BOOKING_REQUEST_INSTITUTIONAL_SUPPORT_ACTIVITY, PED_BOOKING_REQUEST_WISEGUYZ_ACTIVITY])) {
       unset($elements[PED_BOOKING_REQUEST_DELIVERY_FORMAT]['#options']['Online Course']);
-      if ($bt == 203) {
+      if ($bt == PED_BOOKING_REQUEST_COMMUNITY_ENGAGEMENT_ACTIVITY) {
         $elements[PED_BOOKING_REQUEST_NUMBER_PARTICIPANTS]['#title'] = 'Approximate number of attendees';
         $elements[PED_BOOKING_REQUEST_PREFERRED_DATES]['#description']['#markup'] = '<p>Please list your event date if known, and note that bookings are subject to staff availability. We will make every effort to meet requests, but if you are flexible with your dates, please provide this detail.</p>';
       }
