@@ -74,7 +74,7 @@ function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
   }
 
   // Add JS to auto check the accessibility fund field to yes and hide the field on the form.
-  if ($formName === 'CRM_Contribute_Form_Contribution_Main' && $form->getVar('_id') == 9) {
+  if ($formName === 'CRM_Contribute_Form_Contribution_Main' && in_array($form->getVar('_id'), [9])) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/accessibility_fund.js');
   }
 
