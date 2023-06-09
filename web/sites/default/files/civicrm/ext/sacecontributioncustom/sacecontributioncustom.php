@@ -61,15 +61,24 @@ function sacecontributioncustom_civicrm_enable() {
 //}
 
 
+/**
+ * Implements hook_civicrm_buildForm().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_buildForm
+ */
 function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
-  // var_dump($formName);
-  // CRM_Core_Error::debug('label', $form); 
-  if($formName == 'CRM_Contribute_Form_Contribution_Main' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
+
+  if ($formName == 'CRM_Contribute_Form_Contribution_Main' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/community.js');
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/forms.css');
   }
 
-  if($formName == 'CRM_Contribute_Form_Contribution_Confirm' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
+  // Add JS to auto check the accessibility fund field to yes and hide the field on the form.
+  if ($formName === 'CRM_Contribute_Form_Contribution_Main' && $form->getVar('_id') == 9) {
+    Civi::resources()->addScriptFile('sacecontributioncustom', 'js/accessibility_fund.js');
+  }
+
+  if ($formName == 'CRM_Contribute_Form_Contribution_Confirm' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/confirms.css');
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/confirms.js');
   }
