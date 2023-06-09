@@ -17,10 +17,68 @@ category: ''
 elements: |-
   intro_markup:
     '#type': processed_text
-    '#text': |
+    '#states':
+      visible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '55'
+        - xor
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '57'
+        - xor
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '58'
+        - xor
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '59'
+    '#text': |+
       <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
 
       <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
+
+      <p>&nbsp;</p>
+
+
+    '#format': html
+  processed_text:
+    '#type': processed_text
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+          value: '204'
+    '#text': |
+      <h1>Institutional Support Services Request</h1>
+
+      <p>The SACE Institutional Support team empowers institutions and other organizations to take action against sexual violence. We are able to offer consultation provisions on a range of topics to support organizations undertaking their own efforts to address sexual violence in our community.</p>
+
+      <p>Please note that Institutional Support services are strongly tied to our Public Education program: without the educational foundation to inform why and how these policies and practices function and to support culture shift, we find that policies do not find their way into practice. Once we have received your support request, we will reach out to further explore your needs, including public education services.</p>
+
+      <h2>General Information</h2>
+    '#format': html
+  processed_text_01:
+    '#type': processed_text
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+          value: '201'
+    '#text': |
+      <h1>WiseGuyz Booking Request Form</h1>
+
+      <p>The WiseGuyz Program will have a blurb outlining services.</p>
+
+      <h2>General Information</h2>
+    '#format': html
+  processed_text_03:
+    '#type': processed_text
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+          value: '203'
+    '#text': |
+      <h1>Community Engagement Services Request</h1>
+
+      <p>SACE  empowers groups, communities, institutions, and other organizations to take action against sexual violence. We offer a range of community event support to groups and organizations undertaking their own efforts to address sexual violence in our community.</p>
+
+      <h2>General Information</h2>
     '#format': html
   civicrm_1_activity_1_activity_activity_type_id:
     '#type': civicrm_options
@@ -33,6 +91,9 @@ elements: |-
       57: 'PED - Youth Presentation Booking'
       58: 'PED - Post-secondary School Booking'
       59: 'PED - Adult or Professional Booking'
+      201: WiseGuyz
+      203: 'Speaking Engagements/Discussion Panels'
+      204: 'Institutional Support'
     '#default_value': '[current-page:query:booking_type]'
     '#extra':
       aslist: 1
@@ -47,9 +108,9 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '55'
     '#text': |
-      <h2><span style="color:#2e416c;">Youth School Presentation Booking</span></h2>
-
       <p><img alt="Classroom" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/classroom-2093744_1920.jpg?itok=m-_qj8lg" title="" /></p>
+
+      <h2>General Information</h2>
     '#format': html
   youth_presentation_booking_html:
     '#type': processed_text
@@ -58,9 +119,9 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '57'
     '#text': |
-      <h2><span style="color:#2e416c;">Youth Presentation Booking</span></h2>
-
       <p><img alt="Team" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/team-386673_1920.jpg?itok=y7zfLISW" title="" /></p>
+
+      <h2>General Information</h2>
     '#format': html
   post_secondary_school_booking_html:
     '#type': processed_text
@@ -80,202 +141,413 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '59'
     '#text': |
-      <h2><span style="color:#2e416c;">Adult or Professional Booking</span></h2>
-
       <p><img alt="Workshop" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/workshop-1425446_1920.jpg?itok=pJQcarMR" title="" /></p>
+
+      <h2>General Information</h2>
     '#format': html
-  flexbox:
-    '#type': webform_flexbox
-    civicrm_1_contact_1_contact_first_name:
-      '#type': textfield
-      '#contact_type': individual
-      '#form_key': civicrm_1_contact_1_contact_first_name
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_contact_1_fieldset_fieldset
-      '#title': 'First Name'
-      '#required': true
-    civicrm_1_contact_1_contact_last_name:
-      '#type': textfield
-      '#contact_type': individual
-      '#form_key': civicrm_1_contact_1_contact_last_name
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_contact_1_fieldset_fieldset
-      '#title': 'Last Name'
-      '#required': true
-    civicrm_1_contact_1_email_email:
-      '#type': email
-      '#form_key': civicrm_1_contact_1_email_email
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_contact_1_fieldset_fieldset
-      '#title': Email
-      '#required': true
-  flexbox_01:
-    '#type': webform_flexbox
-    civicrm_1_contact_1_phone_phone:
-      '#type': textfield
-      '#title': 'Phone Number'
-      '#input_mask': '(999) 999-9999'
-      '#form_key': civicrm_1_contact_1_phone_phone
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_contact_1_fieldset_fieldset
-    civicrm_1_contact_1_cg5_custom_89:
-      '#type': textfield
-      '#data_type': String
-      '#form_key': civicrm_1_contact_1_cg5_custom_89
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_contact_1_cg5_fieldset
-      '#title': Pronouns
-    civicrm_1_contact_1_contact_preferred_communication_method:
+  general_information:
+    '#type': container
+    '#title': 'General Information'
+    flexbox:
+      '#type': webform_flexbox
+      civicrm_1_contact_1_contact_first_name:
+        '#type': textfield
+        '#contact_type': individual
+        '#form_key': civicrm_1_contact_1_contact_first_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+        '#title': 'First Name'
+        '#required': true
+      civicrm_1_contact_1_contact_last_name:
+        '#type': textfield
+        '#contact_type': individual
+        '#form_key': civicrm_1_contact_1_contact_last_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+        '#title': 'Last Name'
+        '#required': true
+      civicrm_1_contact_1_email_email:
+        '#type': email
+        '#form_key': civicrm_1_contact_1_email_email
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+        '#title': Email
+        '#required': true
+    flexbox_01:
+      '#type': webform_flexbox
+      civicrm_1_contact_1_phone_phone:
+        '#type': textfield
+        '#title': 'Phone Number'
+        '#input_mask': '(999) 999-9999'
+        '#form_key': civicrm_1_contact_1_phone_phone
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+      civicrm_1_contact_1_cg5_custom_89:
+        '#type': textfield
+        '#data_type': String
+        '#form_key': civicrm_1_contact_1_cg5_custom_89
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_cg5_fieldset
+        '#title': Pronouns
+      civicrm_1_contact_1_contact_preferred_communication_method:
+        '#type': civicrm_options
+        '#title': 'Preferred Communication Method'
+        '#civicrm_live_options': 0
+        '#options':
+          1: Phone
+          2: Email
+        '#required': true
+        '#default_value': '2'
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+        '#default_option': '2'
+    civicrm_3_contact_1_contact_existing:
+      '#type': civicrm_contact
+      '#title': 'Your Organization'
+      '#description': 'If you cannot find your organization, please click <a href="#" id="new-org-block">here</a> to create one.'
+      '#widget': autocomplete
+      '#search_prompt': '- Choose existing -'
+      '#none_prompt': '- None Found -'
+      '#show_hidden_contact': 1
+      '#results_display':
+        organization_name: organization_name
+      '#default_relationship_to': '1'
+      '#default_relationship':
+        '': ''
+      '#tag':
+        44: '44'
+        27: '27'
+        2: '2'
+        56: '56'
+        45: '45'
+        48: '48'
+        1: '1'
+        49: '49'
+        7: '7'
+        13: '13'
+        8: '8'
+        10: '10'
+        6: '6'
+        11: '11'
+        14: '14'
+        9: '9'
+        12: '12'
+        15: '15'
+      '#filter_relationship_contact': ''
+      '#contact_type': organization
+      '#form_key': civicrm_3_contact_1_contact_existing
+      '#parent': civicrm_3_contact_1_fieldset_fieldset
+      '#extra': {  }
+    civicrm_3_contact_1_fieldset_fieldset:
+      '#type': fieldset
+      '#title': 'New Organization'
+      '#form_key': civicrm_3_contact_1_fieldset_fieldset
+      civicrm_3_contact_1_contact_organization_name:
+        '#type': textfield
+        '#title': 'Organization Name'
+        '#contact_type': organization
+        '#form_key': civicrm_3_contact_1_contact_organization_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+      civicrm_3_contact_1_address_street_address:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 96
+        '#counter_maximum_message': ' '
+        '#extra':
+          width: 60
+        '#form_key': civicrm_3_contact_1_address_street_address
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#title': 'Street Address'
+      civicrm_3_contact_1_address_city:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 64
+        '#counter_maximum_message': ' '
+        '#extra':
+          width: 20
+        '#form_key': civicrm_3_contact_1_address_city
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#title': City
+      civicrm_3_contact_1_address_postal_code:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 64
+        '#counter_maximum_message': ' '
+        '#extra':
+          width: 7
+        '#form_key': civicrm_3_contact_1_address_postal_code
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#title': 'Postal Code'
+      civicrm_3_contact_1_address_state_province_id:
+        '#type': textfield
+        '#extra':
+          maxlength: 5
+          width: 4
+        '#data_type': state_province_abbr
+        '#form_key': civicrm_3_contact_1_address_state_province_id
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#title': State/Province
+      civicrm_3_contact_1_phone_phone:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 32
+        '#counter_maximum_message': ' '
+        '#form_key': civicrm_3_contact_1_phone_phone
+        '#extra':
+          width: 20
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#title': 'Phone Number'
+      civicrm_3_contact_1_email_email:
+        '#type': email
+        '#form_key': civicrm_3_contact_1_email_email
+        '#extra':
+          width: 20
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#title': Email
+        '#description': 'To choose existing organization please click <a id="existing-org" href="#">here</a> to select one.'
+      civicrm_3_contact_1_contact_contact_sub_type:
+        '#type': civicrm_options
+        '#title': 'Type of Organization'
+        '#civicrm_live_options': 0
+        '#options':
+          School: School
+        '#wrapper_attributes':
+          style: 'display:none'
+        '#extra':
+          aslist: 0
+          multiple: 1
+        '#form_key': civicrm_3_contact_1_contact_contact_sub_type
+        '#parent': civicrm_3_contact_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+  processed_text_08:
+    '#type': processed_text
+    '#states':
+      visible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+    '#text': |
+      <h2><span style="color:#2e416c;">Booking Details</span></h2>
+    '#format': html
+  booking_details:
+    '#type': container
+    '#title': 'Booking Details'
+    '#title_display': invisible
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+          value: '203'
+    civicrm_1_activity_1_cg2_custom_1233:
       '#type': civicrm_options
-      '#title': 'Preferred Communication Method'
-      '#civicrm_live_options': 0
-      '#options':
-        1: Phone
-        2: Email
-      '#required': true
-      '#default_value': '2'
+      '#data_type': String
       '#extra':
         aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
-      '#parent': civicrm_1_contact_1_fieldset_fieldset
-      '#default_option': '2'
-  civicrm_3_contact_1_contact_existing:
-    '#type': civicrm_contact
-    '#title': 'Your Organization'
-    '#description': 'If you cannot find your organization, please click <a id="new-org-block" href="#">here</a> to create one'
-    '#widget': autocomplete
-    '#search_prompt': '- Choose existing -'
-    '#none_prompt': '- None Found -'
-    '#show_hidden_contact': 1
-    '#results_display':
-      organization_name: organization_name
-    '#default_relationship_to': '1'
-    '#default_relationship':
-      '': ''
-    '#tag':
-      44: '44'
-      27: '27'
-      2: '2'
-      56: '56'
-      45: '45'
-      48: '48'
-      1: '1'
-      49: '49'
-      7: '7'
-      13: '13'
-      8: '8'
-      10: '10'
-      6: '6'
-      11: '11'
-      14: '14'
-      9: '9'
-      12: '12'
-      15: '15'
-    '#filter_relationship_contact': ''
-    '#contact_type': organization
-    '#form_key': civicrm_3_contact_1_contact_existing
-    '#parent': civicrm_3_contact_1_fieldset_fieldset
-    '#extra': {  }
-  civicrm_3_contact_1_fieldset_fieldset:
-    '#type': fieldset
-    '#title': 'New Organization'
-    '#form_key': civicrm_3_contact_1_fieldset_fieldset
-    civicrm_3_contact_1_contact_organization_name:
-      '#type': textfield
-      '#title': 'Organization Name'
-      '#contact_type': organization
-      '#form_key': civicrm_3_contact_1_contact_organization_name
-      '#extra':
-        width: 20
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-    civicrm_3_contact_1_address_street_address:
-      '#type': textfield
-      '#counter_type': character
-      '#counter_maximum': 96
-      '#counter_maximum_message': ' '
-      '#extra':
-        width: 60
-      '#form_key': civicrm_3_contact_1_address_street_address
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': 'Street Address'
-    civicrm_3_contact_1_address_city:
-      '#type': textfield
-      '#counter_type': character
-      '#counter_maximum': 64
-      '#counter_maximum_message': ' '
-      '#extra':
-        width: 20
-      '#form_key': civicrm_3_contact_1_address_city
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': City
-    civicrm_3_contact_1_address_postal_code:
-      '#type': textfield
-      '#counter_type': character
-      '#counter_maximum': 64
-      '#counter_maximum_message': ' '
-      '#extra':
-        width: 7
-      '#form_key': civicrm_3_contact_1_address_postal_code
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': 'Postal Code'
-    civicrm_3_contact_1_address_state_province_id:
-      '#type': textfield
-      '#extra':
-        maxlength: 5
-        width: 4
-      '#data_type': state_province_abbr
-      '#form_key': civicrm_3_contact_1_address_state_province_id
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': State/Province
-    civicrm_3_contact_1_phone_phone:
-      '#type': textfield
-      '#counter_type': character
-      '#counter_maximum': 32
-      '#counter_maximum_message': ' '
-      '#form_key': civicrm_3_contact_1_phone_phone
-      '#extra':
-        width: 20
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': 'Phone Number'
-    civicrm_3_contact_1_email_email:
-      '#type': email
-      '#form_key': civicrm_3_contact_1_email_email
-      '#extra':
-        width: 20
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': Email
-      '#description': 'To choose existing organization please click <a id="existing-org" href="#">here</a> to select one.'
-    civicrm_3_contact_1_contact_contact_sub_type:
-      '#type': civicrm_options
-      '#title': 'Type of Organization'
-      '#civicrm_live_options': 0
+        items: |-
+          1|Community Booth or Table
+          2|Speaking Engagement
+          3|Discussion Panel
+          4|Media Interview/Response
+      '#form_key': civicrm_1_activity_1_cg2_custom_1233
       '#options':
-        School: School
-      '#wrapper_attributes':
-        style: 'display:none'
+        1: 'Community Booth or Table'
+        2: 'Speaking Engagement'
+        3: 'Discussion Panel'
+        4: 'Media Interview/Response'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Community Engagement Service'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg2_custom_1234:
+      '#type': textarea
+      '#title': 'Your Event or Initiative'
+      '#description': 'Please provide details on your event or initiative that will help us to understand your support needs.'
+      '#data_type': Memo
       '#extra':
-        aslist: 0
-        multiple: 1
-      '#form_key': civicrm_3_contact_1_contact_contact_sub_type
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg2_custom_1234
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_1_activity_1_cg2_custom_1232:
+    '#type': civicrm_options
+    '#title': 'Consultation Topic'
+    '#description': 'Please note that organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review.&nbsp;'
+    '#empty_option': '- select - '
+    '#options':
+      1: 'Sexual Violence Response and Prevention'
+      2: 'Creating Safer Spaces'
+      3: 'Sexual Violence Policy'
+      4: 'Sexual Violence Resources'
+      5: 'Sexual Violence Education Services'
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+          value: '204'
+    '#states_clear': false
+    '#extra':
+      aslist: 1
+      multiple: 0
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_1232
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': ''
+    '#default_value': ''
+    '#civicrm_live_options': '1'
+  topics_markup:
+    '#type': processed_text
+    '#states':
+      invisible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '201'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+    '#text': |
+      <h2><span style="color:#2e416c;"><strong>Booking Details</strong></span></h2>
+      <h3><span style="color:#2e416c;"><strong>Presentation Topic(s)</strong></span></h3>
+
+      <p>The typical presentation topics by approximate age range are listed below. For more information about each presentation topic, please visit <a href="https://www.sace.ca/services/public-education">www.sace.ca/services/public-education</a>.</p>
+
+      <ul>
+      	<li>Gr 7/12-13 years - Sexual Harassment</li>
+      	<li>Gr 8/13-14 years&nbsp;- Sexual Assault &amp; Consent</li>
+      	<li>Gr 9/14-15 years - Non-Consensual Photo Sharing</li>
+      	<li>High School/15-18 years - Sexual Assault &amp; Consent and/or Non-Consensual Photo Sharing</li>
+      	<li>Adults - sexual assault information, child sexual abuse information, adults who were sexually abused as children, and some common potential impacts of trauma related to sexual abuse.<span class="TextRun SCXO126945267 BCX2" data-contrast="auto" lang="EN-US" style="color: windowtext; font-size: 11pt; font-family: Calibri, sans-serif; line-height: 18px;" xml:lang="EN-US"><span class="NormalTextRun SCXO126945267 BCX2" style="background-color: inherit;"><span id="cke_bm_114C" style="display: none;"> </span></span></span></li>
+      </ul>
+
+      <div class="notranslate" style="all: initial;">&nbsp;</div>
+    '#format': html
+  civicrm_1_activity_1_cg2_custom_40:
+    '#type': civicrm_options
+    '#title': 'Presentation Topic(s)'
+    '#title_display': inline
+    '#civicrm_live_options': 0
+    '#options':
+      SexualHarassment: 'Sexual Harassment'
+      SexualAssaultConsent: 'Sexual Assault & Consent'
+      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
+      TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
+      SACEServices: 'SACE Services'
+      BystanderIntervention: 'Bystander Intervention'
+      CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
+      SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
+      ChildSexualAbuse: 'Child Sexual Abuse'
+      HealthCareSystemsandSexualViolence: 'Health Care Systems & Sexual Violence'
+      SACEandtheSPEAKProgram: 'SACE and the SPEAK Program'
+      CustomSomethingDifferent: 'Custom / Unsure'
+    '#states':
+      invisible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+        - xor
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '201'
+        - xor
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+    '#extra':
+      aslist: 0
+      multiple: 1
+    '#form_key': civicrm_1_activity_1_cg2_custom_40
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': ''
+    '#default_value': ''
+  civicrm_1_activity_1_cg2_custom_41:
+    '#type': textfield
+    '#title': 'Topic Details'
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_40"]':
+          value: CustomSomethingDifferent
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_41
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  sessions_markup:
+    '#type': processed_text
+    '#states':
+      invisible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '59'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '55'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '201'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+    '#text': |
+      <h2><span style="color:#2e416c;"><strong>Your Session(s)</strong></span></h2>
+
+      <p>In this section, tell us a bit about the sessions you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Please note, our sessions are most effective with regular class sizes (about 25-35 participants) but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.</p>
+
+      <p>SACE operates daily from Monday - Thursday, with some exceptions being made for Friday - Sunday. For schools or organizations that are out of town, please note that we have a Winter Driving Policy wherein sessions scheduled between November and March may be cancelled due to inclement driving conditions. To avoid cancellations, it is recommended that out of town sessions are scheduled outside of November - March. Please indicate your preferred date(s) and/or day(s) of the week for your presentation(s). While we cannot guarantee these dates will be available, we will do our best to accommodate your request.</p>
+
+      <p><strong>*Please note, the date of your booking is not finalized until you are contacted by a Public Educator.</strong></p>
+    '#format': html
+  processed_text_04:
+    '#type': processed_text
+    '#states':
+      visible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '59'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '55'
+    '#text': |
+      <h3><span style="color:#2e416c;"><strong>Presentation Details</strong></span></h3>
+
+      <p>In this section, tell us a bit about the presentations you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Please note, our presentations are most effective with regular class sizes (about 25-35 participants) but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.&nbsp;</p>
+
+      <p>SACE operates daily from Monday - Thursday, with some exceptions being made for Friday - Sunday. For schools or organizations that are out of town, please note that we have a Winter Driving Policy wherein presentations scheduled between November and March may be cancelled due to inclement driving conditions. To avoid cancellations, it is recommended that out of town presentations are scheduled outside of November - March. Please indicate your preferred date(s) and/or day(s) of the week for your presentation(s). While we cannot guarantee these dates will be available, we will do our best to accommodate your request.&nbsp;</p>
+
+      <p><strong>*Please note, the date of your booking is not finalized until you are contacted by a Public Educator.</strong>&nbsp;</p>
+    '#format': html
+  processed_text_02:
+    '#type': processed_text
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+          value: '201'
+    '#text': |
+      <h2><span style="color:#2e416c;"><strong>Your Session(s)</strong></span></h2>
+
+      <p>The WiseGuyz Program bookings may be set up initially through this form, and then details added in the Booking Update Form as specific dates and details are added. The CiviCRM build for this form will be fleshed out pending program development.</p>
+    '#format': html
   flexbox_06:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
-      '#title': 'Presentation Method'
-      '#civicrm_live_options': 0
+      '#title': 'Delivery Format'
       '#options':
         'In-Person Presentation': 'In-Person Presentation'
         'Online Presentation': 'Online Presentation'
         'Online Course': 'Online Course'
+        'In-Person Meeting': 'In-Person Meeting'
+        'Online Meeting': 'Online Meeting'
+        'In-Person Event': 'In-Person Event'
+        'Online Event': 'Online Event'
       '#required': true
       '#default_value': '2'
       '#format_items': ul
@@ -285,6 +557,7 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_88
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_90:
       '#type': civicrm_options
       '#title': 'Youth or Adult'
@@ -314,98 +587,46 @@ elements: |-
       'High School (ages 15-18)': 'High School (ages 15-18)'
       'Adults (ages 18+)': 'Adults (ages 18+)'
     '#states':
-      invisible:
-        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-          value: '59'
-    '#default_value':
-      - 'Adults (ages 18+)'
+      visible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '57'
+        - xor
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '55'
+        - xor
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '201'
     '#extra':
       aslist: 0
       multiple: 1
     '#form_key': civicrm_1_activity_1_cg2_custom_25
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': 'Adults (ages 18+)'
-  topics_markup:
-    '#type': processed_text
-    '#text': |
-      <h2><span style="color:#2e416c;"><strong>Presentation Topic(s)</strong></span></h2>
-
-      <p>The typical presentation topics by approximate age range are listed below. For more information about each presentation topic, please visit <a href="https://www.sace.ca/services/public-education">www.sace.ca/services/public-education</a>.</p>
-
-      <ul>
-      	<li>Gr 7/12-13 years - Sexual Harassment</li>
-      	<li>Gr 8/13-14 years&nbsp;- Sexual Assault &amp; Consent</li>
-      	<li>Gr 9/14-15 years - Non-Consensual Photo Sharing</li>
-      	<li>High School/15-18 years - Sexual Assault &amp; Consent and/or Non-Consensual Photo Sharing</li>
-      	<li>Adults - sexual assault information, child sexual abuse information, adults who were sexually abused as children, and some common potential impacts of trauma related to sexual abuse.<span class="TextRun SCXO126945267 BCX2" data-contrast="auto" lang="EN-US" style="color: windowtext; font-size: 11pt; font-family: Calibri, sans-serif; line-height: 18px;" xml:lang="EN-US"><span class="NormalTextRun SCXO126945267 BCX2" style="background-color: inherit;"><span id="cke_bm_114C" style="display: none;"> </span></span></span></li>
-      </ul>
-    '#format': html
-  civicrm_1_activity_1_cg2_custom_40:
-    '#type': civicrm_options
-    '#title': 'Presentation Topic'
-    '#civicrm_live_options': 0
-    '#options':
-      SexualHarassment: 'Sexual Harassment'
-      SexualAssaultConsent: 'Sexual Assault & Consent'
-      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
-      TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
-      SACEServices: 'SACE Services'
-      BystanderIntervention: 'Bystander Intervention'
-      CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
-      SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
-      SexualViolenceTrauma: 'Sexual Violence Trauma'
-      DomesticViolence: 'Domestic Violence'
-      ChildSexualAbuse: 'Child Sexual Abuse'
-      PrivilegeandOppression: 'Privilege & Oppression'
-      TheIntersectionofRacismandSexualViolence: 'The Intersection of Racism & Sexual Violence'
-      CustomSomethingDifferent: 'Custom/Something Different'
-    '#extra':
-      aslist: 1
-      multiple: 0
-    '#form_key': civicrm_1_activity_1_cg2_custom_40
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#default_option': ''
     '#default_value': ''
-  civicrm_1_activity_1_cg2_custom_41:
-    '#type': textfield
-    '#title': 'Topic Details'
-    '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_40"]':
-          value: CustomSomethingDifferent
-    '#data_type': String
-    '#form_key': civicrm_1_activity_1_cg2_custom_41
-    '#extra':
-      width: 20
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-  sessions_markup:
-    '#type': processed_text
-    '#text': |
-      <h2><span style="color:#2e416c;"><strong>Your Session(s)</strong></span></h2>
-
-      <p>In this section, tell us a bit about the sessions you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Please note, our sessions are most effective with regular class sizes (about 25-35 participants) but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.</p>
-
-      <p>SACE operates daily from Monday - Thursday, with some exceptions being made for Friday - Sunday. For schools or organizations that are out of town, please note that we have a Winter Driving Policy wherein sessions scheduled between November and March may be cancelled due to inclement driving conditions. To avoid cancellations, it is recommended that out of town sessions are scheduled outside of November - March. Please indicate your preferred date(s) and/or day(s) of the week for your presentation(s). While we cannot guarantee these dates will be available, we will do our best to accommodate your request.</p>
-
-      <p><strong>*Please note, the date of your booking is not finalized until you are contacted by a Public Educator.</strong></p>
-    '#format': html
   flexbox_04:
     '#type': webform_flexbox
-    civicrm_1_activity_1_cg2_custom_128:
-      '#type': number
-      '#title': 'How many sessions would you like?'
-      '#field_prefix': '#'
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_128
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg2_custom_815:
       '#type': number
-      '#title': 'Approximate number of participants per session'
+      '#title': 'Approximate number of participants per presentation'
       '#field_prefix': '#'
       '#data_type': Float
       '#form_key': civicrm_1_activity_1_cg2_custom_815
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_128:
+      '#type': number
+      '#title': 'How many presentations would you like?'
+      '#field_prefix': '#'
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '203'
+          - or
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '204'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_128
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -423,6 +644,13 @@ elements: |-
       '#type': textfield
       '#title': 'Preferred start and end time(s)'
       '#description': 'If you&#39;re not sure, that&#39;s okay. You can enter morning or afternoon, or simply leave this blank and we&#39;ll confirm with you later.'
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '201'
+          - or
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '204'
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_129
       '#extra':
@@ -431,6 +659,10 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_126:
     '#type': textarea
     '#title': 'Additional needs or considerations (please specify)'
+    '#states':
+      invisible:
+        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+          value: '201'
     '#data_type': Memo
     '#extra':
       cols: '60'
@@ -438,53 +670,86 @@ elements: |-
     '#form_key': civicrm_1_activity_1_cg2_custom_126
     '#parent': civicrm_1_activity_1_fieldset_fieldset
   session_details_in_person:
-    '#type': fieldset
+    '#type': container
     '#title': 'In-Person Session Details'
+    '#title_display': invisible
     '#states':
       invisible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
-          '!value': 'In-Person Presentation'
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+        - or
+        - ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
+            '!value': 'In-Person Presentation'
+    processed_text_05:
+      '#type': processed_text
+      '#text': |
+        <h3><span style="color:#2e416c;">In-Person Presentation Details</span></h3>
+      '#format': html
     civicrm_1_activity_1_cg2_custom_37:
       '#type': textfield
       '#title': 'Parking Instructions'
       '#size': 100
-      '#placeholder': 'If there are specific parking instructions to follow, please indicate them here'
+      '#placeholder': 'If there are specific parking instructions to follow, please indicate them here.'
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_37
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg2_custom_35:
-      '#type': civicrm_options
-      '#title': 'Will there be internet access?'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#format_items': ul
-      '#form_key': civicrm_1_activity_1_cg2_custom_35
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
-    civicrm_1_activity_1_cg2_custom_34:
-      '#type': civicrm_options
-      '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available? If not, we can bring our own equipment.'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#format_items': ul
-      '#form_key': civicrm_1_activity_1_cg2_custom_34
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 0
+    flexbox_07:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_34:
+        '#type': civicrm_options
+        '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available?'
+        '#description': 'If not, we can bring our own equipment.'
+        '#civicrm_live_options': 0
+        '#options':
+          1: 'Yes'
+          0: 'No'
+        '#default_value': '0'
+        '#format_items': ul
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_activity_1_cg2_custom_34
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': '0'
+      civicrm_1_activity_1_cg2_custom_35:
+        '#type': civicrm_options
+        '#title': 'Will there be internet access?'
+        '#civicrm_live_options': 0
+        '#options':
+          1: 'Yes'
+          0: 'No'
+        '#default_value': '0'
+        '#format_items': ul
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_activity_1_cg2_custom_35
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': '0'
   session_details_virtual:
-    '#type': fieldset
+    '#type': container
     '#title': 'Virtual Session Details'
+    '#title_display': invisible
     '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
-          value: 'Online Presentation'
+      invisible:
+        - ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
+            '!value': 'Online Presentation'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+    processed_text_06:
+      '#type': processed_text
+      '#text': |
+        <h3><span style="color:#2e416c;">Online Presentation Details</span></h3>
+      '#format': html
     civicrm_1_activity_1_cg2_custom_119:
       '#type': civicrm_options
       '#title': 'Which virtual platform would you like to use?'
@@ -506,9 +771,10 @@ elements: |-
       '#title': 'Will participants be joining from one location or from home?'
       '#civicrm_live_options': 0
       '#options':
-        Classroom: Classroom
+        'One Location': 'One Location'
         Home: Home
         Both: Both
+        TBD: TBD
       '#default_value': Both
       '#extra':
         aslist: 1
@@ -518,11 +784,12 @@ elements: |-
       '#default_option': Both
     civicrm_1_activity_1_cg2_custom_124:
       '#type': civicrm_options
-      '#title': 'Will participants be joining together as one large group, or separately from their own devices?'
+      '#title': 'Will participants be joining together as one large group or, separately from their own devices?'
       '#options':
-        Individually: Individually
-        Groupings: Groupings
+        'Own devices': 'Own devices'
+        'One large group': 'One large group'
         Both: Both
+        TBD: TBD
       '#default_value': Both
       '#extra':
         aslist: 1
@@ -600,29 +867,61 @@ elements: |-
     '#extra':
       width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-  civicrm_1_activity_1_cg2_custom_333:
-    '#type': civicrm_options
-    '#title': 'Population Focus'
-    '#options':
-      Adults: Adults
-      professionals: Professionals
-      serviceProviders: 'Service providers'
-      educators: Educators
-      guardians: Guardians
-      volunteers: Volunteers
-      Indigenous: Indigenous
-      Newcomers: Newcomers
-      2SLGBTQ+: 2SLGBTQ+
-      'People With Disabilities': PeopleWithDisabilities
-      OlderAdults: 'Older Adults'
-    '#extra':
-      aslist: 0
-      multiple: 1
-    '#form_key': civicrm_1_activity_1_cg2_custom_333
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': ''
-    '#default_value': ''
-    '#civicrm_live_options': '1'
+  container:
+    '#type': container
+    '#states':
+      invisible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+    processed_text_07:
+      '#type': processed_text
+      '#text': |
+        <h3><span style="color:#2e416c;">Presentation Population of Focus</span></h3>
+
+        <p>Select a population of focus if you would like the presentation content to focus on a specific group. Please note, a population of focus is not required to book a session. Choosing a population of focus is only necessary if you would like information about sexual violence as it relates to a specific group.&nbsp;</p>
+      '#format': html
+    civicrm_1_activity_1_cg2_custom_333:
+      '#type': civicrm_options
+      '#title': 'Presentation Population of Focus'
+      '#options':
+        2SLGBTQ+: 2SLGBTQ+
+        Adults: Adults
+        'Child 3-12': 'Child 3-12'
+        FirstNations: 'First Nations, Métis, or Inuit/ Indigenous'
+        Guardians: Guardians/Parents
+        Men/Boys: 'Men/Boys (Trans-Inclusive)'
+        Newcomer: Newcomer/Non-Status/Refugee/Immigrant
+        'People With Disabilities': 'People With Disabilities'
+        ProfessionalAEN: 'Professional - Arts, Entertainment, and Nightlife'
+        ProfessionalG: 'Professional - General'
+        ProfessionalH: 'Professional - Health'
+        ProfessionalJ: 'Professional - Justice'
+        ProfessionalSP: 'Professional - Service Providers'
+        ProfessionalSS: 'Professional - Social Services'
+        ProfessionalE: 'Professionals - Education'
+        Racialized/POC: Racialized/POC
+        'Seniors/Older Adults': 'Seniors/Older Adults'
+        volunteers: Volunteers
+        Women: 'Women/Girls (Trans-Inclusive)'
+        Youth: 'Youth 12-18'
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '204'
+          - xor
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '203'
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg2_custom_333
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
   civicrm_4_contact_1_fieldset_fieldset:
     '#type': fieldset
     '#title': 'Unassigned User'
@@ -859,8 +1158,6 @@ handlers:
     conditions: {  }
     weight: null
     settings:
-      disable: 'Leave Fields and Save Settings'
-      antibot_key: ''
       nid: 1
       number_of_contacts: '4'
       1_contact_type: individual
@@ -1092,6 +1389,149 @@ handlers:
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
+      activity_1_settings_dynamic_custom_cg56: 0
+      civicrm_1_activity_1_cg56_custom_1214: 0
+      civicrm_1_activity_1_cg56_custom_1215: 0
+      civicrm_1_activity_1_cg56_custom_1216: 0
+      civicrm_1_activity_1_cg56_custom_1217: 0
+      civicrm_1_activity_1_cg56_custom_1218: 0
+      civicrm_1_activity_1_cg56_custom_1219: 0
+      civicrm_1_activity_1_cg56_custom_1220: 0
+      civicrm_1_activity_1_cg56_custom_1221: 0
+      civicrm_1_activity_1_cg56_custom_1222: 0
+      civicrm_1_activity_1_cg56_custom_1223: 0
+      civicrm_1_activity_1_cg56_custom_1224: 0
+      civicrm_1_activity_1_cg56_custom_1225: 0
+      civicrm_1_activity_1_cg56_custom_1226: 0
+      civicrm_1_activity_1_cg56_custom_1228: 0
+      civicrm_1_activity_1_cg56_custom_1229: 0
+      civicrm_1_activity_1_cg56_custom_1230: 0
+      civicrm_1_activity_1_cg56_custom_1231: 0
+      civicrm_1_activity_1_cg56_custom_1139: 0
+      civicrm_1_activity_1_cg56_custom_1140: 0
+      civicrm_1_activity_1_cg56_custom_1143: 0
+      civicrm_1_activity_1_cg56_custom_1144: 0
+      civicrm_1_activity_1_cg56_custom_1145: 0
+      civicrm_1_activity_1_cg56_custom_1146: 0
+      civicrm_1_activity_1_cg56_custom_1148: 0
+      civicrm_1_activity_1_cg56_custom_1149: 0
+      civicrm_1_activity_1_cg56_custom_1150: 0
+      civicrm_1_activity_1_cg56_custom_1152: 0
+      civicrm_1_activity_1_cg56_custom_1153: 0
+      civicrm_1_activity_1_cg56_custom_1154: 0
+      civicrm_1_activity_1_cg56_custom_1157: 0
+      civicrm_1_activity_1_cg56_custom_1158: 0
+      civicrm_1_activity_1_cg56_custom_1159: 0
+      civicrm_1_activity_1_cg56_custom_1160: 0
+      civicrm_1_activity_1_cg56_custom_1161: 0
+      civicrm_1_activity_1_cg56_custom_1164: 0
+      civicrm_1_activity_1_cg56_custom_1165: 0
+      civicrm_1_activity_1_cg56_custom_1166: 0
+      civicrm_1_activity_1_cg56_custom_1167: 0
+      civicrm_1_activity_1_cg56_custom_1168: 0
+      civicrm_1_activity_1_cg56_custom_1171: 0
+      civicrm_1_activity_1_cg56_custom_1172: 0
+      civicrm_1_activity_1_cg56_custom_1173: 0
+      civicrm_1_activity_1_cg56_custom_1174: 0
+      civicrm_1_activity_1_cg56_custom_1175: 0
+      civicrm_1_activity_1_cg56_custom_1178: 0
+      civicrm_1_activity_1_cg56_custom_1179: 0
+      civicrm_1_activity_1_cg56_custom_1180: 0
+      civicrm_1_activity_1_cg56_custom_1181: 0
+      civicrm_1_activity_1_cg56_custom_1182: 0
+      civicrm_1_activity_1_cg56_custom_1185: 0
+      civicrm_1_activity_1_cg56_custom_1187: 0
+      civicrm_1_activity_1_cg56_custom_1189: 0
+      civicrm_1_activity_1_cg56_custom_1190: 0
+      civicrm_1_activity_1_cg56_custom_1186: 0
+      civicrm_1_activity_1_cg56_custom_1193: 0
+      civicrm_1_activity_1_cg56_custom_1194: 0
+      civicrm_1_activity_1_cg56_custom_1195: 0
+      civicrm_1_activity_1_cg56_custom_1196: 0
+      civicrm_1_activity_1_cg56_custom_1197: 0
+      civicrm_1_activity_1_cg56_custom_1200: 0
+      civicrm_1_activity_1_cg56_custom_1201: 0
+      civicrm_1_activity_1_cg56_custom_1202: 0
+      civicrm_1_activity_1_cg56_custom_1203: 0
+      civicrm_1_activity_1_cg56_custom_1204: 0
+      civicrm_1_activity_1_cg56_custom_1205: 0
+      civicrm_1_activity_1_cg56_custom_1206: 0
+      civicrm_1_activity_1_cg56_custom_1209: 0
+      civicrm_1_activity_1_cg56_custom_1210: 0
+      civicrm_1_activity_1_cg56_custom_1211: 0
+      civicrm_1_activity_1_cg56_custom_1114: 0
+      civicrm_1_activity_1_cg56_custom_1115: 0
+      civicrm_1_activity_1_cg56_custom_1116: 0
+      civicrm_1_activity_1_cg56_custom_1117: 0
+      civicrm_1_activity_1_cg56_custom_1120: 0
+      civicrm_1_activity_1_cg56_custom_1121: 0
+      civicrm_1_activity_1_cg56_custom_1122: 0
+      civicrm_1_activity_1_cg56_custom_1123: 0
+      civicrm_1_activity_1_cg56_custom_1124: 0
+      civicrm_1_activity_1_cg56_custom_1125: 0
+      civicrm_1_activity_1_cg56_custom_1126: 0
+      civicrm_1_activity_1_cg56_custom_1129: 0
+      civicrm_1_activity_1_cg56_custom_1130: 0
+      civicrm_1_activity_1_cg56_custom_1131: 0
+      civicrm_1_activity_1_cg56_custom_1132: 0
+      civicrm_1_activity_1_cg56_custom_1133: 0
+      civicrm_1_activity_1_cg56_custom_1136: 0
+      civicrm_1_activity_1_cg56_custom_1137: 0
+      civicrm_1_activity_1_cg56_custom_1138: 0
+      civicrm_1_activity_1_cg56_custom_1188: 0
+      civicrm_1_activity_1_cg56_custom_1235: 0
+      civicrm_1_activity_1_cg56_custom_1236: 0
+      civicrm_1_activity_1_cg56_custom_1237: 0
+      civicrm_1_activity_1_cg56_custom_1238: 0
+      civicrm_1_activity_1_cg56_custom_1239: 0
+      civicrm_1_activity_1_cg56_custom_1240: 0
+      civicrm_1_activity_1_cg56_custom_1241: 0
+      civicrm_1_activity_1_cg56_custom_1242: 0
+      civicrm_1_activity_1_cg56_custom_1243: 0
+      civicrm_1_activity_1_cg56_custom_1244: 0
+      civicrm_1_activity_1_cg56_custom_1245: 0
+      civicrm_1_activity_1_cg56_custom_1246: 0
+      civicrm_1_activity_1_cg56_custom_1247: 0
+      civicrm_1_activity_1_cg56_custom_1248: 0
+      civicrm_1_activity_1_cg56_custom_1249: 0
+      civicrm_1_activity_1_cg56_custom_1250: 0
+      civicrm_1_activity_1_cg56_custom_1251: 0
+      civicrm_1_activity_1_cg56_custom_1252: 0
+      civicrm_1_activity_1_cg56_custom_1253: 0
+      civicrm_1_activity_1_cg56_custom_1254: 0
+      civicrm_1_activity_1_cg56_custom_1255: 0
+      civicrm_1_activity_1_cg56_custom_1256: 0
+      civicrm_1_activity_1_cg56_custom_1257: 0
+      civicrm_1_activity_1_cg56_custom_1258: 0
+      civicrm_1_activity_1_cg56_custom_1260: 0
+      civicrm_1_activity_1_cg56_custom_1259: 0
+      activity_1_settings_dynamic_custom_cg55: 0
+      civicrm_1_activity_1_cg55_custom_1086: 0
+      civicrm_1_activity_1_cg55_custom_1087: 0
+      civicrm_1_activity_1_cg55_custom_1088: 0
+      civicrm_1_activity_1_cg55_custom_1089: 0
+      civicrm_1_activity_1_cg55_custom_1090: 0
+      civicrm_1_activity_1_cg55_custom_1091: 0
+      civicrm_1_activity_1_cg55_custom_1092: 0
+      civicrm_1_activity_1_cg55_custom_1093: 0
+      civicrm_1_activity_1_cg55_custom_1094: 0
+      civicrm_1_activity_1_cg55_custom_1095: 0
+      civicrm_1_activity_1_cg55_custom_1096: 0
+      civicrm_1_activity_1_cg55_custom_1097: 0
+      civicrm_1_activity_1_cg55_custom_1098: 0
+      civicrm_1_activity_1_cg55_custom_1099: 0
+      civicrm_1_activity_1_cg55_custom_1100: 0
+      civicrm_1_activity_1_cg55_custom_1101: 0
+      civicrm_1_activity_1_cg55_custom_1102: 0
+      civicrm_1_activity_1_cg55_custom_1103: 0
+      civicrm_1_activity_1_cg55_custom_1104: 0
+      civicrm_1_activity_1_cg55_custom_1105: 0
+      civicrm_1_activity_1_cg55_custom_1106: 0
+      civicrm_1_activity_1_cg55_custom_1107: 0
+      civicrm_1_activity_1_cg55_custom_1108: 0
+      civicrm_1_activity_1_cg55_custom_1109: 0
+      civicrm_1_activity_1_cg55_custom_1212: 0
+      civicrm_1_activity_1_cg55_custom_1213: 0
       activity_1_settings_dynamic_custom_cg30: 0
       civicrm_1_activity_1_cg30_custom_342: 0
       civicrm_1_activity_1_cg30_custom_343: 0
@@ -1118,9 +1558,9 @@ handlers:
       activity_1_settings_dynamic_custom_cg2: 0
       civicrm_1_activity_1_cg2_custom_333: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_332: 0
-      civicrm_1_activity_1_cg2_custom_334: 0
-      civicrm_1_activity_1_cg2_custom_331: 0
-      civicrm_1_activity_1_cg2_custom_330: 0
+      civicrm_1_activity_1_cg2_custom_334: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_331: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_330: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_329: 0
       civicrm_1_activity_1_cg2_custom_40: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_88: create_civicrm_webform_element
@@ -1156,6 +1596,9 @@ handlers:
       civicrm_1_activity_1_cg2_custom_698: 0
       civicrm_1_activity_1_cg2_custom_815: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_816: 0
+      civicrm_1_activity_1_cg2_custom_1232: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1233: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1234: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1731,6 +2174,7 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: 'PED Booking Request'
+      antibot_key: ''
       data:
         contact:
           1:
@@ -1851,6 +2295,8 @@ handlers:
           1:
             existing_activity_status: {  }
             details: {  }
+            dynamic_custom_cg56: 0
+            dynamic_custom_cg55: 0
             dynamic_custom_cg30: 0
             dynamic_custom_cg2: 0
             dynamic_custom_cg9: 0
