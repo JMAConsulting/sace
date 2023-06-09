@@ -1,0 +1,221 @@
+
+/* Globals */
+@font-face {
+    font-family: "Century Gothic";
+    src: url("./GOTHICB.TTF") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Century Gothic";
+    src: url("./GOTHICBI.TTF") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: "Century Gothic";
+    src: url("./GOTHIC.TTF") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Century Gothic";
+    src: url("./GOTHICI.TTF") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  :root {
+    --color-primary: #87cca3;
+    --color-secondary: #a5489b;
+    --color-heading: #2e416c;
+    --color-accent: #57a59d;
+    --color-dark: #1f263b;
+    --color-light: #ffffff;
+    /* --color-bg: #CDD5E4; */
+    --color-bg: #cdd5e463;
+  
+    --font: "Century Gothic", "metropolis", sans-serif;
+  }
+  
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box !important;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font);
+    font-weight: 700;
+    color: var(--color-heading);
+  }
+  
+  @media (min-width: 43.75rem) {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+  
+  body {
+    font-family: var(--font);
+    color: var(--color-dark);
+    background-color: white;
+    background-image: none !important;
+  }
+  
+  p a {
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  p a:hover,
+  p a:active,
+  p a:focus {
+    color: var(--color-dark);
+  }
+  
+
+  @media (min-width: 43.75rem) {
+    .main-content__container {
+      padding-top: 50px;
+    }
+  }
+  
+  @media screen and (min-width: 992px) {
+    h1.title.page-title {
+      font-size: 3.4rem;
+    }
+  }
+  
+  /* Breadcrumbs */
+  .region.region--breadcrumb.grid-full {
+    display: block;
+    grid-row: 1 / span 1;
+    grid-column: 2 / -1;
+    padding-left: 0;
+    padding-right: 2rem;
+    margin-top: 2rem;
+    margin-left: calc(5.75rem);
+  }
+  
+  .region.region--breadcrumb > * {
+    margin-bottom: 0;
+  }
+  
+  .region.region--breadcrumb .breadcrumb__content {
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  
+  @media screen and (max-width: 1200px) {
+    .region.region--breadcrumb.grid-full {
+      margin-left: 4.25rem;
+    }
+  }
+  
+  @media screen and (max-width: 767px) {
+    .region.region--breadcrumb.grid-full {
+      margin-left: 3rem;
+    }
+  }
+  
+  @media screen and (max-width: 699px) {
+    .region.region--breadcrumb.grid-full {
+      margin-left: 0.5rem;
+    }
+  }
+  
+  /* #block-breadcrumbs {
+      margin-bottom: 3.125rem;
+  } */
+  
+  #block-breadcrumbs a:hover,
+  #block-breadcrumbs a:active,
+  #block-breadcrumbs a:focus {
+    color: var(--color-dark);
+    text-decoration: none;
+  }
+  
+  #block-pagetitle {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Buttons */
+.crm-submit-buttons {
+    height: auto !important;
+    display: flex;
+    margin-bottom: 2rem !important;
+}
+
+.sace-btn, a.sace-btn,
+.crm-container .crm-button.crm-form-submit
+ {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    color: var(--color-light);
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 2em;
+    margin-top: 20px;
+    border: none;
+    text-shadow: none;
+    font-family: var(--font);
+    font-size: 16px;
+    float: none !important;
+}
+
+.sace-btn:hover, a.sace-btn:hover,
+.sace-btn:active, a.sace-btn:active,
+.sace-btn:focus, a.sace-btn:focus,
+
+.crm-container .crm-button.crm-form-submit:hover,
+.crm-container .crm-button.crm-form-submit:active,
+.crm-container .crm-button.crm-form-submit:focus
+ {
+    text-decoration: none;
+    color: var(--color-light);
+    background-color: var(--color-dark);
+    border: none;
+}
+
+/* Headers */
+.crm-container .header-dark {
+    background-color: var(--color-dark);
+    border-radius: 0;
+}
+
+.crm-container .help, .crm-container .status.continue_instructions-section {
+    background-color: rgba(135, 204, 163, 0.3);
+    border: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+}
+
+.crm-container fieldset {
+    border-top: none;
+}

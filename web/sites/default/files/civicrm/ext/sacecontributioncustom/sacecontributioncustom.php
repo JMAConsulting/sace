@@ -109,7 +109,8 @@ function sacecontributioncustom_civicrm_entityTypes(&$entityTypes) {
 
 
 function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
- 
+  // var_dump($formName);
+  // CRM_Core_Error::debug('label', $form); 
   if($formName == 'CRM_Contribute_Form_Contribution_Main' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/community.js');
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/forms.css');
@@ -119,4 +120,18 @@ function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/confirms.css');
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/confirms.js');
   }
+
+  if($formName == 'CRM_Contribute_Form_Contribution_Main'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
+    Civi::resources()->addScriptFile('sacecontributioncustom', 'js/general-donate-forms.js');
+    Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-forms.css');
+  }
+
+  if($formName == 'CRM_Contribute_Form_Contribution_Confirm'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
+    Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-confirms.css');
+  }
+
+  // if($formName == 'CRM_Contribute_Form_Contribution_Main'  && $form->getVar('_id') == 3) {
+  //   Civi::resources()->addScriptFile('sacecontributioncustom', 'js/general-donate-forms.js');
+  //   Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-forms.css');
+  // }
 }
