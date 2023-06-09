@@ -18,7 +18,7 @@
   <version>1.0</version>
   <develStage>alpha</develStage>
   <compatibility>
-    <ver>5.0</ver>
+    <ver>5.38</ver>
   </compatibility>
   <comments>This is a new, undeveloped module</comments>
   <classloader>
@@ -26,11 +26,12 @@
   </classloader>
   <civix>
     <namespace>CRM/Sacecontributioncustom</namespace>
-    <format>22.05.2</format>
+    <format>23.02.1</format>
     <angularModule>crmSacecontributioncustom</angularModule>
   </civix>
   <mixins>
     <mixin>mgd-php@1.0.0</mixin>
     <mixin>setting-php@1.0.0</mixin>
   </mixins>
+  <upgrader>CRM_Sacecontributioncustom_Upgrader</upgrader>
 </extension>
