@@ -25,7 +25,7 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
     $elements = WebformFormHelper::flattenElements($form);
     if (empty($elements)) {
       return;
-    }    
+    }
 
     //Toggle text field if Presentation Topic is Custom/Something Different
     if ($elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#default_value'][0] == "CustomSomethingDifferent") {
@@ -37,7 +37,7 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
       $elements[PE_UPDATE_BOOKING_VIRTUAL_SESSION_FIELDSET]['#access'] = FALSE;
     }
     //Get booking type
-    $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];    
+    $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];
 
     //Youth presentation
     if($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
@@ -47,10 +47,10 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
         'SexualAssaultConsent' => 'Sexual Assault & Consent',
         'NonConsensualPhotoSharing' => 'Non-Consensual Photo Sharing',
         'SACEServices' => 'SACE Services',
-        'CustomSomethingDifferent' => 'Custom/Something Different'
+        'CustomSomethingDifferent' => 'Custom/Unsure'
       ];
     }
-    if (in_array($bt, [57, 55, 59])){      
+    if (in_array($bt, [57, 55, 59])){
 
       //  Presentation method dropdown options
       $elements[PE_UPDATE_BOOKING_DELIVERY_FORMAT]['#options'] = [
@@ -74,7 +74,7 @@ function pe_update_booking_preprocess_page_title(&$variables, $hook) {
   if (empty($aid) || !is_numeric($aid)) {
     return;
   }
-  
+
   //Get booking type from activity
   $activity = \Civi\Api4\Activity::get()
   ->addSelect('activity_type_id')
@@ -82,17 +82,17 @@ function pe_update_booking_preprocess_page_title(&$variables, $hook) {
   ->setLimit(1)
   ->execute();
   $bt = $activity->first()['activity_type_id'];
-  
+
   $current_path = \Drupal::service('path.current')->getPath();
   if($current_path == '/webform/update_ped_booking') {
     if($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
       $variables['title'] = [
-        '#markup' => 'Youth Presentation Booking Update',
+        '#markup' => 'Youth Presentation Booking Update Form',
       ];
     }
     elseif($bt == PE_UPDATE_BOOKING_ADULT_ACTIVITY) {
       $variables['title'] = [
-        '#markup' => 'Adult Presentation Booking Update',
+        '#markup' => 'Adult Presentation Booking Update Form',
       ];
     }
   }
