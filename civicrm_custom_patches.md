@@ -3,6 +3,7 @@
 ### CiviCRM Extension Custom Patches
 
 1. IatsPayments [#48ca75a3d447302c40e1ee8444571111b7c91e1a](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/48ca75a3d447302c40e1ee8444571111b7c91e1a) - Fix Filtering of Ipv4 Addresses in FAPs Payment Processor
+2. IatsPayments [#33791bf83](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/33791bf8364bf679d52cb2706337520d5b64f8e4) - Apply patch to allow updating of credit card details with First Pay Credit Card Payment Processor
 
 **NOTE: In future, please update this file with the commit link whenever a new core or extension customisation is added.**
 
