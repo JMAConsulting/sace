@@ -11,13 +11,31 @@ uid: 1
 template: false
 archive: false
 id: ped_sace_student_feedback
-title: 'PED SACE Presentation Evaluation Form'
+title: 'PED SACE Presentation Evaluation Form '
 description: ''
 category: ''
 elements: |-
   flexbox:
     '#type': webform_flexbox
     '#states_clear': false
+    civicrm_1_activity_1_cg2_custom_88:
+      '#type': civicrm_options
+      '#title': 'Presentation Method'
+      '#prepopulate': true
+      '#empty_option': '-Select-'
+      '#options':
+        Presentation: 'In-person Presentation'
+        OnlinePresentation: 'Online Presentation'
+        OnlineResource: 'Online Course'
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_88
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_contact_1_contact_existing:
       '#type': civicrm_contact
       '#title': 'Existing Contact'
@@ -46,7 +64,7 @@ elements: |-
         display_name: display_name
       '#states':
         disabled:
-          ':input[name="civicrm_1_contact_1_contact_first_name"]':
+          ':input[name="civicrm_2_contact_1_contact_existing"]':
             filled: true
       '#states_clear': false
       '#default_relationship_to': '1'
@@ -60,6 +78,7 @@ elements: |-
     civicrm_1_activity_1_activity_activity_type_id:
       '#type': civicrm_options
       '#title': 'Booking Type'
+      '#disabled': true
       '#empty_option': '-Select-'
       '#civicrm_live_options': 0
       '#options':
@@ -70,10 +89,10 @@ elements: |-
         197: 'PED - Participant Presentation Feedback'
       '#states':
         invisible:
-          ':input[name="civicrm_1_contact_1_contact_first_name"]':
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             filled: true
       '#states_clear': false
-      '#disabled': true
+      '#default_value': '197'
       '#format_items': ul
       '#extra':
         aslist: 1
@@ -81,7 +100,23 @@ elements: |-
       '#form_key': civicrm_1_activity_1_activity_activity_type_id
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '197'
-      '#default_value': '197'
+    civicrm_1_activity_1_cg53_custom_706:
+      '#type': textfield
+      '#title': 'Booking Reference ID'
+      '#title_display': inline
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        readonly:
+          ':input[name="civicrm_1_activity_1_cg53_custom_706"]':
+            filled: true
+      '#default_value': '[current-page:query:bid]'
+      '#data_type': Int
+      '#form_key': civicrm_1_activity_1_cg53_custom_706
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
   flexbox_01:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_activity_date_time:
@@ -108,24 +143,6 @@ elements: |-
       '#webform_parents':
         - flexbox_01
         - civicrm_1_activity_1_activity_activity_date_time
-    civicrm_1_activity_1_cg2_custom_88:
-      '#type': civicrm_options
-      '#title': 'Presentation Method'
-      '#prepopulate': true
-      '#empty_option': '-Select-'
-      '#options':
-        Presentation: 'In-person Presentation'
-        OnlinePresentation: 'Online Presentation'
-        OnlineResource: 'Online Course'
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_88
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation topics:'
@@ -157,17 +174,6 @@ elements: |-
     '#default_option': ''
     '#default_value': ''
     '#civicrm_live_options': '1'
-  civicrm_1_activity_1_cg2_custom_41:
-    '#type': textfield
-    '#data_type': String
-    '#counter_type': character
-    '#counter_maximum': 255
-    '#counter_maximum_message': ' '
-    '#form_key': civicrm_1_activity_1_cg2_custom_41
-    '#extra':
-      width: 20
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#title': 'Presentation custom'
   aid:
     '#type': number
     '#title': aid
@@ -175,39 +181,6 @@ elements: |-
     '#default_value': '[current-page:query:bid]'
     '#wrapper_attributes':
       style: 'display:none'
-  civicrm_3_contact_1_fieldset_fieldset:
-    '#type': fieldset
-    '#title': Client
-    '#form_key': civicrm_3_contact_1_fieldset_fieldset
-    civicrm_3_contact_1_contact_first_name:
-      '#type': textfield
-      '#counter_type': character
-      '#counter_maximum': 64
-      '#counter_maximum_message': ' '
-      '#contact_type': individual
-      '#form_key': civicrm_3_contact_1_contact_first_name
-      '#extra':
-        width: 20
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': 'First Name'
-    civicrm_3_contact_1_contact_last_name:
-      '#type': textfield
-      '#counter_type': character
-      '#counter_maximum': 64
-      '#counter_maximum_message': ' '
-      '#contact_type': individual
-      '#form_key': civicrm_3_contact_1_contact_last_name
-      '#extra':
-        width: 20
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': 'Last Name'
-    civicrm_3_contact_1_email_email:
-      '#type': email
-      '#form_key': civicrm_3_contact_1_email_email
-      '#extra':
-        width: 20
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': Email
   civicrm_1_activity_1_fieldset_fieldset:
     '#type': container
     '#title': Activity
@@ -235,7 +208,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q1 I learned something new about [the presentation topic].'
+      '#title': 'I learned something new about [the presentation topic].'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_666:
@@ -248,7 +221,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_666
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q2 List one new thing you learned about [the presentation topic].</strong>'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one new thing you learned about [the presentation topic].</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_667:
       '#type': civicrm_options
@@ -273,24 +246,12 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q3 I am able to identify consent versus problematic behaviours or abuse (not consent)'
+      '#title': 'I am able to identify consent versus problematic behaviours or abuse (not consent)'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_669:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_669
+      '#title': 'I learned something new about how to support someone'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -298,12 +259,15 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_669
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q4 I learned something new about how to support someone impacted by [the presentation topic]'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_668:
       '#type': textarea
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one thing you can do to support someone impacted by the presentation topic</strong>'
       '#data_type': Memo
       '#extra':
         cols: '60'
@@ -312,34 +276,6 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_668
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q5 List one thing you can do to support someone impacted by [the presentation topic]</strong>'
-      '#default_value': ''
-    civicrm_1_activity_1_cg49_custom_671:
-      '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_671
-      '#options':
-        'Strongly Agree': 'Strongly Agree'
-        Agree: Agree
-        'Somewhat Agree': 'Somewhat Agree'
-        'Somewhat Disagree': 'Somewhat Disagree'
-        Disagree: Disagree
-        'Strongly Disagree': 'Strongly Disagree'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q6 I learned something new about how to respond to a disclosure.'
-      '#civicrm_live_options': 1
-      '#default_value': ''
     civicrm_1_activity_1_cg49_custom_672:
       '#type': civicrm_options
       '#extra':
@@ -363,24 +299,12 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q7 I feel more prepared to support someone who has experienced sexual violence.'
+      '#title': 'I feel more prepared to support someone who has experienced sexual violence.'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_673:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_673
+      '#title': 'I learned about resources people can access for help.'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -388,10 +312,12 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_673
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q8 I learned about resources people can access for help.'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_670:
       '#type': textarea
       '#data_type': Memo
@@ -402,7 +328,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_670
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q9 List one resource people can access for help.</strong>'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one resource people can access for help.</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_674:
       '#type': civicrm_options
@@ -427,7 +353,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q10 If I were to receive a disclosure of sexual violence and needed support and/or resources, I would reach out to SACE.'
+      '#title': 'If I were to receive a disclosure of sexual violence and needed support and/or resources, I would reach out to SACE.'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_675:
@@ -453,7 +379,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q11 I have a greater understanding of the impact of this community social issue.'
+      '#title': 'I have a greater understanding of the impact of this community social issue.'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_676:
@@ -479,7 +405,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q12 I have more knowledge to help address this community social issue.'
+      '#title': 'I have more knowledge to help address this community social issue.'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_677:
@@ -505,7 +431,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q13 Education on sexual violence and consent is essential for the well-being of my students/clients/participants.'
+      '#title': 'Education on sexual violence and consent is essential for the well-being of my students/clients/participants.'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_705:
@@ -532,7 +458,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q14 I feel more clear on what values guide my organization''s response to sexual violence'
+      '#title': 'I feel more clear on what values guide my organization''s response to sexual violence'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_681:
@@ -558,7 +484,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q15 This session was a valuable opportunity to think collaboratively with my team about our response to sexual violence'
+      '#title': 'This session was a valuable opportunity to think collaboratively with my team about our response to sexual violence'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_682:
@@ -584,7 +510,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q16 The scenarios helped me understand how to operationalize our safer spaces values and program.'
+      '#title': 'The scenarios helped me understand how to operationalize our safer spaces values and program.'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_680:
@@ -610,7 +536,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q17 I think this session will help my organization develop and execute better safer spaces policies and practices.'
+      '#title': 'I think this session will help my organization develop and execute better safer spaces policies and practices.'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_678:
@@ -623,7 +549,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_678
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q18 What information did you find most helpful and/or relevant to your work?</strong>'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">What information did you find most helpful and/or relevant to your work?</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_699:
       '#type': civicrm_options
@@ -648,24 +574,12 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q19 I feel more prepared to intervene in a situation where sexual violence has occurred or may occur'
+      '#title': 'I feel more prepared to intervene in a situation where sexual violence has occurred or may occur'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_700:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_700
+      '#title': 'I have a better understanding of privilege, oppression, and what it means to be an ally.'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -673,10 +587,28 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_700
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q20 I have gained a better understanding of what it means to be an ally'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg49_custom_671:
+      '#type': civicrm_options
+      '#title': 'I am committed to addressing sexual violence and promoting a culture of consent, including actions like challenging harmful attitudes and behaviours, educating myself and others, advocating for policy and cultural change, and/or supporting sexual assault survivors and services.'
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_671
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_701:
       '#type': civicrm_options
       '#extra':
@@ -700,7 +632,7 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q21 The presenter(s) were effective'
+      '#title': 'The presenter(s) were effective'
       '#civicrm_live_options': 1
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_679:
@@ -713,9 +645,8 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_679
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q22 What did you like most about the presentation/course?</strong>'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">What did you like most about the presentation/course?</strong>'
       '#default_value': ''
-      '#required': '0'
     civicrm_1_activity_1_cg49_custom_812:
       '#type': textarea
       '#data_type': Memo
@@ -726,7 +657,7 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_812
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">Q23 What did you like least about the presentation/course? Is there anything you would change, or anything missing you would like to learn about?</strong>'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">What did you like least about the presentation/course? Is there anything you would change, or anything missing you would like to learn about?</strong>'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_813:
       '#type': civicrm_options
@@ -752,9 +683,8 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q24 I would use SACE services again'
+      '#title': 'I would use SACE services again'
       '#civicrm_live_options': 1
-      '#required': '0'
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_703:
       '#type': civicrm_options
@@ -779,43 +709,62 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q25 I would use SACE services again'
+      '#title': 'I would use SACE services again'
       '#civicrm_live_options': 1
       '#default_value': ''
-    civicrm_1_activity_1_cg49_custom_704:
+  demographic_information:
+    '#type': fieldset
+    '#title': 'Demographic Information'
+    civicrm_1_activity_1_cg49_custom_1262:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |-
-          Yes|Yes
-          No|No
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_704
-      '#options':
-        'Yes': 'Yes'
-        'No': 'No'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q26 Are any of the following statements true for you?   I am a member of the Canadian Armed Forces, or have been a member in the past   Members of my family or household are members of the Canadian Armed Forces   I work on a Canadian Armed Forces base'
-      '#civicrm_live_options': 1
-      '#default_value': ''
-    civicrm_1_activity_1_cg53_custom_706:
-      '#type': textfield
-      '#title': 'Booking Reference ID'
+      '#title': 'Demographic Information'
+      '#description': 'As part of our commitment to improving services and accessibility for individuals from diverse communities, we want to know more about the demographics SACE is serving. If you feel comfortable sharing, please select ANY and AS MANY of the options that apply to you. &quot;I identify as&hellip;&quot;'
+      '#help_title': 'How This Will Be Used'
+      '#help': |-
+        No personally identifying information will ever be shared by SACE. We process anonymous totals, search for trends, and evaluate feedback to hold ourselves accountable, measure our progress, and to learn how we can better serve communities. Totals and findings are shared with our stakeholders, including equity and inclusion committees, program staff, management, and funders. We&#39;ll also use this data in funding proposals and funder reports to support programming and services for priority populations and create educational resources and communications pieces for the broader community informed by our learnings.<br />
+        <br />
+        Please note that we only ask about identities we have a reason for asking about: we realize that this list isn&#39;t complete, and we invite folks to share additional identities you might like us to know about. The identities listed here reflect identified, specific SACE program delivery, funding, or accessibility goals.
       '#title_display': none
+      '#help_display': element_after
+      '#options':
+        Indigenous: 'First Nations, Métis, or Inuit/ Indigenous'
+        Newcomers: Newcomer/Non-Status/Refugee/Immigrant
+        Incarcerated: Incarcerated
+        Rural: Rural
+        MedicalStudentsProfessionals: 'Medical Students/ Professionals'
+        ServiceProviders: 'Service Providers'
+        Educators: Educators
+        Black: Black
+        Racialized: 'Person of Colour/ Racialized'
+        Francophone: 'Francophone (Language)'
+        Man/Boy: Man/Boy
+        Woman/Girl: Woman/Girl
+        Trans: 'Trans, Two-Spirit, Nonbinary, and/or a Gender Minority'
+        Deaf: 'Deaf or Hard of Hearing'
+        Neurodiverse: Neurodiverse
+        'Person with a Disability': 'Person with a Disability'
+        'Direct, Indirect/Family': 'Direct, Indirect/Family, or Past Connection to the Canadian Armed Forces'
+        'Sex worker': 'Sex worker'
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_1262
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg49_custom_1263:
+      '#type': textfield
+      '#data_type': Float
       '#counter_type': character
       '#counter_maximum': 255
       '#counter_maximum_message': ' '
-      '#default_value': '[current-page:query:bid]'
-      '#attributes':
-        style: 'display:none'
-      '#data_type': Int
-      '#form_key': civicrm_1_activity_1_cg53_custom_706
+      '#form_key': civicrm_1_activity_1_cg49_custom_1263
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Age
 css: ''
 javascript: ''
 settings:
@@ -1090,9 +1039,9 @@ handlers:
         Client: Client
       civicrm_3_contact_1_contact_existing: 0
       civicrm_3_contact_1_contact_prefix_id: 0
-      civicrm_3_contact_1_contact_first_name: create_civicrm_webform_element
+      civicrm_3_contact_1_contact_first_name: 0
       civicrm_3_contact_1_contact_middle_name: 0
-      civicrm_3_contact_1_contact_last_name: create_civicrm_webform_element
+      civicrm_3_contact_1_contact_last_name: 0
       civicrm_3_contact_1_contact_suffix_id: 0
       civicrm_3_contact_1_contact_nick_name: 0
       civicrm_3_contact_1_contact_gender_id: 0
@@ -1126,33 +1075,10 @@ handlers:
       contact_3_number_of_other: '0'
       contact_3_number_of_address: '0'
       contact_3_number_of_phone: '0'
-      contact_3_number_of_email: '1'
-      civicrm_3_contact_1_email_email: create_civicrm_webform_element
-      civicrm_3_contact_1_email_location_type_id: '1'
-      civicrm_3_contact_1_email_is_primary: '1'
+      contact_3_number_of_email: '0'
       contact_3_number_of_website: '0'
       contact_3_number_of_im: '0'
-      contact_3_number_of_relationship: '2'
-      civicrm_3_contact_1_relationship_relationship_type_id:
-        '': ''
-      civicrm_3_contact_1_relationship_is_active: '1'
-      civicrm_3_contact_1_relationship_relationship_permission: 0
-      civicrm_3_contact_1_relationship_start_date: 0
-      civicrm_3_contact_1_relationship_end_date: 0
-      civicrm_3_contact_1_relationship_description: 0
-      civicrm_3_contact_1_relationship_custom_138: 0
-      civicrm_3_contact_1_relationship_custom_318: 0
-      civicrm_3_contact_1_relationship_custom_319: 0
-      civicrm_3_contact_2_relationship_relationship_type_id:
-        '': ''
-      civicrm_3_contact_2_relationship_is_active: '1'
-      civicrm_3_contact_2_relationship_relationship_permission: 0
-      civicrm_3_contact_2_relationship_start_date: 0
-      civicrm_3_contact_2_relationship_end_date: 0
-      civicrm_3_contact_2_relationship_description: 0
-      civicrm_3_contact_2_relationship_custom_138: 0
-      civicrm_3_contact_2_relationship_custom_318: 0
-      civicrm_3_contact_2_relationship_custom_319: 0
+      contact_3_number_of_relationship: '0'
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 0
@@ -1185,6 +1111,33 @@ handlers:
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
+      activity_1_settings_dynamic_custom_cg55: 0
+      civicrm_1_activity_1_cg55_custom_1086: 0
+      civicrm_1_activity_1_cg55_custom_1087: 0
+      civicrm_1_activity_1_cg55_custom_1088: 0
+      civicrm_1_activity_1_cg55_custom_1089: 0
+      civicrm_1_activity_1_cg55_custom_1090: 0
+      civicrm_1_activity_1_cg55_custom_1091: 0
+      civicrm_1_activity_1_cg55_custom_1092: 0
+      civicrm_1_activity_1_cg55_custom_1093: 0
+      civicrm_1_activity_1_cg55_custom_1094: 0
+      civicrm_1_activity_1_cg55_custom_1095: 0
+      civicrm_1_activity_1_cg55_custom_1096: 0
+      civicrm_1_activity_1_cg55_custom_1097: 0
+      civicrm_1_activity_1_cg55_custom_1098: 0
+      civicrm_1_activity_1_cg55_custom_1099: 0
+      civicrm_1_activity_1_cg55_custom_1100: 0
+      civicrm_1_activity_1_cg55_custom_1101: 0
+      civicrm_1_activity_1_cg55_custom_1102: 0
+      civicrm_1_activity_1_cg55_custom_1103: 0
+      civicrm_1_activity_1_cg55_custom_1104: 0
+      civicrm_1_activity_1_cg55_custom_1105: 0
+      civicrm_1_activity_1_cg55_custom_1106: 0
+      civicrm_1_activity_1_cg55_custom_1107: 0
+      civicrm_1_activity_1_cg55_custom_1108: 0
+      civicrm_1_activity_1_cg55_custom_1109: 0
+      civicrm_1_activity_1_cg55_custom_1212: 0
+      civicrm_1_activity_1_cg55_custom_1213: 0
       activity_1_settings_dynamic_custom_cg30: 0
       civicrm_1_activity_1_cg30_custom_342: 0
       civicrm_1_activity_1_cg30_custom_343: 0
@@ -1214,7 +1167,6 @@ handlers:
       civicrm_1_activity_1_cg2_custom_334: 0
       civicrm_1_activity_1_cg2_custom_331: 0
       civicrm_1_activity_1_cg2_custom_330: 0
-      civicrm_1_activity_1_cg2_custom_329: 0
       civicrm_1_activity_1_cg2_custom_40: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_88: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_126: 0
@@ -1231,11 +1183,10 @@ handlers:
       civicrm_1_activity_1_cg2_custom_34: 0
       civicrm_1_activity_1_cg2_custom_35: 0
       civicrm_1_activity_1_cg2_custom_37: 0
-      civicrm_1_activity_1_cg2_custom_41: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_41: 0
       civicrm_1_activity_1_cg2_custom_127: 0
       civicrm_1_activity_1_cg2_custom_128: 0
       civicrm_1_activity_1_cg2_custom_129: 0
-      civicrm_1_activity_1_cg2_custom_340: 0
       civicrm_1_activity_1_cg2_custom_341: 0
       civicrm_1_activity_1_cg2_custom_655: 0
       civicrm_1_activity_1_cg2_custom_656: 0
@@ -1248,6 +1199,11 @@ handlers:
       civicrm_1_activity_1_cg2_custom_697: 0
       civicrm_1_activity_1_cg2_custom_698: 0
       civicrm_1_activity_1_cg2_custom_815: 0
+      civicrm_1_activity_1_cg2_custom_816: 0
+      civicrm_1_activity_1_cg2_custom_1232: 0
+      civicrm_1_activity_1_cg2_custom_1233: 0
+      civicrm_1_activity_1_cg2_custom_1234: 0
+      civicrm_1_activity_1_cg2_custom_1261: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1609,15 +1565,15 @@ handlers:
       civicrm_1_activity_1_cg48_custom_634: 0
       civicrm_1_activity_1_cg48_custom_638: 0
       civicrm_1_activity_1_cg48_custom_639: 0
-      activity_1_settings_dynamic_custom_cg49: 1
+      activity_1_settings_dynamic_custom_cg49: 0
       civicrm_1_activity_1_cg49_custom_665: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_666: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_667: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_668: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_669: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_670: create_civicrm_webform_element
-      civicrm_1_activity_1_cg49_custom_671: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_672: create_civicrm_webform_element
+      civicrm_1_activity_1_cg49_custom_671: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_673: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_674: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_675: create_civicrm_webform_element
@@ -1632,10 +1588,12 @@ handlers:
       civicrm_1_activity_1_cg49_custom_700: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_701: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_703: create_civicrm_webform_element
-      civicrm_1_activity_1_cg49_custom_704: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_705: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_812: create_civicrm_webform_element
       civicrm_1_activity_1_cg49_custom_813: create_civicrm_webform_element
+      civicrm_1_activity_1_cg49_custom_1262: create_civicrm_webform_element
+      civicrm_1_activity_1_cg49_custom_1263: create_civicrm_webform_element
+      civicrm_1_activity_1_cg49_custom_1264: 0
       activity_1_settings_dynamic_custom_cg50: 0
       civicrm_1_activity_1_cg50_custom_87: 0
       civicrm_1_activity_1_cg50_custom_208: 0
@@ -1654,7 +1612,6 @@ handlers:
       civicrm_1_activity_1_cg50_custom_693: 0
       civicrm_1_activity_1_cg50_custom_694: 0
       civicrm_1_activity_1_cg50_custom_695: 0
-      civicrm_1_activity_1_cg50_custom_696: 0
       activity_1_settings_dynamic_custom_cg53: 0
       civicrm_1_activity_1_cg53_custom_706: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg54: 0
@@ -1889,24 +1846,16 @@ handlers:
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
-            number_of_email: '1'
+            number_of_email: '0'
             number_of_website: '0'
             number_of_im: '0'
-            number_of_relationship: '2'
-            email:
-              1:
-                location_type_id: '1'
-                is_primary: '1'
-            relationship:
-              1:
-                is_active: '1'
-              2:
-                is_active: '1'
+            number_of_relationship: '0'
         activity:
           number_of_activity: '1'
           1:
             existing_activity_status: {  }
             details: {  }
+            dynamic_custom_cg55: 0
             dynamic_custom_cg30: 0
             dynamic_custom_cg2: 0
             dynamic_custom_cg9: 0
@@ -1930,7 +1879,7 @@ handlers:
             dynamic_custom_cg46: 0
             dynamic_custom_cg47: 0
             dynamic_custom_cg48: 0
-            dynamic_custom_cg49: 1
+            dynamic_custom_cg49: 0
             dynamic_custom_cg50: 0
             dynamic_custom_cg53: 0
             dynamic_custom_cg54: 0
