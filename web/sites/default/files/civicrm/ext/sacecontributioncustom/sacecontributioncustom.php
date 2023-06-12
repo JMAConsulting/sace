@@ -86,6 +86,7 @@ function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
   if($formName == 'CRM_Contribute_Form_Contribution_Main'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/general-donate-forms.js');
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-forms.css');
+    Civi::resources()->addScriptFile('sacecontributioncustom', 'js/accessibility_fund_general.js');
   }
 
   if($formName == 'CRM_Contribute_Form_Contribution_Confirm'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
