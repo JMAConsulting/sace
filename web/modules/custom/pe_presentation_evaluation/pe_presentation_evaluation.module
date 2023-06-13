@@ -93,6 +93,15 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
 
     $result["Booking_Information.Presentation_topics"] = $result["Booking_Information.Presentation_topics"] ?: [];
+    $result["Booking_Information.Audience"] = $result["Booking_Information.Audience"] ?: [];
+
+    // for youth online course course feedback hide specific questiins
+    if ($result['activity_type_id'] == 196) { 
+      foreach ([6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 24] as $Q) {
+        $key = 'civicrm_1_activity_1_cg49_custom_' . $mapper[$Q];
+        $elements[$key]['#access'] = FALSE;
+      }
+    }
 
     foreach ($mapper as $Q => $cfID) {
       $key = 'civicrm_1_activity_1_cg49_custom_' . $value['value'];
