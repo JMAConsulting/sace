@@ -1,6 +1,8 @@
 <?php
 use Drupal\webform\Utility\WebformFormHelper;
 
+require_once 'pe_presentation_evaluation.variables.php';
+
 /**
  * Implements hook_form_alter().
  * @param $form
@@ -8,39 +10,36 @@ use Drupal\webform\Utility\WebformFormHelper;
  * @param $form_id
  */
 function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_presentation_evaluation_summary__add_form') {
+    //Get webform elements
+    $elements = WebformFormHelper::flattenElements($form);
+
+    $elements['civicrm_1_activity_1_cg2_custom_458']['#default_value'] = TRUE;
+    $elements['civicrm_1_activity_1_cg2_custom_459']['#default_value'] = 1;
+
+    $query = \Drupal::entityQuery('webform_submission')
+      ->condition('webform_id', 'webform_submission_presentation_evaluation_summary__add_form');
+  }
+
   if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
-    $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
-    $form['#attached']['drupalSettings']['pe_presentation_evaluation']['pe_presentation_evaluation']['test'] = 'values';
+
+    // Get custom field constants
+    $constants = get_defined_constants(FALSE);
 
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
-    //Get default selected value for Presentation Topic
-    $default_val = $elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0];
-    //Get select field text based on default value
-    $topic = $elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$default_val] ?? 'presentation topic';
-
-    //Update Q1 presentation topic
-    //Get q1
-    $q1 = $elements["q1"]["#title"];
-    //Update text for q1
-    $elements['q1']['#title'] = str_replace('presentation topic', $topic, $q1);
-
-    //Update Q2 presentation topic
-    //Get q2
-    $q2 = $elements["feedback"]["#title"];
-    //Update text for q2
-    $elements['feedback']['#title'] = str_replace('topic', $topic, $q2);
 
     // Get activity id from query var.
-    //get from form field TODO
-    $aid = $elements['aid']['#default_value'] ?? 0;
+    $aid = \Drupal::request()->query->get('bid');
     if (empty($aid) || !is_numeric($aid)) {
       return;
     }
-
     // Get Booking Intake custom fields
-    $result = \Civi\Api4\Activity::get()
-      ->addSelect('Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Population_of_Focus')
+    $result = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('activity_type_id', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
+      ->addJoin('ActivityContact AS activity_contact', 'INNER')
+      ->addGroupBy('id')
+      ->addWhere('activity_contact.record_type_id', '=', 3)
       ->addWhere('id', '=', $aid)
       ->execute()
       ->first();
@@ -49,63 +48,131 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
       return;
     }
 
-    // Q3-4 based on support content toggled
-    if ($result["Booking_Information.Support_Content"] != 1) {
-      $elements['q3']['#access'] = FALSE;
-      $elements['feedback_q4']['#access'] = FALSE;
+    // Disable date and presentation method fields
+    $elements[$constants['PE_PRESENTATION_EVALUATION_ACTIVITY_DATE']]['#disabled'] = TRUE;
+    $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#disabled'] = TRUE;
+    $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#default_value'] = $result['Booking_Information.Presentation_Method'];
+    $elements[$constants['TARGET_CONTACT']] = $result['activity_contact.contact_id'];
+
+    if (in_array($result['activity_type_id'], [55, 196])) {
+      unset($elements[$constants['DEMOGRAPHIC_INFO']]['#options']['Sex worker']);
     }
 
-    // Q5 - q6 based on Community Resources or SACE Services toggled
-    if (empty($result["Booking_Information.Presentation_topics"])) {
-      return;
+    //Get default selected value for Presentation Topic
+    if (!empty($result['Booking_Information.Online_Courses'])) {
+      $topics = \Civi\Api4\OptionValue::get(FALSE)
+        ->addSelect('description')
+        ->addWhere('value', 'LIKE', $result['Booking_Information.Online_Courses'])
+        ->execute()->first()['description'];
     }
-    if ($result["Booking_Information.Presentation_topics"] != 'SACEServices') {
-      if ($result["Booking_Information.Resources_Content"] != 1) {
-        $elements['q5']['#access'] = FALSE;
-        $elements['feedback_q6']['#access'] = FALSE;
+    else {
+      $topics = $result['Booking_Information.Presentation_topics:label'];
+    }
+
+    if (is_array($topics)) {
+      $topic = implode(', ', $topics);
+      if (in_array('Custom/ Something Different', $topics)) {
+        $topic = str_replace('Custom/ Something Different', $result['Booking_Information.Presentation_custom'], $topic);
+      }
+    }
+    else {
+      $topic = $topics;
+    }
+    $elements['presentation_topic_markup']['#markup'] = '<label for="presentation_topic_markup" class="form-item__label">Presentation Topic(s)</label><div>' . $topic . '</div>';
+
+    //Hide other_presentation_topic
+    $elements[$constants['Presentaion_Custom']]['#access'] = FALSE;
+
+    $mapping = \Civi\Api4\OptionValue::get(FALSE)
+      ->addSelect('value', 'label')
+      ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
+      ->execute();
+    $mapper = [];
+    foreach ($mapping as $value) {
+      $mapper[$value['label']] = $value['value'];
+    }
+
+    $result["Booking_Information.Presentation_topics"] = $result["Booking_Information.Presentation_topics"] ?: [];
+    $result["Booking_Information.Audience"] = $result["Booking_Information.Audience"] ?: [];
+
+    // for youth online course course feedback hide specific questiins
+    if ($result['activity_type_id'] == 196) { 
+      foreach ([6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 24] as $Q) {
+        $key = 'civicrm_1_activity_1_cg49_custom_' . $mapper[$Q];
+        $elements[$key]['#access'] = FALSE;
       }
     }
 
-    // Q9 - q11 toggle based on Safer Spaces Content toggled
-    if ($result['Booking_Information.Safer_Spaces_Content'] != 1) {
-      $elements['q9']['#access'] = FALSE;
-      $elements['q10']['#access'] = FALSE;
-      $elements['q11']['#access'] = FALSE;
+    foreach ($mapper as $Q => $cfID) {
+      $key = 'civicrm_1_activity_1_cg49_custom_' . $value['value'];
+      $elements[$key]['#title'] = str_replace('[the presentation topic]', $topic, $elements[$key]['#title']);
+      $Q = (int) $Q;
+      switch($Q) {
+        case 4:
+        case 5:
+        case 7:
+          //Show Q4 Q5 Q7 if Support content covered is Yes
+          $elements[$key]['#access'] = ($result["Booking_Information.Support_Content"] == 1);
+          break;
+
+        case 8:
+        case 9:
+          //Show Q8 Q9 if Content Covered: Resources is selected to Yes
+          $elements[$key]['#access'] = ($result["Booking_Information.Resources_Content"] == 1);
+          break;
+
+        case 13:
+        case 18:
+          //Hide Q13 if Audience not in list
+          $elements[$key]['#access'] = !empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]));
+          break;
+
+        case 14:
+        case 15:
+        case 16:
+          //Hide Q14 Q15 Q16 if Safer Spaces Content is NO
+          $elements[$key]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
+          break;
+
+        case 17:
+          //Hide Q17 if Facilitating Program is not Institutional Support
+          $elements[$key]['#access'] = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+          break;
+
+        case 19:
+          //Hide Q19 if Presentation Topic is not Bystander Intervention
+          $elements[$key]['#access'] = (bool) in_array('BystanderIntervention', $result["Booking_Information.Presentation_topics"]);
+          break;
+
+        case 20:
+          //Show Q20 if Privilege and Oppression Covered set to Yes
+          $elements[$key]['#access'] = (bool) $result['Booking_Information.Privilege_and_Oppression_Content'];
+          break;
+
+        case 21:
+          //Hide Q21 if Presentation Method is not Online Course else hide Q22
+          $elements[$key]['#access'] = !($result['Booking_Information.Presentation_Method'] == 'Online Course');
+          break;
+
+        case 22:
+          //Hide Q21 if Presentation Method is not Online Course else hide Q22
+          $elements[$key]['#access'] = !($result['Booking_Information.Presentation_Method'] != 'Online Course');
+          break;
+
+        case 24:
+          $elements[$key]['#access'] = ($result["Booking_Information.Audience"] == 'Adult');
+          break;
+
+        case 21:
+          //Hide Q21 if Presentation Method is not Online Course else hide Q22
+          $elements[$key]['#access'] = (bool) ($result['Booking_Information.Youth_or_Adult'] == 'Adult');
+          break;
+
+        default:
+          break;
+
+      }
     }
 
-    //Q12 toggle based on facilitating program is Institutional Support
-    if ($result['Booking_Information.Facilitating_Program'] != 'InstitutionalSupport') {
-      $elements['q12']['#access'] = FALSE;
-    }
-
-    // Q13-15 toggle based on Demographic   information
-    if ($result['Booking_Information.Presentation_Population_of_Focus'] != NULL) {
-      $elements['q13']['#access'] = FALSE;
-      $elements['q14']['#access'] = FALSE;
-      $elements['q15']['#access'] = FALSE;
-    }
-
-    //Q16 toggle show when presentation topic is Bystander Intervention
-    if ($result['Booking_Information.Presentation_topics'] != 'BystanderIntervention') {
-      $elements['q16']['#access'] = FALSE;
-    }
-    //Q17 toggle show when presentation topic is Privilege and Oppression
-    if ($result['Booking_Information.Presentation_topics'] !== 'PrivilegeandOppression') {
-      $elements['q17']['#access'] = FALSE;
-    }
-  }
-
-  // Move to new module for booking update
-  if ($form_id == "webform_submission_update_ped_booking_add_form") {
-    //Get webform form elements
-    $elements = WebformFormHelper::flattenElements($form);
-
-    if (empty($elements)) {
-      return;
-    }
-    //exit('<pre>'. print_r($form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'], TRUE).'</pre>');
-    if ($elements['civicrm_1_activity_1_cg2_custom_40']['#default_value'][0] == "CustomSomethingDifferent") {
-      $form['elements']['civicrm_1_activity_1_cg2_custom_41']['#wrapper_attributes']['class'][0] = "";
-    }
   }
 }
