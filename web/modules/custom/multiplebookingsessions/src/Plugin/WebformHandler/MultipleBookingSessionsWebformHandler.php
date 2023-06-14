@@ -63,7 +63,7 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
       for ($key = 1; $key <= 10; $key++) {
         if (!empty($webform_submission_data['additional_appointment_' . $key])) {
           $newActivity = $activity;
-          $activity['source_contact_id'] = $source_contact_id;
+          $newActivity['source_contact_id'] = $source_contact_id;
           unset($newActivity['id']);
           $newActivity['activity_date_time'] = $webform_submission_data['additional_appointment_' . $key];
           $newActivityRecord = Activity::create(FALSE)
