@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Multiplebookingssupport</base>
+  <class>MultipleBooking</class>
+  <name>civicrm_multiple_booking</name>
+  <comment>FIXME</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique MultipleBooking ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>is_multiple_booking</name>
+    <type>boolean</type>
+    <comment>Does this activity type support multiple bookings</comment>
+    <default>0</default>
+    <required>true</required>
+    <html>
+      <type>CheckBox</type>
+    </html>
+  </field>
+  <field>
+    <name>activity_type_id</name>
+    <type>int</type>
+    <comment>Activity Type ID</comment>
+    <html>
+      <type>Select</type>
+    </html>
+  </field>
+  <index>
+    <name>UI_activity_type_id</name>
+    <fieldName>activity_type_id</fieldName>
+    <unique>true</unique>
+  </index>
+</table>
