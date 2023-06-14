@@ -15,13 +15,6 @@
       $('#new-org').trigger('click');
     });
 
-    let optional_addons_select = document.getElementById(`${drupalSettings.ped_online_course_booking_request.optional_addons_select}`);
-    let option = optional_addons_select.options[1].value;
-    $(`#${drupalSettings.ped_online_course_booking_request.optional_addons_select} option`).each(function () {
-      if ($(this).val() != option && $(this).val() != '') {
-        $(this).hide();
-      }
-    });
     $(`#${drupalSettings.ped_online_course_booking_request.high_school_checkbox}`).click(function () {
       if ($(this).is(":checked")) {
         $(`#${drupalSettings.ped_online_course_booking_request.optional_addons_select} option`).each(function () {
