@@ -15,8 +15,23 @@ const onBehalf = document.querySelector("#on-behalf-block fieldset");
 const postProfileSection = document.querySelector(".custom_post_profile-group");
 const preProfileSection = document.querySelector(".custom_pre_profile-group");
 const crmBottomButtons = document.querySelector(".crm-submit-buttons");
+const monthlyContentRow = document.querySelector(".monthly-content");
+const oneTimeContentRow = document.querySelector(".one_time-content");
 
-// console.log(preProfileSection)
+document.addEventListener("change", (e) => {
+	if (monthlyContentRow && monthlyContentRow.contains(e.target)) {
+		if (otherAmountInput.value && otherAmountInput.value > 0) {
+			otherAmountInput.value = 0;
+			otherAmountInput.dispatchEvent(new Event("keyup"));
+		}
+	}
+	if (oneTimeContentRow && oneTimeContentRow.contains(e.target)) {
+		if (otherAmountInput.value && otherAmountInput.value > 0) {
+			otherAmountInput.value = 0;
+			otherAmountInput.dispatchEvent(new Event("keyup"));
+		}
+	}
+});
 
 // Change position of Name and Address Section
 if (preProfileSection) {
@@ -141,10 +156,10 @@ if (hasToggleButtons) {
 	const toggleOneTime = document.getElementById("toggleOneTime");
 	const noneMonthly = monthlySection.querySelector(".monthly-content .price-set-row:last-of-type input");
 	const noneOneTime = oneTimeSection.querySelector(".one_time-content .price-set-row:last-of-type input");
-	// console.log(noneOneTime)
+
 	toggleMonthly.addEventListener("click", (e) => {
 		e.preventDefault();
-		console.log("monthly");
+
 		toggleMonthly.classList.add("active");
 		monthlySection.classList.add("active");
 		toggleOneTime.classList.remove("active");
@@ -158,7 +173,7 @@ if (hasToggleButtons) {
 
 	toggleOneTime.addEventListener("click", (e) => {
 		e.preventDefault();
-		console.log("One Time");
+
 		toggleOneTime.classList.add("active");
 		oneTimeSection.classList.add("active");
 		toggleMonthly.classList.remove("active");

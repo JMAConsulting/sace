@@ -414,6 +414,16 @@ a.sace-btn:focus,
 	margin-left: 10px;
 }
 
+.crm-section .label.option-label > label {
+	font-size: 17px;
+	color: var(--color-heading);
+	font-weight: 600;
+}
+
+.crm-section td.labels {
+	display: flex;
+}
+
 .contribution_amount-content {
 	display: flex;
 }
@@ -436,6 +446,12 @@ a.sace-btn:focus,
 	.contribution_amount-content .price-set-row {
 		flex-basis: 100px;
 	}
+}
+
+.contribution_amount-content .price-set-row:last-of-type {
+	position: absolute;
+	z-index: -10;
+	opacity: 0;
 }
 
 .price-set-row > span > label {

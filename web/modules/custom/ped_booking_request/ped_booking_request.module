@@ -61,5 +61,20 @@ function ped_booking_request_preprocess_page_title(&$variables, $hook) {
         '#markup' => 'Adult Presentation Booking Request',
       ];
     }
+    elseif ($bt == 201) {
+      $variables['title'] = [
+        '#markup' => 'WiseGuyz Booking Request',
+      ];
+    }
+    elseif ($bt == 203) {
+      $variables['title'] = [
+        '#markup' => 'Community Engagement Services Request',
+      ];
+    }
+    elseif ($bt == 204) {
+      $variables['title'] = [
+        '#markup' => 'Institutional Support Services Request',
+      ];
+    }
   }
 }

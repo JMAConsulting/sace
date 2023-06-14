@@ -619,6 +619,16 @@ input[type="radio"]:checked {
 	display: none;
 }
 
+.crm-section .label.option-label > label {
+	font-size: 17px;
+	color: var(--color-heading);
+	font-weight: 600;
+}
+
+.crm-section td.labels {
+	display: flex;
+}
+
 #crm-container.crm-public .contribution_amount-content .price-set-row .price-set-option-content .crm-price-amount-amount {
 	display: block;
 	color: var(--color-light);
