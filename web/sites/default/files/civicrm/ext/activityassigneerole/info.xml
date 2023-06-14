@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="activityassigneerole" type="module">
   <file>activityassigneerole</file>
-  <name>activityassigneerole</name>
-  <description>FIXME</description>
+  <name>Activity Assignee Role</name>
+  <description>Allow for the setting of an additional role for Activity Assignees</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Seamus Lee</author>

@@ -1,4 +1,4 @@
-<?
+<?php
 return [
   [
     'name' => 'OptionGroup_appointment_role', 

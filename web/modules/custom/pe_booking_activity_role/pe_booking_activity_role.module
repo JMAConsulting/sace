@@ -1,0 +1,27 @@
+<?php
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function pe_booking_activity_role_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if (in_array($form_id, ['webform_submission_update_ped_booking_add_form', 'webform_submission_ped_online_course_booking_update_add_form'])) {
+    $elements = WebformFormHelper::flattenElements($form);
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    $activityRoles = \Civi\Api4\ActivityRole::get(FALSE)->addWhere('activity_id', '=', $aid)->execute();
+    $count = 3;
+    foreach ($activityRoles as $activityRole) {
+      // do something
+      $elements['contact_' . $count . '_' . strtolower($activityRole['role_id'])]['#default_value'] = TRUE;
+      $count++;
+    }
+  }
+}
