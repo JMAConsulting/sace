@@ -24,7 +24,7 @@ use Civi\Api4\UFMatch;
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
  * )
  */
-class CivicrmWebformHandler extends WebformHandlerBase {
+class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
 
   /**
    * The CiviCRM service.
