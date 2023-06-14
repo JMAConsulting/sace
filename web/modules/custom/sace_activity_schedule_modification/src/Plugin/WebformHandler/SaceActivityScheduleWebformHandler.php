@@ -16,7 +16,7 @@ use Civi\Api4\UFMatch;
  *
  * @WebformHandler(
  *   id = "sace_activity_schedule",
- *   label = @Translation("CiviCRM"),
+ *   label = @Translation("Sace Activity Schedule"),
  *   category = @Translation("CRM"),
  *   description = @Translation("Sace Activity Schedule Handler"),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_SINGLE,
