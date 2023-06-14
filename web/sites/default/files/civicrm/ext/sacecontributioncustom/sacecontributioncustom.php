@@ -24,59 +24,12 @@ function sacecontributioncustom_civicrm_install() {
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
- */
-function sacecontributioncustom_civicrm_postInstall() {
-  _sacecontributioncustom_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
- */
-function sacecontributioncustom_civicrm_uninstall() {
-  _sacecontributioncustom_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
 function sacecontributioncustom_civicrm_enable() {
   _sacecontributioncustom_civix_civicrm_enable();
-}
-
-/**
- * Implements hook_civicrm_disable().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
- */
-function sacecontributioncustom_civicrm_disable() {
-  _sacecontributioncustom_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
- */
-function sacecontributioncustom_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _sacecontributioncustom_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_entityTypes().
- *
- * Declare entity types provided by this module.
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
- */
-function sacecontributioncustom_civicrm_entityTypes(&$entityTypes) {
-  _sacecontributioncustom_civix_civicrm_entityTypes($entityTypes);
 }
 
 // --- Functions below this ship commented out. Uncomment as required. ---
@@ -108,15 +61,39 @@ function sacecontributioncustom_civicrm_entityTypes(&$entityTypes) {
 //}
 
 
+/**
+ * Implements hook_civicrm_buildForm().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_buildForm
+ */
 function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
- 
-  if($formName == 'CRM_Contribute_Form_Contribution_Main' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
+
+  if ($formName == 'CRM_Contribute_Form_Contribution_Main' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/community.js');
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/forms.css');
   }
 
-  if($formName == 'CRM_Contribute_Form_Contribution_Confirm' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
+  // Add JS to auto check the accessibility fund field to yes and hide the field on the form.
+  if ($formName === 'CRM_Contribute_Form_Contribution_Main' && in_array($form->getVar('_id'), [9])) {
+    Civi::resources()->addScriptFile('sacecontributioncustom', 'js/accessibility_fund.js');
+  }
+
+  if ($formName == 'CRM_Contribute_Form_Contribution_Confirm' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/confirms.css');
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/confirms.js');
   }
+
+  if($formName == 'CRM_Contribute_Form_Contribution_Main'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
+    Civi::resources()->addScriptFile('sacecontributioncustom', 'js/general-donate-forms.js');
+    Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-forms.css');
+  }
+
+  if($formName == 'CRM_Contribute_Form_Contribution_Confirm'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
+    Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-confirms.css');
+  }
+
+  // if($formName == 'CRM_Contribute_Form_Contribution_Main'  && $form->getVar('_id') == 3) {
+  //   Civi::resources()->addScriptFile('sacecontributioncustom', 'js/general-donate-forms.js');
+  //   Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-forms.css');
+  // }
 }
