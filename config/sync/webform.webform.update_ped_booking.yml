@@ -1097,10 +1097,6 @@ handlers:
       contact_1_number_of_cg24: '0'
       contact_1_number_of_cg25: '0'
       contact_1_number_of_cg29: '0'
-<<<<<<< HEAD
-      contact_1_number_of_cg36: '0'
-=======
->>>>>>> Add in configuration changes and add in code fixes
       contact_1_number_of_other: '0'
       contact_1_number_of_address: '0'
       contact_1_number_of_phone: '1'
@@ -1208,10 +1204,6 @@ handlers:
       contact_3_number_of_cg24: '0'
       contact_3_number_of_cg25: '0'
       contact_3_number_of_cg29: '0'
-<<<<<<< HEAD
-      contact_3_number_of_cg36: '0'
-=======
->>>>>>> Add in configuration changes and add in code fixes
       contact_3_number_of_other: '0'
       contact_3_number_of_address: '0'
       contact_3_number_of_phone: '0'
@@ -1391,26 +1383,6 @@ handlers:
       civicrm_1_activity_1_cg2_custom_41: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_127: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_128: 0
-<<<<<<< HEAD
-      civicrm_1_activity_1_cg2_custom_129: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_341: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_655: 0
-      civicrm_1_activity_1_cg2_custom_656: 0
-      civicrm_1_activity_1_cg2_custom_657: 0
-      civicrm_1_activity_1_cg2_custom_658: 0
-      civicrm_1_activity_1_cg2_custom_659: 0
-      civicrm_1_activity_1_cg2_custom_660: 0
-      civicrm_1_activity_1_cg2_custom_661: 0
-      civicrm_1_activity_1_cg2_custom_662: 0
-      civicrm_1_activity_1_cg2_custom_697: 0
-      civicrm_1_activity_1_cg2_custom_698: 0
-      civicrm_1_activity_1_cg2_custom_815: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_816: 0
-      civicrm_1_activity_1_cg2_custom_1232: 0
-      civicrm_1_activity_1_cg2_custom_1233: 0
-      civicrm_1_activity_1_cg2_custom_1234: 0
-      civicrm_1_activity_1_cg2_custom_1261: create_civicrm_webform_element
-=======
       civicrm_1_activity_1_cg2_custom_129: 0
       civicrm_1_activity_1_cg2_custom_47: 0
       civicrm_1_activity_1_cg2_custom_48: 0
@@ -1448,7 +1420,6 @@ handlers:
       civicrm_1_activity_1_cg2_custom_86: 0
       civicrm_1_activity_1_cg2_custom_340: 0
       civicrm_1_activity_1_cg2_custom_341: create_civicrm_webform_element
->>>>>>> Add in configuration changes and add in code fixes
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
