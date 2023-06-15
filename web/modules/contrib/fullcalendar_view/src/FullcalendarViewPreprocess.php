@@ -10,6 +10,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Access\CsrfTokenGenerator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\fullcalendar_view\TimezoneService;
+use DateTime;
 
 class FullcalendarViewPreprocess {
   use StringTranslationTrait;
@@ -160,8 +161,8 @@ class FullcalendarViewPreprocess {
     $start_field_option = $fields[$start_field]->options;
     $end_field_option = empty($end_field) ? NULL : $fields[$end_field]->options;
     // Custom timezone or user timezone.
-    $timezone = !empty($start_field_option['settings']['timezone_override']) ?
-    $start_field_option['settings']['timezone_override'] : date_default_timezone_get();
+    $timezone = !empty($start_field_option['settings']['timezone']) ?
+    $start_field_option['settings']['timezone'] : date_default_timezone_get();
     // Set the first day setting.
     $first_day = isset($options['firstDay']) ? intval($options['firstDay']) : 0;
     // Left side buttons.
@@ -357,12 +358,18 @@ class FullcalendarViewPreprocess {
                   // Drupal store date time in UTC timezone.
                   // So we need to convert it into user timezone.
                   $entry['end'] = $timezone_service->utcToLocal($end_date, $timezone);
+                  $startDateObject = new DateTime($start_date_value);
+                  $endDateObject = new DateTime($end_date);
+                  $difference = $startDateObject->diff($endDateObject);
+                  if ($difference->days > 0 || $difference->m > 0 || $difference->y > 0) {
+                    $entry['allDay'] = TRUE;
+                  }
                 }
               }
             }
             else {
               // Without end date field, this event can't be resized.
-              $entry['eventDurationEditable'] = FALSE;
+              $entry['durationEditable'] = FALSE;
             }
             // Set the color for this event.
             if (isset($event_type) && isset($color_tax[$event_type])) {
