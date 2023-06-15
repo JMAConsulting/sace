@@ -51,7 +51,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
         '59969633dcdb4ee3e2fec945065028d6' => __DIR__ . '/..' . '/civicrm/civicrm-core/guzzle_php81_shim.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        '014237dd13e595931c6755e8f8e26793' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
+        'a321afe5b5ec99bd361b396b4b67d157' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
     );
 
     public static $prefixLengthsPsr4 = array (

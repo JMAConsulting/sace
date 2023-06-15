@@ -104,15 +104,18 @@
            "assets:packages": {
              "+include": ["kcfinder/**"]
            },
-	   "assets:core": {
+           "assets:core": {
              "+include": ["extern/**"]
-	   }
+           }
         },
         "patches": {
-	    "civicrm/civicrm-core": {
+            "civicrm/civicrm-core": {
                 "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
+            },
+            "drupal/fullcalendar_view": {
+                "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch"
             }
-	},
+        },
         "installer-paths": {
             "web/core": [
                 "type:drupal-core"
