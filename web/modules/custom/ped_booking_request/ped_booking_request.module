@@ -1,0 +1,80 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  //attach js
+  if ($form_id == "webform_submission_ped_booking_request_query_params_add_form") {
+    $form['#attached']['library'][] = 'ped_booking_request/ped_booking_request';
+    $elements = WebformFormHelper::flattenElements($form);
+    $bt = \Drupal::request()->query->get('booking_type') ?? 0;
+
+    $mapper = ($bt == 204 || $bt == 201) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation', 'Online Course']);
+    $options = [];
+    foreach($mapper as $value) {
+      $options[$value] = $elements['civicrm_1_activity_1_cg2_custom_88']['#options'][$value];
+    }
+    $elements['civicrm_1_activity_1_cg2_custom_88']['#options'] = $options;
+
+    if (in_array($bt, [55])) {
+      $elements['civicrm_3_contact_1_contact_existing']['#title'] = 'Your School';
+      $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup'] = str_replace('organization', 'school', $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup']);
+      $elements['civicrm_3_contact_1_contact_organization_name']['#title'] = 'School Name';
+      $elements['civicrm_3_contact_1_email_email']['#description']['#markup'] = str_replace('organization', 'school', $elements['civicrm_3_contact_1_email_email']['#description']['#markup']);
+      $elements['civicrm_3_contact_1_fieldset_fieldset']['#title'] = 'New School';
+      $elements['civicrm_3_contact_1_contact_contact_sub_type']['#default_value'] = $elements['civicrm_3_contact_1_contact_contact_sub_type']['#options'];
+      unset($elements['civicrm_1_activity_1_cg2_custom_88']['#options']['Online Course']);
+      if ($bt == 55) {
+        unset($elements['civicrm_1_activity_1_cg2_custom_25']['#options']['Adults (ages 18+)']);
+        $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent'];
+        foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
+          if (!in_array($key, $selectedOptions)) {
+            unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
+          }
+        }
+      }
+      else {
+        $elements['civicrm_1_activity_1_cg2_custom_815']['#title'] = 'Approximate number of participants per session';
+        $elements['civicrm_1_activity_1_cg2_custom_128']['#title'] = 'How many sessions would you like?';
+      }
+    }
+  }
+}
+
+function ped_booking_request_preprocess_page_title(&$variables, $hook) {
+  $bt = \Drupal::request()->query->get('booking_type') ?? 0;
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($current_path == '/webform/ped_booking_request_query_params') {
+    if ($bt == 55) {
+      $variables['title'] = [
+        '#markup' => 'Youth Presentation Booking Request',
+      ];
+    }
+    elseif ($bt == 59) {
+      $variables['title'] = [
+        '#markup' => 'Adult Presentation Booking Request',
+      ];
+    }
+    elseif ($bt == 201) {
+      $variables['title'] = [
+        '#markup' => 'WiseGuyz Booking Request',
+      ];
+    }
+    elseif ($bt == 203) {
+      $variables['title'] = [
+        '#markup' => 'Community Engagement Services Request',
+      ];
+    }
+    elseif ($bt == 204) {
+      $variables['title'] = [
+        '#markup' => 'Institutional Support Services Request',
+      ];
+    }
+  }
+}

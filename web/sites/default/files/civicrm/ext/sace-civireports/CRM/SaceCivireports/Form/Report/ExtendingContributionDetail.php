@@ -32,15 +32,22 @@ class CRM_SaceCivireports_Form_Report_ExtendingContributionDetail extends CRM_Re
     ];
     $this->_columns['civicrm_contribution']['fields']['recent_donation_amount'] = [
       'title' => E::ts('Most recent donation amount'),
+     // 'dbAlias' => 'contribution_civireport.total_amount',
+      'dbAlias' => '(SELECT total_amount FROM civicrm_contribution WHERE contact_id = contribution_civireport.contact_id ORDER BY id desc LIMIT 1)',
+      'type' => $this->_columns['civicrm_contribution']['fields']['total_amount']['type'],
+    ];
+    $this->_columns['civicrm_contribution']['fields']['largest_donation_amount'] = [
+      'title' => E::ts('Largest contribution'),
       'dbAlias' => '(MAX(contribution_civireport.total_amount))',
       'type' => $this->_columns['civicrm_contribution']['fields']['total_amount']['type'],
     ];
+/*
     $this->_columns['civicrm_contribution']['fields']['median'] = [
       'title' => E::ts('Median'),
       'dbAlias' => '(1)',
       'type' => $this->_columns['civicrm_contribution']['fields']['total_amount']['type'],
     ];
-
+*/
     $this->_columns['civicrm_contribution']['fields']['total_count'] = [
       'title' => E::ts('# of donations made for the year ' . date('Y')),
       'dbAlias' => '(SELECT COUNT(DISTINCT id) FROM civicrm_contribution WHERE YEAR(receive_date) = YEAR(CURRENT_DATE) AND contact_id = contribution_civireport.contact_id)',
@@ -78,6 +85,7 @@ class CRM_SaceCivireports_Form_Report_ExtendingContributionDetail extends CRM_Re
   }
 
   protected function getSelectClauseWithGroupConcatIfNotGroupedBy($tableName, &$fieldName, &$field) {
+    CRM_Core_DAO::disableFullGroupByMode();
     if ($this->groupConcatTested && (!empty($this->_groupByArray) || $this->isForceGroupBy)) {
       if ((empty($field['statistics']) || in_array('GROUP_CONCAT', $field['statistics']))) {
         $label = $field['title'] ?? NULL;
@@ -85,7 +93,7 @@ class CRM_SaceCivireports_Form_Report_ExtendingContributionDetail extends CRM_Re
         $this->_columnHeaders["{$tableName}_{$fieldName}"]['title'] = $label;
         $this->_selectAliases[] = $alias;
         if (empty($this->_groupByArray[$tableName . '_' . $fieldName]) && !in_array($field['name'], ['recent_donation_date', 'recent_donation_amount', 'total_count', 'total_lifetime_amount', 'avg_amount', 'recurring_ornot'])) {
-          return "GROUP_CONCAT(DISTINCT {$field['dbAlias']}) as $alias";
+       //   return "GROUP_CONCAT(DISTINCT {$field['dbAlias']}) as $alias";
         }
         return "({$field['dbAlias']}) as $alias";
       }
@@ -108,9 +116,17 @@ class CRM_SaceCivireports_Form_Report_ExtendingContributionDetail extends CRM_Re
       if ($value = CRM_Utils_Array::value('civicrm_contribution_recent_donation_amount', $row)) {
         $rows[$rowNum]['civicrm_contribution_recent_donation_amount'] = CRM_Utils_Money::format($value, $rows[$rowNum]['civicrm_contribution_currency']);
       }
+      if ($value = CRM_Utils_Array::value('civicrm_contribution_largest_donation_amount', $row)) {
+        $rows[$rowNum]['civicrm_contribution_largest_donation_amount'] = CRM_Utils_Money::format($value, $rows[$rowNum]['civicrm_contribution_currency']);
+      }
       $rows[$rowNum]['civicrm_contribution_recurring_ornot'] = (CRM_Utils_Array::value('civicrm_contribution_recurring_ornot', $row, 0) > 0) ? 'Recurring' : 'One-time';
     }
 
   }
+
+public function beginPostProcessCommon() {
+    CRM_Core_DAO::disableFullGroupByMode();
+parent::beginPostProcessCommon();
+}
 
 }

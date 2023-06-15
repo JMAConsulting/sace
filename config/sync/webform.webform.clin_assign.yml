@@ -337,6 +337,16 @@ elements: |-
         '#extra':
           width: 20
         '#parent': civicrm_1_contact_1_fieldset_fieldset
+  waitlist_new:
+    '#type': webform_entity_select
+    '#title': 'Waitlist New'
+    '#target_type': civicrm_contact
+    '#selection_handler': views
+    '#selection_settings':
+      view:
+        view_name: waitlist_contacts
+        display_name: entity_reference_1
+        arguments: {  }
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'

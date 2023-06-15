@@ -392,41 +392,21 @@ elements: |-
     select_staff:
       '#type': webform_entity_radios
       '#title': Select
-      '#options_display': three_columns
-      '#target_type': user
-      '#selection_handler': 'default:user'
-      '#selection_settings':
-        include_anonymous: false
-        filter:
-          type: role
-          role:
-            clin_intake_worker: clin_intake_worker
-            clin_team_lead: 0
-            clin_counsellor: 0
-            ped_team_lead: 0
-            wheel: 0
-            finance: 0
-            taxreceipts: 0
-            supervisors: 0
-            clin_director: 0
-            intake: 0
-            pacs_tl: 0
-            clin_tl: 0
-            pacsa: 0
-            pe: 0
-            cad_tl: 0
-            reception: 0
-            ce_director: 0
-            pe_tl: 0
-            vsil: 0
-            indigenous_cl: 0
-            eval: 0
-            vsil_tl: 0
-            couns_tl: 0
-            is_staff: 0
-            wiseguyz_staff: 0
-            volunteer_supervisor: 0
-            fund_development_officer: 0
+      '#widget': select
+      '#search_prompt': '- Choose existing -'
+      '#results_display':
+        display_name: display_name
+      '#default_relationship_to': '1'
+      '#default_relationship':
+        '': ''
+      '#group':
+        11: '11'
+      '#filter_relationship_contact': ''
+      '#allow_create': 1
+      '#contact_type': individual
+      '#form_key': civicrm_3_contact_1_contact_existing
+      '#parent': civicrm_3_contact_1_fieldset_fieldset
+      '#extra': {  }
     flexbox_03:
       '#type': webform_flexbox
       civicrm_3_contact_1_contact_first_name:
