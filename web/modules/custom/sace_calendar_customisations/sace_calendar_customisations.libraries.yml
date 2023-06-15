@@ -2,3 +2,12 @@ sace_calendar_customisations:
   version: 1.0
   js:
     js/sace_calendar_customisations.js: {}
+
+sace_calendar_booking_calendar_copy:
+  version: 1.0
+  js:
+    js/sace_calendar_booking_calendar_copy.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal.message
