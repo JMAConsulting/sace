@@ -1,0 +1,77 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+require_once 'ped_online_course_booking_request.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function ped_online_course_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_ped_online_course_booking_reques_add_form") {
+    //attach js
+    $form['#attached']['library'][] = 'ped_online_course_booking_request/ped_online_course_booking_request';
+    //pass constants to js
+    $form['#attached']['drupalSettings']['ped_online_course_booking_request']['youth_activity'] = PED_ONLINE_COURSE_BOOKING_YOUTH_ACTIVITY;
+    $form['#attached']['drupalSettings']['ped_online_course_booking_request']['optional_addons'] = PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS;
+    $form['#attached']['drupalSettings']['ped_online_course_booking_request']['high_school_checkbox'] = PED_ONLINE_COURSE_BOOKING_HIGH_SCHOOL_CHECKBOX;
+    $form['#attached']['drupalSettings']['ped_online_course_booking_request']['optional_addons_select'] = PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS_SELECT;
+
+    //Get webform elements
+    $elements = WebformFormHelper::flattenElements($form);
+
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    $bt = \Drupal::request()->query->get('booking_type') ?? 0;
+
+    if ($bt == PED_ONLINE_COURSE_BOOKING_ADULT_ACTIVITY) {
+      $elements['civicrm_2_contact_1_contact_existing']['#default_value'] = 1;
+
+      $elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'] = array_intersect($elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'], [
+        'Information for Partners & Supporters' => 'Information for Partners & Supporters',
+        'Recognizing & Responding to Sexual Violence' => 'Recognizing & Responding to Sexual Violence',
+        'Racism & Sexual Violence' => 'Racism & Sexual Violence',
+        'Sexual Violence & the 2SLGBTQ+ Community' => 'Sexual Violence & the 2SLGBTQ+ Community',
+      ]);
+
+      $elements[PED_ONLINE_COURSE_BOOKING_YOUTH_OR_ADULT]['#default_value'] = "Adult";
+
+      //Hide youth optional addons
+      $elements[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS]['#access'] = FALSE;
+    }
+    elseif ($bt == PED_ONLINE_COURSE_BOOKING_YOUTH_ACTIVITY) {
+      $elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'] = array_intersect($elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'], [
+        'Ask First: Sexual Harassment ' => 'Ask First: Sexual Harassment',
+        'Ask First: Sexual Assault & Consent ' => 'Ask First: Sexual Assault & Consent',
+        'Ask First: Non-Consensual Photo Sharing ' => 'Ask First: Non-Consensual Photo Sharing',
+        'Consent: Ask Me About It!' => 'Consent: Ask Me About It!',
+      ]);
+
+      //Youth or Adult
+      $elements[PED_ONLINE_COURSE_BOOKING_YOUTH_OR_ADULT]['#default_value'] = "Youth";
+
+      //Grades and Ages remove Adults option
+      unset($elements[PED_ONLINE_COURSE_BOOKING_GRADES_AND_AGES]['#options']['Adults (ages 18+)']);
+    }
+  }
+}
+
+function ped_online_course_booking_request_preprocess_page_title(&$variables, $hook) {
+  $bt = \Drupal::request()->query->get('booking_type') ?? 0;
+  $current_path = \Drupal::service('path.current')->getPath();
+
+  if ($current_path == '/webform/ped_online_course_booking_reques') {
+    if ($bt == PED_ONLINE_COURSE_BOOKING_YOUTH_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Youth Online Course Booking Request',
+      ];
+    }
+    elseif ($bt == PED_ONLINE_COURSE_BOOKING_ADULT_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Adult Online Course Booking Request',
+      ];
+    }
+  }
+}

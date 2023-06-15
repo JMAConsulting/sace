@@ -343,7 +343,6 @@ elements: |-
       '#title': Select
       '#widget': select
       '#search_prompt': '- Choose existing -'
-      '#none_prompt': '+ Create new +'
       '#results_display':
         display_name: display_name
       '#default_relationship_to': '1'

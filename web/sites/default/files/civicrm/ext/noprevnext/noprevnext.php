@@ -12,9 +12,9 @@ function noprevnext_civicrm_config(&$config) {
   _noprevnext_civix_civicrm_config($config);
 
   // This is maybe too broad - it clears everyone's cache.
-  CRM_Core_DAO::executeQuery("TRUNCATE TABLE civicrm_prevnext_cache");
+  //CRM_Core_DAO::executeQuery("TRUNCATE TABLE civicrm_prevnext_cache");
   // KG - can't do this CRM_Core_DAO::executeQuery("TRUNCATE TABLE civicrm_group_contact_cache");
-  CRM_Core_DAO::executeQuery("TRUNCATE TABLE civicrm_acl_contact_cache");
+  //CRM_Core_DAO::executeQuery("TRUNCATE TABLE civicrm_acl_contact_cache");
   //  Not necessary if set the timeout to 0 on search prefs
 //  CRM_Contact_BAO_GroupContactCache::deterministicCacheFlush();
 }

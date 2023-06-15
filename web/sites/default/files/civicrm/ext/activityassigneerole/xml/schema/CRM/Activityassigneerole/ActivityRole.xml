@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Activityassigneerole</base>
+  <class>ActivityRole</class>
+  <name>civicrm_activity_role</name>
+  <comment>FIXME</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique ActivityRole ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>assignee_contact_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Contact</comment>
+    <html>
+      <type>EntityRef</type>
+    </html>
+    <required>true</required>
+  </field>
+  <foreignKey>
+    <name>assignee_contact_id</name>
+    <table>civicrm_contact</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+  <field>
+    <name>role_id</name>
+    <type>varchar</type>
+    <length>255</length>
+    <html>
+       <type>Select</type>
+    </html>
+    <pseudoconstant>
+      <optionGroupName>appointment_role</optionGroupName>
+    </pseudoconstant>
+    <required>true</required>
+  </field>
+  <field>
+    <name>activity_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Activity</comment>
+    <html>
+      <type>EnttiyRef</type>
+    </html>
+    <required>true</required>
+  </field>
+  <foreignKey>
+    <name>activity_id</name>
+    <table>civicrm_activity</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+</table>

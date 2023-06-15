@@ -54,6 +54,7 @@ module:
   media_library: 0
   menu_link_content: 0
   menu_ui: 0
+  multiplebookingsessions: 0
   my_receipts: 0
   mysql: 0
   nagios: 0
@@ -64,6 +65,7 @@ module:
   paragraphs_jquery_ui_accordion: 0
   path: 0
   path_alias: 0
+  pe_booking_activity_role: 0
   redirect: 0
   rest: 0
   sace_custom: 0

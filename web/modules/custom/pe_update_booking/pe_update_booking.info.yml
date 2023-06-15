@@ -1,0 +1,10 @@
+name: PE-Update Booking
+type: module
+description: 'PE Booking Update'
+package: Custom
+version: 1.0
+core_version_requirement: ^8 || ^9
+dependencies:
+  - webform:webform  
+js:
+  js/pe_update_booking.js: {}

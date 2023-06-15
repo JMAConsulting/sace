@@ -19,19 +19,6 @@ elements: |-
     '#type': webform_wizard_page
     '#form_key': contact_pagebreak
     '#title': 'Contact Information'
-    '#webform': sace_invoice_payments
-    '#webform_id': sace_invoice_payments--contact_pagebreak
-    '#webform_key': contact_pagebreak
-    '#webform_parent_key': ''
-    '#webform_parent_flexbox': false
-    '#webform_depth': 0
-    '#webform_children': {  }
-    '#webform_multiple': false
-    '#webform_composite': false
-    '#webform_parents':
-      - contact_pagebreak
-    '#admin_title': 'Contact Information'
-    '#webform_plugin_id': webform_wizard_page
     processed_text:
       '#type': processed_text
       '#title': 'Please note:'
@@ -303,19 +290,6 @@ elements: |-
     '#type': webform_wizard_page
     '#form_key': contribution_pagebreak
     '#title': Payment
-    '#webform': sace_invoice_payments
-    '#webform_id': sace_invoice_payments--contribution_pagebreak
-    '#webform_key': contribution_pagebreak
-    '#webform_parent_key': ''
-    '#webform_parent_flexbox': false
-    '#webform_depth': 0
-    '#webform_children': {  }
-    '#webform_multiple': false
-    '#webform_composite': false
-    '#webform_parents':
-      - contribution_pagebreak
-    '#admin_title': Payment
-    '#webform_plugin_id': webform_wizard_page
     flexbox_02:
       '#type': webform_flexbox
       '#webform': sace_invoice_payments
@@ -787,6 +761,7 @@ handlers:
       civicrm_1_contact_1_contact_preferred_communication_method: 0
       civicrm_1_contact_1_contact_privacy: 0
       civicrm_1_contact_1_contact_preferred_language: 0
+      civicrm_1_contact_1_contact_image_url: 0
       civicrm_1_contact_1_contact_contact_id: 0
       civicrm_1_contact_1_contact_user_id: 0
       civicrm_1_contact_1_contact_external_identifier: 0
@@ -805,11 +780,14 @@ handlers:
       civicrm_1_contact_1_phone_phone_ext: 0
       civicrm_1_contact_1_phone_phone_type_id: '1'
       civicrm_1_contact_1_phone_location_type_id: '3'
+      civicrm_1_contact_1_phone_is_primary: '1'
       contact_1_number_of_email: '1'
       civicrm_1_contact_1_email_email: create_civicrm_webform_element
       civicrm_1_contact_1_email_location_type_id: '3'
+      civicrm_1_contact_1_email_is_primary: '1'
       contact_1_number_of_website: '0'
       contact_1_number_of_im: '0'
+      contact_1_number_of_cg30: '0'
       2_contact_type: organization
       2_webform_label: 'Company/Organization Name'
       civicrm_2_contact_1_contact_contact_sub_type:
@@ -822,6 +800,7 @@ handlers:
       civicrm_2_contact_1_contact_preferred_communication_method: 0
       civicrm_2_contact_1_contact_privacy: 0
       civicrm_2_contact_1_contact_preferred_language: 0
+      civicrm_2_contact_1_contact_image_url: 0
       civicrm_2_contact_1_contact_contact_id: 0
       civicrm_2_contact_1_contact_user_id: 0
       civicrm_2_contact_1_contact_external_identifier: 0
@@ -836,6 +815,7 @@ handlers:
       contact_2_number_of_website: '0'
       contact_2_number_of_im: '0'
       contact_2_number_of_relationship: '0'
+      contact_2_number_of_cg30: '0'
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 0
@@ -849,6 +829,8 @@ handlers:
         show_future_events: '1'
         show_public_events: all
         title_display: title
+        show_full_events: 1
+        event_sort_field: start_date
         show_remaining: '0'
         validate: 1
         block_form: 0
@@ -882,6 +864,10 @@ handlers:
       civicrm_1_contribution_1_contribution_billing_address_country_id: create_civicrm_webform_element
       civicrm_1_contribution_1_contribution_billing_address_state_province_id: create_civicrm_webform_element
       contribution_1_settings_dynamic_custom_cg3: 0
+      civicrm_1_contribution_1_cg3_custom_339: 0
+      civicrm_1_contribution_1_cg3_custom_342: 0
+      civicrm_1_contribution_1_cg3_custom_343: 0
+      civicrm_1_contribution_1_cg3_custom_346: 0
       contribution_1_settings_dynamic_custom_cg28: 0
       civicrm_1_contribution_1_cg28_custom_326: create_civicrm_webform_element
       civicrm_1_contribution_1_cg28_custom_328: create_civicrm_webform_element
@@ -919,13 +905,16 @@ handlers:
             number_of_email: '1'
             number_of_website: '0'
             number_of_im: '0'
+            number_of_cg30: '0'
             phone:
               1:
                 phone_type_id: '1'
                 location_type_id: '3'
+                is_primary: '1'
             email:
               1:
                 location_type_id: '3'
+                is_primary: '1'
           2:
             contact:
               1:
@@ -941,6 +930,7 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_relationship: '0'
+            number_of_cg30: '0'
         activity:
           number_of_activity: '0'
         membership:
@@ -982,6 +972,8 @@ handlers:
           show_future_events: '1'
           show_public_events: all
           title_display: title
+          show_full_events: 1
+          event_sort_field: start_date
           show_remaining: '0'
           validate: 1
           block_form: 0
@@ -992,7 +984,7 @@ handlers:
     handler_id: email
     label: Email
     notes: ''
-    status: false
+    status: true
     conditions: {  }
     weight: 0
     settings:

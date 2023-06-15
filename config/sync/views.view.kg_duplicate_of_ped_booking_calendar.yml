@@ -803,6 +803,56 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        activity_assignees_string:
+          id: activity_assignees_string
+          table: civicrm_activity
+          field: activity_assignees_string
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          plugin_id: civicrm_entity_vf_activity_assignees_string
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
         field_calendar_colour:
           id: field_calendar_colour
           table: user__field_calendar_colour
@@ -866,13 +916,201 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        activity_assignees_string:
-          id: activity_assignees_string
-          table: civicrm_activity
-          field: activity_assignees_string
-          entity_type: civicrm_activity
-          plugin_id: civicrm_entity_vf_activity_assignees_string
+        sort_name_1:
+          id: sort_name_1
+          table: civicrm_contact
+          field: sort_name
+          relationship: contact
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_contact
+          entity_field: sort_name
+          plugin_id: field
+          label: ''
           exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        status_id:
+          id: status_id
+          table: civicrm_activity
+          field: status_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: status_id
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        is_multiple_booking:
+          id: is_multiple_booking
+          table: civicrm_multiple_booking
+          field: is_multiple_booking
+          relationship: multiple_booking_activity_type_id
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_multiple_booking
+          entity_field: is_multiple_booking
+          plugin_id: field
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: boolean
+            format_custom_false: ''
+            format_custom_true: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         nothing_1:
           id: nothing_1
           table: views
@@ -885,7 +1123,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n  </div>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Activity ID:</span>\r\n  <span class=\"myactivity-value\">{{ id_4 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n  </div>\r\n</div>\r\n\r\n\r\n<a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n&nbsp;&nbsp;\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\">Teacher Evaluation Form</a>\r\n&nbsp;&nbsp;\r\n<a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\">Participant Evaluation Form</a>\r\n&nbsp;&nbsp;\r\n<a href=\"/ped-presentation-evaluation-summary-input?aid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\">Presentation Evaluation Summary</a>"
+            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n  </div>\r\n\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n  </div>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Booking Status:</span>\r\n  <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n  </div>\r\n</div>\r\n\r\n\r\n<a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?aid={{ id }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n&nbsp;&nbsp;\r\n<a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a>\r\n&nbsp;&nbsp;\r\n<a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>"
             make_link: false
             path: ''
             absolute: false
@@ -1050,6 +1288,7 @@ display:
           plugin_id: list_field
           operator: or
           value:
+            all: all
             55: '55'
             57: '57'
             58: '58'
@@ -1057,23 +1296,54 @@ display:
             60: '60'
             61: '61'
             63: '63'
+            195: '195'
+            196: '196'
+            199: '199'
           group: 1
           exposed: false
           expose:
-            operator_id: ''
-            label: ''
+            operator_id: activity_type_id_op
+            label: 'Booking Type'
             description: ''
             use_operator: false
-            operator: ''
+            operator: activity_type_id_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: ''
+            identifier: activity_type_id
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              wheel: '0'
+              finance: '0'
+              taxreceipts: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              pe: '0'
+              cad_tl: '0'
+              reception: '0'
+              ce_director: '0'
+              pe_tl: '0'
+              vsil: '0'
+              indigenous_cl: '0'
+              eval: '0'
+              vsil_tl: '0'
+              couns_tl: '0'
+              is_staff: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+              fund_development_officer: '0'
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -1097,12 +1367,47 @@ display:
           entity_type: civicrm_contact
           plugin_id: civicrm_entity_vf_uf_select
           operator: in
-          value: {  }
+          value:
+            449: '449'
+            1177: '1177'
+            446: '446'
+            879: '879'
+            880: '880'
+            881: '881'
+            873: '873'
+            706: '706'
+            1334: '1334'
+            878: '878'
+            604: '604'
+            1210: '1210'
+            1341: '1341'
+            1339: '1339'
+            602: '602'
+            872: '872'
+            1211: '1211'
+            1333: '1333'
+            448: '448'
+            1335: '1335'
+            882: '882'
+            883: '883'
+            874: '874'
+            876: '876'
+            1340: '1340'
+            445: '445'
+            592: '592'
+            1329: '1329'
+            877: '877'
+            1209: '1209'
+            595: '595'
+            875: '875'
+            596: '596'
+            712: '712'
+            860: '860'
           group: 1
           exposed: true
           expose:
             operator_id: uf_select_op
-            label: 'Select SACE User'
+            label: 'User Contact'
             description: ''
             use_operator: false
             operator: uf_select_op
@@ -1122,7 +1427,27 @@ display:
               wheel: '0'
               finance: '0'
               taxreceipts: '0'
-            reduce: 0
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              pe: '0'
+              cad_tl: '0'
+              reception: '0'
+              ce_director: '0'
+              pe_tl: '0'
+              vsil: '0'
+              indigenous_cl: '0'
+              eval: '0'
+              vsil_tl: '0'
+              couns_tl: '0'
+              is_staff: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+              fund_development_officer: '0'
+            reduce: 1
           is_grouped: false
           group_info:
             label: 'User Contact'
@@ -1154,7 +1479,7 @@ display:
           exposed: true
           expose:
             operator_id: subject_op
-            label: 'Booking Reference'
+            label: Subject
             description: ''
             use_operator: false
             operator: subject_op
@@ -1174,6 +1499,26 @@ display:
               wheel: '0'
               finance: '0'
               taxreceipts: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              pe: '0'
+              cad_tl: '0'
+              reception: '0'
+              ce_director: '0'
+              pe_tl: '0'
+              vsil: '0'
+              indigenous_cl: '0'
+              eval: '0'
+              vsil_tl: '0'
+              couns_tl: '0'
+              is_staff: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+              fund_development_officer: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -1398,7 +1743,7 @@ display:
         options:
           query_comment: ''
           disable_sql_rewrite: false
-          distinct: false
+          distinct: true
           replica: false
           query_tags: {  }
       relationships:
@@ -1454,8 +1799,85 @@ display:
           admin_label: 'field_user_team: Taxonomy term'
           plugin_id: standard
           required: false
+        multiple_booking_activity_type_id:
+          id: multiple_booking_activity_type_id
+          table: civicrm_activity
+          field: multiple_booking_activity_type_id
+          relationship: none
+          group_type: group
+          admin_label: 'Multiple Booking Join'
+          entity_type: civicrm_activity
+          plugin_id: standard
+          required: false
       header: {  }
       footer: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user.roles
+      tags:
+        - 'config:field.storage.user.field_calendar_colour'
+  embed_1:
+    id: embed_1
+    display_title: Embed
+    display_plugin: embed
+    position: 1
+    display_options:
+      exposed_form:
+        type: bef
+        options:
+          submit_button: Filter
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: html
+          bef:
+            general:
+              autosubmit: false
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              secondary_open: false
+            filter:
+              uf_select:
+                plugin_id: bef
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
+                select_all_none: true
+                select_all_none_nested: false
+                display_inline: false
+              subject:
+                plugin_id: default
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  is_secondary: false
+      access:
+        type: role
+        options:
+          role:
+            ped_team_lead: ped_team_lead
+            wheel: wheel
+      defaults:
+        access: false
+        exposed_form: false
+      display_description: ''
+      exposed_block: false
       display_extenders: {  }
     cache_metadata:
       max-age: -1
