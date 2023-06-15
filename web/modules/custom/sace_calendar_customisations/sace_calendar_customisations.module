@@ -7,6 +7,9 @@ function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'clin_calendar') {
     $view->element['#attached']['library'][] = 'sace_calendar_customisations/sace_calendar_customisations';
   }
+  if ($view->id() === 'kg_duplicate_of_ped_booking_calendar') {
+    $view->element['#attached']['library'][] = 'fontawesome/fontawesome.webfonts.solid';
+  }
 }
 
 function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
