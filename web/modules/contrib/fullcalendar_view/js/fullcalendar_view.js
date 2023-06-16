@@ -165,8 +165,8 @@
       dialogs[dialogIndex] = jsFrame.create(dialogOptions);
       
       let jsFrameEvent = $.Event('jsframe_create');
-      jsFrameEvent.jsFrame = jsFrame;
-      $.trigger(jsFrameEvent);
+      jsFrameEvent.jsFrame = dialogs[dialogIndex];
+      $(this.el).trigger(jsFrameEvent);
       dialogs[dialogIndex].show();
       dialogIndex++;
 
