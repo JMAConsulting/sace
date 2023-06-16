@@ -112,7 +112,8 @@
                 "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
             },
             "drupal/fullcalendar_view": {
-                "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch"
+                "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch",
+                "Apply patch to trigger a jquery event when JSFrame is created": "./patches/full_calendar_view_event_trigger.patch"
             }
         },
         "installer-paths": {

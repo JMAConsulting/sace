@@ -4344,7 +4344,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch"
+                    "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch",
+                    "Apply patch to trigger a jquery event when JSFrame is created": "./patches/full_calendar_view_event_trigger.patch"
                 }
             },
             "installation-source": "dist",
