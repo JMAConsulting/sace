@@ -5,3 +5,7 @@ Apply patch to fix all day calendar events display
 Source: ./patches/full_calendar_view_all_day_patch.patch
 
 
+Apply patch to trigger a jquery event when JSFrame is created
+Source: ./patches/full_calendar_view_event_trigger.patch
+
+
