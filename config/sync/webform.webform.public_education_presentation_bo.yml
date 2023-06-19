@@ -17,11 +17,13 @@ elements: |-
     '#type': webform_markup
     '#markup': |-
       <p>SACE empowers individuals and communities to take action against sexual violence. To accomplish this, we deliver presentations, workshops and seminars, distribute resources, offer consultation, and attend community events and speaking engagements.&nbsp;</p>
-
+       <p>Our Public Education services are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
       <h2>Public Education</h2>
   presentation_bookings_header:
     '#type': webform_markup
-    '#markup': '<h3>Presentation Bookings</h3>'
+    '#markup': |-
+      <h3>Presentation Bookings</h3>
+      Our Public Education team offers both in-person and online presentation options for youth and adult audiences.&nbsp;
   flexbox:
     '#type': webform_flexbox
     '#title': 'Presentation Bookings'
@@ -36,25 +38,20 @@ elements: |-
     wiseguyz_presentation_button:
       '#type': processed_text
       '#access_create_roles':
-        - pe
-        - pe_tl
+        - authenticated
       '#access_view_roles':
         - authenticated
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="https://staging.secure.sace.ca/form/ped-booking-request?booking_type=201">WiseGuyz</a></div>
-      '#format': html
-  flexbox_02:
-    '#type': webform_flexbox
-    institutional_support_button:
-      '#type': processed_text
-      '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=204">Institutional Support Services Booking Request</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=201">WiseGuyz</a></div>
       '#format': html
   online_course_booking_header:
     '#type': processed_text
-    '#text': |-
+    '#text': |
       <h3>Online Course Bookings</h3>
-      <p>We offer online courses to students who are engaging in asynchronous learning. Each course includes short readings, videos, and reflection questions that students can answer in a downloadable workbook.</p>
+
+      <p>In addition to our presentations, SACE also offers a range of online courses to youth and adults. Each course includes short readings, videos, and reflection questions. Some courses offer various interactive activities such as a downloadable workbooks and moderated discussion questions.</p>
+
+      <p><strong>*Please note, our youth online courses are currently offered to students who are engaging in asynchronous learning and/or who will be working through the content independently.</strong></p>
     '#format': html
   flexbox_01:
     '#type': webform_flexbox
@@ -68,12 +65,11 @@ elements: |-
       '#type': processed_text
       '#flex': 2
       '#access_create_roles':
-        - pe
-        - pe_tl
+        - authenticated
       '#access_view_roles':
         - authenticated
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped_online_course_request?booking_type=199">Adult Online Course</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped_online_course_request?booking_type=199&cid2=1">Adult Online Course</a></div>
       '#format': html
   processed_text:
     '#type': processed_text
@@ -86,7 +82,7 @@ elements: |-
 
       <p>SACE offers consultation provision on a range of topics to support organizations undertaking their own efforts to address sexual violence in our community.</p>
 
-      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/external-appointment-booking-form?booking_type=204">Consultation</a></div>
+      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=204">Consultation</a></div>
       <br/>
     '#format': html
   community_engagement_section:

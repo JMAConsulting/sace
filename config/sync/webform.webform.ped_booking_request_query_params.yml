@@ -30,14 +30,12 @@ elements: |-
         - xor
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '59'
-    '#text': |+
-      <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
+    '#text': |
+      <p>SACE delivers age-appropriate sexual violence education for youth over the age of 12. We present to various youth audiences including students, leadership and community groups, and clubs.&nbsp;</p>
 
-      <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
+      <p><b>*Please note,&nbsp;</b><strong>our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</strong></p>
 
       <p>&nbsp;</p>
-
-
     '#format': html
   processed_text:
     '#type': processed_text
@@ -46,8 +44,6 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '204'
     '#text': |
-      <h1>Institutional Support Services Request</h1>
-
       <p>The SACE Institutional Support team empowers institutions and other organizations to take action against sexual violence. We are able to offer consultation provisions on a range of topics to support organizations undertaking their own efforts to address sexual violence in our community.</p>
 
       <p>Please note that Institutional Support services are strongly tied to our Public Education program: without the educational foundation to inform why and how these policies and practices function and to support culture shift, we find that policies do not find their way into practice. Once we have received your support request, we will reach out to further explore your needs, including public education services.</p>
@@ -61,8 +57,6 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '201'
     '#text': |
-      <h1>WiseGuyz Booking Request Form</h1>
-
       <p>The WiseGuyz Program will have a blurb outlining services.</p>
 
       <h2>General Information</h2>
@@ -74,8 +68,6 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '203'
     '#text': |
-      <h1>Community Engagement Services Request</h1>
-
       <p>SACE  empowers groups, communities, institutions, and other organizations to take action against sexual violence. We offer a range of community event support to groups and organizations undertaking their own efforts to address sexual violence in our community.</p>
 
       <h2>General Information</h2>
@@ -416,8 +408,12 @@ elements: |-
         - or
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '203'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '55'
     '#text': |
       <h2><span style="color:#2e416c;"><strong>Booking Details</strong></span></h2>
+
       <h3><span style="color:#2e416c;"><strong>Presentation Topic(s)</strong></span></h3>
 
       <p>The typical presentation topics by approximate age range are listed below. For more information about each presentation topic, please visit <a href="https://www.sace.ca/services/public-education">www.sace.ca/services/public-education</a>.</p>
@@ -432,24 +428,75 @@ elements: |-
 
       <div class="notranslate" style="all: initial;">&nbsp;</div>
     '#format': html
+  processed_text_09:
+    '#type': processed_text
+    '#states':
+      invisible:
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '204'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '201'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+        - or
+        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '59'
+    '#text': |
+      <h2><span style="color:#2e416c;"><strong>Booking Details</strong></span></h2>
+
+      <h3><span style="color:#2e416c;"><strong>Presentation Topic(s)</strong></span></h3>
+
+      <p>The typical presentation topics by approximate age range are listed below. For more information about each presentation topic, please visit <a href="https://www.sace.ca/services/public-education">www.sace.ca/services/public-education</a>.</p>
+
+      <ul>
+      	<li>Grade&nbsp;7 (ages 12-13) - Sexual Harassment</li>
+      	<li>Grade 8 (ages 13-14) - Sexual Assault &amp; Consent</li>
+      	<li>Grade 9 (ages 14-15) - Non-Consensual Photo Sharing</li>
+      	<li>High School (ages 15-18) - Sexual Assault &amp; Consent and/or Non-Consensual Photo Sharing</li>
+      </ul>
+
+      <div class="notranslate" style="all: initial;">&nbsp;</div>
+    '#format': html
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation Topic(s)'
     '#title_display': inline
-    '#civicrm_live_options': 0
     '#options':
-      SexualHarassment: 'Sexual Harassment'
+      2SLGBTQ+: '2SLGBTQ+ Communities & Sexual Violence'
+      Drug-Facilitated: 'Drug-Facilitated Sexual Assault'
+      FRT: 'First Responders Training (FRT)'
       SexualAssaultConsent: 'Sexual Assault & Consent'
+      SexualHarassment: 'Sexual Harassment'
       NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
       TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
       SACEServices: 'SACE Services'
       BystanderIntervention: 'Bystander Intervention'
       CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
       SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
+      SexualViolenceTrauma: 'Sexual Violence Trauma'
+      DomesticViolence: 'Domestic Violence'
       ChildSexualAbuse: 'Child Sexual Abuse'
+      PrivilegeandOppression: 'Privilege & Oppression'
+      RacismandSexualViolence: 'Racism & Sexual Violence'
+      CustomSomethingDifferent: 'Custom/ Something Different'
+      CommunityResources: 'Community Resources'
       HealthCareSystemsandSexualViolence: 'Health Care Systems & Sexual Violence'
       SACEandtheSPEAKProgram: 'SACE and the SPEAK Program'
-      CustomSomethingDifferent: 'Custom / Unsure'
+      GenderSexualityMedia: 'Gender, Sexuality, and Media'
+      HealthyRelationships: 'Healthy Relationships'
+      'Information for Partners & Supporters': 'Information for Partners & Supporters'
+      IntimatePartnerViolence: 'Intimate Partner Violence'
+      'Legal Systems & Sexual Violence': 'Legal Systems & Sexual Violence'
+      Masculinities: Masculinities
+      'Recognizing & Responding to Sexual Violence': 'Recognizing & Responding to Sexual Violence'
+      'SACE Services Tour': 'SACE Services Tour'
+      'Sexual Assault & Self-Care': 'Sexual Assault & Self-Care'
+      SexualHealth: 'Sexual Health'
+      SexualViolence: 'Sexual Violence'
+      ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
+      Unsure: 'Custom / Unsure'
     '#states':
       invisible:
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -460,13 +507,16 @@ elements: |-
         - xor
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '203'
+    '#states_clear': false
+    '#default_value':
+      - Unsure
     '#extra':
       aslist: 0
       multiple: 1
     '#form_key': civicrm_1_activity_1_cg2_custom_40
     '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#default_option': ''
-    '#default_value': ''
+    '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_41:
     '#type': textfield
     '#title': 'Topic Details'
@@ -518,7 +568,7 @@ elements: |-
     '#text': |
       <h3><span style="color:#2e416c;"><strong>Presentation Details</strong></span></h3>
 
-      <p>In this section, tell us a bit about the presentations you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Please note, our presentations are most effective with regular class sizes (about 25-35 participants) but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.&nbsp;</p>
+      <p>In this section, tell us a bit about the presentations you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Our presentations are most effective with regular class sizes (about 25-35 participants) but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.&nbsp;</p>
 
       <p>SACE operates daily from Monday - Thursday, with some exceptions being made for Friday - Sunday. For schools or organizations that are out of town, please note that we have a Winter Driving Policy wherein presentations scheduled between November and March may be cancelled due to inclement driving conditions. To avoid cancellations, it is recommended that out of town presentations are scheduled outside of November - March. Please indicate your preferred date(s) and/or day(s) of the week for your presentation(s). While we cannot guarantee these dates will be available, we will do our best to accommodate your request.&nbsp;</p>
 
@@ -758,20 +808,21 @@ elements: |-
         'Microsoft Teams': 'Microsoft Teams'
         Zoom: Zoom
         Other: Other
+        TBD: TBD
       '#default_value': Other
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_119
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': Other
+      '#default_option': TBD
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_120:
       '#type': civicrm_options
       '#title': 'Will participants be joining from one location or from home?'
       '#civicrm_live_options': 0
       '#options':
-        'One Location': 'One Location'
+        Classroom: 'One Location'
         Home: Home
         Both: Both
         TBD: TBD
@@ -781,10 +832,10 @@ elements: |-
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_120
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': Both
+      '#default_option': TBD
     civicrm_1_activity_1_cg2_custom_124:
       '#type': civicrm_options
-      '#title': 'Will participants be joining together as one large group or, separately from their own devices?'
+      '#title': 'Will participants be joining together as one large group or separately from their own devices?'
       '#options':
         'Own devices': 'Own devices'
         'One large group': 'One large group'
@@ -796,7 +847,7 @@ elements: |-
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_124
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': Both
+      '#default_option': TBD
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_121:
       '#type': civicrm_options
@@ -811,7 +862,7 @@ elements: |-
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_121
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 'No'
+      '#default_option': TBD
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_123:
       '#type': civicrm_options
@@ -819,13 +870,14 @@ elements: |-
       '#options':
         'Yes': 'Yes'
         'No': 'No'
+        TBD: TBD
       '#default_value': 'No'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_123
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 'No'
+      '#default_option': TBD
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_122:
       '#type': civicrm_options
@@ -833,13 +885,14 @@ elements: |-
       '#options':
         'Yes': 'Yes'
         'No': 'No'
+        TBD: TBD
       '#default_value': 'No'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_122
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 'No'
+      '#default_option': TBD
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_125:
       '#type': civicrm_options
@@ -847,13 +900,14 @@ elements: |-
       '#options':
         'Yes': 'Yes'
         'No': 'No'
+        TBD: TBD
       '#default_value': 'No'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_125
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 'No'
+      '#default_option': TBD
       '#civicrm_live_options': '1'
   civicrm_1_activity_1_activity_subject:
     '#type': webform_computed_twig
@@ -868,7 +922,8 @@ elements: |-
       width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
   container:
-    '#type': container
+    '#type': fieldset
+    '#title': 'Presentation Population of Focus'
     '#states':
       invisible:
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -879,13 +934,12 @@ elements: |-
     processed_text_07:
       '#type': processed_text
       '#text': |
-        <h3><span style="color:#2e416c;">Presentation Population of Focus</span></h3>
-
         <p>Select a population of focus if you would like the presentation content to focus on a specific group. Please note, a population of focus is not required to book a session. Choosing a population of focus is only necessary if you would like information about sexual violence as it relates to a specific group.&nbsp;</p>
       '#format': html
     civicrm_1_activity_1_cg2_custom_333:
       '#type': civicrm_options
       '#title': 'Presentation Population of Focus'
+      '#title_display': none
       '#options':
         2SLGBTQ+: 2SLGBTQ+
         Adults: Adults
@@ -967,7 +1021,7 @@ css: |-
 
   .webform-submission-add-form #edit-civicrm-4-contact-1-fieldset-fieldset {
     display: none;
-  }
+  } 
 javascript: ''
 settings:
   ajax: false
@@ -1156,7 +1210,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: null
+    weight: -50
     settings:
       nid: 1
       number_of_contacts: '4'
@@ -2363,7 +2417,7 @@ handlers:
     handler_id: email
     label: Email
     notes: ''
-    status: true
+    status: false
     conditions: {  }
     weight: 0
     settings:

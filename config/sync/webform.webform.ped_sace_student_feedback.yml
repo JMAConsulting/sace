@@ -122,6 +122,10 @@ elements: |-
     civicrm_1_activity_1_activity_activity_date_time:
       '#type': datetime
       '#title': 'Date of Presentation'
+      '#states':
+        disabled:
+          ':input[name="civicrm_1_activity_1_activity_activity_date_time[date]"]':
+            filled: true
       '#default_value': now
       '#admin_title': 'Date of Presentation'
       '#date_date_min': '-50 years'
@@ -213,6 +217,7 @@ elements: |-
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_666:
       '#type': textarea
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one new thing you learned about [the presentation topic]:</strong>'
       '#data_type': Memo
       '#extra':
         cols: '60'
@@ -221,23 +226,9 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_666
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one new thing you learned about [the presentation topic].</strong>'
-      '#default_value': ''
     civicrm_1_activity_1_cg49_custom_667:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_667
+      '#title': 'I am able to identify consent versus problematic behaviours or abuse (not consent).'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -245,13 +236,15 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_667
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'I am able to identify consent versus problematic behaviours or abuse (not consent)'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_669:
       '#type': civicrm_options
-      '#title': 'I learned something new about how to support someone'
+      '#title': 'I learned something new about how to support someone.'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -267,7 +260,7 @@ elements: |-
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_668:
       '#type': textarea
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one thing you can do to support someone impacted by the presentation topic</strong>'
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one thing you can do to support someone impacted by the presentation/course topic:</strong>'
       '#data_type': Memo
       '#extra':
         cols: '60'
@@ -320,6 +313,7 @@ elements: |-
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_670:
       '#type': textarea
+      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one resource people can access for help:</strong>'
       '#data_type': Memo
       '#extra':
         cols: '60'
@@ -328,8 +322,6 @@ elements: |-
         description_above: null
       '#form_key': civicrm_1_activity_1_cg49_custom_670
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': '<strong class="fieldset__legend fieldset__label fieldset__label--group">List one resource people can access for help.</strong>'
-      '#default_value': ''
     civicrm_1_activity_1_cg49_custom_674:
       '#type': civicrm_options
       '#extra':
@@ -436,46 +428,24 @@ elements: |-
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_705:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
+      '#title': 'I feel more clear on what values guide my organization''s response to sexual violence.'
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
       '#data_type': String
       '#nid': ped_sace_student_feedback
       '#form_key': civicrm_1_activity_1_cg49_custom_705
-      '#options':
-        'Strongly Agree': 'Strongly Agree'
-        Agree: Agree
-        'Somewhat Agree': 'Somewhat Agree'
-        'Somewhat Disagree': 'Somewhat Disagree'
-        Disagree: Disagree
-        'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'I feel more clear on what values guide my organization''s response to sexual violence'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_681:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_681
+      '#title': 'This session was a valuable opportunity to think collaboratively with my team about our response to sexual violence.'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -483,10 +453,12 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_681
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'This session was a valuable opportunity to think collaboratively with my team about our response to sexual violence'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_682:
       '#type': civicrm_options
       '#extra':
@@ -553,19 +525,7 @@ elements: |-
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_699:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_699
+      '#title': 'I feel more prepared to intervene in a situation where sexual violence has occurred or may occur.'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -573,10 +533,12 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_699
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'I feel more prepared to intervene in a situation where sexual violence has occurred or may occur'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_700:
       '#type': civicrm_options
       '#title': 'I have a better understanding of privilege, oppression, and what it means to be an ally.'
@@ -611,19 +573,7 @@ elements: |-
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_701:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_701
+      '#title': 'The presenter(s) were effective.'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -631,10 +581,12 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_701
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'The presenter(s) were effective'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_679:
       '#type': textarea
       '#data_type': Memo
@@ -661,46 +613,24 @@ elements: |-
       '#default_value': ''
     civicrm_1_activity_1_cg49_custom_813:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
+      '#title': 'I would use SACE services again.'
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
       '#data_type': String
       '#nid': ped_sace_student_feedback
       '#form_key': civicrm_1_activity_1_cg49_custom_813
-      '#options':
-        'Strongly Agree': 'Strongly Agree'
-        Agree: Agree
-        'Somewhat Agree': 'Somewhat Agree'
-        'Somewhat Disagree': 'Somewhat Disagree'
-        Disagree: Disagree
-        'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'I would use SACE services again'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg49_custom_703:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-        description: ''
-        description_above: null
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg49_custom_703
+      '#title': 'I would use SACE services again.'
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -708,24 +638,28 @@ elements: |-
         'Somewhat Disagree': 'Somewhat Disagree'
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg49_custom_703
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'I would use SACE services again'
-      '#civicrm_live_options': 1
+      '#default_option': ''
       '#default_value': ''
+      '#civicrm_live_options': '1'
   demographic_information:
     '#type': fieldset
     '#title': 'Demographic Information'
+    '#description': 'As part of our commitment to improving services and accessibility for individuals from diverse communities, we want to know more about the demographics SACE is serving. If you feel comfortable sharing, please select ANY and AS MANY of the options that apply to you. &quot;I identify as&hellip;&quot;'
+    '#help_title': 'How This Will Be Used'
+    '#help': |-
+      No personally identifying information will ever be shared by SACE. We process anonymous totals, search for trends, and evaluate feedback to hold ourselves accountable, measure our progress, and to learn how we can better serve communities. Totals and findings are shared with our stakeholders, including equity and inclusion committees, program staff, management, and funders. We&#39;ll also use this data in funding proposals and funder reports to support programming and services for priority populations and create educational resources and communications pieces for the broader community informed by our learnings.<br />
+      <br />
+      Please note that we only ask about identities we have a reason for asking about: we realize that this list isn&#39;t complete, and we invite folks to share additional identities you might like us to know about. The identities listed here reflect identified, specific SACE program delivery, funding, or accessibility goals.
+    '#description_display': before
+    '#help_display': title_after
     civicrm_1_activity_1_cg49_custom_1262:
       '#type': civicrm_options
       '#title': 'Demographic Information'
-      '#description': 'As part of our commitment to improving services and accessibility for individuals from diverse communities, we want to know more about the demographics SACE is serving. If you feel comfortable sharing, please select ANY and AS MANY of the options that apply to you. &quot;I identify as&hellip;&quot;'
-      '#help_title': 'How This Will Be Used'
-      '#help': |-
-        No personally identifying information will ever be shared by SACE. We process anonymous totals, search for trends, and evaluate feedback to hold ourselves accountable, measure our progress, and to learn how we can better serve communities. Totals and findings are shared with our stakeholders, including equity and inclusion committees, program staff, management, and funders. We&#39;ll also use this data in funding proposals and funder reports to support programming and services for priority populations and create educational resources and communications pieces for the broader community informed by our learnings.<br />
-        <br />
-        Please note that we only ask about identities we have a reason for asking about: we realize that this list isn&#39;t complete, and we invite folks to share additional identities you might like us to know about. The identities listed here reflect identified, specific SACE program delivery, funding, or accessibility goals.
       '#title_display': none
-      '#help_display': element_after
+      '#help_display': element_before
       '#options':
         Indigenous: 'First Nations, Métis, or Inuit/ Indigenous'
         Newcomers: Newcomer/Non-Status/Refugee/Immigrant
