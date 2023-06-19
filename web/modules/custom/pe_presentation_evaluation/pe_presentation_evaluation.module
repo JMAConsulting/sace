@@ -106,7 +106,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
 
     foreach ($mapper as $Q => $cfID) {
-      $key = 'civicrm_1_activity_1_cg49_custom_' . $value['value'];
+      $key = 'civicrm_1_activity_1_cg49_custom_' . $cfID;
       $elements[$key]['#title'] = str_replace('[the presentation topic]', $topic, $elements[$key]['#title']);
       $Q = (int) $Q;
       switch($Q) {

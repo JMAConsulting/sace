@@ -34,19 +34,38 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   $elements['civicrm_2_contact_1_contact_existing']['#value'] = $contacts[0]['target_contact_id'];
 
   // Get Booking Intake custom fields
-  $result = \Civi\Api4\Activity::get()
-    ->addSelect( 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
+  $result = \Civi\Api4\Activity::get(FALSE)
+//    ->addSelect( 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
+    ->addSelect('activity_type_id', 'Booking_Information.Online_Courses', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
     ->addWhere('id', '=', $aid)
     ->execute()
     ->first();
 
-  $topics = $result['Booking_Information.Presentation_topics:label'] ?? [];
-  $topic = implode(', ', $topics);
-  if (in_array('Custom/ Something Different', $topics)) {
-   $topic = str_replace('Custom/ Something Different', $result['Booking_Information.Presentation_custom'], $topic);
+  $mapping = \Civi\Api4\OptionValue::get(FALSE)
+      ->addSelect('value', 'label')
+      ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
+      ->execute();
+  $mapper = [];
+  foreach ($mapping as $value) {
+    $mapper[$value['label']] = $value['value'];
   }
 
-  foreach (['questions_1_markup', 'question_2_markup', 'question_5_markup', 'question_markup_18'] as $element) {
+  if (!empty($result['Booking_Information.Online_Courses'])) {
+    $topic = \Civi\Api4\OptionValue::get(FALSE)
+        ->addSelect('description')
+        ->addWhere('value', 'LIKE', $result['Booking_Information.Online_Courses'])
+        ->execute()->first()['description'];;
+  }
+  else {
+    $topics = (array) $result['Booking_Information.Presentation_topics:label'] ?? [];
+    $topic = implode(', ', $topics);
+    if (in_array('Custom/ Something Different', $topics)) {
+      $topic = str_replace('Custom/ Something Different', $result['Booking_Information.Presentation_custom'], $topic);
+    }
+  }
+  //foreach (['questions_markup', 'question_2_markup', 'question_5_markup', 'question_markup_18'] as $element) {
+  foreach ([1, 2, 5, 18] as $key) {
+    $element = 'question_markup_' . $key;
     $elements[$element]['#text'] = str_replace('[presentation topic]', $topic, $elements[$element]['#text']);
   }
 
@@ -60,7 +79,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   $elements['civicrm_1_activity_1_cg54_custom_458']['#default_value'] = $participant_feedback;
   $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $staff_feedback;
 
-  $mapping = [
+  $dropdownmapping = [
   // q1
   'custom_665' => [
     'Strongly Agree' => 'custom_48',
@@ -69,6 +88,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_707',
     'Disagree' => 'custom_56',
     'Strongly Disagree' => 'custom_57',
+    'total' => 'custom_58',
   ],
   //g3
   'custom_667' => [
@@ -78,6 +98,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_709',
     'Disagree' => 'custom_63',
     'Strongly Disagree' => 'custom_64',
+    'total' => 'custom_67',
   ],
   // q4
   'custom_669' => [
@@ -87,6 +108,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_711',
     'Disagree' => 'custom_71',
     'Strongly Disagree' => 'custom_72',
+    'total' => 'custom_73',
   ],
   //q6
   'custom_671' => [
@@ -96,6 +118,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_712',
     'Disagree' => 'custom_78',
     'Strongly Disagree' => 'custom_79',
+    'total' => 'custom_74',
   ],
   //q7
   'custom_672' => [
@@ -105,6 +128,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_713',
     'Disagree' => 'custom_84',
     'Strongly Disagree' => 'custom_85',
+    'total' => 'custom_723',
   ],
   //q8
   'custom_673' => [
@@ -114,6 +138,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_719',
     'Disagree' => 'custom_720',
     'Strongly Disagree' => 'custom_721',
+    'total' => 'custom_722',
   ],
   //q10
   'custom_674' => [
@@ -123,6 +148,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_728',
     'Disagree' => 'custom_729',
     'Strongly Disagree' => 'custom_730',
+    'total' => 'custom_731',
   ],
   //q11
   'custom_675' => [
@@ -132,6 +158,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_735',
     'Disagree' => 'custom_736',
     'Strongly Disagree' => 'custom_737',
+    'total' => 'custom_738',
   ],
   //q12
   'custom_676' => [
@@ -141,6 +168,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_742',
     'Disagree' => 'custom_743',
     'Strongly Disagree' => 'custom_744',
+    'total' => 'custom_745',
   ],
   //q13
   'custom_677' => [
@@ -150,6 +178,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_751',
     'Disagree' => 'custom_748',
     'Strongly Disagree' => 'custom_749',
+    'total' => 'custom_752',
   ],
   //q14
   'custom_705' => [
@@ -159,6 +188,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_756',
     'Disagree' => 'custom_757',
     'Strongly Disagree' => 'custom_758',
+    'total' => 'custom_759',
   ],
   //q15
   'custom_681' => [
@@ -168,6 +198,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_763',
     'Disagree' => 'custom_764',
     'Strongly Disagree' => 'custom_765',
+    'total' => 'custom_766',
   ],
   //q16
   'custom_682' => [
@@ -177,15 +208,17 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_770',
     'Disagree' => 'custom_771',
     'Strongly Disagree' => 'custom_772',
+    'total' => 'custom_773',
   ],
   //q17
   'custom_680' => [
     'Strongly Agree' => 'custom_774',
     'Agree' => 'custom_775',
     'Somewhat Agree' => 'custom_776',
-    'Somewhat Disagree' => 'custom_778',
-    'Disagree' => 'custom_779',
-    'Strongly Disagree' => 'custom_780',
+    'Somewhat Disagree' => 'custom_777',
+    'Disagree' => 'custom_778',
+    'Strongly Disagree' => 'custom_779',
+    'total' => 'custom_780'
   ],
   //q19
   'custom_699' => [
@@ -195,6 +228,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_784',
     'Disagree' => 'custom_785',
     'Strongly Disagree' => 'custom_786',
+    'total' => 'custom_788',
   ],
   //q20
   'custom_700' => [
@@ -204,6 +238,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_792',
     'Disagree' => 'custom_793',
     'Strongly Disagree' => 'custom_794',
+    'total' => 'custom_795',
   ],
   //q21
   'custom_701' => [
@@ -213,6 +248,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_799',
     'Disagree' => 'custom_800',
     'Strongly Disagree' => 'custom_801',
+    'total' => 'custom_802',
   ],
   //q24
   'custom_813' => [
@@ -222,16 +258,18 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     'Somewhat Disagree' => 'custom_808',
     'Disagree' => 'custom_809',
     'Strongly Disagree' => 'custom_810',
+    'total' => 'custom_811',
   ],
 ];
 
- foreach ($mapping as $cf => $values) {
+ foreach ($dropdownmapping as $cf => $values) {
+   unset($values['total']);
    foreach ($values as $option => $element) {
      $elements['civicrm_1_activity_1_cg54_' . $element]['#default_value'] = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, $cf => $option]);
    }
  }
 
- $mapping = [
+ $textmapping = [
     'q2_markup_detail' => [
       'text' => 'custom_666',
       'count' => 'custom_59',
@@ -258,7 +296,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     ],
   ];
 
-  foreach ($mapping as $element => $cf) {
+  foreach ($textmapping as $element => $cf) {
     $result = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$cf['text']], $cf['text'] => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
     $texts = [];
     foreach ($result as $value) {
@@ -278,8 +316,157 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     $elements['civicrm_1_activity_1_cg54_' . $cf['count']]['#default_value'] = count($texts);
   }
 
+foreach ($mapper as $Q => $cfID) {
+      $element = array_key_exists('custom_' . $cfID, $dropdownmapping) ? $dropdownmapping['custom_' . $cfID] : sprintf('q%s_markup_detail', $Q);
+      $Q = (int) $Q;
+      switch($Q) {
+        case 4:
+        case 5:
+        case 7:
+          //Show Q4 Q5 Q7 if Support content covered is Yes
+          if ($result["Booking_Information.Support_Content"] != 1) {
+            if (is_array($element)) {
+              foreach ($element as $key) {
+                $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = FALSE;
+              }
+            }
+            else {
+              $elements['civicrm_1_activity_1_cg54_' . $textmapping[$element]['count']]['#access'] = FALSE;
+            }
+            $elements['question_markup_' . $Q]['#access'] = FALSE;
+          }
+          break;
+
+        case 8:
+        case 9:
+          //Show Q8 Q9 if Content Covered: Resources is selected to Yes
+          if ($result["Booking_Information.Resources_Content"] != 1) {
+            if (is_array($element)) {
+              foreach ($element as $key) {
+                $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = FALSE;
+              }
+              $elements['question_markup_' . $Q]['#access'] = FALSE;
+            }
+            else {
+              $elements['civicrm_1_activity_1_cg54_' . $textmapping[$element]['count']]['#access'] = FALSE;
+            }
+            $elements['question_markup_' . $Q]['#access'] = FALSE;
+          }
+          break;
+
+        case 13:
+        case 18:
+          //Hide Q13 if Audience not in list
+          $result["Booking_Information.Audience"] = (array) $result["Booking_Information.Audience"];
+          if (empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]))) {
+            if (is_array($element)) {
+              foreach ($element as $key) {
+                $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = FALSE;
+              }
+            }
+            elseif (!is_array($element)) { 
+              $elements['civicrm_1_activity_1_cg54_' . $textmapping[$element]['count']]['#access'] = FALSE;
+            }
+$elements['question_markup_' . $Q]['#access'] = FALSE;
+          }
+          break;
+
+        case 14:
+        case 15:
+        case 16:
+          //Hide Q14 Q15 Q16 if Safer Spaces Content is NO
+          if (is_array($element)) {
+            foreach ($element as $key) {
+              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
+            }
+            $elements['question_markup_' . $Q]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
+          }
+          else {
+            $elements['question_markup_' . $Q]['#access'] = FALSE;
+            $elements['civicrm_1_activity_1_cg54_' . $textmapping[$element]['count']]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
+          }
+          break;
+
+        case 17:
+          //Hide Q17 if Facilitating Program is not Institutional Support
+          if (is_array($element)) {
+            foreach ($element as $key) {
+              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+            }
+            $elements['question_markup_' . $Q]['#access'] = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+          }
+          else {
+            $elements['question_markup_' . $Q]['#access'] = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+            $elements['civicrm_1_activity_1_cg54_' . $textmapping[$element]['count']]['#access'] = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+          }
+          break;
+
+        case 19:
+          //Hide Q19 if Presentation Topic is not Bystander Intervention
+          $result["Booking_Information.Presentation_topics"] = (array) $result["Booking_Information.Presentation_topics"];
+          if (is_array($element)) {
+            foreach ($element as $key) {
+              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = (bool) in_array('BystanderIntervention', $result["Booking_Information.Presentation_topics"]);
+            }
+            $elements['question_markup_' . $Q]['#access'] = (bool) in_array('BystanderIntervention', $result["Booking_Information.Presentation_topics"]);
+          }
+          break;
+
+        case 20:
+          //Show Q20 if Privilege and Oppression Covered set to Yes
+          if (is_array($element)) {
+            foreach ($element as $key) {
+              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = (bool) $result['Booking_Information.Privilege_and_Oppression_Content'];
+            }
+            $elements['question_markup_' . $Q]['#access'] = (bool) $result['Booking_Information.Privilege_and_Oppression_Content'];
+          }
+          break;
+
+        case 21:
+          //Hide Q21 if Presentation Method is not Online Course else hide Q22
+          if (is_array($element)) {
+            foreach ($element as $key) {
+              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = !($result['Booking_Information.Presentation_Method'] == 'Online Course');
+            }
+            $elements['question_markup_' . $Q]['#access'] = !($result['Booking_Information.Presentation_Method'] == 'Online Course');
+          }
+          break;
+
+        case 22:
+          //Hide Q21 if Presentation Method is not Online Course else hide Q22
+          $elements['civicrm_1_activity_1_cg54_' . $textmapping[$element]['count']]['#access'] = !($result['Booking_Information.Presentation_Method'] != 'Online Course');
+          $elements['question_markup_22']['#access'] = FALSE;
+          break;
+
+        case 24:
+          if (is_array($element)) {
+            foreach ($element as $key) {
+              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = ($result["Booking_Information.Audience"] == 'Adult');
+            }
+            $elements['question_markup_' . $Q]['#access'] = ($result["Booking_Information.Audience"] == 'Adult');
+          }
+          break;
+
+        case 21:
+          //Hide Q21 if Presentation Method is not Online Course else hide Q22
+          if (is_array($element)) {
+            foreach ($element as $key) {
+              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = (bool) ($result['Booking_Information.Youth_or_Adult'] == 'Adult');
+            }
+            $elements['question_markup_' . $Q]['#access'] = (bool) ($result['Booking_Information.Youth_or_Adult'] == 'Adult');
+          }
+          break;
+
+        default:
+          break;
+
+      }
+    }
+
 
   $elements['civicrm_3_contact_1_contact_existing']['#default_value'] = CRM_Core_Session::getLoggedInContactID();
+
+  
 }
 
 /**

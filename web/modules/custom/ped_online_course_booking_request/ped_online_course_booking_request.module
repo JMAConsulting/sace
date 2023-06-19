@@ -27,8 +27,6 @@ function ped_online_course_booking_request_form_alter(&$form, \Drupal\Core\Form\
     $bt = \Drupal::request()->query->get('booking_type') ?? 0;
 
     if ($bt == PED_ONLINE_COURSE_BOOKING_ADULT_ACTIVITY) {
-      $elements['civicrm_2_contact_1_contact_existing']['#default_value'] = 1;
-
       $elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'] = array_intersect($elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'], [
         'Information for Partners & Supporters' => 'Information for Partners & Supporters',
         'Recognizing & Responding to Sexual Violence' => 'Recognizing & Responding to Sexual Violence',
