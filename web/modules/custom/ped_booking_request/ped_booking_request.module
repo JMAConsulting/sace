@@ -15,7 +15,7 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     $elements = WebformFormHelper::flattenElements($form);
     $bt = \Drupal::request()->query->get('booking_type') ?? 0;
 
-    $mapper = ($bt == 204 || $bt == 201) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation', 'Online Course']);
+    $mapper = ($bt == 204 || $bt == 201) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation']);
     $options = [];
     foreach($mapper as $value) {
       $options[$value] = $elements['civicrm_1_activity_1_cg2_custom_88']['#options'][$value];
