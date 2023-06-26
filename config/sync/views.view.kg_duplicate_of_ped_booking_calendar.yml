@@ -31,7 +31,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'PED Bookings Calendar'
+      title: 'Bookings Calendar'
       fields:
         subject:
           id: subject
@@ -437,7 +437,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ subject }} - {{ activity_type_id }}'
+            text: '{{ subject }}'
             make_link: false
             path: ''
             absolute: false
@@ -470,7 +470,7 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: false
-          empty: ''
+          empty: UNASSIGNED
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
@@ -652,7 +652,7 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: Unassigned
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -1123,7 +1123,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n  </div>\r\n\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n  </div>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Booking Status:</span>\r\n  <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n  </div>\r\n</div>\r\n\r\n\r\n<a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?aid={{ id }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n&nbsp;&nbsp;\r\n<a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a>\r\n&nbsp;&nbsp;\r\n<a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>"
+            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n  </div>\r\n\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n  </div>\r\n</div>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Booking Status:</span>\r\n  <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n\r\n{% if activity_type_id  == 'PE - Youth Online Course Booking' or activity_type_id  == 'PE - Adult Online Course Booking Request' %}\r\n  <a href=\"/ped-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id == 'WiseGuyz' or activity_type_id == 'Booths' or activity_type_id == 'Speaking Engagements/Discussion Panels' or activity_type_id == 'Institutional Support' %}\r\n    <a href=\"/external-appointment-booking-update?&aid={{ id }}&cid2={{ id_1}}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% else %}\r\n  <a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% endif %} \r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n{#\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n#}\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n{% if activity_type_id  == 'PE - Youth Online Course Booking' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a>\r\n{% elseif  activity_type_id == 'PE - Adult Online Course Booking Request' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a>\r\n{% elseif activity_type_id != 'WiseGuyz' and activity_type_id != 'Booths' and activity_type_id != 'Speaking Engagements/Discussion Panels' and activity_type_id != 'Institutional Support' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a>\r\n{% endif %}\r\n\r\n&nbsp;&nbsp;\r\n{% if activity_type_id  == 'PE - Youth Online Course Booking' %}\r\n  <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n{% elseif activity_type_id  == 'PE - Adult Online Course Booking Request' %}\r\n   <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n{% elseif activity_type_id != 'WiseGuyz' and activity_type_id != 'Booths' and activity_type_id != 'Speaking Engagements/Discussion Panels' and activity_type_id != 'Institutional Support' %}\r\n   <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n{% endif %}\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -1299,6 +1299,10 @@ display:
             195: '195'
             196: '196'
             199: '199'
+            201: '201'
+            202: '202'
+            203: '203'
+            204: '204'
           group: 1
           exposed: false
           expose:
@@ -1368,34 +1372,37 @@ display:
           plugin_id: civicrm_entity_vf_uf_select
           operator: in
           value:
+            2: '2'
             449: '449'
             1177: '1177'
+            1208: '1208'
+            605: '605'
+            869: '869'
+            738: '738'
             446: '446'
             879: '879'
             880: '880'
             881: '881'
             873: '873'
             706: '706'
-            1334: '1334'
             878: '878'
+            1419: '1419'
             604: '604'
             1210: '1210'
-            1341: '1341'
-            1339: '1339'
+            1465: '1465'
+            2217: '2217'
             602: '602'
             872: '872'
             1211: '1211'
-            1333: '1333'
+            1582: '1582'
             448: '448'
-            1335: '1335'
             882: '882'
             883: '883'
             874: '874'
             876: '876'
-            1340: '1340'
+            1413: '1413'
             445: '445'
             592: '592'
-            1329: '1329'
             877: '877'
             1209: '1209'
             595: '595'
@@ -1433,7 +1440,6 @@ display:
               pacs_tl: '0'
               clin_tl: '0'
               pacsa: '0'
-              pe: '0'
               cad_tl: '0'
               reception: '0'
               ce_director: '0'
@@ -1447,6 +1453,7 @@ display:
               wiseguyz_staff: '0'
               volunteer_supervisor: '0'
               fund_development_officer: '0'
+              pe: '0'
             reduce: 1
           is_grouped: false
           group_info:
@@ -1479,7 +1486,7 @@ display:
           exposed: true
           expose:
             operator_id: subject_op
-            label: Subject
+            label: 'Calendar Title'
             description: ''
             use_operator: false
             operator: subject_op
@@ -1532,6 +1539,79 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        status_id:
+          id: status_id
+          table: civicrm_activity
+          field: status_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: status_id
+          plugin_id: list_field
+          operator: or
+          value:
+            2: '2'
+            3: '3'
+            9: '9'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: status_id_op
+            label: 'Booking Status'
+            description: ''
+            use_operator: false
+            operator: status_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: status_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              wheel: '0'
+              finance: '0'
+              taxreceipts: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              pe: '0'
+              cad_tl: '0'
+              reception: '0'
+              ce_director: '0'
+              pe_tl: '0'
+              vsil: '0'
+              indigenous_cl: '0'
+              eval: '0'
+              vsil_tl: '0'
+              couns_tl: '0'
+              is_staff: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+              fund_development_officer: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:

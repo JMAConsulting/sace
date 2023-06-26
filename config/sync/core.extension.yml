@@ -66,8 +66,15 @@ module:
   path: 0
   path_alias: 0
   pe_booking_activity_role: 0
+  pe_presentation_evaluation: 0
+  pe_update_booking: 0
+  ped_booking_request: 0
+  ped_evaluation_summary: 0
+  ped_online_course_booking_request: 0
+  ped_online_course_booking_update: 0
   redirect: 0
   rest: 0
+  sace_calendar_customisations: 0
   sace_custom: 0
   serialization: 0
   slick: 0

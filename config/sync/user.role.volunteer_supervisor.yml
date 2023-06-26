@@ -1,0 +1,9 @@
+uuid: 92df3522-c647-4c34-9d62-7ec64c21f7cf
+langcode: en
+status: true
+dependencies: {  }
+id: volunteer_supervisor
+label: 'Volunteer Supervisor'
+weight: 17
+is_admin: null
+permissions: {  }

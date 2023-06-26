@@ -1,0 +1,9 @@
+uuid: 87131f49-f66c-4dc7-9719-059c6e6d9d82
+langcode: en
+status: true
+dependencies: {  }
+id: intake
+label: INTAKE
+weight: 1
+is_admin: null
+permissions: {  }

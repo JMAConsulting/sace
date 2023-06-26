@@ -1,0 +1,14 @@
+uuid: 985454b5-eb4c-4e2b-8a81-56967c7b9f6f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_tl
+  module:
+    - user
+id: user_remove_role_action.clin_tl
+label: 'Remove the CLIN TL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: clin_tl

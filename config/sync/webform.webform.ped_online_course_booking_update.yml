@@ -566,12 +566,12 @@ elements: |-
         width: 20
       '#parent': civicrm_3_contact_1_fieldset_fieldset
       '#title': 'Last Name'
-    contact_3_shadowing:
-      '#type': checkbox
-      '#title': Shadowing
     contact_3_facilitator:
       '#type': checkbox
       '#title': Facilitating
+    contact_3_shadowing:
+      '#type': checkbox
+      '#title': Shadowing
   flexbox_12:
     '#type': webform_flexbox
     civicrm_4_contact_1_contact_existing:
@@ -611,12 +611,12 @@ elements: |-
         width: 20
       '#parent': civicrm_4_contact_1_fieldset_fieldset
       '#title': 'Last Name'
-    contact_4_shadowing:
-      '#type': checkbox
-      '#title': Shadowing
     contact_4_facilitator:
       '#type': checkbox
       '#title': Facilitating
+    contact_4_shadowing:
+      '#type': checkbox
+      '#title': Shadowing
   flexbox_13:
     '#type': webform_flexbox
     civicrm_5_contact_1_contact_existing:
@@ -656,12 +656,12 @@ elements: |-
         width: 20
       '#parent': civicrm_5_contact_1_fieldset_fieldset
       '#title': 'Last Name'
-    contact_5_shadowing:
-      '#type': checkbox
-      '#title': Shadowing
     contact_5_facilitator:
       '#type': checkbox
       '#title': Facilitating
+    contact_5_shadowing:
+      '#type': checkbox
+      '#title': Shadowing
   facilitating_program:
     '#type': fieldset
     '#title': 'Facilitating Program'

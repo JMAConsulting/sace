@@ -1,0 +1,14 @@
+uuid: 49597797-f035-4f8c-ab28-5210532c7c2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.vsil
+  module:
+    - user
+id: user_remove_role_action.vsil
+label: 'Remove the VSIL role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: vsil

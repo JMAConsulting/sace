@@ -31,7 +31,9 @@ elements: |-
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '59'
     '#text': |
-      <p>SACE delivers age-appropriate sexual violence education for youth over the age of 12. We present to various youth audiences including students, leadership and community groups, and clubs.&nbsp;</p>
+      <p>SACE delivers age-appropriate sexual violence education for youth over the age of 12. We present to various youth audiences including students, leadership and community groups, and clubs.</p>
+
+      <p>&nbsp;</p>
 
       <p><b>*Please note,&nbsp;</b><strong>our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</strong></p>
 

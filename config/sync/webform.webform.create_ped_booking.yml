@@ -3,7 +3,6 @@ langcode: en
 status: open
 dependencies:
   module:
-    - pe_booking_activity_role
     - webform_civicrm
 weight: 0
 open: null
@@ -162,6 +161,7 @@ elements: |-
           Sexual Assault & Consent|Sexual Assault & Consent
           Non-Consensual Photo Sharing|Non-Consensual Photo Sharing
           Custom/something different|Custom/something different
+          
       '#data_type': 0
       '#form_key': civicrm_1_activity_1_cg2_custom_40
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -418,12 +418,6 @@ elements: |-
         width: 20
       '#parent': civicrm_3_contact_1_fieldset_fieldset
       '#title': 'Last Name'
-    contact_3_shadowing:
-      '#type': checkbox
-      '#title': Shadowing
-    contact_3_facilitator:
-      '#type': checkbox
-      '#title': Facilitator
   flexbox_06:
     '#type': webform_flexbox
     civicrm_4_contact_1_contact_existing:
@@ -462,12 +456,6 @@ elements: |-
         width: 20
       '#parent': civicrm_4_contact_1_fieldset_fieldset
       '#title': 'Last Name'
-    contact_4_shadowing:
-      '#type': checkbox
-      '#title': Shadowing
-    contact_4_facilitator:
-      '#type': checkbox
-      '#title': Facilitator
   flexbox_07:
     '#type': webform_flexbox
     civicrm_5_contact_1_contact_existing:
@@ -506,12 +494,6 @@ elements: |-
         width: 20
       '#parent': civicrm_5_contact_1_fieldset_fieldset
       '#title': 'Last Name'
-    contact_5_shadowing:
-      '#type': checkbox
-      '#title': Shadowing
-    contact_5_facilitator:
-      '#type': checkbox
-      '#title': Facilitator
 css: ''
 javascript: ''
 settings:
@@ -700,7 +682,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -50
+    weight: null
     settings:
       nid: 1
       number_of_contacts: '5'
@@ -1146,13 +1128,4 @@ handlers:
           block_form: 0
           disable_unregister: 0
           allow_url_load: 0
-  pe_activity_role_update:
-    id: pe_activity_role_update
-    handler_id: pe_activity_role_update
-    label: 'PE Activity Role update'
-    notes: ''
-    status: true
-    conditions: {  }
-    weight: -49
-    settings: {  }
 variants: {  }

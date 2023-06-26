@@ -1,0 +1,9 @@
+uuid: 31f1aa44-6b89-42d4-8c90-7fa4f62b73df
+langcode: en
+status: true
+dependencies: {  }
+id: supervisors
+label: Supervisors
+weight: -1
+is_admin: null
+permissions: {  }

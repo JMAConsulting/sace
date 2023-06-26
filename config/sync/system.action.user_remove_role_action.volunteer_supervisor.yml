@@ -1,0 +1,14 @@
+uuid: 83986c89-741c-4a3b-bea4-372bce93d8bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.volunteer_supervisor
+  module:
+    - user
+id: user_remove_role_action.volunteer_supervisor
+label: 'Remove the Volunteer Supervisor role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: volunteer_supervisor

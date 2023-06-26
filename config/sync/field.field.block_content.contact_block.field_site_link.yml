@@ -1,0 +1,23 @@
+uuid: 08e56b34-d37d-4f5a-9829-c80bdcc9b276
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.contact_block
+    - field.storage.block_content.field_site_link
+  module:
+    - link
+id: block_content.contact_block.field_site_link
+field_name: field_site_link
+entity_type: block_content
+bundle: contact_block
+label: 'Site Link'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link

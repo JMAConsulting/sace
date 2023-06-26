@@ -1,0 +1,9 @@
+uuid: a0de722d-42a6-4677-8605-c449cf8996b4
+langcode: en
+status: true
+dependencies: {  }
+id: ce_director
+label: 'CE Director'
+weight: 8
+is_admin: null
+permissions: {  }

@@ -1,0 +1,14 @@
+uuid: 232debda-4155-4ddd-a734-b19ea75b6d0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.pe
+  module:
+    - user
+id: user_add_role_action.pe
+label: 'Add the PE Staff role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: pe

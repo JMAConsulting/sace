@@ -215,15 +215,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: 0
-        target_contact_id:
-          id: target_contact_id
+        target_id:
+          id: target_id
           table: civicrm_activity
-          field: target_contact_id
+          field: target_id
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: civicrm_activity
-          entity_field: target_contact_id
+          entity_field: target_id
           plugin_id: field
           label: 'Organization  '
           exclude: false
@@ -290,7 +290,7 @@ display:
           entity_type: civicrm_address
           entity_field: postal_code
           plugin_id: field
-          label: 'Postal Code. '
+          label: 'Postal Code  '
           exclude: false
           alter:
             alter_text: false
@@ -539,15 +539,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: 0
-        assignee_contact_id:
-          id: assignee_contact_id
+        assignee_id:
+          id: assignee_id
           table: civicrm_activity
-          field: assignee_contact_id
+          field: assignee_id
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: civicrm_activity
-          entity_field: assignee_contact_id
+          entity_field: assignee_id
           plugin_id: field
           label: 'Presenter(s)  '
           exclude: false
@@ -698,8 +698,7 @@ display:
           entity_type: civicrm_activity
           plugin_id: civicrm_entity_activity_contact
           required: false
-          record_type_id:
-            3: '3'
+          record_type_id: '3'
         reverse__civicrm_address__contact_id:
           id: reverse__civicrm_address__contact_id
           table: civicrm_contact

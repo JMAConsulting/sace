@@ -1,0 +1,14 @@
+uuid: 0ea43648-9a11-43e0-95a9-e9404754a70f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.fund_development_officer
+  module:
+    - user
+id: user_remove_role_action.fund_development_officer
+label: 'Remove the Fund Development Officer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: fund_development_officer

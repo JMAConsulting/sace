@@ -18,9 +18,9 @@ elements: |-
   intro_markup:
     '#type': processed_text
     '#text': |
-      <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
+      <p>For youth engaging in asynchronous or independent learning, SACE offers youth online courses. Each course includes short readings, videos, and reflection questions that youth can answer in a downloadable workbook.</p>
 
-      <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
+      <p>&nbsp;</p>
     '#format': html
   youth_online_courses_booking_html:
     '#type': processed_text
@@ -202,7 +202,7 @@ elements: |-
         '#parent': civicrm_2_contact_1_fieldset_fieldset
     civicrm_1_activity_1_cg2_custom_657:
       '#type': civicrm_options
-      '#title': 'This booking is for a smaller group, program, department or committee within my organization'
+      '#title': 'This booking is for a smaller group, program, department, or committee within my organization'
       '#options':
         'Yes': 'Yes'
         'No': 'No'
@@ -212,8 +212,8 @@ elements: |-
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_657
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
+      '#default_option': 'No'
+      '#default_value': 'No'
       '#civicrm_live_options': '1'
     civicrm_2_contact_1_cg52_custom_663:
       '#type': textfield
@@ -260,17 +260,17 @@ elements: |-
             value: '199'
       '#text': |
         <h3><span style="color:#2e416c;">Online Course Topic(s)</span></h3>
+
         <p>Our online course titles with a brief description of each course are listed below.&nbsp;&nbsp;</p>
 
         <ul>
-        	<li>Information for Partners &amp; Supporters - This&nbsp; self-paced online course is available for adults wanting to learn more&nbsp; about how to support loved ones in their life who have experienced&nbsp; sexual violence.</li>
-        	<li>Recognizing &amp; Responding to Sexual Violence - This self-paced online course is&nbsp; available for adults wanted to learn more about consent, sexual&nbsp; violence, and how to support someone who has experienced sexual&nbsp; violence.
-        	<ul>
-        		<li>This course contains discussion questions that are facilitated by a member of the SACE Public Education Team.</li>
-        	</ul>
-        	</li>
-        	<li>Racism &amp; Sexual Violence - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the deep connection between racism and sexual violence to empower&nbsp; individuals and communities to enact meaningful change.&nbsp;</li>
-        	<li>Sexual Violence &amp; the 2SLGBTQ+ Community - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the connection between queer history, queer trauma, and sexual&nbsp; violence.</li>
+        	<li><strong>Information for Partners &amp; Supporters:</strong>&nbsp;This&nbsp;self-paced online course is available for adults wanting to learn more&nbsp;about how to support loved ones in their life who have experienced&nbsp; sexual violence.<br />
+        	&nbsp;</li>
+        	<li><strong>Recognizing &amp; Responding to Sexual Violence:</strong>&nbsp;This self-paced online course is&nbsp; available for adults wanted to learn more about consent, sexual&nbsp;violence, and how to support someone who has experienced sexual&nbsp; violence. Please note,<strong> </strong>this course contains discussion questions that are facilitated by a member of the SACE Public Education Team.<br />
+        	&nbsp;</li>
+        	<li><strong>Racism &amp; Sexual Violence:</strong>&nbsp;This self-paced online course is available for adults who want to learn more&nbsp;about the deep connection between racism and sexual violence to empower&nbsp;individuals and communities to enact meaningful change.&nbsp;<br />
+        	&nbsp;</li>
+        	<li><strong>Sexual Violence &amp; the 2SLGBTQ+ Community:</strong>&nbsp;This&nbsp;self-paced online course is available for adults who want to learn more&nbsp; about the connection between queer history, queer trauma, and sexual&nbsp;violence.</li>
         </ul>
       '#format': html
     youth_online_course_blurb:
@@ -281,16 +281,19 @@ elements: |-
             value: '196'
       '#text': |
         <h3><span style="color:#2e416c;">Online Course Topic(s)</span></h3>
+
         <p>The typical courses offered by approximate age range are listed below. For more information about each course topic, please visit <a class="ql-link" href="http://www.sace.ca/services/public-education" rel="noopener noreferrer" target="_blank">http://www.sace.ca/services/public-education</a>.<br />
         <br />
         <strong>*Please note that each module builds on the learning of previous ones for each age group.</strong>&nbsp;</p>
 
         <ul>
-        	<li>Gr 7/12-13 years - Ask First: Sexual Harassment&nbsp;</li>
-        	<li>Gr 8/13-14 years - Ask First: Sexual Assault &amp; Consent&nbsp;</li>
-        	<li>Gr 9/14-15 years - Ask First: Non-Consensual Photo Sharing&nbsp;</li>
-        	<li>High School/15-18 years – Consent: Ask Me About It!</li>
+        	<li>Grade 7 (ages 12-13) - Ask First: Sexual Harassment&nbsp;</li>
+        	<li>Grade 8 (ages 13-14)&nbsp;- Ask First: Sexual Assault &amp; Consent&nbsp;</li>
+        	<li>Grade 9 (ages 14-15)&nbsp;- Ask First: Non-Consensual Photo Sharing&nbsp;</li>
+        	<li>High School (ages 15-18 years)&nbsp;– Consent: Ask Me About It!&nbsp;</li>
         </ul>
+
+        <p>The course "Consent: Ask Me About It!" also has an optional Sexual Harassment and Non-Consensual Photo Sharing module.&nbsp;</p>
       '#format': html
     civicrm_1_activity_1_cg2_custom_697:
       '#type': civicrm_options
@@ -387,8 +390,8 @@ elements: |-
         visible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '196'
-      '#text': |2
-                <p><strong>*Please&nbsp; note, our online courses are designed to be used by your school for 1&nbsp; semester at a time. If you would like to use it for multiple semesters,&nbsp; please fill out a separate booking request form for each semester.</strong></p>
+      '#text': |
+        <p><strong>*Please note, our online courses are designed to be used by your school for 1 semester at a time. If you would like to use it for multiple semesters, please fill out a separate booking request form for each semester.</strong></p>
       '#format': html
     flexbox_05:
       '#type': webform_flexbox

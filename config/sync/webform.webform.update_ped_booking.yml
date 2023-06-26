@@ -876,23 +876,34 @@ elements: |-
       '#title_display': none
       '#civicrm_live_options': 0
       '#options':
-        Professionals: Professionals
-        Students: Students
-        'Service Providers': 'Service Providers'
-        Educators: Educators
-        Guardians: Guardians
-        Volunteers: Volunteers
-        'Older Adults': 'Older Adults'
         2SLGBTQ+: 2SLGBTQ+
-        Indigenous: Indigenous
-        Racialized: Racialized
-        PeopleWithDisabilities: 'People With Disabilities'
-        Newcomers: Newcomers
+        'Children 3-11': 'Children 3-11'
         'Community Group': 'Community Group'
-        'At-risk Youth': 'At-risk Youth'
+        'Deaf&HardofHearing': 'Deaf & Hard of Hearing'
+        EnglishLanguageLearners: 'English Language Learners'
+        GuardiansParents: Guardians/Parents
+        IndigenousFirstNationsMétisInuit: 'Indigenous/First Nations, Métis, or Inuit'
         Men/Boys/Masc/NB: Men/Boys/Masc/NB
+        NewcomersNon-StatusRefugeeImmigrant: Newcomers/Non-Status/Refugee/Immigrant
+        PeopleExperiencingIncarceration: 'People Experiencing Incarceration'
+        PeopleWithCognitiveDisabilities: 'People With Cognitive Disabilities'
+        PeopleWithDisabilities: 'People With Disabilities'
+        ProfessionalsArtsEntertainmentNightlife: 'Professionals - Arts, Entertainment, and Nightlife'
+        ProfessionalsGeneral: 'Professionals - General'
+        ProfessionalsServiceProviders: 'Professionals - Service Providers'
+        ProfessionalsStudentsEducation: 'Professionals/Students - Education'
+        ProfessionalsStudentsHealth: 'Professionals/Students - Health'
+        ProfessionalsStudentsLegal: 'Professionals/Students - Legal'
+        ProfessionalsStudentsSocialServices: 'Professionals/Students - Social Services'
+        RacializedPOC: Racialized/POC
+        Rural: Rural
+        'SACE Clients': 'SACE Clients'
+        SeniorsOlderAdults: 'Seniors/Older Adults'
+        Volunteers: Volunteers
         Women/Girls/Femme/NB: Women/Girls/Femme/NB
-        Adults: Adults
+        Youth12-18: 'Youth 12-18'
+        Youth18-30: 'Youth 18-30'
+        YouthAtRisk: 'Youth At Risk'
       '#extra':
         aslist: 0
         multiple: 1

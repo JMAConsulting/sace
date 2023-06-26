@@ -1,0 +1,14 @@
+uuid: 18d75aa9-5dd7-46cc-a3d4-a9a8d2ad5507
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.wiseguyz_staff
+  module:
+    - user
+id: user_add_role_action.wiseguyz_staff
+label: 'Add the WiseGuyz Staff role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: wiseguyz_staff

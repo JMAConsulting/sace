@@ -1,0 +1,9 @@
+uuid: 510e5e84-99c6-4e46-94bf-f03a9afacb17
+langcode: en
+status: true
+dependencies: {  }
+id: clin_director
+label: 'CLIN Director'
+weight: 0
+is_admin: null
+permissions: {  }

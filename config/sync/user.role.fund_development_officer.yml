@@ -1,0 +1,9 @@
+uuid: 4d31cffe-ade5-4cb2-9cb7-aa3d619d174d
+langcode: en
+status: true
+dependencies: {  }
+id: fund_development_officer
+label: 'Fund Development Officer'
+weight: 18
+is_admin: null
+permissions: {  }

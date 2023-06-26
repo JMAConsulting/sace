@@ -1,0 +1,9 @@
+uuid: 25e853a9-70a7-492e-9e74-8a6f2036b293
+langcode: en
+status: true
+dependencies: {  }
+id: clin_tl
+label: 'CLIN TL'
+weight: 3
+is_admin: null
+permissions: {  }

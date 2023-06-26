@@ -1,0 +1,14 @@
+uuid: d283a94a-6c21-4ebc-b4ef-60aeab4a66cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.clin_director
+  module:
+    - user
+id: user_add_role_action.clin_director
+label: 'Add the CLIN Director role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: clin_director

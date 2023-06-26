@@ -1,0 +1,14 @@
+uuid: 28796f4f-e6b8-4ecf-8cd0-9f6db59b593a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.ce_director
+  module:
+    - user
+id: user_remove_role_action.ce_director
+label: 'Remove the CE Director role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: ce_director

@@ -1,0 +1,14 @@
+uuid: cfd6980b-57fa-4ad6-95fb-62f8f7cc382a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.vsil_tl
+  module:
+    - user
+id: user_add_role_action.vsil_tl
+label: 'Add the VSIL TL role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: vsil_tl

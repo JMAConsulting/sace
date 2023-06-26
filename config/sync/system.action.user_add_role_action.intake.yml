@@ -1,0 +1,14 @@
+uuid: 4b5dc227-81b6-4339-91fc-89c58f4e9398
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.intake
+  module:
+    - user
+id: user_add_role_action.intake
+label: 'Add the INTAKE role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: intake
