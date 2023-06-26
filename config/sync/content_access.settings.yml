@@ -16,7 +16,6 @@ content_access_roles_gids:
   pacs_tl: 13
   clin_tl: 14
   pacsa: 15
-  pe: 16
   cad_tl: 17
   reception: 18
   ce_director: 19
@@ -30,5 +29,6 @@ content_access_roles_gids:
   wiseguyz_staff: 27
   volunteer_supervisor: 28
   fund_development_officer: 29
+  pe: 30
 content_access_node_type:
   demo: 'a:2:{s:8:"view_own";a:2:{i:0;s:13:"authenticated";i:1;s:5:"wheel";}s:4:"view";a:3:{i:0;s:9:"anonymous";i:1;s:13:"authenticated";i:2;s:5:"wheel";}}'

@@ -67,7 +67,10 @@ module:
   pe_booking_activity_role: 0
   pe_presentation_evaluation: 0
   pe_update_booking: 0
-  ped_booking_request_webform: 0
+  ped_booking_request: 0
+  ped_evaluation_summary: 0
+  ped_online_course_booking_request: 0
+  ped_online_course_booking_update: 0
   redirect: 0
   rest: 0
   sace_calendar_customisations: 0

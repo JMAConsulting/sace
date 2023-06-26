@@ -1,0 +1,25 @@
+uuid: 592fd808-54c0-4bd5-a0ec-2052d21a4398
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:contact_block:d698679b-41e2-4251-98b5-96e775844ea8'
+  module:
+    - block_content
+  theme:
+    - oliverolocal
+id: addingaddresstofooter
+theme: oliverolocal
+region: pre_footer
+weight: -6
+provider: null
+plugin: 'block_content:d698679b-41e2-4251-98b5-96e775844ea8'
+settings:
+  id: 'block_content:d698679b-41e2-4251-98b5-96e775844ea8'
+  label: 'Adding address to footer'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }
