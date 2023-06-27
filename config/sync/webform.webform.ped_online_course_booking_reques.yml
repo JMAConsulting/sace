@@ -18,10 +18,11 @@ elements: |-
   intro_markup:
     '#type': processed_text
     '#text': |
-      <p>For youth engaging in asynchronous or independent learning, SACE offers youth online courses. Each course includes short readings, videos, and reflection questions that youth can answer in a downloadable workbook.</p>
+      <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
 
-      <p>&nbsp;</p>
+      <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
     '#format': html
+    '#access': false
   youth_online_courses_booking_html:
     '#type': processed_text
     '#states':
@@ -29,6 +30,9 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '196'
     '#text': |
+      <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
+
+      <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
       <p><img alt="Team" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/team-386673_1920.jpg?itok=y7zfLISW" title="" /></p>
     '#format': html
   adult_professional_booking_html:
@@ -38,6 +42,7 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '199'
     '#text': |
+      <p>SACE offers both self-paced and moderated online learning opportunities for adults to learn more about topics related to sexual violence. Each course includes short readings, videos, and reflection questions to further engage with the material.</p>
       <p><img alt="Workshop" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/workshop-1425446_1920.jpg?itok=pJQcarMR" title="" /></p>
     '#format': html
   processed_text:
@@ -202,18 +207,18 @@ elements: |-
         '#parent': civicrm_2_contact_1_fieldset_fieldset
     civicrm_1_activity_1_cg2_custom_657:
       '#type': civicrm_options
-      '#title': 'This booking is for a smaller group, program, department, or committee within my organization'
+      '#title': 'This booking is for a smaller group, program, department or committee within my organization'
       '#options':
         'Yes': 'Yes'
         'No': 'No'
+      '#default_value': ''
       '#extra':
         aslist: 1
         multiple: 0
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_657
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 'No'
-      '#default_value': 'No'
+      '#default_option': ''
       '#civicrm_live_options': '1'
     civicrm_2_contact_1_cg52_custom_663:
       '#type': textfield
@@ -260,17 +265,17 @@ elements: |-
             value: '199'
       '#text': |
         <h3><span style="color:#2e416c;">Online Course Topic(s)</span></h3>
-
         <p>Our online course titles with a brief description of each course are listed below.&nbsp;&nbsp;</p>
 
         <ul>
-        	<li><strong>Information for Partners &amp; Supporters:</strong>&nbsp;This&nbsp;self-paced online course is available for adults wanting to learn more&nbsp;about how to support loved ones in their life who have experienced&nbsp; sexual violence.<br />
-        	&nbsp;</li>
-        	<li><strong>Recognizing &amp; Responding to Sexual Violence:</strong>&nbsp;This self-paced online course is&nbsp; available for adults wanted to learn more about consent, sexual&nbsp;violence, and how to support someone who has experienced sexual&nbsp; violence. Please note,<strong> </strong>this course contains discussion questions that are facilitated by a member of the SACE Public Education Team.<br />
-        	&nbsp;</li>
-        	<li><strong>Racism &amp; Sexual Violence:</strong>&nbsp;This self-paced online course is available for adults who want to learn more&nbsp;about the deep connection between racism and sexual violence to empower&nbsp;individuals and communities to enact meaningful change.&nbsp;<br />
-        	&nbsp;</li>
-        	<li><strong>Sexual Violence &amp; the 2SLGBTQ+ Community:</strong>&nbsp;This&nbsp;self-paced online course is available for adults who want to learn more&nbsp; about the connection between queer history, queer trauma, and sexual&nbsp;violence.</li>
+        	<li>Information for Partners &amp; Supporters - This&nbsp; self-paced online course is available for adults wanting to learn more&nbsp; about how to support loved ones in their life who have experienced&nbsp; sexual violence.</li>
+        	<li>Recognizing &amp; Responding to Sexual Violence - This self-paced online course is&nbsp; available for adults wanted to learn more about consent, sexual&nbsp; violence, and how to support someone who has experienced sexual&nbsp; violence.
+        	<ul>
+        		<li>This course contains discussion questions that are facilitated by a member of the SACE Public Education Team.</li>
+        	</ul>
+        	</li>
+        	<li>Racism &amp; Sexual Violence - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the deep connection between racism and sexual violence to empower&nbsp; individuals and communities to enact meaningful change.&nbsp;</li>
+        	<li>Sexual Violence &amp; the 2SLGBTQ+ Community - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the connection between queer history, queer trauma, and sexual&nbsp; violence.</li>
         </ul>
       '#format': html
     youth_online_course_blurb:
@@ -281,19 +286,16 @@ elements: |-
             value: '196'
       '#text': |
         <h3><span style="color:#2e416c;">Online Course Topic(s)</span></h3>
-
         <p>The typical courses offered by approximate age range are listed below. For more information about each course topic, please visit <a class="ql-link" href="http://www.sace.ca/services/public-education" rel="noopener noreferrer" target="_blank">http://www.sace.ca/services/public-education</a>.<br />
         <br />
         <strong>*Please note that each module builds on the learning of previous ones for each age group.</strong>&nbsp;</p>
 
         <ul>
-        	<li>Grade 7 (ages 12-13) - Ask First: Sexual Harassment&nbsp;</li>
-        	<li>Grade 8 (ages 13-14)&nbsp;- Ask First: Sexual Assault &amp; Consent&nbsp;</li>
-        	<li>Grade 9 (ages 14-15)&nbsp;- Ask First: Non-Consensual Photo Sharing&nbsp;</li>
-        	<li>High School (ages 15-18 years)&nbsp;– Consent: Ask Me About It!&nbsp;</li>
+        	<li>Gr 7/12-13 years - Ask First: Sexual Harassment&nbsp;</li>
+        	<li>Gr 8/13-14 years - Ask First: Sexual Assault &amp; Consent&nbsp;</li>
+        	<li>Gr 9/14-15 years - Ask First: Non-Consensual Photo Sharing&nbsp;</li>
+        	<li>High School/15-18 years – Consent: Ask Me About It!</li>
         </ul>
-
-        <p>The course "Consent: Ask Me About It!" also has an optional Sexual Harassment and Non-Consensual Photo Sharing module.&nbsp;</p>
       '#format': html
     civicrm_1_activity_1_cg2_custom_697:
       '#type': civicrm_options
@@ -318,14 +320,14 @@ elements: |-
       '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_662:
-      '#type': civicrm_options
+      '#type': checkboxes
       '#title': 'Youth Online Course Optional Add-Ons'
-      '#empty_option': '- Select Optional Add-Ons -'
-      '#civicrm_live_options': 0
       '#options':
-        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator'
-        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module'
-        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_"
+        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator -- This option can be offered in-person or online.'
+        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module -- Only available for Consent: Ask Me About It! online course.'
+        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_ -- Only available for Consent: Ask Me About It! online course."
+      '#empty_option': ''
+      '#civicrm_live_options': 0
       '#extra':
         aslist: 1
         multiple: 0
@@ -333,7 +335,6 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_662
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
-      '#default_value': ''
   civicrm_1_activity_1_cg2_custom_90:
     '#type': civicrm_options
     '#title': 'Youth or Adult'
@@ -390,9 +391,31 @@ elements: |-
         visible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '196'
-      '#text': |
-        <p><strong>*Please note, our online courses are designed to be used by your school for 1 semester at a time. If you would like to use it for multiple semesters, please fill out a separate booking request form for each semester.</strong></p>
+      '#text': |2
+                <p><strong>*Please&nbsp; note, our online courses are designed to be used by your school for 1&nbsp; semester at a time. If you would like to use it for multiple semesters,&nbsp; please fill out a separate booking request form for each semester.</strong></p>
       '#format': html
+    civicrm_1_activity_1_cg2_custom_25:
+      '#type': checkboxes
+      '#title': 'Grades and Ages'
+      '#options':
+        'Grade 7 (ages 12-13)': 'Grade 7 (ages 12-13)'
+        'Grade 8 (ages 13-14)': 'Grade 8 (ages 13-14)'
+        'Grade 9 (ages 14-15)': 'Grade 9 (ages 14-15)'
+        'High School (ages 15-18)': 'High School (ages 15-18)'
+        'Adults (ages 18+)': 'Adults (ages 18+)'
+      '#extra':
+        multiple: 1
+        aslist: 1
+        items: |-
+          Grade 7 (ages 12-13)|Grade 7 (ages 12-13)
+          Grade 8 (ages 13-14)|Grade 8 (ages 13-14)
+          Grade 9 (ages 14-15)|Grade 9 (ages 14-15)
+          High School (ages 15-18)|High School (ages 15-18)
+          Adults (ages 18+)|Adults (ages 18+)
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_25
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#civicrm_live_options': 1
     flexbox_05:
       '#type': webform_flexbox
       civicrm_1_activity_1_cg2_custom_815:
@@ -674,10 +697,8 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -50
+    weight: null
     settings:
-      disable: 'Leave Fields and Save Settings'
-      antibot_key: ''
       nid: 1
       number_of_contacts: '2'
       1_contact_type: individual
@@ -779,7 +800,7 @@ handlers:
       civicrm_2_contact_1_address_state_province_id: create_civicrm_webform_element
       civicrm_2_contact_1_address_county_id: 0
       civicrm_2_contact_1_address_master_id: 0
-      civicrm_2_contact_1_address_location_type_id: '1'
+      civicrm_2_contact_1_address_location_type_id: '3'
       civicrm_2_contact_1_address_is_primary: '1'
       contact_2_number_of_phone: '1'
       civicrm_2_contact_1_phone_phone: create_civicrm_webform_element
@@ -836,122 +857,6 @@ handlers:
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
-      activity_1_settings_dynamic_custom_cg56: 0
-      civicrm_1_activity_1_cg56_custom_1214: 0
-      civicrm_1_activity_1_cg56_custom_1215: 0
-      civicrm_1_activity_1_cg56_custom_1216: 0
-      civicrm_1_activity_1_cg56_custom_1217: 0
-      civicrm_1_activity_1_cg56_custom_1218: 0
-      civicrm_1_activity_1_cg56_custom_1219: 0
-      civicrm_1_activity_1_cg56_custom_1220: 0
-      civicrm_1_activity_1_cg56_custom_1221: 0
-      civicrm_1_activity_1_cg56_custom_1222: 0
-      civicrm_1_activity_1_cg56_custom_1223: 0
-      civicrm_1_activity_1_cg56_custom_1224: 0
-      civicrm_1_activity_1_cg56_custom_1225: 0
-      civicrm_1_activity_1_cg56_custom_1226: 0
-      civicrm_1_activity_1_cg56_custom_1228: 0
-      civicrm_1_activity_1_cg56_custom_1229: 0
-      civicrm_1_activity_1_cg56_custom_1230: 0
-      civicrm_1_activity_1_cg56_custom_1231: 0
-      civicrm_1_activity_1_cg56_custom_1139: 0
-      civicrm_1_activity_1_cg56_custom_1140: 0
-      civicrm_1_activity_1_cg56_custom_1143: 0
-      civicrm_1_activity_1_cg56_custom_1144: 0
-      civicrm_1_activity_1_cg56_custom_1145: 0
-      civicrm_1_activity_1_cg56_custom_1146: 0
-      civicrm_1_activity_1_cg56_custom_1148: 0
-      civicrm_1_activity_1_cg56_custom_1149: 0
-      civicrm_1_activity_1_cg56_custom_1150: 0
-      civicrm_1_activity_1_cg56_custom_1152: 0
-      civicrm_1_activity_1_cg56_custom_1153: 0
-      civicrm_1_activity_1_cg56_custom_1154: 0
-      civicrm_1_activity_1_cg56_custom_1157: 0
-      civicrm_1_activity_1_cg56_custom_1158: 0
-      civicrm_1_activity_1_cg56_custom_1159: 0
-      civicrm_1_activity_1_cg56_custom_1160: 0
-      civicrm_1_activity_1_cg56_custom_1161: 0
-      civicrm_1_activity_1_cg56_custom_1164: 0
-      civicrm_1_activity_1_cg56_custom_1165: 0
-      civicrm_1_activity_1_cg56_custom_1166: 0
-      civicrm_1_activity_1_cg56_custom_1167: 0
-      civicrm_1_activity_1_cg56_custom_1168: 0
-      civicrm_1_activity_1_cg56_custom_1171: 0
-      civicrm_1_activity_1_cg56_custom_1172: 0
-      civicrm_1_activity_1_cg56_custom_1173: 0
-      civicrm_1_activity_1_cg56_custom_1174: 0
-      civicrm_1_activity_1_cg56_custom_1175: 0
-      civicrm_1_activity_1_cg56_custom_1178: 0
-      civicrm_1_activity_1_cg56_custom_1179: 0
-      civicrm_1_activity_1_cg56_custom_1180: 0
-      civicrm_1_activity_1_cg56_custom_1181: 0
-      civicrm_1_activity_1_cg56_custom_1182: 0
-      civicrm_1_activity_1_cg56_custom_1185: 0
-      civicrm_1_activity_1_cg56_custom_1187: 0
-      civicrm_1_activity_1_cg56_custom_1189: 0
-      civicrm_1_activity_1_cg56_custom_1190: 0
-      civicrm_1_activity_1_cg56_custom_1186: 0
-      civicrm_1_activity_1_cg56_custom_1193: 0
-      civicrm_1_activity_1_cg56_custom_1194: 0
-      civicrm_1_activity_1_cg56_custom_1195: 0
-      civicrm_1_activity_1_cg56_custom_1196: 0
-      civicrm_1_activity_1_cg56_custom_1197: 0
-      civicrm_1_activity_1_cg56_custom_1200: 0
-      civicrm_1_activity_1_cg56_custom_1201: 0
-      civicrm_1_activity_1_cg56_custom_1202: 0
-      civicrm_1_activity_1_cg56_custom_1203: 0
-      civicrm_1_activity_1_cg56_custom_1204: 0
-      civicrm_1_activity_1_cg56_custom_1205: 0
-      civicrm_1_activity_1_cg56_custom_1206: 0
-      civicrm_1_activity_1_cg56_custom_1209: 0
-      civicrm_1_activity_1_cg56_custom_1210: 0
-      civicrm_1_activity_1_cg56_custom_1211: 0
-      civicrm_1_activity_1_cg56_custom_1114: 0
-      civicrm_1_activity_1_cg56_custom_1115: 0
-      civicrm_1_activity_1_cg56_custom_1116: 0
-      civicrm_1_activity_1_cg56_custom_1117: 0
-      civicrm_1_activity_1_cg56_custom_1120: 0
-      civicrm_1_activity_1_cg56_custom_1121: 0
-      civicrm_1_activity_1_cg56_custom_1122: 0
-      civicrm_1_activity_1_cg56_custom_1123: 0
-      civicrm_1_activity_1_cg56_custom_1124: 0
-      civicrm_1_activity_1_cg56_custom_1125: 0
-      civicrm_1_activity_1_cg56_custom_1126: 0
-      civicrm_1_activity_1_cg56_custom_1129: 0
-      civicrm_1_activity_1_cg56_custom_1130: 0
-      civicrm_1_activity_1_cg56_custom_1131: 0
-      civicrm_1_activity_1_cg56_custom_1132: 0
-      civicrm_1_activity_1_cg56_custom_1133: 0
-      civicrm_1_activity_1_cg56_custom_1136: 0
-      civicrm_1_activity_1_cg56_custom_1137: 0
-      civicrm_1_activity_1_cg56_custom_1138: 0
-      civicrm_1_activity_1_cg56_custom_1188: 0
-      civicrm_1_activity_1_cg56_custom_1235: 0
-      civicrm_1_activity_1_cg56_custom_1236: 0
-      civicrm_1_activity_1_cg56_custom_1237: 0
-      civicrm_1_activity_1_cg56_custom_1238: 0
-      civicrm_1_activity_1_cg56_custom_1239: 0
-      civicrm_1_activity_1_cg56_custom_1240: 0
-      civicrm_1_activity_1_cg56_custom_1241: 0
-      civicrm_1_activity_1_cg56_custom_1242: 0
-      civicrm_1_activity_1_cg56_custom_1243: 0
-      civicrm_1_activity_1_cg56_custom_1244: 0
-      civicrm_1_activity_1_cg56_custom_1245: 0
-      civicrm_1_activity_1_cg56_custom_1246: 0
-      civicrm_1_activity_1_cg56_custom_1247: 0
-      civicrm_1_activity_1_cg56_custom_1248: 0
-      civicrm_1_activity_1_cg56_custom_1249: 0
-      civicrm_1_activity_1_cg56_custom_1250: 0
-      civicrm_1_activity_1_cg56_custom_1251: 0
-      civicrm_1_activity_1_cg56_custom_1252: 0
-      civicrm_1_activity_1_cg56_custom_1253: 0
-      civicrm_1_activity_1_cg56_custom_1254: 0
-      civicrm_1_activity_1_cg56_custom_1255: 0
-      civicrm_1_activity_1_cg56_custom_1256: 0
-      civicrm_1_activity_1_cg56_custom_1257: 0
-      civicrm_1_activity_1_cg56_custom_1258: 0
-      civicrm_1_activity_1_cg56_custom_1260: 0
-      civicrm_1_activity_1_cg56_custom_1259: 0
       activity_1_settings_dynamic_custom_cg55: 0
       civicrm_1_activity_1_cg55_custom_1086: 0
       civicrm_1_activity_1_cg55_custom_1087: 0
@@ -1020,7 +925,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_119: 0
       civicrm_1_activity_1_cg2_custom_90: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_43: 0
-      civicrm_1_activity_1_cg2_custom_25: 0
+      civicrm_1_activity_1_cg2_custom_25: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_34: 0
       civicrm_1_activity_1_cg2_custom_35: 0
       civicrm_1_activity_1_cg2_custom_37: 0
@@ -1044,6 +949,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1232: 0
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
+      civicrm_1_activity_1_cg2_custom_1261: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1412,8 +1318,8 @@ handlers:
       civicrm_1_activity_1_cg49_custom_668: 0
       civicrm_1_activity_1_cg49_custom_669: 0
       civicrm_1_activity_1_cg49_custom_670: 0
-      civicrm_1_activity_1_cg49_custom_671: 0
       civicrm_1_activity_1_cg49_custom_672: 0
+      civicrm_1_activity_1_cg49_custom_671: 0
       civicrm_1_activity_1_cg49_custom_673: 0
       civicrm_1_activity_1_cg49_custom_674: 0
       civicrm_1_activity_1_cg49_custom_675: 0
@@ -1428,10 +1334,12 @@ handlers:
       civicrm_1_activity_1_cg49_custom_700: 0
       civicrm_1_activity_1_cg49_custom_701: 0
       civicrm_1_activity_1_cg49_custom_703: 0
-      civicrm_1_activity_1_cg49_custom_704: 0
       civicrm_1_activity_1_cg49_custom_705: 0
       civicrm_1_activity_1_cg49_custom_812: 0
       civicrm_1_activity_1_cg49_custom_813: 0
+      civicrm_1_activity_1_cg49_custom_1262: 0
+      civicrm_1_activity_1_cg49_custom_1263: 0
+      civicrm_1_activity_1_cg49_custom_1264: 0
       activity_1_settings_dynamic_custom_cg50: 0
       civicrm_1_activity_1_cg50_custom_87: 0
       civicrm_1_activity_1_cg50_custom_208: 0
@@ -1591,6 +1499,17 @@ handlers:
       civicrm_1_activity_1_cg54_custom_737: 0
       civicrm_1_activity_1_cg54_custom_738: 0
       civicrm_1_activity_1_cg54_custom_788: 0
+      civicrm_1_activity_1_cg54_custom_1268: 0
+      civicrm_1_activity_1_cg54_custom_1269: 0
+      civicrm_1_activity_1_cg54_custom_1270: 0
+      civicrm_1_activity_1_cg54_custom_1271: 0
+      civicrm_1_activity_1_cg54_custom_1272: 0
+      civicrm_1_activity_1_cg54_custom_1273: 0
+      civicrm_1_activity_1_cg54_custom_1274: 0
+      activity_1_settings_dynamic_custom_cg58: 0
+      civicrm_1_activity_1_cg58_custom_1265: 0
+      civicrm_1_activity_1_cg58_custom_1266: 0
+      civicrm_1_activity_1_cg58_custom_1267: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -1617,6 +1536,7 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: 'PED Youth Online Booking Request'
+      antibot_key: ''
       data:
         contact:
           1:
@@ -1673,7 +1593,7 @@ handlers:
             number_of_relationship: '1'
             address:
               1:
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
             phone:
               1:
@@ -1692,7 +1612,6 @@ handlers:
           1:
             existing_activity_status: {  }
             details: {  }
-            dynamic_custom_cg56: 0
             dynamic_custom_cg55: 0
             dynamic_custom_cg30: 0
             dynamic_custom_cg2: 0
@@ -1721,6 +1640,7 @@ handlers:
             dynamic_custom_cg50: 0
             dynamic_custom_cg53: 0
             dynamic_custom_cg54: 0
+            dynamic_custom_cg58: 0
             activity:
               1:
                 target_contact_id:
@@ -1754,7 +1674,7 @@ handlers:
     handler_id: email
     label: Email
     notes: ''
-    status: false
+    status: true
     conditions: {  }
     weight: 0
     settings:
