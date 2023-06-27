@@ -4,7 +4,7 @@
       field = '.form-item-civicrm-3-contact-1-contact-existing';
       fieldset = '#edit-civicrm-3-contact-1-fieldset-fieldset';
       description = '#edit-civicrm-3-contact-1-contact-existing--description';
-
+console.log(`${fieldset}`);
       $(`${fieldset}`).hide();
       $('#existing-org').on('click', function (e) {
         e.preventDefault();

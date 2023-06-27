@@ -1,5 +1,6 @@
 <?php
 use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\Core\Datetime\DrupalDateTime;
 
 require_once 'pe_presentation_evaluation.variables.php';
 
@@ -36,7 +37,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
     // Get Booking Intake custom fields
     $result = \Civi\Api4\Activity::get(FALSE)
-      ->addSelect('activity_type_id', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
+      ->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
       ->addJoin('ActivityContact AS activity_contact', 'INNER')
       ->addGroupBy('id')
       ->addWhere('activity_contact.record_type_id', '=', 3)
@@ -49,7 +50,8 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
 
     // Disable date and presentation method fields
-    $elements[$constants['PE_PRESENTATION_EVALUATION_ACTIVITY_DATE']]['#disabled'] = TRUE;
+    $elements['date_of_presentation']['#disabled'] = TRUE;
+    $elements['date_of_presentation']['#default_value'] = DrupalDateTime::createFromTimestamp(strtotime($result['activity_date_time']));
     $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#disabled'] = TRUE;
     $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#default_value'] = $result['Booking_Information.Presentation_Method'];
     $elements[$constants['TARGET_CONTACT']] = $result['activity_contact.contact_id'];
@@ -71,8 +73,8 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
     if (is_array($topics)) {
       $topic = implode(', ', $topics);
-      if (in_array('Custom/ Something Different', $topics)) {
-        $topic = str_replace('Custom/ Something Different', $result['Booking_Information.Presentation_custom'], $topic);
+      if (in_array('Custom / Unsure', $topics)) {
+        $topic = str_replace('Custom / Unsure', $result['Booking_Information.Presentation_custom'], $topic);
       }
     }
     else {

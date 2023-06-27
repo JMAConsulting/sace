@@ -1,0 +1,14 @@
+<?php
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function sace_activity_schedule_modification_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_external_appointment_booking_for_add_form') {
+    $form['#attached']['library'][] = 'sace_activity_schedule_modification/sace_activity_schedule_modification';
+  }
+}

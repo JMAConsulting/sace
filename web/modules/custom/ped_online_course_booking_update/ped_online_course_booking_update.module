@@ -1,7 +1,9 @@
 <?php
 
+use DateTime as GlobalDateTime;
 use Drupal\webform\Utility\WebformFormHelper;
 use \Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Datetime\Element\Datetime;
 
 require_once 'ped_online_course_booking_update.variables.php';
 
@@ -12,57 +14,87 @@ require_once 'ped_online_course_booking_update.variables.php';
  * @param $form_id
  */
 function ped_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_ped_online_course_booking_update_add_form") {
-
-    // Get custom field constants
-    $constants = get_defined_constants(FALSE);
-
+  if($form_id == "webform_submission_ped_online_course_booking_update_add_form"){    
     //attach js
     $form['#attached']['library'][] = 'ped_online_course_booking_update/ped_online_course_booking_update';
-    $form['#attached']['drupalSettings']['ped_online_course_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', $constants['Start_Date']);
-    $form['#attached']['drupalSettings']['ped_online_course_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', $constants['End_Date']);
-    $form['#attached']['drupalSettings']['ped_online_course_booking_update']['optional_addons'] = $constants['optional_addons'];
-    $form['#attached']['drupalSettings']['ped_online_course_booking_update']['high_school_checkbox'] = $constants['high_school_checkbox'];
-
+    $form['#attached']['drupalSettings']['ped_online_course_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', PED_ONLINE_COURSE_BOOKING_UPDATE_START_DATE);
+    $form['#attached']['drupalSettings']['ped_online_course_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', PED_ONLINE_COURSE_BOOKING_UPDATE_END_DATE);
+    // $form['#attached']['drupalSettings']['ped_online_course_booking_update']['optional_addons_select'] = $constants['optional_addons_select'];
+    // $form['#attached']['drupalSettings']['ped_online_course_booking_update']['high_school_checkbox'] = $constants['high_school_checkbox'];
+    
     //Get webform elements
     $elements = WebformFormHelper::flattenElements($form);
-
+    if (empty($elements)) {
+      return;
+    }
     //Activity ID
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if (empty($aid) || !is_numeric($aid)) {
       return;
     }
 
-    if (empty($elements[$constants['Facilitating_Program']]['#default_value'])) {
-      $elements[$constants['Facilitating_Program']]['#default_value'] = 'PublicEducation';
+    //End Date
+    $activity = \Civi\Api4\Activity::get(FALSE)
+    ->addSelect('Booking_Information.End_Date')
+    ->addWhere('id', '=', $aid)
+    ->setLimit(1)
+    ->execute();
+    $end_date = $activity->first()['Booking_Information.End_Date'];
+    if($end_date) {
+      // $elements[PED_ONLINE_COURSE_BOOKING_UPDATE_END_DATE]['#default_value'] =  date_create_from_format('YmdH',$end_date)->format('Y-m-d');
     }
 
-    $elements[$constants['Resources_Content']]['#default_value'] = $elements[$constants['Support_Content']]['#default_value'] = 1;
+    if (empty($elements[PED_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'])) {
+      $elements[PED_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'] = 'PublicEducation';
+    }
 
-    $bt = $elements['civicrm_1_activity_1_activity_activity_type_id']['#default_value'];
-
-    if ($bt == $constants['adult_activity']) {
-      $elements[$constants['online_courses']]['#options'] = array_intersect($elements[$constants['online_courses']]['#options'], [
+$bt = $elements['civicrm_1_activity_1_activity_activity_type_id']['#default_value'];
+    if ($bt == PED_ONLINE_COURSE_BOOKING_UPDATE_ADULT_ACTIVITY) {
+      $elements[PED_ONLINE_COURSE_BOOKING_UPDATE_ONLINE_COURSES]['#options'] = array_intersect($elements[PED_ONLINE_COURSE_BOOKING_UPDATE_ONLINE_COURSES]['#options'], [
         'Information for Partners & Supporters' => 'Information for Partners & Supporters',
         'Recognizing & Responding to Sexual Violence' => 'Recognizing & Responding to Sexual Violence',
         'Racism & Sexual Violence' => 'Racism & Sexual Violence',
         'Sexual Violence & the 2SLGBTQ+ Community' => 'Sexual Violence & the 2SLGBTQ+ Community',
-      ]);
-
-      //Hide youth optional addons
-      $elements[$constants['optional_addons']]['#access'] = FALSE;
+      ]);      
     }
-    elseif ($bt == $constants['youth_activity']) {
-      $elements[$constants['online_courses']]['#options'] = array_intersect($elements[$constants['online_courses']]['#options'], [
+    elseif ($bt == PED_ONLINE_COURSE_BOOKING_UPDATE_YOUTH_ACTIVITY) {
+      $elements[PED_ONLINE_COURSE_BOOKING_UPDATE_ONLINE_COURSES]['#options'] = array_intersect($elements[PED_ONLINE_COURSE_BOOKING_UPDATE_ONLINE_COURSES]['#options'], [
         'Ask First: Sexual Harassment ' => 'Ask First: Sexual Harassment',
         'Ask First: Sexual Assault & Consent ' => 'Ask First: Sexual Assault & Consent',
         'Ask First: Non-Consensual Photo Sharing ' => 'Ask First: Non-Consensual Photo Sharing',
         'Consent: Ask Me About It!' => 'Consent: Ask Me About It!',
       ]);
-
-      //Grades and Ages remove Adults option
-      unset($elements[$constants['grades_and_ages']]['#options']['Adults (ages 18+)']);
     }
+  }
+}
 
+function ped_online_course_booking_update_preprocess_page_title(&$variables, $hook) {
+  //Activity ID
+  $aid = \Drupal::request()->query->get('aid') ?? 0;
+  if (empty($aid) || !is_numeric($aid)) {
+    return;
+  }
+
+  //Get booking type from activity
+  $activity = \Civi\Api4\Activity::get(FALSE)
+  ->addSelect('activity_type_id')
+  ->addWhere('id', '=', $aid)
+  ->setLimit(1)
+  ->execute();
+  $bt = $activity->first()['activity_type_id'];
+
+  $current_path = \Drupal::service('path.current')->getPath();
+
+  if($current_path == '/webform/ped_online_course_booking_update') {
+    if($bt == PED_ONLINE_COURSE_BOOKING_UPDATE_YOUTH_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Youth Online Course Booking Update',
+      ];
+    }
+    elseif($bt == PED_ONLINE_COURSE_BOOKING_UPDATE_ADULT_ACTIVITY) {
+      $variables['title'] = [
+        '#markup' => 'Adult Online Course Booking Update',
+      ];
+    }
   }
 }
