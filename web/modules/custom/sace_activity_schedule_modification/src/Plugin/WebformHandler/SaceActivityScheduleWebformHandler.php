@@ -54,8 +54,13 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
-    if ($webform_submission_data) {
+    $civicrm_submission_data = $this->database->query("SELECT civicrm_data FROM {webform_civicrm_submissions} WHERE sid = :sid", [
+      ':sid' => $webform_submission->id(),
+    ]);
+    if ($webform_submission_data && $civicrm_submission_data) {
+      while ($row = $civicrm_submission_data->fetchAssoc()) {
       $contacts = [];
+      $data = unserialize($row['civicrm_data']);
       if (!empty($webform_submission_data['staff'])) {
         $contacts = array_merge($contacts, $webform_submission_data['staff']);
       }
@@ -72,10 +77,11 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
         foreach ($unique_contacts as $contact_id) {
           ActivityContact::create(FALSE)
             ->addValue('contact_id', $contact_id)
-            ->addValue('activity_id', $webform_submission_data['civicrm']['activity'][1]['id'])
+            ->addValue('activity_id', $data['activity'][1]['id'])
             ->addValue('record_type_id:name', 'Activity Assignees')
             ->execute();
         }
+      }
       }
     }
   }

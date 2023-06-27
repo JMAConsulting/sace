@@ -1,0 +1,6 @@
+sace_activity_schedule_modification:
+  version: 1.0
+  js:
+    js/view.js: {}
+  dependencies:
+    - core/jquery

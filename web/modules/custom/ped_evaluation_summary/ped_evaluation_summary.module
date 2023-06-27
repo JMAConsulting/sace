@@ -36,7 +36,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   // Get Booking Intake custom fields
   $result = \Civi\Api4\Activity::get(FALSE)
 //    ->addSelect( 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
-    ->addSelect('activity_type_id', 'Booking_Information.Online_Courses', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
+    ->addSelect('Booking_Information.Number_of_Participants_per_course', 'activity_type_id', 'Booking_Information.Online_Courses', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
     ->addWhere('id', '=', $aid)
     ->execute()
     ->first();
@@ -59,8 +59,8 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   else {
     $topics = (array) $result['Booking_Information.Presentation_topics:label'] ?? [];
     $topic = implode(', ', $topics);
-    if (in_array('Custom/ Something Different', $topics)) {
-      $topic = str_replace('Custom/ Something Different', $result['Booking_Information.Presentation_custom'], $topic);
+    if (in_array('Custom / Unsure', $topics)) {
+      $topic = str_replace('Custom / Unsure', $result['Booking_Information.Presentation_custom'], $topic);
     }
   }
   //foreach (['questions_markup', 'question_2_markup', 'question_5_markup', 'question_markup_18'] as $element) {
@@ -70,14 +70,15 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   }
 
   // Get student feedback from webform submitted data.
-  $feedback = get_ped_sace_student_feedback($aid);
+  $feedback = $result['Booking_Information.Number_of_Participants_per_course'];
+//get_ped_sace_student_feedback($aid);
   $participant_feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, "activity_type_id" => "PED - Participant Presentation Feedback"]);
-  $staff_feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, "activity_type_id" => "PED - Teacher Presentation Feedback"]);
+//  $staff_feedback = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, "activity_type_id" => "PED - Teacher Presentation Feedback"]);
 
   // # of returned evaluations
   $elements['civicrm_1_activity_1_cg54_custom_24']['#default_value'] = $feedback;
   $elements['civicrm_1_activity_1_cg54_custom_458']['#default_value'] = $participant_feedback;
-  $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $staff_feedback;
+//  $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $staff_feedback;
 
   $dropdownmapping = [
   // q1
@@ -286,7 +287,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     ],
     'q5_markup_detail' => [
       'text' => 'custom_668',
-      'count' => 'custom_73',
+      'count' => 'custom_65',
     ],
     'q9_markup_detail' => [
       'text' => 'custom_670',

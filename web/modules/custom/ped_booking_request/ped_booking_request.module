@@ -15,12 +15,25 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     $elements = WebformFormHelper::flattenElements($form);
     $bt = \Drupal::request()->query->get('booking_type') ?? 0;
 
-    $mapper = ($bt == 204 || $bt == 201) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation']);
+    $mapper = ($bt == 204) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation']);
     $options = [];
     foreach($mapper as $value) {
       $options[$value] = $elements['civicrm_1_activity_1_cg2_custom_88']['#options'][$value];
     }
     $elements['civicrm_1_activity_1_cg2_custom_88']['#options'] = $options;
+
+    if ($bt == 55 || $bt == 201) {
+      unset($elements['civicrm_1_activity_1_cg2_custom_25']['#options']['Adults (ages 18+)']);
+    }
+    if (in_array($bt, [55, 59])) {
+      $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent'];
+      $selectedOptions = $bt == 55 ? $selectedOptions : array_merge($selectedOptions, ['HealthCareSystemsandSexualViolence', 'BystanderIntervention', 'ChildSexualAbuse', 'CreatingSaferSpacesandRespondingtoSexualViolence', 'SACEandtheSPEAKProgram', 'SupportiveResponsestoSexualViolence', 'TechnologyFacilitatedSexualViolence']);
+      foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
+        if (!in_array($key, $selectedOptions)) {
+          unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
+        }
+      }
+    }
 
     if (in_array($bt, [55])) {
       $elements['civicrm_3_contact_1_contact_existing']['#title'] = 'Your School';
@@ -30,19 +43,6 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       $elements['civicrm_3_contact_1_fieldset_fieldset']['#title'] = 'New School';
       $elements['civicrm_3_contact_1_contact_contact_sub_type']['#default_value'] = $elements['civicrm_3_contact_1_contact_contact_sub_type']['#options'];
       unset($elements['civicrm_1_activity_1_cg2_custom_88']['#options']['Online Course']);
-      if ($bt == 55) {
-        unset($elements['civicrm_1_activity_1_cg2_custom_25']['#options']['Adults (ages 18+)']);
-        $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent'];
-        foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
-          if (!in_array($key, $selectedOptions)) {
-            unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
-          }
-        }
-      }
-      else {
-        $elements['civicrm_1_activity_1_cg2_custom_815']['#title'] = 'Approximate number of participants per session';
-        $elements['civicrm_1_activity_1_cg2_custom_128']['#title'] = 'How many sessions would you like?';
-      }
     }
   }
 }

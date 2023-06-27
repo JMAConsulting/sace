@@ -19,8 +19,7 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
 
     //Attach library
     $form['#attached']['library'][] = 'pe_update_booking/pe_update_booking';
-    $form['#attached']['drupalSettings']['pe_update_booking']['Presentation_Topics'] = PE_UPDATE_BOOKING_PRESENTATION_TOPICS;
-
+    
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
     if (empty($elements)) {
@@ -76,7 +75,7 @@ function pe_update_booking_preprocess_page_title(&$variables, $hook) {
   }
 
   //Get booking type from activity
-  $activity = \Civi\Api4\Activity::get()
+  $activity = \Civi\Api4\Activity::get(FALSE)
     ->addSelect('activity_type_id')
     ->addWhere('id', '=', $aid)
     ->setLimit(1)

@@ -1,5 +1,5 @@
 <?php
-  define('Activity_Date','civicrm_1_activity_1_activity_activity_date_time');
+  define('PE_PRESENTATION_EVALUATION_ACTIVITY_DATE','civicrm_1_activity_1_activity_activity_date_time');
   define('Presentation_Method', 'civicrm_1_activity_1_cg2_custom_88');
   define('Presentation_Topic', 'civicrm_1_activity_1_cg2_custom_40');
   define('Presentaion_Custom', 'civicrm_1_activity_1_cg2_custom_41');
