@@ -5,6 +5,9 @@
 }
 
 /* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"); */
+.pre-footer {
+	display: none;
+}
 
 /* Globals */
 @font-face {
@@ -526,6 +529,10 @@ a.sace-btn:focus,
 	padding: 15px 10px;
 	padding-top: 15px !important;
 	margin-right: 10px;
+}
+
+.crm-section.other_amount-section .label label {
+	color: var(--color-light) !important;
 }
 
 .crm-section.other_amount-section .content {
@@ -1061,6 +1068,10 @@ table.crm-profile-tagsandgroups .group-wrapper input {
 
 #helprow-group {
 	margin: 1rem 0;
+}
+
+#footer_text p strong {
+	color: var(--color-heading);
 }
 
 #footer_text p a {

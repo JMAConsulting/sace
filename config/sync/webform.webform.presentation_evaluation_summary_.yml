@@ -87,7 +87,7 @@ elements: |-
   question_markup_1:
     '#type': processed_text
     '#text': |
-      <p><strong>I learned something new about [presentation topic]:</strong></p>
+      <p><strong>I learned something new about the [presentation topic]:</strong></p>
     '#format': html
   flexbox_q1:
     '#type': webform_flexbox
@@ -347,7 +347,7 @@ elements: |-
     '#text': |
       <p><strong>List one thing you can do to support someone impacted by the presentation topic:</strong></p>
     '#format': html
-  q4_markup_detail:
+  q5_markup_detail:
     '#type': processed_text
     '#text': |
       <p></p>
@@ -496,6 +496,9 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_713:
       '#type': number
+      '#title': 'Somewhat Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': none
       '#data_type': Int
       '#counter_type': character
       '#counter_maximum': 255
@@ -504,8 +507,6 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Somewhat Disagree'
-      '#description': 'Strongly Disagree'
     civicrm_1_activity_1_cg54_custom_84:
       '#type': number
       '#title': Disagree
@@ -771,7 +772,7 @@ elements: |-
   question_markup_11:
     '#type': processed_text
     '#text': |
-      <p><strong>11. I have a greater understanding of the impact of this community social issue.</strong></p>
+      <p><strong>I have a greater understanding of the impact of this community social issue.</strong></p>
     '#format': html
   flexbox_q11:
     '#type': webform_flexbox
@@ -872,7 +873,7 @@ elements: |-
   question_markup_12:
     '#type': processed_text
     '#text': |
-      <p><strong>12. I have more knowledge to help address this community social issue.</strong></p>
+      <p><strong>I have more knowledge to help address this community social issue.</strong></p>
     '#format': html
   flexbox_q12:
     '#type': webform_flexbox
@@ -1276,7 +1277,7 @@ elements: |-
   question_markup_16:
     '#type': processed_text
     '#text': |
-      <p><strong>The scenarios helped me practice responding to sexual violence.</strong></p>
+      <p><strong>The scenarios helped me understand how to operationalize our safer spaces values and program.</strong></p>
     '#format': html
   flexbox_q16:
     '#type': webform_flexbox
@@ -1732,7 +1733,7 @@ elements: |-
     '#text': |
       <p><strong>7. I have a greater understanding of the impact of sexual violence on my community:</strong></p>
     '#format': html
-  flexbox_q21:
+  flexbox_q211:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_796:
       '#type': number
@@ -1828,6 +1829,107 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_212:
+    '#type': processed_text
+    '#text': |
+      <p><strong>The content was effective.</strong></p>
+    '#format': html
+  flexbox_q212:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_1268:
+      '#type': number
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1268
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg54_custom_1269:
+      '#type': number
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1269
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg54_custom_1270:
+      '#type': number
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1270
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg54_custom_1271:
+      '#type': number
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1271
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Somewhat Disagree'
+      '#description': 'Somewhat Disagree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg54_custom_1272:
+      '#type': number
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1272
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg54_custom_1273:
+      '#type': number
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1273
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+    civicrm_1_activity_1_cg54_custom_1274:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg54_custom_1268|default(0) + data.civicrm_1_activity_1_cg54_custom_1269|default(0) + data.civicrm_1_activity_1_cg54_custom_1270|default(0) + data.civicrm_1_activity_1_cg54_custom_1271|default(0) + data.civicrm_1_activity_1_cg54_custom_1272|default(0) + data.civicrm_1_activity_1_cg54_custom_1273|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_1274
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
   question_markup_22:
     '#type': processed_text
     '#text': |
@@ -1851,7 +1953,8 @@ elements: |-
   question_markup_23:
     '#type': processed_text
     '#text': |
-      <p><strong>Areas for improvement feedback on service offering</strong></p>
+      <p><strong>What did you like least about the presentation/course? Is there anything you would change, or anything missing you would like to learn about?
+      </strong></p>
     '#format': html
   q23_markup_detail:
     '#type': processed_text
@@ -2248,9 +2351,9 @@ handlers:
         '': ''
       civicrm_1_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_1_contact_1_contact_prefix_id: 0
-      civicrm_1_contact_1_contact_first_name: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_first_name: 0
       civicrm_1_contact_1_contact_middle_name: 0
-      civicrm_1_contact_1_contact_last_name: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_last_name: 0
       civicrm_1_contact_1_contact_suffix_id: 0
       civicrm_1_contact_1_contact_nick_name: 0
       civicrm_1_contact_1_contact_gender_id: 0
@@ -2551,6 +2654,33 @@ handlers:
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
+      activity_1_settings_dynamic_custom_cg55: 0
+      civicrm_1_activity_1_cg55_custom_1086: 0
+      civicrm_1_activity_1_cg55_custom_1087: 0
+      civicrm_1_activity_1_cg55_custom_1088: 0
+      civicrm_1_activity_1_cg55_custom_1089: 0
+      civicrm_1_activity_1_cg55_custom_1090: 0
+      civicrm_1_activity_1_cg55_custom_1091: 0
+      civicrm_1_activity_1_cg55_custom_1092: 0
+      civicrm_1_activity_1_cg55_custom_1093: 0
+      civicrm_1_activity_1_cg55_custom_1094: 0
+      civicrm_1_activity_1_cg55_custom_1095: 0
+      civicrm_1_activity_1_cg55_custom_1096: 0
+      civicrm_1_activity_1_cg55_custom_1097: 0
+      civicrm_1_activity_1_cg55_custom_1098: 0
+      civicrm_1_activity_1_cg55_custom_1099: 0
+      civicrm_1_activity_1_cg55_custom_1100: 0
+      civicrm_1_activity_1_cg55_custom_1101: 0
+      civicrm_1_activity_1_cg55_custom_1102: 0
+      civicrm_1_activity_1_cg55_custom_1103: 0
+      civicrm_1_activity_1_cg55_custom_1104: 0
+      civicrm_1_activity_1_cg55_custom_1105: 0
+      civicrm_1_activity_1_cg55_custom_1106: 0
+      civicrm_1_activity_1_cg55_custom_1107: 0
+      civicrm_1_activity_1_cg55_custom_1108: 0
+      civicrm_1_activity_1_cg55_custom_1109: 0
+      civicrm_1_activity_1_cg55_custom_1212: 0
+      civicrm_1_activity_1_cg55_custom_1213: 0
       activity_1_settings_dynamic_custom_cg30: 0
       civicrm_1_activity_1_cg30_custom_342: 0
       civicrm_1_activity_1_cg30_custom_343: 0
@@ -2740,6 +2870,17 @@ handlers:
       civicrm_1_activity_1_cg54_custom_737: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_738: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_788: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1268: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1269: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1270: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1271: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1272: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1273: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1274: create_civicrm_webform_element
+      activity_1_settings_dynamic_custom_cg58: 0
+      civicrm_1_activity_1_cg58_custom_1265: 0
+      civicrm_1_activity_1_cg58_custom_1266: 0
+      civicrm_1_activity_1_cg58_custom_1267: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -2927,10 +3068,12 @@ handlers:
           1:
             existing_activity_status: {  }
             details: {  }
+            dynamic_custom_cg55: 0
             dynamic_custom_cg30: 0
             dynamic_custom_cg42: 0
             dynamic_custom_cg53: 0
             dynamic_custom_cg54: 0
+            dynamic_custom_cg58: 0
             activity:
               1:
                 activity_type_id: '200'

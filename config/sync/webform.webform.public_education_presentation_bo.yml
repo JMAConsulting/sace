@@ -69,7 +69,7 @@ elements: |-
       '#access_view_roles':
         - authenticated
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped_online_course_request?booking_type=199&cid2=1">Adult Online Course</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped_online_course_request?booking_type=199">Adult Online Course</a></div>
       '#format': html
   processed_text:
     '#type': processed_text
