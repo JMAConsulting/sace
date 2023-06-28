@@ -76,7 +76,11 @@ if (postProfileSection) {
 		if (newsletterField && newsletterHelpField) {
 			newsletterField.classList.add("newsletter");
 			newsletterHelpField.classList.add("newsletter-helper");
-			const footerTextParent = footerText.parentNode;
+			let footerTextParent;
+			if (footerText) {
+				footerTextParent = footerText.parentNode;
+			}
+
 			const crmBottomButtonsParent = crmBottomButtons.parentNode;
 			crmBottomButtonsParent.insertBefore(newsletterField, crmBottomButtons);
 			crmBottomButtonsParent.insertBefore(newsletterHelpField, crmBottomButtons);

@@ -9,6 +9,10 @@
 	margin: auto;
 }
 
+.pre-footer {
+	/* display: none; */
+}
+
 /* Globals */
 @font-face {
 	font-family: "Century Gothic";
@@ -232,6 +236,7 @@ p a:focus {
 
 .crm-container fieldset legend {
 	font-weight: 700;
+	color: var(--color-heading);
 	font-size: 20px;
 	margin-bottom: 10px;
 	display: grid;
@@ -417,7 +422,7 @@ a.sace-btn:focus,
 }
 
 .crm-section.other_amount-section .label {
-	color: var(--color-light);
+	color: var(--color-light) !important;
 	background-color: var(--color-accent);
 	padding: 15px 10px;
 	padding-top: 15px !important;
@@ -426,6 +431,7 @@ a.sace-btn:focus,
 
 .crm-section.other_amount-section .label label {
 	margin-bottom: 0;
+	color: var(--color-light) !important;
 }
 
 .crm-section.other_amount-section .content {
@@ -748,7 +754,7 @@ input[type="radio"]:checked {
 	text-shadow: none;
 	font-family: var(--font);
 	font-size: 18px;
-	font-weight: 600;
+	font-weight: 500;
 	margin-left: 5px;
 	margin-right: 5px;
 	min-width: 130px;
@@ -796,7 +802,7 @@ input[type="radio"]:checked {
 	text-shadow: none;
 	font-family: var(--font);
 	font-size: 18px;
-	font-weight: 600;
+	font-weight: 500;
 	margin-left: 5px;
 	margin-right: 5px;
 	min-width: 130px;
