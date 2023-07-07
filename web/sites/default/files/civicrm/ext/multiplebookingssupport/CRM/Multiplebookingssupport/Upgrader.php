@@ -2,6 +2,8 @@
 // phpcs:disable
 use CRM_Multiplebookingssupport_ExtensionUtil as E;
 // phpcs:enable
+use Civi\Api4\MultipleBooking;
+use Civi\Api4\OptionValue;
 
 /**
  * Collection of upgrade steps.
@@ -67,12 +69,32 @@ class CRM_Multiplebookingssupport_Upgrader extends CRM_Extension_Upgrader_Base {
    * @return TRUE on success
    * @throws CRM_Core_Exception
    */
-  // public function upgrade_4200(): bool {
-  //   $this->ctx->log->info('Applying update 4200');
-  //   CRM_Core_DAO::executeQuery('UPDATE foo SET bar = "whiz"');
-  //   CRM_Core_DAO::executeQuery('DELETE FROM bang WHERE willy = wonka(2)');
-  //   return TRUE;
-  // }
+  public function upgrade_1000(): bool {
+    $this->ctx->log->info('Applying update 1000 Add in booking_calendar_display column and set it appropriately for various activity types');
+    $this->addColumn('civicrm_multiple_booking', 'booking_calendar_display', "tinyint NOT NULL DEFAULT 0 COMMENT 'Should this activity type be shown on the booking calendars'");
+    $activity_types = [
+     'Youth Presentation',
+     'Adult Presentation',
+     'Youth Online Course',
+     'Adult Online Course',
+     'Wiseguyz',
+     'Booths',
+     'Community Engagement',
+     'Institutional Support',
+     'Consultation',
+    ];
+    foreach ($activity_types as $activity_type_label) {
+      $activityType = OptionValue::get(FALSE)->addWhere('label', '=', $activity_type_label)->addWhere('option_group_id:name', '=', 'activity_type')->execute()->first();
+      $check = MultipleBooking::get(FALSE)->addWhere('activity_type_id', '=', $activityType['value'])->execute();
+      if (count($check) > 0) {
+        MultipleBooking::update(FALSE)->addValue('booking_calendar_display', TRUE)->addWhere('id', '=', $check[0]['id'])->execute();
+      }
+      else {
+        MultipleBooking::create(FALSE)->addValue('activity_type_id', $activityType['value'])->addValue('booking_calendar_display', TRUE)->execute();
+      }
+    }
+    return TRUE;
+  }
 
   /**
    * Example: Run an external SQL script.
