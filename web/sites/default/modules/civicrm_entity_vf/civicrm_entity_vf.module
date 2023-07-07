@@ -66,7 +66,30 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
       }
     }
 
+    $team_users = array_keys(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties([
+      'field_user_team' => ['39', '12'],
+    ]));
+    $team_contact_ids = [];
+    $team_contact_id_map = [];
+    $team_contact_id_lookup = \Drupal::service('civicrm_entity.api')->get('UFMatch', [
+      'sequential' => 1,
+      'return' => ['uf_id', 'contact_id'],
+      'uf_id' => ['IN' => $team_users],
+      'options' => ['limit' => 0],
+    ]);
+    foreach($team_contact_id_lookup as $tc) {
+      $team_contact_ids[] = $tc['contact_id'];
+      $team_contact_id_map[$tc['contact_id']] = $tc['uf_id'];
+    }
+
     $contact_ids = array_keys($form['uf_select']['#options']);
+    $contact_ids = array_merge($contact_ids, $team_contact_ids);
+    foreach ($contact_ids as $contact_id) {
+      if (!array_key_exists($contact_id, $form['uf_select']['#options'])) {
+        $account = \Drupal::entityTypeManager()->getStorage('user')->load($team_contact_id_map[$contact_id]);
+        $form['uf_select']['#options'][$contact_id] = $account->getAccountName();
+      }
+    }
 
     $map_uid_cid = [];
 
