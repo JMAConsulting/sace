@@ -993,7 +993,7 @@ display:
           value:
             min: ''
             max: ''
-            value: '-1 month'
+            value: '-1 year'
             type: offset
           group: 1
           exposed: false
@@ -1486,6 +1486,7 @@ display:
           entity_type: civicrm_activity
           plugin_id: standard
           required: false
+      css_class: jma-user-contact
       header: {  }
       footer: {  }
       display_extenders: {  }

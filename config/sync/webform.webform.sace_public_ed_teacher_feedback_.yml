@@ -148,6 +148,10 @@ elements: |-
       3: 'Somewhat Disagree'
       2: Disagree
       1: 'Strongly Disagree'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-6
+        - ''
   q2:
     '#type': radios
     '#title': 'Q2 The educator communicated the content effectively'
@@ -157,6 +161,10 @@ elements: |-
       3: Neutral
       2: Disagree
       1: 'Strongly Disagree'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-6
+        - ''
   q3:
     '#type': radios
     '#title': 'Q3 The educator engaged the students effectively'
@@ -166,6 +174,10 @@ elements: |-
       3: Neutral
       2: Disagree
       1: 'Strongly Disagree'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-6
+        - ''
   feedback:
     '#type': textarea
     '#title': 'Do you have any feedback regarding any aspects of the educator''s facilitation of this session?'
@@ -178,6 +190,10 @@ elements: |-
       3: Neutral
       2: Disagree
       1: 'Strongly Disagree'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-6
+        - ''
   q5:
     '#type': radios
     '#title': 'Q5 I would invite SACE to present in my class again'
@@ -187,6 +203,10 @@ elements: |-
       3: Neutral
       2: Disagree
       1: 'Strongly Disagree'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-6
+        - ''
   q6:
     '#type': radios
     '#title': 'Q6 If I were to receive a disclosure of sexual abuse or assault from a student, I would reach out to SACE for support and/or resources and information.'
@@ -196,6 +216,10 @@ elements: |-
       3: Neutral
       2: Disagree
       1: 'Strongly disagree'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-6
+        - ''
   any_other_comments_:
     '#type': textarea
     '#title': 'Any other comments?'

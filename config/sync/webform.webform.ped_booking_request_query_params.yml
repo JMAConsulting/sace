@@ -76,13 +76,13 @@ elements: |-
     '#disabled': true
     '#civicrm_live_options': 0
     '#options':
-      55: 'PED - Youth School Presentation Booking'
+      55: 'Youth Presentation'
       57: 'PED - Youth Presentation Booking'
       58: 'PED - Post-secondary School Booking'
-      59: 'PED - Adult or Professional Booking'
+      59: 'Adult Presentation'
       201: WiseGuyz
-      203: 'Speaking Engagements/Discussion Panels'
-      204: 'Institutional Support'
+      203: 'Community Engagement'
+      204: Consultation
     '#default_value': '[current-page:query:booking_type]'
     '#extra':
       aslist: 1
@@ -201,7 +201,7 @@ elements: |-
     civicrm_3_contact_1_contact_existing:
       '#type': civicrm_contact
       '#title': 'Your Organization'
-      '#description': 'If you cannot find your organization, please click <a href="#" id="new-org-block">here</a> to create one.'
+      '#description': 'If you cannot find your organization, please click <a href="#" id="new-org-block">here</a> to create one. Please note that this field is for your organization&#39;s information only; if you would like to request that your session is delivered at a different location, please note this in the &quot;Additional Details&quot; field below.'
       '#widget': autocomplete
       '#search_prompt': '- Choose existing -'
       '#none_prompt': '- None Found -'
@@ -462,38 +462,37 @@ elements: |-
     '#title_display': inline
     '#options':
       2SLGBTQ+: '2SLGBTQ+ Communities & Sexual Violence'
+      BystanderIntervention: 'Bystander Intervention'
+      ChildSexualAbuse: 'Child Sexual Abuse'
+      CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
       Drug-Facilitated: 'Drug-Facilitated Sexual Assault'
       FRT: 'First Responders Training (FRT)'
-      SexualAssaultConsent: 'Sexual Assault & Consent'
-      SexualHarassment: 'Sexual Harassment'
-      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
-      TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
-      SACEServices: 'SACE Services'
-      BystanderIntervention: 'Bystander Intervention'
-      CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
-      SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
-      SexualViolenceTrauma: 'Sexual Violence Trauma'
-      DomesticViolence: 'Domestic Violence'
-      ChildSexualAbuse: 'Child Sexual Abuse'
-      PrivilegeandOppression: 'Privilege & Oppression'
-      RacismandSexualViolence: 'Racism & Sexual Violence'
-      CustomSomethingDifferent: 'Custom/ Something Different'
-      CommunityResources: 'Community Resources'
-      HealthCareSystemsandSexualViolence: 'Health Care Systems & Sexual Violence'
-      SACEandtheSPEAKProgram: 'SACE and the SPEAK Program'
       GenderSexualityMedia: 'Gender, Sexuality, and Media'
+      HealthCareSystemsandSexualViolence: 'Health Care Systems & Sexual Violence'
       HealthyRelationships: 'Healthy Relationships'
       'Information for Partners & Supporters': 'Information for Partners & Supporters'
       IntimatePartnerViolence: 'Intimate Partner Violence'
       'Legal Systems & Sexual Violence': 'Legal Systems & Sexual Violence'
       Masculinities: Masculinities
+      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
+      PrivilegeandOppression: 'Privilege & Oppression'
+      RacismandSexualViolence: 'Racism & Sexual Violence'
       'Recognizing & Responding to Sexual Violence': 'Recognizing & Responding to Sexual Violence'
+      SACEandtheSPEAKProgram: 'SACE & the SPEAK Program'
+      SACEServices: 'SACE Services'
       'SACE Services Tour': 'SACE Services Tour'
+      SexualAssaultConsent: 'Sexual Assault & Consent'
       'Sexual Assault & Self-Care': 'Sexual Assault & Self-Care'
+      SexualHarassment: 'Sexual Harassment'
       SexualHealth: 'Sexual Health'
       SexualViolence: 'Sexual Violence'
+      SexualViolenceTrauma: 'Sexual Violence Trauma'
+      SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
+      TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
       ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
-      Unsure: 'Custom / Unsure'
+      CustomUnsure: 'Custom / Unsure'
+      DomesticViolence: 'Domestic Violence'
+      CommunityResources: 'Community Resources'
     '#states':
       invisible:
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -507,6 +506,10 @@ elements: |-
     '#states_clear': false
     '#default_value':
       - Unsure
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
+        - ''
     '#extra':
       aslist: 0
       multiple: 1
@@ -643,6 +646,9 @@ elements: |-
         - xor
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '201'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
     '#extra':
       aslist: 0
       multiple: 1
@@ -706,6 +712,7 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_126:
     '#type': textarea
     '#title': 'Additional needs or considerations (please specify)'
+    '#description': '<p>Please include any information about additional needs or considerations here, including details about the location where you would like the session to be delivered if this is different from your organization&#39;s usual address.</p>'
     '#data_type': Memo
     '#extra':
       cols: '60'
@@ -955,7 +962,7 @@ elements: |-
         'Child 3-12': 'Child 3-12'
         FirstNations: 'First Nations, Métis, or Inuit/ Indigenous'
         Guardians: Guardians/Parents
-        Men/Boys: 'Men/Boys (Trans-Inclusive)'
+        Men/Boys: 'Men/Boys/Masc/NB (Trans-Inclusive)'
         Newcomer: Newcomer/Non-Status/Refugee/Immigrant
         'People With Disabilities': 'People With Disabilities'
         ProfessionalAEN: 'Professional - Arts, Entertainment, and Nightlife'
@@ -968,7 +975,7 @@ elements: |-
         Racialized/POC: Racialized/POC
         'Seniors/Older Adults': 'Seniors/Older Adults'
         volunteers: Volunteers
-        Women: 'Women/Girls (Trans-Inclusive)'
+        Women: 'Women/Girls/Femme/NB (Trans-Inclusive)'
         Youth: 'Youth 12-18'
       '#states':
         invisible:
@@ -977,6 +984,10 @@ elements: |-
           - xor
           - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
               value: '203'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
       '#extra':
         aslist: 0
         multiple: 1
@@ -996,6 +1007,7 @@ elements: |-
       '#none_prompt': '- None Found -'
       '#results_display':
         display_name: display_name
+      '#default_value': '860'
       '#default': contact_id
       '#default_relationship_to': '1'
       '#default_relationship':
@@ -1030,7 +1042,7 @@ css: |-
 
   .webform-submission-add-form #edit-civicrm-4-contact-1-fieldset-fieldset {
     display: none;
-  }
+  } 
 javascript: ''
 settings:
   ajax: false

@@ -165,6 +165,9 @@ elements: |-
       Transgender: Transgender
       Unknown: Unknown
     '#options_display': side_by_side
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
   client_age_at_intake:
     '#type': radios
     '#title': 'Client Age at Intake'
@@ -177,6 +180,9 @@ elements: |-
       'Senior (65+)': 'Senior (65+)'
       Unknown: Unknown
     '#options_display': side_by_side
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
   client_marital_status:
     '#type': radios
     '#title': 'Client Marital Status'
@@ -188,6 +194,9 @@ elements: |-
       Separated: Separated
       'Common-law/Living together': 'Common-law/Living together'
     '#options_display': side_by_side
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
   client_cultural_background:
     '#type': webform_checkboxes_other
     '#title': 'Client Cultural Background'
@@ -201,6 +210,9 @@ elements: |-
       Caucasian: Caucasian
       Unknown: Unknown
     '#options_display': side_by_side
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
   flexbox_03:
     '#type': webform_flexbox
 css: ''

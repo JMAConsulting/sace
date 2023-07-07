@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.user.field_calendar_colour
     - user.role.anonymous
+    - user.role.authenticated
     - user.role.ped_team_lead
     - user.role.wheel
   module:
@@ -1123,7 +1124,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n  </div>\r\n\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n  </div>\r\n</div>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Booking Status:</span>\r\n  <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n\r\n{% if activity_type_id  == 'PE - Youth Online Course Booking' or activity_type_id  == 'PE - Adult Online Course Booking Request' %}\r\n  <a href=\"/ped-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id == 'WiseGuyz' or activity_type_id == 'Booths' or activity_type_id == 'Speaking Engagements/Discussion Panels' or activity_type_id == 'Institutional Support' %}\r\n    <a href=\"/external-appointment-booking-update?&aid={{ id }}&cid2={{ id_1}}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% else %}\r\n  <a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% endif %} \r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n{#\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n#}\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n{% if activity_type_id  == 'PE - Youth Online Course Booking' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a>\r\n{% elseif  activity_type_id == 'PE - Adult Online Course Booking Request' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a>\r\n{% elseif activity_type_id != 'WiseGuyz' and activity_type_id != 'Booths' and activity_type_id != 'Speaking Engagements/Discussion Panels' and activity_type_id != 'Institutional Support' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a>\r\n{% endif %}\r\n\r\n&nbsp;&nbsp;\r\n{% if activity_type_id  == 'PE - Youth Online Course Booking' %}\r\n  <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n{% elseif activity_type_id  == 'PE - Adult Online Course Booking Request' %}\r\n   <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n{% elseif activity_type_id != 'WiseGuyz' and activity_type_id != 'Booths' and activity_type_id != 'Speaking Engagements/Discussion Panels' and activity_type_id != 'Institutional Support' %}\r\n   <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n{% endif %}\r\n{% endif %}"
+            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n  </div>\r\n\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n  </div>\r\n</div>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Booking Status:</span>\r\n  <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n\r\n{% if activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/ped-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n    <a href=\"/external-appointment-booking-update?&aid={{ id }}&cid2={{ id_1}}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% else %}\r\n  <a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% endif %}\r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n{#\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n#}\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n{% if activity_type_id  == 'Youth Online Course' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a>\r\n{% elseif  activity_type_id == 'Adult Online Course' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a>\r\n{% elseif activity_type_id != 'WiseGuyz' and activity_type_id != 'Booths' and activity_type_id != 'Community Engagement' and activity_type_id != 'Consultation' %}\r\n  <a href=\"/ped-sace-presentation-evaluation-form?bid={{ id }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a>\r\n{% endif %}\r\n\r\n&nbsp;&nbsp;\r\n{% if activity_type_id  == 'Youth Online Course' %}\r\n  <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n{% elseif activity_type_id  == 'Adult Online Course' %}\r\n   <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n{% elseif activity_type_id != 'WiseGuyz' and activity_type_id != 'Consultation' and activity_type_id != 'Community Engagement' %}\r\n   <a href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n{% endif %}\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -1243,7 +1244,7 @@ display:
           value:
             min: ''
             max: ''
-            value: '-1 month'
+            value: '-1 year'
             type: offset
           group: 1
           exposed: false
@@ -1567,7 +1568,7 @@ display:
             identifier: status_id
             required: false
             remember: false
-            multiple: true
+            multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
@@ -1584,7 +1585,6 @@ display:
               pacs_tl: '0'
               clin_tl: '0'
               pacsa: '0'
-              pe: '0'
               cad_tl: '0'
               reception: '0'
               ce_director: '0'
@@ -1598,6 +1598,7 @@ display:
               wiseguyz_staff: '0'
               volunteer_supervisor: '0'
               fund_development_officer: '0'
+              pe: '0'
             reduce: true
           is_grouped: false
           group_info:
@@ -1667,9 +1668,9 @@ display:
           left_buttons: 'prev,next today'
           right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
           default_view: dayGridMonth
-          default_mobile_view: listYear
-          mobile_width: '768'
-          firstDay: '0'
+          firstDay: '1'
+          minTime: '00:00:00'
+          maxTime: '23:59:00'
           nav_links: 1
           timeFormat: 'hh:mm a'
           allowEventOverlap: 1
@@ -1679,8 +1680,10 @@ display:
           languageSelector: 0
           dialogWindow: 1
           openEntityInNewTab: 1
+          dialogModal: 0
           createEventLink: 0
           eventLimit: '3'
+          slotDuration: '00:30:00'
           tax_field: field_calendar_colour
           vocabularies: calendar_colour
           color_bundle:
@@ -1710,6 +1713,8 @@ display:
             membership_signup: '#3a87ad'
             membership_renewal: '#3a87ad'
             sms_outbound_: '#3a87ad'
+            pledge_acknowledgment: '#3a87ad'
+            pledge_reminder: '#3a87ad'
             membership_renewal_reminder: '#3a87ad'
             survey: '#3a87ad'
             canvass: '#3a87ad'
@@ -1729,13 +1734,13 @@ display:
             refund: '#3a87ad'
             change_registration: '#3a87ad'
             failed_payment: '#3a87ad'
-            ped_youth_school_presentation_booking: '#333333'
-            ped_youth_presentation_booking: '#333333'
-            ped_post_secondary_school_booking: '#333333'
-            ped_adult_or_professional_booking: '#333333'
-            ped_first_responder_training_booking: '#333333'
-            ped_institutional_support_program_booking: '#333333'
-            ped_interview_or_panel_discussion_booking: '#333333'
+            pe_youth_school_presentation_booking: '#3a87ad'
+            pe_youth_presentation_booking: '#3a87ad'
+            pe_post_secondary_school_booking: '#3a87ad'
+            pe_adult_or_professional_booking: '#3a87ad'
+            pe_first_responder_training_booking: '#3a87ad'
+            pe_institutional_support_program_booking: '#3a87ad'
+            pe_interview_or_panel_discussion_booking: '#3a87ad'
             clin_adult_counselling_client_consent: '#3a87ad'
             clin_iwbc: '#3a87ad'
             clin_core_demographic: '#3a87ad'
@@ -1770,6 +1775,25 @@ display:
             edi_presentation: '#3a87ad'
             sace_toil: '#3a87ad'
             sace_community_development_and_relationship_building: '#3a87ad'
+            contact_type_changed: '#3a87ad'
+            advocate_fundraiser: '#3a87ad'
+            adult_session_note: '#3a87ad'
+            pe_youth_online_presentation_booking: '#3a87ad'
+            pe_youth_online_course_booking: '#3a87ad'
+            pe_participant_presentation_feedback: '#3a87ad'
+            pe_teacher_presentation_feedback: '#3a87ad'
+            pe_adult_online_course_booking_request: '#3a87ad'
+            pe_presentation_evaluation_summary_score: '#3a87ad'
+            wiseguyz: '#3a87ad'
+            booths: '#3a87ad'
+            speaking_engagements_discussion_panels: '#3a87ad'
+            institutional_support: '#3a87ad'
+            pe_youth_online_course_evaluation_feedback: '#3a87ad'
+            pe_adult_online_course_evaluation_feedback: '#3a87ad'
+            ad_best_promising_practices_research: '#3a87ad'
+            ad_governance_review_development: '#3a87ad'
+            ad_policy_practice_review_development: '#3a87ad'
+            ad_regulation_legislation_or_compliance_research_review: '#3a87ad'
           rrule: ''
           duration: ''
           bundle_type: ''
@@ -1780,6 +1804,7 @@ display:
             65: '#007c38'
             66: '#007fff'
             67: '#00ffcc'
+            127: '#13c79e'
             68: '#1fe3c7'
             69: '#2619ef'
             70: '#26d076'
@@ -1788,8 +1813,10 @@ display:
             73: '#336633'
             74: '#37fdfc'
             75: '#3e6889'
+            120: '#432c04'
             76: '#474448'
             77: '#474a2c'
+            122: '#48c334'
             78: '#4d194d'
             32: '#533e2d'
             79: '#533e2d'
@@ -1809,6 +1836,7 @@ display:
             89: '#785964'
             90: '#78ab46'
             91: '#78e47b'
+            119: '#7b530c'
             92: '#7d26cd'
             93: '#800000'
             11: '#87cca3'
@@ -1823,6 +1851,7 @@ display:
             34: '#aad9bd'
             97: '#adb5bd'
             98: '#af3800'
+            121: '#afe676'
             63: '#b67c3d'
             17: '#b9d34a'
             28: '#bb7e5d'
@@ -1832,6 +1861,7 @@ display:
             101: '#cc2936'
             102: '#ccd5ae'
             103: '#ccff00'
+            128: '#d28514'
             8: '#d96262'
             104: '#da627d'
             62: '#db9370'
@@ -1839,10 +1869,15 @@ display:
             105: '#3a87ad'
             106: '#3a87ad'
             107: '#ef27a6'
+            124: '#ef6c00'
+            129: '#f1d726'
             10: '#f2e266'
             108: '#f4806e'
+            123: '#f58c0b'
             24: '#f7b32b'
             109: '#f7b32b'
+            125: '#f7b664'
+            126: '#fac3eb'
             110: '#fac9b8'
             111: '#3a87ad'
             112: '#fcf6b1'
@@ -1929,6 +1964,7 @@ display:
           entity_type: civicrm_activity
           plugin_id: standard
           required: false
+      css_class: jma-user-contact
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -2394,6 +2430,7 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+              reset_button_always_show: false
             filter:
               uf_select:
                 plugin_id: bef
@@ -2412,12 +2449,19 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
+              status_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
       access:
         type: role
         options:
           role:
-            ped_team_lead: ped_team_lead
-            wheel: wheel
+            authenticated: authenticated
       defaults:
         access: false
         exposed_form: false

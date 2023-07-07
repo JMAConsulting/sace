@@ -74,6 +74,7 @@ module:
   ped_online_course_booking_update: 0
   redirect: 0
   rest: 0
+  sace_activity_schedule_modification: 0
   sace_calendar_customisations: 0
   sace_custom: 0
   serialization: 0

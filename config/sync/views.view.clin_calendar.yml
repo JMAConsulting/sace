@@ -1377,6 +1377,7 @@ display:
           admin_label: 'field_user_team: Taxonomy term'
           plugin_id: standard
           required: false
+      css_class: jma-user-contact
       header: {  }
       footer: {  }
       display_extenders: {  }
