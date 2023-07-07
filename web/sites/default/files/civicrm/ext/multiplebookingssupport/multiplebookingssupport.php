@@ -47,14 +47,21 @@ function multiplebookingssupport_civicrm_buildForm($formName, &$form): void {
       'entity' => 'multiple_booking',
       'action' => 'create',
     ]);
+    $form->addField('booking_calendar_display', [
+      'entity' => 'multiple_booking',
+      'action' => 'create',
+    ]);
     if (!empty($form->_id)) {
       $multipleBooking = MultipleBooking::get(FALSE)
         ->addJoin('OptionValue AS option_value', 'INNER', ['option_value.value', '=', 'activity_type_id'])
         ->addWhere('option_value.id', '=', $form->_id)
         ->execute();
       if (count($multipleBooking) > 0) {
-        $form->setDefaults(['is_multiple_booking' => $multipleBooking[0]['is_multiple_booking']]);
+        $form->setDefaults(['is_multiple_booking' => $multipleBooking[0]['is_multiple_booking'], 'booking_calendar_display' => $multipleBooking[0]['booking_calendar_display']]);
       }
+    }
+    else {
+      $form->setDefaults(['booking_calendar_display' => 0]);
     }
     CRM_Core_Region::instance('form-bottom')->add([
       'template' => 'CRM/Admin/Form/ActivityTypeMultipleBooking.tpl',
@@ -70,8 +77,9 @@ function multiplebookingssupport_civicrm_buildForm($formName, &$form): void {
 function multiplebookingssupport_civicrm_postProcess($formName, &$form): void {
   if ($formName === 'CRM_Admin_Form_Options' && $form->getVar('_gName') === 'activity_type') {
     $multipleBookingValue = $form->getSubmittedValue('is_multiple_booking') ?? 0;
+    $bookingCalenderDisplayValue = $form->getSubmittedValue('booking_calendar_display');
     $optionValue = OptionValue::get(FALSE)->addWhere('id', '=', $form->_id)->execute()->first();
-    MultipleBooking::save(FALSE)->setRecords([['is_multiple_booking' => $multipleBookingValue, 'activity_type_id' => $optionValue['value']]])->setMatch(['activity_type_id'])->execute();
+    MultipleBooking::save(FALSE)->setRecords([['is_multiple_booking' => $multipleBookingValue, 'activity_type_id' => $optionValue['value'], 'booking_calendar_display' => $bookingCalenderDisplayValue]])->setMatch(['activity_type_id'])->execute();
   }
 }
 

@@ -37,6 +37,7 @@ CREATE TABLE `civicrm_multiple_booking` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique MultipleBooking ID',
   `is_multiple_booking` tinyint NOT NULL DEFAULT 0 COMMENT 'Does this activity type support multiple bookings',
   `activity_type_id` int COMMENT 'Activity Type ID',
+  `booking_calendar_display` tinyint NOT NULL DEFAULT 0 COMMENT 'Should this activity type be shown on the booking calendars',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `UI_activity_type_id`(activity_type_id)
 )
