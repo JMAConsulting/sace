@@ -52,6 +52,7 @@
     <required>true</required>
     <html>
       <type>Radio</type>
+      <label>Show on Calendar?</label>
     </html>
   </field>
 </table>

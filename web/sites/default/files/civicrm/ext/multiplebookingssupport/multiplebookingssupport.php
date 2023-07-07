@@ -50,6 +50,10 @@ function multiplebookingssupport_civicrm_buildForm($formName, &$form): void {
     $form->addField('booking_calendar_display', [
       'entity' => 'multiple_booking',
       'action' => 'create',
+      'options' => [
+        0 => E::ts('No'),
+        1 => E::ts('Yes'),
+      ],
     ]);
     if (!empty($form->_id)) {
       $multipleBooking = MultipleBooking::get(FALSE)
