@@ -15,14 +15,14 @@ function sace_custom_update_9001() {
     foreach ($taxonomyTerms as $taxonomyTerm) {
       $menu_check = \Drupal::entityTypeManager()->getStorage('menu_link_content')
         ->loadByProperties([
-          'title' => $taxonomyTerm->label() . '  - User Team',
+          'title' => $taxonomyTerm->label() . ' User Team',
           'menu_name' => 'main',
         ]);
       if (count($menu_check) > 0) {
         continue;
       }
       $menu_link_storage->create([
-        'title' => $taxonomyTerm->label() . '  - User Team',
+        'title' => $taxonomyTerm->label() . ' User Team',
         'menu_name' => 'main',
         'link' => ['uri' => 'internal:/calendar-team/' . $taxonomyTerm->id()],
         'parent' => $menu_link_parent->getPluginId(),

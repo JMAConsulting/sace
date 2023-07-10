@@ -49,6 +49,18 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
         'CustomSomethingDifferent' => 'Custom/Unsure',
       ];
     }
+
+    $mapper = ($bt == 204) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation']);
+    $options = [];
+    foreach($mapper as $value) {
+      $options[$value] = $elements['civicrm_1_activity_1_cg2_custom_88']['#options'][$value];
+    }
+    $elements['civicrm_1_activity_1_cg2_custom_88']['#options'] = $options;
+
+    if ($bt == 203) {
+      $elements['civicrm_1_activity_1_cg2_custom_815']['#title'] = 'Approximate number of participants per presentation';
+    }
+
     if (in_array($bt, [57, 55, 59])) {
 
       //  Presentation method dropdown options
@@ -92,6 +104,21 @@ function pe_update_booking_preprocess_page_title(&$variables, $hook) {
     elseif ($bt == PE_UPDATE_BOOKING_ADULT_ACTIVITY) {
       $variables['title'] = [
         '#markup' => 'Adult Presentation Booking Update Form',
+      ];
+    }
+    elseif ($bt == 201) {
+      $variables['title'] = [
+        '#markup' => 'WiseGuyz Booking Update Form',
+      ];
+    }
+    elseif ($bt == 204) { 
+      $variables['title'] = [
+        '#markup' => 'Institutional Support Booking Update Form',
+      ];
+    }
+    elseif ($bt == 203) {
+      $variables['title'] = [
+        '#markup' => 'Community Engagement Booking Update Form',
       ];
     }
   }
