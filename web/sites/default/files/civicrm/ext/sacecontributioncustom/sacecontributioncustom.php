@@ -10,7 +10,8 @@ use CRM_Sacecontributioncustom_ExtensionUtil as E;
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
  */
-function sacecontributioncustom_civicrm_config(&$config) {
+function sacecontributioncustom_civicrm_config(&$config)
+{
   _sacecontributioncustom_civix_civicrm_config($config);
 }
 
@@ -19,7 +20,8 @@ function sacecontributioncustom_civicrm_config(&$config) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function sacecontributioncustom_civicrm_install() {
+function sacecontributioncustom_civicrm_install()
+{
   _sacecontributioncustom_civix_civicrm_install();
 }
 
@@ -28,7 +30,8 @@ function sacecontributioncustom_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function sacecontributioncustom_civicrm_enable() {
+function sacecontributioncustom_civicrm_enable()
+{
   _sacecontributioncustom_civix_civicrm_enable();
 }
 
@@ -66,7 +69,8 @@ function sacecontributioncustom_civicrm_enable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_buildForm
  */
-function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
+function sacecontributioncustom_civicrm_buildForm($formName, &$form)
+{
 
   if ($formName == 'CRM_Contribute_Form_Contribution_Main' && ($form->getVar('_id') == 7 || $form->getVar('_id') == 8 || $form->getVar('_id') == 9)) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/community.js');
@@ -83,12 +87,12 @@ function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/confirms.js');
   }
 
-  if($formName == 'CRM_Contribute_Form_Contribution_Main'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
+  if ($formName == 'CRM_Contribute_Form_Contribution_Main'  && (!in_array($form->getVar('_id'), [7, 9,  8]))) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/general-donate-forms.js');
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-forms.css');
   }
-  
-  if($formName == 'CRM_Contribute_Form_Contribution_Main'  && (!in_array($form->getVar('_id'), [9, 8]))) {
+
+  if ($formName == 'CRM_Contribute_Form_Contribution_Main'  && (!in_array($form->getVar('_id'), [9, 8]))) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/accessibility_fund_general.js');
   }
 
@@ -96,7 +100,7 @@ function sacecontributioncustom_civicrm_buildForm($formName, &$form) {
     Civi::resources()->addScriptFile('sacecontributioncustom', 'js/accessibility_fund_general.js');
   }
 
-  if($formName == 'CRM_Contribute_Form_Contribution_Confirm'  && (!in_array($form->getVar('_id'), [7, 9, 1, 8]))) {
+  if ($formName == 'CRM_Contribute_Form_Contribution_Confirm'  && (!in_array($form->getVar('_id'), [7, 9,  8]))) {
     Civi::resources()->addStyleFile('sacecontributioncustom', 'css/general-confirms.css');
   }
 

@@ -423,7 +423,8 @@ a.sace-btn:focus,
 
 .crm-section.other_amount-section .label {
 	color: var(--color-light) !important;
-	background-color: var(--color-accent);
+	/* background-color: var(--color-accent); */
+	background-color: var(--color-secondary);
 	padding: 15px 10px;
 	padding-top: 15px !important;
 	margin-right: 10px;
@@ -676,7 +677,8 @@ input[type="radio"]:checked {
 }
 
 .price-set-row > span.highlight > label {
-	background-color: var(--color-accent);
+	/* background-color: var(--color-accent); */
+	background-color: var(--color-secondary);
 }
 
 /* Footer Text */
@@ -775,8 +777,10 @@ input[type="radio"]:checked {
 }
 
 .honor_block-group > .crm-public-form-item .content input[name="soft_credit_type_id"]:checked + label {
-	background-color: var(--color-accent);
-	border-color: var(--color-accent);
+	/* background-color: var(--color-accent);
+	border-color: var(--color-accent); */
+	background-color: var(--color-secondary);
+	border-color: var(--color-secondary);
 	color: var(--color-light);
 }
 
@@ -834,8 +838,10 @@ input[type="radio"]:checked {
 
 .duration-button-section .toggle-btn.active,
 .onbehalf-button-section .toggle-btn.active {
-	background-color: var(--color-accent);
-	border-color: var(--color-accent);
+	/* background-color: var(--color-accent);
+	border-color: var(--color-accent); */
+	background-color: var(--color-secondary);
+	border-color: var(--color-secondary);
 	color: var(--color-light);
 }
 
