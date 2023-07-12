@@ -82,22 +82,23 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
 }
 
 function pe_update_booking_preprocess_page_title(&$variables, $hook) {
-  //Activity ID
-  $aid = \Drupal::request()->query->get('aid') ?? 0;
-  if (empty($aid) || !is_numeric($aid)) {
-    return;
-  }
-
-  //Get booking type from activity
-  $activity = \Civi\Api4\Activity::get(FALSE)
-    ->addSelect('activity_type_id')
-    ->addWhere('id', '=', $aid)
-    ->setLimit(1)
-    ->execute();
-  $bt = $activity->first()['activity_type_id'];
-
   $current_path = \Drupal::service('path.current')->getPath();
   if ($current_path == '/webform/update_ped_booking') {
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    \Drupal::service('civicrm')->initialize();
+    //Get booking type from activity
+    $activity = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('activity_type_id')
+      ->addWhere('id', '=', $aid)
+      ->setLimit(1)
+      ->execute();
+    $bt = $activity->first()['activity_type_id'];
+
     if ($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
       $variables['title'] = [
         '#markup' => 'Youth Presentation Booking Update Form',
