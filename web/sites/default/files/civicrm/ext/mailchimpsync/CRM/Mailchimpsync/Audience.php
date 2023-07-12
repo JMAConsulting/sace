@@ -1193,7 +1193,7 @@ class CRM_Mailchimpsync_Audience
    * @param int $relevant_since
    * @param bool $with_data
    */
-  public function reconcileQueueProcess(int $max_time=0, $relevant_since, $with_data) {
+  public function reconcileQueueProcess(int $max_time=0, $relevant_since = NULL, $with_data = FALSE) {
     $this->updateLock([
       'for'    => 'fetchAndReconcile',
       'to'     => 'busy',
