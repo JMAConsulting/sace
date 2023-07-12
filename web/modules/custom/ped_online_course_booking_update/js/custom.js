@@ -1,26 +1,22 @@
 (function ($, Drupal, drupalSettings) {
     $(document).ready(function () {
-//console.log(`${drupalSettings.ped_online_course_booking_update.start_date}`);
-      $(`${drupalSettings.ped_online_course_booking_update.start_date}`).on('change', function () {
-        var end = $(`${drupalSettings.ped_online_course_booking_update.end_date}`).val();
-        if (end && $(this).val()) {
-          setDuration($(this).val(), end);
+      $(`${drupalSettings.ped_online_course_booking_update.start_date}-date, ${drupalSettings.ped_online_course_booking_update.start_date}-time, ${drupalSettings.ped_online_course_booking_update.end_date}-date, ${drupalSettings.ped_online_course_booking_update.end_date}-time`).on('change', function () {
+        var end = $(`${drupalSettings.ped_online_course_booking_update.end_date}-date`).val();
+        var endTime = $(`${drupalSettings.ped_online_course_booking_update.end_date}-time`).val();
+        var start = $(`${drupalSettings.ped_online_course_booking_update.start_date}-date`).val();
+        var startTime = $(`${drupalSettings.ped_online_course_booking_update.start_date}-time`).val();
+
+        if (end && start) {
+          setDuration(start + ' ' + startTime, end + ' ' + endTime);
         }
       });
-  
-      $(`${drupalSettings.ped_online_course_booking_update.end_date}`).on('change', function () {
-        var start = $(`${drupalSettings.ped_online_course_booking_update.start_date}`).val();
-        if (start && $(this).val()) {
-          setDuration(start, $(this).val());
-        }
-      });
-  
+
       function setDuration(start, end) {
         start = new Date(start);
         end = new Date(end);
         if (start > end) {
           alert('Start Date cannot be after the End Date');
-          $(`${drupalSettings.ped_online_course_booking_update.end_date}`).val('');
+          $(`${drupalSettings.ped_online_course_booking_update.end_date}-date, ${drupalSettings.ped_online_course_booking_update.end_date}-time`).val('');
           $('#edit-civicrm-1-activity-1-activity-duration').val('');
           return;
         }

@@ -19,6 +19,8 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
 
     //Attach library
     $form['#attached']['library'][] = 'pe_update_booking/pe_update_booking';
+    $form['#attached']['drupalSettings']['ped_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', PED_BOOKING_UPDATE_START_DATE);
+    $form['#attached']['drupalSettings']['ped_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', PED_BOOKING_UPDATE_END_DATE);
     
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
