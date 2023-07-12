@@ -813,7 +813,7 @@ class CivicrmEntityViewsData extends EntityViewsData {
     }
 
     if ($field_column_name === 'format') {
-      $views_field = NULL;
+      $views_field = [];
     }
   }
 
