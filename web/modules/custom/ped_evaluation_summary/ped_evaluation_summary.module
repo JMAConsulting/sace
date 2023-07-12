@@ -304,31 +304,37 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
       'text' => 'custom_666',
       'value' => 'custom_59',
       'count' => 'q2_total_block',
+      'note' => 'civicrm_1_activity_1_cg54_custom_715',
     ],
     'q5_markup_detail' => [
       'text' => 'custom_668',
       'value' => 'custom_65',
       'count' => 'q5_total_block',
+      'note' => 'civicrm_1_activity_1_cg54_custom_1281',
     ],
     'q9_markup_detail' => [
       'text' => 'custom_670',
       'value' => 'custom_724',
       'count' => 'q9_total_block',
+      'note' => 'civicrm_1_activity_1_cg54_custom_1286',
     ],
     'q18_markup_detail' => [
       'text' => 'custom_678',
       'value' => 'custom_787',
       'count' => 'q18_total_block',
+      'note' => 'civicrm_1_activity_1_cg54_custom_1283',
     ],
     'q22_markup_detail' => [
       'text' => 'custom_679',
       'value' => 'custom_803',
       'count' => 'q22_total_block',
+      'note' => 'civicrm_1_activity_1_cg54_custom_1284',
     ],
     'q23_markup_detail' => [
       'text' => 'custom_812',
       'value' => 'custom_804',
       'count' => 'q23_total_block',
+      'note' => 'civicrm_1_activity_1_cg54_custom_1285',
     ],
   ];
 
@@ -403,6 +409,7 @@ foreach ($mapper as $Q => $cfID) {
           }
           else {
             $elements[$textmapping[$element]['count']]['#access'] = $flag;
+            $elements[$textmapping[$element]['note']]['#access'] = $flag;
           }
           $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail'] = $flag;
           break;
