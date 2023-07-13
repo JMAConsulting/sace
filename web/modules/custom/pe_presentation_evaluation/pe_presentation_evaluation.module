@@ -54,7 +54,10 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements['date_of_presentation']['#default_value'] = DrupalDateTime::createFromTimestamp(strtotime($result['activity_date_time']));
     $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#disabled'] = TRUE;
     $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#default_value'] = $result['Booking_Information.Presentation_Method'];
-    $elements[$constants['TARGET_CONTACT']] = $result['activity_contact.contact_id'];
+    $elements[$constants['TARGET_CONTACT']]['#value'] = $result['activity_contact.contact_id'];
+    $elements[$constants['TARGET_CONTACT']]['#default_value'] = $result['activity_contact.contact_id'];
+    $elements[$constants['TARGET_CONTACT']]['#disabled'] = TRUE;
+    $elements[$constants['TARGET_CONTACT']]['#hidden'] = TRUE;
 
     if (in_array($result['activity_type_id'], [55, 196])) {
       unset($elements[$constants['DEMOGRAPHIC_INFO']]['#options']['Sex worker']);

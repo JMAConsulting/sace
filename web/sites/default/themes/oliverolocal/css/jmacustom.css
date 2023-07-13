@@ -480,6 +480,10 @@ fieldset.webform-type-fieldset > .fieldset__legend > span:after {
 	margin-left: 10px;
 }
 
+form .form-disabled li.token-input-token span {
+        display: none;
+}
+
 .webform-has-field-prefix {
 	display: flex !important;
 	align-items: center;
