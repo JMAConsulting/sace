@@ -411,7 +411,7 @@ foreach ($mapper as $Q => $cfID) {
             $elements[$textmapping[$element]['count']]['#access'] = $flag;
             $elements[$textmapping[$element]['note']]['#access'] = $flag;
           }
-          $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail'] = $flag;
+          $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#value'] = $elements['q' . $Q . '_markup_detail']['#default_value'] = $flag;
           break;
 
         case 6:
