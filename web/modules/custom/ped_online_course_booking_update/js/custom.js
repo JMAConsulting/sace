@@ -7,14 +7,17 @@
         var startTime = $(`${drupalSettings.ped_online_course_booking_update.start_date}-time`).val();
 
         if (end && start) {
-          setDuration(start + ' ' + startTime, end + ' ' + endTime);
+          var end1 = new Date(end);
+          var start1 = new Date(start);
+          var sameDay = (((end1.getTime() - start1.getTime()) / (1000 * 60)) == 0);
+          setDuration(start + ' ' + startTime, end + ' ' + endTime, sameDay);
         }
       });
 
-      function setDuration(start, end) {
+      function setDuration(start, end, sameDay) {
         start = new Date(start);
         end = new Date(end);
-        if (start > end) {
+        if (start > end && !sameDay) {
           alert('Start Date cannot be after the End Date');
           $(`${drupalSettings.ped_online_course_booking_update.end_date}-date, ${drupalSettings.ped_online_course_booking_update.end_date}-time`).val('');
           $('#edit-civicrm-1-activity-1-activity-duration').val('');
