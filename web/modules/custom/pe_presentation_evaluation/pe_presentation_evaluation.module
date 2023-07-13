@@ -29,7 +29,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
-
+    \Drupal::service('civicrm')->initialize();
     // Get activity id from query var.
     $aid = \Drupal::request()->query->get('bid');
     if (empty($aid) || !is_numeric($aid)) {

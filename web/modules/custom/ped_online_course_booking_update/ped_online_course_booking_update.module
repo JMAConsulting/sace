@@ -27,6 +27,7 @@ function ped_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\F
     if (empty($elements)) {
       return;
     }
+    \Drupal::service('civicrm')->initialize();
     //Activity ID
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if (empty($aid) || !is_numeric($aid)) {
