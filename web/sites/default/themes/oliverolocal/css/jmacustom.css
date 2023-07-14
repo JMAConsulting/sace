@@ -481,7 +481,7 @@ fieldset.webform-type-fieldset > .fieldset__legend > span:after {
 }
 
 form .form-disabled li.token-input-token span {
-        display: none;
+	display: none;
 }
 
 .webform-has-field-prefix {
@@ -599,4 +599,73 @@ label.form-item__label {
 	.jma-user-contact .views-exposed-form > fieldset .fieldset__wrapper .form-boolean-group .form-checkboxes {
 		grid-template-columns: 1fr;
 	}
+}
+
+/* .jma-user-contact .view-filters .fieldset__legend */
+/* .jma-user-contact .view-filters .fieldset__wrapper */
+.jma-user-contact .view-filters .fieldset__legend {
+	cursor: pointer;
+}
+
+.jma-user-contact .view-filters .fieldset__legend .fieldset__label {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+}
+
+.jma-user-contact .view-filters .fieldset__legend .fieldset__label:after {
+	content: "\f078";
+	font: var(--fa-font-solid);
+	font-weight: 600;
+	font-size: 18px;
+	display: inline-block;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	transition: rotate 0.7s ease-in;
+}
+
+.jma-user-contact .view-filters[aria-expanded="false"] .fieldset__legend .fieldset__label:after {
+	rotate: 180deg;
+}
+
+.jma-user-contact .view-filters .fieldset__wrapper {
+	display: grid;
+	grid-template-rows: 1fr;
+	transition: grid-template-rows 0.7s ease-in-out;
+	/* padding: 1.125rem; */
+}
+
+.jma-user-contact .view-filters .fieldset__wrapper > div {
+	overflow: hidden;
+}
+
+.jma-user-contact .view-filters[aria-expanded="false"] .fieldset__wrapper {
+	grid-template-rows: 0fr;
+	/* padding: 0; */
+}
+
+.jma-user-contact .view-filters[aria-expanded="false"] .fieldset__wrapper::before {
+	border-color: transparent;
+}
+
+.jma-user-contact .view-filters .fieldset__wrapper::before {
+	border-color: var(--sace-soft-blue);
+}
+
+.menu.primary-nav__menu {
+	padding-left: 1rem !important;
+	padding-right: 1rem !important;
+}
+
+div[id^="windowManager"] > span {
+	box-shadow: none !important;
+	border-color: transparent !important;
+}
+
+.jsframe-titlebar-focused + div iframe + div {
+	padding: 1rem;
+	min-height: 550px;
+	height: auto;
+	background-color: #ffffff !important;
+	box-shadow: rgba(0, 0, 0, 0.6) 2px 3px 16px;
 }
