@@ -1,6 +1,8 @@
 <?php
 use Drupal\webform\Utility\WebformFormHelper;
 
+require_once 'sace_activity_schedule_modification.variables.php';
+
 /**
  * Implements hook_form_alter().
  * @param $form
@@ -10,5 +12,20 @@ use Drupal\webform\Utility\WebformFormHelper;
 function sace_activity_schedule_modification_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'webform_submission_external_appointment_booking_for_add_form') {
     $form['#attached']['library'][] = 'sace_activity_schedule_modification/sace_activity_schedule_modification';
+
+    $elements = WebformFormHelper::flattenElements($form);
+
+    $elements['civicrm_1_activity_1_activity_activity_type_id']['#options'] = [];
+    
+    $multipleBookings = \Civi\Api4\MultipleBooking::get()
+    ->addSelect('activity_type_id', 'option_value.name')
+    ->addJoin('OptionValue AS option_value', 'LEFT', ['activity_type_id', '=', 'option_value.value'])
+    ->addWhere('booking_calendar_display', '=', TRUE)  
+    ->execute();
+
+    foreach($multipleBookings as $multipleBooking) {
+      $elements[SACE_ACTIVITY_SCHEDULE_MODIFICATION_ACTIVITY_TYPE_FIELD]['#options'][$multipleBooking['activity_type_id']] = $multipleBooking['option_value.name'];
+    }
+
   }
 }
