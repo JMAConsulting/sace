@@ -20,7 +20,7 @@ console.log(`${fieldset}`);
           $(`${field} .token-input-delete-token`).trigger('click');
       });
 
-      $('#edit-civicrm-1-activity-1-cg2-custom-40-customsomethingdifferent').on('click', function(e) {
+      $('#edit-civicrm-1-activity-1-cg2-custom-40-customunsure').on('click', function(e) {
         $('.form-item-civicrm-1-activity-1-cg2-custom-41').toggle($(this).is(":checked"));
       });
 
