@@ -30,10 +30,13 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '196'
     '#text': |
+      <p><img alt="​A youth online courses banner graphic features four tablets, each displaying a colourful course title page with an illustration featuring diverse people in a range of scenarios useful to illustrating sexual violence education concepts" class="" data-entity-type="" data-entity-uuid="" id="" width="100%" src="https://secure.sace.ca/sites/default/files/2023-07/YouthOnlineCoursesBanner_0.png" title="Youth Online Course Group Booking Requests" /></p>
+
+      <p>&nbsp;</p>
+
       <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
 
       <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
-      <p><img alt="Team" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/team-386673_1920.jpg?itok=y7zfLISW" title="" /></p>
     '#format': html
   adult_professional_booking_html:
     '#type': processed_text
@@ -42,8 +45,13 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '199'
     '#text': |
+      <p><img alt="An adult online courses graphic features features four tablets, each displaying a colourful course title page with an illustration featuring diverse people in a range of scenarios useful to illustrating sexual violence education concepts" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/AdultOnlineCoursesBanner.png" title="Adult Online Course Group Requests" width="100%" /></p>
+
+      <p>&nbsp;</p>
+
       <p>SACE offers both self-paced and moderated online learning opportunities for adults to learn more about topics related to sexual violence. Each course includes short readings, videos, and reflection questions to further engage with the material.</p>
-      <p><img alt="Workshop" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/workshop-1425446_1920.jpg?itok=pJQcarMR" title="" /></p>
+
+      <p>&nbsp;</p>
     '#format': html
   processed_text:
     '#type': processed_text

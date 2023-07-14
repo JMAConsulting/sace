@@ -15,9 +15,35 @@ title: 'PED SACE Presentation Evaluation Form '
 description: ''
 category: ''
 elements: |-
+  form_summary:
+    '#type': processed_text
+    '#wrapper_attributes':
+      class:
+        - show-on-print
+    '#text': |
+      <div class="jm-form-summary">
+      <p>This survey is both voluntary and confidential. You may choose whether or not to complete it. We use feedback to report to our funders and make our materials as effective as possible*. Thank you for your valuable feedback!</p>
+
+      <p>Use the following symbols to answer the questions below:</p>
+
+      <ul>
+      	<li><span>6</span><span>Strongly Agree</span></li>
+      	<li><span>5</span><span>Agree</span></li>
+      	<li><span>4</span><span>Somewhat Agree</span></li>
+      	<li><span>3</span><span>Somewhat Disagree</span></li>
+      	<li><span>2</span><span>Disagree</span></li>
+      	<li><span>1</span><span>Strongly Disagree</span></li>
+      </ul>
+
+      <p><i>* Feedback may be used in SACE funding reports, or in promotional and marketing materials, though personal or identifying information will not be shared.</i></p>
+      </div>
+    '#format': html
   flexbox:
     '#type': webform_flexbox
     '#states_clear': false
+    '#attributes':
+      class:
+        - hide-on-print
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
       '#title': 'Presentation Method'
@@ -116,6 +142,9 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
   flexbox_01:
     '#type': webform_flexbox
+    '#attributes':
+      class:
+        - hide-on-print
     date_of_presentation:
       '#type': datetime
       '#title': 'Date of Presentation'
@@ -697,7 +726,7 @@ settings:
   page_submit_path: /ped-sace-presentation-evaluation-form
   page_confirm_path: ''
   page_theme_name: ''
-  form_title: both
+  form_title: source_entity_webform
   form_submit_once: false
   form_open_message: ''
   form_close_message: ''
@@ -726,7 +755,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
-  form_attributes: {  }
+  form_attributes:
+    class:
+      - js-printable-form
   form_method: ''
   form_action: ''
   share: false
@@ -772,6 +803,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''

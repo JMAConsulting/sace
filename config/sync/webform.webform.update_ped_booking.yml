@@ -844,10 +844,23 @@ elements: |-
       '#webform_parents':
         - flexbox_04
         - civicrm_1_activity_1_activity_activity_date_time
+    civicrm_1_activity_1_cg2_custom_661:
+      '#type': datetime
+      '#title': 'End Date and Time'
+      '#date_date_min': '-50 years'
+      '#date_date_max': '+50 years'
+      '#date_date_format': ''
+      '#date_time_format': ''
+      '#date_time_step': '60'
+      '#data_type': Date
+      '#form_key': civicrm_1_activity_1_cg2_custom_661
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#extra': {  }
     civicrm_1_activity_1_activity_duration:
       '#type': number
       '#title': Duration
-      '#field_suffix': min.
+      '#field_suffix': minutes
+      '#disabled': true
       '#required': true
       '#step': 1
       '#form_key': civicrm_1_activity_1_activity_duration
@@ -1643,7 +1656,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_658: 0
       civicrm_1_activity_1_cg2_custom_659: 0
       civicrm_1_activity_1_cg2_custom_660: 0
-      civicrm_1_activity_1_cg2_custom_661: 0
+      civicrm_1_activity_1_cg2_custom_661: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_662: 0
       civicrm_1_activity_1_cg2_custom_697: 0
       civicrm_1_activity_1_cg2_custom_698: 0
@@ -1887,7 +1900,6 @@ handlers:
       civicrm_1_activity_1_cg54_custom_712: 0
       civicrm_1_activity_1_cg54_custom_713: 0
       civicrm_1_activity_1_cg54_custom_714: 0
-      civicrm_1_activity_1_cg54_custom_715: 0
       civicrm_1_activity_1_cg54_custom_716: 0
       civicrm_1_activity_1_cg54_custom_717: 0
       civicrm_1_activity_1_cg54_custom_718: 0
@@ -1919,6 +1931,18 @@ handlers:
       civicrm_1_activity_1_cg54_custom_1272: 0
       civicrm_1_activity_1_cg54_custom_1273: 0
       civicrm_1_activity_1_cg54_custom_1274: 0
+      civicrm_1_activity_1_cg54_custom_1275: 0
+      civicrm_1_activity_1_cg54_custom_1276: 0
+      civicrm_1_activity_1_cg54_custom_1277: 0
+      civicrm_1_activity_1_cg54_custom_1278: 0
+      civicrm_1_activity_1_cg54_custom_1279: 0
+      civicrm_1_activity_1_cg54_custom_1280: 0
+      civicrm_1_activity_1_cg54_custom_715: 0
+      civicrm_1_activity_1_cg54_custom_1281: 0
+      civicrm_1_activity_1_cg54_custom_1283: 0
+      civicrm_1_activity_1_cg54_custom_1284: 0
+      civicrm_1_activity_1_cg54_custom_1285: 0
+      civicrm_1_activity_1_cg54_custom_1286: 0
       activity_1_settings_dynamic_custom_cg58: 0
       civicrm_1_activity_1_cg58_custom_1265: 0
       civicrm_1_activity_1_cg58_custom_1266: create_civicrm_webform_element

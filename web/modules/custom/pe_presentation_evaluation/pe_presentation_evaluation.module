@@ -182,11 +182,6 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
           $elements[$key]['#access'] = ($result['activity_type_id'] == 59);
           break;
 
-        case 211:
-          //Hide Q21 if Presentation Method is not Online Course else hide Q22
-          $elements[$key]['#access'] = (bool) ($result['Booking_Information.Youth_or_Adult'] == 'Adult');
-          break;
-
         default:
           break;
 

@@ -14,18 +14,20 @@ description: ''
 category: ''
 elements: |-
   markup:
-    '#type': webform_markup
-    '#markup': |-
+    '#type': processed_text
+    '#text': |
       <p>SACE empowers individuals and communities to take action against sexual violence. To accomplish this, we deliver presentations, workshops and seminars, distribute resources, offer consultation, and attend community events and speaking engagements.&nbsp;</p>
 
       <h2>Public Education</h2>
+    '#format': html
   presentation_bookings_header:
-    '#type': webform_markup
-    '#markup': |-
+    '#type': processed_text
+    '#text': |
       <h3>Presentation Bookings</h3>
       Our Public Education team offers both in-person and online presentation options for youth and adult audiences.&nbsp;<br />
       <br />
       Our Public Education services are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.
+    '#format': html
   flexbox:
     '#type': webform_flexbox
     '#title': 'Presentation Bookings'

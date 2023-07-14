@@ -511,8 +511,8 @@ elements: |-
     flexbox_05:
       '#type': webform_flexbox
       civicrm_1_activity_1_activity_activity_date_time:
-        '#type': date
-        '#title': 'Start Date'
+        '#type': datetime
+        '#title': 'Start Date and Time'
         '#default_value': now
         '#date_date_format': ''
         '#date_time_format': ''
@@ -521,12 +521,13 @@ elements: |-
         '#parent': civicrm_1_activity_1_fieldset_fieldset
         '#extra': {  }
       civicrm_1_activity_1_cg2_custom_661:
-        '#type': date
-        '#title': 'End Date'
+        '#type': datetime
+        '#title': 'End Date and Time'
         '#date_date_min': '-50 years'
         '#date_date_max': '+50 years'
-        '#form_key': civicrm_1_activity_1_cg2_custom_661
         '#date_date_format': ''
+        '#date_time_format': ''
+        '#form_key': civicrm_1_activity_1_cg2_custom_661
     civicrm_1_activity_1_activity_duration:
       '#type': civicrm_number
       '#title': Duration

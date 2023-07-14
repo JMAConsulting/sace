@@ -363,75 +363,87 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
 foreach ($mapper as $Q => $cfID) {
       $element = array_key_exists('custom_' . $cfID, $dropdownmapping) ? $dropdownmapping['custom_' . $cfID] : sprintf('q%s_markup_detail', $Q);
       $Q = (int) $Q;
+      $flag = TRUE;
       switch($Q) {
       case 4:
         case 5:
         case 7:
           //Show Q4 Q5 Q7 if Support content covered is Yes
           $flag = ($result["Booking_Information.Support_Content"] == 1);
+          break;
+
         case 8:
         case 9:
           $flag = ($result["Booking_Information.Resources_Content"] == 1);
+        break;
+
         case 14:
-          $flag = ($result["Booking_Information.Facilitating_Program"] == 'InstitutionalSupport');
+          $flag = (bool) ($result["Booking_Information.Facilitating_Program"] == 'InstitutionalSupport');
+          break;
+
         case 15:
           $flag = (bool) strstr('Professionals', implode('', $result["Booking_Information.Audience"]));
+          break;
+
         case 16: 
           $flag = (bool) $result['Booking_Information.Safer_Spaces_Content'];
+          break;
+
         case 17:
           $flag = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+          break;
+
         case 19:
           //Hide Q19 if Presentation Topic is not Bystander Intervention
           $flag = (bool) in_array('BystanderIntervention', $result["Booking_Information.Presentation_topics"]);
+          break;
+
         case 20:
           //Show Q20 if Privilege and Oppression Covered set to Yes
           $flag = (bool) $result['Booking_Information.Privilege_and_Oppression_Content'];
+          break;
+
         case 21:
           //Hide Q21 if Presentation Method is not Online Course else hide Q22
           $flag = !($result['Booking_Information.Presentation_Method'] == 'Online Course');
+          break;
+
         case 22:
           //Show for all presentation and online course evaluations.
           $flag = in_array($result['activity_type_id'], [55, 59, 196, 199]);
+          break;
+
         case 24:
-          $flag = ($result['activity_type_id'] == 59);
-        case 211:
-          //Hide Q21 if Presentation Method is not Online Course else hide Q22
-          $flag = (bool) ($result['Booking_Information.Youth_or_Adult'] == 'Adult');        
+          $flag = ($result['activity_type_id'] == 59);        
+          break;
+
         case 13:
         case 18:
-          if (in_array($Q, [13, 18])) {
-            $flag = !empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]));
-          }
-          if (is_array($element)) {
-            foreach ($element as $key) {
-              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $flag;
-            }
-          }
-          else {
-            $elements[$textmapping[$element]['count']]['#access'] = $flag;
-            $elements[$textmapping[$element]['note']]['#access'] = $flag;
-          }
-          $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#access'] = $flag;
+          $flag = !empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]));
           break;
 
         case 6:
           $flag = in_array($result['activity_type_id'], [59, 199]);
+          break;
+
         case 10:
-          if ($Q == 10) {
-            $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
-          }
-          if (is_array($element)) {
-            foreach ($element as $key) {
-              $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $flag;
-            }
-          }
-          $elements['question_markup_' . $Q]['#access'] = $flag;
+          $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
           break;
 
         default:
           break;
+        }
 
-      }
+        if (is_array($element)) {
+          foreach ($element as $key) {
+            $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $flag;
+          }
+        }
+        else {
+          $elements[$textmapping[$element]['count']]['#access'] = $flag;
+          $elements[$textmapping[$element]['note']]['#access'] = $flag;
+        }
+        $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#access'] = $flag;
     }
 
 
