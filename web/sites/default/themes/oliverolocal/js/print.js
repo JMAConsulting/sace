@@ -1,15 +1,15 @@
 const pageTitleBlock = document.getElementById("block-pagetitle");
-const firstFormRow = document.querySelector(".form-wrapper");
+const firstFormRow = document.querySelector(".js-printable-form .form-wrapper");
 let bookingID;
 if (firstFormRow) {
 	const fieldBoxes = firstFormRow.querySelectorAll("div > div > div ");
 	fieldBoxes.forEach((field, index) => {
-		const label = field.querySelector("label").innerText.toLocaleLowerCase();
+		const label = field.querySelector("label") ? field.querySelector("label").innerText.toLowerCase() : null;
 		const input = field.querySelector("input");
 
-		if (label == "Booking Reference ID".toLocaleLowerCase()) {
+		if (label == "Booking Reference ID".toLowerCase()) {
 			bookingID = input.value;
-			console.log(bookingID);
+			// console.log(bookingID);
 		}
 	});
 
