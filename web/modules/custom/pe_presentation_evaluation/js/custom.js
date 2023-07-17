@@ -6,6 +6,7 @@ jQuery(document).ready(function ($, settings) {
   
   $('a.crm-clear-link').on('click', function(e) {
     e.preventDefault();
+    $(this).siblings('input[type="radio"]').prop('checked', false).trigger('change');
     $(this).parent().siblings().each(function() {
       if ($(this).children('input[type="radio"]').is(':checked')) {
         $(this).children('input[type="radio"]').prop('checked', false).trigger('change');
