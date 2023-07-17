@@ -76,6 +76,7 @@ function ped_online_course_booking_update_preprocess_page_title(&$variables, $ho
     return;
   }
 
+  \Drupal::service('civicrm')->initialize();
   //Get booking type from activity
   $activity = \Civi\Api4\Activity::get(FALSE)
   ->addSelect('activity_type_id')

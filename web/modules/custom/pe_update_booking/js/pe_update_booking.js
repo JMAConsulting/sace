@@ -47,6 +47,23 @@ jQuery(document).ready(function ($, settings) {
     }
   );
 
+//Dynamic Your Organization / School fields
+var field1 = '.form-item-civicrm-2-contact-1-contact-existing';
+var fieldset = '#edit-civicrm-2-contact-1-fieldset-fieldset';
+var description = '#edit-civicrm-2-contact-1-contact-existing--description';
+$(`${field1}`).hide();
+$('#existing-org').on('click', function (e) {
+  e.preventDefault();
+  $(`${field1}`).show();
+  $(`${fieldset}`).hide();
+});
+
+$('#new-org-block').on('click', function (e) {
+    e.preventDefault();
+    $(`${fieldset}`).show();
+    $(`${field1}`).hide();
+});
+
   if (bt == 204 || bt == 203) {
     $('div.js-form-type-textfield form-item-civicrm-1-activity-1-cg58-custom-1267').insertAfter($('#edit-flexbox-08'));
   }
