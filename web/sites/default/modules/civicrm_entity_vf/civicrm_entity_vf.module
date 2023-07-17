@@ -78,8 +78,21 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
       'options' => ['limit' => 0],
     ]);
     foreach($team_contact_id_lookup as $tc) {
-      $contact_ids[] = $tc['contact_id'];
+      $contact_ids[$tc['contact_id']] = $tc['contact_id'];
       $team_contact_id_map[$tc['contact_id']] = $tc['uf_id'];
+    }
+    
+    $contact_staff = \Drupal::service('civicrm_entity.api')->get('Contact', [
+      'return' => ['id'],
+      'id' => ['IN' => $contact_ids],
+      'contact_sub_type' => "Staff",
+      'options' => ['limit' => 0],
+    ]);
+    
+    foreach ($contact_ids as $k => $value) {
+      if (!array_key_exists($value, $contact_staff)) {
+        unset($contact_ids[$k]);
+      }
     }
 
     $form['uf_select']['#options'] = [];

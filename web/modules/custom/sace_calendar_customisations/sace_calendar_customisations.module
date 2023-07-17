@@ -18,6 +18,10 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
     $view->build_info['query']->groupby('civicrm_activity_contact3.id');
     $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
   }
+  if ($view->id() == 'calendar_counsellors' || $view->id() == 'team_calendar') {
+    $view->build_info['query']->groupby('civicrm_activity_contact.id');
+    $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
+  }
 }
 
 function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAssetsInterface $assets) {
