@@ -303,4 +303,8 @@
 	.js-printable-form .form-actions {
 		display: none;
 	}
+
+	.js-printable-form .page-break-before {
+		page-break-before: always;
+	}
 }

@@ -657,6 +657,26 @@ label.form-item__label {
 	padding-right: 1rem !important;
 }
 
+li > .menu.primary-nav__menu.primary-nav__menu--level-3 {
+	padding-left: 0rem !important;
+	padding-right: 0rem !important;
+	padding: 0 !important;
+	margin-left: 8px !important;
+}
+
+li > .menu.primary-nav__menu.primary-nav__menu--level-3 > li {
+	/* margin-bottom: 8px; */
+}
+
+li > .menu.primary-nav__menu.primary-nav__menu--level-3 .primary-nav__menu-link-inner {
+	padding-bottom: 0 !important;
+	padding-top: 0px !important;
+}
+
+span.primary-nav__menu-link-inner {
+	font-size: 1.4rem;
+}
+
 div[id^="windowManager"] > span {
 	box-shadow: none !important;
 	border-color: transparent !important;
