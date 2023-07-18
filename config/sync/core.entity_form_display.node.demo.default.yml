@@ -5,12 +5,10 @@ dependencies:
   config:
     - field.field.node.demo.body
     - field.field.node.demo.field_image_banner
-    - field.field.node.demo.field_paragraphs
     - field.field.node.demo.field_webform
     - node.type.demo
   module:
     - media_library
-    - paragraphs
     - path
     - text
     - webform
@@ -41,18 +39,6 @@ content:
     region: content
     settings:
       media_types: {  }
-    third_party_settings: {  }
-  field_paragraphs:
-    type: entity_reference_paragraphs
-    weight: 123
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
     third_party_settings: {  }
   field_webform:
     type: webform_entity_reference_select
@@ -106,5 +92,10 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden: {  }

@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.demo.body
     - field.field.node.demo.field_image_banner
-    - field.field.node.demo.field_paragraphs
     - field.field.node.demo.field_webform
     - node.type.demo
   module:
@@ -32,5 +31,4 @@ content:
     region: content
 hidden:
   field_image_banner: true
-  field_paragraphs: true
   field_webform: true

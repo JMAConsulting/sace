@@ -429,95 +429,6 @@ elements: |-
     '#form_key': civicrm_1_activity_1_cg54_custom_1281
     '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#title': 'Noteworthy comments from evaluations'
-  question_markup_6:
-    '#type': processed_text
-    '#text': |
-      <p><strong>I am committed to addressing sexual violence and promoting a culture of consent, including actions like challenging harmful attitudes and behaviours, educating myself and others, advocating for policy and cultural change, and/or supporting sexual assault survivors and services.</strong></p>
-    '#format': html
-  flexbox_q6:
-    '#type': webform_flexbox
-    civicrm_1_activity_1_cg54_custom_75:
-      '#type': number
-      '#title': 'Strongly Agree'
-      '#description': 'Strongly Agree'
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_75
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_76:
-      '#type': number
-      '#title': Agree
-      '#description': Agree
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_76
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_77:
-      '#type': number
-      '#title': 'Somewhat Agree'
-      '#description': 'Somewhat Agree'
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_77
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_712:
-      '#type': number
-      '#title': 'Somewhat Disagree'
-      '#description': 'Strongly Disagree'
-      '#title_display': none
-      '#data_type': Int
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#form_key': civicrm_1_activity_1_cg54_custom_712
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_78:
-      '#type': number
-      '#title': Disagree
-      '#description': Disagree
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_78
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_79:
-      '#type': number
-      '#title': 'Strongly Disagree '
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_79
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_74:
-      '#type': webform_computed_twig
-      '#title': Total
-      '#template': '{{ data.civicrm_1_activity_1_cg54_custom_75|default(0) + data.civicrm_1_activity_1_cg54_custom_76|default(0) + data.civicrm_1_activity_1_cg54_custom_77|default(0) + data.civicrm_1_activity_1_cg54_custom_712|default(0) + data.civicrm_1_activity_1_cg54_custom_78|default(0) + data.civicrm_1_activity_1_cg54_custom_79|default(0) }}'
-      '#ajax': true
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_74
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
   question_markup_7:
     '#type': processed_text
     '#text': |
@@ -1809,6 +1720,95 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_6:
+    '#type': processed_text
+    '#text': |
+      <p><strong>I am committed to addressing sexual violence and promoting a culture of consent, including actions like challenging harmful attitudes and behaviours, educating myself and others, advocating for policy and cultural change, and/or supporting sexual assault survivors and services.</strong></p>
+    '#format': html
+  flexbox_q6:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_75:
+      '#type': number
+      '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_75
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_76:
+      '#type': number
+      '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_76
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_77:
+      '#type': number
+      '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_77
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_712:
+      '#type': number
+      '#title': 'Somewhat Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': none
+      '#data_type': Int
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_712
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_78:
+      '#type': number
+      '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_78
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_79:
+      '#type': number
+      '#title': 'Strongly Disagree '
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_79
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_74:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg54_custom_75|default(0) + data.civicrm_1_activity_1_cg54_custom_76|default(0) + data.civicrm_1_activity_1_cg54_custom_77|default(0) + data.civicrm_1_activity_1_cg54_custom_712|default(0) + data.civicrm_1_activity_1_cg54_custom_78|default(0) + data.civicrm_1_activity_1_cg54_custom_79|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_74
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
   question_markup_211:
     '#type': processed_text
     '#text': |
@@ -2015,7 +2015,7 @@ elements: |-
   question_markup_22:
     '#type': processed_text
     '#text': |
-      <p><strong>Positive feedback on service offering</strong></p>
+      <p><strong>What did you like most about the presentation/course?</strong></p>
     '#format': html
   q22_markup_detail:
     '#type': processed_text

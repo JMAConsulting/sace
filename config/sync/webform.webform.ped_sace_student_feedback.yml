@@ -667,6 +667,9 @@ elements: |-
       Please note that we only ask about identities we have a reason for asking about: we realize that this list isn&#39;t complete, and we invite folks to share additional identities you might like us to know about. The identities listed here reflect identified, specific SACE program delivery, funding, or accessibility goals.
     '#description_display': before
     '#help_display': title_after
+    '#attributes':
+      class:
+        - page-break-before
     civicrm_1_activity_1_cg49_custom_1262:
       '#type': civicrm_options
       '#title': 'Demographic Information'

@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.clin_page.body
     - field.field.node.clin_page.field_button
     - field.field.node.clin_page.field_image_banner
-    - field.field.node.clin_page.field_paragraphs
     - node.type.clin_page
   module:
     - text
@@ -33,4 +32,3 @@ content:
 hidden:
   field_button: true
   field_image_banner: true
-  field_paragraphs: true

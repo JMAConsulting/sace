@@ -91,31 +91,48 @@ elements: |-
         multiple: 0
       '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
       '#parent': civicrm_1_contact_1_fieldset_fieldset
+  civicrm_2_contact_1_contact_existing:
+    '#type': civicrm_contact
+    '#title': 'Your Organization'
+    '#description': 'If you cannot find your organization, please click <a href="#" id="new-org-block">here</a> to create one. Please note that this field is for your organization&#39;s information only.'
+    '#tag':
+      44: '44'
+      27: '27'
+      2: '2'
+      56: '56'
+      45: '45'
+      48: '48'
+      1: '1'
+      49: '49'
+      7: '7'
+      13: '13'
+      8: '8'
+      10: '10'
+      6: '6'
+      11: '11'
+      14: '14'
+      9: '9'
+      12: '12'
+      15: '15'
+    '#widget': autocomplete
+    '#none_prompt': '- None Found -'
+    '#results_display':
+      organization_name: organization_name
+    '#default_relationship_to': '1'
+    '#default_relationship':
+      '': ''
+    '#filter_relationship_contact': ''
+    '#contact_type': organization
+    '#form_key': civicrm_2_contact_1_contact_existing
+    '#parent': civicrm_2_contact_1_fieldset_fieldset
+    '#extra': {  }
   civicrm_2_contact_1_fieldset_fieldset:
     '#type': fieldset
     '#title': 'Your Organization'
     '#form_key': civicrm_2_contact_1_fieldset_fieldset
-    civicrm_2_contact_1_contact_existing:
-      '#type': civicrm_contact
-      '#title': 'Existing Contact'
-      '#widget': hidden
-      '#none_prompt': '- None Found -'
-      '#results_display':
-        display_name: display_name
-      '#wrapper_attributes':
-        style: 'display:none'
-      '#default_relationship_to': '1'
-      '#default_relationship':
-        '': ''
-      '#filter_relationship_contact': ''
-      '#contact_type': organization
-      '#form_key': civicrm_2_contact_1_contact_existing
-      '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#extra': {  }
     civicrm_2_contact_1_contact_organization_name:
       '#type': textfield
       '#title': 'Organization Name'
-      '#disabled': true
       '#counter_type': character
       '#counter_maximum': 128
       '#counter_maximum_message': ' '
@@ -129,7 +146,6 @@ elements: |-
       '#counter_type': character
       '#counter_maximum': 96
       '#counter_maximum_message': ' '
-      '#disabled': true
       '#extra':
         width: 60
       '#form_key': civicrm_2_contact_1_address_street_address
@@ -140,7 +156,6 @@ elements: |-
       '#counter_type': character
       '#counter_maximum': 64
       '#counter_maximum_message': ' '
-      '#disabled': true
       '#extra':
         width: 20
       '#form_key': civicrm_2_contact_1_address_city
@@ -151,7 +166,6 @@ elements: |-
       '#counter_type': character
       '#counter_maximum': 64
       '#counter_maximum_message': ' '
-      '#disabled': true
       '#extra':
         width: 7
       '#form_key': civicrm_2_contact_1_address_postal_code
@@ -159,8 +173,6 @@ elements: |-
       '#title': 'Postal Code'
     civicrm_2_contact_1_address_state_province_id:
       '#type': textfield
-      '#disabled': true
-      '#readonly': true
       '#extra':
         maxlength: 5
         width: 4
@@ -168,6 +180,7 @@ elements: |-
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
       '#title': State/Province
+      '#description': 'To choose existing organization please click <a id="existing-org" href="#">here</a> to select one.'
     civicrm_1_activity_1_cg2_custom_657:
       '#type': civicrm_options
       '#title': 'This booking is for a smaller group, program, department or committee within my organization'
@@ -520,6 +533,7 @@ elements: |-
         '#form_key': civicrm_1_activity_1_activity_activity_date_time
         '#parent': civicrm_1_activity_1_fieldset_fieldset
         '#extra': {  }
+        '#required': true
       civicrm_1_activity_1_cg2_custom_661:
         '#type': datetime
         '#title': 'End Date and Time'
@@ -527,17 +541,19 @@ elements: |-
         '#date_date_max': '+50 years'
         '#date_date_format': ''
         '#date_time_format': ''
+        '#date_time_step': '60'
         '#form_key': civicrm_1_activity_1_cg2_custom_661
-    civicrm_1_activity_1_activity_duration:
-      '#type': civicrm_number
-      '#title': Duration
-      '#field_suffix': minutes
-      '#wrapper_attributes':
-        style: 'display:none'
-      '#step': 1
-      '#form_key': civicrm_1_activity_1_activity_duration
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#extra': {  }
+        '#required': true
+      civicrm_1_activity_1_activity_duration:
+        '#type': civicrm_number
+        '#title': Duration
+        '#field_suffix': minutes
+        '#disabled': true
+        '#step': 1
+        '#form_key': civicrm_1_activity_1_activity_duration
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#extra': {  }
+        '#required': true
     civicrm_1_activity_1_cg2_custom_698:
       '#type': textarea
       '#data_type': Memo

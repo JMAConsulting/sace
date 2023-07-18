@@ -131,9 +131,14 @@ display:
           plugin_id: bundle
           value:
             user_team: user_team
+          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: default
         options:

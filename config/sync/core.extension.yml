@@ -45,7 +45,6 @@ module:
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
-  layout_builder: 0
   layout_discovery: 0
   libraries: 0
   link: 0
@@ -62,7 +61,6 @@ module:
   options: 0
   page_cache: 0
   panelbutton: 0
-  paragraphs_jquery_ui_accordion: 0
   path: 0
   path_alias: 0
   pe_booking_activity_role: 0
@@ -108,7 +106,6 @@ module:
   webform_ui: 0
   pathauto: 1
   views: 10
-  paragraphs: 11
   minimal: 1000
 theme:
   seven: 0

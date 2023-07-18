@@ -10,12 +10,10 @@ dependencies:
     - field.field.node.ce_page.field_button04
     - field.field.node.ce_page.field_button05
     - field.field.node.ce_page.field_image_banner
-    - field.field.node.ce_page.field_paragraphs
     - node.type.ce_page
   module:
     - link_class
     - media_library
-    - paragraphs
     - path
     - text
 id: node.ce_page.default
@@ -100,18 +98,6 @@ content:
     region: content
     settings:
       media_types: {  }
-    third_party_settings: {  }
-  field_paragraphs:
-    type: entity_reference_paragraphs
-    weight: 123
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
     third_party_settings: {  }
   path:
     type: path

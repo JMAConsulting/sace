@@ -1171,18 +1171,19 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        booking_calendar_display:
-          id: booking_calendar_display
-          table: civicrm_multiple_booking
-          field: booking_calendar_display
-          relationship: multiple_booking_activity_type_id
+        contact_sub_type:
+          id: contact_sub_type
+          table: civicrm_contact
+          field: contact_sub_type
+          relationship: contact
           group_type: group
           admin_label: ''
-          entity_type: civicrm_multiple_booking
-          entity_field: booking_calendar_display
-          plugin_id: boolean
-          operator: '='
-          value: '1'
+          entity_type: civicrm_contact
+          entity_field: contact_sub_type
+          plugin_id: list_field
+          operator: or
+          value:
+            Staff: Staff
           group: 1
           exposed: false
           expose:
@@ -1199,6 +1200,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1211,6 +1213,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:
@@ -1474,16 +1477,6 @@ display:
           relationship: user
           group_type: group
           admin_label: 'field_user_team: Taxonomy term'
-          plugin_id: standard
-          required: false
-        multiple_booking_activity_type_id:
-          id: multiple_booking_activity_type_id
-          table: civicrm_activity
-          field: multiple_booking_activity_type_id
-          relationship: none
-          group_type: group
-          admin_label: 'Multiple Booking Join'
-          entity_type: civicrm_activity
           plugin_id: standard
           required: false
       css_class: jma-user-contact

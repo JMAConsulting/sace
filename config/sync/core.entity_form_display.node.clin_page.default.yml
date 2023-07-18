@@ -6,11 +6,9 @@ dependencies:
     - field.field.node.clin_page.body
     - field.field.node.clin_page.field_button
     - field.field.node.clin_page.field_image_banner
-    - field.field.node.clin_page.field_paragraphs
     - node.type.clin_page
   module:
     - link_class
-    - paragraphs
     - path
     - text
 id: node.clin_page.default
@@ -54,18 +52,6 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
-    third_party_settings: {  }
-  field_paragraphs:
-    type: entity_reference_paragraphs
-    weight: 124
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
     third_party_settings: {  }
   path:
     type: path
@@ -111,5 +97,10 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden: {  }
