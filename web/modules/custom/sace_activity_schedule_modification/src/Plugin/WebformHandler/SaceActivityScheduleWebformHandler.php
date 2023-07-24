@@ -71,8 +71,20 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
         $user_ids = array_keys(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['field_user_team' => $webform_submission_data['user_team']]));
         $team_contact_ids = UFMatch::get(FALSE)->addWhere('uf_id', 'IN', $user_ids)->execute()->column('contact_id');
         $contacts = array_merge($contacts, $team_contact_ids);
+        $user_team = implode(',', $webform_submission_data['user_team']);
+        Activity::update(FALSE)
+          ->addWhere('id', '=', $data['activity'][1]['id'])
+          ->addValue('CE_External_Activities.User_Team_filter', $user_team)
+          ->execute();
       }
       if (!empty($contacts)) {
+        $activityContacts = \Civi\Api4\ActivityContact::get(FALSE)
+          ->addWhere('activity_id', '=', $data['activity'][1]['id'])
+          ->addWhere('record_type_id:name', '=', 'Activity Assignees')
+          ->execute();
+        foreach ($activityContacts as $activityContact) {
+          \Civi\Api4\ActivityContact::delete()->addWhere('id', '=', $activityContact['id'])->execute();
+        }
         $unique_contacts = array_unique($contacts);
         foreach ($unique_contacts as $contact_id) {
           ActivityContact::create(FALSE)

@@ -31,6 +31,26 @@ function setDuration(start, end, sameDay) {
   $('#edit-civicrm-1-activity-1-activity-duration').val((end.getTime() - start.getTime()) / (1000 * 60));
 }
 
+//Dynamic Your Organization / School fields
+field1 = '#edit-civicrm-1-contact-1-cg52-fieldset';
+fieldset = '#edit-civicrm-1-contact-1-fieldset-fieldset';
+description = '#edit-civicrm-1-contact-1-contact-existing--description';
+
+$(`${fieldset}`).hide();
+$('#new-org-block').on('click', function (e) {
+  e.preventDefault();
+  $(`${field1}`).show();
+  $(`${fieldset}`).hide();
+  $(`${field1} .token-input-delete-token`).trigger('click');
+});
+
+$('#existing-org').on('click', function (e) {
+    e.preventDefault();
+    $(`${fieldset}`).show();
+    $(`${field1}`).hide();
+    $(`${field1} .token-input-delete-token`).trigger('click');
+});
+
 $(`${field}`).toggle($(`${checkbox}`).is(":checked"));
     $(`${label}`).toggle($(`${checkbox}`).is(":checked"));
 

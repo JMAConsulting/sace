@@ -12,5 +12,62 @@ function sace_activity_schedule_modification_form_alter(&$form, \Drupal\Core\For
     $form['#attached']['library'][] = 'sace_activity_schedule_modification/sace_activity_schedule_modification';
     $form['#attached']['drupalSettings']['ped_activity_schedule']['start_date'] = '#edit-civicrm-1-activity-1-activity-activity-date-time';
     $form['#attached']['drupalSettings']['ped_activity_schedule']['end_date'] = '#edit-civicrm-1-activity-1-cg2-custom-661';
+
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+    if (empty($elements)) {
+      return;
+    }
+   
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (!$aid) {
+      return;
+    }
+
+    \Drupal::service('civicrm')->initialize();
+    $activityContacts = \Civi\Api4\ActivityContact::get(FALSE)
+        ->addSelect('activity.CE_External_Activities.User_Team_filter', 'contact.contact_type', 'contact_id', 'contact.contact_sub_type')
+        ->addJoin('Contact AS contact', 'INNER')
+        ->addJoin('Activity AS activity', 'INNER')
+  	->addWhere('activity_id', '=', $aid)
+  	->addWhere('record_type_id', '=', 1)
+  	->execute();
+    $type = [
+      'org' => [],
+      'staff' => [],
+      'user_team' => [],
+    ];
+
+    foreach ($activityContacts as $activityContact) {
+      if (empty($type['user_team']) && !empty($activityContact['activity.CE_External_Activities.User_Team_filter'])) {
+        $type['user_team'] = explode(',', $activityContact['activity.CE_External_Activities.User_Team_filter']);
+      }
+      if ($activityContact['contact.contact_type'] == 'Organization') {
+        $type['org'][] = $activityContact['contact_id'];
+          
+      }
+      elseif (is_array($activityContact['contact.contact_sub_type']) && in_array('Staff', $activityContact['contact.contact_sub_type'])) {
+        $type['staff'][] = $activityContact['contact_id']; 
+      }
+    }
+
+    foreach(['org', 'staff', 'user_team'] as $t) {
+      if (!empty($type[$t])) {
+        switch($t) {
+         case 'org':
+           $elements['organisation_select']['#default_value'] = $type[$t];
+           break;
+          
+         case 'staff':
+           $elements['staff']['#default_value'] = $type[$t];
+           break;
+
+         case 'user_team':
+           $elements['user_team']['#default_value'] = $type[$t];
+           break;
+        }
+      }
+    }
   }
 }
