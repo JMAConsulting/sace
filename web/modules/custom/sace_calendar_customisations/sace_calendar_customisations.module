@@ -20,7 +20,8 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
   }
   if ($view->id() == 'calendar_counsellors' || $view->id() == 'team_calendar') {
     $view->build_info['query']->groupby('civicrm_activity_contact.id');
-    $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
+    $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');    
+    $view->build_info['query']->where('civicrm_activity.activity_type_id NOT IN (197, 200)'); 
   }
 }
 
