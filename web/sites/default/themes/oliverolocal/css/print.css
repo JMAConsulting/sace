@@ -160,6 +160,10 @@
 		content: "1";
 	}
 
+	.js-printable-form .fieldset__wrapper .crm-clear-link {
+		display: none;
+	}
+
 	.js-printable-form .fieldset__wrapper .js-webform-radios > div > input,
 	.js-printable-form .fieldset__wrapper .js-webform-radios > div > label {
 		position: absolute;

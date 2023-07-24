@@ -462,6 +462,17 @@ fieldset.webform-type-fieldset > .fieldset__legend > span:after {
 	opacity: 0.2;
 }
 
+.fieldset__wrapper {
+	position: relative;
+}
+
+.fieldset__wrapper .crm-clear-link {
+	position: absolute;
+	top: 5px;
+	right: 15px;
+	color: var(--sace-magenta);
+}
+
 .form-item h3 {
 	margin-bottom: 1.5rem;
 	display: grid;
@@ -523,6 +534,11 @@ label.form-item__label {
 	margin: 0;
 	margin-top: 0;
 	margin-bottom: 0;
+}
+
+/* [dir="ltr"] input[type="checkbox"] + label, [dir="ltr"] input[type="radio"] + label */
+.form-item__label.option {
+	padding-left: 0.5625rem;
 }
 
 .fieldset__wrapper .fieldset__wrapper {
