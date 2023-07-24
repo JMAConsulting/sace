@@ -218,7 +218,7 @@
         {include file="CRM/UF/Form/Block.tpl" fields=$customPre}
       </div>
 
-      {if $isHonor}
+      {if isset($isHonor)}
         <fieldset class="crm-public-form-item crm-group pcp-group">
           <div class="crm-public-form-item crm-section pcp-section">
             <div class="crm-public-form-item crm-section display_in_roll-section">
@@ -287,7 +287,7 @@
       {include file="CRM/UF/Form/Block.tpl" fields=$customPost}
     </div>
 
-    {if $is_monetary and $form.bank_account_number}
+    {if $is_monetary and isset($form.bank_account_number)}
       <div id="payment_notice">
         <fieldset class="crm-public-form-item crm-group payment_notice-group">
           <legend>{ts}Agreement{/ts}</legend>
@@ -306,7 +306,7 @@
     {/if}
   </div>
   <script type="text/javascript">
-    {if $isHonor}
+    {if isset($isHonor)}
     pcpAnonymous();
     {/if}
 

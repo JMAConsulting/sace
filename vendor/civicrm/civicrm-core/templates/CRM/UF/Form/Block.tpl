@@ -10,7 +10,7 @@
 {* Edit or display Profile fields, when embedded in an online contribution or event registration form. *}
 {if ! empty( $fields )}
   {strip}
-    {if $help_pre && $action neq 4}<div class="messages help">{$help_pre}</div>{/if}
+    {if isset($help_pre) && $action neq 4}<div class="messages help">{$help_pre}</div>{/if}
     {assign var=zeroField value="Initial Non Existent Fieldset"}
     {assign var=fieldset  value=$zeroField}
     {include file="CRM/UF/Form/Fields.tpl"}
@@ -19,13 +19,13 @@
       <div class="messages help">{$field.groupHelpPost}</div>
     {/if}
 
-    {if $mode eq 4}
+    {if isset($mode) and $mode eq 4}
       <div class="crm-submit-buttons">
         {$form.buttons.html}
       </div>
     {/if}
 
-    {if $mode ne 8 && $action neq 1028 && !$hideFieldset}
+    {if isset($mode) and $mode ne 8 && $action neq 1028 && ! isset($hideFieldset)}
     </fieldset>
     {/if}
 

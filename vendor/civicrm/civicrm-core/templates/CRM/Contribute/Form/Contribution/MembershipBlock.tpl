@@ -271,7 +271,7 @@
       autoRenewC.prop('checked',  isChecked );
     }
 
-    {/literal}{if $allowAutoRenewMembership}{literal}
+    {/literal}{if isset($allowAutoRenewMembership)}{literal}
     CRM.$(function($) {
       //keep read only always checked.
       cj( "#auto_renew" ).click(function( ) {

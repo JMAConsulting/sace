@@ -35,7 +35,7 @@
   <div id="crm-container" class="crm-container crm-public" lang="{$config->lcMessages|truncate:2:"":true}" xml:lang="{$config->lcMessages|truncate:2:"":true}">
   {/if}
 
-  {if $isDuplicate and ( ($action eq 1 and $mode eq 4 ) or ($action eq 2) or ($action eq 8192) ) }
+  {if isset($isDuplicate) and ( ($action eq 1 and $mode eq 4 ) or ($action eq 2) or ($action eq 8192) ) }
     <div class="crm-submit-buttons">
       {$form._qf_Edit_upload_duplicate.html}
     </div>
@@ -47,10 +47,10 @@
 
     {include file="CRM/common/CMSUser.tpl"}
 
-    {if $action eq 2 and $multiRecordFieldListing}
+    {if $action eq 2 and isset($multiRecordFieldListing)}
       <h1>{ts}Edit Details{/ts}</h1>
       <div class="crm-submit-buttons" style='float:right'>
-      {include file="CRM/common/formButtons.tpl"}{if $isDuplicate}{$form._qf_Edit_upload_duplicate.html}{/if}
+      {include file="CRM/common/formButtons.tpl"}{if isset($isDuplicate)}{$form._qf_Edit_upload_duplicate.html}{/if}
       </div>
     {/if}
 
@@ -94,7 +94,7 @@
             <div class="content description">{$field.help_pre}</div>
           </div>
         {/if}
-        {if $field.options_per_line}
+        {if isset($field.options_per_line)}
           <div class="crm-section editrow_{$n}-section form-item" id="editrow-{$n}">
             <div class="label">{$form.$n.label}</div>
             <div class="content edit-value">
@@ -194,14 +194,14 @@
     {/if}
 
     {if ($action eq 1 and $mode eq 4 ) or ($action eq 2) or ($action eq 8192)}
-      {if $action eq 2 and $multiRecordFieldListing}
+      {if $action eq 2 and isset($multiRecordFieldListing)}
         <div class="crm-multi-record-custom-field-listing">
           {include file="CRM/Profile/Page/MultipleRecordFieldsListing.tpl" showListing=true}
           {assign var=floatStyle value='float:right'}
         </div>
       {/if}
       <div class="crm-submit-buttons" style='{$floatStyle}'>
-        {include file="CRM/common/formButtons.tpl"}{if $isDuplicate}{$form._qf_Edit_upload_duplicate.html}{/if}
+        {include file="CRM/common/formButtons.tpl"}{if isset($isDuplicate)}{$form._qf_Edit_upload_duplicate.html}{/if}
         {if $includeCancelButton}
           <a class="button cancel" href="{$cancelURL}">
             <span>
@@ -217,7 +217,7 @@
 </div> {* end crm-container div *}
 
 {/if} {* fields array is not empty *}
-{if $multiRecordFieldListing and empty($fields)}
+{if isset($multiRecordFieldListing) and empty($fields)}
   {include file="CRM/Profile/Page/MultipleRecordFieldsListing.tpl" showListing=true}
 {/if}
 {if $statusMessage}
