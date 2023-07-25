@@ -22,27 +22,34 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
           'booking_reference_id_706' => [
             'title' => ts('Booking Ref'),
             'required' => TRUE,
-            'no_display' => TRUE,
+            // 'no_display' => TRUE,
           ],
+        ],
+      ],
+      'filters' => [
+        'activity_date_time' => [
+          'type' => CRM_Utils_Type::T_DATE,
+          'title' => E::ts('Activity date'),
+          'operatorType' => CRM_Report_Form::OP_DATE,
         ],
       ],
       'civicrm_activity' => [
         'dao' => 'CRM_Activity_DAO_Activity',
         'fields' => [
           'id' => [
-            'no_display' => TRUE,
+            // 'no_display' => TRUE,
             'title' => ts('Activity ID'),
             'required' => TRUE,
           ],
-          'activity_date_time_Month' => [
-            'title' => ts('Activity Month'),
+          'activity_type_id' => [
+            // 'no_display' => TRUE,
+            'title' => ts('Activity Type ID'),
             'required' => TRUE,
-            'dbAlias' => 'MONTH(activity_date_time)',
           ],
-          'activity_date_time_Year' => [
-            'title' => ts('Activity Year'),
+          'activity_date_time' => [
+            'title' => ts('Activity Date'),
             'required' => TRUE,
-            'dbAlias' => 'Year(activity_date_time)',
+            'dbAlias' => 'DATE(activity_date_time)',
           ],
         ],
       ],
@@ -81,8 +88,8 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
       ],
 
       'civicrm_value_booking_infor_2' => [
-        'dao' => 'CRM_Contact_DAO_Contact',
-        'extends' => 'Activity',
+        'dao' => 'CRM_Activity_DAO_Activity',
+        // 'extends' => 'Activity',
         'fields' => [
           'presentation_topics_40' => [
             'title' => ts('Presentation Topics'),
@@ -114,14 +121,14 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
       'civicrm_value_ped_presentat_54' => [
         'dao' => 'CRM_Activity_DAO_Activity',
         'fields' => [
-          'number_of_online_evaluations_458' => [
-            'title' => ts('No. of Online Evaluations'),
-            'required' => TRUE,
-          ],
-          'number_of_staff_entered_evaluati_459' => [
-            'title' => ts('No. of Staff Entered Evaluations'),
-            'required' => TRUE,
-          ],
+          // 'number_of_online_evaluations_458' => [
+          //   'title' => ts('No. of Online Evaluations'),
+          //   'required' => TRUE,
+          // ],
+          // 'number_of_staff_entered_evaluati_459' => [
+          //   'title' => ts('No. of Staff Entered Evaluations'),
+          //   'required' => TRUE,
+          // ],
               //Q1
           'sum_1sa_48' => [
             'title' => ts('Q1 SA'),
@@ -741,27 +748,24 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
   }
 
   public function from() {
-    // CRM_Core_Error::debug($this->_aliases);exit;
-
-    $this->_from = NULL;
     $this->_from = "
       FROM civicrm_activity {$this->_aliases['civicrm_activity']}
-      LEFT JOIN civicrm_value_booking_infor_2 {$this->_aliases['civicrm_value_booking_infor_2']} ON {$this->_aliases['civicrm_value_booking_infor_2']}.entity_id = {$this->_aliases['civicrm_activity']}.id
       LEFT JOIN civicrm_value_ped_presentat_54 {$this->_aliases['civicrm_value_ped_presentat_54']} ON {$this->_aliases['civicrm_value_ped_presentat_54']}.entity_id = {$this->_aliases['civicrm_activity']}.id
-      LEFT JOIN civicrm_value_ped_booking_r_53 {$this->_aliases['civicrm_value_ped_booking_r_53']} ON {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706 = {$this->_aliases['civicrm_activity']}.id
-      LEFT JOIN civicrm_activity_contact assignee ON assignee.activity_id = {$this->_aliases['civicrm_activity']}.id AND assignee.record_type_id = 2
-      LEFT JOIN civicrm_activity_contact target ON target.activity_id = {$this->_aliases['civicrm_activity']}.id AND target.record_type_id = 3
-      LEFT JOIN civicrm_activity_contact source ON source.activity_id = {$this->_aliases['civicrm_activity']}.id AND source.record_type_id = 1
+      LEFT JOIN civicrm_value_ped_booking_r_53 {$this->_aliases['civicrm_value_ped_booking_r_53']} ON {$this->_aliases['civicrm_value_ped_booking_r_53']}.entity_id = {$this->_aliases['civicrm_activity']}.id
+      LEFT JOIN civicrm_value_booking_infor_2 {$this->_aliases['civicrm_value_booking_infor_2']} ON {$this->_aliases['civicrm_value_booking_infor_2']}.entity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706
+      LEFT JOIN civicrm_activity_contact assignee ON assignee.activity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706 AND assignee.record_type_id = 2
+      LEFT JOIN civicrm_activity_contact target ON target.activity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706 AND target.record_type_id = 3
+      LEFT JOIN civicrm_activity_contact source ON source.activity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706 AND source.record_type_id = 1
       LEFT JOIN civicrm_contact ac ON ac.id = assignee.contact_id
       LEFT JOIN civicrm_contact tc ON tc.id = target.contact_id
       LEFT JOIN civicrm_contact sc ON sc.id = source.contact_id
-      ";
+    ";
 
   }
 
   public function groupBy() {
     $this->_groupBy = "
-    GROUP BY {$this->_aliases['civicrm_activity']}.id";
+      GROUP BY {$this->_aliases['civicrm_activity']}.id";
   }
 
   /**
@@ -796,9 +800,7 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
   }
 
   public function where() {
-    $this->_where = "
-      WHERE activity_type_id IN (55,59,196,199,201,203,204)
-    ";
+    $this->_where = "WHERE {$this->_aliases['civicrm_activity']}.activity_type_id = 200";
 
   }
 
