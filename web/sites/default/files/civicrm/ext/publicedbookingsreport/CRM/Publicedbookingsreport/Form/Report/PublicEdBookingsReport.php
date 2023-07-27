@@ -26,13 +26,7 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
           ],
         ],
       ],
-      'filters' => [
-        'activity_date_time' => [
-          'type' => CRM_Utils_Type::T_DATE,
-          'title' => E::ts('Activity date'),
-          'operatorType' => CRM_Report_Form::OP_DATE,
-        ],
-      ],
+      
       'civicrm_activity' => [
         'dao' => 'CRM_Activity_DAO_Activity',
         'fields' => [
@@ -47,9 +41,17 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
             'required' => TRUE,
           ],
           'activity_date_time' => [
+            // 'no_display' => TRUE,
             'title' => ts('Activity Date'),
             'required' => TRUE,
-            'dbAlias' => 'DATE(activity_date_time)',
+            'dbAlias' => 'DATE(activity_date_time)'
+          ],
+        ],
+        'filters' => [
+          'activity_date_time' => [
+            'type' => CRM_Utils_Type::T_DATE,
+            'title' => E::ts('Activity date'),
+            'operatorType' => CRM_Report_Form::OP_DATE,
           ],
         ],
       ],
@@ -116,19 +118,20 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
             'required' => TRUE,
           ],
         ],
+        'filters' => [],
       ],
 
       'civicrm_value_ped_presentat_54' => [
         'dao' => 'CRM_Activity_DAO_Activity',
         'fields' => [
-          // 'number_of_online_evaluations_458' => [
-          //   'title' => ts('No. of Online Evaluations'),
-          //   'required' => TRUE,
-          // ],
-          // 'number_of_staff_entered_evaluati_459' => [
-          //   'title' => ts('No. of Staff Entered Evaluations'),
-          //   'required' => TRUE,
-          // ],
+          'number_of_online_evaluations_458' => [
+            'title' => ts('No. of Online Evaluations'),
+            'required' => TRUE,
+          ],
+          'number_of_staff_entered_evaluati_459' => [
+            'title' => ts('No. of Staff Entered Evaluations'),
+            'required' => TRUE,
+          ],
               //Q1
           'sum_1sa_48' => [
             'title' => ts('Q1 SA'),
@@ -739,6 +742,8 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
     ];
     $this->_groupFilter = TRUE;
     $this->_tagFilter = TRUE;
+    CRM_Publicedbookingsreport_Utils::addFilter($this->_columns['civicrm_value_booking_infor_2']['filters'], ['presentation_topics_40','contact_method_88','facilitating_program_332','youth_or_adult_90','audience_341']);
+
     parent::__construct();
   }
 
@@ -801,72 +806,9 @@ class CRM_Publicedbookingsreport_Form_Report_PublicEdBookingsReport extends CRM_
 
   public function where() {
     $this->_where = "WHERE {$this->_aliases['civicrm_activity']}.activity_type_id = 200";
-
   }
 
   public function alterDisplay(&$rows) {
-
     // custom code to alter rows
-    $entryFound = FALSE;
-    $checkList = [];
-    // CRM_Core_Error::debug($rows); exit();
-    foreach ($rows as $rowNum => $row) {
-
-      // if (!empty($this->_noRepeats) && $this->_outputMode != 'csv') {
-      //   // not repeat contact display names if it matches with the one
-      //   // in previous row
-      //   $repeatFound = FALSE;
-      //   foreach ($row as $colName => $colVal) {
-      //     if (CRM_Utils_Array::value($colName, $checkList) &&
-      //       is_array($checkList[$colName]) &&
-      //       in_array($colVal, $checkList[$colName])
-      //     ) {
-      //       $rows[$rowNum][$colName] = "";
-      //       $repeatFound = TRUE;
-      //     }
-      //     if (in_array($colName, $this->_noRepeats)) {
-      //       $checkList[$colName][] = $colVal;
-      //     }
-      //   }
-      // }
-
-      // if (array_key_exists('civicrm_membership_membership_type_id', $row)) {
-      //   if ($value = $row['civicrm_membership_membership_type_id']) {
-      //     $rows[$rowNum]['civicrm_membership_membership_type_id'] = CRM_Member_PseudoConstant::membershipType($value, FALSE);
-      //   }
-      //   $entryFound = TRUE;
-      // }
-
-      // if (array_key_exists('civicrm_address_state_province_id', $row)) {
-      //   if ($value = $row['civicrm_address_state_province_id']) {
-      //     $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvince($value, FALSE);
-      //   }
-      //   $entryFound = TRUE;
-      // }
-
-      // if (array_key_exists('civicrm_address_country_id', $row)) {
-      //   if ($value = $row['civicrm_address_country_id']) {
-      //     $rows[$rowNum]['civicrm_address_country_id'] = CRM_Core_PseudoConstant::country($value, FALSE);
-      //   }
-      //   $entryFound = TRUE;
-      // }
-
-      // if (array_key_exists('civicrm_contact_sort_name', $row) &&
-      //   $rows[$rowNum]['civicrm_contact_sort_name'] &&
-      //   array_key_exists('civicrm_contact_id', $row)
-      // ) {
-      //   $url = CRM_Utils_System::url("civicrm/contact/view",
-      //     'reset=1&cid=' . $row['civicrm_contact_id'],
-      //     $this->_absoluteUrl
-      //   );
-      //   $rows[$rowNum]['civicrm_contact_sort_name_link'] = $url;
-      //   $rows[$rowNum]['civicrm_contact_sort_name_hover'] = E::ts("View Contact Summary for this Contact.");
-      //   $entryFound = TRUE;
-      // }
-
-      // if (!$entryFound) {
-      //   break;
-      // }
-    }
   }
 }
