@@ -165,13 +165,16 @@ elements: |-
         11: 'Risk Assessments'
         14: 'Restraining Orders'
         13: Other
-      '#default_value': 0
+      '#default_value': ''
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
       '#extra':
         aslist: 0
         multiple: 1
       '#form_key': civicrm_1_activity_1_cg20_custom_216
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 0
+      '#default_option': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg20_custom_217:
       '#type': textfield
@@ -211,13 +214,16 @@ elements: |-
         7: 'Court Attendance Expense Reimbursement application'
         8: 'Victims of Crime Protocol (handbook)'
         9: Other
+      '#default_value': ''
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
       '#extra':
         aslist: 0
         multiple: 1
       '#form_key': civicrm_1_activity_1_cg20_custom_220
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 0
-      '#default_value': 0
+      '#default_option': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg20_custom_221:
       '#type': textfield
@@ -258,13 +264,16 @@ elements: |-
         7: 'Court Attendance Expense Reimbursement application - forwarded'
         8: 'Victims of Crime Protocol - forwarded'
         9: 'Other - forwarded'
+      '#default_value': ''
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
       '#extra':
         aslist: 0
         multiple: 1
       '#form_key': civicrm_1_activity_1_cg20_custom_224
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 0
-      '#default_value': 0
+      '#default_option': ''
       '#civicrm_live_options': '1'
     if_other_forms_were_frowarded_directly_to_the_office_of_police_c:
       '#type': fieldset
@@ -342,13 +351,16 @@ elements: |-
         39: 'Mustard Seed'
         40: 'Police (EPS)'
         41: 'Victim Service Units (VSUs)'
-      '#default_value': 0
+      '#default_value': ''
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
       '#extra':
         aslist: 0
         multiple: 1
       '#form_key': civicrm_1_activity_1_cg20_custom_228
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 0
+      '#default_option': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg20_custom_229:
       '#type': textfield

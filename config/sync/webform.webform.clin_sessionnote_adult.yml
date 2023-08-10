@@ -166,7 +166,6 @@ elements: |-
           3|3
           4|4
           5|5
-          
       '#form_key': civicrm_1_activity_1_cg18_custom_148
       '#options':
         1: '1'
@@ -187,7 +186,6 @@ elements: |-
           1|In person
           2|Online
           3|Other
-          
       '#form_key': civicrm_1_activity_1_cg18_custom_149
       '#options':
         1: 'In person'
@@ -203,7 +201,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#required': true
       '#data_type': 0
       '#form_key': civicrm_1_activity_1_cg18_custom_150
@@ -215,20 +212,7 @@ elements: |-
       '#civicrm_live_options': 1
     civicrm_1_activity_1_cg18_custom_151:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Client History Form
-          2|Mann-Whitney
-          3|TSC-40
-          4|Counselling Client Questionnaire
-          5|Index of Well-Being and Coping
-          6|Other
-          
-      '#required': true
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg18_custom_151
+      '#title': 'Forms Completed'
       '#options':
         1: 'Client History Form'
         2: Mann-Whitney
@@ -236,9 +220,19 @@ elements: |-
         4: 'Counselling Client Questionnaire'
         5: 'Index of Well-Being and Coping'
         6: Other
+      '#required': true
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg18_custom_151
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Forms Completed'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
   civicrm_1_contact_1_fieldset_fieldset:
     '#type': fieldset
     '#title': Counsellor

@@ -479,7 +479,8 @@ a.sace-btn:focus,
 }
 
 .price-set-row > span.highlight > label {
-	background-color: var(--color-accent);
+	/* background-color: var(--color-accent); */
+	background-color: var(--color-secondary);
 }
 
 .price-set-row > span.highlight label,
@@ -525,7 +526,8 @@ a.sace-btn:focus,
 
 .crm-section.other_amount-section .label {
 	color: var(--color-light);
-	background-color: var(--color-accent);
+	/* background-color: var(--color-accent); */
+	background-color: var(--color-secondary);
 	padding: 15px 10px;
 	padding-top: 15px !important;
 	margin-right: 10px;
@@ -1043,7 +1045,8 @@ table.crm-profile-tagsandgroups .group-wrapper input {
 } */
 
 .active-look {
-	background-color: var(--color-accent) !important;
+	/* background-color: var(--color-accent) !important; */
+	background-color: var(--color-secondary) !important;
 	color: var(--color-light) !important;
 }
 

@@ -66,25 +66,23 @@ elements: |-
         '#parent': civicrm_2_contact_1_cg12_fieldset
     civicrm_2_contact_1_contact_gender_id:
       '#type': civicrm_options
-      '#contact_type': individual
-      '#form_key': civicrm_2_contact_1_contact_gender_id
+      '#title': Gender
+      '#civicrm_live_options': 0
       '#options':
         1: Female
         2: Male
         3: Other
         4: Non-Binary
         5: Two-Spirit
-      '#extra':
-        items: |-
-          1|Female
-          2|Male
-          3|Other
-          4|Non-Binary
-          5|Two-Spirit
-        aslist: false
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
+      '#contact_type': individual
+      '#form_key': civicrm_2_contact_1_contact_gender_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#title': Gender
-      '#civicrm_live_options': 0
+      '#default_option': ''
+      '#default_value': ''
     civicrm_2_contact_1_contact_birth_date:
       '#type': date
       '#extra':

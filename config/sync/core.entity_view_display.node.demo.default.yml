@@ -5,13 +5,11 @@ dependencies:
   config:
     - field.field.node.demo.body
     - field.field.node.demo.field_image_banner
-    - field.field.node.demo.field_paragraphs
     - field.field.node.demo.field_webform
     - image.style.banner_1191
     - node.type.demo
   module:
     - blazy
-    - entity_reference_revisions
     - text
     - user
     - webform
@@ -41,13 +39,10 @@ content:
       overlay: ''
       title: ''
       vanilla: false
-      icon: ''
       layout: ''
       view_mode: default
       cache: 0
-      current_view_mode: default
       skin: ''
-      fx: ''
       style: ''
       background: false
       box_caption: ''
@@ -59,24 +54,18 @@ content:
       media_switch: ''
       ratio: ''
       thumbnail_style: ''
-      _uri: ''
-      breakpoints: {  }
-      sizes: ''
-      grid_header: ''
       grid: ''
       grid_medium: ''
       grid_small: ''
+      breakpoints: {  }
+      current_view_mode: default
+      fx: ''
+      icon: ''
+      sizes: ''
+      grid_header: ''
+      _uri: ''
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_paragraphs:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 2
     region: content
   field_webform:
     type: webform_entity_reference_entity_view

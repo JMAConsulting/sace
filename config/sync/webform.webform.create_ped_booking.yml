@@ -84,10 +84,13 @@ elements: |-
     '#options':
       1: Phone
       2: Email
-    '#default_value': 0
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
     '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
     '#parent': civicrm_1_contact_1_fieldset_fieldset
-    '#default_option': 0
+    '#default_option': ''
+    '#default_value': ''
   horizontal_rule:
     '#type': webform_horizontal_rule
   flexbox_02:
@@ -135,10 +138,13 @@ elements: |-
     '#options':
       5_b: 'Employer of'
       6_b: 'Volunteer is'
+    '#default_value': ''
+    '#wrapper_attributes':
+      class:
+        - jma-grid-2
     '#form_key': civicrm_2_contact_1_relationship_relationship_type_id
     '#parent': civicrm_2_contact_1_fieldset_fieldset
-    '#default_option': 0
-    '#default_value': 0
+    '#default_option': ''
   horizontal_rule_01:
     '#type': webform_horizontal_rule
   civicrm_1_activity_1_fieldset_fieldset:
@@ -153,6 +159,9 @@ elements: |-
         'Sexual Assault & Consent': 'Sexual Assault & Consent'
         'Non-Consensual Photo Sharing': 'Non-Consensual Photo Sharing'
         'Custom/something different': 'Custom/something different'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
       '#extra':
         multiple: 1
         aslist: 1
@@ -161,7 +170,6 @@ elements: |-
           Sexual Assault & Consent|Sexual Assault & Consent
           Non-Consensual Photo Sharing|Non-Consensual Photo Sharing
           Custom/something different|Custom/something different
-          
       '#data_type': 0
       '#form_key': civicrm_1_activity_1_cg2_custom_40
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -312,16 +320,17 @@ elements: |-
       'Grade 8 (ages 13-14)': 'Grade 8 (ages 13-14)'
       'Grade 9 (ages 14-15)': 'Grade 9 (ages 14-15)'
       'High School (ages 15-18)': 'High School (ages 15-18)'
-    '#default_value': false
+    '#default_value': ''
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
     '#format_items': ul
-    '#format_items_html': ''
-    '#format_items_text': ''
     '#extra':
       aslist: 0
       multiple: 1
     '#form_key': civicrm_1_activity_1_cg2_custom_25
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': false
+    '#default_option': ''
   horizontal_rule_04:
     '#type': webform_horizontal_rule
   civicrm_1_activity_1_cg2_custom_34:
@@ -331,13 +340,14 @@ elements: |-
     '#options':
       1: 'Yes'
       0: 'No'
+    '#default_value': '0'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
     '#format_items': ul
-    '#format_items_html': ''
-    '#format_items_text': ''
     '#form_key': civicrm_1_activity_1_cg2_custom_34
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': false
-    '#default_value': false
+    '#default_option': '0'
   civicrm_1_activity_1_cg2_custom_35:
     '#type': civicrm_options
     '#title': 'Will there be Internet access?'
@@ -345,13 +355,14 @@ elements: |-
     '#options':
       1: 'Yes'
       0: 'No'
+    '#default_value': '0'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
     '#format_items': ul
-    '#format_items_html': ''
-    '#format_items_text': ''
     '#form_key': civicrm_1_activity_1_cg2_custom_35
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': false
-    '#default_value': false
+    '#default_option': '0'
   civicrm_1_activity_1_cg2_custom_37:
     '#type': textfield
     '#title': 'Parking Instructions'

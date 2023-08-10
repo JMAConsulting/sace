@@ -163,7 +163,6 @@ elements: |-
             3|3
             4|4
             5|5
-            
         '#form_key': civicrm_1_activity_1_cg17_custom_144
         '#options':
           1: '1'
@@ -183,7 +182,6 @@ elements: |-
             Office|Office
             Playroom|Playroom
             Online|Online
-            
         '#form_key': civicrm_1_activity_1_cg17_custom_147
         '#options':
           Office: Office
@@ -205,20 +203,7 @@ elements: |-
     '#title': Measures
     civicrm_1_activity_1_cg17_custom_152:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|PROPS
-          2|CROPS
-          6|TSC-40
-          3|Index of Well-Being and Coping
-          4|Mann-Whitney
-          7|Counseling Client Questionnaire
-          5|Other
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_152
+      '#title': 'Measures completed'
       '#options':
         1: PROPS
         2: CROPS
@@ -227,9 +212,17 @@ elements: |-
         4: Mann-Whitney
         7: 'Counseling Client Questionnaire'
         5: Other
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_152
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Measures completed'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_153:
       '#type': textfield
       '#data_type': String
@@ -243,19 +236,7 @@ elements: |-
     '#title': Consent
     civicrm_1_activity_1_cg17_custom_154:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Limits to confidentiality
-          2|Risks to online counselling
-          3|Change in availability
-          4|Crisis resources
-          5|Boundaries
-          6|Not relevant
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_154
+      '#title': 'Reviewed Consent (when relevant)'
       '#options':
         1: 'Limits to confidentiality'
         2: 'Risks to online counselling'
@@ -263,9 +244,17 @@ elements: |-
         4: 'Crisis resources'
         5: Boundaries
         6: 'Not relevant'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_154
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Reviewed Consent (when relevant)'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_155:
       '#type': textfield
       '#data_type': String
@@ -279,19 +268,7 @@ elements: |-
     '#title': Risk
     civicrm_1_activity_1_cg17_custom_156:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|No safety concerns noted
-          2|Interpersonal violence (risk to client, risk to other)
-          3|Self-harm
-          4|Suicidal ideation (thoughts, active/passive, plan, self-reported level of intent)
-          5|Risk assessment (see attached other data form as needed)
-          6|Safety plan (see attached other data form as needed)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_156
+      '#title': 'Risk Assessment (when relevant)'
       '#options':
         1: 'No safety concerns noted'
         2: 'Interpersonal violence (risk to client, risk to other)'
@@ -299,9 +276,17 @@ elements: |-
         4: 'Suicidal ideation (thoughts, active/passive, plan, self-reported level of intent)'
         5: 'Risk assessment (see attached other data form as needed)'
         6: 'Safety plan (see attached other data form as needed)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_156
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Risk Assessment (when relevant)'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_157:
       '#type': textfield
       '#data_type': String
@@ -315,25 +300,23 @@ elements: |-
     '#title': 'Assessment of Play'
     civicrm_1_activity_1_cg17_custom_158:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Quadrant I: Active Utilization
-          2|Quadrant II: Open Discussion and Exploration
-          3|Quadrant III: Non-Intrusive Responding
-          4|Quadrant IV: Co-Facilitation
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_158
+      '#title': 'Quadrant use'
       '#options':
         1: 'Quadrant I: Active Utilization'
         2: 'Quadrant II: Open Discussion and Exploration'
         3: 'Quadrant III: Non-Intrusive Responding'
         4: 'Quadrant IV: Co-Facilitation'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_158
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Quadrant use'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_161:
       '#type': textfield
       '#data_type': String
@@ -344,132 +327,119 @@ elements: |-
       '#title': 'Quadrant use notes'
     civicrm_1_activity_1_cg17_custom_159:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Protest (actions indicated upset/protestation, child terminated activities)
-          2|Ignored (child did not respond to therapist's suggestions)
-          3|Moderate responsiveness/flexibility (took time but was gradually able to shift)
-          4|High responsiveness/flexibility (readily shifted and incorporated activities)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_159
+      '#title': 'Child''s Response to Therapist Led Shifts'
       '#options':
         1: 'Protest (actions indicated upset/protestation, child terminated activities)'
         2: 'Ignored (child did not respond to therapist''s suggestions)'
         3: 'Moderate responsiveness/flexibility (took time but was gradually able to shift)'
         4: 'High responsiveness/flexibility (readily shifted and incorporated activities)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_159
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Child''s Response to Therapist Led Shifts'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_160:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Exploratory/Sensorimotor
-          2|Constructive
-          3|Relational
-          4|Dramatic
-          5|Games with rules
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_160
+      '#title': 'Developmental Stages of Play'
       '#options':
         1: Exploratory/Sensorimotor
         2: Constructive
         3: Relational
         4: Dramatic
         5: 'Games with rules'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_160
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Developmental Stages of Play'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_162:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|None (no child initiation)
-          2|Limited (delayed/hesitant)
-          3|Moderate (occasional initiation)
-          4|High (spontaneously and actively created sequence)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_162
+      '#title': 'Child''s Initiation of Play Sequences'
       '#options':
         1: 'None (no child initiation)'
         2: 'Limited (delayed/hesitant)'
         3: 'Moderate (occasional initiation)'
         4: 'High (spontaneously and actively created sequence)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_162
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Child''s Initiation of Play Sequences'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_163:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|None (therapist initiated)
-          2|Limited (rarely directed play or therapist actions)
-          3|Moderate (frequently gave direction)
-          4|High (child issued frequent/high levels of direction)
-          5|Extreme (level of direction so frequent thats therapist's verbal/non verbal actions were limited/constricted)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_163
+      '#title': 'Capacity to Direct and Maintain Play Activities'
       '#options':
         1: 'None (therapist initiated)'
         2: 'Limited (rarely directed play or therapist actions)'
         3: 'Moderate (frequently gave direction)'
         4: 'High (child issued frequent/high levels of direction)'
         5: 'Extreme (level of direction so frequent thats therapist''s verbal/non verbal actions were limited/constricted)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_163
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Capacity to Direct and Maintain Play Activities'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_164:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Low (highly fragmented play)
-          2|Medium (maintain or complete some play sequences)
-          3|High (play continuous with logical cause and effect)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_164
+      '#title': 'Capacity to Maintain Play Sequence'
       '#options':
         1: 'Low (highly fragmented play)'
         2: 'Medium (maintain or complete some play sequences)'
         3: 'High (play continuous with logical cause and effect)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_164
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Capacity to Maintain Play Sequence'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_165:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|None (play appeared to have continuous flow)
-          2|Minor (infrequently/seemingly insignificant disruptions)
-          3|Moderate (play scenarios fragments/disrupted)
-          4|Frequent (disruptions/shifts to play, unable to track/follow scenarios)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_165
+      '#title': 'Inhibitions and Disruptions'
       '#options':
         1: 'None (play appeared to have continuous flow)'
         2: 'Minor (infrequently/seemingly insignificant disruptions)'
         3: 'Moderate (play scenarios fragments/disrupted)'
         4: 'Frequent (disruptions/shifts to play, unable to track/follow scenarios)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_165
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Inhibitions and Disruptions'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_168:
       '#type': textfield
       '#data_type': String
@@ -480,82 +450,77 @@ elements: |-
       '#title': 'Note on disruptions'
     civicrm_1_activity_1_cg17_custom_166:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|None (did not occur)
-          2|Low (partial closure)
-          3|Medium (closure with tensions)
-          4|High (meaningful closure)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_166
+      '#title': 'End of Play Scenarios'
       '#options':
         1: 'None (did not occur)'
         2: 'Low (partial closure)'
         3: 'Medium (closure with tensions)'
         4: 'High (meaningful closure)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_166
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'End of Play Scenarios'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_167:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Constricted (displayed few emotions, blunted affect, low expression)
-          2|Moderate Expressiveness (moderate range of feelings represented in play, feeling states consistent with play)
-          3|High Expressiveness (broad range of feelings represented, high capacity for expressiveness indicated)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_167
+      '#title': 'Emotional Range'
       '#options':
         1: 'Constricted (displayed few emotions, blunted affect, low expression)'
         2: 'Moderate Expressiveness (moderate range of feelings represented in play, feeling states consistent with play)'
         3: 'High Expressiveness (broad range of feelings represented, high capacity for expressiveness indicated)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_167
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Emotional Range'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_169:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Low (disorganized approach to planning and goal selection, inhibition, impulsivity)
-          2|Moderate (some disorganization and impulsivity, can initiate and follow play sequence)
-          3|High (consistent ability to organize play and displays mastery in play)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_169
+      '#title': Self-Regulation
       '#options':
         1: 'Low (disorganized approach to planning and goal selection, inhibition, impulsivity)'
         2: 'Moderate (some disorganization and impulsivity, can initiate and follow play sequence)'
         3: 'High (consistent ability to organize play and displays mastery in play)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_169
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': Self-Regulation
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_170:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Low (interpersonally disengaged)
-          2|Medium (intermittently involved and interactive)
-          3|High (responsive, interpersonally involved and interactive)
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_170
+      '#title': Engagement
       '#options':
         1: 'Low (interpersonally disengaged)'
         2: 'Medium (intermittently involved and interactive)'
         3: 'High (responsive, interpersonally involved and interactive)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_170
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': Engagement
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_171:
       '#type': textfield
       '#data_type': String
@@ -566,39 +531,7 @@ elements: |-
       '#title': 'Summary of Play/Items used'
     civicrm_1_activity_1_cg17_custom_172:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |
-          1|Anger
-          10|Boundaries/intrusion
-          18|Coercion
-          2|Conflict/good vs. bad
-          11|Confusion
-          19|Death
-          3|Empowerment
-          12|Healing
-          20|Hopelessness/helplessness
-          4|Identity confusion
-          13|Insecurity
-          21|Loneliness
-          5|Loss/abandonment
-          14|Loyalty/betrayal
-          22|Nurturness
-          6|Power/control
-          15|Protection
-          23|Regression
-          7|Rejection
-          16|Role reversal
-          25|Safety
-          8|Secrecy
-          17|Self-esteem
-          26|Victimization
-          9|Violation
-          28|Other
-          
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg17_custom_172
+      '#title': 'Thematic Representations'
       '#options':
         1: Anger
         10: Boundaries/intrusion
@@ -626,9 +559,17 @@ elements: |-
         26: Victimization
         9: Violation
         28: Other
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#form_key': civicrm_1_activity_1_cg17_custom_172
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Thematic Representations'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg17_custom_173:
       '#type': textfield
       '#data_type': String

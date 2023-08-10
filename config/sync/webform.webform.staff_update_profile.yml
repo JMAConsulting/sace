@@ -592,6 +592,9 @@ elements: |-
           'Allergy - Seafood': 'Allergy - Seafood'
           'Allergy - Zucchini/squash/pumpkin': 'Allergy - Zucchini/squash/pumpkin'
         '#options_display': three_columns
+        '#wrapper_attributes':
+          class:
+            - jma-grid-4
         '#extra':
           multiple: 1
           aslist: 1
@@ -700,12 +703,15 @@ elements: |-
         18_r: 'Emergency Contact'
       '#default_value':
         - 18_r
+      '#wrapper_attributes':
+        class:
+          - jma-grid-6
       '#extra':
         aslist: 0
         multiple: 1
       '#form_key': civicrm_2_contact_1_relationship_relationship_type_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#default_option': 0
+      '#default_option': ''
   civicrm_3_contact_1_contact_existing:
     '#type': civicrm_contact
     '#title': 'Existing Contact'
@@ -774,22 +780,15 @@ elements: |-
         18_r: 'Emergency Contact'
       '#default_value':
         - 18_r
+      '#wrapper_attributes':
+        class:
+          - jma-grid-6
       '#extra':
         aslist: 0
         multiple: 1
       '#form_key': civicrm_3_contact_1_relationship_relationship_type_id
       '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#default_option': 0
-    civicrm_3_contact_1_phone_phone_ext:
-      '#type': textfield
-      '#counter_type': character
-      '#counter_maximum': 16
-      '#counter_maximum_message': ' '
-      '#extra':
-        width: 4
-      '#form_key': civicrm_3_contact_1_phone_phone_ext
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#title': 'Phone Extension'
+      '#default_option': ''
   civicrm_4_contact_1_contact_existing:
     '#type': civicrm_contact
     '#title': 'Existing Contact'

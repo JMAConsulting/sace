@@ -1,0 +1,310 @@
+.flex-title .booking-id,
+.show-on-print {
+	display: none;
+}
+
+/* show-on-print */
+@media print {
+	@page {
+		size: auto;
+		margin-top: 0mm;
+		margin-bottom: 0mm;
+	}
+
+	.mobile-buttons,
+	#header-nav,
+	.main-content > .main-content__container > .region,
+	.hide-on-print,
+	.pre-footer,
+	.site-footer {
+		display: none !important;
+	}
+
+	.show-on-print {
+		display: block !important;
+	}
+
+	.main-content__container {
+		padding: 0;
+	}
+
+	.flex-title {
+		margin-bottom: 0;
+	}
+
+	.flex-title .title.page-title {
+		margin: 0;
+		margin-right: 30px;
+		font-size: 14px;
+		line-height: 1.2;
+	}
+
+	.flex-title .booking-id {
+		display: block !important;
+	}
+
+	.js-printable-form {
+		/* font-size: 12px; */
+	}
+
+	.booking-id {
+		font-family: var(--font);
+		font-weight: 700;
+		color: var(--sace-navy-blue);
+		display: block;
+		text-align: right;
+		font-size: 14px;
+		line-height: 1.2;
+		margin-bottom: 0;
+	}
+
+	.flex-title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.js-printable-form .fieldset__legend {
+		background: transparent;
+		margin-bottom: 0;
+		margin-top: 0;
+	}
+
+	.js-printable-form input,
+	.js-printable-form select {
+		border: none;
+		padding: 0;
+	}
+
+	.js-printable-form .fieldset__label {
+		font-weight: 400;
+		font-size: 12px;
+		padding: 0;
+		text-align: left;
+	}
+
+	.js-printable-form .fieldset__wrapper {
+		padding: 0;
+		border: none !important;
+	}
+
+	.js-printable-form fieldset {
+		margin-bottom: 8px !important;
+		margin-top: 8px !important;
+	}
+
+	.js-printable-form fieldset.webform-type-fieldset.webform-element-help-container--title > .fieldset__legend > span {
+		font-family: var(--font);
+		font-weight: 700;
+		color: var(--sace-navy-blue);
+		display: block;
+		text-align: right;
+		font-size: 13px;
+		line-height: 1.2;
+		margin-bottom: 4px;
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div label {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		font-weight: 700;
+		max-width: 50px;
+		margin: auto;
+		font-weight: 700;
+		font-size: 12px;
+		line-height: 1.3;
+		padding: 0;
+		color: var(--sace-navy-blue);
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		margin-top: 4px;
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div:after {
+		content: "";
+		display: block;
+		color: var(--sace-navy-blue);
+		font-size: 12px;
+		line-height: 1.3;
+		font-weight: 700;
+		text-align: center;
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div:nth-child(1)::after {
+		content: "6";
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div:nth-child(2)::after {
+		content: "5";
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div:nth-child(3)::after {
+		content: "4";
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div:nth-child(4)::after {
+		content: "3";
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div:nth-child(5)::after {
+		content: "2";
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div:nth-child(6)::after {
+		content: "1";
+	}
+
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div > input,
+	.js-printable-form .fieldset__wrapper .js-webform-radios > div > label {
+		position: absolute;
+		z-index: -1111;
+		opacity: 0;
+		display: none;
+	}
+
+	.js-printable-form .js-form-type-textarea {
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+
+	.js-printable-form .js-form-type-textarea > div {
+		/* -webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none; */
+		border: 1px solid var(--sace-soft-blue);
+		border-width: 1px 1px 1px 1px;
+		margin-top: 10px;
+		margin-bottom: 0;
+		position: relative;
+		height: 40px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.js-printable-form .js-form-type-textarea > div textarea {
+		position: absolute;
+		z-index: -111;
+		opacity: 0;
+		display: none;
+	}
+
+	/* .js-printable-form .js-form-type-textarea > div::before,
+.js-printable-form .js-form-type-textarea > div::after {
+	content: "";
+	height: 0.5px;
+	width: 100%;
+	background-color: var(--sace-soft-blue);
+	display: block;
+}
+
+.js-printable-form .js-form-type-textarea > div::before {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+} */
+
+	.js-printable-form .js-form-type-textfield {
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+
+	.js-printable-form .form-type-textfield label {
+		font-size: 12px;
+		line-height: 1.2;
+	}
+
+	.js-printable-form .form-type-textfield input {
+		height: 25px !important;
+		min-height: 0;
+		padding: 0;
+		border: 1px solid var(--sace-soft-blue) !important;
+		border-radius: 0;
+	}
+
+	.js-printable-form .jm-form-summary {
+		color: var(--sace-navy-blue);
+		font-size: 12px;
+		line-height: 1.3;
+	}
+
+	.js-printable-form .jm-form-summary > p {
+		margin-bottom: 8px;
+	}
+
+	.js-printable-form .jm-form-summary ul {
+		list-style: none;
+		margin-left: 0;
+		padding-left: 0;
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		column-gap: 16px;
+		max-width: 80%;
+		margin: auto;
+		margin-bottom: 8px;
+	}
+
+	.js-printable-form .jm-form-summary ul li {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		font-weight: 700;
+		line-height: 1.1;
+		text-align: center;
+		/* max-width: 50px; */
+	}
+
+	.js-printable-form .jm-form-summary ul li > span:last-child {
+		flex: 1;
+		margin-top: 10px;
+	}
+
+	/* .js-printable-form .js-webform-type-fieldset {
+		padding: 0;
+		border: none;
+		margin: 0;
+	} */
+
+	.js-printable-form .js-webform-type-fieldset .checkboxes--wrapper {
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.3;
+		/* color: var(--text-color); */
+	}
+
+	.js-printable-form .js-webform-type-fieldset .checkboxes--wrapper * {
+		font-size: inherit;
+		line-height: inherit;
+	}
+
+	.js-printable-form .js-webform-type-fieldset .fieldset__wrapper span {
+		font-size: 12px;
+		line-height: 1.3;
+	}
+
+	.js-printable-form .js-webform-type-fieldset .checkboxes--wrapper input {
+		border: 1px solid var(--sace-soft-blue) !important;
+		padding: 5px;
+		width: 15px;
+		height: 15px;
+	}
+
+	.js-printable-form .webform-element-help {
+		display: none;
+	}
+
+	.js-printable-form .form-actions {
+		display: none;
+	}
+
+	.js-printable-form .page-break-before {
+		page-break-before: always;
+	}
+}

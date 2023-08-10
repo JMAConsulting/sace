@@ -73,7 +73,7 @@ abstract class ArrayElement extends Element implements \IteratorAggregate, Typed
       return $element;
     }
     else {
-      throw new \InvalidArgumentException("The configuration property $name doesn't exist.");
+//      throw new \InvalidArgumentException("The configuration property $name doesn't exist.");
     }
   }
 

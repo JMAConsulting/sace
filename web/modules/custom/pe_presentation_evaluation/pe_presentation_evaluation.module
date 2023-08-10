@@ -23,7 +23,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
   }
 
   if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
-
+    $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
@@ -31,7 +31,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
   if ($form_id == 'webform_submission_ped_sace_student_feedback_add_form') {
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
-
+    \Drupal::service('civicrm')->initialize();
     // Get activity id from query var.
     $aid = \Drupal::request()->query->get('bid');
     if (empty($aid) || !is_numeric($aid)) {
@@ -39,7 +39,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
     // Get Booking Intake custom fields
     $result = \Civi\Api4\Activity::get(FALSE)
-      ->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
+      ->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program')
       ->addJoin('ActivityContact AS activity_contact', 'INNER')
       ->addGroupBy('id')
       ->addWhere('activity_contact.record_type_id', '=', 3)
@@ -56,7 +56,10 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements['date_of_presentation']['#default_value'] = DrupalDateTime::createFromTimestamp(strtotime($result['activity_date_time']));
     $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#disabled'] = TRUE;
     $elements[$constants['PE_PRESENTATION_EVALUATION_PRESENTATION_METHOD']]['#default_value'] = $result['Booking_Information.Presentation_Method'];
-    $elements[$constants['TARGET_CONTACT']] = $result['activity_contact.contact_id'];
+    $elements[$constants['TARGET_CONTACT']]['#value'] = $result['activity_contact.contact_id'];
+    $elements[$constants['TARGET_CONTACT']]['#default_value'] = $result['activity_contact.contact_id'];
+    $elements[$constants['TARGET_CONTACT']]['#disabled'] = TRUE;
+    $elements[$constants['TARGET_CONTACT']]['#hidden'] = TRUE;
 
     if (in_array($result['activity_type_id'], [55, 196])) {
       unset($elements[$constants['DEMOGRAPHIC_INFO']]['#options']['Sex worker']);
@@ -119,10 +122,18 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
           $elements[$key]['#access'] = ($result["Booking_Information.Support_Content"] == 1);
           break;
 
+        case 6:
+          $elements[$key]['#access'] = in_array($result['activity_type_id'], [59, 199]);
+          break;         
+
         case 8:
         case 9:
           //Show Q8 Q9 if Content Covered: Resources is selected to Yes
           $elements[$key]['#access'] = ($result["Booking_Information.Resources_Content"] == 1);
+          break;
+
+        case 10:
+          $elements[$key]['#access'] = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
           break;
 
         case 13:
@@ -132,7 +143,13 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
           break;
 
         case 14:
+          $elements[$key]['#access'] = ($result["Booking_Information.Facilitating_Program"] == 'InstitutionalSupport');
+          break;
+
         case 15:
+          $elements[$key]['#access'] = (bool) strstr('Professionals', implode('', $result["Booking_Information.Audience"]));
+          break;
+
         case 16:
           //Hide Q14 Q15 Q16 if Safer Spaces Content is NO
           $elements[$key]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
@@ -159,17 +176,12 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
           break;
 
         case 22:
-          //Hide Q21 if Presentation Method is not Online Course else hide Q22
-          $elements[$key]['#access'] = !($result['Booking_Information.Presentation_Method'] != 'Online Course');
+          //Show for all presentation and online course evaluations.
+          $elements[$key]['#access'] = in_array($result['activity_type_id'], [55, 59, 196, 199]);
           break;
 
         case 24:
-          $elements[$key]['#access'] = ($result["Booking_Information.Audience"] == 'Adult');
-          break;
-
-        case 21:
-          //Hide Q21 if Presentation Method is not Online Course else hide Q22
-          $elements[$key]['#access'] = (bool) ($result['Booking_Information.Youth_or_Adult'] == 'Adult');
+          $elements[$key]['#access'] = ($result['activity_type_id'] == 59);
           break;
 
         default:

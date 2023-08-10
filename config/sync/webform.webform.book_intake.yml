@@ -21,6 +21,9 @@ elements: |-
     '#options':
       'for myself': 'for myself'
       'for someone else': 'for someone else'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
   are_you_the_legal_guardian:
     '#type': radios
     '#title': 'Are you the legal guardian?'
@@ -31,6 +34,9 @@ elements: |-
       visible:
         ':input[name="are_you_looking_for_services_for_yourself_or_for_someone_else_"]':
           value: 'for someone else'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
   processed_text_02:
     '#type': processed_text
     '#states':
@@ -60,10 +66,13 @@ elements: |-
       77: Adult
       78: 'Child and Youth'
     '#required': true
-    '#default_value': ''
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
     '#form_key': civicrm_1_activity_1_activity_activity_type_id
     '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#default_option': ''
+    '#default_value': ''
   has_this_been_reported_:
     '#type': radios
     '#title': 'Has this been reported?'
@@ -75,6 +84,9 @@ elements: |-
       visible:
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '78'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
   processed_text_01:
     '#type': processed_text
     '#states':
@@ -883,7 +895,11 @@ settings:
 access:
   create:
     roles:
-      - authenticated
+      - clin_team_lead
+      - clin_intake_worker
+      - clin_counsellor
+      - clin_director
+      - clin_tl
     users: {  }
     permissions: {  }
   view_any:

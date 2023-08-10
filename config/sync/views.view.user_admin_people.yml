@@ -23,7 +23,9 @@ dependencies:
     - 'taxonomy_term:user_team:834b47b5-ce6c-48e7-92cf-e5ea28a31d8f'
     - 'taxonomy_term:user_team:8bd10ee6-4747-46d8-93e2-9dd4a0f73249'
     - 'taxonomy_term:user_team:9601a7ec-8e27-41d0-a25e-cd518cacd43f'
+    - 'taxonomy_term:user_team:98281b33-2442-4b6f-8fa3-8dd9075635a2'
     - 'taxonomy_term:user_team:989632c3-68c8-41b4-8cc1-3368561ee448'
+    - 'taxonomy_term:user_team:9e578e4d-361a-48b6-bca3-34fd94ee977f'
     - 'taxonomy_term:user_team:afaa91b3-cb8a-4d68-8922-5421567ccef2'
     - 'taxonomy_term:user_team:b4f9254a-b62e-4e65-8c38-94fbdbb4e0b6'
     - 'taxonomy_term:user_team:c686c22e-9172-4d4f-8657-82ab86b6a30e'
@@ -952,6 +954,8 @@ display:
           operator: or
           value:
             12: 12
+            130: 130
+            131: 131
             13: 13
             38: 38
             16: 16
@@ -980,7 +984,7 @@ display:
           exposed: true
           expose:
             operator_id: field_user_team_target_id_op
-            label: 'User Team (field_user_team)'
+            label: 'User Team'
             description: ''
             use_operator: false
             operator: field_user_team_target_id_op
@@ -1000,6 +1004,26 @@ display:
               wheel: '0'
               finance: '0'
               taxreceipts: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              cad_tl: '0'
+              reception: '0'
+              ce_director: '0'
+              pe_tl: '0'
+              vsil: '0'
+              indigenous_cl: '0'
+              eval: '0'
+              vsil_tl: '0'
+              couns_tl: '0'
+              is_staff: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+              fund_development_officer: '0'
+              pe: '0'
             reduce: false
           is_grouped: false
           group_info:

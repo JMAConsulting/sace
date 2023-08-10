@@ -10,6 +10,7 @@ use Drupal\webform\Utility\WebformFormHelper;
 function pe_booking_activity_role_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if (in_array($form_id, ['webform_submission_update_ped_booking_add_form', 'webform_submission_ped_online_course_booking_update_add_form'])) {
     $elements = WebformFormHelper::flattenElements($form);
+     \Drupal::service('civicrm')->initialize();
     //Activity ID
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if (empty($aid) || !is_numeric($aid)) {

@@ -19,6 +19,8 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
 
     //Attach library
     $form['#attached']['library'][] = 'pe_update_booking/pe_update_booking';
+    $form['#attached']['drupalSettings']['ped_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', PED_BOOKING_UPDATE_START_DATE);
+    $form['#attached']['drupalSettings']['ped_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', PED_BOOKING_UPDATE_END_DATE);
     
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
@@ -49,6 +51,18 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
         'CustomSomethingDifferent' => 'Custom/Unsure',
       ];
     }
+
+    $mapper = ($bt == 204) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation']);
+    $options = [];
+    foreach($mapper as $value) {
+      $options[$value] = $elements['civicrm_1_activity_1_cg2_custom_88']['#options'][$value];
+    }
+    $elements['civicrm_1_activity_1_cg2_custom_88']['#options'] = $options;
+
+    if ($bt == 203) {
+      $elements['civicrm_1_activity_1_cg2_custom_815']['#title'] = 'Approximate number of participants per presentation';
+    }
+
     if (in_array($bt, [57, 55, 59])) {
 
       //  Presentation method dropdown options
@@ -68,22 +82,23 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
 }
 
 function pe_update_booking_preprocess_page_title(&$variables, $hook) {
-  //Activity ID
-  $aid = \Drupal::request()->query->get('aid') ?? 0;
-  if (empty($aid) || !is_numeric($aid)) {
-    return;
-  }
-
-  //Get booking type from activity
-  $activity = \Civi\Api4\Activity::get(FALSE)
-    ->addSelect('activity_type_id')
-    ->addWhere('id', '=', $aid)
-    ->setLimit(1)
-    ->execute();
-  $bt = $activity->first()['activity_type_id'];
-
   $current_path = \Drupal::service('path.current')->getPath();
   if ($current_path == '/webform/update_ped_booking') {
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    \Drupal::service('civicrm')->initialize();
+    //Get booking type from activity
+    $activity = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('activity_type_id')
+      ->addWhere('id', '=', $aid)
+      ->setLimit(1)
+      ->execute();
+    $bt = $activity->first()['activity_type_id'];
+
     if ($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
       $variables['title'] = [
         '#markup' => 'Youth Presentation Booking Update Form',
@@ -92,6 +107,21 @@ function pe_update_booking_preprocess_page_title(&$variables, $hook) {
     elseif ($bt == PE_UPDATE_BOOKING_ADULT_ACTIVITY) {
       $variables['title'] = [
         '#markup' => 'Adult Presentation Booking Update Form',
+      ];
+    }
+    elseif ($bt == 201) {
+      $variables['title'] = [
+        '#markup' => 'WiseGuyz Booking Update Form',
+      ];
+    }
+    elseif ($bt == 204) { 
+      $variables['title'] = [
+        '#markup' => 'Institutional Support Booking Update Form',
+      ];
+    }
+    elseif ($bt == 203) {
+      $variables['title'] = [
+        '#markup' => 'Community Engagement Booking Update Form',
       ];
     }
   }

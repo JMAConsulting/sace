@@ -162,25 +162,22 @@ elements: |-
         '#default_value': ''
     civicrm_2_contact_1_contact_gender_id:
       '#type': civicrm_options
-      '#contact_type': individual
-      '#form_key': civicrm_2_contact_1_contact_gender_id
+      '#title': Gender
+      '#civicrm_live_options': 0
       '#options':
         1: Female
         2: Male
         3: Other
         4: Non-Binary
         5: Two-Spirit
-      '#extra':
-        items: |-
-          1|Female
-          2|Male
-          3|Other
-          4|Non-Binary
-          5|Two-Spirit
-        aslist: false
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#contact_type': individual
+      '#form_key': civicrm_2_contact_1_contact_gender_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#title': Gender
-      '#civicrm_live_options': 0
+      '#default_option': ''
+      '#default_value': ''
   flexbox_10:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_activity_type_id:
@@ -190,6 +187,9 @@ elements: |-
       '#options':
         77: Adult
         78: Child/Youth
+      '#wrapper_attributes':
+        class:
+          - jma-grid-2
       '#form_key': civicrm_1_activity_1_activity_activity_type_id
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
@@ -249,19 +249,19 @@ elements: |-
     '#format': html
   civicrm_1_activity_1_cg9_custom_265:
     '#type': civicrm_options
-    '#extra':
-      aslist: 0
-      items: |
-        1|Yes
-        0|No
-    '#data_type': 0
-    '#form_key': civicrm_1_activity_1_cg9_custom_265
+    '#title': 'Verbal Informed Consent Received'
+    '#civicrm_live_options': 0
     '#options':
       1: 'Yes'
       0: 'No'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
+        - ''
+    '#form_key': civicrm_1_activity_1_cg9_custom_265
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#title': 'Verbal Informed Consent Received'
-    '#civicrm_live_options': 0
+    '#default_option': '0'
+    '#default_value': '0'
   child_youth_initial_intake_questions:
     '#type': container
     '#states':
@@ -681,6 +681,9 @@ elements: |-
         'Other Crisis or Support and Info Lines (SILs)': 'Other Crisis or Support and Info Lines (SILs)'
         Zebra: Zebra
       '#options_display': three_columns
+      '#wrapper_attributes':
+        class:
+          - jma-grid-3
       '#civicrm_live_options': 0
       '#extra':
         aslist: 1
@@ -1075,12 +1078,14 @@ elements: |-
       '#format': html
     civicrm_2_contact_1_cg10_custom_108:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |
-          Yes|Yes
-          No|No
-      '#data_type': 0
+      '#title': 'Current or Prior Counselling at SACE'
+      '#options':
+        'Yes': 'Yes'
+        'No': 'No'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
       '#civicrm_condition':
         andor: or
         action: show
@@ -1089,12 +1094,10 @@ elements: |-
             values:
               - Client
       '#form_key': civicrm_2_contact_1_cg10_custom_108
-      '#options':
-        'Yes': 'Yes'
-        'No': 'No'
       '#parent': civicrm_2_contact_1_cg10_fieldset
-      '#title': 'Current or Prior Counselling at SACE'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_2_contact_1_cg10_custom_109:
       '#type': textfield
       '#title': 'If yes, please expand'
@@ -1124,6 +1127,10 @@ elements: |-
       '#options':
         'Yes': 'Yes'
         'No': 'No'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
       '#civicrm_condition':
         andor: or
         action: show
@@ -1181,6 +1188,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
       '#civicrm_condition':
         andor: or
         action: show
@@ -1191,7 +1203,6 @@ elements: |-
       '#form_key': civicrm_2_contact_1_cg10_custom_274
       '#parent': civicrm_2_contact_1_cg10_fieldset
       '#default_option': '0'
-      '#default_value': '0'
     civicrm_2_contact_1_cg10_custom_321:
       '#type': textarea
       '#title': 'Detail medication name and what for'
@@ -1429,6 +1440,10 @@ elements: |-
         Northgate: Northgate
         RCMP: RCMP
       '#options_display': three_columns
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
       '#civicrm_live_options': 0
       '#extra':
         aslist: 0
@@ -1505,12 +1520,15 @@ elements: |-
       '#parent': civicrm_2_contact_1_cg10_fieldset
     civicrm_2_contact_1_cg10_custom_291:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |
-          1|Yes
-          0|No
-      '#data_type': 0
+      '#title': 'For clients 12 years and older, would online counselling be an option?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
       '#civicrm_condition':
         andor: or
         action: show
@@ -1519,12 +1537,9 @@ elements: |-
             values:
               - Client
       '#form_key': civicrm_2_contact_1_cg10_custom_291
-      '#options':
-        1: 'Yes'
-        0: 'No'
       '#parent': civicrm_2_contact_1_cg10_fieldset
-      '#title': 'For clients 12 years and older, would online counselling be an option?'
-      '#civicrm_live_options': 0
+      '#default_option': '0'
+      '#default_value': '0'
     civicrm_2_contact_1_cg10_custom_292:
       '#type': civicrm_options
       '#title': 'Discussed receiving up to 15 sessions and brief psycho-ed around various factors that may impact the focus of the sessions. Factors may include substance use, coping behaviors, stabilization concerns, etc.'
@@ -1532,6 +1547,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+          - ''
       '#civicrm_condition':
         andor: or
         action: show
@@ -1542,7 +1562,6 @@ elements: |-
       '#form_key': civicrm_2_contact_1_cg10_custom_292
       '#parent': civicrm_2_contact_1_cg10_fieldset
       '#default_option': '0'
-      '#default_value': '0'
   civicrm_2_contact_1_cg10_custom_320:
     '#type': civicrm_options
     '#data_type': 0

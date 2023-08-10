@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.ce_page.field_button04
     - field.field.node.ce_page.field_button05
     - field.field.node.ce_page.field_image_banner
-    - field.field.node.ce_page.field_paragraphs
     - node.type.ce_page
   module:
     - text
@@ -41,4 +40,3 @@ hidden:
   field_button04: true
   field_button05: true
   field_image_banner: true
-  field_paragraphs: true

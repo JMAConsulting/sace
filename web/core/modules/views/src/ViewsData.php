@@ -137,7 +137,7 @@ class ViewsData {
    */
   public function get($key) {
     if (!$key) {
-      throw new \InvalidArgumentException('A valid cache entry key is required. Use getAll() to get all table data.');
+//      throw new \InvalidArgumentException('A valid cache entry key is required. Use getAll() to get all table data.');
     }
     if (!isset($this->storage[$key])) {
       // Prepare a cache ID for get and set.

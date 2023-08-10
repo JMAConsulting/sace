@@ -11,7 +11,7 @@ uid: 2
 template: false
 archive: false
 id: presentation_evaluation_summary_
-title: 'PED Presentation Evaluation Summary Input'
+title: 'Evaluation Summary'
 description: ''
 category: ''
 elements: |-
@@ -75,15 +75,6 @@ elements: |-
       '#title': 'Number of staff entered evaluations'
   horizontal_rule_01:
     '#type': webform_horizontal_rule
-  civicrm_1_activity_1_cg54_custom_715:
-    '#type': textarea
-    '#data_type': Memo
-    '#extra':
-      cols: '60'
-      rows: '4'
-    '#form_key': civicrm_1_activity_1_cg54_custom_715
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#title': 'Noteworthy comments from evaluations'
   question_markup_1:
     '#type': processed_text
     '#text': |
@@ -135,32 +126,70 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Number of staff entered evaluations'
-  civicrm_1_activity_1_cg2_custom_43:
-    '#type': civicrm_options
-    '#title': 'Demographic information'
-    '#civicrm_live_options': 0
-    '#options':
-      Adults: Adults
-      'At-Risk Youth': 'At-Risk Youth'
-      'English Language Learners': 'English Language Learners'
-      'First Nation Reserves': 'First Nation Reserves'
-      Incarcerated: Incarcerated
-      Indigenous: Indigenous
-      LGBT2QS+: LGBT2QS+
-      'Métis Settlements': 'Métis Settlements'
-      'Newcomers and Refugees': 'Newcomers and Refugees'
-      'Older Adults': 'Older Adults'
-      'Persons with Disability': 'Persons with Disability'
-      Rural: Rural
-      Youth: Youth
-    '#default_value': false
-    '#format_items': ul
-    '#format_items_html': ''
-    '#format_items_text': ''
+    civicrm_1_activity_1_cg54_custom_57:
+      '#type': number
+      '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_57
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_58:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg54_custom_48|default(0) + data.civicrm_1_activity_1_cg54_custom_54|default(0) +  data.civicrm_1_activity_1_cg54_custom_55|default(0) + data.civicrm_1_activity_1_cg54_custom_707|default(0) + data.civicrm_1_activity_1_cg54_custom_56|default(0) + data.civicrm_1_activity_1_cg54_custom_57|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_58
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_2:
+    '#type': processed_text
+    '#text': |
+      <p><strong>List one new thing you learned about the [presentation topic].</strong></p>
+    '#format': html
+  q2_markup_detail:
+    '#type': processed_text
+    '#text': |
+      <p></p>
+    '#format': html
+  q2_total_block:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_59:
+      '#type': number
+      '#title': 'Total number of responses'
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_59
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_1275:
+      '#type': textfield
+      '#data_type': Float
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1275
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Qualitative staff evaluation'
+  civicrm_1_activity_1_cg54_custom_715:
+    '#type': textarea
+    '#data_type': Memo
     '#extra':
-      width: 20
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg54_custom_715
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Noteworthy comments from evaluations'
   question_markup_3:
     '#type': processed_text
     '#text': |
@@ -352,105 +381,38 @@ elements: |-
     '#text': |
       <p></p>
     '#format': html
-  civicrm_1_activity_1_cg54_custom_65:
-    '#type': number
-    '#title': Total
-    '#field_prefix': '#'
-    '#placeholder': '0'
-    '#data_type': Float
-    '#form_key': civicrm_1_activity_1_cg54_custom_65
-    '#extra':
-      width: 20
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-  question_markup_6:
-    '#type': processed_text
-    '#text': |
-      <p><strong>I am committed to addressing sexual violence and promoting a culture of consent, including actions like challenging harmful attitudes and behaviours, educating myself and others, advocating for policy and cultural change, and/or supporting sexual assault survivors and services.</strong></p>
-    '#format': html
-  flexbox_q6:
+  q5_total_block:
     '#type': webform_flexbox
-    civicrm_1_activity_1_cg54_custom_75:
+    civicrm_1_activity_1_cg54_custom_65:
       '#type': number
-      '#title': 'Strongly Agree'
-      '#description': 'Strongly Agree'
-      '#title_display': invisible
+      '#title': 'Total number of responses'
       '#field_prefix': '#'
       '#placeholder': '0'
       '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_75
+      '#form_key': civicrm_1_activity_1_cg54_custom_65
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_76:
-      '#type': number
-      '#title': Agree
-      '#description': Agree
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
+    civicrm_1_activity_1_cg54_custom_1276:
+      '#type': textfield
       '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_76
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_77:
-      '#type': number
-      '#title': 'Somewhat Agree'
-      '#description': 'Somewhat Agree'
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_77
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_712:
-      '#type': number
-      '#title': 'Somewhat Disagree'
-      '#description': 'Strongly Disagree'
-      '#title_display': none
-      '#data_type': Int
       '#counter_type': character
       '#counter_maximum': 255
       '#counter_maximum_message': ' '
-      '#form_key': civicrm_1_activity_1_cg54_custom_712
+      '#form_key': civicrm_1_activity_1_cg54_custom_1276
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_78:
-      '#type': number
-      '#title': Disagree
-      '#description': Disagree
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_78
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_79:
-      '#type': number
-      '#title': 'Strongly Disagree '
-      '#title_display': invisible
-      '#field_prefix': '#'
-      '#placeholder': '0'
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_79
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg54_custom_74:
-      '#type': webform_computed_twig
-      '#title': Total
-      '#template': '{{ data.civicrm_1_activity_1_cg54_custom_75|default(0) + data.civicrm_1_activity_1_cg54_custom_76|default(0) + data.civicrm_1_activity_1_cg54_custom_77|default(0) + data.civicrm_1_activity_1_cg54_custom_712|default(0) + data.civicrm_1_activity_1_cg54_custom_78|default(0) + data.civicrm_1_activity_1_cg54_custom_79|default(0) }}'
-      '#ajax': true
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg54_custom_74
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Qualitative staff evaluation'
+  civicrm_1_activity_1_cg54_custom_1281:
+    '#type': textarea
+    '#data_type': Memo
+    '#extra':
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg54_custom_1281
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Noteworthy comments from evaluations'
   question_markup_7:
     '#type': processed_text
     '#text': |
@@ -658,16 +620,38 @@ elements: |-
     '#text': |
       <p></p>
     '#format': html
-  civicrm_1_activity_1_cg54_custom_724:
-    '#type': number
-    '#title': Total
-    '#field_prefix': '#'
-    '#placeholder': '0'
-    '#data_type': Float
-    '#form_key': civicrm_1_activity_1_cg54_custom_724
+  q9_total_block:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_724:
+      '#type': number
+      '#title': 'Total number of responses'
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_724
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_1277:
+      '#type': textfield
+      '#data_type': Float
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1277
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Qualitative staff evaluation'
+  civicrm_1_activity_1_cg54_custom_1286:
+    '#type': textarea
+    '#data_type': Memo
     '#extra':
-      width: 20
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg54_custom_1286
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Noteworthy comments from evaluations'
   question_markup_10:
     '#type': processed_text
     '#text': |
@@ -1486,16 +1470,38 @@ elements: |-
     '#text': |
       <p><strong>2. Out of all the participants surveyed, how many very able to list one new thing they learned about the topic?</strong></p>
     '#format': html
-  civicrm_1_activity_1_cg54_custom_787:
-    '#type': number
-    '#title': Total
-    '#field_prefix': '#'
-    '#placeholder': '0'
-    '#data_type': Float
-    '#form_key': civicrm_1_activity_1_cg54_custom_787
+  q18_total_block:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_787:
+      '#type': number
+      '#title': 'Total number of responses'
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_787
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_1278:
+      '#type': textfield
+      '#data_type': Float
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1278
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Qualitative staff evaluation'
+  civicrm_1_activity_1_cg54_custom_1283:
+    '#type': textarea
+    '#data_type': Memo
     '#extra':
-      width: 20
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg54_custom_1283
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Noteworthy comments from evaluations'
   question_markup_19:
     '#type': processed_text
     '#text': |
@@ -1713,7 +1719,96 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-  question_6_markup:
+  question_markup_6:
+    '#type': processed_text
+    '#text': |
+      <p><strong>I am committed to addressing sexual violence and promoting a culture of consent, including actions like challenging harmful attitudes and behaviours, educating myself and others, advocating for policy and cultural change, and/or supporting sexual assault survivors and services.</strong></p>
+    '#format': html
+  flexbox_q6:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_75:
+      '#type': number
+      '#title': 'Strongly Agree'
+      '#description': 'Strongly Agree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_75
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_76:
+      '#type': number
+      '#title': Agree
+      '#description': Agree
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_76
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_77:
+      '#type': number
+      '#title': 'Somewhat Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_77
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_712:
+      '#type': number
+      '#title': 'Somewhat Disagree'
+      '#description': 'Strongly Disagree'
+      '#title_display': none
+      '#data_type': Int
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_712
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_78:
+      '#type': number
+      '#title': Disagree
+      '#description': Disagree
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_78
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_79:
+      '#type': number
+      '#title': 'Strongly Disagree '
+      '#title_display': invisible
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_79
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_74:
+      '#type': webform_computed_twig
+      '#title': Total
+      '#template': '{{ data.civicrm_1_activity_1_cg54_custom_75|default(0) + data.civicrm_1_activity_1_cg54_custom_76|default(0) + data.civicrm_1_activity_1_cg54_custom_77|default(0) + data.civicrm_1_activity_1_cg54_custom_712|default(0) + data.civicrm_1_activity_1_cg54_custom_78|default(0) + data.civicrm_1_activity_1_cg54_custom_79|default(0) }}'
+      '#ajax': true
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_74
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  question_markup_211:
     '#type': processed_text
     '#text': |
       <p><strong>6. Out of all the participants surveyed, how many very able to list one resource a person impacted by the topic could access for help?</strong></p>
@@ -1933,23 +2028,45 @@ elements: |-
   question_markup_22:
     '#type': processed_text
     '#text': |
-      <p><strong>Positive feedback on service offering</strong></p>
+      <p><strong>What did you like most about the presentation/course?</strong></p>
     '#format': html
   q22_markup_detail:
     '#type': processed_text
     '#text': |
       <p></p>
     '#format': html
-  civicrm_1_activity_1_cg54_custom_803:
-    '#type': number
-    '#title': Total
-    '#field_prefix': '#'
-    '#placeholder': '0'
-    '#data_type': Float
-    '#form_key': civicrm_1_activity_1_cg54_custom_803
+  q22_total_block:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_803:
+      '#type': number
+      '#title': 'Total number of responses'
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_803
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_1279:
+      '#type': textfield
+      '#data_type': Float
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1279
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Qualitative staff evaluation'
+  civicrm_1_activity_1_cg54_custom_1284:
+    '#type': textarea
+    '#data_type': Memo
     '#extra':
-      width: 20
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg54_custom_1284
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Noteworthy comments from evaluations'
   question_markup_23:
     '#type': processed_text
     '#text': |
@@ -1961,16 +2078,38 @@ elements: |-
     '#text': |
       <p></p>
     '#format': html
-  civicrm_1_activity_1_cg54_custom_804:
-    '#type': number
-    '#title': Total
-    '#field_prefix': '#'
-    '#placeholder': '0'
-    '#data_type': Float
-    '#form_key': civicrm_1_activity_1_cg54_custom_804
+  q23_total_block:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg54_custom_804:
+      '#type': number
+      '#title': 'Total number of responses'
+      '#field_prefix': '#'
+      '#placeholder': '0'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg54_custom_804
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg54_custom_1280:
+      '#type': textfield
+      '#data_type': Float
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg54_custom_1280
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Qualitative staff evaluation'
+  civicrm_1_activity_1_cg54_custom_1285:
+    '#type': textarea
+    '#data_type': Memo
     '#extra':
-      width: 20
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg54_custom_1285
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Noteworthy comments from evaluations'
   question_markup_24:
     '#type': processed_text
     '#text': |
@@ -2238,6 +2377,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -2341,8 +2482,6 @@ handlers:
     conditions: {  }
     weight: null
     settings:
-      disable: 'Leave Fields and Save Settings'
-      antibot_key: ''
       nid: 1
       number_of_contacts: '6'
       1_contact_type: individual
@@ -2372,24 +2511,15 @@ handlers:
       civicrm_1_contact_1_contact_is_deceased: 0
       civicrm_1_contact_1_contact_deceased_date: 0
       contact_1_settings_matching_rule: Unsupervised
-      contact_1_number_of_cg10: '0'
-      contact_1_number_of_cg14: '0'
       contact_1_number_of_cg5: '0'
       contact_1_number_of_cg12: '0'
-      contact_1_number_of_cg19: '0'
-      contact_1_number_of_cg21: '0'
-      contact_1_number_of_cg22: '0'
-      contact_1_number_of_cg23: '0'
-      contact_1_number_of_cg24: '0'
-      contact_1_number_of_cg25: '0'
-      contact_1_number_of_cg29: '0'
-      contact_1_number_of_cg36: '0'
       contact_1_number_of_other: '0'
       contact_1_number_of_address: '0'
       contact_1_number_of_phone: '0'
       contact_1_number_of_email: '0'
       contact_1_number_of_website: '0'
       contact_1_number_of_im: '0'
+      contact_1_number_of_cg30: '0'
       2_contact_type: organization
       2_webform_label: School
       civicrm_2_contact_1_contact_contact_sub_type:
@@ -2436,6 +2566,7 @@ handlers:
       contact_2_number_of_website: '0'
       contact_2_number_of_im: '0'
       contact_2_number_of_relationship: '0'
+      contact_2_number_of_cg30: '0'
       3_contact_type: individual
       3_webform_label: 'Verified by'
       civicrm_3_contact_1_contact_contact_sub_type:
@@ -2463,18 +2594,8 @@ handlers:
       civicrm_3_contact_1_contact_is_deceased: 0
       civicrm_3_contact_1_contact_deceased_date: 0
       contact_3_settings_matching_rule: Unsupervised
-      contact_3_number_of_cg10: '0'
-      contact_3_number_of_cg14: '0'
       contact_3_number_of_cg5: '0'
       contact_3_number_of_cg12: '0'
-      contact_3_number_of_cg19: '0'
-      contact_3_number_of_cg21: '0'
-      contact_3_number_of_cg22: '0'
-      contact_3_number_of_cg23: '0'
-      contact_3_number_of_cg24: '0'
-      contact_3_number_of_cg25: '0'
-      contact_3_number_of_cg29: '0'
-      contact_3_number_of_cg36: '0'
       contact_3_number_of_other: '0'
       contact_3_number_of_address: '0'
       contact_3_number_of_phone: '0'
@@ -2482,6 +2603,7 @@ handlers:
       contact_3_number_of_website: '0'
       contact_3_number_of_im: '0'
       contact_3_number_of_relationship: '0'
+      contact_3_number_of_cg30: '0'
       4_contact_type: individual
       4_webform_label: 'Staff 1'
       civicrm_4_contact_1_contact_contact_sub_type:
@@ -2509,18 +2631,8 @@ handlers:
       civicrm_4_contact_1_contact_is_deceased: 0
       civicrm_4_contact_1_contact_deceased_date: 0
       contact_4_settings_matching_rule: Unsupervised
-      contact_4_number_of_cg10: '0'
-      contact_4_number_of_cg14: '0'
       contact_4_number_of_cg5: '0'
       contact_4_number_of_cg12: '0'
-      contact_4_number_of_cg19: '0'
-      contact_4_number_of_cg21: '0'
-      contact_4_number_of_cg22: '0'
-      contact_4_number_of_cg23: '0'
-      contact_4_number_of_cg24: '0'
-      contact_4_number_of_cg25: '0'
-      contact_4_number_of_cg29: '0'
-      contact_4_number_of_cg36: '0'
       contact_4_number_of_other: '0'
       contact_4_number_of_address: '0'
       contact_4_number_of_phone: '0'
@@ -2528,6 +2640,7 @@ handlers:
       contact_4_number_of_website: '0'
       contact_4_number_of_im: '0'
       contact_4_number_of_relationship: '0'
+      contact_4_number_of_cg30: '0'
       5_contact_type: individual
       5_webform_label: 'Staff 2'
       civicrm_5_contact_1_contact_contact_sub_type:
@@ -2555,18 +2668,8 @@ handlers:
       civicrm_5_contact_1_contact_is_deceased: 0
       civicrm_5_contact_1_contact_deceased_date: 0
       contact_5_settings_matching_rule: Unsupervised
-      contact_5_number_of_cg10: '0'
-      contact_5_number_of_cg14: '0'
       contact_5_number_of_cg5: '0'
       contact_5_number_of_cg12: '0'
-      contact_5_number_of_cg19: '0'
-      contact_5_number_of_cg21: '0'
-      contact_5_number_of_cg22: '0'
-      contact_5_number_of_cg23: '0'
-      contact_5_number_of_cg24: '0'
-      contact_5_number_of_cg25: '0'
-      contact_5_number_of_cg29: '0'
-      contact_5_number_of_cg36: '0'
       contact_5_number_of_other: '0'
       contact_5_number_of_address: '0'
       contact_5_number_of_phone: '0'
@@ -2574,6 +2677,7 @@ handlers:
       contact_5_number_of_website: '0'
       contact_5_number_of_im: '0'
       contact_5_number_of_relationship: '0'
+      contact_5_number_of_cg30: '0'
       6_contact_type: individual
       6_webform_label: 'Staff 3'
       civicrm_6_contact_1_contact_contact_sub_type:
@@ -2601,18 +2705,8 @@ handlers:
       civicrm_6_contact_1_contact_is_deceased: 0
       civicrm_6_contact_1_contact_deceased_date: 0
       contact_6_settings_matching_rule: Unsupervised
-      contact_6_number_of_cg10: '0'
-      contact_6_number_of_cg14: '0'
       contact_6_number_of_cg5: '0'
       contact_6_number_of_cg12: '0'
-      contact_6_number_of_cg19: '0'
-      contact_6_number_of_cg21: '0'
-      contact_6_number_of_cg22: '0'
-      contact_6_number_of_cg23: '0'
-      contact_6_number_of_cg24: '0'
-      contact_6_number_of_cg25: '0'
-      contact_6_number_of_cg29: '0'
-      contact_6_number_of_cg36: '0'
       contact_6_number_of_other: '0'
       contact_6_number_of_address: '0'
       contact_6_number_of_phone: '0'
@@ -2620,6 +2714,7 @@ handlers:
       contact_6_number_of_website: '0'
       contact_6_number_of_im: '0'
       contact_6_number_of_relationship: '0'
+      contact_6_number_of_cg30: '0'
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 0
@@ -2654,81 +2749,6 @@ handlers:
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
-      activity_1_settings_dynamic_custom_cg55: 0
-      civicrm_1_activity_1_cg55_custom_1086: 0
-      civicrm_1_activity_1_cg55_custom_1087: 0
-      civicrm_1_activity_1_cg55_custom_1088: 0
-      civicrm_1_activity_1_cg55_custom_1089: 0
-      civicrm_1_activity_1_cg55_custom_1090: 0
-      civicrm_1_activity_1_cg55_custom_1091: 0
-      civicrm_1_activity_1_cg55_custom_1092: 0
-      civicrm_1_activity_1_cg55_custom_1093: 0
-      civicrm_1_activity_1_cg55_custom_1094: 0
-      civicrm_1_activity_1_cg55_custom_1095: 0
-      civicrm_1_activity_1_cg55_custom_1096: 0
-      civicrm_1_activity_1_cg55_custom_1097: 0
-      civicrm_1_activity_1_cg55_custom_1098: 0
-      civicrm_1_activity_1_cg55_custom_1099: 0
-      civicrm_1_activity_1_cg55_custom_1100: 0
-      civicrm_1_activity_1_cg55_custom_1101: 0
-      civicrm_1_activity_1_cg55_custom_1102: 0
-      civicrm_1_activity_1_cg55_custom_1103: 0
-      civicrm_1_activity_1_cg55_custom_1104: 0
-      civicrm_1_activity_1_cg55_custom_1105: 0
-      civicrm_1_activity_1_cg55_custom_1106: 0
-      civicrm_1_activity_1_cg55_custom_1107: 0
-      civicrm_1_activity_1_cg55_custom_1108: 0
-      civicrm_1_activity_1_cg55_custom_1109: 0
-      civicrm_1_activity_1_cg55_custom_1212: 0
-      civicrm_1_activity_1_cg55_custom_1213: 0
-      activity_1_settings_dynamic_custom_cg30: 0
-      civicrm_1_activity_1_cg30_custom_342: 0
-      civicrm_1_activity_1_cg30_custom_343: 0
-      civicrm_1_activity_1_cg30_custom_352: 0
-      civicrm_1_activity_1_cg30_custom_353: 0
-      civicrm_1_activity_1_cg30_custom_354: 0
-      civicrm_1_activity_1_cg30_custom_355: 0
-      civicrm_1_activity_1_cg30_custom_356: 0
-      civicrm_1_activity_1_cg30_custom_357: 0
-      civicrm_1_activity_1_cg30_custom_358: 0
-      civicrm_1_activity_1_cg30_custom_359: 0
-      civicrm_1_activity_1_cg30_custom_360: 0
-      civicrm_1_activity_1_cg30_custom_361: 0
-      civicrm_1_activity_1_cg30_custom_362: 0
-      civicrm_1_activity_1_cg30_custom_363: 0
-      civicrm_1_activity_1_cg30_custom_364: 0
-      civicrm_1_activity_1_cg30_custom_365: 0
-      civicrm_1_activity_1_cg30_custom_366: 0
-      civicrm_1_activity_1_cg30_custom_367: 0
-      civicrm_1_activity_1_cg30_custom_368: 0
-      civicrm_1_activity_1_cg30_custom_369: 0
-      civicrm_1_activity_1_cg30_custom_370: 0
-      civicrm_1_activity_1_cg30_custom_371: 0
-      activity_1_settings_dynamic_custom_cg42: 0
-      civicrm_1_activity_1_cg42_custom_487: 0
-      civicrm_1_activity_1_cg42_custom_488: 0
-      civicrm_1_activity_1_cg42_custom_489: 0
-      civicrm_1_activity_1_cg42_custom_490: 0
-      civicrm_1_activity_1_cg42_custom_491: 0
-      civicrm_1_activity_1_cg42_custom_492: 0
-      civicrm_1_activity_1_cg42_custom_493: 0
-      civicrm_1_activity_1_cg42_custom_494: 0
-      civicrm_1_activity_1_cg42_custom_495: 0
-      civicrm_1_activity_1_cg42_custom_496: 0
-      civicrm_1_activity_1_cg42_custom_497: 0
-      civicrm_1_activity_1_cg42_custom_498: 0
-      civicrm_1_activity_1_cg42_custom_499: 0
-      civicrm_1_activity_1_cg42_custom_500: 0
-      civicrm_1_activity_1_cg42_custom_501: 0
-      civicrm_1_activity_1_cg42_custom_502: 0
-      civicrm_1_activity_1_cg42_custom_503: 0
-      civicrm_1_activity_1_cg42_custom_504: 0
-      civicrm_1_activity_1_cg42_custom_505: 0
-      civicrm_1_activity_1_cg42_custom_506: 0
-      civicrm_1_activity_1_cg42_custom_507: 0
-      civicrm_1_activity_1_cg42_custom_508: 0
-      civicrm_1_activity_1_cg42_custom_509: 0
-      civicrm_1_activity_1_cg42_custom_635: 0
       activity_1_settings_dynamic_custom_cg53: 0
       civicrm_1_activity_1_cg53_custom_706: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg54: 0
@@ -2845,7 +2865,6 @@ handlers:
       civicrm_1_activity_1_cg54_custom_712: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_713: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_714: '3'
-      civicrm_1_activity_1_cg54_custom_715: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_716: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_717: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_718: create_civicrm_webform_element
@@ -2877,6 +2896,18 @@ handlers:
       civicrm_1_activity_1_cg54_custom_1272: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_1273: create_civicrm_webform_element
       civicrm_1_activity_1_cg54_custom_1274: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1275: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1276: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1277: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1278: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1279: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1280: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_715: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1281: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1283: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1284: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1285: create_civicrm_webform_element
+      civicrm_1_activity_1_cg54_custom_1286: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg58: 0
       civicrm_1_activity_1_cg58_custom_1265: 0
       civicrm_1_activity_1_cg58_custom_1266: 0
@@ -2921,24 +2952,15 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Teacher/Staff in Charge'
             matching_rule: Unsupervised
-            number_of_cg10: '0'
-            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
-            number_of_cg19: '0'
-            number_of_cg21: '0'
-            number_of_cg22: '0'
-            number_of_cg23: '0'
-            number_of_cg24: '0'
-            number_of_cg25: '0'
-            number_of_cg29: '0'
-            number_of_cg36: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
             number_of_email: '0'
             number_of_website: '0'
             number_of_im: '0'
+            number_of_cg30: '0'
           2:
             contact:
               1:
@@ -2955,6 +2977,7 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_relationship: '0'
+            number_of_cg30: '0'
             address:
               1:
                 location_type_id: '3'
@@ -2966,18 +2989,8 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Verified by'
             matching_rule: Unsupervised
-            number_of_cg10: '0'
-            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
-            number_of_cg19: '0'
-            number_of_cg21: '0'
-            number_of_cg22: '0'
-            number_of_cg23: '0'
-            number_of_cg24: '0'
-            number_of_cg25: '0'
-            number_of_cg29: '0'
-            number_of_cg36: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
@@ -2985,6 +2998,7 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_relationship: '0'
+            number_of_cg30: '0'
           4:
             contact:
               1:
@@ -2992,18 +3006,8 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Staff 1'
             matching_rule: Unsupervised
-            number_of_cg10: '0'
-            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
-            number_of_cg19: '0'
-            number_of_cg21: '0'
-            number_of_cg22: '0'
-            number_of_cg23: '0'
-            number_of_cg24: '0'
-            number_of_cg25: '0'
-            number_of_cg29: '0'
-            number_of_cg36: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
@@ -3011,6 +3015,7 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_relationship: '0'
+            number_of_cg30: '0'
           5:
             contact:
               1:
@@ -3018,18 +3023,8 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Staff 2'
             matching_rule: Unsupervised
-            number_of_cg10: '0'
-            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
-            number_of_cg19: '0'
-            number_of_cg21: '0'
-            number_of_cg22: '0'
-            number_of_cg23: '0'
-            number_of_cg24: '0'
-            number_of_cg25: '0'
-            number_of_cg29: '0'
-            number_of_cg36: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
@@ -3037,6 +3032,7 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_relationship: '0'
+            number_of_cg30: '0'
           6:
             contact:
               1:
@@ -3044,18 +3040,8 @@ handlers:
                 contact_sub_type: {  }
                 webform_label: 'Staff 3'
             matching_rule: Unsupervised
-            number_of_cg10: '0'
-            number_of_cg14: '0'
             number_of_cg5: '0'
             number_of_cg12: '0'
-            number_of_cg19: '0'
-            number_of_cg21: '0'
-            number_of_cg22: '0'
-            number_of_cg23: '0'
-            number_of_cg24: '0'
-            number_of_cg25: '0'
-            number_of_cg29: '0'
-            number_of_cg36: '0'
             number_of_other: '0'
             number_of_address: '0'
             number_of_phone: '0'
@@ -3063,14 +3049,12 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_relationship: '0'
+            number_of_cg30: '0'
         activity:
           number_of_activity: '1'
           1:
             existing_activity_status: {  }
             details: {  }
-            dynamic_custom_cg55: 0
-            dynamic_custom_cg30: 0
-            dynamic_custom_cg42: 0
             dynamic_custom_cg53: 0
             dynamic_custom_cg54: 0
             dynamic_custom_cg58: 0

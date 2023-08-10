@@ -268,7 +268,7 @@ function sace_custom_taxonomy_term_insert(Drupal\Core\Entity\EntityInterface $en
   if ($menu_link_parent) {
     \Drupal::entityTypeManager()->getStorage('menu_link_content')
       ->create([
-        'title' => $entity->label() . '  - User Team',
+        'title' => $entity->label() . ' User Team',
         'menu_name' => 'main',
         'link' => ['uri' => 'internal:/calendar-team/' . $entity->id()],
         'parent' => $menu_link_parent->getPluginId(),
@@ -286,7 +286,7 @@ function sace_custom_taxonomy_term_update(Drupal\Core\Entity\EntityInterface $en
 
   $menuItem = reset($calendarMenu);
   if ($menuItem) {
-    $menuItem->setName($entity->label() . '  - User Team');
+    $menuItem->setName($entity->label() . ' User Team');
     $menuItem->save();
   }
   _clear_menu_caches();

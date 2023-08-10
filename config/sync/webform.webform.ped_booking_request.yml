@@ -19,7 +19,6 @@ elements: |-
     '#type': processed_text
     '#text': |
       <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides educational sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
-      
     '#format': html
   flexbox:
     '#type': webform_flexbox
@@ -76,15 +75,17 @@ elements: |-
         1: Phone
         2: Email
       '#required': true
-      '#default_value': 0
+      '#default_value': ''
+      '#wrapper_attributes':
+        class:
+          - jma-grid-2
       '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
       '#parent': civicrm_1_contact_1_fieldset_fieldset
-      '#default_option': 0
+      '#default_option': ''
   processed_text:
     '#type': processed_text
     '#text': |
       <p>Please select one booking type:</p>
-      
     '#format': html
   flexbox_03:
     '#type': webform_flexbox
@@ -94,6 +95,9 @@ elements: |-
       '#options':
         55: 'Youth School Presentation Booking'
       '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-1
       '#civicrm_live_options': 0
       '#form_key': civicrm_1_activity_1_activity_activity_type_id
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -105,6 +109,9 @@ elements: |-
       '#options':
         57: 'Youth Presentation Booking'
       '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-1
       '#civicrm_live_options': 0
       '#form_key': civicrm_2_activity_1_activity_activity_type_id
       '#parent': civicrm_2_activity_1_fieldset_fieldset
@@ -115,6 +122,9 @@ elements: |-
       '#options':
         58: 'Post-secondary School Booking'
       '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-1
       '#civicrm_live_options': 0
       '#form_key': civicrm_3_activity_1_activity_activity_type_id
       '#parent': civicrm_3_activity_1_fieldset_fieldset
@@ -125,6 +135,9 @@ elements: |-
       '#options':
         59: 'Adult or Professional Booking'
       '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-1
       '#civicrm_live_options': 0
       '#form_key': civicrm_4_activity_1_activity_activity_type_id
       '#parent': civicrm_4_activity_1_fieldset_fieldset
@@ -142,11 +155,10 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Which school&nbsp;are you requesting a presentation for?</strong></h4>
-        
+
         <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your school&nbsp;is out of town, we will contact you with a quote and an invoice for this fee.</p>
-        
+
         <p>If you cannot find your school, please contact us at info@sace.ca</p>
-        
       '#format': html
     civicrm_2_contact_1_contact_existing:
       '#type': civicrm_contact
@@ -176,18 +188,29 @@ elements: |-
           'Grade 8': 'Grade 8'
           'Grade 9': 'Grade 9'
           'High School': 'High School'
+        '#wrapper_attributes':
+          class:
+            - jma-grid-2
       civicrm_1_activity_1_cg2_custom_88:
         '#type': civicrm_options
         '#title': 'Presentation Method*'
         '#options':
-          1: In-person
-          2: Virtual
+          'In-Person Presentation': 'In-Person Presentation'
+          'Online Presentation': 'Online Presentation'
+          'Online Course': 'Online Course'
+          'In-Person Meeting': 'In-Person Meeting'
+          'Online Meeting': 'Online Meeting'
+          'In-Person Event': 'In-Person Event'
+          'Online Event': 'Online Event'
         '#required': true
-        '#default_value': 0
+        '#default_value': ''
+        '#wrapper_attributes':
+          class:
+            - jma-grid-2
         '#format_items': ul
         '#form_key': civicrm_1_activity_1_cg2_custom_88
         '#parent': civicrm_1_activity_1_fieldset_fieldset
-        '#default_option': 0
+        '#default_option': ''
         '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_39:
       '#type': textfield
@@ -203,9 +226,8 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Booking Details</strong></h4>
-        
+
         <p>There are a few more details we'll need.</p>
-        
       '#format': html
     civicrm_1_activity_1_cg2_custom_34:
       '#type': civicrm_options
@@ -395,9 +417,8 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Which organization are you requesting a presentation for?</strong></h4>
-        
+
         <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
-        
       '#format': html
     civicrm_5_contact_1_contact_organization_name:
       '#type': textfield
@@ -419,25 +440,35 @@ elements: |-
           '14-15 years': '14-15 years'
           '15-18 years': '15-18 years'
           19+: 19+
+        '#wrapper_attributes':
+          class:
+            - jma-grid-2
       civicrm_2_activity_1_cg2_custom_88:
         '#type': civicrm_options
         '#title': 'Presentation Method'
         '#civicrm_live_options': 0
-        '#options':
-          1: In-person
-          2: Virtual
-        '#default_value': 0
+        '#default_value': ''
+        '#wrapper_attributes':
+          class:
+            - jma-grid-2
         '#format_items': ul
         '#form_key': civicrm_2_activity_1_cg2_custom_88
         '#parent': civicrm_2_activity_1_fieldset_fieldset
-        '#default_option': 0
+        '#default_option': ''
+        '#options':
+          'In-Person Presentation': 'In-Person Presentation'
+          'Online Presentation': 'Online Presentation'
+          'Online Course': 'Online Course'
+          'In-Person Meeting': 'In-Person Meeting'
+          'Online Meeting': 'Online Meeting'
+          'In-Person Event': 'In-Person Event'
+          'Online Event': 'Online Event'
     booking_details_markup_2:
       '#type': processed_text
       '#text': |
         <h4><strong>Booking Details</strong></h4>
-        
+
         <p>There are a few more details we'll need.</p>
-        
       '#format': html
     civicrm_2_activity_1_cg2_custom_34:
       '#type': civicrm_options
@@ -505,7 +536,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_2_activity_1_cg2_custom_125
       '#options':
         'Yes': 'Yes'
@@ -522,7 +552,6 @@ elements: |-
           Individually|Individually
           Groupings|Groupings
           Both|Both
-          
       '#form_key': civicrm_2_activity_1_cg2_custom_124
       '#options':
         Individually: Individually
@@ -539,7 +568,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_2_activity_1_cg2_custom_123
       '#options':
         'Yes': 'Yes'
@@ -555,7 +583,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_2_activity_1_cg2_custom_122
       '#options':
         'Yes': 'Yes'
@@ -571,7 +598,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_2_activity_1_cg2_custom_121
       '#options':
         'Yes': 'Yes'
@@ -588,7 +614,6 @@ elements: |-
           Classroom|Classroom
           Home|Home
           Both|Both
-          
       '#form_key': civicrm_2_activity_1_cg2_custom_120
       '#options':
         Classroom: Classroom
@@ -607,7 +632,6 @@ elements: |-
           Microsoft Teams|Microsoft Teams
           Zoom|Zoom
           Other|Other
-          
       '#form_key': civicrm_2_activity_1_cg2_custom_119
       '#options':
         'Google Meets': 'Google Meets'
@@ -629,9 +653,8 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Which post-secondary institution&nbsp;are you requesting a presentation for?</strong></h4>
-        
+
         <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your post-secondary institution is out of town, we will contact you with a quote and an invoice for this fee.</p>
-        
       '#format': html
     civicrm_4_contact_1_contact_organization_name:
       '#type': textfield
@@ -661,9 +684,8 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Booking Details</strong></h4>
-        
+
         <p>There are a few more details we'll need.</p>
-        
       '#format': html
     civicrm_3_activity_1_cg2_custom_34:
       '#type': civicrm_options
@@ -731,7 +753,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_3_activity_1_cg2_custom_125
       '#options':
         'Yes': 'Yes'
@@ -748,7 +769,6 @@ elements: |-
           Individually|Individually
           Groupings|Groupings
           Both|Both
-          
       '#form_key': civicrm_3_activity_1_cg2_custom_124
       '#options':
         Individually: Individually
@@ -765,7 +785,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_3_activity_1_cg2_custom_123
       '#options':
         'Yes': 'Yes'
@@ -781,7 +800,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_3_activity_1_cg2_custom_122
       '#options':
         'Yes': 'Yes'
@@ -797,7 +815,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_3_activity_1_cg2_custom_121
       '#options':
         'Yes': 'Yes'
@@ -814,7 +831,6 @@ elements: |-
           Classroom|Classroom
           Home|Home
           Both|Both
-          
       '#form_key': civicrm_3_activity_1_cg2_custom_120
       '#options':
         Classroom: Classroom
@@ -833,7 +849,6 @@ elements: |-
           Microsoft Teams|Microsoft Teams
           Zoom|Zoom
           Other|Other
-          
       '#form_key': civicrm_3_activity_1_cg2_custom_119
       '#options':
         'Google Meets': 'Google Meets'
@@ -855,9 +870,8 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Which organization are you requesting a presentation for?</strong></h4>
-        
+
         <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
-        
       '#format': html
     civicrm_3_contact_1_contact_organization_name:
       '#type': textfield
@@ -886,9 +900,8 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Booking Details</strong></h4>
-        
+
         <p>There are a few more details we'll need.</p>
-        
       '#format': html
     civicrm_4_activity_1_cg2_custom_34:
       '#type': civicrm_options
@@ -956,7 +969,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_4_activity_1_cg2_custom_125
       '#options':
         'Yes': 'Yes'
@@ -973,7 +985,6 @@ elements: |-
           Individually|Individually
           Groupings|Groupings
           Both|Both
-          
       '#form_key': civicrm_4_activity_1_cg2_custom_124
       '#options':
         Individually: Individually
@@ -990,7 +1001,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_4_activity_1_cg2_custom_123
       '#options':
         'Yes': 'Yes'
@@ -1006,7 +1016,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_4_activity_1_cg2_custom_122
       '#options':
         'Yes': 'Yes'
@@ -1022,7 +1031,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_4_activity_1_cg2_custom_121
       '#options':
         'Yes': 'Yes'
@@ -1039,7 +1047,6 @@ elements: |-
           Classroom|Classroom
           Home|Home
           Both|Both
-          
       '#form_key': civicrm_4_activity_1_cg2_custom_120
       '#options':
         Classroom: Classroom
@@ -1058,7 +1065,6 @@ elements: |-
           Microsoft Teams|Microsoft Teams
           Zoom|Zoom
           Other|Other
-          
       '#form_key': civicrm_4_activity_1_cg2_custom_119
       '#options':
         'Google Meets': 'Google Meets'
@@ -1072,10 +1078,9 @@ elements: |-
     '#type': processed_text
     '#text': |
       <h4><strong>When would you like the session to be held?</strong></h4>
-      
+
       <p>SACE operates daily from Monday - Thursday, with some exceptions being made for Friday - Sunday. For schools or organizations that are out of town, please note that we have a Winter Driving Policy wherein sessions scheduled between November and March may be cancelled due to inclement driving conditions. To avoid cancellations, it is recommended that out of town sessions are scheduled outside of November - March.<br />
       Please indicate your preferred date(s) and/or day(s) of the week for your presentation(s). While we cannot guarantee these dates will be available, we will do our best to accommodate your request. Please note, the date of your booking is not finalized until you are contacted by a Public Educator.</p>
-      
     '#format': html
   preferred_dates_:
     '#type': textarea
@@ -1084,9 +1089,8 @@ elements: |-
     '#type': processed_text
     '#text': |
       <h4><strong>Your Session(s)</strong></h4>
-      
+
       <p>In this section, tell us a bit about the sessions you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Please note, our sessions are most effective with regular class sizes (about 25-35 people) but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 people.</p>
-      
     '#format': html
   flexbox_04:
     '#type': webform_flexbox
@@ -1105,9 +1109,8 @@ elements: |-
     '#type': processed_text
     '#text': |
       <h4><strong>What are the start and end time of each session?</strong></h4>
-      
+
       <p>If you're not sure, that's okay. You can enter morning or afternoon, or simply leave this blank and we'll confirm with you later.</p>
-      
     '#format': html
   time_of_sessions:
     '#type': textarea
@@ -1124,14 +1127,13 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Presentation Topic(s) - Schools</strong></h4>
-        
+
         <p>The typical presentation topics per grade level are listed below. For more information about each presentation topic, please visit <a href="https://www.google.com/url?q=http://www.sace.ca/services/public-education&amp;sa=D&amp;ust=1592075297813000&amp;usg=AFQjCNFxCM3fqrCjnEAbtoRygUBZ4vld1w">www.sace.ca/services/public-education</a>.<br />
         <br />
         Grade 7 - Sexual Harassment<br />
         Grade 8 - Sexual Assault &amp; Consent<br />
         Grade 9 - Non-Consensual Photo Sharing<br />
         High School - Sexual Assault &amp; Consent and/or Non-Consensual Photo Sharing</p>
-        
       '#format': html
     school_presentation_topics:
       '#type': webform_likert
@@ -1160,14 +1162,13 @@ elements: |-
       '#type': processed_text
       '#text': |
         <h4><strong>Presentation Topic(s) - Youth Organizations</strong></h4>
-        
+
         <p>The typical presentation topics per approximate age range are listed below. For more information about each presentation topic, please visit <a href="https://www.google.com/url?q=http://www.sace.ca/services/public-education&amp;sa=D&amp;ust=1592075297813000&amp;usg=AFQjCNFxCM3fqrCjnEAbtoRygUBZ4vld1w">www.sace.ca/services/public-education</a>.<br />
         <br />
         12-13 years - Sexual Harassment<br />
         13-14 years&nbsp;- Sexual Assault &amp; Consent<br />
         14-15 years - Non-Consensual Photo Sharing<br />
         15-18 years - Sexual Assault &amp; Consent and/or Non-Consensual Photo Sharing</p>
-        
       '#format': html
     youth_presentation_topics:
       '#type': webform_likert

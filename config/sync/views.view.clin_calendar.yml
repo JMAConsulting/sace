@@ -1430,6 +1430,16 @@ display:
           entity_type: civicrm_contact
           plugin_id: civicrm_entity_civicrm_contact_user
           required: false
+        field_user_team:
+          id: field_user_team
+          table: user__field_user_team
+          field: field_user_team
+          relationship: user
+          group_type: group
+          admin_label: 'field_user_team: Taxonomy term'
+          plugin_id: standard
+          required: false
+      css_class: jma-user-contact
       header: {  }
       footer: {  }
       display_extenders: {  }

@@ -52,7 +52,7 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
     foreach ($view->display_handler->getHandlers('argument') as $handler) {
       if ('taxonomy_term.tid' == $handler->getEntityType() . $handler->getField()) {
         $tids = explode(' ', $handler->getValue());
-	$terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
+        $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
         if (!empty($terms)) {
           foreach ($terms as $term) {
             if ('user_team' == $term->bundle()) {
@@ -66,7 +66,42 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
       }
     }
 
-    $contact_ids = array_keys($form['uf_select']['#options']);
+    $team_users = array_keys(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties([
+      'field_user_team' => ['39', '12'],
+    ]));
+    $contact_ids = [];
+    $team_contact_id_map = [];
+    $team_contact_id_lookup = \Drupal::service('civicrm_entity.api')->get('UFMatch', [
+      'sequential' => 1,
+      'return' => ['uf_id', 'contact_id'],
+      'uf_id' => ['IN' => $team_users],
+      'options' => ['limit' => 0],
+    ]);
+    foreach($team_contact_id_lookup as $tc) {
+      $contact_ids[$tc['contact_id']] = $tc['contact_id'];
+      $team_contact_id_map[$tc['contact_id']] = $tc['uf_id'];
+    }
+    
+    $contact_staff = \Drupal::service('civicrm_entity.api')->get('Contact', [
+      'return' => ['id'],
+      'id' => ['IN' => $contact_ids],
+      'contact_sub_type' => "Staff",
+      'options' => ['limit' => 0],
+    ]);
+    
+    foreach ($contact_ids as $k => $value) {
+      if (!array_key_exists($value, $contact_staff)) {
+        unset($contact_ids[$k]);
+      }
+    }
+
+    $form['uf_select']['#options'] = [];
+    foreach ($contact_ids as $contact_id) {
+      if (!array_key_exists($contact_id, $form['uf_select']['#options'])) {
+        $account = \Drupal::entityTypeManager()->getStorage('user')->load($team_contact_id_map[$contact_id]);
+        $form['uf_select']['#options'][$contact_id] = $account->getAccountName();
+      }
+    }
 
     $map_uid_cid = [];
 
