@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: volunteer_supervisor
 label: 'Volunteer Supervisor'
-weight: 17
+weight: 14
 is_admin: null
 permissions: {  }

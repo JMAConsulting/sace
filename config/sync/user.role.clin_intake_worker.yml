@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: clin_intake_worker
 label: 'CLIN Intake Worker'
-weight: -7
+weight: 1
 is_admin: null
 permissions: {  }

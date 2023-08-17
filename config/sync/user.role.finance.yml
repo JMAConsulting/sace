@@ -10,7 +10,7 @@ dependencies:
     - toolbar
 id: finance
 label: Finance
-weight: -3
+weight: -11
 is_admin: null
 permissions:
   - 'access AJAX API'

@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: clin_tl
 label: 'CLIN TL'
-weight: 3
+weight: 8
 is_admin: null
 permissions: {  }

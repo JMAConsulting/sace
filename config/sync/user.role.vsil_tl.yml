@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: vsil_tl
 label: 'VSIL TL'
-weight: 13
+weight: -4
 is_admin: null
 permissions: {  }

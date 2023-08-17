@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: cad_tl
 label: 'CAD TL'
-weight: 6
+weight: -15
 is_admin: null
 permissions: {  }

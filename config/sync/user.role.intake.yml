@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: intake
 label: INTAKE
-weight: 1
+weight: 6
 is_admin: null
 permissions: {  }

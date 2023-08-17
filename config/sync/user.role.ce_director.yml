@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: ce_director
 label: 'CE Director'
-weight: 8
+weight: -13
 is_admin: null
 permissions: {  }

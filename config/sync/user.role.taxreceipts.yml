@@ -6,7 +6,7 @@ dependencies:
     - civicrm
 id: taxreceipts
 label: 'Finance - TaxReceipts'
-weight: -2
+weight: -10
 is_admin: null
 permissions:
   - 'issue cdn tax receipts'

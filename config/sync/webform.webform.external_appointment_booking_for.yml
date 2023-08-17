@@ -19,13 +19,11 @@ elements: |-
   civicrm_1_contact_1_cg52_fieldset:
     '#type': fieldset
     '#title': 'Your Organization'
-    '#attributes':
-      style: 'display:none;'
     '#form_key': civicrm_1_contact_1_cg52_fieldset
     civicrm_1_contact_1_contact_existing:
       '#type': civicrm_contact
       '#title': 'Select Your Organization'
-      '#description': 'If you cannot find your organization, please click <a id="new-org" href=#> here</a> to add one.'
+      '#description': 'If you cannot find your organization, please click <a id="existing-org" href=#> here</a> to add one.'
       '#widget': autocomplete
       '#none_prompt': '+ Create new +'
       '#results_display':
@@ -39,80 +37,80 @@ elements: |-
       '#form_key': civicrm_1_contact_1_contact_existing
       '#parent': civicrm_1_contact_1_fieldset_fieldset
       '#extra': {  }
-    civicrm_1_contact_1_fieldset_fieldset:
-      '#type': fieldset
-      '#title': 'New Organization'
-      '#form_key': civicrm_1_contact_1_fieldset_fieldset
-      civicrm_1_contact_1_contact_organization_name:
-        '#type': textfield
-        '#title': 'Organization Name'
-        '#counter_type': character
-        '#counter_maximum': 128
-        '#counter_maximum_message': ' '
-        '#attributes':
-          style: 'display:inline'
-        '#contact_type': organization
-        '#form_key': civicrm_1_contact_1_contact_organization_name
-        '#extra':
-          width: 20
-        '#parent': civicrm_1_contact_1_fieldset_fieldset
-      civicrm_1_contact_1_address_street_address:
-        '#type': textfield
-        '#counter_type': character
-        '#counter_maximum': 96
-        '#counter_maximum_message': ' '
-        '#extra':
-          width: 60
-        '#form_key': civicrm_1_contact_1_address_street_address
-        '#parent': civicrm_1_contact_1_fieldset_fieldset
-        '#title': 'Street Address'
-      civicrm_1_contact_1_address_city:
-        '#type': textfield
-        '#counter_type': character
-        '#counter_maximum': 64
-        '#counter_maximum_message': ' '
-        '#extra':
-          width: 20
-        '#form_key': civicrm_1_contact_1_address_city
-        '#parent': civicrm_1_contact_1_fieldset_fieldset
-        '#title': City
-      civicrm_1_contact_1_address_postal_code:
-        '#type': textfield
-        '#counter_type': character
-        '#counter_maximum': 64
-        '#counter_maximum_message': ' '
-        '#extra':
-          width: 7
-        '#form_key': civicrm_1_contact_1_address_postal_code
-        '#parent': civicrm_1_contact_1_fieldset_fieldset
-        '#title': 'Postal Code'
-      civicrm_1_contact_1_address_state_province_id:
-        '#type': textfield
-        '#extra':
-          maxlength: 5
-          width: 4
-        '#data_type': state_province_abbr
-        '#form_key': civicrm_1_contact_1_address_state_province_id
-        '#parent': civicrm_1_contact_1_fieldset_fieldset
-        '#title': State/Province
-      civicrm_1_contact_1_phone_phone:
-        '#type': textfield
-        '#counter_type': character
-        '#counter_maximum': 32
-        '#counter_maximum_message': ' '
-        '#form_key': civicrm_1_contact_1_phone_phone
-        '#extra':
-          width: 20
-        '#parent': civicrm_1_contact_1_fieldset_fieldset
-        '#title': 'Phone Number'
-      civicrm_1_contact_1_email_email:
-        '#type': email
-        '#title': Email
-        '#description': 'To choose existing organization please click <a href="#new-org" id="existing-org">here</a> to select one.'
-        '#form_key': civicrm_1_contact_1_email_email
-        '#extra':
-          width: 20
-        '#parent': civicrm_1_contact_1_fieldset_fieldset
+  civicrm_1_contact_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': 'New Organization'
+    '#form_key': civicrm_1_contact_1_fieldset_fieldset
+    civicrm_1_contact_1_contact_organization_name:
+      '#type': textfield
+      '#title': 'Organization Name'
+      '#counter_type': character
+      '#counter_maximum': 128
+      '#counter_maximum_message': ' '
+      '#attributes':
+        style: 'display:inline'
+      '#contact_type': organization
+      '#form_key': civicrm_1_contact_1_contact_organization_name
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+    civicrm_1_contact_1_address_street_address:
+      '#type': textfield
+      '#counter_type': character
+      '#counter_maximum': 96
+      '#counter_maximum_message': ' '
+      '#extra':
+        width: 60
+      '#form_key': civicrm_1_contact_1_address_street_address
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': 'Street Address'
+    civicrm_1_contact_1_address_city:
+      '#type': textfield
+      '#counter_type': character
+      '#counter_maximum': 64
+      '#counter_maximum_message': ' '
+      '#extra':
+        width: 20
+      '#form_key': civicrm_1_contact_1_address_city
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': City
+    civicrm_1_contact_1_address_postal_code:
+      '#type': textfield
+      '#counter_type': character
+      '#counter_maximum': 64
+      '#counter_maximum_message': ' '
+      '#extra':
+        width: 7
+      '#form_key': civicrm_1_contact_1_address_postal_code
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': 'Postal Code'
+    civicrm_1_contact_1_address_state_province_id:
+      '#type': textfield
+      '#extra':
+        maxlength: 5
+        width: 4
+      '#data_type': state_province_abbr
+      '#form_key': civicrm_1_contact_1_address_state_province_id
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': State/Province
+    civicrm_1_contact_1_phone_phone:
+      '#type': textfield
+      '#counter_type': character
+      '#counter_maximum': 32
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_contact_1_phone_phone
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': 'Phone Number'
+    civicrm_1_contact_1_email_email:
+      '#type': email
+      '#title': Email
+      '#description': 'To choose existing organization please click <a href="#" id="new-org-block">here</a> to select one.'
+      '#form_key': civicrm_1_contact_1_email_email
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
   flexbox_07:
     '#type': webform_flexbox
     markup_02:
@@ -151,7 +149,7 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#extra': {  }
       '#required': true
-      '#disabled': true
+      '#readonly': true
   location:
     '#type': webform_markup
     '#markup': '<h2>Location</h2>'
@@ -185,14 +183,15 @@ elements: |-
         'Microsoft Teams': 'Microsoft Teams'
         Zoom: Zoom
         Other: Other
+        TBD: TBD
       '#extra':
         aslist: 1
         multiple: 0
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_119
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
+      '#default_option': TBD
+      '#default_value': TBD
       '#civicrm_live_options': '1'
   flexbox_18:
     '#type': webform_flexbox
@@ -281,6 +280,7 @@ elements: |-
       '#type': civicrm_options
       '#title': 'Activity Type'
       '#description': 'Select the activity that best aligns with the primary focus of your work/meeting for this session. Additional details may be listed in the outputs/deliverables completed and the Activity Notes fields. Depending on submissions/how it&#39;s being used we may build out more features such as custom fields for recurring content in the Notes field and other improvements to keep improving this form.'
+      '#empty_option': '- select -'
       '#civicrm_live_options': 0
       '#options':
         207: 'AD - Best/ Promising Practices Research'
@@ -421,6 +421,10 @@ elements: |-
         329: 'Volunteer Training'
         235: 'PACS - Testifying'
       '#required': true
+      '#states':
+        disabled:
+          ':input[name="aid"]':
+            filled: true
       '#default_value': '[current-page:query:booking_type]'
       '#extra':
         aslist: 1
@@ -513,7 +517,10 @@ elements: |-
         SexualHealth: 'Sexual Health'
         SexualViolence: 'Sexual Violence'
         ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
-        CustomSomethingDifferent: 'Custom / Unsure'
+        CustomSomethingDifferent: 'Custom / Other'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-3
       '#extra':
         multiple: 1
         aslist: 1
@@ -554,9 +561,6 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_40
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#civicrm_live_options': 1
-      '#wrapper_attributes':
-        class:
-          - jma-grid-3
     civicrm_1_activity_1_cg2_custom_41:
       '#type': textfield
       '#title': 'Content Other Topic'
@@ -628,6 +632,12 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+  aid:
+    '#type': number
+    '#title': aid
+    '#default_value': '[current-page:query:aid]'
+    '#wrapper_attributes':
+      style: 'display:none;'
 css: ''
 javascript: ''
 settings:
@@ -645,7 +655,7 @@ settings:
   form_open_message: ''
   form_close_message: ''
   form_exception_message: ''
-  form_previous_submissions: true
+  form_previous_submissions: false
   form_confidential: false
   form_confidential_message: ''
   form_disable_remote_addr: false
@@ -859,17 +869,17 @@ handlers:
       civicrm_1_contact_1_address_country_id: 0
       civicrm_1_contact_1_address_state_province_id: create_civicrm_webform_element
       civicrm_1_contact_1_address_county_id: 0
-      civicrm_1_contact_1_address_location_type_id: '1'
+      civicrm_1_contact_1_address_location_type_id: '3'
       civicrm_1_contact_1_address_is_primary: '1'
       contact_1_number_of_phone: '1'
       civicrm_1_contact_1_phone_phone: create_civicrm_webform_element
       civicrm_1_contact_1_phone_phone_ext: 0
       civicrm_1_contact_1_phone_phone_type_id: '1'
-      civicrm_1_contact_1_phone_location_type_id: '1'
+      civicrm_1_contact_1_phone_location_type_id: '3'
       civicrm_1_contact_1_phone_is_primary: '1'
       contact_1_number_of_email: '1'
       civicrm_1_contact_1_email_email: create_civicrm_webform_element
-      civicrm_1_contact_1_email_location_type_id: '1'
+      civicrm_1_contact_1_email_location_type_id: '3'
       civicrm_1_contact_1_email_is_primary: '1'
       contact_1_number_of_website: '0'
       contact_1_number_of_im: '0'
@@ -880,7 +890,7 @@ handlers:
       message: ''
       activity_number_of_activity: '1'
       activity_1_settings_existing_activity_status:
-        '': ''
+        2: '2'
       activity_1_settings_details:
         entire_result: 0
         view_link: 0
@@ -1276,21 +1286,22 @@ handlers:
             number_of_cg30: '0'
             address:
               1:
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
             phone:
               1:
                 phone_type_id: '1'
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
             email:
               1:
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
         activity:
           number_of_activity: '1'
           1:
-            existing_activity_status: {  }
+            existing_activity_status:
+              2: '2'
             details: {  }
             dynamic_custom_cg2: 0
             dynamic_custom_cg9: 0

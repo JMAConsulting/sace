@@ -94,8 +94,9 @@ elements: |-
   civicrm_2_contact_1_contact_existing:
     '#type': civicrm_contact
     '#title': 'Your Organization'
-    '#widget': autocomplete
     '#description': 'If you cannot find your organization, please click <a href="#" id="new-org-block">here</a> to create one. Please note that this field is for your organization&#39;s information only.'
+    '#disabled': true
+    '#widget': autocomplete
     '#none_prompt': '- None Found -'
     '#results_display':
       organization_name: organization_name
@@ -443,32 +444,32 @@ elements: |-
       '#default_option': '1'
     civicrm_1_activity_1_cg2_custom_334:
       '#type': civicrm_options
-      '#title': 'Safer Spaces Content'
+      '#title': 'Safer Spaces Programs Content'
       '#civicrm_live_options': 0
       '#options':
         1: 'Yes'
         0: 'No'
+      '#default_value': '0'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_334
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
-      '#default_value': '0'
     civicrm_1_activity_1_cg2_custom_1261:
       '#type': civicrm_options
-      '#title': 'Privilege and Oppression Content'
+      '#title': 'Privilege & Oppression Content'
       '#civicrm_live_options': 0
       '#options':
         1: 'Yes'
         0: 'No'
+      '#default_value': '0'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_1261
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
-      '#default_value': '0'
   civicrm_1_activity_1_cg2_custom_333:
     '#type': civicrm_options
     '#title': 'Presentation Population of Focus'
@@ -575,6 +576,12 @@ elements: |-
       '#counter_maximum_message': ' '
       '#states':
         visible:
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '55'
+          - xor
+          - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              value: '59'
+          - xor
           - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
               value: '203'
           - xor

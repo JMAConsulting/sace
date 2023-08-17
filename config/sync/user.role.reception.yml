@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: reception
 label: Reception
-weight: 7
+weight: 10
 is_admin: null
 permissions: {  }

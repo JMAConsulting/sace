@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: wiseguyz_staff
 label: 'WiseGuyz Staff'
-weight: 16
+weight: 13
 is_admin: null
 permissions: {  }

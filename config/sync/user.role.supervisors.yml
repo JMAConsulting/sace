@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: supervisors
 label: Supervisors
-weight: -1
+weight: 4
 is_admin: null
 permissions: {  }

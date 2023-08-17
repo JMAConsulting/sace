@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: fund_development_officer
-label: 'Fund Development Officer'
-weight: 18
+label: 'Fund Development'
+weight: -9
 is_admin: null
 permissions: {  }

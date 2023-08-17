@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: eval
 label: Eval
-weight: 12
+weight: -12
 is_admin: null
 permissions: {  }

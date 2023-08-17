@@ -10,7 +10,7 @@ _core:
   default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
 id: anonymous
 label: 'Anonymous user'
-weight: -10
+weight: -2
 is_admin: false
 permissions:
   - 'access CiviMail subscribe/unsubscribe pages'

@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: clin_director
 label: 'CLIN Director'
-weight: 0
+weight: 5
 is_admin: null
 permissions: {  }

@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: pe_tl
 label: 'PE TL'
-weight: 9
+weight: -6
 is_admin: null
 permissions: {  }

@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 id: pe
 label: 'PE Staff'
-weight: 19
+weight: -7
 is_admin: null
 permissions: {  }
