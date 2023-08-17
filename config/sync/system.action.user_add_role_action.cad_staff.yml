@@ -1,0 +1,14 @@
+uuid: 81661d72-7657-495c-af62-4146cdc2c517
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cad_staff
+  module:
+    - user
+id: user_add_role_action.cad_staff
+label: 'Add the CAD Staff role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cad_staff

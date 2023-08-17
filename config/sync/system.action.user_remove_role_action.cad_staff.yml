@@ -1,0 +1,14 @@
+uuid: 8e46216b-9d58-48b4-b368-f430f056cbe8
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cad_staff
+  module:
+    - user
+id: user_remove_role_action.cad_staff
+label: 'Remove the CAD Staff role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cad_staff

@@ -1,0 +1,14 @@
+uuid: d6eeaf48-c163-4bc3-8fe8-3f3e3465cdf1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.ce_staff
+  module:
+    - user
+id: user_remove_role_action.ce_staff
+label: 'Remove the CE Staff role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: ce_staff

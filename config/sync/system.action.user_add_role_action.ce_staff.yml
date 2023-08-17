@@ -1,0 +1,14 @@
+uuid: 6655229b-5737-4e4e-aab4-468a94682780
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.ce_staff
+  module:
+    - user
+id: user_add_role_action.ce_staff
+label: 'Add the CE Staff role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: ce_staff
