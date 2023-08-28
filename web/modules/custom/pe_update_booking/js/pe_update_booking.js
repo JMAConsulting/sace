@@ -1,29 +1,27 @@
 jQuery(document).ready(function ($, settings) {  
   //Presentation Topic Custom/SOmething Different toggle text field
-  $(`${drupalSettings.ped_booking_update.start_date}-date, ${drupalSettings.ped_booking_update.start_date}-time, ${drupalSettings.ped_booking_update.end_date}-date, ${drupalSettings.ped_booking_update.end_date}-time`).on('change', function () {
+  $(`${drupalSettings.ped_booking_update.start_date}-date, ${drupalSettings.ped_booking_update.start_date}-time, ${drupalSettings.ped_booking_update.end_date}-date, ${drupalSettings.ped_booking_update.end_date}-time`).on('input', function () {
         var end = $(`${drupalSettings.ped_booking_update.end_date}-date`).val();
         var endTime = $(`${drupalSettings.ped_booking_update.end_date}-time`).val();
         var start = $(`${drupalSettings.ped_booking_update.start_date}-date`).val();
         var startTime = $(`${drupalSettings.ped_booking_update.start_date}-time`).val();
         if (end && start) {
-          var end1 = new Date(end);
-          var start1 = new Date(start);
-          var sameDay = (((end1.getTime() - start1.getTime()) / (1000 * 60)) == 0);
-          setDuration(start + ' ' + startTime, end + ' ' + endTime, sameDay);
+          setDuration(start + ' ' + startTime, end + ' ' + endTime, endTime);
         }
       });
 
-      function setDuration(start, end, sameDay) {
+      function setDuration(start, end, endTime) {
         start = new Date(start);
         end = new Date(end);
-        if (start > end && !sameDay) {
+        var duration = (end.getTime() - start.getTime()) / (1000 * 60);
+        if (duration < 0 && endTime) {
           alert('Start Date cannot be after the End Date');
           $(`${drupalSettings.ped_booking_update.end_date}-date, ${drupalSettings.ped_booking_update.end_date}-time`).val('');
           $('#edit-civicrm-1-activity-1-activity-duration').val('');
           return;
         }
 
-        $('#edit-civicrm-1-activity-1-activity-duration').val((end.getTime() - start.getTime()) / (1000 * 60));
+        $('#edit-civicrm-1-activity-1-activity-duration').val(duration);
       }
 
   let checkbox = "#edit-civicrm-1-activity-1-cg2-custom-40-customsomethingdifferent";
