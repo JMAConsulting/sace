@@ -41,13 +41,11 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '204'
     '#text': |
-      <p><img alt="A photo of participants in an online meeting is displayed out of focus on a laptop screen with a cup of tea in the foreground of the desk, while the words &quot;We believe in creating a culture of consent&quot; are shown on a dark background to the side" class="" data-entity-type="" data-entity-uuid="" id="" width="100%" src="https://secure.sace.ca/sites/default/files/2023-07/InstitutionalSupportBanner_0.png" title="InstitutionalSupportBanner" /></p>
-
-      <p>&nbsp;</p>
-
       <p>The SACE Institutional Support team empowers institutions and other organizations to take action against sexual violence. We are able to offer consultation provisions on a range of topics to support organizations undertaking their own efforts to address sexual violence in our community.</p>
 
       <p>Please note that Institutional Support services are strongly tied to our Public Education program: without the educational foundation to inform why and how these policies and practices function and to support culture shift, we find that policies do not find their way into practice. Once we have received your support request, we will reach out to further explore your needs, including public education services.</p>
+
+      <p><img alt="A photo of participants in an online meeting is displayed out of focus on a laptop screen with a cup of tea in the foreground of the desk, while the words &quot;We believe in creating a culture of consent&quot; are shown on a dark background to the side" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/InstitutionalSupportBanner_0.png" title="InstitutionalSupportBanner" width="100%" /></p>
 
       <h2>General Information</h2>
     '#format': html
@@ -58,11 +56,11 @@ elements: |-
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '201'
     '#text': |
-      <p><img alt="A photo taken at dusk shows masculine-looking young people in silhoutte against the sky, and a teardrop icon sits in the foreground surrounded by the words &quot;let boys be emotional&quot;. To the left is the logo for WiseGuyz Centre for Sexuality" class="" data-entity-type="" data-entity-uuid="" id="/wiseguyzbanner" width="100%"  src="https://secure.sace.ca/sites/default/files/2023-07/WiseGuyz Booking Request.png" title="WiseGuyz banner" /></p>
+      <p><img alt="A photo taken at dusk shows masculine-looking young people in silhoutte against the sky, and a teardrop icon sits in the foreground surrounded by the words &quot;let boys be emotional&quot;. To the left is the logo for WiseGuyz Centre for Sexuality" class="" data-entity-type="" data-entity-uuid="" id="/wiseguyzbanner" src="https://secure.sace.ca/sites/default/files/2023-07/WiseGuyz Booking Request.png" title="WiseGuyz banner" width="100%" /></p>
 
       <p>&nbsp;</p>
 
-      <p>The WiseGuyz Program will have a blurb outlining services.</p>
+      <p>The WiseGuyz Program will have a blurb outlining services before this form is made public.</p>
 
       <h2>General Information</h2>
     '#format': html
@@ -353,23 +351,22 @@ elements: |-
           value: '203'
     civicrm_1_activity_1_cg2_custom_1233:
       '#type': civicrm_options
-      '#data_type': String
-      '#extra':
-        aslist: 1
-        items: |-
-          1|Community Booth or Table
-          2|Speaking Engagement
-          3|Discussion Panel
-          4|Media Interview/Response
-      '#form_key': civicrm_1_activity_1_cg2_custom_1233
+      '#title': 'Community Engagement Service'
+      '#empty_option': '- select -'
       '#options':
         1: 'Community Booth or Table'
         2: 'Speaking Engagement'
         3: 'Discussion Panel'
         4: 'Media Interview/Response'
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_1233
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Community Engagement Service'
-      '#civicrm_live_options': 1
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_1234:
       '#type': textarea
       '#title': 'Your Event or Initiative'
@@ -385,12 +382,14 @@ elements: |-
     '#title': 'Consultation Topic'
     '#description': 'Please note that organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review.&nbsp;'
     '#empty_option': '- select - '
+    '#civicrm_live_options': 0
     '#options':
-      1: 'Sexual Violence Response and Prevention'
-      2: 'Creating Safer Spaces'
-      3: 'Sexual Violence Policy'
-      4: 'Sexual Violence Resources'
-      5: 'Sexual Violence Education Services'
+      CreatingSaferSpaces: 'Creating Safer Spaces'
+      SexualViolenceEducationServices: 'Sexual Violence Education Services'
+      SexualViolencePolicy: 'Sexual Violence Policy'
+      SexualViolenceResources: 'Sexual Violence Resources'
+      'Sexua ViolenceResponsePrevention': 'Sexual Violence Response & Prevention'
+    '#required': true
     '#states':
       visible:
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -404,7 +403,6 @@ elements: |-
     '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#default_option': ''
     '#default_value': ''
-    '#civicrm_live_options': '1'
   topics_markup:
     '#type': processed_text
     '#states':
@@ -602,16 +600,15 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
       '#title': 'Delivery Format'
+      '#empty_option': '- select -'
       '#options':
         'In-Person Presentation': 'In-Person Presentation'
         'Online Presentation': 'Online Presentation'
         'Online Course': 'Online Course'
-        'In-Person Meeting': 'In-Person Meeting'
-        'Online Meeting': 'Online Meeting'
-        'In-Person Event': 'In-Person Event'
-        'Online Event': 'Online Event'
+        'In-Person Activity': 'In-Person Activity'
+        'Online Activity': 'Online Activity'
+        'Phone Activity': 'Phone Activity'
       '#required': true
-      '#default_value': '2'
       '#format_items': ul
       '#extra':
         aslist: 1
@@ -619,6 +616,7 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_88
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
+      '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_90:
       '#type': civicrm_options
@@ -1784,6 +1782,7 @@ handlers:
       civicrm_1_activity_1_cg58_custom_1265: 0
       civicrm_1_activity_1_cg58_custom_1266: create_civicrm_webform_element
       civicrm_1_activity_1_cg58_custom_1267: 0
+      civicrm_1_activity_1_cg58_custom_1287: 0
       participant_reg_type: '0'
       reg_options:
         event_type:

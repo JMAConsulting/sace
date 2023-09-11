@@ -312,18 +312,17 @@ elements: |-
         'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator'
         "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module'
         "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": 'Non-Consensual Photo Sharing Add-On Module'
+        None: None
       '#states':
         visible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '196'
       '#extra':
-        aslist: 1
-        multiple: 0
+        aslist: 0
+        multiple: 1
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_662
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
       '#civicrm_live_options': '1'
   container:
     '#type': container

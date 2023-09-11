@@ -29,7 +29,7 @@ visibility:
     id: request_path
     negate: true
     context_mapping: {  }
-    pages: ''
+    pages: "/civicrm/contribute/*\r\n/form/donate-to-sace"
   user_role:
     id: user_role
     negate: false

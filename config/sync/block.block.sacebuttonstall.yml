@@ -6,7 +6,6 @@ dependencies:
     - 'block_content:custom:ed75daff-2e46-4d5e-b060-a4e30a1f2e41'
   module:
     - block_content
-    - system
     - user
   theme:
     - oliverolocal
@@ -33,7 +32,3 @@ visibility:
     roles:
       anonymous: anonymous
       authenticated: authenticated
-  request_path:
-    id: request_path
-    negate: false
-    pages: "/civicrm/contribute/*\r\n/form/donate-to-sace"

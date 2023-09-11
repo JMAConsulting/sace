@@ -219,14 +219,14 @@ elements: |-
       '#options':
         'Yes': 'Yes'
         'No': 'No'
-      '#default_value': ''
       '#extra':
         aslist: 1
         multiple: 0
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_657
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
+      '#default_option': 'No'
+      '#default_value': 'No'
       '#civicrm_live_options': '1'
     civicrm_2_contact_1_cg52_custom_663:
       '#type': textfield
