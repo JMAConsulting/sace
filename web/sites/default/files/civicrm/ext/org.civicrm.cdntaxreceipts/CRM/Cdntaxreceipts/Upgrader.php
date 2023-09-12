@@ -3,7 +3,7 @@
 /**
  * Collection of upgrade steps
  */
-class CRM_Cdntaxreceipts_Upgrader extends CRM_Cdntaxreceipts_Upgrader_Base {
+class CRM_Cdntaxreceipts_Upgrader extends CRM_Extension_Upgrader_Base {
 
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
@@ -22,6 +22,7 @@ Attached please find your official tax receipt for income tax purposes.
     $email_subject = 'Your tax receipt {$receipt.receipt_no}';
 
     $this->_create_message_template($email_message, $email_subject);
+    $this->_setSourceDefaults();
   }
 
   /**
@@ -194,6 +195,11 @@ AND COLUMN_NAME = 'receipt_status'");
     return TRUE;
   }
 
+  public function upgrade_1413() {
+    $this->_setSourceDefaults();
+    return TRUE;
+  }
+
   public function _create_message_template($email_message, $email_subject) {
 
     $html_message = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -267,6 +273,9 @@ AND COLUMN_NAME = 'receipt_status'");
       'is_reserved' => 0,
     );
     civicrm_api3('MessageTemplate', 'create', $params);
+    $params['is_default'] = 0;
+    $params['is_reserved'] = 1;
+    civicrm_api3('MessageTemplate', 'create', $params);
 
     $params = array(
       'msg_title' => 'CDN Tax Receipts - Email Annual/Aggregate Receipt',
@@ -278,8 +287,26 @@ AND COLUMN_NAME = 'receipt_status'");
       'is_reserved' => 0,
     );
     civicrm_api3('MessageTemplate', 'create', $params);
+    $params['is_default'] = 0;
+    $params['is_reserved'] = 1;
+    civicrm_api3('MessageTemplate', 'create', $params);
 
     return TRUE;
+  }
+
+  private function _setSourceDefaults() {
+    \Civi::settings()->set('cdntaxreceipts_source_field', '{contribution.source}');
+    $locales = CRM_Core_I18n::getMultilingual();
+    if ($locales) {
+      foreach ($locales as $locale) {
+        // The space in "Source: " is not a typo.
+        \Civi::settings()->set('cdntaxreceipts_source_label_' . $locale, ts('Source: ', array('domain' => 'org.civicrm.cdntaxreceipts')));
+      }
+    }
+    else {
+      // The space in "Source: " is not a typo.
+      \Civi::settings()->set('cdntaxreceipts_source_label_' . CRM_Core_I18n::getLocale(), ts('Source: ', array('domain' => 'org.civicrm.cdntaxreceipts')));
+    }
   }
 
   /**

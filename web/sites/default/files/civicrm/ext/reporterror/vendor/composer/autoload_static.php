@@ -6,14 +6,11 @@ namespace Composer\Autoload;
 
 class ComposerStaticInita199ac280c2355e17c0acc461fad9daa
 {
-    public static $files = array (
-        'f54c9b5e988cab550b89236716b03511' => __DIR__ . '/..' . '/graylog2/gelf-php/src/check_technical_requirements.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'ParagonIE\\ConstantTime\\' => 23,
         ),
         'M' => 
         array (
@@ -29,6 +26,10 @@ class ComposerStaticInita199ac280c2355e17c0acc461fad9daa
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'ParagonIE\\ConstantTime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
         'Monolog\\' => 
         array (
