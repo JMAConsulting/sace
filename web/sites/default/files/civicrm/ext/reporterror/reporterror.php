@@ -21,15 +21,6 @@ function reporterror_civicrm_config(&$config) {
 }
 
 /**
- * Implementation of hook_civicrm_xmlMenu
- *
- * @param $files array(string)
- */
-function reporterror_civicrm_xmlMenu(&$files) {
-  _reporterror_civix_civicrm_xmlMenu($files);
-}
-
-/**
  * Implementation of hook_civicrm_install
  */
 function reporterror_civicrm_install() {
@@ -103,16 +94,6 @@ function reporterror_civicrm_disable() {
  */
 function reporterror_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
   return _reporterror_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implementation of hook_civicrm_managed
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- */
-function reporterror_civicrm_managed(&$entities) {
-  _reporterror_civix_civicrm_managed($entities);
 }
 
 /**
@@ -363,7 +344,7 @@ function _reporterror_civicrm_get_session_info($show_session_data = FALSE) {
       $output .= _reporterror_civicrm_parse_array($contact);
     }
     catch (Exception $e) {
-      $output .= "Failed to fetch user info using the API:\n";
+      $output .= "Failed to fetch user info using the API: " . $e->getMessage() . "\n";
     }
   }
   else {
@@ -385,8 +366,7 @@ function _reporterror_civicrm_get_session_info($show_session_data = FALSE) {
 
   // $_SERVER
   $output .= "\n\n***SERVER***\n";
-  $output .= _reporterror_civicrm_parse_array($_SERVER);
-  return $output;
+  return $output . _reporterror_civicrm_parse_array($_SERVER);
 }
 
 /**
@@ -408,11 +388,4 @@ function reporterror_setting_get($name, $options_overrides) {
     return $options_overrides[$name];
   }
   return Civi::settings()->get($name);
-}
-
-/**
- * Implements hook_civicrm_alterSettingsFolders().
- */
-function reporterror_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _reporterror_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
