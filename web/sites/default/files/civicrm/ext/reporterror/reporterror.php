@@ -277,7 +277,12 @@ function _reporterror_civicrm_parse_array($array) {
 
   foreach ($array as $key => $value) {
     if (is_array($value) || is_object($value)) {
-      $value = print_r($value, TRUE);
+      //$value = print_r($value, TRUE);
+      $value = (new \Symfony\Component\VarDumper\Dumper\CliDumper('php://output'))
+          ->dump(
+            (new \Symfony\Component\VarDumper\Cloner\VarCloner())->cloneVar($value),
+            TRUE);
+
     }
 
     $key = str_pad($key . ':', 20, ' ');
