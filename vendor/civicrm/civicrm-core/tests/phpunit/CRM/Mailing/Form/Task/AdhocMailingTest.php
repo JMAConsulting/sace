@@ -15,21 +15,6 @@
 class CRM_Mailing_Form_Task_AdhocMailingTest extends CiviUnitTestCase {
 
   /**
-   * @throws \Exception
-   */
-  protected function setUp(): void {
-    parent::setUp();
-    $this->_contactIds = [
-      $this->individualCreate(['first_name' => 'Antonia', 'last_name' => 'D`souza']),
-      $this->individualCreate(['first_name' => 'Anthony', 'last_name' => 'Collins']),
-    ];
-    $this->_optionValue = $this->callAPISuccess('optionValue', 'create', [
-      'label' => '"Seamus Lee" <seamus@example.com>',
-      'option_group_id' => 'from_email_address',
-    ]);
-  }
-
-  /**
    * Test creating a hidden smart group from a search builder search.
    *
    * A hidden smart group is a group used for sending emails.
@@ -59,8 +44,9 @@ class CRM_Mailing_Form_Task_AdhocMailingTest extends CiviUnitTestCase {
     catch (CRM_Core_Exception_PrematureExitException $e) {
       // Nothing to see here.
     }
-    $savedSearch = $this->callAPISuccessGetSingle('SavedSearch', []);
-    $this->assertEquals($formValues, $savedSearch['form_values']);
+    $savedSearch = $this->callAPISuccess('SavedSearch', 'get', ['sequential' => 1, 'options' => ['sort' => "id DESC"]]);
+    $this->assertGreaterThan(0, $savedSearch['count']);
+    $this->assertEquals($formValues, $savedSearch['values'][0]['form_values']);
   }
 
 }

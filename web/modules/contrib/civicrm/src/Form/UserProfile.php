@@ -90,6 +90,7 @@ class UserProfile extends FormBase {
     \CRM_Core_Resources::singleton()->addCoreResources();
 
     $form['#title'] = $this->user->getAccountName();
+    $form['#attributes'] = ['enctype' => "multipart/form-data"];
     $form['form'] = [
       '#type' => 'fieldset',
       '#title' => $this->ufGroup['title'],
@@ -113,7 +114,7 @@ class UserProfile extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $errors = \CRM_Core_BAO_UFGroup::isValid($this->contactId, $this->ufGroup['title']);
+    $errors = \CRM_Core_BAO_UFGroup::isValid($this->contactId, $this->ufGroup['name']);
 
     if (is_array($errors)) {
       foreach ($errors as $name => $error) {

@@ -22,16 +22,14 @@ class api_v3_WebsiteTest extends CiviUnitTestCase {
   protected $id;
   protected $_entity;
 
-  public $DBResetRequired = FALSE;
-
   public function setUp(): void {
     parent::setUp();
     $this->useTransaction();
 
     $this->_entity = 'website';
-    $this->_contactID = $this->organizationCreate();
+    $contactID = $this->organizationCreate();
     $this->params = [
-      'contact_id' => $this->_contactID,
+      'contact_id' => $contactID,
       'url' => 'website.com',
       'website_type_id' => 1,
     ];

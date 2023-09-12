@@ -40,8 +40,8 @@ class CRM_Core_ResourcesTest extends CiviUnitTestCase {
   public function setUp(): void {
     parent::setUp();
 
-    list ($this->basedir, $this->container, $this->mapper) = $this->_createMapper();
-    $cache = new CRM_Utils_Cache_Arraycache([]);
+    $this->mapper = $this->createMapper();
+    $cache = new CRM_Utils_Cache_ArrayCache([]);
     $this->res = new CRM_Core_Resources($this->mapper, new CRM_Core_Resources_Strings($cache), NULL);
     $this->res->setCacheCode('resTest');
     CRM_Core_Resources::singleton($this->res);
@@ -427,22 +427,18 @@ class CRM_Core_ResourcesTest extends CiviUnitTestCase {
   }
 
   /**
-   * @param CRM_Utils_Cache_Interface $cache
-   * @param string $cacheKey
-   *
-   * @return array
-   *   [string $basedir, CRM_Extension_Container_Interface, CRM_Extension_Mapper]
+   * @return CRM_Extension_Mapper
    */
-  public function _createMapper(CRM_Utils_Cache_Interface $cache = NULL, $cacheKey = NULL) {
+  private function createMapper() {
     $basedir = rtrim($this->createTempDir('ext-'), '/');
     mkdir("$basedir/com.example.ext");
     mkdir("$basedir/com.example.ext/js");
     file_put_contents("$basedir/com.example.ext/info.xml", "<extension key='com.example.ext' type='report'><file>oddball</file></extension>");
     file_put_contents("$basedir/com.example.ext/js/example.js", "alert('Boo!');");
     // not needed for now // file_put_contents("$basedir/weird/bar/oddball.php", "<?php\n");
-    $c = new CRM_Extension_Container_Basic($basedir, 'http://ext-dir', $cache, $cacheKey);
+    $c = new CRM_Extension_Container_Basic($basedir, 'http://ext-dir', NULL, NULL);
     $mapper = new CRM_Extension_Mapper($c, NULL, NULL, '/pathto/civicrm', 'http://core-app');
-    return [$basedir, $c, $mapper];
+    return $mapper;
   }
 
   /**

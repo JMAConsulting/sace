@@ -1,18 +1,25 @@
 <?php
 namespace Civi\AssetPlugin\Integration;
 
+use Civi\AssetPlugin\Util\ComposerJsonMerge;
 use ProcessHelper\ProcessHelper as PH;
 
+/**
+ * @group composer-1
+ * @group composer-2
+ */
 class CustomPathsTest extends \Civi\AssetPlugin\Integration\IntegrationTestCase {
 
-  public static function getComposerJson() {
-    return parent::getComposerJson() + [
+  public static function getComposerJson(): array {
+    return ComposerJsonMerge::merge(parent::getComposerJson(), [
       'name' => 'test/custom-paths',
       'require' => [
         'civicrm/civicrm-asset-plugin' => '@dev',
         'civicrm/civicrm-core' => '@stable',
         'civicrm/civicrm-packages' => '@stable',
         'civipkg/org.civicrm.api4' => '4.4.3',
+        // Circa Feb 2023, composer-patches@1.x-head failing on composer-1.10.26. Lock in.
+        'cweagans/composer-patches' => '~1.7.0',
       ],
       'minimum-stability' => 'dev',
       'extra' => [
@@ -22,10 +29,10 @@ class CustomPathsTest extends \Civi\AssetPlugin\Integration\IntegrationTestCase 
           // FIXME: Maybe custom 'files' listing as well?
         ],
       ],
-    ];
+    ]);
   }
 
-  public static function setUpBeforeClass() {
+  public static function setUpBeforeClass(): void {
     parent::setUpBeforeClass();
     self::initTestProject(static::getComposerJson());
     PH::runOk('composer install');

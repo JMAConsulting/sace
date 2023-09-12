@@ -324,7 +324,7 @@ class ezcMailTest extends ezcTestCase
         $this->mail->subject = "æøå";
         $this->mail->body = new ezcMailText( "Dette er body ßßæøååå" );
         $this->mail->generateHeaders();
-        $expected = '<'. date( 'YmdGHjs' ) . '.' . getmypid() . '.60@ez.no>';
+        $expected = '<'. date( 'YmdGHjs' ) . '.' . getmypid() . '.61@ez.no>';
         $this->assertEquals( $expected, $this->mail->getHeader( 'Message-Id' ) );
     }
 
@@ -523,7 +523,7 @@ class ezcMailTest extends ezcTestCase
         }
         catch ( ezcBaseValueException $e )
         {
-            $this->assertEquals( "The value 'with space@example.com' that you were trying to assign to setting 'returnPath' is invalid. Allowed values are: the characters '" . ezcMail::RETURN_PATH_CHARS . "'.", $e->getMessage() );
+            $this->assertEquals( "The value 'with space@example.com' that you were trying to assign to setting 'returnPath' is invalid. Allowed values are: a valid email address or null.", $e->getMessage() );
         }
     }
 

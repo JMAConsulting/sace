@@ -54,11 +54,6 @@ class AutocompleteTest extends Api4TestBase implements HookInterface, Transactio
     }
   }
 
-  public function setUpHeadless() {
-    // TODO: search_kit should probably be part of the 'headless()' baseline.
-    return \Civi\Test::headless()->install(['org.civicrm.search_kit'])->apply();
-  }
-
   public function setUp(): void {
     $this->hookCallback = NULL;
     // Ensure MockBasicEntity gets added via above listener
@@ -66,6 +61,11 @@ class AutocompleteTest extends Api4TestBase implements HookInterface, Transactio
     MockBasicEntity::delete(FALSE)->addWhere('identifier', '>', 0)->execute();
     \Civi::settings()->set('includeWildCardInName', 1);
     parent::setUp();
+  }
+
+  public function tearDown(): void {
+    \Civi::settings()->revert('search_autocomplete_count');
+    parent::tearDown();
   }
 
   public function testMockEntityAutocomplete(): void {
@@ -234,7 +234,7 @@ class AutocompleteTest extends Api4TestBase implements HookInterface, Transactio
   }
 
   public function testAutocompleteWithDifferentKey() {
-    $label = $this->randomLetters();
+    $label = \CRM_Utils_String::createRandom(10, implode('', range('a', 'z')));
     $sample = $this->saveTestRecords('SavedSearch', [
       'records' => [
         ['name' => 'c', 'label' => "C $label"],
@@ -258,7 +258,7 @@ class AutocompleteTest extends Api4TestBase implements HookInterface, Transactio
       ->setInput((string) $sample['b']['id'])
       ->setKey('name')
       ->execute();
-    $this->assertCount(1, $result1);
+    $this->assertEquals(1, $result1->countFetched());
     $this->assertEquals('b', $result1[0]['id']);
 
     // This key won't be used since api_entity is not a unique index
@@ -272,8 +272,9 @@ class AutocompleteTest extends Api4TestBase implements HookInterface, Transactio
     $this->assertEquals($sample['c']['id'], $result2[2]['id']);
   }
 
-  public function testContactAutocompleteById() {
-    $firstName = $this->randomLetters();
+  public function testContactAutocompleteById(): void {
+    \Civi::settings()->set('search_autocomplete_count', 3);
+    $firstName = \CRM_Utils_String::createRandom(10, implode('', range('a', 'z')));
 
     $contacts = $this->saveTestRecords('Contact', [
       'records' => array_fill(0, 15, ['first_name' => $firstName]),
@@ -285,25 +286,36 @@ class AutocompleteTest extends Api4TestBase implements HookInterface, Transactio
       ->addRecord(['id' => $contacts[0]['id'], 'last_name' => "Aaaac$cid"])
       ->addRecord(['id' => $contacts[14]['id'], 'last_name' => "Aaaab$cid"])
       ->addRecord(['id' => $contacts[6]['id'], 'last_name' => "Aaaaa$cid"])
+      ->addRecord(['id' => $contacts[1]['id'], 'last_name' => "Aaaad$cid"])
       ->execute();
 
-    $result = Contact::autocomplete()
-      ->setInput((string) $cid)
-      ->execute();
+    $page = 1;
+    $all = [];
+    do {
+      $result = Contact::autocomplete()
+        ->setPage($page++)
+        ->setInput((string) $cid)
+        ->execute();
+      $all = array_merge($all, (array) $result);
+    } while ($result->countFetched() < $result->countMatched());
+
+    // Should have iterated at least 3 times
+    $this->assertGreaterThanOrEqual(3, $page);
 
     // Exact match should be at beginning of the list
-    $this->assertContains($cid, $result->column('id'));
-    $this->assertEquals($cid, $result[0]['id']);
+    $this->assertEquals($cid, \CRM_Utils_Array::first($all)['id']);
+    $this->assertEquals($cid, $all[0]['id']);
     // If by chance there are other matching contacts in the db, skip over them
-    foreach ($result as $i => $row) {
+    foreach ($all as $i => $row) {
       if ($row['id'] == $contacts[6]['id']) {
         break;
       }
     }
-    // The other 3 matches should be in order
-    $this->assertEquals($contacts[6]['id'], $result[$i]['id']);
-    $this->assertEquals($contacts[14]['id'], $result[$i + 1]['id']);
-    $this->assertEquals($contacts[0]['id'], $result[$i + 2]['id']);
+    // The other 4 matches should be in order
+    $this->assertEquals($contacts[6]['id'], $all[$i]['id']);
+    $this->assertEquals($contacts[14]['id'], $all[$i + 1]['id']);
+    $this->assertEquals($contacts[0]['id'], $all[$i + 2]['id']);
+    $this->assertEquals($contacts[1]['id'], $all[$i + 3]['id']);
 
     // Ensure partial match doesn't work (end of id)
     $result = Contact::autocomplete()

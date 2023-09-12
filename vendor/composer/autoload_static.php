@@ -51,7 +51,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
         '59969633dcdb4ee3e2fec945065028d6' => __DIR__ . '/..' . '/civicrm/civicrm-core/guzzle_php81_shim.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        '6480296ea635cda0e91f36d66ca37b68' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
+        'a321afe5b5ec99bd361b396b4b67d157' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -237,8 +237,6 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
             'Civi\\CompilePlugin\\' => 19,
             'Civi\\AssetPlugin\\' => 17,
             'Civi\\' => 5,
-            'Cache\\TagInterop\\' => 17,
-            'Cache\\IntegrationTests\\' => 23,
             'CCL\\' => 4,
         ),
         'B' => 
@@ -552,8 +550,8 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         ),
         'League\\OAuth2\\Client\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
-            1 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            0 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            1 => __DIR__ . '/..' . '/league/oauth2-client/src',
         ),
         'League\\Csv\\' => 
         array (
@@ -750,14 +748,6 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
             1 => __DIR__ . '/..' . '/civicrm/civicrm-core/Civi',
             2 => __DIR__ . '/..' . '/civicrm/civicrm-core/setup/src',
         ),
-        'Cache\\TagInterop\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/cache/tag-interop',
-        ),
-        'Cache\\IntegrationTests\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/cache/integration-tests/src',
-        ),
         'CCL\\' => 
         array (
             0 => __DIR__ . '/..' . '/civicrm/composer-compile-lib/src',
@@ -821,8 +811,8 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         array (
             'Mail' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/mail',
-                1 => __DIR__ . '/..' . '/pear/mail_mime',
+                0 => __DIR__ . '/..' . '/pear/mail_mime',
+                1 => __DIR__ . '/..' . '/pear/mail',
             ),
         ),
         'L' => 
@@ -901,6 +891,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
     public static $classMap = array (
         'AllowDynamicProperties' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/AllowDynamicProperties.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'CURLStringFile' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
         'Callback' => __DIR__ . '/..' . '/rubobaquero/phpquery/phpQuery/phpQuery/Callback.php',
         'CallbackBody' => __DIR__ . '/..' . '/rubobaquero/phpquery/phpQuery/phpQuery/Callback.php',
         'CallbackParam' => __DIR__ . '/..' . '/rubobaquero/phpquery/phpQuery/phpQuery/Callback.php',

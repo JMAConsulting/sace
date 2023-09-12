@@ -31,6 +31,8 @@ use Civi\Api4\Service\Spec\FieldSpec;
 use Civi\Api4\Utils\CoreUtil;
 use Civi\Core\Event\PostEvent;
 use Civi\Core\Event\PreEvent;
+use Civi\Test;
+use Civi\Test\CiviEnvBuilder;
 use Civi\Test\HookInterface;
 
 /**
@@ -51,6 +53,14 @@ class ConformanceTest extends Api4TestBase implements HookInterface {
     \CRM_Core_BAO_ConfigSetting::enableAllComponents();
     parent::setUp();
     $this->resetCheckAccess();
+  }
+
+  public function setUpHeadless(): CiviEnvBuilder {
+    // Install all core extensions that provide APIs
+    return Test::headless()->install([
+      'org.civicrm.search_kit',
+      'civigrant',
+    ])->apply();
   }
 
   /**
@@ -85,10 +95,6 @@ class ConformanceTest extends Api4TestBase implements HookInterface {
    * @throws \CRM_Core_Exception
    */
   public function getEntitiesHitech(): array {
-    // Ensure all components are enabled so their entities show up
-    foreach (array_keys(\CRM_Core_Component::getComponents()) as $component) {
-      \CRM_Core_BAO_ConfigSetting::enableComponent($component);
-    }
     return $this->toDataProviderArray(Entity::get(FALSE)->execute()->column('name'));
   }
 
@@ -102,19 +108,22 @@ class ConformanceTest extends Api4TestBase implements HookInterface {
    * @return array
    */
   public function getEntitiesLotech(): array {
-    $manual['add'] = [];
-    $manual['remove'] = ['CustomValue'];
+    // Core + required core extensions
+    $directores = ['', 'ext/search_kit/', 'ext/civigrant/', 'ext/civi_*/'];
+    $manual['remove'] = ['CustomValue', 'SKEntity'];
     $manual['transform'] = ['CiviCase' => 'Case'];
 
     $scanned = [];
-    $srcDir = dirname(__DIR__, 5);
-    foreach ((array) glob("$srcDir/Civi/Api4/*.php") as $name) {
-      $fileName = basename($name, '.php');
-      $scanned[] = $manual['transform'][$fileName] ?? $fileName;
+    $baseDir = dirname(__DIR__, 5);
+    foreach ($directores as $directory) {
+      foreach ((array) glob("$baseDir/{$directory}Civi/Api4/*.php") as $name) {
+        $fileName = basename($name, '.php');
+        $scanned[] = $manual['transform'][$fileName] ?? $fileName;
+      }
     }
 
     $names = array_diff(
-      array_unique(array_merge($scanned, $manual['add'])),
+      $scanned,
       $manual['remove']
     );
 
@@ -130,36 +139,37 @@ class ConformanceTest extends Api4TestBase implements HookInterface {
   }
 
   /**
-   * @param string $entity
+   * @param string $entityName
    *   Ex: 'Contact'
    *
    * @dataProvider getEntitiesLotech
    *
    * @throws \CRM_Core_Exception
    */
-  public function testConformance(string $entity): void {
-    $entityClass = CoreUtil::getApiClass($entity);
+  public function testConformance(string $entityName): void {
+    $entityClass = CoreUtil::getApiClass($entityName);
 
     $this->checkEntityInfo($entityClass);
     $actions = $this->checkActions($entityClass);
 
     // Go no further if it's not a CRUD entity
     if (array_diff(['get', 'create', 'update', 'delete'], array_keys($actions))) {
-      $this->markTestSkipped("The API \"$entity\" does not implement CRUD actions");
+      $this->markTestSkipped("The API \"$entityName\" does not implement CRUD actions");
     }
 
-    $this->checkFields($entityClass, $entity);
-    $this->checkCreationDenied($entity, $entityClass);
-    $id = $this->checkCreation($entity, $entityClass);
-    $this->checkGet($entityClass, $id, $entity);
-    $this->checkGetAllowed($entityClass, $id, $entity);
-    $this->checkGetCount($entityClass, $id, $entity);
+    $this->checkFields($entityClass, $entityName);
+    $this->checkCreationDenied($entityName, $entityClass);
+    $id = $this->checkCreation($entityName, $entityClass);
+    $getResult = $this->checkGet($entityName, $id);
+    $this->checkGetAllowed($entityClass, $id, $entityName);
+    $this->checkGetCount($entityClass, $id, $entityName);
     $this->checkUpdateFailsFromCreate($entityClass, $id);
+    $this->checkUpdate($entityName, $getResult);
     $this->checkWrongParamType($entityClass);
     $this->checkDeleteWithNoId($entityClass);
-    $this->checkDeletionDenied($entityClass, $id, $entity);
-    $this->checkDeletionAllowed($entityClass, $id, $entity);
-    $this->checkPostDelete($entityClass, $id, $entity);
+    $this->checkDeletionDenied($entityClass, $id, $entityName);
+    $this->checkDeletionAllowed($entityClass, $id, $entityName);
+    $this->checkPostDelete($entityClass, $id, $entityName);
   }
 
   /**
@@ -176,10 +186,6 @@ class ConformanceTest extends Api4TestBase implements HookInterface {
     $this->assertNotEmpty($info['primary_key']);
     $this->assertRegExp(';^\d\.\d+$;', $info['since']);
     $this->assertContains($info['searchable'], ['primary', 'secondary', 'bridge', 'none']);
-    // Bridge must be between exactly 2 entities
-    if (in_array('EntityBridge', $info['type'], TRUE)) {
-      $this->assertCount(2, $info['bridge']);
-    }
   }
 
   /**
@@ -319,19 +325,39 @@ class ConformanceTest extends Api4TestBase implements HookInterface {
   }
 
   /**
-   * @param \Civi\Api4\Generic\AbstractEntity|string $entityClass
+   * @param string $entityName
    * @param int $id
-   * @param string $entity
    */
-  protected function checkGet($entityClass, int $id, string $entity): void {
-    $getResult = $entityClass::get(FALSE)
-      ->addWhere('id', '=', $id)
-      ->execute();
-
-    $errMsg = sprintf('Failed to fetch a %s after creation', $entity);
-    $idField = CoreUtil::getIdFieldName($entity);
+  protected function checkGet(string $entityName, int $id): array {
+    $idField = CoreUtil::getIdFieldName($entityName);
+    $getResult = civicrm_api4($entityName, 'get', [
+      'checkPermissions' => FALSE,
+      'where' => [[$idField, '=', $id]],
+    ]);
+    $errMsg = sprintf('Failed to fetch a %s after creation', $entityName);
     $this->assertEquals($id, $getResult->first()[$idField], $errMsg);
-    $this->assertEquals(1, $getResult->count(), $errMsg);
+    return $getResult->single();
+  }
+
+  /**
+   * Ensure updating an entity does not alter it
+   *
+   * @param string $entityName
+   * @param array $getResult
+   * @throws \CRM_Core_Exception
+   */
+  protected function checkUpdate(string $entityName, array $getResult): void {
+    $idField = CoreUtil::getIdFieldName($entityName);
+    civicrm_api4($entityName, 'update', [
+      'checkPermissions' => FALSE,
+      'where' => [[$idField, '=', $getResult[$idField]]],
+      'values' => [$idField, $getResult[$idField]],
+    ]);
+    $getResult2 = civicrm_api4($entityName, 'get', [
+      'checkPermissions' => FALSE,
+      'where' => [[$idField, '=', $getResult[$idField]]],
+    ]);
+    $this->assertEquals($getResult, $getResult2->single());
   }
 
   /**

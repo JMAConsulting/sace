@@ -58,13 +58,6 @@ function afform_civicrm_config(&$config) {
   $dispatcher->addListener('hook_civicrm_alterAngular', ['\Civi\Afform\AfformMetadataInjector', 'preprocess']);
   $dispatcher->addListener('hook_civicrm_check', ['\Civi\Afform\StatusChecks', 'hook_civicrm_check']);
   $dispatcher->addListener('civi.afform.get', ['\Civi\Api4\Action\Afform\Get', 'getCustomGroupBlocks']);
-
-  // Register support for email tokens
-  if (CRM_Extension_System::singleton()->getMapper()->isActiveModule('authx')) {
-    $dispatcher->addListener('hook_civicrm_alterMailContent', ['\Civi\Afform\Tokens', 'applyCkeditorWorkaround']);
-    $dispatcher->addListener('hook_civicrm_tokens', ['\Civi\Afform\Tokens', 'hook_civicrm_tokens']);
-    $dispatcher->addListener('hook_civicrm_tokenValues', ['\Civi\Afform\Tokens', 'hook_civicrm_tokenValues']);
-  }
 }
 
 /**
@@ -77,48 +70,12 @@ function afform_civicrm_install() {
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postInstall
- */
-function afform_civicrm_postInstall() {
-  _afform_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
- */
-function afform_civicrm_uninstall() {
-  _afform_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function afform_civicrm_enable() {
   _afform_civix_civicrm_enable();
-}
-
-/**
- * Implements hook_civicrm_disable().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
- */
-function afform_civicrm_disable() {
-  _afform_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_upgrade
- */
-function afform_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _afform_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -397,17 +354,6 @@ function _afform_get_partials($moduleName, $module) {
 }
 
 /**
- * Implements hook_civicrm_entityTypes().
- *
- * Declare entity types provided by this module.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_entityTypes
- */
-function afform_civicrm_entityTypes(&$entityTypes) {
-  _afform_civix_civicrm_entityTypes($entityTypes);
-}
-
-/**
  * Implements hook_civicrm_buildAsset().
  */
 function afform_civicrm_buildAsset($asset, $params, &$mimeType, &$content) {
@@ -552,26 +498,6 @@ function _afform_angular_module_name($fileBaseName, $format = 'camel') {
 
     default:
       throw new \Exception("Unrecognized format");
-  }
-}
-
-/**
- * Implements hook_civicrm_alterApiRoutePermissions().
- *
- * @see CRM_Utils_Hook::alterApiRoutePermissions
- */
-function afform_civicrm_alterApiRoutePermissions(&$permissions, $entity, $action) {
-  if ($entity == 'Afform') {
-    // These actions should be accessible to anonymous users; permissions are checked internally
-    $allowedActions = ['prefill', 'submit', 'submitFile', 'getOptions'];
-    if (in_array($action, $allowedActions, TRUE)) {
-      $permissions = CRM_Core_Permission::ALWAYS_ALLOW_PERMISSION;
-    }
-  }
-  // This is temporarily stuck here, but probably belongs in core (until this hook is finally abolished)
-  elseif ($action === 'autocomplete') {
-    // Autocomplete widget must be accessible by anonymous users. Permissions are checked internally.
-    $permissions = CRM_Core_Permission::ALWAYS_ALLOW_PERMISSION;
   }
 }
 
