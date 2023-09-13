@@ -7,6 +7,7 @@ use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Civi\Api4\Activity;
+use Civi\Api4\ActivityRole;
 
 /**
  * Sace CiviCRM Activity Update Handler.
@@ -66,6 +67,8 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
           $newActivity['source_contact_id'] = $source_contact_id;
           unset($newActivity['id']);
           $newActivity['activity_date_time'] = $webform_submission_data['additional_appointment_' . $key];
+          // Update End date custom field based on new start date and duration.
+          $newActivity['Booking_Information.End_Date'] = date('Y-m-d H:i:s', strtotime('+' . $activity['duration'] . 'minutes', strtotime($newActivity['activity_date_time'])));
           $newActivityRecord = Activity::create(FALSE)
             ->setValues($newActivity)
             ->execute()
@@ -76,6 +79,20 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
               'contact_id' => $contact['contact_id'],
               'record_type_id' => $contact['record_type_id'],
             ]);
+            // Copy across activity roles as well.
+            $activityRole = ActivityRole::get(FALSE)
+              ->addWhere('assignee_contact_id', '=', $contact['contact_id'])
+              ->addWhere('activity_id', '=', $activity['id'])
+              ->execute()->first();
+            if (!empty($activityRole)) {
+              ActivityRole::create(FALSE)
+                ->setValues([
+                  'activity_id' => $newActivityRecord['id'],
+                  'assignee_contact_id' => $contact['contact_id'],
+                  'role_id' => $activityRole['role_id'],
+                ])
+              ->execute();
+            }
           }
         }
       }
