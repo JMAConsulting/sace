@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'AllowDynamicProperties' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/AllowDynamicProperties.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+    'CURLStringFile' => $vendorDir . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
     'Callback' => $vendorDir . '/rubobaquero/phpquery/phpQuery/phpQuery/Callback.php',
     'CallbackBody' => $vendorDir . '/rubobaquero/phpquery/phpQuery/phpQuery/Callback.php',
     'CallbackParam' => $vendorDir . '/rubobaquero/phpquery/phpQuery/phpQuery/Callback.php',

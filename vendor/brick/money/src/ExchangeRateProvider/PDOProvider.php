@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Brick\Money\ExchangeRateProvider;
 
+use Brick\Math\BigNumber;
 use Brick\Money\ExchangeRateProvider;
 use Brick\Money\Exception\CurrencyConversionException;
 
@@ -42,44 +43,28 @@ final class PDOProvider implements ExchangeRateProvider
     {
         $conditions = [];
 
-        if ($configuration->tableName === null) {
-            throw new \InvalidArgumentException('Invalid configuration: $tableName is not set.');
+        if (null !== $whereConditions = $configuration->getWhereConditions()) {
+            $conditions[] = sprintf('(%s)', $whereConditions);
         }
 
-        if ($configuration->exchangeRateColumnName === null) {
-            throw new \InvalidArgumentException('Invalid configuration: $exchangeRateColumnName is not set.');
+        if (null !== $sourceCurrencyCode = $configuration->getSourceCurrencyCode()) {
+            $this->sourceCurrencyCode = $sourceCurrencyCode;
+        } elseif (null !== $sourceCurrencyColumnName = $configuration->getSourceCurrencyColumnName()) {
+            $conditions[] = sprintf('%s = ?', $sourceCurrencyColumnName);
         }
 
-        if ($configuration->sourceCurrencyCode !== null && $configuration->targetCurrencyCode !== null) {
-            throw new \InvalidArgumentException('Invalid configuration: $sourceCurrencyCode and $targetCurrencyCode cannot be both set.');
-        }
-
-        if ($configuration->whereConditions !== null) {
-            $conditions[] = '(' . $configuration->whereConditions . ')';
-        }
-
-        if ($configuration->sourceCurrencyCode !== null) {
-            $this->sourceCurrencyCode = $configuration->sourceCurrencyCode;
-        } elseif ($configuration->sourceCurrencyColumnName !== null) {
-            $conditions[] = $configuration->sourceCurrencyColumnName . ' = ?';
-        } else {
-            throw new \InvalidArgumentException('Invalid configuration: one of $sourceCurrencyCode or $sourceCurrencyColumnName must be set.');
-        }
-
-        if ($configuration->targetCurrencyCode !== null) {
-            $this->targetCurrencyCode = $configuration->targetCurrencyCode;
-        } elseif ($configuration->targetCurrencyColumnName !== null) {
-            $conditions[] = $configuration->targetCurrencyColumnName . ' = ?';
-        } else {
-            throw new \InvalidArgumentException('Invalid configuration: one of $targetCurrencyCode or $targetCurrencyColumnName must be set.');
+        if (null !== $targetCurrencyCode = $configuration->getTargetCurrencyCode()) {
+            $this->targetCurrencyCode = $targetCurrencyCode;
+        } elseif (null !== $targetCurrencyColumnName = $configuration->getTargetCurrencyColumnName()) {
+            $conditions[] = sprintf('%s = ?', $targetCurrencyColumnName);
         }
 
         $conditions = implode(' AND ' , $conditions);
 
         $query = sprintf(
             'SELECT %s FROM %s WHERE %s',
-            $configuration->exchangeRateColumnName,
-            $configuration->tableName,
+            $configuration->getExchangeRateColumnName(),
+            $configuration->getTableName(),
             $conditions
         );
 
@@ -91,12 +76,8 @@ final class PDOProvider implements ExchangeRateProvider
      *
      * This is used in conjunction with $whereConditions in the configuration class.
      * The number of parameters passed to this method must match the number of placeholders.
-     *
-     * @param mixed ...$parameters
-     *
-     * @return void
      */
-    public function setParameters(...$parameters) : void
+    public function setParameters(mixed ...$parameters) : void
     {
         $this->parameters = $parameters;
     }
@@ -104,7 +85,7 @@ final class PDOProvider implements ExchangeRateProvider
     /**
      * {@inheritdoc}
      */
-    public function getExchangeRate(string $sourceCurrencyCode, string $targetCurrencyCode)
+    public function getExchangeRate(string $sourceCurrencyCode, string $targetCurrencyCode): int|float|string
     {
         $parameters = $this->parameters;
 

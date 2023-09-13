@@ -83,20 +83,20 @@ class CRM_Utils_Date {
     $date['d'] = sprintf('%02d', $date['d']);
 
     $time = '';
-    if (CRM_Utils_Array::value('H', $date) != NULL ||
-      CRM_Utils_Array::value('h', $date) != NULL ||
-      CRM_Utils_Array::value('i', $date) != NULL ||
-      CRM_Utils_Array::value('s', $date) != NULL
+    if (!empty($date['H']) ||
+      !empty($date['h']) ||
+      !empty($date['i']) ||
+      !empty($date['s'])
     ) {
       // we have time too..
       if (!empty($date['h'])) {
-        if (CRM_Utils_Array::value('A', $date) == 'PM' or CRM_Utils_Array::value('a', $date) == 'pm') {
+        if (($date['A'] ?? NULL) == 'PM' or ($date['a'] ?? NULL) == 'pm') {
           if ($date['h'] != 12) {
             $date['h'] = $date['h'] + 12;
           }
         }
-        if ((CRM_Utils_Array::value('A', $date) == 'AM' or CRM_Utils_Array::value('a', $date) == 'am') &&
-          CRM_Utils_Array::value('h', $date) == 12
+        if ((($date['A'] ?? NULL) == 'AM' or ($date['a'] ?? NULL) == 'am') &&
+          ($date['h'] ?? NULL) == 12
         ) {
           $date['h'] = '00';
         }
@@ -850,9 +850,9 @@ class CRM_Utils_Date {
    * Find whether today's date lies in
    * the given range
    *
-   * @param date $startDate
+   * @param Date $startDate
    *   Start date for the range.
-   * @param date $endDate
+   * @param Date $endDate
    *   End date for the range.
    *
    * @return bool
@@ -915,9 +915,9 @@ class CRM_Utils_Date {
   /**
    * Calculate Age in Years if greater than one year else in months.
    *
-   * @param date $birthDate
+   * @param Date $birthDate
    *   Birth Date.
-   * @param date $targetDate
+   * @param Date $targetDate
    *   Target Date. (show age on specific date)
    *
    * @return array

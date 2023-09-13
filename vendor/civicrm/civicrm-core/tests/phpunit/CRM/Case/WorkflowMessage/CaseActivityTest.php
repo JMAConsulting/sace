@@ -12,6 +12,7 @@
 
 /**
  * Class CRM_Case_WorkflowMessage_CaseActivityTest
+ * @group msgtpl
  */
 class CRM_Case_WorkflowMessage_CaseActivityTest extends CiviUnitTestCase {
   use \Civi\Test\WorkflowMessageTestTrait;
@@ -71,7 +72,7 @@ class CRM_Case_WorkflowMessage_CaseActivityTest extends CiviUnitTestCase {
       ->execute()
       ->single();
     $this->assertEquals($name, $get['name']);
-    $this->assertEquals(100, $get['data']['modelProps']['contact']['id']);
+    $this->assertEquals(0, $get['data']['modelProps']['contact']['id']);
     $this->assertEquals('myrole', $get['data']['modelProps']['contact']['role']);
   }
 

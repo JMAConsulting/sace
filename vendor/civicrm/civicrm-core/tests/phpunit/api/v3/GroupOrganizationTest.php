@@ -19,6 +19,16 @@ class api_v3_GroupOrganizationTest extends CiviUnitTestCase {
   protected $_apiversion;
 
   /**
+   * @var int
+   */
+  private $_groupID;
+
+  /**
+   * @var int
+   */
+  private $_orgID;
+
+  /**
    * Sets up the fixture, for example, opens a network connection.
    * This method is called before a test is executed.
    */
@@ -28,7 +38,7 @@ class api_v3_GroupOrganizationTest extends CiviUnitTestCase {
     $this->useTransaction(TRUE);
     $this->_groupID = $this->groupCreate();
 
-    $this->_orgID = $this->organizationCreate(NULL);
+    $this->_orgID = $this->organizationCreate();
   }
 
   ///////////////// civicrm_group_organization_get methods

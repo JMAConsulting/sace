@@ -5,13 +5,31 @@ use ProcessHelper\ProcessHelper as PH;
 
 class IntegrationTestCase extends \PHPUnit\Framework\TestCase {
 
-  public static function getComposerJson() {
+  public static function getComposerJson(): array {
     return [
       'authors' => [
         [
           'name' => 'Tester McFakus',
           'email' => 'tester@example.org',
         ],
+      ],
+
+      'config' => [
+        'allow-plugins' => [
+          'civicrm/civicrm-asset-plugin' => TRUE,
+          'civicrm/composer-compile-plugin' => TRUE,
+          'civicrm/composer-downloads-plugin' => TRUE,
+          "composer/installers" => TRUE,
+          'cweagans/composer-patches' => TRUE,
+          "drupal/core-composer-scaffold" => TRUE,
+          "drupal/core-project-message" => TRUE,
+          "dealerdirect/phpcodesniffer-composer-installer" => TRUE,
+        ],
+      ],
+
+      'extra' => [
+        'compile-mode' => 'ALL',
+        'enable-patching' => 'true',
       ],
 
       'repositories' => [
@@ -85,7 +103,7 @@ class IntegrationTestCase extends \PHPUnit\Framework\TestCase {
     return self::$testDir;
   }
 
-  public static function tearDownAfterClass() {
+  public static function tearDownAfterClass(): void {
     parent::tearDownAfterClass();
 
     if (self::$testDir) {
@@ -119,7 +137,11 @@ class IntegrationTestCase extends \PHPUnit\Framework\TestCase {
     $this->assertTrue(file_exists($path), "Path ($path) should exist (symlink file)");
     $this->assertTrue(is_link($path), "Path ($path) should be a symlink");
 
-    $linkTgt = readlink($path);
+    // Insanity: The above conditions pass, and shell "readlink" is fine, but the PHP
+    // variant complains: 'readlink(): No such file or directory'. clearstatcache() doesn't help.
+    // $linkTgt = readlink($path);
+    $linkTgt = trim(system("readlink " . escapeshellarg($path)));
+
     $this->assertTrue(is_string($linkTgt));
     $this->assertTrue(is_file(dirname($path) . '/' . $linkTgt), "Path ($path) should be symlinking pointing to a file. Found tgt ($linkTgt)");
   }
@@ -134,7 +156,10 @@ class IntegrationTestCase extends \PHPUnit\Framework\TestCase {
     $this->assertTrue(file_exists($path), "Path ($path) should exist (symlink dir)");
     $this->assertTrue(is_link($path), "Path ($path) should be a symlink");
 
-    $linkTgt = readlink($path);
+    // Insanity: The above conditions pass, and shell "readlink" is fine, but the PHP
+    // variant complains: 'readlink(): No such file or directory'. clearstatcache() doesn't help.
+    // $linkTgt = readlink($path);
+    $linkTgt = trim(system("readlink " . escapeshellarg($path)));
     $this->assertTrue(is_string($linkTgt));
     $this->assertTrue(is_dir(dirname($path) . '/' . $linkTgt), "Path ($path) should be symlinking pointing to a dir. Found tgt ($linkTgt");
   }
