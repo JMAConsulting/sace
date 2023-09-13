@@ -28,7 +28,6 @@ elements: |-
       '#none_prompt': '+ Create new +'
       '#results_display':
         display_name: display_name
-      '#default_value': '1'
       '#allow_create': 1
       '#contact_type': organization
       '#default_relationship_to': '1'
