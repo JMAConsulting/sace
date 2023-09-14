@@ -56,7 +56,7 @@ class PedOnlineCourseBookingUpdateWebformHandler extends WebformHandlerBase {
   public function preSave(WebformSubmissionInterface $webform_submission) {
     $webform_submission_data = $webform_submission->getData();
     if ($webform_submission_data && $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] == PED_ONLINE_COURSE_BOOKING_UPDATE_ADULT_ACTIVITY) {
-      $webform_submission[PED_ONLINE_COURSE_BOOKING_UPDATE_OPTIONAL_ADDONS] = 'None';
+      $webform_submission_data[PED_ONLINE_COURSE_BOOKING_UPDATE_OPTIONAL_ADDONS] = 'None';
       $webform_submission->setData($webform_submission_data);
     }
   }
