@@ -201,7 +201,7 @@ function sace_custom_taxonomy_term_update(Drupal\Core\Entity\EntityInterface $en
 
   $menuItem = reset($calendarMenu);
   if ($menuItem) {
-    $menuItem->setName($entity->label() . ' User Team');
+    $menuItem->set('title', $entity->label() . ' User Team');
     $menuItem->save();
   }
   _clear_menu_caches();
