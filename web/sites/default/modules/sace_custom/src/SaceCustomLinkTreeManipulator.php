@@ -74,13 +74,19 @@ class SaceCustomLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
     if (strpos($url->toString(), '/calendar-team') !== FALSE && $url->toString() !== '/calendar-team/all') {
       // Set the access result as forbidden in case the user does not
       // have a role required.
+      $route_name = \Drupal::routeMatch()->getRouteName();
       $access_result = AccessResult::forbidden();
-      $userId = \Drupal::currentUser()->id();
-      $user = \Drupal::entityTypeManager()->getStorage('user')->load($userId);
-      $teamIds = $user->get('field_user_team')->getValue();
-      foreach ($teamIds as $teamId) {
-        if ($teamId['target_id'] == str_replace('/calendar-team/', '', $url->toString())) {
-          $access_result = AccessResult::allowed();
+      if ($route_name === 'entity.menu.edit_form') {
+        $access_result = AccessResult::allowed();
+      }
+      else {
+        $userId = \Drupal::currentUser()->id();
+        $user = \Drupal::entityTypeManager()->getStorage('user')->load($userId);
+        $teamIds = $user->get('field_user_team')->getValue();
+        foreach ($teamIds as $teamId) {
+          if ($teamId['target_id'] == str_replace('/calendar-team/', '', $url->toString())) {
+            $access_result = AccessResult::allowed();
+          }
         }
       }
     }
