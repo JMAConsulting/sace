@@ -680,15 +680,14 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_128:
       '#type': number
       '#title': 'How many presentations would you like?'
-      '#field_prefix': '#'
       '#states':
         invisible:
           - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
               value: '203'
-          - or
+          - xor
           - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
               value: '204'
-          - or
+          - xor
           - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
               value: '201'
       '#data_type': String
