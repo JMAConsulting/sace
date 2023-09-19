@@ -4,6 +4,7 @@ status: open
 dependencies:
   module:
     - pe_booking_activity_role
+    - ped_online_course_booking_update
     - webform_civicrm
 weight: 0
 open: null
@@ -308,6 +309,7 @@ elements: |-
       '#type': civicrm_options
       '#title': 'Optional Add-Ons'
       '#empty_option': '- Select Optional Add-Ons -'
+      '#civicrm_live_options': 0
       '#options':
         'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator'
         "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module'
@@ -317,13 +319,18 @@ elements: |-
         visible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '196'
+        disabled:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            '!value': '196'
+      '#states_clear': false
       '#extra':
         aslist: 0
         multiple: 1
       '#data_type': String
+      '#default_option': None
       '#form_key': civicrm_1_activity_1_cg2_custom_662
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#civicrm_live_options': '1'
+      '#default_value': None
   container:
     '#type': container
     processed_text_08:
@@ -1005,7 +1012,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: null
+    weight: -48
     settings:
       nid: 1
       number_of_contacts: '6'
@@ -1828,6 +1835,15 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: 0
+    weight: -49
+    settings: {  }
+  ped_online_course_booking_update_handler:
+    id: ped_online_course_booking_update_handler
+    handler_id: ped_online_course_booking_update_handler
+    label: 'PED Online Course Booking Update Handler'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
     settings: {  }
 variants: {  }

@@ -433,6 +433,17 @@ elements: |-
       '#form_key': civicrm_1_activity_1_activity_activity_type_id
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
+    civicrm_1_activity_1_activity_subject:
+      '#type': textfield
+      '#title': 'Calendar Title'
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_activity_subject
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg58_custom_1265:
       '#type': text_format
       '#data_type': Memo
@@ -621,17 +632,6 @@ elements: |-
       '#wrapper_attributes':
         class:
           - jma-grid-3
-    civicrm_1_activity_1_activity_subject:
-      '#type': webform_computed_twig
-      '#title': 'Activity Subject'
-      '#display_on': view
-      '#template': "{{ (data.\tcivicrm_1_contact_1_contact_organization_name)|upper }}"
-      '#store': true
-      '#ajax': true
-      '#form_key': civicrm_1_activity_1_activity_subject
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
   aid:
     '#type': number
     '#title': aid

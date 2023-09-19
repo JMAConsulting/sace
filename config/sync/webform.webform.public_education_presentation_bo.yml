@@ -88,8 +88,9 @@ elements: |-
 
       <p>SACE offers consultation provision on a range of topics to support organizations undertaking their own efforts to address sexual violence in our community.</p>
 
-      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=204">Consultation</a></div>
-      <br/>
+      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=204">Institutional Support</a></div>
+
+      <p>&nbsp;</p>
     '#format': html
   community_engagement_section:
     '#type': processed_text
