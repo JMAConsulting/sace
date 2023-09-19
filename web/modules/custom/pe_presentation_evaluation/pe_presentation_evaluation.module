@@ -60,7 +60,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements[$constants['TARGET_CONTACT']]['#hidden'] = TRUE;
 
     if (in_array($result['activity_type_id'], [55, 196])) {
-      unset($elements[$constants['DEMOGRAPHIC_INFO']]['#options']['Sex worker']);
+      unset($elements[$constants['DEMOGRAPHIC_INFO']]['#options']['Sex Worker']);
     }
 
     //Get default selected value for Presentation Topic
