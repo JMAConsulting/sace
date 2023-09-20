@@ -14,14 +14,14 @@ require_once 'ped_online_course_booking_update.variables.php';
  * @param $form_id
  */
 function ped_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if($form_id == "webform_submission_ped_online_course_booking_update_add_form"){    
+  if($form_id == "webform_submission_ped_online_course_booking_update_add_form"){
     //attach js
     $form['#attached']['library'][] = 'ped_online_course_booking_update/ped_online_course_booking_update';
     $form['#attached']['drupalSettings']['ped_online_course_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', PED_ONLINE_COURSE_BOOKING_UPDATE_START_DATE);
     $form['#attached']['drupalSettings']['ped_online_course_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', PED_ONLINE_COURSE_BOOKING_UPDATE_END_DATE);
     // $form['#attached']['drupalSettings']['ped_online_course_booking_update']['optional_addons_select'] = $constants['optional_addons_select'];
     // $form['#attached']['drupalSettings']['ped_online_course_booking_update']['high_school_checkbox'] = $constants['high_school_checkbox'];
-    
+
     //Get webform elements
     $elements = WebformFormHelper::flattenElements($form);
     if (empty($elements)) {
@@ -33,6 +33,13 @@ function ped_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\F
     if (empty($aid) || !is_numeric($aid)) {
       return;
     }
+
+    // hackish fix to bypass false validation error on assigned Staff fields
+    //  triggerred at line 151 of web/core/lib/Drupal/Core/Form/FormErrorHandler.php
+    unset($elements['civicrm_3_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_4_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_5_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_6_contact_1_contact_existing']['#group']);
 
     //End Date
     $activity = \Civi\Api4\Activity::get(FALSE)
@@ -56,7 +63,7 @@ $bt = $elements['civicrm_1_activity_1_activity_activity_type_id']['#default_valu
         'Recognizing & Responding to Sexual Violence' => 'Recognizing & Responding to Sexual Violence',
         'Racism & Sexual Violence' => 'Racism & Sexual Violence',
         'Sexual Violence & the 2SLGBTQ+ Community' => 'Sexual Violence & the 2SLGBTQ+ Community',
-      ]);      
+      ]);
     }
     elseif ($bt == PED_ONLINE_COURSE_BOOKING_UPDATE_YOUTH_ACTIVITY) {
       $elements[PED_ONLINE_COURSE_BOOKING_UPDATE_ONLINE_COURSES]['#options'] = array_intersect($elements[PED_ONLINE_COURSE_BOOKING_UPDATE_ONLINE_COURSES]['#options'], [
