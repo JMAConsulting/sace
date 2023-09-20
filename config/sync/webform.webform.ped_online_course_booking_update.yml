@@ -96,6 +96,13 @@ elements: |-
     '#type': civicrm_contact
     '#title': 'Your Organization'
     '#description': 'If you cannot find your organization, please click <a href="#" id="new-org-block">here</a> to create one. Please note that this field is for your organization&#39;s information only.'
+    '#widget': autocomplete
+    '#none_prompt': '- None Found -'
+    '#results_display':
+      organization_name: organization_name
+    '#default_relationship_to': '1'
+    '#default_relationship':
+      '': ''
     '#tag':
       44: '44'
       27: '27'
@@ -115,13 +122,7 @@ elements: |-
       9: '9'
       12: '12'
       15: '15'
-    '#widget': autocomplete
-    '#none_prompt': '- None Found -'
-    '#results_display':
-      organization_name: organization_name
-    '#default_relationship_to': '1'
-    '#default_relationship':
-      '': ''
+      66: '66'
     '#filter_relationship_contact': ''
     '#contact_type': organization
     '#form_key': civicrm_2_contact_1_contact_existing
@@ -181,7 +182,6 @@ elements: |-
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
       '#title': State/Province
-      '#description': 'To choose existing organization please click <a id="existing-org" href="#">here</a> to select one.'
     civicrm_1_activity_1_cg2_custom_657:
       '#type': civicrm_options
       '#title': 'This booking is for a smaller group, program, department or committee within my organization'
@@ -227,6 +227,38 @@ elements: |-
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Group Details'
+    civicrm_2_contact_1_other_tag:
+      '#type': civicrm_options
+      '#title': Tag(s)
+      '#civicrm_live_options': 0
+      '#options':
+        44: 'Arts, Entertainment & Nightlife'
+        27: Conference
+        2: 'For-Profit Organization'
+        56: 'Government Ministry/ Agency'
+        45: 'Hospital/ Medical Organization'
+        48: Military
+        1: 'Non-Profit Organization'
+        49: 'Policing/ Corrections Institution'
+        7: 'Private/Charter School'
+        13: '- BGSD'
+        8: '- ECSD'
+        10: '- EICSD'
+        6: '- EPSB'
+        11: '- EVCSD'
+        14: '- PHSD'
+        9: '- PSD'
+        12: '- STACSD'
+        15: '- STAPSD'
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#table': tag
+      '#form_key': civicrm_2_contact_1_other_tag
+      '#parent': civicrm_2_contact_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#description': 'To choose existing organization please click <a id="existing-org" href="#">here</a> to select one.'
   container_01:
     '#type': container
     processed_text_01:
@@ -1014,6 +1046,7 @@ handlers:
     conditions: {  }
     weight: -48
     settings:
+      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '6'
       1_contact_type: individual
@@ -1089,7 +1122,11 @@ handlers:
       contact_2_settings_dynamic_custom_cg52: 0
       civicrm_2_contact_1_cg52_custom_663: create_civicrm_webform_element
       civicrm_2_contact_1_cg52_custom_664: create_civicrm_webform_element
-      contact_2_number_of_other: '0'
+      contact_2_number_of_other: '1'
+      civicrm_2_contact_1_other_group:
+        '': ''
+      civicrm_2_contact_1_other_tag:
+        create_civicrm_webform_element: create_civicrm_webform_element
       contact_2_number_of_address: '1'
       civicrm_2_contact_1_address_street_address: create_civicrm_webform_element
       civicrm_2_contact_1_address_street_name: 0
@@ -1584,7 +1621,6 @@ handlers:
       civicrm_1_activity_1_cg54_custom_712: 0
       civicrm_1_activity_1_cg54_custom_713: 0
       civicrm_1_activity_1_cg54_custom_714: 0
-      civicrm_1_activity_1_cg54_custom_715: 0
       civicrm_1_activity_1_cg54_custom_716: 0
       civicrm_1_activity_1_cg54_custom_717: 0
       civicrm_1_activity_1_cg54_custom_718: 0
@@ -1616,10 +1652,23 @@ handlers:
       civicrm_1_activity_1_cg54_custom_1272: 0
       civicrm_1_activity_1_cg54_custom_1273: 0
       civicrm_1_activity_1_cg54_custom_1274: 0
+      civicrm_1_activity_1_cg54_custom_1275: 0
+      civicrm_1_activity_1_cg54_custom_1276: 0
+      civicrm_1_activity_1_cg54_custom_1277: 0
+      civicrm_1_activity_1_cg54_custom_1278: 0
+      civicrm_1_activity_1_cg54_custom_1279: 0
+      civicrm_1_activity_1_cg54_custom_1280: 0
+      civicrm_1_activity_1_cg54_custom_715: 0
+      civicrm_1_activity_1_cg54_custom_1281: 0
+      civicrm_1_activity_1_cg54_custom_1283: 0
+      civicrm_1_activity_1_cg54_custom_1284: 0
+      civicrm_1_activity_1_cg54_custom_1285: 0
+      civicrm_1_activity_1_cg54_custom_1286: 0
       activity_1_settings_dynamic_custom_cg58: 0
       civicrm_1_activity_1_cg58_custom_1265: 0
       civicrm_1_activity_1_cg58_custom_1266: 0
       civicrm_1_activity_1_cg58_custom_1267: 0
+      civicrm_1_activity_1_cg58_custom_1287: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -1650,7 +1699,6 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: ' PED Youth Online Course Booking Update'
-      antibot_key: ''
       data:
         contact:
           1:
@@ -1689,7 +1737,7 @@ handlers:
             number_of_cg27: '0'
             number_of_cg52: '1'
             dynamic_custom_cg52: 0
-            number_of_other: '0'
+            number_of_other: '1'
             number_of_address: '1'
             number_of_phone: '0'
             number_of_email: '0'
