@@ -133,6 +133,26 @@ elements: |-
       '#default_relationship_to': '1'
       '#default_relationship':
         '': ''
+      '#tag':
+        44: '44'
+        27: '27'
+        2: '2'
+        56: '56'
+        45: '45'
+        48: '48'
+        1: '1'
+        49: '49'
+        7: '7'
+        13: '13'
+        8: '8'
+        10: '10'
+        6: '6'
+        11: '11'
+        14: '14'
+        9: '9'
+        12: '12'
+        15: '15'
+        66: '66'
       '#filter_relationship_contact': ''
       '#allow_create': 1
       '#contact_type': organization
@@ -817,7 +837,11 @@ handlers:
       contact_2_settings_dynamic_custom_cg52: 0
       civicrm_2_contact_1_cg52_custom_663: create_civicrm_webform_element
       civicrm_2_contact_1_cg52_custom_664: create_civicrm_webform_element
-      contact_2_number_of_other: '0'
+      contact_2_number_of_other: '1'
+      civicrm_2_contact_1_other_group:
+        '': ''
+      civicrm_2_contact_1_other_tag:
+        66: '66'
       contact_2_number_of_address: '1'
       civicrm_2_contact_1_address_street_address: create_civicrm_webform_element
       civicrm_2_contact_1_address_street_name: 0
@@ -1206,7 +1230,6 @@ handlers:
       civicrm_1_activity_1_cg54_custom_712: 0
       civicrm_1_activity_1_cg54_custom_713: 0
       civicrm_1_activity_1_cg54_custom_714: 0
-      civicrm_1_activity_1_cg54_custom_715: 0
       civicrm_1_activity_1_cg54_custom_716: 0
       civicrm_1_activity_1_cg54_custom_717: 0
       civicrm_1_activity_1_cg54_custom_718: 0
@@ -1238,10 +1261,23 @@ handlers:
       civicrm_1_activity_1_cg54_custom_1272: 0
       civicrm_1_activity_1_cg54_custom_1273: 0
       civicrm_1_activity_1_cg54_custom_1274: 0
+      civicrm_1_activity_1_cg54_custom_1275: 0
+      civicrm_1_activity_1_cg54_custom_1276: 0
+      civicrm_1_activity_1_cg54_custom_1277: 0
+      civicrm_1_activity_1_cg54_custom_1278: 0
+      civicrm_1_activity_1_cg54_custom_1279: 0
+      civicrm_1_activity_1_cg54_custom_1280: 0
+      civicrm_1_activity_1_cg54_custom_715: 0
+      civicrm_1_activity_1_cg54_custom_1281: 0
+      civicrm_1_activity_1_cg54_custom_1283: 0
+      civicrm_1_activity_1_cg54_custom_1284: 0
+      civicrm_1_activity_1_cg54_custom_1285: 0
+      civicrm_1_activity_1_cg54_custom_1286: 0
       activity_1_settings_dynamic_custom_cg58: 0
       civicrm_1_activity_1_cg58_custom_1265: 0
       civicrm_1_activity_1_cg58_custom_1266: 0
       civicrm_1_activity_1_cg58_custom_1267: 0
+      civicrm_1_activity_1_cg58_custom_1287: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -1269,7 +1305,6 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: 'PED Youth Online Booking Request'
-      antibot_key: ''
       data:
         contact:
           1:
@@ -1308,7 +1343,7 @@ handlers:
             number_of_cg27: '0'
             number_of_cg52: '1'
             dynamic_custom_cg52: 0
-            number_of_other: '0'
+            number_of_other: '1'
             number_of_address: '1'
             number_of_phone: '1'
             number_of_email: '1'
@@ -1316,6 +1351,10 @@ handlers:
             number_of_im: '0'
             number_of_relationship: '1'
             number_of_cg30: '0'
+            other:
+              1:
+                tag:
+                  66: '66'
             address:
               1:
                 location_type_id: '3'

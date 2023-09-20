@@ -241,6 +241,7 @@ elements: |-
         9: '9'
         12: '12'
         15: '15'
+        66: '66'
       '#filter_relationship_contact': ''
       '#contact_type': organization
       '#form_key': civicrm_3_contact_1_contact_existing
@@ -1356,7 +1357,11 @@ handlers:
       contact_3_settings_matching_rule: Unsupervised
       contact_3_number_of_cg27: '0'
       contact_3_number_of_cg52: '0'
-      contact_3_number_of_other: '0'
+      contact_3_number_of_other: '1'
+      civicrm_3_contact_1_other_group:
+        '': ''
+      civicrm_3_contact_1_other_tag:
+        66: '66'
       contact_3_number_of_address: '1'
       civicrm_3_contact_1_address_street_address: create_civicrm_webform_element
       civicrm_3_contact_1_address_street_name: 0
@@ -1811,7 +1816,6 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: 'PED Booking Request'
-      antibot_key: ''
       data:
         contact:
           1:
@@ -1873,7 +1877,7 @@ handlers:
             matching_rule: Unsupervised
             number_of_cg27: '0'
             number_of_cg52: '0'
-            number_of_other: '0'
+            number_of_other: '1'
             number_of_address: '1'
             number_of_phone: '1'
             number_of_email: '1'
@@ -1881,6 +1885,10 @@ handlers:
             number_of_im: '0'
             number_of_relationship: '0'
             number_of_cg30: '0'
+            other:
+              1:
+                tag:
+                  66: '66'
             address:
               1:
                 location_type_id: '3'
