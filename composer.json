@@ -31,7 +31,7 @@
         "drupal/charts": "^3.2",
         "drupal/codesnippet": "^1.7",
         "drupal/colorbutton": "^1.2",
-        "drupal/content_access": "^1.0@alpha",
+        "drupal/content_access": "^2.0",
         "drupal/core-composer-scaffold": "^9.5",
         "drupal/core-project-message": "^9.5",
         "drupal/core-recommended": "^9.5",
