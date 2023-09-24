@@ -904,7 +904,6 @@ elements: |-
       '#type': number
       '#title': Duration
       '#field_suffix': minutes
-      '#disabled': true
       '#required': true
       '#step': 1
       '#form_key': civicrm_1_activity_1_activity_duration
