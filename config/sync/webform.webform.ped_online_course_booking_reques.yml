@@ -17,26 +17,26 @@ category: ''
 elements: |-
   intro_markup:
     '#type': processed_text
+    '#admin_title': 'Is this a copy from Presentations? Not the same as there though-- can we delete?'
+    '#access': false
     '#text': |
       <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
 
       <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
     '#format': html
-    '#access': false
   youth_online_courses_booking_html:
     '#type': processed_text
     '#states':
       visible:
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '196'
+    '#admin_title': 'Online Course Youth Banner and Blurb'
     '#text': |
-      <p><img alt="​A youth online courses banner graphic features four tablets, each displaying a colourful course title page with an illustration featuring diverse people in a range of scenarios useful to illustrating sexual violence education concepts" class="" data-entity-type="" data-entity-uuid="" id="" width="100%" src="https://secure.sace.ca/sites/default/files/2023-07/YouthOnlineCoursesBanner_0.png" title="Youth Online Course Group Booking Requests" /></p>
-
-      <p>&nbsp;</p>
-
       <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
 
       <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
+
+      <p><img alt="​A youth online courses banner graphic features four tablets, each displaying a colourful course title page with an illustration featuring diverse people in a range of scenarios useful to illustrating sexual violence education concepts" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/YouthOnlineCoursesBanner_0.png" title="Youth Online Course Group Booking Requests" width="100%" /></p>
     '#format': html
   adult_professional_booking_html:
     '#type': processed_text
@@ -44,18 +44,19 @@ elements: |-
       visible:
         ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
           value: '199'
+    '#admin_title': 'Online Course Adult Banner and Blurb'
     '#text': |
-      <p><img alt="An adult online courses graphic features features four tablets, each displaying a colourful course title page with an illustration featuring diverse people in a range of scenarios useful to illustrating sexual violence education concepts" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/AdultOnlineCoursesBanner.png" title="Adult Online Course Group Requests" width="100%" /></p>
-
-      <p>&nbsp;</p>
-
       <p>SACE offers both self-paced and moderated online learning opportunities for adults to learn more about topics related to sexual violence. Each course includes short readings, videos, and reflection questions to further engage with the material.</p>
 
       <p>&nbsp;</p>
+
+      <p><img alt="An adult online courses graphic features features four tablets, each displaying a colourful course title page with an illustration featuring diverse people in a range of scenarios useful to illustrating sexual violence education concepts" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/AdultOnlineCoursesBanner.png" title="Adult Online Course Group Requests" width="100%" /></p>
     '#format': html
   processed_text:
     '#type': processed_text
-    '#text': '<h2><span style="color:#2e416c;"><strong>General Information</strong></span></h2>'
+    '#admin_title': 'General Information Header'
+    '#text': |
+      <h2><span style="color:#2e416c;"><strong>General Information</strong></span></h2>
     '#format': html
   flexbox:
     '#type': webform_flexbox
@@ -260,7 +261,9 @@ elements: |-
       '#title': 'Group Details'
   processed_text_01:
     '#type': processed_text
-    '#text': '<h2><span style="color:#2e416c;">Booking Details</span></h2>'
+    '#admin_title': 'Booking Details Header'
+    '#text': |
+      <h2><span style="color:#2e416c;">Booking Details</span></h2>
     '#format': html
   online_course_s_:
     '#type': container
@@ -271,19 +274,21 @@ elements: |-
         visible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '199'
+      '#admin_title': 'Online Course Adult Topics Blurb'
       '#text': |
         <h3><span style="color:#2e416c;">Online Course Topic(s)</span></h3>
+
         <p>Our online course titles with a brief description of each course are listed below.&nbsp;&nbsp;</p>
 
         <ul>
-        	<li>Information for Partners &amp; Supporters - This&nbsp; self-paced online course is available for adults wanting to learn more&nbsp; about how to support loved ones in their life who have experienced&nbsp; sexual violence.</li>
-        	<li>Recognizing &amp; Responding to Sexual Violence - This self-paced online course is&nbsp; available for adults wanted to learn more about consent, sexual&nbsp; violence, and how to support someone who has experienced sexual&nbsp; violence.
+        	<li><strong>Information for Partners &amp; Supporters</strong> -&nbsp;&nbsp;This&nbsp; self-paced online course is available for adults wanting to learn more&nbsp; about how to support loved ones in their life who have experienced&nbsp; sexual violence.</li>
+        	<li><strong>Recognizing &amp; Responding to Sexual Violence</strong> - This self-paced online course is&nbsp; available for adults wanted to learn more about consent, sexual&nbsp; violence, and how to support someone who has experienced sexual&nbsp; violence.
         	<ul>
         		<li>This course contains discussion questions that are facilitated by a member of the SACE Public Education Team.</li>
         	</ul>
         	</li>
-        	<li>Racism &amp; Sexual Violence - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the deep connection between racism and sexual violence to empower&nbsp; individuals and communities to enact meaningful change.&nbsp;</li>
-        	<li>Sexual Violence &amp; the 2SLGBTQ+ Community - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the connection between queer history, queer trauma, and sexual&nbsp; violence.</li>
+        	<li><strong>Racism &amp; Sexual Violence</strong> - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the deep connection between racism and sexual violence to empower&nbsp; individuals and communities to enact meaningful change.&nbsp;</li>
+        	<li><strong>Sexual Violence &amp; the 2SLGBTQ+ Community</strong> - This&nbsp; self-paced online course is available for adults who want to learn more&nbsp; about the connection between queer history, queer trauma, and sexual&nbsp; violence.</li>
         </ul>
       '#format': html
     youth_online_course_blurb:
@@ -292,17 +297,20 @@ elements: |-
         visible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '196'
+      '#admin_title': 'Online Course Youth Grades and Topics Blurb'
       '#text': |
         <h3><span style="color:#2e416c;">Online Course Topic(s)</span></h3>
-        <p>The typical courses offered by approximate age range are listed below. For more information about each course topic, please visit <a class="ql-link" href="http://www.sace.ca/services/public-education" rel="noopener noreferrer" target="_blank">http://www.sace.ca/services/public-education</a>.<br />
-        <br />
-        <strong>*Please note that each module builds on the learning of previous ones for each age group.</strong>&nbsp;</p>
+
+        <p>The typical courses offered by approximate age range are listed below. For more information about each course topic, please visit <a class="ql-link" href="http://www.sace.ca/services/public-education" rel="noopener noreferrer" target="_blank">http://www.sace.ca/services/public-education</a>.</p>
+
+        <p><br />
+        <b>*Please note,</b><strong> that each module builds on the learning of previous ones for each age group.</strong>&nbsp;</p>
 
         <ul>
-        	<li>Gr 7/12-13 years - Ask First: Sexual Harassment&nbsp;</li>
-        	<li>Gr 8/13-14 years - Ask First: Sexual Assault &amp; Consent&nbsp;</li>
-        	<li>Gr 9/14-15 years - Ask First: Non-Consensual Photo Sharing&nbsp;</li>
-        	<li>High School/15-18 years – Consent: Ask Me About It!</li>
+        	<li>Grade 7 (12-13 years) - Ask First: Sexual Harassment&nbsp;</li>
+        	<li>Grade 8 (13-14 years) - Ask First: Sexual Assault &amp; Consent&nbsp;</li>
+        	<li>Grade 9 (14-15 years) - Ask First: Non-Consensual Photo Sharing&nbsp;</li>
+        	<li>High School (15-18 years) – Consent: Ask Me About It!</li>
         </ul>
       '#format': html
     civicrm_1_activity_1_cg2_custom_697:
@@ -310,14 +318,15 @@ elements: |-
       '#title': 'Online Courses'
       '#empty_option': '- Select Online Courses -'
       '#options':
-        "Ask First: Sexual Harassment\_": "Ask First: Sexual Harassment\_"
-        "Ask First: Sexual Assault & Consent\_": "Ask First: Sexual Assault & Consent\_"
-        "Ask First: Non-Consensual Photo Sharing\_": "Ask First: Non-Consensual Photo Sharing\_"
+        "Ask First: Sexual Harassment\_": 'Ask First: Sexual Harassment'
+        "Ask First: Sexual Assault & Consent\_": 'Ask First: Sexual Assault & Consent'
+        "Ask First: Non-Consensual Photo Sharing\_": 'Ask First: Non-Consensual Photo Sharing'
         'Consent: Ask Me About It!': 'Consent: Ask Me About It!'
         "Information for Partners & Supporters\_": 'Information for Partners & Supporters'
         "Recognizing & Responding to Sexual Violence\_": 'Recognizing & Responding to Sexual Violence'
         'Racism & Sexual Violence': 'Racism & Sexual Violence'
         'Sexual Violence & the 2SLGBTQ+ Community': 'Sexual Violence & the 2SLGBTQ+ Community'
+      '#required': true
       '#extra':
         aslist: 1
         multiple: 0
@@ -392,10 +401,13 @@ elements: |-
     '#form_key': civicrm_1_activity_1_fieldset_fieldset
     processed_text_02:
       '#type': processed_text
-      '#text': '<h3><span style="color:#2e416c;">Online Course Details</span></h3>'
+      '#admin_title': 'Online Course Details Header'
+      '#text': |
+        <h3><span style="color:#2e416c;">Online Course Details</span></h3>
       '#format': html
     your_course_markup:
       '#type': processed_text
+      '#admin_title': 'Online Course Details Blurb'
       '#text': |
         <p>In this section, tell us a bit about the online courses you'd like. It's okay if you're not sure; put your best answers and we can help you from there. Please note, our minimum participant requirement is 8 participants.</p>
       '#format': html
@@ -405,8 +417,9 @@ elements: |-
         visible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '196'
-      '#text': |2
-                <p><strong>*Please&nbsp; note, our online courses are designed to be used by your school for 1&nbsp; semester at a time. If you would like to use it for multiple semesters,&nbsp; please fill out a separate booking request form for each semester.</strong></p>
+      '#admin_title': 'Your Online Course Youth Blurb'
+      '#text': |
+        <p><b>*Please note,</b><strong> our online courses are designed to be used by your school for 1 semester at a time. If you would like to use it for multiple semesters, please fill out a separate booking request form for each semester.</strong></p>
       '#format': html
     civicrm_1_activity_1_cg2_custom_25:
       '#type': checkboxes

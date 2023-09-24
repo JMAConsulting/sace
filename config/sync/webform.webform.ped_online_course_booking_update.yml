@@ -554,11 +554,11 @@ elements: |-
         '#type': civicrm_number
         '#title': Duration
         '#field_suffix': minutes
+        '#required': true
         '#step': 1
         '#form_key': civicrm_1_activity_1_activity_duration
         '#parent': civicrm_1_activity_1_fieldset_fieldset
         '#extra': {  }
-        '#required': true
     civicrm_1_activity_1_cg2_custom_698:
       '#type': textarea
       '#data_type': Memo

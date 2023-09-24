@@ -15,6 +15,7 @@ category: ''
 elements: |-
   markup:
     '#type': processed_text
+    '#admin_title': 'Booking Request Blurb and Public Education Header'
     '#text': |
       <p>SACE empowers individuals and communities to take action against sexual violence. To accomplish this, we deliver presentations, workshops and seminars, distribute resources, offer consultation, and attend community events and speaking engagements.&nbsp;</p>
 
@@ -22,25 +23,35 @@ elements: |-
     '#format': html
   presentation_bookings_header:
     '#type': processed_text
+    '#admin_title': 'Presentation Booking Request Header and Blurb'
     '#text': |
       <h3>Presentation Bookings</h3>
-      Our Public Education team offers both in-person and online presentation options for youth and adult audiences.&nbsp;<br />
-      <br />
-      Our Public Education services are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.
+
+      <p>Our Public Education team offers both in-person and online presentation options for youth and adult audiences.&nbsp;</p>
+
+      <p>&nbsp;</p>
+
+      <p><br />
+      <b>*Please note,&nbsp;</b><strong>our Public Education services are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</strong></p>
     '#format': html
   flexbox:
     '#type': webform_flexbox
     '#title': 'Presentation Bookings'
     youth_presentation_button:
       '#type': processed_text
-      '#text': '<div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=55&amp;pop=Youth">Youth Presentation</a></div>'
+      '#admin_title': 'Youth Presentation Request Button'
+      '#text': |
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=55&amp;pop=Youth">Youth Presentation</a></div>
       '#format': html
     adult_presentation_button:
       '#type': processed_text
-      '#text': '<div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=59&amp;pop=Adult">Adult Presentation</a></div>'
+      '#admin_title': 'Adult Presentation Request Button'
+      '#text': |
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=59&amp;pop=Adult">Adult Presentation</a></div>
       '#format': html
     wiseguyz_presentation_button:
       '#type': processed_text
+      '#admin_title': 'WiseGuyz Booking Request Button'
       '#access_create_roles':
         - authenticated
       '#access_view_roles':
@@ -50,6 +61,7 @@ elements: |-
       '#format': html
   online_course_booking_header:
     '#type': processed_text
+    '#admin_title': 'Online Course Booking Request Header and Blurb'
     '#text': |
       <h3>Online Course Bookings</h3>
 
@@ -57,19 +69,21 @@ elements: |-
 
       <p>&nbsp;</p>
 
-      <p><strong>*Please note, our youth online courses are currently offered to students who are engaging in asynchronous learning and/or who will be working through the content independently.</strong></p>
+      <p><b>*Please note,</b><strong> our youth online courses are currently offered to students who are engaging in asynchronous learning and/or who will be working through the content independently.</strong></p>
     '#format': html
   flexbox_01:
     '#type': webform_flexbox
     youth_online_course_button:
       '#type': processed_text
       '#flex': 2
+      '#admin_title': 'Youth Online Course Booking Request Button'
       '#text': |
         <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped_online_course_request?booking_type=196">Youth Online Course</a></div>
       '#format': html
     adult_online_course_button:
       '#type': processed_text
       '#flex': 2
+      '#admin_title': 'Adult Online Course Booking Request Button'
       '#access_create_roles':
         - authenticated
       '#access_view_roles':
@@ -79,10 +93,13 @@ elements: |-
       '#format': html
   processed_text:
     '#type': processed_text
-    '#text': '<p>For more information about SACE Public Education, including individual registration for online courses available for adults, visit <a href="http://sace.ca/public-education" rel="noopener noreferrer" target="_blank">sace.ca/public-education</a>.</p>'
+    '#admin_title': 'Online Course Booking Request Blurb'
+    '#text': |
+      <p>For more information about SACE Public Education, including individual registration for online courses available for adults, visit <a href="http://sace.ca/sace-services/public-education" rel="noopener noreferrer" target="_blank">sace.ca/public-education</a>.</p>
     '#format': html
   processed_text_01:
     '#type': processed_text
+    '#admin_title': 'IS Booking Request Header, Blurb, and Button'
     '#text': |
       <h2>Institutional Support</h2>
 
@@ -94,6 +111,7 @@ elements: |-
     '#format': html
   community_engagement_section:
     '#type': processed_text
+    '#admin_title': 'CE Booking Request Header, Blurb, and Button'
     '#text': |
       <p>&nbsp;</p>
 
