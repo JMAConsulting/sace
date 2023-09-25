@@ -33,6 +33,7 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
           unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
         }
       }
+      $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = ($bt == 55) ? 'Youth' : 'Adult';
     }
 
     if (in_array($bt, [55])) {

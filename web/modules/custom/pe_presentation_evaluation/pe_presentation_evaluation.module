@@ -176,7 +176,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
           break;
 
         case 24:
-          $elements[$key]['#access'] = in_array('Adults', $result["Booking_Information.Audience"]);
+          $elements[$key]['#access'] = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
           break;
 
         default:
