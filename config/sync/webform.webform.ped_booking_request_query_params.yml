@@ -331,6 +331,53 @@ elements: |-
         '#parent': civicrm_3_contact_1_fieldset_fieldset
         '#default_option': ''
         '#default_value': ''
+  civicrm_1_activity_1_cg2_custom_657:
+    '#type': civicrm_options
+    '#title': 'This booking is for a smaller group, program, department or committee within my organization'
+    '#options':
+      'Yes': 'Yes'
+      'No': 'No'
+    '#extra':
+      aslist: 1
+      multiple: 0
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_657
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': 'No'
+    '#default_value': 'No'
+    '#civicrm_live_options': '1'
+  civicrm_1_activity_1_cg2_custom_658:
+    '#type': textfield
+    '#title': 'Group Name'
+    '#description': 'Name of a smaller group, program, department or committee within my organization.'
+    '#counter_type': character
+    '#counter_maximum': 255
+    '#counter_maximum_message': ' '
+    '#states':
+      invisible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+          value: 'No'
+    '#data_type': String
+    '#extra':
+      description: 'Name of a smaller group, program, department or committee within my organization'
+      description_above: 1
+      width: 20
+    '#has_help': true
+    '#form_key': civicrm_1_activity_1_cg2_custom_658
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_3_contact_1_cg52_custom_663:
+    '#type': textarea
+    '#data_type': Memo
+    '#states':
+      invisible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+          value: 'No'
+    '#extra':
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_3_contact_1_cg52_custom_663
+    '#parent': civicrm_3_contact_1_cg52_fieldset
+    '#title': 'Groups SACE works with in this org'
   processed_text_08:
     '#type': processed_text
     '#states':
@@ -1356,7 +1403,9 @@ handlers:
       civicrm_3_contact_1_contact_cs: 0
       contact_3_settings_matching_rule: Unsupervised
       contact_3_number_of_cg27: '0'
-      contact_3_number_of_cg52: '0'
+      contact_3_number_of_cg52: '1'
+      contact_3_settings_dynamic_custom_cg52: 0
+      civicrm_3_contact_1_cg52_custom_663: create_civicrm_webform_element
       contact_3_number_of_other: '1'
       civicrm_3_contact_1_other_group:
         '': ''
@@ -1492,8 +1541,8 @@ handlers:
       civicrm_1_activity_1_cg2_custom_341: 0
       civicrm_1_activity_1_cg2_custom_655: 0
       civicrm_1_activity_1_cg2_custom_656: 0
-      civicrm_1_activity_1_cg2_custom_657: 0
-      civicrm_1_activity_1_cg2_custom_658: 0
+      civicrm_1_activity_1_cg2_custom_657: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_658: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_659: 0
       civicrm_1_activity_1_cg2_custom_660: 0
       civicrm_1_activity_1_cg2_custom_661: 0
@@ -1876,7 +1925,8 @@ handlers:
             number_of_cg26: '0'
             matching_rule: Unsupervised
             number_of_cg27: '0'
-            number_of_cg52: '0'
+            number_of_cg52: '1'
+            dynamic_custom_cg52: 0
             number_of_other: '1'
             number_of_address: '1'
             number_of_phone: '1'

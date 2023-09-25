@@ -248,9 +248,10 @@ elements: |-
       '#default_option': 'No'
       '#default_value': 'No'
       '#civicrm_live_options': '1'
-    civicrm_2_contact_1_cg52_custom_663:
+    civicrm_1_activity_1_cg2_custom_658:
       '#type': textfield
       '#title': 'Group Name'
+      '#description': 'Name of a smaller group, program, department or committee within my organization.'
       '#counter_type': character
       '#counter_maximum': 255
       '#counter_maximum_message': ' '
@@ -259,25 +260,22 @@ elements: |-
           ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
             value: 'No'
       '#data_type': String
-      '#form_key': civicrm_2_contact_1_cg52_custom_663
-      '#extra':
-        width: 20
+      '#has_help': true
+      '#form_key': civicrm_1_activity_1_cg2_custom_658
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_2_contact_1_cg52_custom_664:
-      '#type': textfield
-      '#data_type': String
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
+    civicrm_2_contact_1_cg52_custom_663:
+      '#type': textarea
+      '#data_type': Memo
       '#states':
-        visible:
+        invisible:
           ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
-            value: 'Yes'
-      '#form_key': civicrm_2_contact_1_cg52_custom_664
+            value: 'No'
       '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Group Details'
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_2_contact_1_cg52_custom_663
+      '#parent': civicrm_2_contact_1_cg52_fieldset
+      '#title': 'Groups SACE works with in this org'
   processed_text_01:
     '#type': processed_text
     '#text': '<h2><span style="color:#2e416c;">Booking Details</span></h2>'
@@ -562,6 +560,10 @@ elements: |-
       '#form_key': civicrm_3_contact_1_contact_existing
       '#parent': civicrm_3_contact_1_fieldset_fieldset
       '#extra': {  }
+  civicrm_2_contact_1_cg52_fieldset:
+    '#type': fieldset
+    '#title': 'Organization Groups'
+    '#form_key': civicrm_2_contact_1_cg52_fieldset
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -836,7 +838,6 @@ handlers:
       contact_2_number_of_cg52: '1'
       contact_2_settings_dynamic_custom_cg52: 0
       civicrm_2_contact_1_cg52_custom_663: create_civicrm_webform_element
-      civicrm_2_contact_1_cg52_custom_664: create_civicrm_webform_element
       contact_2_number_of_other: '1'
       civicrm_2_contact_1_other_group:
         '': ''
@@ -983,7 +984,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_655: 0
       civicrm_1_activity_1_cg2_custom_656: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_657: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_658: 0
+      civicrm_1_activity_1_cg2_custom_658: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_659: 0
       civicrm_1_activity_1_cg2_custom_660: 0
       civicrm_1_activity_1_cg2_custom_661: 0
