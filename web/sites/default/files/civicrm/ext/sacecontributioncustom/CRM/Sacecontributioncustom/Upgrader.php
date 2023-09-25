@@ -75,6 +75,34 @@ class CRM_Sacecontributioncustom_Upgrader extends CRM_Extension_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_1002(): bool {
+    $this->ctx->log->info('Applying update 1002 - Add tag "Unspecified Organization Type" to all newly created organization via booking request');
+    $tagID = \Civi\Api4\Tag::get(FALSE)
+      ->addSelect('id')
+      ->addWhere('name', '=', 'Unspecified Organization Type')
+      ->execute()
+      ->first()['id'] ?? NULL;
+
+    if (!$tagID) {
+      $tagID = \Civi\Api4\Tag::create(FALSE)
+      ->addValue('name', 'Unspecified Organization Type1')
+      ->addValue('used_for', [
+        'civicrm_contact',
+      ])
+      ->execute()
+      ->first()['id'];
+    }
+
+    \Civi\Api4\Contact::get(FALSE)
+      ->addWhere('source', 'LIKE', '%Booking%')
+      ->addChain('add_tag', 
+        \Civi\Api4\EntityTag::save(TRUE)
+        ->setRecords([['tag_id' => $tagID, 'entity_id' => '$id', 'entity_table' => 'civicrm_contact']])
+        ->setMatch(['tag_id', 'entity_id', 'entity_table'])
+      )->execute();
+  }
+
+
   /**
    * Example: Run an external SQL script.
    *
