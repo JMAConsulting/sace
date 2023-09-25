@@ -815,7 +815,6 @@ elements: |-
     '#title': Audience
     '#options':
       2SLGBTQ+: 2SLGBTQ+
-      Adults: Adults
       'Children 3-11': 'Children 3-11'
       'Community Group': 'Community Group'
       'Deaf&HardofHearing': 'Deaf & Hard of Hearing'
@@ -1049,6 +1048,7 @@ handlers:
     conditions: {  }
     weight: -48
     settings:
+      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '6'
       1_contact_type: individual

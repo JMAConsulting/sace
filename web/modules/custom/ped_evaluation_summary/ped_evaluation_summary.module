@@ -414,7 +414,7 @@ foreach ($mapper as $Q => $cfID) {
           break;
 
         case 24:
-          $flag = ($result['activity_type_id'] == 59);        
+          $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');      
           break;
 
         case 13:
