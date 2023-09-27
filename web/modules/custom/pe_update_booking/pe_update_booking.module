@@ -21,12 +21,19 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
     $form['#attached']['library'][] = 'pe_update_booking/pe_update_booking';
     $form['#attached']['drupalSettings']['ped_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', PED_BOOKING_UPDATE_START_DATE);
     $form['#attached']['drupalSettings']['ped_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', PED_BOOKING_UPDATE_END_DATE);
-    
+
     //Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
     if (empty($elements)) {
       return;
     }
+
+    // hackish fix to bypass false validation error on assigned Staff fields
+    //  triggerred at line 151 of web/core/lib/Drupal/Core/Form/FormErrorHandler.php
+    unset($elements['civicrm_3_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_4_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_5_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_6_contact_1_contact_existing']['#group']);
 
     //Toggle text field if Presentation Topic is Custom/Something Different
     if ($elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#default_value'][0] == "CustomSomethingDifferent") {
@@ -114,7 +121,7 @@ function pe_update_booking_preprocess_page_title(&$variables, $hook) {
         '#markup' => 'WiseGuyz Booking Update Form',
       ];
     }
-    elseif ($bt == 204) { 
+    elseif ($bt == 204) {
       $variables['title'] = [
         '#markup' => 'Institutional Support Booking Update Form',
       ];
