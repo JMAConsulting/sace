@@ -200,6 +200,7 @@ elements: |-
     civicrm_2_contact_1_other_tag:
       '#type': civicrm_options
       '#title': Tag(s)
+      '#description': 'To choose existing organization please click <a href="#" id="existing-org">here</a> to select one.'
       '#civicrm_live_options': 0
       '#options':
         44: 'Arts, Entertainment & Nightlife'
@@ -228,7 +229,6 @@ elements: |-
       '#parent': civicrm_2_contact_1_fieldset_fieldset
       '#default_option': ''
       '#default_value': ''
-      '#description': 'To choose existing organization please click <a id="existing-org" href="#">here</a> to select one.'
   civicrm_1_activity_1_cg2_custom_657:
     '#type': civicrm_options
     '#title': 'This booking is for a smaller group, program, department or committee within my organization'

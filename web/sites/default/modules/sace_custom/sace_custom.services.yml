@@ -1,4 +1,4 @@
-services:
-  menu.default_tree_manipulators:
-    class: Drupal\sace_custom\SaceCustomLinkTreeManipulator
-    arguments: ['@access_manager', '@current_user', '@entity_type.manager', '@config.manager', '@entity.repository']
+#services:
+#  menu.default_tree_manipulators:
+#    class: Drupal\sace_custom\SaceCustomLinkTreeManipulator
+#    arguments: ['@access_manager', '@current_user', '@entity_type.manager', '@config.manager', '@entity.repository']
