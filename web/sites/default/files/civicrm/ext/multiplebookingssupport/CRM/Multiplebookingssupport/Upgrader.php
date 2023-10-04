@@ -4,6 +4,7 @@ use CRM_Multiplebookingssupport_ExtensionUtil as E;
 // phpcs:enable
 use Civi\Api4\MultipleBooking;
 use Civi\Api4\OptionValue;
+use Civi\Api4\Activity;
 
 /**
  * Collection of upgrade steps.
@@ -92,6 +93,44 @@ class CRM_Multiplebookingssupport_Upgrader extends CRM_Extension_Upgrader_Base {
       else {
         MultipleBooking::create(FALSE)->addValue('activity_type_id', $activityType['value'])->addValue('booking_calendar_display', TRUE)->execute();
       }
+    }
+    return TRUE;
+  }
+
+  public function upgrade_1001(): bool {
+    $this->ctx->log->info('Applying update 1001: Populate potentially missing Youth/Adult Field for bookings where applicable');
+    $youth_activity_types = [
+      'Youth Presentation',
+      'Youth Online Course',
+      'Wiseguyz',
+    ];
+    $adult_activity_types = [
+      'Adult Presentation',
+      'Adult Online Course',
+      'Community Engagement',
+      'Institutional Support',
+      'Consultation',
+      'Booths',
+    ];
+    $youthActivities = Activity::get(FALSE)
+      ->addWhere('activity_type_id:label', 'IN', $youth_activity_types)
+      ->addWhere('Booking_Information.Youth_or_Adult', 'IS EMPTY')
+      ->execute();
+    foreach($youthActivities as $youthActivity) {
+      Activity::update(FALSE)
+        ->addValue('Booking_Information.Youth_or_Adult', 'Youth')
+        ->addWhere('id', '=', $youthActivity['id'])
+        ->execute();
+    }
+    $adultActivities = Activity::get(FALSE)
+      ->addWhere('activity_type_id:label', 'IN', $adult_activity_types)
+      ->addWhere('Booking_Information.Youth_or_Adult', 'IS EMPTY')
+      ->execute();
+    foreach($adultActivities as $adultActivity) {
+      Activity::update(FALSE)
+        ->addValue('Booking_Information.Youth_or_Adult', 'Adult')
+        ->addWhere('id', '=', $adultActivity['id'])
+        ->execute();
     }
     return TRUE;
   }
