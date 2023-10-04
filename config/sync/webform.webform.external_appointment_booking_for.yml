@@ -18,12 +18,15 @@ category: ''
 elements: |-
   civicrm_1_contact_1_cg52_fieldset:
     '#type': fieldset
-    '#title': 'Your Organization'
+    '#title': 'Hosting Organization'
     '#form_key': civicrm_1_contact_1_cg52_fieldset
     civicrm_1_contact_1_contact_existing:
       '#type': civicrm_contact
-      '#title': 'Select Your Organization'
-      '#description': 'If you cannot find your organization, please click <a id="existing-org" href=#> here</a> to add one.'
+      '#title': 'Select Hosting Organization'
+      '#description': |-
+        This will typically be SACE: both activities held at SACE and those held online, whether from SACE or from home, should be recorded as SACE.<br />
+        For activities held at other organizations, select that organization name, and the relevant address will be pulled. If you cannot find an organization, please click <a href="#" id="existing-org"> here</a> to add one.<br />
+        *Note that if a hosting organization is using a different address than what displays here, whether because they&#39;ve moved or a temporary location, you can update the address. This will not impact the permanent address we have in the system.
       '#widget': autocomplete
       '#none_prompt': '+ Create new +'
       '#results_display':

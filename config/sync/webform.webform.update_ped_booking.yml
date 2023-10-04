@@ -1389,6 +1389,8 @@ handlers:
     conditions: {  }
     weight: -50
     settings:
+      disable: 'Leave Fields and Save Settings'
+      antibot_key: ''
       nid: 1
       number_of_contacts: '6'
       1_contact_type: individual
@@ -2043,7 +2045,6 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: 'Create PED Booking'
-      antibot_key: ''
       data:
         contact:
           1:

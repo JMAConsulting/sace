@@ -49,6 +49,8 @@ elements: |-
 
       <p>Please note that Institutional Support services are strongly tied to our Public Education program: without the educational foundation to inform why and how these policies and practices function and to support culture shift, we find that policies do not find their way into practice. Once we have received your support request, we will reach out to further explore your needs, including public education services.</p>
 
+      <p>&nbsp;</p>
+
       <p><img alt="A photo of participants in an online meeting is displayed out of focus on a laptop screen with a cup of tea in the foreground of the desk, while the words &quot;We believe in creating a culture of consent&quot; are shown on a dark background to the side" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/InstitutionalSupportBanner_0.png" title="InstitutionalSupportBanner" width="100%" /></p>
 
       <h2>General Information</h2>
@@ -127,18 +129,6 @@ elements: |-
       <p><img alt="A photo shot from the back of a room features many young people seated in chairs facing a masculine public educator facilitating from the front of the well-lit room" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/YouthPresentationRequests.png" title="Youth Presentation Requests Banner" width="100%" /></p>
 
       <h2>General Information</h2>
-    '#format': html
-  post_secondary_school_booking_html:
-    '#type': processed_text
-    '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-          value: '58'
-    '#admin_title': 'Is this a dropped form, can we delete this field?'
-    '#text': |
-      <h2><span style="color:#2e416c;">Post Secondary School Booking</span></h2>
-
-      <p><img alt="Lecture" class="" data-entity-type="" data-entity-uuid="" id="" src="/sites/default/files/styles/banner_1191/public/2021-05/lecture-hall-347316_1920.jpg?itok=VhPzVks2" title="" /></p>
     '#format': html
   adult_professional_booking_html:
     '#type': processed_text
@@ -574,7 +564,7 @@ elements: |-
         - or
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '203'
-    '#admin_title': 'Is this session details field redundant, can we delete?'
+    '#admin_title': 'Session Details'
     '#text': |
       <h2><span style="color:#2e416c;"><strong>Your Session(s)</strong></span></h2>
 
@@ -648,13 +638,13 @@ elements: |-
       '#options':
         Adult: Adult
         Youth: Youth
-      '#default_value': ''
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_90
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
+      '#default_value': ''
       '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_25:
     '#type': civicrm_options
