@@ -387,10 +387,6 @@ elements: |-
     '#options':
       Adult: Adult
       Youth: Youth
-    '#states':
-      invisible:
-        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-          filled: true
     '#extra':
       aslist: 1
       multiple: 0
