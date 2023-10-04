@@ -1197,25 +1197,6 @@ elements: |-
     '#default_option': ''
     '#default_value': ''
     '#civicrm_live_options': '1'
-  civicrm_1_activity_1_cg2_custom_90:
-    '#type': civicrm_options
-    '#title': 'Youth or Adult'
-    '#options':
-      Adult: Adult
-      Youth: Youth
-    '#states':
-      invisible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_90"]':
-          filled: true
-    '#extra':
-      aslist: 1
-      multiple: 0
-    '#data_type': String
-    '#form_key': civicrm_1_activity_1_cg2_custom_90
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': ''
-    '#default_value': ''
-    '#civicrm_live_options': '1'
 css: "#edit-civicrm-1-activity-1-cg2-custom-40 > div.js-form-type-checkbox {\r\n width: 49% !important;\r\n}"
 javascript: ''
 settings:

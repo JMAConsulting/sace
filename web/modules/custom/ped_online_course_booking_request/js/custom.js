@@ -37,5 +37,7 @@
         });
       }
     });
+    // visually hide the youth and adult field so that it can still be submitted by webform.
+    $("[name='civicrm_1_activity_1_cg2_custom_90']").parent().hide();
   });
 })(jQuery, Drupal, drupalSettings);

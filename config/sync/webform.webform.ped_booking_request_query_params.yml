@@ -648,17 +648,13 @@ elements: |-
       '#options':
         Adult: Adult
         Youth: Youth
-      '#states':
-        invisible:
-          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            filled: true
-      '#default_value': '[current-page:query:pop]'
+      '#default_value': ''
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_90
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': Youth
+      '#default_option': ''
       '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_25:
     '#type': civicrm_options
