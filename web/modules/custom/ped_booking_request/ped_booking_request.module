@@ -34,7 +34,7 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         }
       }
     }
-    $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = (in_array($bt, [55, 201]) ? 'Youth' : 'Adult';
+    $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = (in_array($bt, [55, 201]) ? 'Youth' : 'Adult');
 
     if (in_array($bt, [55])) {
       $elements['civicrm_3_contact_1_contact_existing']['#title'] = 'Your School';
