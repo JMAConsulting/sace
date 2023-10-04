@@ -59,7 +59,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements[$constants['TARGET_CONTACT']]['#disabled'] = TRUE;
     $elements[$constants['TARGET_CONTACT']]['#hidden'] = TRUE;
 
-    if (in_array($result['activity_type_id'], [55, 196])) {
+    if ($result['Booking_Information.Youth_or_Adult'] == 'Youth') {
       unset($elements[$constants['DEMOGRAPHIC_INFO']]['#options']['Sex Worker']);
     }
 
@@ -100,8 +100,8 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $result["Booking_Information.Presentation_topics"] = $result["Booking_Information.Presentation_topics"] ?: [];
     $result["Booking_Information.Audience"] = $result["Booking_Information.Audience"] ?: [];
 
-    // for youth online course course feedback hide specific questiins
-    if ($result['activity_type_id'] == 196) { 
+    // for youth online course course feedback hide specific questions
+    if ($result['activity_type_id'] == 196) {
       foreach ([6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 24] as $Q) {
         $key = 'civicrm_1_activity_1_cg49_custom_' . $mapper[$Q];
         $elements[$key]['#access'] = FALSE;
@@ -122,8 +122,8 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
         case 6:
         case 10:
-          $elements[$key]['#access'] = in_array($result['activity_type_id'], [59, 199]);
-          break;         
+          $elements[$key]['#access'] = (bool) ($result['Booking_Information.Youth_or_Adult'] == 'Adult');
+          break;
 
         case 8:
         case 9:
@@ -133,21 +133,18 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
         case 13:
         case 18:
-          //Hide Q13 if Audience not in list
+          //Hide Q13, Q18 if Audience not in list
           $elements[$key]['#access'] = !empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]));
           break;
 
         case 14:
-          $elements[$key]['#access'] = ($result["Booking_Information.Facilitating_Program"] == 'InstitutionalSupport');
+        case 16:
+          //Hide Q14 Q16 if Safer Spaces Content is NO
+          $elements[$key]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
           break;
 
         case 15:
           $elements[$key]['#access'] = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
-          break;
-
-        case 16:
-          //Hide Q14 Q15 Q16 if Safer Spaces Content is NO
-          $elements[$key]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
           break;
 
         case 17:
