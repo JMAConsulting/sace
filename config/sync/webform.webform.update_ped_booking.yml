@@ -1704,7 +1704,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_121: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_120: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_119: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_90: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_90: 0
       civicrm_1_activity_1_cg2_custom_43: 0
       civicrm_1_activity_1_cg2_custom_25: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_34: create_civicrm_webform_element
