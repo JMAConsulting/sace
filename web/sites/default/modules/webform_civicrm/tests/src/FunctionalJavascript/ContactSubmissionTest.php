@@ -14,12 +14,9 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
-    $this->utils->wf_civicrm_api('Extension', 'download', [
-      'key' => "com.aghstrategies.uscounties",
-    ]);
-    drupal_flush_all_caches();
+    $this->setUpExtension('com.aghstrategies.uscounties');
   }
 
   /**
@@ -326,6 +323,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
       'selector' => 'edit-webform-ui-elements-civicrm-1-contact-1-contact-existing-operations',
       'widget' => 'Static',
       'default' => 'Current User',
+      'required' => TRUE,
     ];
     $this->editContactElement($editContact);
     $this->assertSession()->pageTextContains('Existing Contact has been updated');
@@ -351,6 +349,61 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
     $this->getSession()->getPage()->pressButton('Submit');
     $this->assertSession()->pageTextContains('New submission added to CiviCRM Webform Test.');
     $this->assertPageNoErrorMessages();
+
+    $this->drupalLogout();
+
+    // Submit the form as an anonymous user.
+    // Empty static widget should throw an error on submission.
+    $this->drupalGet($this->webform->toUrl('canonical'));
+    $this->assertPageNoErrorMessages();
+    $this->getSession()->getPage()->pressButton('Submit');
+    $this->assertSession()->pageTextContains('Existing Contact field is required');
+  }
+
+  /**
+   * Submit webform with subtype value.
+   */
+  public function testSubmitWebformWithContactSubtype() {
+    $params = [
+      'name' => "First Contact",
+      'is_active' => 1,
+      'parent_id' => "Individual",
+    ];
+    $result = $this->utils->wf_civicrm_api('ContactType', 'create', $params);
+    $this->assertEquals(0, $result['is_error']);
+    $this->assertEquals(1, $result['count']);
+
+    $this->drupalLogin($this->adminUser);
+    $this->drupalGet(Url::fromRoute('entity.webform.civicrm', [
+      'webform' => $this->webform->id(),
+    ]));
+    $this->enableCivicrmOnWebform();
+    $this->getSession()->getPage()->selectFieldOption('civicrm_1_contact_1_contact_contact_sub_type[]', 'create_civicrm_webform_element');
+    $this->assertSession()->assertWaitOnAjaxRequest();
+
+    $this->saveCiviCRMSettings();
+
+    $this->drupalLogout();
+    $this->drupalGet($this->webform->toUrl('canonical'));
+    $this->assertPageNoErrorMessages();
+
+    $this->getSession()->getPage()->checkField('First Contact');
+    $this->assertSession()->checkboxChecked("First Contact");
+    $this->getSession()->getPage()->fillField('First Name', 'Frederick');
+    $this->getSession()->getPage()->fillField('Last Name', 'Pabst');
+
+    $this->getSession()->getPage()->pressButton('Submit');
+    $this->assertPageNoErrorMessages();
+    $this->assertSession()->pageTextContains('New submission added to CiviCRM Webform Test.');
+
+    $api_result = $this->utils->wf_civicrm_api('Contact', 'get', [
+      'sequential' => 1,
+      'first_name' => 'Frederick',
+      'last_name' => 'Pabst',
+    ]);
+    $this->assertEquals(1, $api_result['count']);
+    $contact = reset($api_result['values']);
+    $this->assertEquals('First_Contact', implode($contact['contact_sub_type']));
   }
 
   /**
@@ -359,6 +412,10 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
    * @dataProvider dataContactValues
    */
   public function testSubmitWebform($contact_type, array $contact_values) {
+    $communication_styles = array_column($this->utils->wf_crm_apivalues('OptionValue', 'get', [
+      'sequential' => 1,
+      'option_group_id' => "communication_style",
+    ]), 'value', 'name');
     $this->assertArrayHasKey('contact', $contact_values, 'Test data must contain contact');
     $this->assertArrayHasKey('first_name', $contact_values['contact'], 'Test contact data must contain first_name');
     $this->assertArrayHasKey('last_name', $contact_values['contact'], 'Test contact data must contain last_name');
@@ -368,15 +425,13 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
       'webform' => $this->webform->id(),
     ]));
     // The label has a <div> in it which can cause weird failures here.
-    $this->assertSession()->waitForText('Enable CiviCRM Processing');
-    $this->assertSession()->waitForField('nid');
-    $this->htmlOutput();
-    $this->getSession()->getPage()->checkField('nid');
-    $this->getSession()->getPage()->selectFieldOption('1_contact_type', strtolower($contact_type));
-    $this->assertSession()->assertWaitOnAjaxRequest();
+    $this->enableCivicrmOnWebform();
 
     // @see wf_crm_location_fields().
     $configurable_contact_field_groups = [
+      'contact' => [
+        'communication_style_id',
+      ],
       'address' => [
         'street_address',
         'city',
@@ -394,11 +449,13 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
     // address => 'street_address' or 'city'
     foreach ($configurable_contact_field_groups as $field_group => $field_value_key) {
       if (isset($contact_values[$field_group])) {
-        $this->assertTrue(is_array($contact_values[$field_group]));
-        $this->assertTrue(isset($contact_values[$field_group][0]));
-        $this->getSession()->getPage()->selectFieldOption('contact_1_number_of_' . $field_group, count($contact_values[$field_group]));
-        $this->assertSession()->assertWaitOnAjaxRequest();
-        $this->htmlOutput();
+        if ($field_group != 'contact') {
+          $this->assertTrue(is_array($contact_values[$field_group]));
+          $this->assertTrue(isset($contact_values[$field_group][0]));
+          $this->getSession()->getPage()->selectFieldOption('contact_1_number_of_' . $field_group, count($contact_values[$field_group]));
+          $this->assertSession()->assertWaitOnAjaxRequest();
+          $this->htmlOutput();
+        }
         if (is_array($field_value_key)) {
           foreach ($field_value_key as $value_key) {
             $this->getSession()->getPage()->checkField("civicrm_1_contact_1_{$field_group}_{$value_key}");
@@ -410,9 +467,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
         }
       }
     }
-
-    $this->getSession()->getPage()->pressButton('Save Settings');
-    $this->assertSession()->pageTextContains('Saved CiviCRM settings');
+    $this->saveCiviCRMSettings();
 
     $this->drupalLogout();
     $this->drupalGet($this->webform->toUrl('canonical'));
@@ -428,6 +483,9 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
           }
         }
         else {
+          if ($field_name == 'communication_style_id') {
+            $field_value = $communication_styles[$field_value] ?? $field_value;
+          }
           $selector = "civicrm_1_contact_1_{$entity_type}_{$field_name}";
           $this->addFieldValue($selector, $field_value);
         }
@@ -448,6 +506,9 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
     $this->assertEquals($contact_type, $contact['contact_type']);
 
     foreach ($contact_values['contact'] as $field_name => $field_value) {
+      if ($field_name == 'communication_style_id') {
+        $field_value = $communication_styles[$field_value] ?? $field_value;
+      }
       $this->assertEquals($field_value, $contact[$field_name], $result_debug);
     }
     if (isset($contact_values['email'])) {
@@ -455,7 +516,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
     }
 
     foreach ($configurable_contact_field_groups as $field_group => $field_value_key) {
-      if (isset($contact_values[$field_group])) {
+      if (isset($contact_values[$field_group]) && $field_group != 'contact') {
         $api_result = $this->utils->wf_civicrm_api($field_group, 'get', [
           'sequential' => 1,
           'contact_id' => $contact['contact_id'],
@@ -465,22 +526,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
           if (is_array($field_value_key)) {
             foreach ($field_value_key as $value_key) {
               if (isset($contact_values[$field_group][$key][$value_key])) {
-                switch ($value_key) {
-                  case 'state_province_id':
-                    $state = $this
-                      ->utils
-                      ->wf_civicrm_api('StateProvince', 'getvalue', [
-                        'return' => "abbreviation",
-                        'id' => $result_entity[$value_key],
-                      ]);
-
-                    $this->assertEquals($contact_values[$field_group][$key][$value_key], $state);
-                    break;
-
-                  default:
-                    $this->assertEquals($contact_values[$field_group][$key][$value_key], $result_entity[$value_key]);
-                    break;
-                }
+                $this->assertEquals($contact_values[$field_group][$key][$value_key], $result_entity[$value_key]);
               }
             }
           }
@@ -523,6 +569,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
         'contact' => [
           'first_name' => 'Frederick',
           'last_name' => 'Pabst',
+          'communication_style_id' => 'familiar',
         ]
     ]];
     yield [
@@ -542,8 +589,8 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
             'street_address' => 'Test',
             'city' => 'Adamsville',
             'postal_code' => '35005',
-            'country_id' => '1228',
-            'state_province_id' => 'AL',
+            'country_id' => '1228', // United States
+            'state_province_id' => '1000', // Alabama
             'county_id' => '7',
           ]
         ],
@@ -554,6 +601,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
         'contact' => [
           'first_name' => 'Frederick',
           'last_name' => 'Pabst',
+          'communication_style_id' => 'formal',
         ],
         'website' => [
           [
@@ -567,6 +615,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
         'contact' => [
           'first_name' => 'Frederick',
           'last_name' => 'Pabst',
+          'communication_style_id' => 'formal',
         ],
         'phone' => [
           [
@@ -580,6 +629,7 @@ final class ContactSubmissionTest extends WebformCivicrmTestBase {
         'contact' => [
           'first_name' => 'Frederick',
           'last_name' => 'Pabst',
+          'communication_style_id' => 'familiar',
         ],
         'email' => [
           [

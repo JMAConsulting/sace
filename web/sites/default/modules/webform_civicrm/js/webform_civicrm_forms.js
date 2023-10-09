@@ -2,7 +2,7 @@
  * JS for CiviCRM-enabled webforms
  */
 
-var wfCivi = (function ($, D, drupalSettings) {
+var wfCivi = (function (D, $, drupalSettings, once) {
   'use strict';
   var setting = drupalSettings.webform_civicrm;
   /**
@@ -31,7 +31,7 @@ var wfCivi = (function ($, D, drupalSettings) {
         }
         names.organization = names.household = names.first + (names.last ? ' ' : '') + names.last;
         for (i in names) {
-          $(':input[name$="civicrm_'+num+'_contact_1_contact_'+i+'_name"]', formClass).val(names[i]);
+          $(':input[name$="civicrm_' + num + '_contact_1_contact_' + i + '_name"]', formClass).val(names[i]);
         }
       }
       return;
@@ -116,8 +116,8 @@ var wfCivi = (function ($, D, drupalSettings) {
         }
       }
       else {
-        $(':visible', container).hide();
-        container.append('<input type="submit" class="button form-submit ajax-processed civicrm-remove-file" value="' + Drupal.t('Remove') + '" onclick="wfCivi.clearFileField(\'' + field + '\'); return false;">');
+        $(container).children().hide();
+        container.append('<input type="submit" class="button form-submit ajax-processed civicrm-remove-file" value="' + Drupal.t('Change') + '" onclick="wfCivi.clearFileField(\'' + field + '\'); return false;">');
       }
       container.prepend('<span class="file civicrm-file-icon file--'+info.icon+'">' + (info.name ? ('<a href="'+ info.file_url+ '" target="_blank">'+info.name +'</a>') : '') + '</span>');
     }
@@ -127,7 +127,7 @@ var wfCivi = (function ($, D, drupalSettings) {
     var element = 'div#edit-' + field.replace(/_/g, '-') + '.civicrm-enabled';
     var container = $(element.toLowerCase());
     $('.civicrm-remove-file, .civicrm-file-icon', container).remove();
-    $('input[type=file], input[type=submit]', container).show();
+    $(container).children().show();
   };
 
   /**
@@ -137,7 +137,7 @@ var wfCivi = (function ($, D, drupalSettings) {
   var stateProvinceCache = {};
 
   function getFormClass(webformId) {
-    return '.webform-submission-' + webformId.replace(/_/g, '-') + '-form'
+    return '.webform-submission-' + webformId.toString().replace(/_/g, '-') + '-form';
   }
 
   function resetFields(num, nid, clear, op, toHide, hideOrDisable, showEmpty, speed, defaults) {
@@ -164,6 +164,9 @@ var wfCivi = (function ($, D, drupalSettings) {
               $(':input[id$="month"]', $wrapper).val(parseInt(date[1], 10)).trigger('change', 'webform_civicrm:autofill');
               $(':input[id$="day"]', $wrapper).val(parseInt(date[2], 10)).trigger('change', 'webform_civicrm:autofill');
             }
+            else {
+              $(':input', this).val('').trigger('change', 'webform_civicrm:reset');;
+            }
           }
           else {
             $(':input', this).not(':radio, :checkbox, :button, :submit, :file, .form-file').each(function() {
@@ -174,7 +177,7 @@ var wfCivi = (function ($, D, drupalSettings) {
             });
             $('.civicrm-remove-file', this).click();
             $('input:checkbox, input:radio', this).each(function() {
-              $(this).removeAttr('checked').trigger('change', 'webform_civicrm:reset');
+              $(this).prop('checked', false).trigger('change', 'webform_civicrm:reset');
             });
           }
         }
@@ -232,7 +235,7 @@ var wfCivi = (function ($, D, drupalSettings) {
         pub.initFileField(fid, this);
         return;
       }
-      var $wrapper = $(formClass +' div.form-item[class*="-'+(fid.replace(/_/g, '-'))+'"]');
+      var $wrapper = $(formClass + ' div.form-item[class*="-' + (fid.replace(/_/g, '-')) + '"]');
       if (this.data_type === 'Date') {
         var vals = val.split(' ');
         var $date_el = $('input[name="' + fid + '[date]"]', $wrapper);
@@ -271,8 +274,9 @@ var wfCivi = (function ($, D, drupalSettings) {
       // Next go after the wrapper - for radios & checkboxes
       else {
         $.each($.makeArray(val), function(k, v) {
-          $('input[value="'+v+'"]', $wrapper).prop('checked', true).trigger('change', 'webform_civicrm:autofill');
+          $('input[value="' + v + '"]', $wrapper).prop('checked', true).trigger('change', 'webform_civicrm:autofill');
         });
+        $('input[type="checkbox"]:first-child', $wrapper).removeAttr('required');
       }
     });
   }
@@ -289,14 +293,14 @@ var wfCivi = (function ($, D, drupalSettings) {
 
   function populateStates(stateSelect, countryId) {
     $(stateSelect).prop('disabled', true);
-    var is_billing = stateSelect.attr('name').indexOf("billing_address") >= 0;
-    if (!is_billing && stateProvinceCache[countryId]) {
+    if (stateProvinceCache[countryId]) {
       fillOptions(stateSelect, stateProvinceCache[countryId]);
     }
     else {
-      $.getJSON(setting.callbackPath+'/stateProvince/' + countryId + '/' + is_billing, function(data) {
+      $.getJSON(setting.callbackPath+'/stateProvince/' + countryId, function(data) {
         fillOptions(stateSelect, data);
         stateProvinceCache[countryId] = data;
+        sameBillingAddress(true);
       });
     }
   }
@@ -347,7 +351,7 @@ var wfCivi = (function ($, D, drupalSettings) {
 
   function sharedAddress(item, action, speed) {
     var name = parseName($(item).attr('name'));
-    var fields = $(item).parents('form.webform-submission-form').find('[name*="['+(name.replace('master_id', ''))+'"]').not('[name*=location_type_id]').not('[name*=master_id]').not('[type="hidden"]');
+    var fields = $(item).parents('form.webform-submission-form').find('[name*="'+(name.replace(/master_id.*$/, ''))+'"]').not('[name*=location_type_id]').not('[name*=master_id]').not('[type="hidden"]');
     if (action === 'hide') {
       fields.parent().hide(speed, function() {$(this).css('display', 'none');});
       fields.prop('disabled', true);
@@ -355,6 +359,43 @@ var wfCivi = (function ($, D, drupalSettings) {
     else {
       fields.removeAttr('disabled');
       fields.parent().show(speed);
+    }
+  }
+
+  /**
+   * Copy Values from Contact 1 Address fields to billing address.
+   *
+   * @param bool state_only
+   *  true, if only state field needs to be populated.
+   */
+  function sameBillingAddress(state_only = false) {
+    if ($('input[name="civicrm_1_contribution_1_contribution_billing_address_same_as"]').length && $('input[name="civicrm_1_contribution_1_contribution_billing_address_same_as"]').is(':checked')) {
+      // Address fields are on different pages.
+      if (typeof setting.billing_values != "undefined") {
+        $.each(setting.billing_values, function(k, v) {
+          if (state_only && k == 'state_province_id') {
+            $('[name=civicrm_1_contribution_1_contribution_billing_address_' + k + ']').val(v);
+          }
+          else if (!state_only) {
+            $('[name=civicrm_1_contribution_1_contribution_billing_address_' + k + ']').val(v).change();
+          }
+        });
+      }
+      else {
+        // Address fields are on same page.
+        var billing_fields = state_only ? ['state_province_id'] : ['street_address', 'city', 'postal_code', 'state_province_id', 'country_id', 'first_name', 'middle_name', 'last_name'];
+        $.each(billing_fields, function(key, field_name) {
+          if ($('[name=civicrm_1_contact_1_address_' + field_name).length > 0) {
+            var v = (key < 5) ? $('[name=civicrm_1_contact_1_address_' + field_name).val() : $('[name=civicrm_1_contact_1_contact_' + field_name).val();
+            if (state_only && field_name == 'state_province_id') {
+              $('[name=civicrm_1_contribution_1_contribution_billing_address_' + field_name + ']').val(v);
+            }
+            else if (!state_only) {
+              $('[name=civicrm_1_contribution_1_contribution_billing_address_' + field_name + ']').val(v).change();
+            }
+          }
+        });
+      }
     }
   }
 
@@ -380,17 +421,6 @@ var wfCivi = (function ($, D, drupalSettings) {
     return cids;
   }
 
-  function makeSelect($el) {
-    var value = $el.val(),
-      classes = $el.attr('class').replace('text', 'select'),
-      id = $el.attr('id'),
-      $form = $el.closest('form');
-    $el.replaceWith('<select id="'+$el.attr('id')+'" name="'+$el.attr('name')+'"' + ' class="' + classes + ' civicrm-processed" data-val="' + value + '"></select>');
-    return $('#' + id, $form).change(function() {
-      $(this).attr('data-val', '');
-    });
-  }
-
   D.behaviors.webform_civicrmForm = {
     attach: function (context) {
       if (!stateProvinceCache['default'] && setting) {
@@ -399,8 +429,8 @@ var wfCivi = (function ($, D, drupalSettings) {
         stateProvinceCache[''] = {'': setting.noCountry};
       }
 
-      // Replace state/prov & county textboxes with dynamic select lists
-      $('input:text.civicrm-enabled[name*="_address_state_province_id"]', context).each(function() {
+      // Replace state/prov & county with dynamic select lists
+      $('select.civicrm-enabled[name*="_address_state_province_id"]', context).each(function() {
         var $el = $(this);
         var $form = $el.parents('form');
         var key = parseName($el.attr('name'));
@@ -411,9 +441,7 @@ var wfCivi = (function ($, D, drupalSettings) {
 
         var readOnly = $el.attr('readonly');
 
-        $el = makeSelect($el);
         if ($county.length && !$county.attr('readonly')) {
-          $county = makeSelect($county);
           $el.change(populateCounty);
         }
 
@@ -441,10 +469,16 @@ var wfCivi = (function ($, D, drupalSettings) {
       });
 
       // Add handler to country field to trigger ajax refresh of corresponding state/prov
-      $('form.webform-submission-form .civicrm-enabled[name*="_address_country_id"]').once('civicrm').change(countrySelect);
+      $(once('civicrm', 'form.webform-submission-form .civicrm-enabled[name*="_address_country_id"]')).change(countrySelect);
+
+      // Copy address fields to billing section if "Same As" checkbox is enabled.
+      $(once('civicrm', 'form.webform-submission-form .civicrm-enabled[name="civicrm_1_contribution_1_contribution_billing_address_same_as"]')).change(function(){
+        sameBillingAddress();
+      });
+      sameBillingAddress();
 
       // Show/hide address fields when sharing an address
-      $('form.webform-submission-form .civicrm-enabled[name*="_address_master_id"]').once('civicrm').change(function(){
+      $(once('civicrm', 'form.webform-submission-form .civicrm-enabled[name*="_address_master_id"]')).change(function(){
         var action = ($(this).val() === '' || ($(this).is('input:checkbox:not(:checked)'))) ? 'show' : 'hide';
         sharedAddress(this, action, 500);
       });
@@ -461,7 +495,7 @@ var wfCivi = (function ($, D, drupalSettings) {
         pub.initFileField(getFieldNameFromClass($(this).parent()));
       });
 
-      $('form.webform-submission-form').once('civicrm').each(function () {
+      $(once('civicrm', 'form.webform-submission-form')).each(function () {
         if (Array.isArray(drupalSettings.webform_civicrm.fileFields)) {
           drupalSettings.webform_civicrm.fileFields.forEach(function (fileField){
             wfCivi.initFileField(fileField.eid, fileField.fileInfo);
@@ -471,4 +505,4 @@ var wfCivi = (function ($, D, drupalSettings) {
     }
   };
   return pub;
-  })(jQuery, Drupal, drupalSettings);
+  })(Drupal, jQuery, drupalSettings, once);

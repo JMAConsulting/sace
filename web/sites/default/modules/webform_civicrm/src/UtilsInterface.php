@@ -45,24 +45,10 @@ interface UtilsInterface {
   public function wf_crm_get_fields($var = 'fields');
 
   /**
-   * Get list of states, keyed by abbreviation rather than ID.
+   * Get list of states, keyed by ID.
    * @param null|int|string $param
    */
   public function wf_crm_get_states($param = NULL);
-
-  /**
-   * Match a state/province id to its abbr. and vice-versa
-   *
-   * @param $input
-   *   User input (state province id or abbr)
-   * @param $ret
-   *   String: 'abbreviation' or 'id'
-   * @param $country_id
-   *   Int: (optional) must be supplied if fetching id from abbr
-   *
-   * @return string or integer
-   */
-  function wf_crm_state_abbr($input, $ret = 'abbreviation', $country_id = NULL);
 
   /**
    * Get list of events.

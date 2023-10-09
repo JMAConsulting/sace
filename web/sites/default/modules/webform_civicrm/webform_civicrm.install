@@ -302,3 +302,118 @@ function webform_civicrm_update_8003() {
     $webform->save();
   }
 }
+
+/**
+ * Change text state fields to civicrm options.
+ */
+function webform_civicrm_update_8004() {
+  $stateFormKey = 'address_state_province_id';
+  $countyFormKey = 'address_county_id';
+  $webforms = Webform::loadMultiple();
+  foreach ($webforms as $webform) {
+    $handler = $webform->getHandlers('webform_civicrm');
+    $config = $handler->getConfiguration();
+    if (empty($config['webform_civicrm'])) {
+      continue;
+    }
+    $settings = &$config['webform_civicrm']['settings'] ?? [];
+    foreach ($settings as $key => $val) {
+      if (strpos($key, $stateFormKey) !== false || strpos($key, $countyFormKey) !== false) {
+        $element = $webform->getElement($key);
+        if (!empty($element['#type']) && $element['#type'] == 'textfield') {
+          $element = array_merge($element, [
+            '#type' => 'civicrm_options',
+            '#webform_plugin_id' => 'civicrm_options',
+            '#extra' => ['aslist' => 1],
+            '#civicrm_live_options' => 0,
+            '#empty_option' => '- None -',
+            '#options' => [],
+          ]);
+          $webform->setElementProperties($element['#form_key'], $element);
+        }
+      }
+    }
+    $webform->save();
+  }
+}
+
+/**
+ * Set Contact 1 as the assigned for Contributions in all webforms
+ * (It keeps default behavior <= 6.2.0)
+ */
+function webform_civicrm_update_8005() {
+  \Drupal::service('civicrm')->initialize();
+  $webforms = Webform::loadMultiple();
+  foreach ($webforms as $webform) {
+    $handler = $webform->getHandlers('webform_civicrm');
+    $config = $handler->getConfiguration();
+    if (empty($config['webform_civicrm'])) {
+      continue;
+    }
+    $settings = &$config['webform_civicrm']['settings'];
+    // If Contribution enabled, set Contact 1 assigned as default behavior <= 6.2.0
+    if ($settings['civicrm_1_contribution_1_contribution_enable_contribution'] == "1") {
+      $settings['civicrm_1_contribution_1_contribution_contact_id'] = 1;
+      $settings['data']['contribution'][1]['contribution'][1]['contact_id'] = 1;
+      $handler->setConfiguration($config);
+      $webform->save();
+    }
+  }
+}
+
+/**
+ * Fix contact subtype case in existing webforms.
+ */
+function webform_civicrm_update_8006() {
+  \Drupal::service('civicrm')->initialize();
+  $utils = \Drupal::service('webform_civicrm.utils');
+  $subTypes = $utils->wf_crm_apivalues('Contact', 'getoptions', [
+    'field' => "contact_sub_type",
+  ]);
+  if (empty($subTypes)) {
+    return;
+  }
+  // change keys to lowercase
+  $subTypes = array_change_key_case($subTypes, CASE_LOWER);
+
+  $webforms = Webform::loadMultiple();
+  foreach ($webforms as $webform) {
+    $handler = $webform->getHandlers('webform_civicrm');
+    $config = $handler->getConfiguration();
+    if (empty($config['webform_civicrm'])) {
+      continue;
+    }
+    $settings = &$config['webform_civicrm']['settings'];
+
+    $settings_updated = FALSE;
+    foreach ($settings as $key => &$value) {
+      if (preg_match('/contact_contact_sub_type$/', $key)) {
+        foreach ($value as $k => $v) {
+          if (strtolower($k) == $k && !empty($subTypes[$k])) {
+            $value[$subTypes[$k]] = $subTypes[$k];
+            unset($value[$k]);
+            $settings_updated = TRUE;
+          }
+        }
+      }
+    }
+    // Update data key in settings to have the correct case for subtype. 
+    $data = &$settings['data'];
+    foreach ($data['contact'] as $key => &$contact) {
+      if (!empty($contact['contact'][1]['contact_sub_type'])) {
+        foreach ($contact['contact'][1]['contact_sub_type'] as $k => $v) {
+          if (strtolower($k) == $k && !empty($subTypes[$k])) {
+            $contact['contact'][1]['contact_sub_type'][$subTypes[$k]] = $subTypes[$k];
+            unset($contact['contact'][1]['contact_sub_type'][$k]);
+            $settings_updated = TRUE;
+          }
+        }
+      }
+    }
+
+    if ($settings_updated) {
+      $handler->setConfiguration($config);
+      $webform->save();
+    }
+  }
+}

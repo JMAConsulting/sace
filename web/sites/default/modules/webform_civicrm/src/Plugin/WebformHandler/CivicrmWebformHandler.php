@@ -44,6 +44,13 @@ class CivicrmWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
+  public function getSummary() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form['link'] = [
       '#type' => 'link',
@@ -144,6 +151,15 @@ class CivicrmWebformHandler extends WebformHandlerBase {
     $this->civicrm->initialize();
     $processor = \Drupal::service('webform_civicrm.postprocess')->initialize($webform_submission);
     $processor->postSave($webform_submission);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function confirmForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+    $this->civicrm->initialize();
+    $processor = \Drupal::service('webform_civicrm.confirmform')->initialize($form_state);
+    $processor->doPayment();
   }
 
   /**

@@ -13,6 +13,7 @@ use Drupal\webform\Entity\WebformSubmission;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * The versions of CiviCRM and WebForm. Min is >=.  Max is <. FALSE = no MAX
@@ -54,7 +55,8 @@ function webform_civicrm_civicrm_alterMailParams(&$params, $context) {
           }
           $settings = &$config['webform_civicrm']['settings'];
           $utils = \Drupal::service('webform_civicrm.utils');
-          $receiptParams = $utils->getReceiptParams($settings['data'], $params['tplParams']['contributionID']);
+          $submissionData = array_merge($settings['data'], $submission->getData());
+          $receiptParams = $utils->getReceiptParams($submissionData, $params['tplParams']['contributionID']);
           $params['tplParams']= array_merge($params['tplParams'], $receiptParams);
         }
       }
@@ -137,7 +139,7 @@ function webform_civicrm_webform_autocomplete_options_alter(&$results, $node, $c
     $key = $utils->wf_crm_explode_key($node->webform['components'][$cid]['form_key']);
   }
   if (isset($key) && substr($key[5], 0, 7) == 'custom_') {
-    civicrm_initialize();
+    \Drupal::service('civicrm')->initialize();
     $customField = $utils->wf_civicrm_api('CustomField', 'getsingle', [
       'id' => substr($key[5], 7),
       'return' => 'option_group_id',
@@ -169,7 +171,9 @@ function webform_civicrm_theme() {
 
 /**
  * Implements hook_entity_load()
- * Display labels for civicrm option element.
+ * Display entity links on submission page.
+ *
+ * @param array $entities
  */
 function webform_civicrm_webform_submission_load($entities) {
   foreach ($entities as $entity) {
@@ -189,20 +193,45 @@ function _fillCiviCRMData($data, $webformSubmission) {
     return $data;
   }
 
+  \Drupal::service('civicrm')->initialize();
   $utils = \Drupal::service('webform_civicrm.utils');
   $webform = $webformSubmission->getWebform();
   foreach ($data as $key => $val) {
     $element = $webform->getElement($key);
-    if (!empty($val) && $element['#type'] == 'civicrm_options') {
+    if ($element && !empty($val) && $element['#type'] == 'civicrm_options') {
       if (!empty($element['#webform_multiple'])) {
         foreach ($val as $k => $v) {
           if (isset($element['#options'][$v])) {
+            $data[$key]["{$k}_raw"] = $data[$key][$k];
             $data[$key][$k] = $element['#options'][$v];
           }
         }
       }
       elseif (isset($element['#options'][$val])) {
+        $data["{$key}_raw"] = $data[$key];
         $data[$key] = $element['#options'][$val];
+      }
+      elseif (strpos($key, 'state_province_id') !== false) {
+        $country_key = str_replace('state_province_id', 'country_id', $key);
+        $country_id = $data["{$country_key}_raw"] ?? $data[$country_key] ?? NULL;
+        $params = [
+          'sequential' => 1,
+          'country_id' => $country_id,
+        ];
+        $is_abbr = $utils->wf_civicrm_api4('StateProvince', 'get', [
+          'select' => ['row_count'],
+          'where' => [['abbreviation', '=', $val]],
+        ])->count() > 0;
+        if (is_numeric($val)) {
+          $params['id'] = $val;
+        }
+        elseif ($is_abbr) {
+          $params['abbreviation'] = $val;
+        }
+        else {
+          continue;
+        }
+        $data[$key] = $utils->wf_crm_apivalues('StateProvince', 'get', $params, 'name')[0] ?? $data[$key];
       }
     }
   }
@@ -236,56 +265,45 @@ function _fillCiviCRMData($data, $webformSubmission) {
 }
 
 /**
- * Implements hook_webform_submission_render_alter().
+ * Implements hook_webform_submission_view_alter().
+ *
  * Add display name to title while viewing a submission.
  */
-function webform_civicrm_webform_submission_render_alter(&$sub) {
-  if (!empty($sub['#submission']->civicrm['contact'][1]['display_name']) && empty($sub['#email']) && $sub['#format'] == 'html') {
-    drupal_set_title(t('Submission #@num by @name', ['@num' => $sub['#submission']->sid, '@name' => $sub['#submission']->civicrm['contact'][1]['display_name']]));
-  }
-}
-
-/**
- * Implements hook_webform_submission_actions().
- * Add links to view contact & activity.
- */
-function webform_civicrm_webform_submission_actions($node, $submission) {
-  $actions = [];
-  if (!empty($node->webform_civicrm)
-    && !empty($submission->civicrm)
-    && webform_results_access($node)
-    && user_access('access CiviCRM')) {
-    $data = $submission->civicrm;
-    if (!empty($data['contact'][1]['display_name'])) {
-      $actions['civicrm_action contact_view'] = [
-        'title' => t('View @name', ['@name' => $data['contact'][1]['display_name']]),
-        'href' => 'civicrm/contact/view',
-        'query' => ['reset' => 1, 'cid' => $data['contact'][1]['id']],
-      ];
-      if (!empty($data['activity'][1]['id'])) {
-        $actions['civicrm_action activity_view'] = [
-          'title' => t('View Activity'),
-          'href' => 'civicrm/activity',
-          'query' => ['action' => 'view', 'reset' => 1, 'cid' => $data['contact'][1]['id'], 'id' => $data['activity'][1]['id']],
-        ];
-      }
-      if (!empty($data['contribution'][1]['id'])) {
-        $actions['civicrm_action contribution_view'] = [
-          'title' => t('View Contribution'),
-          'href' => 'civicrm/contact/view/contribution',
-          'query' => ['action' => 'view', 'reset' => 1, 'cid' => $data['contact'][1]['id'], 'id' => $data['contribution'][1]['id']],
-        ];
-      }
-      if (!empty($data['participant'][1]['id'])) {
-        $actions['civicrm_action participant_view'] = [
-          'title' => t('View Participant'),
-          'href' => 'civicrm/contact/view/participant',
-          'query' => ['action' => 'view', 'reset' => 1, 'cid' => $data['contact'][1]['id'], 'id' => $data['participant'][1]['id']],
-        ];
+function webform_civicrm_webform_submission_view_alter(array &$build, WebformSubmission $submission) {
+  $webform = $submission->getWebform();
+  $config = $webform->getHandlers('webform_civicrm')->getConfiguration();
+  if (!empty($config['webform_civicrm']) && !empty($submission->getData()['civicrm']) && \Drupal::currentUser()->hasPermission('access CiviCRM')) {
+    $data = $submission->getData()['civicrm'];
+    $links = [];
+    $entity_links = [
+      'contact' => 'contact/view',
+      'activity' => 'activity',
+      'contribution' => 'contact/view/contribution',
+      'participant' => 'contact/view/participant'
+    ];
+    foreach ($entity_links as $entity => $link) {
+      if (!empty($data[$entity][1]['id'])) {
+        $query = ['action' => 'view', 'reset' => 1, 'cid' => $data['contact'][1]['id'], 'id' => $data[$entity][1]['id']];
+        $name = ucfirst($entity);
+        if ($entity == 'contact') {
+          $query = ['reset' => 1, 'cid' => $data['contact'][1]['id']];
+          $name = $data['contact'][1]['display_name'];
+        }
+        $url = Url::fromUri('internal:/civicrm/' . $link, ['query' => $query, 'absolute' => TRUE]);
+        $links[$entity] = Link::fromTextAndUrl(t('View @entity', ['@entity' => $name]), $url)->toRenderable();
       }
     }
+    if (!empty($links)) {
+      $links_markup = '';
+      foreach ($links as $link) {
+        $links_markup .= '<li>' . \Drupal::service('renderer')->renderPlain($link) . '</li>';
+      }
+      $build['civicrm_actions'] = [
+        '#markup' => '<ul class="inline">' . $links_markup . '</ul>',
+        '#weight' => -10,
+      ];
+    }
   }
-  return $actions;
 }
 
 /**
@@ -401,7 +419,7 @@ function webform_civicrm_civicrm_merge($type, $data, $new_id = NULL, $old_id = N
 function webform_civicrm_help($section) {
   if ($section == 'help.page.webform_civicrm') {
     // Return a line-break version of the module README.md
-    return nl2br(file_get_contents(drupal_get_path('module', 'webform_civicrm') . '/README.md'));
+    return nl2br(file_get_contents(\Drupal::service('extension.list.module')->getPath('webform_civicrm') . '/README.md'));
   }
 }
 
@@ -843,7 +861,7 @@ function _webform_civicrm_replaceCaseLinkTokens($tokens, $webformSubmissionData)
  * @return int
  */
 function _webform_civicrm_getCaseContactID($caseID) {
-  civicrm_initialize();
+  \Drupal::service('civicrm')->initialize();
 
   $caseEntity = civicrm_api3('Case', 'get', [
     'return' => ['contact_id'],

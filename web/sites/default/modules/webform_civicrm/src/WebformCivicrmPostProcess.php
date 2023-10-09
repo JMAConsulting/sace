@@ -164,7 +164,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $webform = $webform_submission->getWebform();
     foreach ($data as $field_key => $val) {
       $element = $webform->getElement($field_key);
-      if ($element['#type'] == 'civicrm_options' && is_array($val) && count(array_filter(array_keys($val), 'is_string')) > 0) {
+      if ($element && $element['#type'] == 'civicrm_options' && is_array($val) && count(array_filter(array_keys($val), 'is_string')) > 0) {
         $data[$field_key] = array_values($val);
       }
     }
@@ -412,8 +412,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
           else {
             $country_id = (int) $this->utils->wf_crm_get_civi_setting('defaultContactCountry', 1228);
           }
-          $isBilling = (strpos($element['#name'], 'billing_address_') !== false) ?? FALSE;
-          $states = $this->utils->wf_crm_get_states($country_id, $isBilling);
+          $states = $this->utils->wf_crm_get_states($country_id);
           if ($states && !array_key_exists(strtoupper($element['#value']), $states)) {
             $countries = $this->utils->wf_crm_apivalues('address', 'getoptions', ['field' => 'country_id']);
             $this->form_state->setError($element, t('Mismatch: "@state" is not a state/province of %country. Please enter a valid state/province abbreviation for %field.', ['@state' => $element['#value'], '%country' => $countries[$country_id], '%field' => $element['#title']]));
@@ -522,10 +521,27 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $this->loadEvents();
     // Add event info to line items
     $format = wf_crm_aval($this->data['reg_options'], 'title_display', 'title');
+    // Get the Event Fee Financial Type Id if active, otherwise get the first active Financial Type Id
+    if ($this->line_items) {
+      $eventFTId = $this->utils->wf_crm_apivalues('FinancialType', 'get', [
+        'sequential' => 1,
+        'return' => ["id"],
+        'name' => "Event Fee",
+        'is_active' => 1,
+      ])[0]['id'] ?? NULL;
+      if (empty($eventFTId)) {
+        $eventFTId = $this->utils->wf_crm_apivalues('FinancialType', 'get', [
+          'sequential' => 1,
+          'return' => ["id"],
+          'is_active' => 1,
+          'options' => ['limit' => 1],
+        ])[0]['id'];
+      }
+    }
     foreach ($this->line_items as &$item) {
       $label = empty($item['contact_label']) ? '' : "{$item['contact_label']} - ";
       $item['label'] = $label . $this->utils->wf_crm_format_event($this->events[$item['event_id']], $format);
-      $item['financial_type_id'] = wf_crm_aval($this->events[$item['event_id']], 'financial_type_id', 'Event Fee');
+      $item['financial_type_id'] = wf_crm_aval($this->events[$item['event_id']], 'financial_type_id', $eventFTId);
     }
     // Form Validation
     if (!empty($this->data['reg_options']['validate'])) {
@@ -643,7 +659,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     if ($rule) {
       $contact['contact'][1]['contact_type'] = ucfirst($contact['contact'][1]['contact_type']);
       $params = [
-        'check_permission' => FALSE,
+        'check_permissions' => FALSE,
         'sequential' => TRUE,
         'rule_type' => is_numeric($rule) ? NULL : $rule,
         'dedupe_rule_id' => is_numeric($rule) ? $rule : NULL,
@@ -667,10 +683,6 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
             $contact['address'][1] = reset($masters);
           }
         }
-      }
-      // Translate state abbr to id (skip if using $masters address which would have returned id not abbr from the api)
-      if (empty($masters) && !empty($contact['address'][1]['state_province_id'])) {
-        $contact['address'][1]['state_province_id'] = $this->utils->wf_crm_state_abbr($contact['address'][1]['state_province_id'], 'id', $contact['address'][1]['country_id'] ?? NULL);
       }
       foreach ($contact as $table => $fields) {
         if (is_array($fields) && !empty($fields[1])) {
@@ -808,6 +820,10 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
         if ($location != 'website') {
           $params['options'] = ['sort' => 'is_primary DESC'];
         }
+        // If billing address is submitted during validation phase, ignore updating that value.
+        if ($location == 'address' && !empty($this->billing_params['billing_address_id'])) {
+          $params['id'] = ['!=' => $this->billing_params['billing_address_id']];
+        }
         $result = $this->utils->wf_civicrm_api($location, 'get', $params);
         if (!empty($result['values'])) {
           $contact[$location] = self::reorderLocationValues($contact[$location], $result['values'], $location);
@@ -815,13 +831,6 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
           $existing = array_merge([[]], $result['values']);
         }
         foreach ($contact[$location] as $i => $params) {
-          // Translate state/prov abbr to id
-          if (!empty($params['state_province_id'])) {
-            $default_country = $this->utils->wf_crm_get_civi_setting('defaultContactCountry', 1228);
-            if (!($params['state_province_id'] = $this->utils->wf_crm_state_abbr($params['state_province_id'], 'id', wf_crm_aval($params, 'country_id', $default_country)))) {
-              $params['state_province_id'] = '';
-            }
-          }
           // Substitute county stub ('-' is a hack to get around required field when there are no available counties)
           if (isset($params['county_id']) && $params['county_id'] === '-') {
             $params['county_id'] = '';
@@ -1180,6 +1189,10 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
               if (empty($params['status_id'])) {
                 unset($params['status_id']);
               }
+              // Set the currency of the result to the currency type that was submitted.
+              if (isset($this->data['contribution'][$n]['currency'])) {
+                $params['fee_currency'] = $this->data['contribution'][$n]['currency'];
+              }
               $result = $this->utils->wf_civicrm_api('participant', 'create', $params);
               $this->ent['participant'][$n]['id'] = $result['id'];
 
@@ -1194,7 +1207,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
                 }
               }
               // When registering contact 1, store id to apply to other contacts
-              if ($c == 1) {
+              if ($c == 1 && empty($this->data['reg_options']['disable_primary_participant'])) {
                 $registered_by_id[$e][$i] = $result['id'];
               }
             }
@@ -1603,7 +1616,10 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     if (!empty($this->data['activity'][$activity_number]['details']['view_link'])) {
       $params['details'] .= '<p>' . $this->submission->toLink(t('View Webform Submission'), 'canonical', [
         'absolute' => TRUE,
-      ])->toString() . '</p>';
+      ])->toString() . '</p>' . \Drupal\Core\Link::fromTextAndUrl('View Webform Submission', $this->submission->getTokenUrl('view'))->toString();
+    }
+    if (!empty($this->data['activity'][$activity_number]['details']['view_link_secure'])) {
+      $params['details'] .= '<p>' . \Drupal\Core\Link::fromTextAndUrl('View Webform Submission', $this->submission->getTokenUrl('view'))->toString() . '</p>';
     }
     if (!empty($this->data['activity'][$activity_number]['details']['edit_link'])) {
       $params['details'] .= '<p>' . $this->submission->toLink(t('Edit Submission'), 'edit-form', [
@@ -1676,7 +1692,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     if (isset($this->enabled[$fid])) {
       foreach ($this->data['lineitem'][1]['contribution'] as $n => $lineitem) {
         $fid = "civicrm_1_lineitem_{$n}_contribution_line_total";
-        if ($this->getData($fid) > 0) {
+        if ($this->getData($fid) != 0) {
           $this->line_items[] = [
             'qty' => 1,
             'unit_price' => $lineitem['line_total'],
@@ -1711,11 +1727,21 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
             };
 
             if ($price) {
+              if (!empty($this->data['contact'][$c]['contact'][$n])) {
+                $member_contact = $this->data['contact'][$c]['contact'][$n];
+                if (!empty($member_contact['first_name']) && !empty($member_contact['last_name'])) {
+                  $member_name = "{$member_contact['first_name']} {$member_contact['last_name']}";
+                }
+              }
+              // If member name is not entered on the form, retrieve it from civicrm.
+              if (empty($member_name)) {
+                $member_name = $this->utils->wf_crm_display_name($this->existing_contacts[$c]);
+              }
               $this->line_items[] = [
                 'qty' => $membership_item['num_terms'],
                 'unit_price' => $price,
                 'financial_type_id' => $membership_financialtype,
-                'label' => $this->getMembershipTypeField($type, 'name') . ": " . $this->utils->wf_crm_display_name($this->existing_contacts[$c]),
+                'label' => $this->getMembershipTypeField($type, 'name') . ": " . $member_name,
                 'element' => "civicrm_{$c}_membership_{$n}",
                 'entity_table' => 'civicrm_membership',
               ];
@@ -1825,9 +1851,10 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       $valid = FALSE;
     }
     // Email
-    for ($i = 1; $i <= $this->data['contact'][1]['number_of_email']; ++$i) {
-      if (!empty($this->crmValues["civicrm_1_contact_{$i}_email_email"])) {
-        $params['email'] = $this->crmValues["civicrm_1_contact_{$i}_email_email"];
+    $c = $this->getContributionContactIndex();
+    for ($i = 1; $i <= $this->data['contact'][$c]['number_of_email']; ++$i) {
+      if (!empty($this->crmValues["civicrm_{$c}_contact_{$i}_email_email"])) {
+        $params['email'] = $this->crmValues["civicrm_{$c}_contact_{$i}_email_email"];
         break;
       }
     }
@@ -1845,13 +1872,21 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
   }
 
   /**
+   * Return index value of contribution contact.
+   */
+  private function getContributionContactIndex() {
+    return wf_crm_aval($this->settings, "data:contribution:1:contribution:1:contact_id") ?? wf_crm_aval($this->submissionValue("civicrm_1_contribution_1_contribution_contact_id"), 0) ?? 1;
+  }
+
+  /**
    * Create contact 1 if not already existing (required by contribution.transact)
    * @return int
    */
   private function createBillingContact() {
-    $cid = wf_crm_aval($this->existing_contacts, 1);
+    $i = $this->getContributionContactIndex();
+    $cid = wf_crm_aval($this->existing_contacts, $i);
     if (!$cid) {
-      $contact = $this->data['contact'][1];
+      $contact = $this->data['contact'][$i];
       // Only use middle name from billing if we are using the rest of the billing name as well
       if (empty($contact['contact'][1]['first_name']) && !empty($this->billing_params['middle_name'])) {
         $contact['contact'][1]['middle_name'] = $this->billing_params['middle_name'];
@@ -1875,6 +1910,8 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       'location_type_id' => 'Billing',
     ];
     if (!$cid) {
+      // Current employer must wait for ContactRef ids to be filled
+      unset($contact['contact'][1]['employer_id']);
       $cid = $this->createContact($contact);
       $this->billing_contact = $cid;
     }
@@ -1892,13 +1929,13 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       }
     }
     if ($cid) {
-      $address['contact_id'] = $email['contact_id'] = $this->ent['contact'][1]['id'] = $cid;
+      $address['contact_id'] = $email['contact_id'] = $this->ent['contact'][$i]['id'] = $cid;
       // Don't create a blank billing address.
       if ($address['street_address'] || $address['city'] || $address['country_id'] || $address['state_province_id'] || $address['postal_code']) {
-        $this->utils->wf_civicrm_api('address', 'create', $address);
+        $this->billing_params['billing_address_id'] = $this->utils->wf_civicrm_api('address', 'create', $address)['id'] ?? NULL;
       }
       if ($email['email'] ?? FALSE) {
-        $this->utils->wf_civicrm_api('email', 'create', $email);
+        $this->billing_params['billing_email_id'] = $this->utils->wf_civicrm_api('email', 'create', $email)['id'] ?? NULL;
       }
     }
     return $cid;
@@ -1918,6 +1955,8 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       $result = $this->contributionRecur($contributionParams);
     }
     else {
+      // Not a recur payment, remove any recur fields if present.
+      unset($contributionParams['frequency_unit'], $contributionParams['frequency_interval'], $contributionParams['is_recur']);
       $result = $this->utils->wf_civicrm_api('contribution', 'transact', $contributionParams);
     }
 
@@ -1993,7 +2032,7 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     ];
 
     $APIAction = 'transact';
-    if ($paymentType === 'deferred') {
+    if (in_array($paymentType, ['deferred', 'ipn'], TRUE)) {
       $APIAction = 'create';
     }
     $result = $this->utils->wf_civicrm_api('contribution', $APIAction, $contributionParams + $additionalParams);
@@ -2040,10 +2079,15 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
 
     $numInstallments = wf_crm_aval($params, 'installments', NULL, TRUE);
     $frequencyInterval = wf_crm_aval($params, 'frequency_unit');
-    if ($numInstallments != 1 && !empty($frequencyInterval) && $this->contributionIsPayLater) {
-      $result = $this->contributionRecur($params, 'deferred');
+    if ($numInstallments != 1 && !empty($frequencyInterval)) {
+      if ($this->contributionIsPayLater) {
+        $result = $this->contributionRecur($params, 'deferred');
+      }
+      elseif (empty($this->isLivePaymentProcessor())) {
+        $result = $this->contributionRecur($params, 'ipn');
+      }
     }
-    else {
+    if (empty($result['id'])) {
       $result = $this->utils->wf_civicrm_api('contribution', 'create', $params);
     }
 
@@ -2057,15 +2101,36 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $params = $this->data['contribution'][1]['contribution'][1];
     $processor_type = $this->utils->wf_civicrm_api('payment_processor', 'getsingle', ['id' => $params['payment_processor_id']]);
     $paymentProcessor = \Civi\Payment\System::singleton()->getById($params['payment_processor_id']);
+
+    // Include billing fields with keys expected by payment processor.
+    $billingAddressFieldsMetadata = [];
+    if (method_exists($paymentProcessor, 'getBillingAddressFieldsMetadata')) {
+      $billingAddressFieldsMetadata = $paymentProcessor->getBillingAddressFieldsMetadata();
+      foreach ($params as $key => $value) {
+        if (strpos($key, 'billing_address_') !== false) {
+          $name = str_replace('billing_address_', '', $key);
+          foreach (["billing_{$name}", "billing_{$name}-5"] as $billingName) {
+            if (isset($billingAddressFieldsMetadata[$billingName])) {
+              $params[$billingName] = $value;
+            }
+          }
+        }
+      }
+    }
     // Ideally we would pass the correct id for the test processor through but that seems not to be the
     // case so load it here.
     if (!empty($params['is_test'])) {
       $paymentProcessor = \Civi\Payment\System::singleton()->getByName($processor_type['name'], TRUE);
     }
     // Add contact details to params (most processors want a first_name and last_name)
-    $contact = $this->utils->wf_civicrm_api('contact', 'getsingle', ['id' => $this->ent['contact'][1]['id']]);
+    $i = $this->getContributionContactIndex();
+    $contact = $this->utils->wf_civicrm_api('contact', 'getsingle', ['id' => $this->ent['contact'][$i]['id']]);
     $params += $contact;
     $params['contributionID'] = $params['id'] = $this->ent['contribution'][1]['id'];
+    if (!empty($this->ent['contribution_recur'][1]['id'])) {
+      $params['is_recur'] = TRUE;
+      $params['contributionRecurID'] = $this->ent['contribution_recur'][1]['id'];
+    }
     // Generate a fake qfKey in case payment processor redirects to contribution thank-you page
     $params['qfKey'] = $this->getQfKey();
 
@@ -2074,6 +2139,11 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $params['total_amount'] = round($this->totalContribution, 2);
     // Some processors want this one way, some want it the other
     $params['amount'] = $params['total_amount'];
+    $numInstallments = wf_crm_aval($params, 'installments', NULL, TRUE);
+    $frequencyInterval = wf_crm_aval($params, 'frequency_unit');
+    if ($numInstallments == 1 || empty($frequencyInterval)) {
+      unset($params['frequency_unit'], $params['frequency_interval'], $params['is_recur']);
+    }
 
     $params['financial_type_id'] = wf_crm_aval($this->data, 'contribution:1:contribution:1:financial_type_id');
 
@@ -2081,19 +2151,11 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $params['item_name'] = $params['description'] = t('Webform Payment: @title', ['@title' => $this->node->label()]);
 
     if (method_exists($paymentProcessor, 'setSuccessUrl')) {
-      $paymentProcessor->setSuccessUrl($this->getIpnRedirectUrl('success'));
-      $paymentProcessor->setCancelUrl($this->getIpnRedirectUrl('cancel'));
+      $params['successURL'] = $this->getIpnRedirectUrl('success');
+      $params['cancelURL'] = $this->getIpnRedirectUrl('cancel');
     }
 
-    try {
-      $paymentProcessor->doPayment($params);
-    }
-    catch (\Civi\Payment\Exception\PaymentProcessorException $e) {
-      \Drupal::messenger()->addError(ts('Payment approval failed with message: %error ', [
-        '%error' =>  $e->getMessage(),
-      ]));
-      \CRM_Utils_System::redirect($this->getIpnRedirectUrl('cancel'));
-    }
+    $this->form_state->set(['civicrm', 'doPayment'], $params);
 
   }
 
@@ -2134,7 +2196,10 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
     $params['financial_type_id'] = wf_crm_aval($this->data, 'contribution:1:contribution:1:financial_type_id');
     $params['currency'] = $params['currencyID'] = wf_crm_aval($this->data, "contribution:1:currency");
     $params['skipRecentView'] = $params['skipLineItem'] = 1;
-    $params['contact_id'] = $this->ent['contact'][1]['id'];
+
+    $i = $this->getContributionContactIndex();
+    $params['contact_id'] = $this->ent['contact'][$i]['id'];
+
     $params['total_amount'] = round($this->totalContribution, 2);
 
     // Most payment processors expect this (normally be set by contribution page processConfirm)
@@ -2257,13 +2322,12 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       }
     }
     // Save honoree
-    // FIXME: these api params were deprecated in 4.5, should be switched to use soft-credits when we drop support for 4.4
     if (!empty($contribution['honor_contact_id']) && !empty($contribution['honor_type_id'])) {
-      $this->utils->wf_civicrm_api('contribution', 'create', [
-        'id' => $id,
-        'total_amount' => $contribution['total_amount'],
-        'honor_contact_id' => $contribution['honor_contact_id'],
-        'honor_type_id' => $contribution['honor_type_id'],
+      $this->utils->wf_civicrm_api('contribution_soft', 'create', [
+        'contribution_id' => $id,
+        'amount' => $contribution['total_amount'],
+        'contact_id' => $contribution['honor_contact_id'],
+        'soft_credit_type_id' => $contribution['honor_type_id'],
       ]);
     }
 
@@ -2454,6 +2518,9 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
           }
           if (substr($name, 0, 6) === 'custom' || ($table == 'other' && in_array($name, ['group', 'tag']))) {
             $val = array_filter($val);
+            if ($name === 'group') {
+              unset($val['public_groups']);
+            }
           }
 
           // We need to handle items being de-selected too and provide an array to pass to Entity.create API
@@ -2469,6 +2536,11 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
           if ($table !== 'other' && $name !== 'event_id' && $name !== 'relationship_type_id' && $table !== 'contact' && $dataType != 'ContactReference' && strpos($name, 'tag') !== 0) {
             $val = \CRM_Utils_Array::implodePadded($val);
           }
+        }
+        // If this is a single-static radio button, set it to a non array value
+        // since civicrm api doesn't expect array for a radio field.
+        elseif (empty($component['#extra']['multiple']) && $this->utils->hasMultipleValues($component)) {
+          $val = $val[0] ?? NULL;
         }
         elseif ($name === 'image_url') {
           if (empty($val[0]) || !($val = $this->getDrupalFileUrl($val[0]))) {
@@ -2643,7 +2715,9 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       $data = $webform_submission->getData();
     }
     else {
+      $webform_submission = $this->submission;
       $data = $this->submission->getData();
+      $webform_submission = $this->submission;
     }
 
     if (!isset($data[$fid])) {

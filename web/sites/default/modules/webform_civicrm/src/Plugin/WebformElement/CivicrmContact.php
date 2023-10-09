@@ -130,8 +130,22 @@ class CivicrmContact extends WebformElementBase {
       $element['#options'] = [];
       $element['#attributes']['data-is-select'] = 1;
     }
-    $element['#attributes']['data-search-prompt'] = $this->getElementProperty($element, 'search_prompt') ?? '- Choose existing -';
-    $element['#attributes']['data-none-prompt'] = $this->getElementProperty($element, 'none_prompt') ?? '+ Create new +';
+    elseif ($element['#widget'] === 'textfield') {
+      $element['#attributes']['data-is-contactid'] = 1;
+      $element['#description'] = 'Lookup by Contact ID.';
+      $element['#size'] = 8;
+    }
+    // get translated properties used for autocomplete widget
+    $element['#attributes']['data-search-prompt'] = $this->getTranslatedElementProperty($element, 'search_prompt') ?? t('- Choose existing -');
+    $element['#attributes']['data-none-prompt'] = $this->getTranslatedElementProperty($element, 'none_prompt') ?? t('+ Create new +');
+    // translate search_prompt, which later is copied as #empty_value, and then created as first <option> if element is select widget
+    if(!empty($element['#search_prompt'])){
+      $element['#search_prompt'] = t($element['#search_prompt']);
+    }
+    // translate none_prompt, which later is created as second <option> if element is select widget (if user has privilegies to create new contacts)
+    if(!empty($element['#none_prompt'])){
+      $element['#none_prompt'] = t($element['#none_prompt']);
+    }
     if (!empty($cid)) {
       $webform = $webform_submission->getWebform();
       $contactComponent = \Drupal::service('webform_civicrm.contact_component');
@@ -331,7 +345,7 @@ class CivicrmContact extends WebformElementBase {
     ];
     $cid = $element_properties['default_contact_id'];
     $contactComponent = \Drupal::service('webform_civicrm.contact_component');
-    if ($cid && $name = $contactComponent->wf_crm_contact_access($element_properties, ['check_permissions' => 1], $cid)) {
+    if ($cid && $name = $contactComponent->wf_crm_contact_access($element_properties, ['checkPermissions' => 1], $cid)) {
       $form['contact_defaults']['default_contact_id']['#default_value'] = $cid;
       $form['contact_defaults']['default_contact_id']['#attributes'] = [
         'data-civicrm-name' => $name,
@@ -612,6 +626,56 @@ class CivicrmContact extends WebformElementBase {
       }
     }
     return $value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
+    if ($element['#type'] == 'hidden' && !empty($element['#required'])) {
+      $element['#element_validate'][] = [get_class($this), 'validateRequired'];
+    }
+  }
+
+  /**
+   * Form API callback. Validate static widget #required attribute.
+   */
+  public static function validateRequired(&$element, FormStateInterface &$form_state) {
+    if (empty($element['#required'])) {
+      return;
+    }
+
+    if (empty($element['#value'])) {
+      $args = [
+        '%name' => empty($element['#title']) ? $element['#parents'][0] : $element['#title'],
+      ];
+      // Avoid error while calling form_state which expects '#group' as a string value :(.
+      $static_element = $element;
+      unset($static_element['#group']);
+      $form_state->setError($static_element, t('%name field is required.', $args));
+    }
+  }
+
+  /**
+   * Get an element's property value with translation.
+   *
+   * @param array $element
+   *   An element.
+   * @param string $property_name
+   *   An element's property name.
+   *
+   * @return mixed
+   *   A translated element's property value, translated default value, or NULL if
+   *   property does not exist.
+   */
+  public function getTranslatedElementProperty(array $element, $property_name) {
+    $prop = $this->getElementProperty($element, $property_name);
+    if (!empty($prop) && is_string($prop)) {
+      return t($prop);
+    }
+
+    return $prop;
   }
 
 }
