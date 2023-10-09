@@ -5,7 +5,7 @@ require_once 'reporterror.civix.php';
 define('REPORTERROR_CIVICRM_SUBJECT_LEN', 100);
 define('REPORTERROR_EMAIL_SEPARATOR', ',');
 
-require_once(__DIR__ . '/vendor/autoload.php');
+//require_once(__DIR__ . '/vendor/autoload.php');
 
 use CRM_ReportError_ExtensionUtil as E;
 
