@@ -70,8 +70,18 @@ class AdminHelp implements AdminHelpInterface {
       '</p>';
   }
 
+  protected function contribution_contact_id() {
+    return '<p>' .
+      t('The contribution record created after webform submission is assigned to this contact.') .
+      '</p><p>' .
+      t('Enable "-User Select-" option if you want user to select the payment contact while submitting the form.') .
+      '</p><p>' .
+      t('Please enable respective email fields on the contact tab. Webform submission may lead to fatal error if email value is not sent to the selected payment processor.') .
+      '</p>';
+  }
+
   protected function contact_external_identifier() {
-    $this->contact_contact_id();
+    return $this->contact_contact_id();
   }
 
   protected function contact_source() {
@@ -156,6 +166,12 @@ class AdminHelp implements AdminHelpInterface {
     return '<p>' .
       t('Number of Installments. ') .
       t('Create a webform element that allows the Number of Installments to be specified: for example - total amount is paid in 10 installments. For a Contribution of unspecified duration/commitment use installments = 0.') .
+      '</p>';
+  }
+
+  protected function contribution_billing_address_same_as() {
+    return '<p>' .
+      t('Provides a checkbox on the webform which copies the values from first address of Contact 1 to Billing section.') .
       '</p>';
   }
 
@@ -251,6 +267,15 @@ class AdminHelp implements AdminHelpInterface {
       t('Example for "Register separately":') .
       '<br /><code>' . Url::fromUri("internal:/node", ['absolute' => TRUE])->toString() .
       '/{node.nid}?c1event1={event1.event_id},{event2.event_id}&amp;c2event1={event3.event_id}</code></p>';
+  }
+
+  /**
+   * Help text for disable primary setting.
+   */
+  protected function reg_options_disable_primary_participant() {
+    return '<p>' .
+      t('If enabled, Contact 1 will not be stored as primary participant for multiple registrations.') .
+      '</p>';
   }
 
   protected function reg_options_show_past_events() {

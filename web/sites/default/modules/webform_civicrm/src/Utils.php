@@ -61,11 +61,10 @@ class Utils implements UtilsInterface {
   }
 
   /**
-   * Get list of states, keyed by abbreviation rather than ID.
+   * Get list of states, keyed by ID.
    * @param null|int|string $param
-   * @param bool $isBilling
    */
-  public function wf_crm_get_states($param = NULL, $isBilling = FALSE) {
+  public function wf_crm_get_states($param = NULL) {
     $ret = [];
     if (!$param || $param == 'default') {
       $settings = $this->wf_civicrm_api('Setting', 'get', [
@@ -93,8 +92,7 @@ class Utils implements UtilsInterface {
       'country_id' => ['IN' => $param],
     ]);
     foreach ($states as $state) {
-      $key = $isBilling ? 'id' : 'abbreviation';
-      $ret[strtoupper($state[$key])] = $state['name'];
+      $ret[$state['id']] = $state['name'];
     }
     // Localize the state/province names if in an non-en_US locale
     $tsLocale = \CRM_Utils_System::getUFLocale();
@@ -104,34 +102,6 @@ class Utils implements UtilsInterface {
       \CRM_Utils_Array::asort($ret);
     }
     return $ret;
-  }
-
-  /**
-   * Match a state/province id to its abbr. and vice-versa
-   *
-   * @param $input
-   *   User input (state province id or abbr)
-   * @param $ret
-   *   String: 'abbreviation' or 'id'
-   * @param $country_id
-   *   Int: (optional) must be supplied if fetching id from abbr
-   *
-   * @return string or integer
-   */
-  function wf_crm_state_abbr($input, $ret = 'abbreviation', $country_id = NULL) {
-    $params = ['sequential' => 1];
-    if ($ret == 'id') {
-      $params['abbreviation'] = $input;
-      if (!$country_id || $country_id === 'default') {
-        $country_id = (int) $this->wf_crm_get_civi_setting('defaultContactCountry', 1228);
-      }
-    }
-    else {
-      $params['id'] = $input;
-    }
-    $params['country_id'] = $country_id;
-    $result = $this->wf_crm_apivalues('StateProvince', 'get', $params, $ret);
-    return wf_crm_aval($result, 0);
   }
 
   /**
@@ -331,7 +301,7 @@ class Utils implements UtilsInterface {
           $contact_types[strtolower($type['name'])] = $type['label'];
           continue;
         }
-        $sub_types[strtolower($data[$type['parent_id']]['name'])][strtolower($type['name'])] = $type['label'];
+        $sub_types[strtolower($data[$type['parent_id']]['name'])][$type['name']] = $type['label'];
       }
     }
     return [$contact_types, $sub_types];
@@ -363,15 +333,15 @@ class Utils implements UtilsInterface {
     static $types = [];
     if (!$types) {
       foreach ($this->wf_crm_apivalues('relationship_type', 'get', ['is_active' => 1]) as $r) {
-        $r['type_a'] = strtolower(wf_crm_aval($r, 'contact_type_a'));
-        $r['type_b'] = strtolower(wf_crm_aval($r, 'contact_type_b'));
+        $r['type_a'] = strtolower(wf_crm_aval($r, 'contact_type_a') ?? '');
+        $r['type_b'] = strtolower(wf_crm_aval($r, 'contact_type_b') ?? '');
         $r['sub_type_a'] = wf_crm_aval($r, 'contact_sub_type_a');
         if (!is_null($r['sub_type_a'])) {
-          $r['sub_type_a'] = strtolower($r['sub_type_a']);
+          $r['sub_type_a'] = $r['sub_type_a'];
         }
         $r['sub_type_b'] = wf_crm_aval($r, 'contact_sub_type_b');
         if (!is_null($r['sub_type_b'])) {
-          $r['sub_type_b'] = strtolower($r['sub_type_b']);
+          $r['sub_type_b'] = $r['sub_type_b'];
         }
         $types[$r['id']] = $r;
       }
@@ -396,7 +366,7 @@ class Utils implements UtilsInterface {
   function wf_crm_get_contact_relationship_types($type_a, $type_b, $sub_type_a, $sub_type_b) {
     $ret = [];
     foreach ($this->wf_crm_get_relationship_types() as $t) {
-      $reciprocal = ($t['label_a_b'] != $t['label_b_a'] && $t['label_b_a'] || $t['type_a'] != $t['type_b']);
+      $reciprocal = ($t['label_a_b'] != $t['label_b_a'] && $t['label_b_a'] || $t['type_a'] != $t['type_b'] || $t['sub_type_a'] != $t['sub_type_b']);
       if (($t['type_a'] == $type_a || !$t['type_a'])
         && ($t['type_b'] == $type_b || !$t['type_b'])
         && (in_array($t['sub_type_a'], $sub_type_a) || !$t['sub_type_a'])
@@ -478,7 +448,8 @@ class Utils implements UtilsInterface {
               $enabled[$lobo . '_' . $i . '_' . $ent . '_' . $n . '_' . $customGroupFieldsetKey . '_createmode'] = 1;
             }
           }
-          if ((isset($fields[$id]) || $id == 'fieldset_fieldset' || $id == $customGroupFieldsetKey . '_fieldset') && is_numeric($i) && is_numeric($n)) {
+          $fieldSetIds = ['fieldset_fieldset', "{$customGroupFieldsetKey}_fieldset", "number_of_billing_1_fieldset_fieldset"];
+          if ((isset($fields[$id]) || (in_array($id, $fieldSetIds))) && is_numeric($i) && is_numeric($n)) {
             if (!$show_all && ($ent == 'contact' || $ent == 'participant') && empty($handler_configuration['settings']['data']['contact'][$i])) {
               continue;
             }
@@ -629,6 +600,32 @@ class Utils implements UtilsInterface {
       $str .= ($str ? "\n" : '') . $k . '|' . $v;
     }
     return $str;
+  }
+
+  /**
+   * Wrapper for all CiviCRM APIv4 calls
+   *
+   * @param string $entity
+   *   API entity
+   * @param string $operation
+   *   API operation
+   * @param array $params
+   *   API params
+   * @param string|int|array $index
+   *   Controls the Result array format.
+   *
+   * @return array
+   *   Result of API call
+   */
+  function wf_civicrm_api4($entity, $operation, $params, $index = NULL) {
+    if (!$entity) {
+      return [];
+    }
+    $params += [
+      'checkPermissions' => FALSE,
+    ];
+    $result = civicrm_api4($entity, $operation, $params, $index);
+    return $result;
   }
 
   /**
@@ -993,10 +990,10 @@ class Utils implements UtilsInterface {
   public function getReceiptParams($data, $contributionID) {
     $contributionData = wf_crm_aval($data, 'contribution:1:contribution:1');
     $params = ['id' => $contributionID];
-    $params['payment_processor_id'] = $contributionData['payment_processor_id'];
+    $params['payment_processor_id'] = $contributionData['payment_processor_id'] ?? $data['civicrm_1_contribution_1_contribution_payment_processor_id'] ?? NULL;
     unset($params['payment_processor']);
 
-    $params['financial_type_id'] = $contributionData['financial_type_id'];
+    $params['financial_type_id'] = $contributionData['financial_type_id'] ?? $data['civicrm_1_contribution_1_contribution_financial_type_id_raw'] ?? NULL;
     $params['currency'] = wf_crm_aval($data, "contribution:1:currency");
 
     //Assign receipt values set on the webform config page.
@@ -1006,6 +1003,22 @@ class Utils implements UtilsInterface {
       $params[$val] = $receipt["number_number_of_receipt_{$val}"] ?? '';
     }
     return $params;
+  }
+
+  /**
+   * Does an element support multiple values
+   *
+   * @param array $element
+   */
+  public function hasMultipleValues($element) {
+    if (!empty($element['#extra']['multiple']) ||
+      (empty($element['#civicrm_live_options'])
+      && empty($element['#extra']['aslist'])
+      && !empty($element['#options']) && is_array($element['#options'])
+      && count($element['#options']) === 1)) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
 }

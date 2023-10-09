@@ -1,7 +1,7 @@
-(function ($, D, drupalSettings) {
+(function (D, $, drupalSettings, once) {
   D.behaviors.webform_civicrm_contact = {
     attach: function (context) {
-      $('[data-civicrm-contact]', context).once('webform_civicrm_contact').each(function (i, el) {
+      $(once('webform_civicrm_contact', '[data-civicrm-contact]', context)).each(function (i, el) {
         var field = $(el);
         var toHide = [];
         if (field.data('hide-fields')) {
@@ -10,17 +10,21 @@
         var autocompleteUrl = D.url('webform-civicrm/js/' + field.data('form-id') + '/' + field.data('civicrm-field-key'));
         var isSelect = field.data('is-select');
         if (!isSelect) {
+          var tokenValues = field.data('is-contactid') ? false : {
+            hintText: field.data('search-prompt'),
+            noResultsText: field.data('none-prompt'),
+            resultsFormatter: formatChoices,
+            searchingText: "Searching...",
+            enableHTML: true
+          };
           wfCivi.existingInit(
             field,
             field.data('civicrm-contact'),
             field.data('form-id'),
             autocompleteUrl,
-            toHide, {
-            hintText: field.data('search-prompt'),
-            noResultsText: field.data('none-prompt'),
-            resultsFormatter: formatChoices,
-            searchingText: "Searching..."
-          });
+            toHide,
+            tokenValues
+          );
         }
 
         field.change(function () {
@@ -54,10 +58,14 @@
         return "<li>" + string + "</li>";
       }
 
+      /**
+       * TODO: Remove this function and use states api instead once
+       * https://www.drupal.org/project/drupal/issues/1149078 is fixed in core webform module.
+       */
       function changeDefault() {
         var val = $(this).val().replace(/_/g, '-');
 
-        $('[data-drupal-selector=edit-contact-defaults] > div > .form-item', context).not('[class$=properties-default], [class$=properties-allow-url-autofill]').each(function() {
+        $('[data-drupal-selector=edit-contact-defaults] > div > .form-item', context).not('[class$=properties-default], [class*=properties-allow-url-autofill]').each(function() {
           if (val.length && $(this).is('[class*=form-item-properties-default-'+val+']')) {
             $(this).removeAttr('style');
           }
@@ -113,4 +121,4 @@
 
     }
   }
-})(jQuery, Drupal, drupalSettings)
+})(Drupal, jQuery, drupalSettings, once)

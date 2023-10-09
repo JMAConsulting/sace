@@ -68,7 +68,8 @@ class Fields implements FieldsInterface {
         'activity' => ['entity_type' => 'activity', 'label' => t('Activity'), 'max_instances' => 99,  'attachments' => TRUE],
         'relationship' => ['entity_type' => 'contact', 'label' => t('Relationship'), 'help_text' => TRUE, 'custom_fields' => 'combined'],
       ];
-      $civicrm_version = $this->utils->wf_crm_apivalues('System', 'get')[0]['version'];
+
+      $civicrm_version = \CRM_Utils_System::version();
       // Grant is moved to extension after > 5.47.0.
       if (version_compare($civicrm_version, '5.47') >= 0) {
         $components = array_diff($components, ['CiviGrant']);
@@ -252,7 +253,18 @@ class Fields implements FieldsInterface {
       $fields['contact_preferred_language'] = [
         'name' => t('Preferred Language'),
         'type' => 'select',
-        'value' => $this->utils->wf_crm_get_civi_setting('lcMessages', 'en_US'),
+        'default_value' => $this->utils->wf_crm_get_civi_setting('lcMessages', 'en_US'),
+      ];
+      $default_communication_style = $this->utils->wf_crm_apivalues('OptionValue', 'get', [
+        'sequential' => 1,
+        'option_group_id' => "communication_style",
+        'is_default' => 1,
+      ], 'value')[0] ?? NULL;
+      $fields['contact_communication_style_id'] = [
+        'name' => t('Communication Style'),
+        'type' => 'select',
+        'civicrm_live_options' => 1,
+        'default_value' => $default_communication_style,
       ];
       if (isset($elements['managed_file']) && !$elements['managed_file']->isDisabled() && !$elements['managed_file']->isHidden()) {
         $fields['contact_image_url'] = [
@@ -351,16 +363,16 @@ class Fields implements FieldsInterface {
       ];
       $fields['address_state_province_id'] = [
         'name' => t('State/Province'),
-        'type' => 'textfield',
-        'extra' => [
-          'maxlength' => 5,
-          'width' => 4,
-        ],
+        'type' => 'select',
+        'extra' => ['aslist' => 1],
         'data_type' => 'state_province_abbr',
+        'empty_option' => t('- None -'),
       ];
       $fields['address_county_id'] = [
         'name' => t('District/County'),
-        'type' => 'textfield',
+        'type' => 'select',
+        'extra' => ['aslist' => 1],
+        'empty_option' => t('- None -'),
       ];
       $fields['address_master_id'] = [
         'name' => t('Share address of'),
@@ -411,13 +423,13 @@ class Fields implements FieldsInterface {
             'name' => $label,
             'type' => 'select',
             'expose_list' => TRUE,
-            'value' => '1',
+            'default_value' => '1',
           ];
           $fields[$key . '_is_primary'] = [
             'name' => 'Is Primary',
             'type' => 'select',
             'expose_list' => TRUE,
-            'value' => '1',
+            'default_value' => '1',
           ];
         }
       }
@@ -519,7 +531,7 @@ class Fields implements FieldsInterface {
           'extra' => ['required' => 1, 'multiple' => $this->utils->wf_crm_get_civi_setting('civicaseAllowMultipleClients', 0)],
           'data_type' => 'ContactReference',
           'set' => 'caseRoles',
-          'value' => 1,
+          'default_value' => 1,
         ];
         $fields['case_status_id'] = [
           'name' => t('Case # Status'),
@@ -661,6 +673,16 @@ class Fields implements FieldsInterface {
           'parent' => 'contribution_pagebreak',
         ];
         // @todo moved in order since we can't pass `weight`.
+        $fields['contribution_contact_id'] = [
+          'name' => t('Contact'),
+          'type' => 'select',
+          'expose_list' => TRUE,
+          'data_type' => 'ContactReference',
+          'extra' => [
+            'aslist' => 1,
+            'required' => TRUE
+          ],
+        ];
         $fields['contribution_total_amount'] = [
             'name' => 'Contribution Amount',
             'parent' => 'contribution_pagebreak',
@@ -718,28 +740,41 @@ class Fields implements FieldsInterface {
           'type' => 'textfield',
           'parent' => 'contribution_pagebreak',
         ];
+        $donationFinancialType = current($this->utils->wf_crm_apivalues('FinancialType', 'get', [
+          'return' => 'id',
+          'name' => 'Donation',
+        ], 'id')) ?? NULL;
+        $fields['contribution_financial_type_id'] = [
+          'name' => t('Financial Type'),
+          'type' => 'select',
+          'expose_list' => TRUE,
+          'civicrm_live_options' => TRUE,
+          'default_value' => $donationFinancialType,
+          'parent' => 'contribution_pagebreak',
+          'extra' => ['required' => 1],
+        ];
         // Line items
         $fields['contribution_line_total'] = [
             'name' => t('Line Item Amount'),
             'set' => 'line_items',
             'parent' => 'contribution_pagebreak',
           ] + $moneyDefaults;
-        $fields['contribution_financial_type_id'] = [
+        $fields['lineitem_financial_type_id'] = [
           'name' => t('Financial Type'),
           'type' => 'select',
           'expose_list' => TRUE,
           'civicrm_live_options' => TRUE,
-          'value' => 1,
-          'default' => 1,
-          'set' => 'line_items',
+          'default_value' => $donationFinancialType,
           'parent' => 'contribution_pagebreak',
+          'set' => 'line_items',
+          'fid' => 'contribution_financial_type_id',
         ];
         $sets['contributionRecur'] = ['entity_type' => 'contribution', 'label' => t('Recurring Contribution')];
         $fields['contribution_frequency_unit'] = [
           'name' => t('Frequency of Installments'),
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => 0,
+          'default_value' => 0,
           'exposed_empty_option' => '- ' . t('No Installments') . ' -',
           'set' => 'contributionRecur',
         ];
@@ -760,6 +795,12 @@ class Fields implements FieldsInterface {
           'set' => 'contributionRecur',
         ];
         $sets['billing_1_number_of_billing'] = ['entity_type' => 'contribution', 'label' => t('Billing Address')];
+        $fields['contribution_billing_address_same_as'] = [
+          'name' => t('Same As'),
+          'type' => 'checkbox',
+          'set' => 'billing_1_number_of_billing',
+          'parent' => 'contribution_pagebreak',
+        ];
         $billingFields = [
           'first_name' => t('Billing First Name'),
           'middle_name' => t('Billing Middle Name'),
@@ -795,14 +836,12 @@ class Fields implements FieldsInterface {
         ];
         $fields['contribution_billing_address_state_province_id'] = [
           'name' => t('State/Province'),
-          'type' => 'textfield',
-          'extra' => [
-            'maxlength' => 5,
-            'width' => 4,
-          ],
+          'type' => 'select',
+          'extra' => ['aslist' => 1],
           'data_type' => 'state_province_abbr',
           'set' => 'billing_1_number_of_billing',
           'parent' => 'contribution_pagebreak',
+          'empty_option' => t('- None -'),
         ];
       }
       if (isset($sets['participant'])) {
@@ -817,14 +856,14 @@ class Fields implements FieldsInterface {
           'name' => t('Participant Role'),
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => '1',
+          'default_value' => '1',
           'extra' => ['multiple' => 1, 'required' => 1],
         ];
         $fields['participant_status_id'] = [
           'name' => t('Registration Status'),
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => 0,
+          'default_value' => 0,
           'exposed_empty_option' => '- ' . t('Automatic') . ' -',
         ];
         $fields['participant_note'] = [
@@ -848,14 +887,13 @@ class Fields implements FieldsInterface {
           'name' => t('Membership Financial Type'),
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => 0,
           'exposed_empty_option' => '- ' . t('Automatic') . ' -',
         ];
         $fields['membership_status_id'] = [
           'name' => t('Override Status'),
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => 0,
+          'default_value' => 0,
           'exposed_empty_option' => '- ' . t('No') . ' -',
         ];
         $fields['membership_status_override_end_date'] = [
@@ -876,7 +914,7 @@ class Fields implements FieldsInterface {
           'name' => t('Number of Terms'),
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => 1,
+          'default_value' => 1,
           'empty_option' => t('Enter Dates Manually'),
         ];
         if (isset($sets['contribution'])) {
@@ -940,7 +978,7 @@ class Fields implements FieldsInterface {
           'name' => t('Grant Status'),
           'type' => 'select',
           'expose_list' => TRUE,
-          'value' => 0,
+          'default_value' => 0,
           'exposed_empty_option' => '- ' . t('Automatic') . ' -',
         ];
         $fields['grant_application_received_date'] = [
@@ -1067,7 +1105,7 @@ class Fields implements FieldsInterface {
         $fields[$id]['name'] = $custom_field['label'];
         $fields[$id]['required'] = (int) !empty($custom_field['is_required']);
         if (!empty($custom_field['default_value'])) {
-          $fields[$id]['value'] = implode(',', $this->utils->wf_crm_explode_multivalue_str($custom_field['default_value']));
+          $fields[$id]['default_value'] = implode(',', $this->utils->wf_crm_explode_multivalue_str($custom_field['default_value']));
         }
         $fields[$id]['data_type'] = $custom_field['data_type'];
         if (!empty($custom_field['help_pre']) || !empty($custom_field['help_post'])) {
@@ -1082,7 +1120,7 @@ class Fields implements FieldsInterface {
         if ($sets[$set]['entity_type'] == 'contact' && !empty($sets[$set]['sub_types'])) {
           $fields[$id]['civicrm_condition'] = [
             'andor' => 'or',
-            'action' => 'show',
+            'action' => 'visible',
             'rules' => [
               'contact_contact_sub_type' => [
                 'values' => $sets[$set]['sub_types'],

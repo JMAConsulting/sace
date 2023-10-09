@@ -7,6 +7,11 @@ on:
   schedule:
     # Run Monday/Thursday at 12:13 GMT
     - cron: '13 12 * * 1,4'
+  workflow_dispatch:
+    inputs:
+      coreprurl:
+        description: (optional) Core PR URL
+        required: false
 
 jobs:
   phpunit:
@@ -15,16 +20,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - drupal: '9.3.*'
-            civicrm: '5.45.*'
-          - drupal: '9.3.*'
-            civicrm: '5.46.*'
-          - drupal: '9.3.*'
-            civicrm: '5.47.*'
-          - drupal: '9.3.*'
-            civicrm: '5.48.*'
-          - drupal: '9.3.*'
+          - drupal: '9.5.*'
+            civicrm: '5.65.*'
+            php: '7.4'
+          - drupal: '9.5.*'
+            civicrm: '5.66.*'
+            php: '7.4'
+          - drupal: '9.5.*'
+            civicrm: '5.67.x-dev'
+            php: '8.1'
+          - drupal: '9.5.*'
             civicrm: 'dev-master'
+            php: '8.1'
+          - drupal: '10.0.*'
+            civicrm: 'dev-master'
+            php: '8.1'
     name: Drupal ${{ matrix.drupal }} | CiviCRM ${{ matrix.civicrm }}
     services:
       mysql:
@@ -36,17 +46,17 @@ jobs:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: shivammathur/setup-php@v2
         with:
-            php-version: 7.4
+            php-version: ${{ matrix.php }}
             extensions: dom, curl, libxml, mbstring, zip, pdo, mysql, pdo_mysql, bcmath, soap, intl, gd, exif, iconv
             coverage: none
             tools: composer:v2
       - name: Get composer cache directory
         id: composercache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v2
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
         with:
             path: ${{ steps.composercache.outputs.dir }}
             key: ${{ runner.os }}-${{ matrix.drupal }}-composer-${{ hashFiles('**/composer.json') }}
@@ -58,25 +68,44 @@ jobs:
       # - CiviCRM requires `compile-mode: all`
       - name: Setup sendmail
         run: |
+          sudo apt-get update
           sudo apt-get install sendmail
       - name: Setup Drupal
         run: |
-          COMPOSER_MEMORY_LIMIT=-1 composer create-project drupal/recommended-project:${{ matrix.drupal }} ~/drupal --no-interaction
+          COMPOSER_MEMORY_LIMIT=-1 composer create-project drupal/recommended-project:${{ matrix.drupal }} ~/drupal --no-interaction --no-install
           cd ~/drupal
           composer config extra.enable-patching true
           composer config extra.compile-mode all
           composer config minimum-stability dev
           composer config prefer-stable true
-          composer config preferred-install dist
+          composer config preferred-install auto
+          composer config allow-plugins.civicrm/composer-compile-plugin true
+          composer config allow-plugins.civicrm/composer-downloads-plugin true
+          composer config allow-plugins.civicrm/civicrm-asset-plugin true
+          composer config allow-plugins.cweagans/composer-patches true
+          composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
           # Note in composer v2 the order is more important. We want the path one to have higher priority.
           composer config repositories.0 composer https://packages.drupal.org/8
           composer config repositories.1 path $GITHUB_WORKSPACE
+          composer install --no-interaction
           COMPOSER_MEMORY_LIMIT=-1 composer require drupal/core-dev-pinned:${{ matrix.drupal }}
+      - name: Suppress links to screenshots
+        # There's so many! They can be useful locally if running one test, but they aren't useful here and cause massive scrolling.
+        run: |
+          cd ~/drupal
+          curl -L -O https://raw.githubusercontent.com/colemanw/webform_civicrm/def72b3dce1ea4bc7dd2cdd28a72844885727789/DrupalHtmlOutputTrait.diff
+          git apply DrupalHtmlOutputTrait.diff
       - name: Install CiviCRM ${{ matrix.civicrm }}
         run: |
           cd ~/drupal
-          COMPOSER_MEMORY_LIMIT=-1 composer require civicrm/civicrm-asset-plugin:'~1.1' civicrm/civicrm-{core,packages,drupal-8}:${{ matrix.civicrm }} --prefer-dist -W
+          COMPOSER_MEMORY_LIMIT=-1 composer require civicrm/civicrm-asset-plugin:'~1.1' civicrm/civicrm-{core,packages,drupal-8}:${{ matrix.civicrm }} -W
+      - name: Ensure Webform ^6.2
+        if: ${{ matrix.drupal == '10.0.*' }}
+        run: |
+          cd ~/drupal
+          COMPOSER_MEMORY_LIMIT=-1 composer require 'drupal/webform:^6.2@beta'
       - name: Ensure Webform ^6.0
+        if: ${{ matrix.drupal != '10.0.*' }}
         run: |
           cd ~/drupal
           #COMPOSER_MEMORY_LIMIT=-1 composer require cweagans/composer-patches
@@ -90,7 +119,56 @@ jobs:
       - name: Install token
         run: |
           cd ~/drupal
-          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/token:^1.9
+          COMPOSER_MEMORY_LIMIT=-1 composer require drupal/token:^1.11
+      - name: Download some test helpers
+        run: |
+          cd ~/drupal
+          COMPOSER_MEMORY_LIMIT=-1 composer require semperit/minkcivicrmhelpers
+      - name: Set identity
+        # Needed for `git am` but otherwise irrelevant
+        run: |
+          git config --global user.email "webform.civicrm@example.org"
+          git config --global user.name "Webform CiviCRM"
+      - name: Optionally Apply Core PR
+        if: ${{ github.event.inputs.coreprurl != 0 }}
+        run: |
+          cd  ~/drupal/vendor/civicrm/civicrm-core
+          curl -L -o prpatch.patch ${{ github.event.inputs.coreprurl }}.patch
+          git am prpatch.patch
+      - name: Do a fake temp install
+        # so that we can use civi api to get extensions with a version appropriate to the installed civi version
+        run: |
+          cd ~/drupal
+          composer require drush/drush
+          mkdir -p /home/runner/civicrm-cv
+          curl -L https://download.civicrm.org/cv/cv.phar -o /home/runner/civicrm-cv/cv
+          chmod +x /home/runner/civicrm-cv/cv
+          ./vendor/drush/drush/drush -y -l http://civi.localhost site-install standard --db-url='mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/fakedb' --site-name=FakeCivi
+          chmod +w web/sites/default
+          /home/runner/civicrm-cv/cv core:install --cms-base-url=http://civi.localhost
+      - name: Download Civi extensions from git
+        if: ${{ matrix.drupal == '10.0.*' }}
+        run: |
+          mkdir -p ~/drupal/web/sites/default/files/civicrm/ext
+          cd ~/drupal/web/sites/default/files/civicrm/ext
+          /home/runner/civicrm-cv/cv api3 Extension.download install=0 key=com.aghstrategies.uscounties
+          # Let's get latest git versions of these
+          git clone https://lab.civicrm.org/extensions/mjwshared.git
+          git clone https://lab.civicrm.org/extensions/firewall.git
+          git clone https://lab.civicrm.org/extensions/stripe.git
+          git clone https://github.com/iATSPayments/com.iatspayments.civicrm.git
+      - name: Download Civi extensions normal
+        if: ${{ matrix.drupal != '10.0.*' }}
+        run: |
+          mkdir -p ~/drupal/web/sites/default/files/civicrm/ext
+          cd ~/drupal/web/sites/default/files/civicrm/ext
+          # Normally we'll just let civi decide which version to download.
+          # Apparently we have to install it, otherwise stripe gives a dependency error even with install=0. I think that's a bug, but let's just do it. This is a fake install anyway.
+          /home/runner/civicrm-cv/cv api3 Extension.download install=1 key=mjwshared
+          /home/runner/civicrm-cv/cv api3 Extension.download install=1 key=firewall
+          /home/runner/civicrm-cv/cv api3 Extension.download install=1 key=com.drastikbydesign.stripe
+          /home/runner/civicrm-cv/cv api3 Extension.download install=0 key=com.iatspayments.civicrm
+          /home/runner/civicrm-cv/cv api3 Extension.download install=0 key=com.aghstrategies.uscounties
       - uses: nanasess/setup-chromedriver@master
       - name: Run chromedriver
         run: chromedriver &
@@ -102,12 +180,14 @@ jobs:
           cd ~/drupal/web
           ../vendor/bin/phpunit -c core modules/contrib/webform_civicrm
         env:
-          SYMFONY_DEPRECATIONS_HELPER: weak
+          SYMFONY_DEPRECATIONS_HELPER: 999999
           SIMPLETEST_DB: mysql://root:@127.0.0.1:${{ job.services.mysql.ports[3306] }}/db
           SIMPLETEST_BASE_URL: http://127.0.0.1:8080
           MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu", "--no-sandbox", "--headless"]}}, "http://127.0.0.1:9515"]'
           BROWSERTEST_OUTPUT_DIRECTORY: '${{ runner.temp }}/browser_output'
-      - uses: actions/upload-artifact@v2
+          DEV_EXTENSION_DIR: /home/runner/drupal/web/sites/default/files/civicrm/ext
+          DEV_EXTENSION_URL: http://127.0.0.1:8080/sites/default/files/civicrm/ext
+      - uses: actions/upload-artifact@v3
         if: ${{ failure() || success() }}
         with:
           name: phpunit_browser_output
