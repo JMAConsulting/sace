@@ -4,7 +4,7 @@ namespace Drupal\civicrm_entity\Plugin\views\relationship;
 
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
-use Drupal\core\form\FormStateInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\relationship\RelationshipPluginBase;
 use Drupal\views\Views;
 
@@ -51,8 +51,9 @@ class CiviCrmActivityContact extends RelationshipPluginBase {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     $form['record_type_id'] = [
-      '#type' => 'radios',
-      '#options' => ['' => $this->t('- Any -')] + $this->recordTypeMapping,
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $this->recordTypeMapping,
       '#title' => $this->t('Activity contact type'),
       '#default_value' => $this->options['record_type_id'],
     ];
@@ -68,11 +69,14 @@ class CiviCrmActivityContact extends RelationshipPluginBase {
 
     $this->definition['extra'] = [];
     if (!empty($this->options['record_type_id'])) {
-      $this->definition['extra'][] = [
-        'field' => 'record_type_id',
-        'value' => $this->options['record_type_id'],
-        'numeric' => TRUE,
-      ];
+      $record_type = !is_array($this->options['record_type_id']) ? [$this->options['record_type_id']] : $this->options['record_type_id'];
+      foreach ($record_type as $type) {
+        $this->definition['extra'][] = [
+          'field' => 'record_type_id',
+          'value' => $type,
+          'numeric' => TRUE,
+        ];
+      }
     }
   }
 
@@ -85,7 +89,8 @@ class CiviCrmActivityContact extends RelationshipPluginBase {
     $views_data = Views::viewsData()->get($this->table);
     $left_field = $views_data['table']['base']['field'];
 
-    // Add a join to the civicrm_activity_contact table with the matching contact_id.
+    // Add a join to the civicrm_activity_contact table,
+    // with the matching contact_id.
     $first = [
       'left_table' => $this->tableAlias,
       'left_field' => $left_field,
@@ -100,6 +105,7 @@ class CiviCrmActivityContact extends RelationshipPluginBase {
 
     if (!empty($this->definition['extra'])) {
       $first['extra'] = $this->definition['extra'];
+      $first['extra_operator'] = 'OR';
     }
 
     $first_join = Views::pluginManager('join')->createInstance('standard', $first);
@@ -125,4 +131,5 @@ class CiviCrmActivityContact extends RelationshipPluginBase {
 
     $this->alias = $this->query->addRelationship($alias, $second_join, $this->definition['base'], $this->relationship);
   }
+
 }

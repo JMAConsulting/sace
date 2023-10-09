@@ -99,13 +99,10 @@ final class SupportedEntities {
       'label property' => 'subject',
       'permissions' => [
         'view' => ['access all cases and activities'],
-        'edit' => ['access all cases and activities'],
-        'update' => ['access all cases and activities'],
-        'create' => ['add cases', 'access all cases and activities'],
-        'delete' => [
-          'delete in CiviCase',
-          'access all cases and activities',
-        ],
+        'edit' => ['add cases'],
+        'update' => ['add cases'],
+        'create' => ['add cases'],
+        'delete' => ['delete in CiviCase'],
       ],
       'required' => [
         'contact_id' => TRUE,
@@ -116,10 +113,11 @@ final class SupportedEntities {
       'civicrm entity name' => 'case_type',
       'label property' => 'title',
       'permissions' => [
-        'view' => [],
-        'update' => [],
-        'create' => [],
-        'delete' => [],
+        'view' => ['access all cases and activities'],
+        'edit' => ['add cases'],
+        'update' => ['add cases'],
+        'create' => ['add cases'],
+        'delete' => ['delete in CiviCase'],
       ],
     ];
     $civicrm_entity_info['civicrm_contact'] = [
@@ -145,7 +143,7 @@ final class SupportedEntities {
     $civicrm_entity_info['civicrm_contribution'] = [
       'civicrm entity label' => t('Contribution'),
       'civicrm entity name' => 'contribution',
-      'label property' => 'source',
+      'label property' => 'contribution_source',
       'permissions' => [
         'view' => ['access CiviContribute', 'administer CiviCRM'],
         'edit' => ['edit contributions', 'administer CiviCRM'],
@@ -292,7 +290,7 @@ final class SupportedEntities {
       ],
       'fields' => [
         'summary' => [
-          'description' => 'Brief summary of event.'
+          'description' => 'Brief summary of event.',
         ],
       ],
     ];
@@ -309,18 +307,18 @@ final class SupportedEntities {
       ],
     ];
 
-$civicrm_entity_info['civicrm_group_contact'] = [
-  'civicrm entity label' => t('Group Contact'),
-  'civicrm entity name' => 'group_contact',
-  'label property' => 'id',
-    'permissions' => [
-    'view' => ['edit groups'],
-    'edit' => ['edit groups'],
-    'update' => ['edit groups'],
-    'create' => ['edit groups'],
-    'delete' => ['edit groups', 'administer CiviCRM'],
-  ],
-];
+    $civicrm_entity_info['civicrm_group_contact'] = [
+      'civicrm entity label' => t('Group Contact'),
+      'civicrm entity name' => 'group_contact',
+      'label property' => 'id',
+      'permissions' => [
+        'view' => ['edit groups'],
+        'edit' => ['edit groups'],
+        'update' => ['edit groups'],
+        'create' => ['edit groups'],
+        'delete' => ['edit groups', 'administer CiviCRM'],
+      ],
+    ];
 
     $civicrm_entity_info['civicrm_grant'] = [
       'civicrm entity label' => t('Grant'),
@@ -666,7 +664,7 @@ $civicrm_entity_info['civicrm_group_contact'] = [
         'update' => ['edit all mailing'],
         'create' => ['edit all mailing'],
         'delete' => ['delete mailing'],
-      ]
+      ],
     ];
 
     $civicrm_entity_info['civicrm_mailing_job'] = [
@@ -705,7 +703,19 @@ $civicrm_entity_info['civicrm_group_contact'] = [
     ];
 
     static::alterEntityInfo($civicrm_entity_info);
-
+    // Check if API finds each entity type.
+    // Necessary for tests/civi upgrade after,
+    // CiviGrant moved to extension in 5.47.
+    $civicrm_api = \Drupal::service('civicrm_entity.api');
+    $api_entity_types = $civicrm_api->get('entity', ['sequential' => FALSE]);
+    array_walk($api_entity_types, function (&$value) {
+      $value = static::getEntityNameFromCamel($value);
+    });
+    foreach ($civicrm_entity_info as $entity_type => $entity_info) {
+      if (!in_array($entity_info['civicrm entity name'], $api_entity_types)) {
+        unset($civicrm_entity_info[$entity_type]);
+      }
+    }
     return $civicrm_entity_info;
   }
 
@@ -766,7 +776,7 @@ $civicrm_entity_info['civicrm_group_contact'] = [
     if (!$entity_type_id) {
       return $info;
     }
-    return isset($info[$entity_type_id]) ? $info[$entity_type_id] : [];
+    return $info[$entity_type_id] ?? [];
   }
 
   /**
@@ -785,6 +795,7 @@ $civicrm_entity_info['civicrm_group_contact'] = [
       case 'Organization':
         $entity_type = 'civicrm_contact';
         break;
+
       default:
         $entity_type = 'civicrm_' . static::getEntityNameFromCamel($objectName);
         break;
@@ -800,18 +811,18 @@ $civicrm_entity_info['civicrm_group_contact'] = [
   /**
    * Convert possibly camel name to underscore separated entity name.
    *
-   * @see _civicrm_api_get_entity_name_from_camel()
-   *
-   * @TODO Why don't we just call the above function directly?
-   * Because the function is officially 'likely' to change as it is an internal
-   * api function and calling api functions directly is explicitly not
-   * supported.
-   *
    * @param string $entity
    *   Entity name in various formats e.g:
    *     Contribution => contribution,
    *     OptionValue => option_value,
    *     UFJoin => uf_join.
+   *
+   * @see _civicrm_api_get_entity_name_from_camel()
+   *
+   * @todo Why don't we just call the above function directly?
+   * Because the function is officially 'likely' to change as it is an internal
+   * api function and calling api functions directly is explicitly not
+   * supported.
    *
    * @return string
    *   $entity entity name in underscore separated format
@@ -856,7 +867,7 @@ $civicrm_entity_info['civicrm_group_contact'] = [
    * @return mixed
    *   Altered civicrm_entity entity info.
    */
-  public static function alterEntityInfo(&$civicrm_entity_info) {
+  public static function alterEntityInfo(array &$civicrm_entity_info) {
     \Drupal::service('civicrm_entity.api')->civicrmInitialize();
 
     $code_version = explode('.', \CRM_Utils_System::version());
@@ -886,6 +897,7 @@ $civicrm_entity_info['civicrm_group_contact'] = [
    *   The transliteration service.
    *
    * @return string
+   *   The transformed string.
    */
   public static function optionToMachineName($value, TransliterationInterface $transliteration) {
     $value = $transliteration->transliterate($value, LanguageInterface::LANGCODE_DEFAULT, '_');

@@ -12,6 +12,11 @@ use Drupal\Core\Entity\Query\QueryInterface;
  */
 class Query extends QueryBase implements QueryInterface {
 
+  /**
+   * The CiviCRM API service.
+   *
+   * @var \Drupal\civicrm_entity\CiviCrmApi
+   */
   protected $civicrmApi;
 
   /**
@@ -28,8 +33,8 @@ class Query extends QueryBase implements QueryInterface {
   public function execute() {
     $params = [];
     foreach ($this->condition->conditions() as $condition) {
-      // If there's anything requiring a custom field, set condition which cannot
-      // be completed.
+      // If there's anything requiring a custom field,
+      // set condition which cannot be completed.
       // @todo Introduced when supporting field config. Find something better.
       // @see \Drupal\field_ui\Form\FieldStorageConfigEditForm::validateCardinality()
       if (substr($condition['field'], 0, 6) === 'field_') {
@@ -48,15 +53,21 @@ class Query extends QueryBase implements QueryInterface {
       }
     }
 
+    $sort = [];
+    foreach ($this->sort as $s) {
+      $sort[] = $s['field'] . ' ' . $s['direction'];
+    }
+
+    $params['options']['sort'] = implode(',', $sort);
+
     $this->initializePager();
     if ($this->range) {
-      $params['options'] = [
-        'limit' => $this->range['length'],
-        'offset' => $this->range['start'],
-      ];
+      $params['options']['limit'] = $this->range['length'];
+      $params['options']['offset'] = $this->range['start'];
     }
 
     if ($this->count) {
+      unset($params['options']['sort']);
       return $this->civicrmApi->getCount($this->entityType->get('civicrm_entity'), $params);
     }
     else {

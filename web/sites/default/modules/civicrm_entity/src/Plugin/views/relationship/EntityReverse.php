@@ -3,7 +3,6 @@
 namespace Drupal\civicrm_entity\Plugin\views\relationship;
 
 use Drupal\views\Plugin\views\relationship\EntityReverse as CoreEntityReverse;
-use Drupal\views\Views;
 
 /**
  * A relationship handlers which reverse CiviCRM entity references.
@@ -36,8 +35,8 @@ class EntityReverse extends CoreEntityReverse {
       $join['extra'] = $this->definition['extra'];
     }
 
-    if (!empty($def['join_id'])) {
-      $id = $def['join_id'];
+    if (!empty($this->definition['join_id'])) {
+      $id = $this->definition['join_id'];
     }
     else {
       $id = 'standard';
