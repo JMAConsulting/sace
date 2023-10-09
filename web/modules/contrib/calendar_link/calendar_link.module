@@ -13,11 +13,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function calendar_link_help($route_name, RouteMatchInterface $route_match): string {
-  $output = '';
-  switch ($route_name) {
-    case 'help.page.calendar_link':
-      $output = check_markup(file_get_contents(dirname(__FILE__) . '/README.md'));
-  }
-  return $output;
+function calendar_link_help(string $route_name, RouteMatchInterface $route_match): string {
+  return match ($route_name) {
+    'help.page.calendar_link' => check_markup(file_get_contents(dirname(__FILE__) . '/README.md')),
+    default => '',
+  };
 }
