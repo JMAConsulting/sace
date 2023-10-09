@@ -33,5 +33,5 @@ return array(
     'bad842bce63596a608e2623519fb382c' => $vendorDir . '/xkerman/restricted-unserialize/src/function.php',
     '59969633dcdb4ee3e2fec945065028d6' => $vendorDir . '/civicrm/civicrm-core/guzzle_php81_shim.php',
     '801c31d8ed748cfa537fa45402288c95' => $vendorDir . '/psy/psysh/src/functions.php',
-    'a321afe5b5ec99bd361b396b4b67d157' => $vendorDir . '/composer/autoload_civicrm_asset.php',
+    'a52b6e5017b7463d5bcb1a277e367217' => $vendorDir . '/composer/autoload_civicrm_asset.php',
 );
