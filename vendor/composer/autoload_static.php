@@ -39,7 +39,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'bad842bce63596a608e2623519fb382c' => __DIR__ . '/..' . '/xkerman/restricted-unserialize/src/function.php',
         '59969633dcdb4ee3e2fec945065028d6' => __DIR__ . '/..' . '/civicrm/civicrm-core/guzzle_php81_shim.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        '6480296ea635cda0e91f36d66ca37b68' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
+        'a52b6e5017b7463d5bcb1a277e367217' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
     );
 
     public static $prefixLengthsPsr4 = array (
