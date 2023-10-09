@@ -248,7 +248,10 @@ class IcalWizard extends StylePluginBase {
     $this->calendar = $calendar;
 
     $parent_render = parent::render();
-    $this->calendar->setTimezone($this->vTimezone);
+    
+    if (isset($this->vTimezone)) {
+      $this->calendar->setTimezone($this->vTimezone);
+    }
 
     // Sets the 'X-WR-CALNAME" property. Just use the View name here.
     if ($this->view->getTitle()) {

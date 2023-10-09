@@ -5,7 +5,7 @@
     "license": "GPL-2.0+",
     "minimum-stability": "dev",
     "require": {
-        "eluceo/ical": "^0.15",
+        "eluceo/ical": "^0.17",
         "html2text/html2text": "^4.0"
     }
 }

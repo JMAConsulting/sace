@@ -47,6 +47,7 @@ function fontawesome_menu_icons_form_menu_link_content_form_alter(&$form, FormSt
         'fa-menu-iconpicker',
       ],
     ],
+    '#description' => t('Note: If you are using Font Awesome 6.x, prefix the name of your icons with \'fa-\'.'),
   ];
 
   $form['fa_icon']['fa_icon_prefix'] = [
@@ -60,6 +61,12 @@ function fontawesome_menu_icons_form_menu_link_content_form_alter(&$form, FormSt
       'fal' => 'fal (' . t('5.x only') . ')',
       'fad' => 'fad (' . t('5.x only') . ')',
       'fab' => 'fab (' . t('5.x only') . ')',
+      'fa-solid' => 'Solid (' . t('6.x only') . ')',
+      'fa-regular' => 'Regular (' . t('6.x only') . ')',
+      'fa-light' => 'Light (' . t('6.x only') . ')',
+      'fa-thin' => 'Thin (' . t('6.x only') . ')',
+      'fa-duotone' => 'Duotone (' . t('6.x only') . ')',
+      'fa-brands' => 'Brands (' . t('6.x only') . ')',
     ],
   ];
 
@@ -147,6 +154,7 @@ function fontawesome_menu_icons_form_menu_link_edit_alter(&$form, FormStateInter
         'fa-menu-iconpicker',
       ],
     ],
+    '#description' => t('Note: If you are using Font Awesome 6.x, prefix the name of your icons with \'fa-\'.'),
   ];
 
   $form['fa_icon']['fa_icon_prefix'] = [
@@ -160,6 +168,12 @@ function fontawesome_menu_icons_form_menu_link_edit_alter(&$form, FormStateInter
       'fal' => 'fal (' . t('5.x only') . ')',
       'fad' => 'fad (' . t('5.x only') . ')',
       'fab' => 'fab (' . t('5.x only') . ')',
+      'fa-solid' => 'Solid (' . t('6.x only') . ')',
+      'fa-regular' => 'Regular (' . t('6.x only') . ')',
+      'fa-light' => 'Light (' . t('6.x only') . ')',
+      'fa-thin' => 'Thin (' . t('6.x only') . ')',
+      'fa-duotone' => 'Duotone (' . t('6.x only') . ')',
+      'fa-brands' => 'Brands (' . t('6.x only') . ')',
     ],
   ];
 

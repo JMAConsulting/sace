@@ -207,8 +207,6 @@ class RecurrenceRule implements ValueInterface
     }
 
     /**
-     * @param \DateTimeInterface|null $until
-     *
      * @return $this
      */
     public function setUntil(\DateTimeInterface $until = null)
@@ -247,9 +245,13 @@ class RecurrenceRule implements ValueInterface
      */
     public function setFreq($freq)
     {
-        if (@constant('static::FREQ_' . $freq) !== null) {
-            $this->freq = $freq;
-        } else {
+        try {
+            if (@constant('static::FREQ_' . $freq) !== null) {
+                $this->freq = $freq;
+            } else {
+                throw new \InvalidArgumentException("The Frequency {$freq} is not supported.");
+            }
+        } catch (\Error $error) {
             throw new \InvalidArgumentException("The Frequency {$freq} is not supported.");
         }
 
@@ -465,8 +467,6 @@ class RecurrenceRule implements ValueInterface
      *
      * Each BYDAY value can also be preceded by a positive (+n) or negative (-n) integer.
      * If present, this indicates the nth occurrence of a specific day within the MONTHLY or YEARLY "RRULE".
-     *
-     * @param string $day
      *
      * @return $this
      */

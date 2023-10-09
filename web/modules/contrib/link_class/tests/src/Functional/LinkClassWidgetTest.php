@@ -19,11 +19,16 @@ use Drupal\Tests\BrowserTestBase;
 class LinkClassWidgetTest extends BrowserTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'entity_test',
     'link',
     'node',
@@ -80,7 +85,7 @@ class LinkClassWidgetTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->drupalCreateContentType(['type' => 'article']);
     $this->drupalLogin($this->drupalCreateUser([
@@ -90,7 +95,9 @@ class LinkClassWidgetTest extends BrowserTestBase {
       'administer node form display',
       'administer node display',
       'administer nodes',
+      'access content',
       'edit any article content',
+      'create article content',
     ]));
   }
 
@@ -123,10 +130,10 @@ class LinkClassWidgetTest extends BrowserTestBase {
     $bundle_path = 'admin/structure/types/manage/article';
 
     $this->drupalGet($bundle_path . '/form-display');
-    $this->assertFieldByXPath('//table[@id="field-display-overview"]//tr[@id="' . $field_name . '"]/td[1]', 'Link', 'Field appears in the Manage form display page.');
+    $this->assertSession()->elementTextEquals('xpath', '//table[@id="field-display-overview"]//tr[@id="' . $field_name . '"]/td[1]', 'Link');
     $this->assertSession()->fieldValueEquals('fields[' . $field_name . '][type]', 'link_class_field_widget');
     // Default values are applied on widget.
-    $this->assertRaw('Mode: Users can set a class manually');
+    $this->assertSession()->responseContains('Mode: Users can set a class manually');
 
     // Check the display mode.
     $this->drupalGet($bundle_path . '/display');
@@ -134,9 +141,9 @@ class LinkClassWidgetTest extends BrowserTestBase {
 
     // Display creation form.
     $this->drupalGet('node/add/article');
-    $this->assertFieldByName("{$field_name}[0][uri]", '');
-    $this->assertFieldByName("{$field_name}[0][title]", '');
-    $this->assertFieldByName("{$field_name}[0][options][attributes][class]", '');
+    $this->assertSession()->fieldValueEquals("{$field_name}[0][uri]", '');
+    $this->assertSession()->fieldValueEquals("{$field_name}[0][title]", '');
+    $this->assertSession()->fieldValueEquals("{$field_name}[0][options][attributes][class]", '');
 
     // Change the field configuration to set default value for link field.
     $field_path = "admin/structure/types/manage/article/fields/node.article.{$field_name}";
@@ -145,13 +152,14 @@ class LinkClassWidgetTest extends BrowserTestBase {
       'default_value_input[' . $field_name . '][0][title]' => 'My secondary button',
       'default_value_input[' . $field_name . '][0][options][attributes][class]' => 'btn btn-secondary',
     ];
-    $this->drupalPostForm($field_path, $field_edit, 'Save settings');
+    $this->drupalGet($field_path);
+    $this->submitForm($field_edit, 'Save settings');
 
     // Check that default value are here when we create a new node..
     $this->drupalGet('node/add/article');
-    $this->assertRaw('http://www.mysite.fr');
-    $this->assertRaw('My secondary button');
-    $this->assertRaw('btn btn-secondary');
+    $this->assertSession()->responseContains('http://www.mysite.fr');
+    $this->assertSession()->responseContains('My secondary button');
+    $this->assertSession()->responseContains('btn btn-secondary');
 
     // Create a test node.
     $title = 'Article 1';
@@ -165,7 +173,7 @@ class LinkClassWidgetTest extends BrowserTestBase {
     ];
     $this->node = $this->drupalCreateNode($values);
     $this->drupalGet("node/{$this->node->id()}");
-    $this->assertRaw('Article 1');
+    $this->assertSession()->responseContains('Article 1');
 
     // Add a link with the node edit form.
     $edit = [
@@ -173,9 +181,10 @@ class LinkClassWidgetTest extends BrowserTestBase {
       $field_name . '[0][title]' => 'My button',
       $field_name . '[0][options][attributes][class]' => 'button1',
     ];
-    $this->drupalPostForm("/node/{$this->node->id()}/edit", $edit, 'Save');
+    $this->drupalGet("/node/{$this->node->id()}/edit");
+    $this->submitForm($edit, 'Save');
     $this->drupalGet("node/{$this->node->id()}");
-    $this->assertRaw('<a href="http://www.example.com" class="button1">My button</a>');
+    $this->assertSession()->responseContains('<a href="http://www.example.com" class="button1">My button</a>');
 
     // Change the widget settings to add class automatically.
     $settings = [
@@ -184,18 +193,19 @@ class LinkClassWidgetTest extends BrowserTestBase {
     ];
     $this->setFormDisplay('node.article.default', 'node', 'article', $field_name, 'link_class_field_widget', $settings);
     $this->drupalGet($bundle_path . '/form-display');
-    $this->assertRaw('Mode: Class are automatically added');
-    $this->assertRaw('Class(es) added: btn btn-default');
+    $this->assertSession()->responseContains('Mode: Class are automatically added');
+    $this->assertSession()->responseContains('Class(es) added: btn btn-default');
 
     // Edit the link in the node edit form.
     $this->drupalGet("node/{$this->node->id()}/edit");
-    $this->assertNoField($field_name . '[0][options][attributes][class');
+    $this->assertSession()->fieldNotExists($field_name . '[0][options][attributes][class');
     $edit = [
       $field_name . '[0][uri]' => 'http://www.example.com',
       $field_name . '[0][title]' => 'My button',
     ];
-    $this->drupalPostForm("/node/{$this->node->id()}/edit", $edit, 'Save');
-    $this->assertRaw('<a href="http://www.example.com" class="btn btn-default">My button</a>');
+    $this->drupalGet("/node/{$this->node->id()}/edit");
+    $this->submitForm($edit, 'Save');
+    $this->assertSession()->responseContains('<a href="http://www.example.com" class="btn btn-default">My button</a>');
 
     // Change the widget settings to use a select list.
     $settings = [
@@ -204,28 +214,29 @@ class LinkClassWidgetTest extends BrowserTestBase {
     ];
     $this->setFormDisplay('node.article.default', 'node', 'article', $field_name, 'link_class_field_widget', $settings);
     $this->drupalGet($bundle_path . '/form-display');
-    $this->assertRaw(t('Mode: Let users select a class from a list'));
-    $this->assertRaw(t('Class(es) available: btn btn-default, btn btn-primary, btn btn-secondary'));
+    $this->assertSession()->responseContains(t('Mode: Let users select a class from a list'));
+    $this->assertSession()->responseContains(t('Class(es) available: btn btn-default, btn btn-primary, btn btn-secondary'));
 
     // Edit the link in the node edit form.
     $this->drupalGet("node/{$this->node->id()}/edit");
-    $this->assertField($field_name . '[0][options][attributes][class]');
-    $this->assertOption("edit-{$field_name}-0-options-attributes-class", 'btn btn-default');
-    $this->assertOption("edit-{$field_name}-0-options-attributes-class", 'btn btn-primary');
-    $this->assertOption("edit-{$field_name}-0-options-attributes-class", 'btn btn-secondary');
-    $this->assertOptionByText("edit-{$field_name}-0-options-attributes-class", 'Default button');
-    $this->assertOptionByText("edit-{$field_name}-0-options-attributes-class", 'Primary button');
-    $this->assertOptionByText("edit-{$field_name}-0-options-attributes-class", 'Secondary button');
+    $this->assertSession()->fieldExists($field_name . '[0][options][attributes][class]');
+    $this->assertSession()->optionExists("edit-{$field_name}-0-options-attributes-class", 'btn btn-default');
+    $this->assertSession()->optionExists("edit-{$field_name}-0-options-attributes-class", 'btn btn-primary');
+    $this->assertSession()->optionExists("edit-{$field_name}-0-options-attributes-class", 'btn btn-secondary');
+    $this->assertSession()->optionExists("edit-{$field_name}-0-options-attributes-class", 'Default button');
+    $this->assertSession()->optionExists("edit-{$field_name}-0-options-attributes-class", 'Primary button');
+    $this->assertSession()->optionExists("edit-{$field_name}-0-options-attributes-class", 'Secondary button');
     $edit = [
       $field_name . '[0][uri]' => 'http://www.example.com',
       $field_name . '[0][title]' => 'My button',
       $field_name . '[0][options][attributes][class]' => 'btn btn-primary',
     ];
-    $this->drupalPostForm("/node/{$this->node->id()}/edit", $edit, 'Save');
-    $this->assertRaw('<a href="http://www.example.com" class="btn btn-primary">My button</a>');
+    $this->drupalGet("/node/{$this->node->id()}/edit");
+    $this->submitForm($edit, 'Save');
+    $this->assertSession()->responseContains('<a href="http://www.example.com" class="btn btn-primary">My button</a>');
 
     $this->drupalGet("node/{$this->node->id()}/edit");
-    $this->assertOptionSelected("edit-{$field_name}-0-options-attributes-class", 'btn btn-primary');
+    $this->assertTrue($this->assertSession()->optionExists("edit-{$field_name}-0-options-attributes-class", 'btn btn-primary')->hasAttribute('selected'));
   }
 
   /**
