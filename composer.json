@@ -57,6 +57,7 @@
         "drupal/pathauto": "^1.8",
         "drupal/quick_node_clone": "^1.16",
         "drupal/redirect": "^1.6",
+        "drupal/seven": "^1.0",
         "drupal/slick": "^2.2",
         "drupal/slick_example": "^1.0@RC",
         "drupal/slick_extras": "^1.0@RC",

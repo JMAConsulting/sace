@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5cefec73925367fe1cb8a9e594b7d51ecb13e71e',
+        'reference' => '787366d198610d361192228939a5acd855b1a75a',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -865,7 +865,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5cefec73925367fe1cb8a9e594b7d51ecb13e71e',
+            'reference' => '787366d198610d361192228939a5acd855b1a75a',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -877,6 +877,15 @@
             'reference' => '8.x-1.8',
             'type' => 'drupal-module',
             'install_path' => __DIR__ . '/../../web/modules/contrib/redirect',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'drupal/seven' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => '1.0.0',
+            'type' => 'drupal-theme',
+            'install_path' => __DIR__ . '/../../web/themes/contrib/seven',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -1648,9 +1657,9 @@
         'psr/container-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.1|2.0',
-                1 => '^1.1 || ^2.0',
-                2 => '^1.0',
+                0 => '^1.1 || ^2.0',
+                1 => '^1.0',
+                2 => '1.1|2.0',
             ),
         ),
         'psr/event-dispatcher' => array(
