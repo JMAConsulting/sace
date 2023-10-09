@@ -1,5 +1,5 @@
 name: 'SACE Custom'
 type: module
 description: 'SACE custom code'
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: 'Custom'
