@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * CiviCRM Entity Views related hooks and functions.
+ */
+
 use Drupal\civicrm_entity\CiviEntityStorage;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -60,6 +65,85 @@ function civicrm_entity_views_data_alter(&$data) {
   }
   // End: views_views_data_alter() snippet.
   // @codingStandardsIgnoreEnd
+
+  $civicrm_mailing_events = [
+    'civicrm_mailing_event_bounce' => [
+      'title' => t('Bounces'),
+      'description' => t('Total count of Bounces.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Bounce',
+    ],
+    'civicrm_mailing_event_confirm' => [
+      'title' => t('Confirm'),
+      'description' => t('Total count of Confirmations.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Confirm',
+    ],
+    'civicrm_mailing_event_delivered' => [
+      'title' => t('Delivered'),
+      'description' => t('Total count of Delivered.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Delivered',
+    ],
+    'civicrm_mailing_event_forward' => [
+      'title' => t('Forward'),
+      'description' => t('Total count of Forwarded.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Forward',
+    ],
+    'civicrm_mailing_event_opened' => [
+      'title' => t('Opened'),
+      'description' => t('Total count of Opened.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Opened',
+    ],
+    'civicrm_mailing_event_unique_opened' => [
+      'title' => t('Unique Opened'),
+      'description' => t('Total count of Unique Opened.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Opened',
+      'distinct' => TRUE,
+    ],
+    'civicrm_mailing_event_reply' => [
+      'title' => t('Reply'),
+      'description' => t('Total count of Replies.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Reply',
+    ],
+    'civicrm_mailing_event_subscribe' => [
+      'title' => t('Subscribe'),
+      'description' => t('Total count of Subscriptions.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Subscribe',
+    ],
+    'civicrm_mailing_event_trackable_url_open' => [
+      'title' => t('Trackable URL Open'),
+      'description' => t('Total count of Trackable URL Opened.'),
+      'bao' => 'CRM_Mailing_Event_BAO_TrackableURLOpen',
+    ],
+    'civicrm_mailing_event_unsubscribe' => [
+      'title' => t('Unsubscribe'),
+      'description' => t('Total count of Unsubscribes.'),
+      'bao' => 'CRM_Mailing_Event_BAO_Unsubscribe',
+    ],
+  ];
+
+  foreach ($civicrm_mailing_events as $table => $value) {
+    $key = str_replace('civicrm_mailing_event_', '', $table);
+    $data['civicrm_mailing'][$key] = [
+      'title' => $value['title'],
+      'help' => $value['description'],
+      'real field' => 'id',
+      'field' => [
+        'id' => 'civicrm_entity_mailing_event',
+        'bao' => $value['bao'],
+        'distinct' => !empty($value['distinct']) ? TRUE : FALSE,
+      ],
+    ];
+  }
+
+  $data['civicrm_mailing']['opened_rate'] = [
+    'title' => t('Opened Rate'),
+    'help' => t('Total count of Opened Rate.'),
+    'real field' => 'id',
+    'field' => ['id' => 'civicrm_entity_mailing_event_opened_rate'],
+  ];
+
+  $data['civicrm_contact']['current_employer']['real field'] = 'organization_name';
+  $data['civicrm_contact']['employer_id']['field']['id'] = 'standard';
+  $data['civicrm_contribution']['contribution_source']['real field'] = 'source';
 }
 
 /**
@@ -135,10 +219,10 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
   $entity_type_id = $field_storage->getTargetEntityTypeId();
   $entity_type = $entity_type_manager->getDefinition($entity_type_id);
   // EDIT: We ensure the base table is set to the entity type ID, which matches
-  // the CiviCRM table pattern of `civicrm_*`
+  // the CiviCRM table pattern of `civicrm_*`.
   if (!$base_table = $entity_type->getBaseTable()) {
     // We cannot do anything if for some reason there is no base table.
-     return $data;
+    return $data;
   }
   $entity_tables = [$base_table => $entity_type_id];
   // Some entities may not have a data table.
@@ -159,6 +243,7 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
   // Description of the field tables.
   // @todo Generalize this code to make it work with any table layout. See
   //   https://www.drupal.org/node/2079019.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
   $table_mapping = $storage->getTableMapping();
   $field_tables = [
     EntityStorageInterface::FIELD_LOAD_CURRENT => [
@@ -184,6 +269,7 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
   foreach ($bundles_names as $bundle) {
     $fields[$bundle] = FieldConfig::loadByName($entity_type->id(), $bundle, $field_name);
   }
+  /** @var \Drupal\field\FieldConfigInterface $config_entity */
   foreach ($fields as $bundle => $config_entity) {
     if (!empty($config_entity)) {
       if ($config_entity->isTranslatable()) {
@@ -210,6 +296,7 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
   // If the field is translatable only on certain bundles, there will be a join
   // on langcode OR bundle name.
   elseif (!empty($translatable_configs) && !empty($untranslatable_configs)) {
+    /** @var \Drupal\field\FieldConfigInterface $config */
     foreach ($untranslatable_configs as $config) {
       $untranslatable_config_bundles[] = $config->getTargetBundle();
     }
@@ -313,7 +400,7 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
   // Determine the label to use for the field. We don't have a label available
   // at the field level, so we just go through all fields and take the one
   // which is used the most frequently.
-  list($label, $all_labels) = views_entity_field_label($entity_type_id, $field_name);
+  [$label, $all_labels] = views_entity_field_label($entity_type_id, $field_name);
 
   // Expose data for the field as a whole.
   foreach ($field_tables as $type => $table_info) {
@@ -347,9 +434,15 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
             'base' => $base_table,
             'group' => $group_name,
             'title' => $label_name,
-            'help' => t('This is an alias of @group: @field.', ['@group' => $group_name, '@field' => $label]),
+            'help' => t('This is an alias of @group: @field.', [
+              '@group' => $group_name,
+              '@field' => $label,
+            ]),
           ];
-          $also_known[] = t('@group: @field', ['@group' => $group_name, '@field' => $label_name]);
+          $also_known[] = t('@group: @field', [
+            '@group' => $group_name,
+            '@field' => $label_name,
+          ]);
         }
       }
       elseif ($supports_revisions && $label != $label_name) {
@@ -357,9 +450,15 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
           'base' => $table,
           'group' => t('@group (historical data)', ['@group' => $group_name]),
           'title' => $label_name,
-          'help' => t('This is an alias of @group: @field.', ['@group' => $group_name, '@field' => $label]),
+          'help' => t('This is an alias of @group: @field.', [
+            '@group' => $group_name,
+            '@field' => $label,
+          ]),
         ];
-        $also_known[] = t('@group (historical data): @field', ['@group' => $group_name, '@field' => $label_name]);
+        $also_known[] = t('@group (historical data): @field', [
+          '@group' => $group_name,
+          '@field' => $label_name,
+        ]);
       }
     }
     if ($aliases) {
@@ -396,7 +495,7 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
   foreach ($field_columns as $column => $attributes) {
     $allow_sort = TRUE;
 
-    // Identify likely filters and arguments for each column based on field type.
+    // Identify filters and arguments for each column based on field type.
     switch ($attributes['type']) {
       case 'int':
       case 'mediumint':
@@ -412,6 +511,7 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
           $filter = 'boolean';
         }
         break;
+
       case 'text':
       case 'blob':
         // It does not make sense to sort by blob or text.
@@ -424,12 +524,22 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
     }
 
     if (count($field_columns) == 1 || $column == 'value') {
-      $title = t('@label (@name)', ['@label' => $label, '@name' => $field_name]);
+      $title = t('@label (@name)', [
+        '@label' => $label,
+        '@name' => $field_name,
+      ]);
       $title_short = $label;
     }
     else {
-      $title = t('@label (@name:@column)', ['@label' => $label, '@name' => $field_name, '@column' => $column]);
-      $title_short = t('@label:@column', ['@label' => $label, '@column' => $column]);
+      $title = t('@label (@name:@column)', [
+        '@label' => $label,
+        '@name' => $field_name,
+        '@column' => $column,
+      ]);
+      $title_short = t('@label:@column', [
+        '@label' => $label,
+        '@column' => $column,
+      ]);
     }
 
     // Expose data for the property.
@@ -455,24 +565,37 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
         'help' => t('Appears in: @bundles.', ['@bundles' => implode(', ', $bundles_names)]),
       ];
 
-      // Go through and create a list of aliases for all possible combinations of
+      // Create a list of aliases for all possible combinations of
       // entity type + name.
       $aliases = [];
       $also_known = [];
       foreach ($all_labels as $label_name => $true) {
         if ($label != $label_name) {
           if (count($field_columns) == 1 || $column == 'value') {
-            $alias_title = t('@label (@name)', ['@label' => $label_name, '@name' => $field_name]);
+            $alias_title = t('@label (@name)', [
+              '@label' => $label_name,
+              '@name' => $field_name,
+            ]);
           }
           else {
-            $alias_title = t('@label (@name:@column)', ['@label' => $label_name, '@name' => $field_name, '@column' => $column]);
+            $alias_title = t('@label (@name:@column)', [
+              '@label' => $label_name,
+              '@name' => $field_name,
+              '@column' => $column,
+            ]);
           }
           $aliases[] = [
             'group' => $group_name,
             'title' => $alias_title,
-            'help' => t('This is an alias of @group: @field.', ['@group' => $group_name, '@field' => $title]),
+            'help' => t('This is an alias of @group: @field.', [
+              '@group' => $group_name,
+              '@field' => $title,
+            ]),
           ];
-          $also_known[] = t('@group: @field', ['@group' => $group_name, '@field' => $title]);
+          $also_known[] = t('@group: @field', [
+            '@group' => $group_name,
+            '@field' => $title,
+          ]);
         }
       }
       if ($aliases) {
@@ -525,7 +648,10 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
 
       // Expose additional delta column for multiple value fields.
       if ($field_storage->isMultiple()) {
-        $title_delta = t('@label (@name:delta)', ['@label' => $label, '@name' => $field_name]);
+        $title_delta = t('@label (@name:delta)', [
+          '@label' => $label,
+          '@name' => $field_name,
+        ]);
         $title_short_delta = t('@label:delta', ['@label' => $label]);
 
         $data[$table_alias]['delta'] = [
@@ -568,4 +694,11 @@ function civicrm_entity_field_default_views_data(FieldStorageConfigInterface $fi
   }
 
   return $data;
+}
+
+/**
+ * Implements hook_views_plugins_argument_validator_alter().
+ */
+function civicrm_entity_views_plugins_argument_validator_alter(array &$plugins) {
+  $plugins['entity:civicrm_contact']['class'] = 'Drupal\civicrm_entity\Plugin\views\argument_validator\CivicrmContact';
 }

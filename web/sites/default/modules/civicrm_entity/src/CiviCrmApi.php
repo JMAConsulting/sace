@@ -31,6 +31,12 @@ class CiviCrmApi implements CiviCrmApiInterface {
    */
   public function get($entity, array $params = []) {
     $this->initialize();
+
+    if ($entity == 'contribution') {
+      $params['return'][] = 'contribution_source';
+      $params['return'] = array_diff($params['return'], ['source']);
+    }
+
     $result = civicrm_api3($entity, 'get', $params);
     return $result['values'];
   }
@@ -44,6 +50,9 @@ class CiviCrmApi implements CiviCrmApiInterface {
     return $result['values'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function validate($entity, $params) {
     $this->initialize();
     if (!function_exists('_civicrm_api3_validate')) {
@@ -67,9 +76,15 @@ class CiviCrmApi implements CiviCrmApiInterface {
   public function getFields($entity, $action = '') {
     $this->initialize();
     $result = civicrm_api3($entity, 'getfields', [
-      'sequential' => 1,
+      // 'sequential' => 1,
       'action' => $action,
     ]);
+
+    if ($entity == 'contribution' && isset($result['values']['source'])) {
+      $result['values']['contribution_source'] = $result['values']['source'];
+      unset($result['values']['source']);
+    }
+
     return $result['values'];
   }
 
@@ -133,7 +148,7 @@ class CiviCrmApi implements CiviCrmApiInterface {
       return FALSE;
     }
 
-    list(, $id) = $field_name;
+    [, $id] = $field_name;
 
     try {
       $values = $this->get('CustomField', ['id' => $id, 'is_active' => 1]);
@@ -141,7 +156,11 @@ class CiviCrmApi implements CiviCrmApiInterface {
 
       if (!empty($values)) {
         // Include information from group.
-        if (isset($values['custom_group_id']) && ($custom_group_values = $this->get('CustomGroup', ['sequential' => 1, 'id' => $values['custom_group_id']]))) {
+        $custom_group_values = $this->get('CustomGroup', [
+          'sequential' => 1,
+          'id' => $values['custom_group_id'],
+        ]);
+        if (isset($values['custom_group_id']) && $custom_group_values) {
           $custom_group_values = reset($custom_group_values);
 
           $values += [

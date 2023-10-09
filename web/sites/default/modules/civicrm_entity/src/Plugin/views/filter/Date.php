@@ -8,13 +8,19 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * An "In" handler to include CiviCRM API.
+ * An "Date" handler to include CiviCRM API.
  *
  * @ingroup views_filter_handlers
  *
  * @ViewsFilter("civicrm_entity_date")
  */
 class Date extends BaseDate {
+  /**
+   * The date formatter service.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected $dateFormatter;
 
   /**
    * Date format for comparison.
@@ -52,8 +58,8 @@ class Date extends BaseDate {
 
     if ($this->value['type'] == 'offset') {
       $now = time();
-      $a = $now + sprintf('%+d', $a);
-      $b = $now + sprintf('%+d', $b);
+      $a = $now + (int) sprintf('%+d', $a);
+      $b = $now + (int) sprintf('%+d', $b);
     }
 
     $a = DateTimePlus::createFromTimestamp($a);
@@ -80,7 +86,7 @@ class Date extends BaseDate {
     $value = intval(strtotime($this->value['value'], 0));
 
     if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
-      $value = time() + sprintf('%+d', $value);
+      $value = time() + (int) sprintf('%+d', $value);
     }
 
     $value = DateTimePlus::createFromTimestamp($value);

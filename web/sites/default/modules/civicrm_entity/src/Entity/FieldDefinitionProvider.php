@@ -7,6 +7,9 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 
+/**
+ * Field Definition Provider class.
+ */
 class FieldDefinitionProvider implements FieldDefinitionProviderInterface {
 
   /**
@@ -42,6 +45,17 @@ class FieldDefinitionProvider implements FieldDefinitionProviderInterface {
             }
             else {
               $field = $this->getIntegerDefinition($civicrm_field);
+            }
+          }
+          elseif (isset($civicrm_field['data_type']) && $civicrm_field['data_type'] === 'ContactReference') {
+            $field = BaseFieldDefinition::create('entity_reference')
+              ->setSetting('target_type', 'civicrm_contact')
+              ->setSetting('handler', 'default');
+
+            if (isset($civicrm_field['serialize']) && $civicrm_field['serialize']) {
+              $field
+                ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+                ->setCustomStorage(TRUE);
             }
           }
           else {
@@ -110,7 +124,7 @@ class FieldDefinitionProvider implements FieldDefinitionProviderInterface {
     $field
       ->setDisplayConfigurable('view', TRUE)
       ->setLabel($civicrm_field['title'])
-      ->setDescription(isset($civicrm_field['description']) ? $civicrm_field['description'] : '');
+      ->setDescription($civicrm_field['description'] ?? '');
 
     if ($field->getType() != 'boolean') {
       $field->setRequired(isset($civicrm_field['api.required']) && (bool) $civicrm_field['api.required']);
@@ -283,7 +297,7 @@ class FieldDefinitionProvider implements FieldDefinitionProviderInterface {
         'type' => $field_type == 'string_long' ? 'string_textarea' : 'civicrm_entity_textarea',
         'weight' => 0,
         // If the default text formatter is CKEditor, this will be ignored.
-        'rows' => isset($civicrm_field['rows']) ? $civicrm_field['rows'] : 5,
+        'rows' => $civicrm_field['rows'] ?? 5,
       ]);
     return $field;
   }

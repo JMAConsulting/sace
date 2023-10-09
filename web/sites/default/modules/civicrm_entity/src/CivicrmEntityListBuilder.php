@@ -4,10 +4,15 @@ namespace Drupal\civicrm_entity;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Url;
 
+/**
+ * CiviCRM Entity List builder class.
+ */
 class CivicrmEntityListBuilder extends EntityListBuilder {
 
+  /**
+   * {@inheritdoc}
+   */
   protected $limit = 25;
 
   /**
@@ -16,10 +21,10 @@ class CivicrmEntityListBuilder extends EntityListBuilder {
   public function buildHeader() {
     if ($this->entityType->hasKey('bundle')) {
       return [
-          'id' => $this->t('ID'),
-          'bundle' => $this->entityType->getBundleLabel(),
-          'label' => $this->t('Label'),
-        ] + parent::buildHeader();
+        'id' => $this->t('ID'),
+        'bundle' => $this->entityType->getBundleLabel(),
+        'label' => $this->t('Label'),
+      ] + parent::buildHeader();
     }
     return [
       'id' => $this->t('ID'),
@@ -33,14 +38,14 @@ class CivicrmEntityListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     if ($this->entityType->hasKey('bundle')) {
       return [
-          'id' => $entity->id(),
-          'bundle' => $entity->bundle(),
-          'label' => $entity->toLink(),
-        ] + parent::buildRow($entity);
+        'id' => $entity->id(),
+        'bundle' => $entity->bundle(),
+        'label' => $entity->hasLinkTemplate('canonical') ? $entity->toLink() : $entity->label(),
+      ] + parent::buildRow($entity);
     }
     return [
       'id' => $entity->id(),
-      'label' => $entity->toLink(),
+      'label' => $entity->hasLinkTemplate('canonical') ? $entity->toLink() : $entity->label(),
     ] + parent::buildRow($entity);
   }
 
@@ -50,11 +55,13 @@ class CivicrmEntityListBuilder extends EntityListBuilder {
   protected function getDefaultOperations(EntityInterface $entity) {
     $operations = parent::getDefaultOperations($entity);
 
-    $operations['view'] = [
-      'title' => $this->t('View'),
-      'weight' => 50,
-      'url' => $entity->toUrl(),
-    ];
+    if ($entity->hasLinkTemplate('canonical')) {
+      $operations['view'] = [
+        'title' => $this->t('View'),
+        'weight' => 0,
+        'url' => $entity->toUrl(),
+      ];
+    }
 
     return $operations;
   }

@@ -70,6 +70,9 @@ class CivicrmSql extends Sql {
     parent::init($view, $display, $options);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function query($get_count = FALSE) {
     $query = parent::query($get_count);
     assert($query instanceof Select);
@@ -79,8 +82,9 @@ class CivicrmSql extends Sql {
       // If the table is not prefixed with civicrm_, assume it is a Drupal table
       // and convert it to a fully qualified table name. But, make sure it has
       // not already been converted.
-      if ((strpos($table['table'], 'civicrm_') !== 0 && strpos($table['table'], '.') === FALSE) || (strpos($table['table'], 'civicrm_') === 0 && strpos($table['table'], '__') !== FALSE)) {
-         $table['table'] = $connection->getFullQualifiedTableName($table['table']);
+      // Also do not convert any drupal custom fields.
+      if ((strpos($table['table'], 'civicrm_') !== 0 && strpos($table['table'], '.') === FALSE) || ((strpos($table['table'], 'civicrm_') === 0 && strpos($table['table'], '__') !== FALSE)) || strpos($table['table'], 'civicrm_value_') === 0) {
+        $table['table'] = $connection->getFullQualifiedTableName($table['table']);
       }
     }
     return $query;
