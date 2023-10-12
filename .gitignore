@@ -46,3 +46,5 @@ sites/simpletest
 # Ignore SimpleTest multi-site environment.
 # simpletest
 web/.htaccess.orig
+web/phpmyadmin
+web/sites/default/sace_settings.local.php
