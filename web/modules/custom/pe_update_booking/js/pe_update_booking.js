@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($, settings) {  
+jQuery(document).ready(function ($, settings) {
   //Presentation Topic Custom/SOmething Different toggle text field
   $(`${drupalSettings.ped_booking_update.start_date}-date, ${drupalSettings.ped_booking_update.start_date}-time, ${drupalSettings.ped_booking_update.end_date}-date, ${drupalSettings.ped_booking_update.end_date}-time`).on('input', function () {
         var end = $(`${drupalSettings.ped_booking_update.end_date}-date`).val();
@@ -14,13 +14,6 @@ jQuery(document).ready(function ($, settings) {
         start = new Date(start);
         end = new Date(end);
         var duration = (end.getTime() - start.getTime()) / (1000 * 60);
-        if (duration < 0 && endTime) {
-          alert('Start Date cannot be after the End Date');
-          $(`${drupalSettings.ped_booking_update.end_date}-date, ${drupalSettings.ped_booking_update.end_date}-time`).val('');
-          $('#edit-civicrm-1-activity-1-activity-duration').val('');
-          return;
-        }
-
         $('#edit-civicrm-1-activity-1-activity-duration').val(duration);
       }
 

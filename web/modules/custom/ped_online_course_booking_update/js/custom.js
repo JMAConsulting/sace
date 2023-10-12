@@ -15,33 +15,27 @@
         start = new Date(start);
         end = new Date(end);
         var duration = (end.getTime() - start.getTime()) / (1000 * 60);
-        if (duration < 0 && endTime) {
-          alert('Start Date cannot be after the End Date');
-          $(`${drupalSettings.ped_online_course_booking_update.end_date}-date, ${drupalSettings.ped_online_course_booking_update.end_date}-time`).val('');
-          $('#edit-civicrm-1-activity-1-activity-duration').val('');
-          return;
-        }
-  
+
         $('#edit-civicrm-1-activity-1-activity-duration').val(duration);
       }
 
-//Dynamic Your Organization / School fields
-var field1 = '.form-item-civicrm-2-contact-1-contact-existing';
-var fieldset = '#edit-civicrm-2-contact-1-fieldset-fieldset';
-var description = '#edit-civicrm-2-contact-1-contact-existing--description';
-$(`${field1}`).hide();
-$('#existing-org').on('click', function (e) {
-  e.preventDefault();
-  $(`${field1}`).show();
-  $(`${fieldset}`).hide();
-});
+      //Dynamic Your Organization / School fields
+      var field1 = '.form-item-civicrm-2-contact-1-contact-existing';
+      var fieldset = '#edit-civicrm-2-contact-1-fieldset-fieldset';
+      var description = '#edit-civicrm-2-contact-1-contact-existing--description';
+      $(`${field1}`).hide();
+      $('#existing-org').on('click', function (e) {
+        e.preventDefault();
+        $(`${field1}`).show();
+        $(`${fieldset}`).hide();
+      });
 
-$('#new-org-block').on('click', function (e) {
-    e.preventDefault();
-    $(`${fieldset}`).show();
-    $(`${field1}`).hide();
-});
- 
+      $('#new-org-block').on('click', function (e) {
+          e.preventDefault();
+          $(`${fieldset}`).show();
+          $(`${field1}`).hide();
+      });
+
       // let optional_addons_select = document.getElementById(`${drupalSettings.ped_online_course_booking_update.optional_addons_select}`);
       // let option = optional_addons_select.options[1].value;
       // $(`#${drupalSettings.ped_online_course_booking_update.optional_addons_select} option`).each(function() {
@@ -73,4 +67,3 @@ $('#new-org-block').on('click', function (e) {
       // });
     });
   })(jQuery, Drupal, drupalSettings);
-  
