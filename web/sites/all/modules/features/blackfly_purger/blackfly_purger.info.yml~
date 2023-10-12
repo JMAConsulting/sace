@@ -1,0 +1,14 @@
+name: 'Falcoe Purger'
+type: module
+description: 'Varnish Purger, Falcoe'
+core: 9.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - purge
+  - system
+  - varnish_purger
+  - views
+  - varnish_purge_tags
+  - purge_ui
+  - purge_drush
+  - purge_processor_cron

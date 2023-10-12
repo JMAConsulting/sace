@@ -1,0 +1,13 @@
+diff --git a/ext/greenwich/scss/_greenwich.scss b/ext/greenwich/scss/_greenwich.scss
+index 0bf1a362769..556d64b02e6 100644
+--- a/ext/greenwich/scss/_greenwich.scss
++++ b/ext/greenwich/scss/_greenwich.scss
+@@ -566,7 +566,7 @@ $popover-arrow-color: $popover-bg;
+ //** Popover outer arrow width
+ $popover-arrow-outer-width: ($popover-arrow-width + 1);
+ //** Popover outer arrow color
+-$popover-arrow-outer-color: fadein($popover-border-color, 5%);
++$popover-arrow-outer-color: fade_in($popover-border-color, 0.05);
+ //** Popover outer arrow fallback color
+ $popover-arrow-outer-fallback-color: darken($popover-fallback-border-color, 20%);
+ 
