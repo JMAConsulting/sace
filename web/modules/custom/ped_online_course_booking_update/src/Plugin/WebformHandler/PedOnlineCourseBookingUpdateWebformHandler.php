@@ -65,7 +65,22 @@ class PedOnlineCourseBookingUpdateWebformHandler extends WebformHandlerBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
     $this->validateTag($form_state);
+    $this->validateDateDuration($form_state);
   }
+
+  /**
+   * Validate date duration to ensure end date is not before the start date.
+   */
+  private function validateDateDuration(FormStateInterface $formState) {
+    $duration = (int) $formState->getValue('civicrm_1_activity_1_activity_duration') ?? NULL;
+    $startDate = $formState->getValue('civicrm_1_activity_1_activity_activity_date_time');
+    $endDate = $formState->getValue('civicrm_1_activity_1_cg2_custom_661');
+    // if someone manually update the duration to be positive as it is editable, we are using timediff first to ensure start date is always before the end date
+    if ((strtotime($endDate) < strtotime($startDate))  || $duration < 0) {
+      $formState->setErrorByName('civicrm_1_activity_1_cg2_custom_661', $this->t('Start Date cannot be after the End Date.'));
+    }
+  }
+
 
   /**
    * Validate contact tags.
