@@ -1,0 +1,15 @@
+<?php # redis config with minimal caching
+$conf['redis_client_host']      = 'vredis';
+$conf['cache_prefix'] = array('default' => 'vredis');
+$conf['redis_client_interface']      = 'PhpRedis';
+$conf['cache_backends'][]            = 'sites/all/modules/contrib/redis/redis.autoload.inc';
+$conf['cache_default_class'] = 'Redis_CacheCompressed';
+$conf['cache_compression_size_threshold'] = 100;
+$conf['cache_compression_ratio'] = 1;
+$conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
+$conf['lock_inc'] = 'sites/all/modules/contrib/redis/redis.lock.inc';
+$conf['path_inc'] = 'sites/all/modules/contrib/redis/redis.path.inc';
+#$conf['cache_class_cache'] = 'Redis_Cache';
+#$conf['cache_class_cache_bootstrap'] = 'Redis_Cache';
+#$conf['cache_class_cache_menu'] = 'Redis_Cache';
+#$conf['cache_class_cache_variable'] = 'Redis_Cache';

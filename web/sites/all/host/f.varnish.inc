@@ -1,0 +1,20 @@
+<?php /* include file for Blackfly */
+global $conf;
+$bridge_ip = gethostbyname('varnish');
+// $swarm_ip = '10.255.0.2'; // ,10.255.0.2';
+$swarm_ip = '10.255.0.2'; // ,10.255.0.2';
+$host_ip = '51.79.18.13';
+$conf['reverse_proxy'] = TRUE;
+$conf['reverse_proxy_addresses'] = array($host_ip, $swarm_ip, $bridge_ip);
+$conf['reverse_proxy_header'] = 'HTTP_X_FORWARDED_FOR';
+$conf['cache_class_cache_page'] = 'VarnishCache';
+$conf['page_cache_invoke_hooks'] = false;
+$conf['cache_backends'][] = 'sites/all/modules/contrib/varnish/varnish.cache.inc';
+$conf['varnish_cache_clear'] = '1';
+$conf['varnish_bantype'] = '1';
+$conf['varnish_flush_cron'] = '0';
+$conf['varnish_version'] = '4';
+$conf['varnish_control_terminal'] = $host_ip.':6082';
+#$conf['varnish_control_terminal'] = $bridge_ip.':6082';
+$conf['varnish_control_key'] = 'b8d87664-d7d8e3d0-025b8d0f-64da6d35';
+$conf['varnish_socket_timeout'] = 100;
