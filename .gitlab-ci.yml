@@ -58,7 +58,7 @@ before_script:
   ##
   - git config --global user.email "pipeline@jmaconsulting.biz"
   - git config --global user.name "pipeline"
-  - ssh-keyscan d11.jmaconsulting.biz >> ~/.ssh/known_hosts
+  - ssh-keyscan ovh11.jmaconsulting.biz >> ~/.ssh/known_hosts
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
@@ -69,7 +69,7 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: production
   script:
-    - ssh -A pipeline@d11.jmaconsulting.biz <<ENDSSH
+    - ssh -A pipeline@ovh11.jmaconsulting.biz <<ENDSSH
     - git config --global --add safe.directory /var/www/staging.secure.sace.ca/htdocs
     - ssh-keyscan lab.jmaconsulting.biz  >> ~/.ssh/known_hosts
     - cd /var/www/staging.secure.sace.ca/htdocs
