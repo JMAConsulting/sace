@@ -1,0 +1,13 @@
+/* Minor visual corrections on the editor CSS */
+.input-filename {
+  width: 300px;
+}
+
+.input-folder, .input-frequency, .input-period {
+  width: 150px;
+}
+
+.input-last_activity {
+  width: 90%;
+  font-size: 12px;
+}

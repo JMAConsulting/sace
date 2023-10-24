@@ -1,0 +1,11 @@
+{
+    "name": "civicrm/purgelogs",
+    "description": "Purge Logs is a configurable API Job, to remove files older than a defined timeframe.",
+    "license": "AGPL-3.0-only",
+    "authors": [
+        {
+            "name": "iXiam Global Solutions",
+            "email": "info@ixiam.com"
+        }
+    ]
+}
