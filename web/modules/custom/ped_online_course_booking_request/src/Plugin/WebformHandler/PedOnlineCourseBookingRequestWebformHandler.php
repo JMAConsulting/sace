@@ -56,12 +56,12 @@ class PedOnlineCourseBookingRequestWebformHandler extends WebformHandlerBase {
     $webform_submission_data = $webform_submission->getData();
     // If we are dealing with an Adult Online Course then set the field to be None
     if ($webform_submission_data && $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] == PED_ONLINE_COURSE_BOOKING_ADULT_ACTIVITY) {
-      $webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] = 'None';
+      $webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] = ['None'];
       $webform_submission->setData($webform_submission_data);
     }
-    elseif ($webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] === '' || $webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] === '0') {
+    elseif ($webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] === '' || $webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] === '0' || $webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] == []) {
       // if We have not filled out the Optional Addons section and its a Youth Booking set it to be none also
-      $webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] = 'None';
+      $webform_submission_data[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] = ['None'];
       $webform_submission->setData($webform_submission_data);
     }
   }
