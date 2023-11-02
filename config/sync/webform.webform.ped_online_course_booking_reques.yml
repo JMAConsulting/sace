@@ -367,6 +367,7 @@ elements: |-
         'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator -- This option can be offered in-person or online.'
         "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module -- Only available for Consent: Ask Me About It! online course.'
         "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_ -- Only available for Consent: Ask Me About It! online course."
+      '#default_value': '0'
       '#wrapper_attributes':
         class:
           - jma-grid-3
@@ -381,7 +382,6 @@ elements: |-
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_662
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_value': '0'
   civicrm_1_activity_1_cg2_custom_90:
     '#type': civicrm_options
     '#title': 'Youth or Adult'

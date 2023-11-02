@@ -111,18 +111,19 @@ elements: |-
       56: '56'
       45: '45'
       48: '48'
-      1: '1'
       49: '49'
-      7: '7'
+      1: '1'
       13: '13'
       8: '8'
       10: '10'
       6: '6'
       11: '11'
       14: '14'
+      7: '7'
       9: '9'
       12: '12'
       15: '15'
+      66: '66'
     '#filter_relationship_contact': ''
     '#contact_type': organization
     '#form_key': civicrm_2_contact_1_contact_existing
@@ -200,7 +201,6 @@ elements: |-
     civicrm_2_contact_1_other_tag:
       '#type': civicrm_options
       '#title': Tag(s)
-      '#description': 'To choose existing organization please click <a href="#" id="existing-org">here</a> to select one.'
       '#civicrm_live_options': 0
       '#options':
         44: 'Arts, Entertainment & Nightlife'
