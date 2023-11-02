@@ -1317,8 +1317,8 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: ''
-            make_link: true
+            text: "{% if online_meeting_link_1267 and online_meeting_link_1267|upper != 'N/A' %}\r\n<a href=\"{{ online_meeting_link_1267 }}\">{{ online_meeting_link_1267 }}</a>\r\n{% endif %}"
+            make_link: false
             path: '{{ online_meeting_link_1267 }}'
             absolute: false
             external: false
