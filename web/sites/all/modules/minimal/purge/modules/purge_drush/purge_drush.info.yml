@@ -1,0 +1,7 @@
+name: 'Purge Drush'
+type: module
+description: 'Administrative Drush commands for Purge.'
+package: Purge
+dependencies:
+  - purge:purge
+core_version_requirement: '^8.9 || ^9'
