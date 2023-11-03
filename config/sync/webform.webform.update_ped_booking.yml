@@ -107,22 +107,33 @@ elements: |-
     '#tag':
       44: '44'
       27: '27'
+      46: '46'
       2: '2'
       56: '56'
       45: '45'
       48: '48'
       49: '49'
+      50: '50'
       1: '1'
-      13: '13'
+      35: '35'
+      22: '22'
+      36: '36'
+      31: '31'
+      32: '32'
+      33: '33'
+      34: '34'
+      23: '23'
+      42: '42'
+      24: '24'
+      30: '30'
+      43: '43'
+      29: '29'
       8: '8'
-      10: '10'
       6: '6'
-      11: '11'
-      14: '14'
-      7: '7'
-      9: '9'
-      12: '12'
-      15: '15'
+      58: '58'
+      68: '68'
+      54: '54'
+      59: '59'
       66: '66'
     '#filter_relationship_contact': ''
     '#contact_type': organization
@@ -198,37 +209,47 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#options': {  }
-    civicrm_2_contact_1_other_tag:
-      '#type': civicrm_options
-      '#title': Tag(s)
-      '#civicrm_live_options': 0
-      '#options':
-        44: 'Arts, Entertainment & Nightlife'
-        27: Conference
-        2: 'For-Profit Organization'
-        56: 'Government Ministry/ Agency'
-        45: 'Hospital/ Medical Organization'
-        48: Military
-        1: 'Non-Profit Organization'
-        49: 'Policing/ Corrections Institution'
-        7: 'Private/Charter School'
-        13: '- BGSD'
-        8: '- ECSD'
-        10: '- EICSD'
-        6: '- EPSB'
-        11: '- EVCSD'
-        14: '- PHSD'
-        9: '- PSD'
-        12: '- STACSD'
-        15: '- STAPSD'
-      '#extra':
-        aslist: 0
-        multiple: 1
-      '#table': tag
-      '#form_key': civicrm_2_contact_1_other_tag
-      '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
+  civicrm_2_contact_1_other_tag:
+    '#type': civicrm_options
+    '#title': Tag(s)
+    '#civicrm_live_options': 0
+    '#options':
+      44: 'Arts, Entertainment & Nightlife'
+      27: Conference
+      2: 'For-Profit Organization'
+      1: 'Non-Profit Organization'
+      8: '- ECSD'
+      6: '- EPSB'
+      46: 'Counselling Agency'
+      56: 'Government Ministry/ Agency'
+      45: 'Hospital/ Medical Organization'
+      48: Military
+      49: 'Policing/ Corrections Institution'
+      35: '- 2SLGBTQ-Serving Organization'
+      22: '- Committee/ Working Group'
+      36: '- Exploited Persons-Serving Organization'
+      31: '- Indigenous-Serving Organization'
+      32: '- Newcomer-Serving Organization'
+      33: '- Older Adult-Serving Organization'
+      34: '- People With Disabilities-Serving Organization'
+      23: '- Program'
+      42: '- Religious Organization'
+      24: '- Sexual Assault Services'
+      30: '- Social Services Organization'
+      43: '- Youth At Risk-Serving Organization'
+      29: School
+      58: '- High School'
+      68: '- Junior High School'
+      54: '- Post-Secondary'
+      59: '- Pre-School'
+    '#extra':
+      aslist: 0
+      multiple: 1
+    '#table': tag
+    '#form_key': civicrm_2_contact_1_other_tag
+    '#parent': civicrm_2_contact_1_fieldset_fieldset
+    '#default_option': ''
+    '#default_value': ''
   processed_text_01:
     '#type': processed_text
     '#text': '<h2><span style="color:#2e416c;">Booking Details</span></h2>'
