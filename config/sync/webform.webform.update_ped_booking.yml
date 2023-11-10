@@ -95,7 +95,7 @@ elements: |-
   civicrm_2_contact_1_contact_existing:
     '#type': civicrm_contact
     '#title': 'Your Organization'
-    '#description': 'If you cannot find your organization, please click <a href="#" id="new-org-block">here</a> to create one. Please note that this field is for your organization&#39;s information only.'
+    '#description': 'Please click <a href="#" id="new-org-block">here</a> to update Organization details'
     '#disabled': true
     '#widget': autocomplete
     '#none_prompt': '- None Found -'
@@ -187,14 +187,14 @@ elements: |-
       '#title': 'Postal Code'
     civicrm_2_contact_1_address_state_province_id:
       '#type': textfield
+      '#title': State/Province
+      '#description': 'Please click <a href="#" id="existing-org">here</a> to choose a different organization.&nbsp;Changing the details above will not create a new organization, but edit the current one associated with the booking'
       '#extra':
         maxlength: 5
         width: 4
       '#data_type': state_province_abbr
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#title': State/Province
-      '#description': 'To choose existing organization please click <a id="existing-org" href="#">here</a> to select one.'
     civicrm_2_contact_1_contact_contact_sub_type:
       '#type': civicrm_options
       '#title': 'Type of Organization'
