@@ -1,9 +1,12 @@
 uuid: d2a9fbae-e694-4bf3-bd0c-16965b3930cf
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: pe
 label: 'PE Staff'
 weight: -7
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

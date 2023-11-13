@@ -24,7 +24,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Melanie''s Calendar'
+      title: "Melanie's Calendar"
       fields:
         subject:
           id: subject
@@ -555,13 +555,13 @@ display:
       tags: {  }
   block_1:
     id: block_1
-    display_title: 'Melanie''s Calendar Block'
+    display_title: "Melanie's Calendar Block"
     display_plugin: block
     position: 2
     display_options:
       display_description: ''
       display_extenders: {  }
-      block_description: 'Melanie''s Calendar'
+      block_description: "Melanie's Calendar"
     cache_metadata:
       max-age: -1
       contexts:
@@ -572,11 +572,11 @@ display:
       tags: {  }
   block_2:
     id: block_2
-    display_title: 'Karin''s Calendar Block'
+    display_title: "Karin's Calendar Block"
     display_plugin: block
     position: 2
     display_options:
-      title: 'Karin''s Calendar'
+      title: "Karin's Calendar"
       arguments:
         uid:
           id: uid
@@ -620,7 +620,7 @@ display:
         arguments: false
       display_description: ''
       display_extenders: {  }
-      block_description: 'Karin''s Calendar'
+      block_description: "Karin's Calendar"
     cache_metadata:
       max-age: -1
       contexts:
@@ -631,16 +631,16 @@ display:
       tags: {  }
   block_3:
     id: block_3
-    display_title: 'Nikki''s Calendar Block'
+    display_title: "Nikki's Calendar Block"
     display_plugin: block
     position: 2
     display_options:
-      title: 'Nikki''s Calendar'
+      title: "Nikki's Calendar"
       defaults:
         title: false
       display_description: ''
       display_extenders: {  }
-      block_description: 'Nikki''s Calendar'
+      block_description: "Nikki's Calendar"
     cache_metadata:
       max-age: -1
       contexts:

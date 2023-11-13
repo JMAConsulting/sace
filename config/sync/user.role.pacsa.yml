@@ -1,9 +1,12 @@
 uuid: e89b218b-6d73-43a8-8a49-3f661284cdaf
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: pacsa
 label: PACSA
 weight: 9
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

@@ -1,9 +1,12 @@
 uuid: a4297e3d-e0ec-4e62-ba2e-f0b640164690
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: couns_tl
 label: 'COUNS TL'
 weight: 12
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

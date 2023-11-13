@@ -6,6 +6,7 @@ dependencies:
     - civicrm
     - contact
     - contextual
+    - file
     - system
     - toolbar
 id: finance
@@ -48,6 +49,7 @@ permissions:
   - 'delete in CiviMail'
   - 'delete in CiviMember'
   - 'delete in CiviPledge'
+  - 'delete own files'
   - 'delete own manual batches'
   - 'edit all contacts'
   - 'edit all events'

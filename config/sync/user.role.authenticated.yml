@@ -6,6 +6,7 @@ dependencies:
     - filter.format.html
   module:
     - civicrm
+    - file
     - filter
     - fontawesome
     - media
@@ -22,6 +23,7 @@ permissions:
   - 'access content'
   - 'access fontawesome additional settings'
   - 'access uploaded files'
+  - 'delete own files'
   - 'make online contributions'
   - 'profile create'
   - 'profile edit'

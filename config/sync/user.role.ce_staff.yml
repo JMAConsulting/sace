@@ -1,9 +1,12 @@
 uuid: 1fcc5c79-28af-4499-8f78-f61e035e2c7b
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: ce_staff
 label: 'CE Staff'
 weight: -14
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

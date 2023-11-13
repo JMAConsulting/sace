@@ -1526,7 +1526,7 @@ display:
             title_enable: false
             title: All
           title_enable: true
-          title: '{{ arguments.tid|replace({''No name'': ''''}) }} Team Calendar'
+          title: "{{ arguments.tid|replace({'No name': ''}) }} Team Calendar"
           default_argument_type: fixed
           default_argument_options:
             argument: ''

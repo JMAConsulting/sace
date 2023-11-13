@@ -13,7 +13,7 @@ archive: false
 id: ped_booking_request_query_params
 title: 'Public Education Booking Request'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   intro_markup:
     '#type': processed_text
@@ -298,14 +298,31 @@ elements: |-
         '#parent': civicrm_3_contact_1_fieldset_fieldset
         '#title': 'Postal Code'
       civicrm_3_contact_1_address_state_province_id:
-        '#type': textfield
+        '#type': civicrm_options
         '#extra':
-          maxlength: 5
-          width: 4
+          aslist: 1
         '#data_type': state_province_abbr
         '#form_key': civicrm_3_contact_1_address_state_province_id
         '#parent': civicrm_3_contact_1_fieldset_fieldset
         '#title': State/Province
+        '#webform': ped_booking_request_query_params
+        '#webform_id': ped_booking_request_query_params--civicrm_3_contact_1_address_state_province_id
+        '#webform_key': civicrm_3_contact_1_address_state_province_id
+        '#webform_parent_key': civicrm_3_contact_1_fieldset_fieldset
+        '#webform_parent_flexbox': false
+        '#webform_depth': 2
+        '#webform_children': {  }
+        '#webform_multiple': false
+        '#webform_composite': false
+        '#webform_parents':
+          - general_information
+          - civicrm_3_contact_1_fieldset_fieldset
+          - civicrm_3_contact_1_address_state_province_id
+        '#admin_title': State/Province
+        '#webform_plugin_id': civicrm_options
+        '#civicrm_live_options': 0
+        '#empty_option': '- None -'
+        '#options': {  }
       civicrm_3_contact_1_phone_phone:
         '#type': textfield
         '#counter_type': character
@@ -1183,6 +1200,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -1478,7 +1497,7 @@ handlers:
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 1
-      message: 'You are viewing this form as [display name]. Please {click here if that''s not you}.'
+      message: "You are viewing this form as [display name]. Please {click here if that's not you}."
       activity_number_of_activity: '1'
       activity_1_settings_existing_activity_status:
         '': ''

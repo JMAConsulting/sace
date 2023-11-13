@@ -1,9 +1,12 @@
 uuid: b14e1a5e-6a2e-4d72-863a-74dae29190ab
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: clin_team_lead
 label: 'CLIN Receptionist'
 weight: 0
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'
