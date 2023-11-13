@@ -1,0 +1,58 @@
+diff --git a/CRM/Core/Key.php b/CRM/Core/Key.php
+index 3e7826f2c71..58b0a3912ca 100644
+--- a/CRM/Core/Key.php
++++ b/CRM/Core/Key.php
+@@ -67,7 +67,7 @@ public static function sessionID() {
+       $session = CRM_Core_Session::singleton();
+       self::$_sessionID = $session->get('qfSessionID');
+       if (!self::$_sessionID) {
+-        self::$_sessionID = session_id();
++        self::$_sessionID = CRM_Core_Config::singleton()->userSystem->getSessionId();
+         $session->set('qfSessionID', self::$_sessionID);
+       }
+     }
+diff --git a/CRM/Utils/System/Base.php b/CRM/Utils/System/Base.php
+index a2bf46e7a10..f163aea7dd7 100644
+--- a/CRM/Utils/System/Base.php
++++ b/CRM/Utils/System/Base.php
+@@ -1019,6 +1019,15 @@ public function sessionStart() {
+     session_start();
+   }
+ 
++  /**
++   * This exists because of https://www.drupal.org/node/3006306 where
++   * they changed so that they don't start sessions for anonymous, but we
++   * want that.
++   */
++  public function getSessionId() {
++    return session_id();
++  }
++
+   /**
+    * Get role names
+    *
+diff --git a/CRM/Utils/System/Drupal8.php b/CRM/Utils/System/Drupal8.php
+index 06db4707141..3cf29f44986 100644
+--- a/CRM/Utils/System/Drupal8.php
++++ b/CRM/Utils/System/Drupal8.php
+@@ -848,6 +848,20 @@ public function sessionStart() {
+     }
+   }
+ 
++  /**
++   * @inheritdoc
++   */
++  public function getSessionId() {
++    if (\Drupal::hasContainer()) {
++      $session = \Drupal::service('session');
++      if (!$session->has('civicrm.tempstore.sessionid')) {
++        $session->set('civicrm.tempstore.sessionid', \Drupal\Component\Utility\Crypt::randomBytesBase64());
++      }
++      return $session->get('civicrm.tempstore.sessionid');
++    }
++    return '';
++  }
++
+   /**
+    * Load the user object.
+    *

@@ -1,0 +1,9 @@
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
+        "patches": {
+          "civicrm/civicrm-core": {
+            "PR 21471": "https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-core/pull/21471.diff"
+          }
+        },

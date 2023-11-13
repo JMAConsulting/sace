@@ -395,7 +395,7 @@ foreach ($mapper as $Q => $cfID) {
 
         case 19:
           //Hide Q19 if Presentation Topic is not Bystander Intervention
-          $flag = (bool) in_array('BystanderIntervention', $result["Booking_Information.Presentation_topics"]);
+          $flag = (bool) in_array('BystanderIntervention', (array) $result["Booking_Information.Presentation_topics"]);
           break;
 
         case 20:

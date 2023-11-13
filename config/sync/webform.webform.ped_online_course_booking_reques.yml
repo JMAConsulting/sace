@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - ped_online_course_booking_request
     - webform_civicrm
 weight: 0
 open: null
@@ -367,6 +368,7 @@ elements: |-
         'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator -- This option can be offered in-person or online.'
         "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module -- Only available for Consent: Ask Me About It! online course.'
         "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_ -- Only available for Consent: Ask Me About It! online course."
+      '#default_value': '0'
       '#wrapper_attributes':
         class:
           - jma-grid-3
@@ -381,7 +383,6 @@ elements: |-
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_662
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_value': '0'
   civicrm_1_activity_1_cg2_custom_90:
     '#type': civicrm_options
     '#title': 'Youth or Adult'
@@ -773,7 +774,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: null
+    weight: -48
     settings:
       nid: 1
       number_of_contacts: '3'
@@ -1456,7 +1457,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: 0
+    weight: -50
     settings:
       states:
         - completed
@@ -1493,4 +1494,13 @@ handlers:
       theme_name: ''
       parameters: {  }
       debug: false
+  ped_online_course_booking_reqest_handler:
+    id: ped_online_course_booking_reqest_handler
+    handler_id: ped_online_course_booking_reqest_handler
+    label: 'PED Online Course Booking Reqest Handler'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -49
+    settings: {  }
 variants: {  }

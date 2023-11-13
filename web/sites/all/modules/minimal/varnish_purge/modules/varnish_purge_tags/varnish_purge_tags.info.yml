@@ -1,0 +1,7 @@
+name: Varnish Purger Tags
+type: module
+description: 'Cache-Tags response header to support tag-based invalidation.'
+package: "Purge - reverse proxies & CDNs"
+core_version_requirement: ^8 || ^9
+dependencies:
+  - varnish_purger:varnish_purger
