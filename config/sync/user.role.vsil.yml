@@ -1,9 +1,12 @@
 uuid: 95e50243-d6e0-4eac-9924-be077512afdb
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: vsil
 label: VSIL
 weight: -5
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

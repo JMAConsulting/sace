@@ -1,9 +1,12 @@
 uuid: c4d367a5-ace4-4977-9a09-5738465547cd
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: clin_counsellor
 label: 'CLIN Counsellor'
 weight: 2
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

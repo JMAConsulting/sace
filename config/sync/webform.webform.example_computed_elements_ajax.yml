@@ -16,7 +16,8 @@ archive: false
 id: example_computed_elements_ajax
 title: 'Example: Computed Ajax'
 description: 'Example of a computed element using Ajax.'
-category: Example
+categories:
+  - Example
 elements: |
   message_warning:
     '#type': webform_message
@@ -233,6 +234,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''

@@ -1,9 +1,12 @@
 uuid: 56181b8c-10a0-4554-b637-949c27cfedd8
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: cad_tl
 label: 'CAD TL'
 weight: -15
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

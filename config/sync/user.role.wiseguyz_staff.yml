@@ -1,9 +1,12 @@
 uuid: 7b4895bb-ad80-4326-a706-375e76aff080
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: wiseguyz_staff
 label: 'WiseGuyz Staff'
 weight: 13
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

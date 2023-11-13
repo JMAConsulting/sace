@@ -13,7 +13,7 @@ archive: false
 id: clin_sessionnote_sol_gen_stats
 title: 'CLIN SessionNote - Sol Gen Stats'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   civicrm_2_contact_1_fieldset_fieldset:
     '#type': fieldset
@@ -537,6 +537,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -682,7 +684,7 @@ handlers:
       2_contact_type: individual
       2_webform_label: Client
       civicrm_2_contact_1_contact_contact_sub_type:
-        client: client
+        Client: Client
       contact_2_number_of_cg6: '0'
       contact_2_number_of_cg10: '0'
       contact_2_number_of_cg19: '0'
@@ -722,7 +724,7 @@ handlers:
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 1
-      message: 'You are viewing this form as [display name]. Please {click here if that''s not you}.'
+      message: "You are viewing this form as [display name]. Please {click here if that's not you}."
       activity_number_of_activity: '1'
       activity_1_settings_existing_activity_status:
         '': ''
@@ -944,7 +946,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  client: client
+                  Client: Client
                 webform_label: Client
             number_of_cg6: '0'
             number_of_cg10: '0'

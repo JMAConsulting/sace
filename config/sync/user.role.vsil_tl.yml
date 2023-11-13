@@ -1,9 +1,12 @@
 uuid: 42b56737-be03-4d72-8346-95d097920b87
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: vsil_tl
 label: 'VSIL TL'
 weight: -4
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

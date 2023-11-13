@@ -1,9 +1,12 @@
 uuid: 31f1aa44-6b89-42d4-8c90-7fa4f62b73df
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: supervisors
 label: Supervisors
 weight: 4
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'
