@@ -2,7 +2,7 @@
   $(document).ready(function () {
     //Dynamic Your Organization / School fields
     field = '.form-item-civicrm-3-contact-1-contact-existing';
-    fieldset = '#edit-civicrm-3-contact-1-fieldset-fieldset';
+    fieldset = '#edit-civicrm-3-contact-1-fieldset-fieldset legend, div.form-item-civicrm-3-contact-1-contact-organization-name';
     description = '#edit-civicrm-3-contact-1-contact-existing--description';
     $(`${fieldset}`).hide();
     $('#existing-org').on('click', function (e) {

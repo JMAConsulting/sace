@@ -25,7 +25,7 @@ function setDuration(start, end, endTime) {
 
 //Dynamic Your Organization / School fields
 field1 = '#edit-civicrm-1-contact-1-cg52-fieldset';
-fieldset = '#edit-civicrm-1-contact-1-fieldset-fieldset';
+fieldset = '#edit-civicrm-1-contact-1-fieldset-fieldset legend, div.form-item-civicrm-1-contact-1-contact-organization-name';
 description = '#edit-civicrm-1-contact-1-contact-existing--description';
 
 $(`${fieldset}`).hide();
