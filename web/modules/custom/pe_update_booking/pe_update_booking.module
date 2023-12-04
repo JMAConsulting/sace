@@ -47,8 +47,12 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
     //Get booking type
     $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];
 
+    $isStaff = in_array('Staff', (\Civi\Api4\Contact::get(FALSE)
+      ->addWhere('id', '=', CRM_Core_Session::getLoggedInContactID() ?? 0)
+      ->execute()->first()['contact_sub_type'] ?? []));
+
     //Youth presentation
-    if ($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
+    if ($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY && !$isStaff) {
       //  Presentation topic dropdown options
       $elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#options'] = [
         'SexualHarassment' => 'Sexual Harassment',
