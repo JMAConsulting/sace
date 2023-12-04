@@ -9,8 +9,8 @@ return [
     'entity' => 'ReportTemplate',
     'params' => [
       'version' => 3,
-      'label' => 'PublicEdBookingsReport',
-      'description' => 'PublicEdBookingsReport (publicedbookingsreport)',
+      'label' => 'Public Education Presentations report',
+      'description' => 'Public Education Presentations report template (publicedbookingsreport)',
       'class_name' => 'CRM_SaceCivireports_Form_Report_PublicEdBookingsReport',
       'report_url' => 'sace-civi-reports/publicedbookingsreport',
       'component' => '',
