@@ -1,5 +1,5 @@
 <?php
-use CRM_Publicedbookingsreport_ExtensionUtil as E;
+use CRM_SaceCivireports_ExtensionUtil as E;
 
 class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_Form {
 
