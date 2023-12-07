@@ -1436,6 +1436,8 @@ handlers:
     conditions: {  }
     weight: -50
     settings:
+      disable: 'Leave Fields and Save Settings'
+      antibot_key: ''
       nid: 1
       number_of_contacts: '6'
       1_contact_type: individual

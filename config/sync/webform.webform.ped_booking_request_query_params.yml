@@ -1098,7 +1098,7 @@ css: |-
 
   .webform-submission-add-form #edit-civicrm-4-contact-1-fieldset-fieldset {
     display: none;
-  } 
+  }
 javascript: ''
 settings:
   ajax: false
@@ -1864,6 +1864,7 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: 'PED Booking Request'
+      antibot_key: ''
       data:
         contact:
           1:
