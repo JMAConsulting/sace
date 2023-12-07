@@ -280,11 +280,9 @@ elements: |-
     '#title': Activity
     '#form_key': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_activity_activity_type_id:
-      '#type': civicrm_options
+      '#type': select
       '#title': 'Activity Type'
       '#description': 'Select the activity that best aligns with the primary focus of your work/meeting for this session. Additional details may be listed in the outputs/deliverables completed and the Activity Notes fields. Depending on submissions/how it&#39;s being used we may build out more features such as custom fields for recurring content in the Notes field and other improvements to keep improving this form.'
-      '#empty_option': '- select -'
-      '#civicrm_live_options': 0
       '#options':
         207: 'AD - Best/ Promising Practices Research'
         208: 'AD - Governance Review & Development'
@@ -423,16 +421,14 @@ elements: |-
         328: 'Volunteer Stewardship'
         329: 'Volunteer Training'
         235: 'PACS - Testifying'
+      '#empty_option': '- select -'
+      '#select2': true
       '#required': true
-      '#states':
-        disabled:
-          ':input[name="aid"]':
-            filled: true
       '#default_value': '[current-page:query:booking_type]'
+      '#civicrm_live_options': 0
       '#extra':
         aslist: 1
         multiple: 0
-      '#select2': true
       '#form_key': civicrm_1_activity_1_activity_activity_type_id
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
