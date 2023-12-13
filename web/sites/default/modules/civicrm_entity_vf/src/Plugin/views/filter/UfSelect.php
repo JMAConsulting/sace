@@ -81,7 +81,8 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
 
       // Get active user uids.
       $uids = $this->userQuery
-        ->condition('status', 1)
+	->accessCheck()   
+	->condition('status', 1)
         ->execute();
 
       // Get user display names.

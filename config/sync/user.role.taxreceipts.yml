@@ -4,9 +4,11 @@ status: true
 dependencies:
   module:
     - civicrm
+    - file
 id: taxreceipts
 label: 'Finance - TaxReceipts'
 weight: -10
 is_admin: null
 permissions:
+  - 'delete own files'
   - 'issue cdn tax receipts'

@@ -7,6 +7,7 @@
 
 namespace Drupal\views_ical\Plugin\views\row;
 
+use DateTimeZone;
 use Drupal\views\Plugin\views\row\Fields;
 use Drupal\views\ResultRow;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -462,14 +463,14 @@ class IcalFieldsWizard extends Fields {
    *
    * @param array $events
    *   The array of events that will be output.
-   * @param \Drupal\Core\Entity\ContentEntityInterface $row
+   * @param \Drupal\views\ResultRow $row
    *   The views result being processed.
    * @param \DateTimeZone $timezone
    *   A timezone object to use for output.
    * @param array $fieldMapping
    *   An array of mappings to specify which entity fields to use for output.
    */
-  public function addSmartDateEvent(array &$events, \Drupal\views\ResultRow $row, \DateTimeZone $timezone, array $fieldMapping): void {
+  public function addSmartDateEvent(array &$events, ResultRow $row, \DateTimeZone $timezone, array $fieldMapping): void {
 
     $entity = $this->getEntity($row);
 
@@ -480,7 +481,7 @@ class IcalFieldsWizard extends Fields {
       $dateValue = $datefieldValues[$delta]['value'];
       $dateEndValue = $datefieldValues[$delta]['end_value'];
       $dateRrule = $datefieldValues[$delta]['rrule'];
-      $dateTZ = $datefieldValues[$delta]['timezone'] ?: $timezone;
+      $dateTZ = !empty($datefieldValues[$delta]['timezone']) ? new \DateTimeZone($datefieldValues[$delta]['timezone']) : $timezone;
       if (in_array($dateRrule, $processed_rules)) {
         continue;
       }
@@ -545,7 +546,7 @@ class IcalFieldsWizard extends Fields {
         if ($recurRuleObject->getUntil()) {
           $icalRrule->setUntil($recurRuleObject->getUntil());
         }
-        $event->setRecurrenceRule($icalRrule);
+        $event->addRecurrenceRule($icalRrule);
       }
       $events[] = $event;
     }

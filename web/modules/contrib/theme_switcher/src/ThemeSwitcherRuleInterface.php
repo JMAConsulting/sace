@@ -34,6 +34,14 @@ interface ThemeSwitcherRuleInterface extends ConfigEntityInterface {
   public function getAdminTheme();
 
   /**
+   * Gets the conjunction.
+   *
+   * @return string
+   *   The conjunction.
+   */
+  public function getConjunction();
+
+  /**
    * Return the switchers.
    *
    * @return array

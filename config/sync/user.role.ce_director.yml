@@ -1,9 +1,12 @@
 uuid: a0de722d-42a6-4677-8605-c449cf8996b4
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: ce_director
 label: 'CE Director'
 weight: -13
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

@@ -13,8 +13,7 @@ use Eluceo\iCal\Component\Timezone;
  *   - view: A View object.
  */
 function views_ical_preprocess_views_view_ical(&$variables) {
-
-  module_load_include('inc', 'views', 'views.theme');
+  Drupal::moduleHandler()->loadInclude('views', 'inc', $name = 'views.theme');
 
   $view = $variables['view'];
   $view->getResponse()->headers->set('Content-Type', 'text/calendar; charset=utf-8');
@@ -79,7 +78,7 @@ function views_ical_preprocess_views_view_icalwizard(&$variables) {
 
 
   if (false) {
-    module_load_include('inc', 'views', 'views.theme');
+    Drupal::moduleHandler()->loadInclude('views', 'inc', $name = 'views.theme');
 
     $view = $variables['view'];
     //$view->getResponse()->headers->set('Content-Type', 'text/calendar; charset=utf-8');
@@ -111,6 +110,6 @@ function views_ical_preprocess_views_view_icalwizard(&$variables) {
  *   - view: A View object.
  */
 function views_ical_preprocess_views_view_ical_fields(&$variables) {
-  module_load_include('inc', 'views', 'views.theme');
+  Drupal::moduleHandler()->loadInclude('views', 'inc', $name = 'views.theme');
   template_preprocess_views_view_fields($variables);
 }

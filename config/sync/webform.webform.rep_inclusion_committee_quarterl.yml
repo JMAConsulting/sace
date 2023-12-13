@@ -13,7 +13,7 @@ archive: false
 id: rep_inclusion_committee_quarterl
 title: 'REP- Inclusion Committee Quarterly Report'
 description: ''
-category: Reporting
+categories: {  }
 elements: |-
   civicrm_1_contact_1_fieldset_fieldset:
     '#type': fieldset
@@ -216,6 +216,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -325,7 +327,7 @@ handlers:
       1_contact_type: individual
       1_webform_label: Staff
       civicrm_1_contact_1_contact_contact_sub_type:
-        staff: staff
+        Staff: Staff
       contact_1_number_of_cg14: '0'
       civicrm_1_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_1_contact_1_contact_prefix_id: 0
@@ -360,7 +362,7 @@ handlers:
       2_contact_type: organization
       2_webform_label: Program/Committee
       civicrm_2_contact_1_contact_contact_sub_type:
-        program_committee: program_committee
+        Program/Committee: Program/Committee
       contact_2_number_of_cg26: '1'
       civicrm_2_contact_1_cg26_custom_303: create_civicrm_webform_element
       civicrm_2_contact_1_cg26_custom_304: create_civicrm_webform_element
@@ -432,7 +434,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  staff: staff
+                  Staff: Staff
                 webform_label: Staff
             number_of_cg14: '0'
             matching_rule: Unsupervised
@@ -449,7 +451,7 @@ handlers:
               1:
                 contact_type: organization
                 contact_sub_type:
-                  program_committee: program_committee
+                  Program/Committee: Program/Committee
                 webform_label: Program/Committee
             number_of_cg26: '1'
             matching_rule: Unsupervised

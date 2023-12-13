@@ -13,6 +13,6 @@ fontawesome-menu-icons:
     js/fontawesome_menu_icons.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
     - core/drupal
     - core/drupalSettings

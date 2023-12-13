@@ -12,6 +12,22 @@ use Drupal\Core\Url;
 final class ActivitySubmissionTest extends WebformCivicrmTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    $this->_contacts = [
+      1 => [
+        'first_name' => 'Frederick',
+        'last_name' => 'Pabst',
+      ],
+      2 => [
+        'first_name' => 'Mark',
+        'last_name' => 'Wood',
+      ],
+    ];
+  }
+  /**
    * Test submitting an activity
    */
   public function testSubmitWebform() {
@@ -21,6 +37,24 @@ final class ActivitySubmissionTest extends WebformCivicrmTestBase {
     ]));
     // The label has a <div> in it which can cause weird failures here.
     $this->addActivityFields();
+    $this->submitWebform();
+    $this->verifyActivityValues();
+  }
+
+  /**
+   * Test Activity with single option for Activity Type.
+   */
+  public function testSingleActivityTypeOption() {
+    $this->drupalLogin($this->rootUser);
+    $this->drupalGet(Url::fromRoute('entity.webform.civicrm', [
+      'webform' => $this->webform->id(),
+    ]));
+    $this->addActivityFields(1, TRUE);
+    // Alter activity type field to use static options with only 1 option enabled.
+    $this->drupalGet($this->webform->toUrl('edit-form'));
+    $this->htmlOutput();
+    $this->editCivicrmOptionElement("edit-webform-ui-elements-civicrm-1-activity-1-activity-activity-type-id-operations", FALSE, TRUE, NULL, NULL, TRUE, TRUE);
+
     $this->submitWebform();
     $this->verifyActivityValues();
   }
@@ -43,7 +77,7 @@ final class ActivitySubmissionTest extends WebformCivicrmTestBase {
    *
    * @param int $num
    */
-  private function addActivityFields($num = 1) {
+  private function addActivityFields($num = 1, $select_activity = FALSE) {
     $this->enableCivicrmOnWebform();
 
     $this->getSession()->getPage()->selectFieldOption('number_of_contacts', $num);
@@ -54,6 +88,12 @@ final class ActivitySubmissionTest extends WebformCivicrmTestBase {
     $this->getSession()->getPage()->selectFieldOption('activity_number_of_activity', 1);
     $this->assertSession()->assertWaitOnAjaxRequest();
     $this->htmlOutput();
+
+    if ($select_activity) {
+      $this->getSession()->getPage()->selectFieldOption('civicrm_1_activity_1_activity_activity_type_id', '- User Select -');
+      $this->assertSession()->assertWaitOnAjaxRequest();
+      $this->htmlOutput();
+    }
 
     $this->getSession()->getPage()->checkField("civicrm_1_activity_1_activity_subject");
     $this->getSession()->getPage()->checkField("civicrm_1_activity_1_activity_details");
@@ -85,7 +125,6 @@ final class ActivitySubmissionTest extends WebformCivicrmTestBase {
    * @param int $num
    */
   private function submitWebform($num = 1) {
-    $this->_contacts = [];
     $this->drupalLogout();
     $this->drupalGet($this->webform->toUrl('canonical'));
     $this->assertPageNoErrorMessages();
@@ -93,10 +132,6 @@ final class ActivitySubmissionTest extends WebformCivicrmTestBase {
     $this->assertSession()->waitForField('civicrm_1_contact_1_contact_first_name');
 
     for ($i = 1; $i <= $num; $i++) {
-      $this->_contacts[$i] = [
-        'first_name' => 'Frederick' . substr(sha1(rand()), 0, 7),
-        'last_name' => 'Pabst' . substr(sha1(rand()), 0, 7),
-      ];
       $this->getSession()->getPage()->fillField("civicrm_{$i}_contact_1_contact_first_name", $this->_contacts[$i]['first_name']);
       $this->getSession()->getPage()->fillField("civicrm_{$i}_contact_1_contact_last_name", $this->_contacts[$i]['last_name']);
     }
@@ -140,6 +175,7 @@ final class ActivitySubmissionTest extends WebformCivicrmTestBase {
     for ($i = 1; $i <= $num; $i++) {
       // In this test: contact_id 1 = Default Organization; contact_id 2 = Drupal User; contact_id 3 = Frederick
       $contact = $this->utils->wf_civicrm_api('Contact', 'get', [
+        'sequential' => 1,
         'first_name' => $this->_contacts[$i]['first_name'],
         'last_name' => $this->_contacts[$i]['last_name'],
       ]);
@@ -149,6 +185,20 @@ final class ActivitySubmissionTest extends WebformCivicrmTestBase {
 
     // Ok now let's log back in and retrieve the Activity we just stored - so that we can update it.
     $this->drupalLogin($this->adminUser);
+    $sid = $this->getLastSubmissionId($this->webform);
+    $this->drupalGet(Url::fromRoute('entity.webform_submission.canonical', [
+      'webform' => $this->webform->id(),
+      'webform_submission' => $sid,
+    ]));
+    $this->htmlOutput();
+
+    $title = $this->webform->label();
+    $this->assertSession()->pageTextContains("{$title}: Submission #{$sid} by Frederick Pabst");
+    $this->assertSession()->linkExists("View Frederick Pabst");
+    $this->assertSession()->linkExists("View Activity");
+    $this->assertSession()-> linkNotExists('View Contribution');
+    $this->assertSession()-> linkNotExists('View Participant');
+
     $this->drupalGet($this->webform->toUrl('canonical', ['query' => ['cid1' => $contact['id'], 'aid' => $activity['id']]]));
     $this->assertPageNoErrorMessages();
 

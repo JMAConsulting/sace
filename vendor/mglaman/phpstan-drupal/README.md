@@ -6,7 +6,7 @@ Extension for [PHPStan](https://phpstan.org/) to allow analysis of Drupal code.
 
 ## Sponsors
 
-<a href="https://www.undpaul.de/"><img src="https://www.undpaul.de/themes/custom/undpaul3/logo.svg" alt="undpaul" width="250" /></a> <a href="https://www.iodigital.com/en"><img src="https://www.drupal.org/files/iO-logo%2Bblack.png" alt="iO" width="225" /></a>
+<a href="https://www.undpaul.de/"><img src="https://www.undpaul.de/themes/custom/undpaul3/logo.svg" alt="undpaul" width="250" /></a>
 
 [Would you like to sponsor?](https://github.com/sponsors/mglaman)
 
@@ -32,6 +32,10 @@ includes:
 ```
 </details>
 
+## Getting help
+
+Ask for assistance in the [discussions](https://github.com/mglaman/phpstan-drupal/discussions) or [#phpstan](https://drupal.slack.com/archives/C033S2JUMLJ) channel on Drupal Slack.
+
 ## Excluding tests from analysis
 
 To exclude tests from analysis, add the following parameter
@@ -45,19 +49,8 @@ parameters:
 
 ## Deprecation testing
 
-Add the deprecation rules to your Drupal project's dependencies
-
-```
-composer require --dev phpstan/phpstan-deprecation-rules
-```
-
-Edit your `phpstan.neon` to look like the following:
-
-```
-includes:
-	- vendor/mglaman/phpstan-drupal/extension.neon
-	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
-```
+This project depends on `phpstan/phpstan-deprecation-rules` which adds deprecation rules. We provide Drupal-specific 
+deprecated scope resolvers.
 
 To only handle deprecation testing, use a `phpstan.neon` like this:
 
@@ -75,6 +68,22 @@ includes:
 	- vendor/mglaman/phpstan-drupal/extension.neon
 	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
 ```
+
+To disable deprecation rules while using `phpstan/extension-installer`, you can do the following:
+
+```json
+{
+  "extra": {
+    "phpstan/extension-installer": {
+      "ignore": [
+        "phpstan/phpstan-deprecation-rules"
+      ]
+    }
+  }
+}
+```
+
+See the `extension-installer` documentation for more information: https://github.com/phpstan/extension-installer#ignoring-a-particular-extension
 
 ## Adapting to your project
 

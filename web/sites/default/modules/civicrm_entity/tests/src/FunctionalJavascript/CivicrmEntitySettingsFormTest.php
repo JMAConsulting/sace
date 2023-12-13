@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Drupal\Tests\civicrm_entity\FunctionalJavascript;
 
@@ -17,13 +19,32 @@ final class CivicrmEntitySettingsFormTest extends CivicrmEntityTestBase {
    */
   public function testEnableNewEntityTypes() {
     $admin_user = $this->createUser([
-      'administer civicrm entity'
+      'administer civicrm entity',
     ]);
     $this->drupalLogin($admin_user);
     $this->enableCivicrmEntityTypes(['civicrm_event', 'civicrm_activity']);
     $this->drupalGet(Url::fromRoute('civicrm_entity.admin'));
     $this->assertSession()->linkExists('CiviCRM Activity');
     $this->assertSession()->linkExists('CiviCRM Event');
+
+    $this->drupalGet(Url::fromRoute('civicrm_entity.settings'));
+    $page = $this->getSession()->getPage();
+    foreach (['civicrm_contact'] as $entity_type) {
+      $page->checkField("enabled_entity_types[$entity_type][enabled]");
+      $page->uncheckField("enabled_entity_types[$entity_type][enable_links][view]");
+      $page->uncheckField("enabled_entity_types[$entity_type][enable_links][add]");
+      $page->uncheckField("enabled_entity_types[$entity_type][enable_links][edit]");
+      $page->uncheckField("enabled_entity_types[$entity_type][enable_links][delete]");
+    }
+    $page->pressButton('Save configuration');
+    $this->drupalGet('/civicrm-contact/add');
+    $this->assertSession()->responseContains('Page not found');
+    $this->drupalGet('/civicrm-contact/1');
+    $this->assertSession()->responseContains('Page not found');
+    $this->drupalGet('/civicrm-contact/1/edit');
+    $this->assertSession()->responseContains('Page not found');
+    $this->drupalGet('/civicrm-contact/1/delete');
+    $this->assertSession()->responseContains('Page not found');
   }
 
   /**
@@ -46,7 +67,7 @@ final class CivicrmEntitySettingsFormTest extends CivicrmEntityTestBase {
 
     $admin_user = $this->createUser([
       'administer filters',
-      'administer civicrm entity'
+      'administer civicrm entity',
     ]);
     $this->drupalLogin($admin_user);
 

@@ -21,9 +21,7 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
       'webform' => $this->webform->id(),
     ]));
     // The label has a <div> in it which can cause weird failures here.
-    $this->assertSession()->waitForText('Enable CiviCRM Processing');
-    $this->assertSession()->waitForField('nid');
-    $this->getSession()->getPage()->checkField('nid');
+    $this->enableCivicrmOnWebform();
     $this->getSession()->getPage()->clickLink('Memberships');
 
     // Configure Membership tab.
@@ -34,26 +32,18 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
     // $this->createScreenshot($this->htmlOutputDirectory . '/membership_page_settings.png');
 
     // Configure Contribution tab and enable recurring.
-    $this->getSession()->getPage()->clickLink('Contribution');
-    $this->getSession()->getPage()->selectFieldOption('civicrm_1_contribution_1_contribution_enable_contribution', 1);
-    $this->assertSession()->assertWaitOnAjaxRequest();
-    $this->assertSession()->pageTextContains('You must enable an email field for Contact 1 in order to process transactions.');
-    $this->getSession()->getPage()->pressButton('Enable It');
-    $this->assertSession()->assertWaitOnAjaxRequest();
-    $this->getSession()->getPage()->selectFieldOption('Currency', 'USD');
-    $this->getSession()->getPage()->selectFieldOption('Financial Type', 1);
+    $params = [
+      'payment_processor_id' => $payment_processor['id'],
+    ];
+    $this->configureContributionTab($params);
     $this->getSession()->getPage()->selectFieldOption('Frequency of Installments', 'year');
 
-    $this->getSession()->getPage()->selectFieldOption('Payment Processor', $payment_processor['id']);
-    // $this->createScreenshot($this->htmlOutputDirectory . '/membership_page_settings_before_save.png');
     $this->enableBillingSection();
 
-    $this->getSession()->getPage()->pressButton('Save Settings');
-    $this->assertSession()->pageTextContains('Saved CiviCRM settings');
+    $this->saveCiviCRMSettings();
 
     $this->drupalGet($this->webform->toUrl('canonical'));
     $this->assertPageNoErrorMessages();
-    // $this->createScreenshot($this->htmlOutputDirectory . '/membership_page1.png');
 
     $this->getSession()->getPage()->fillField('First Name', 'Frederick');
     $this->getSession()->getPage()->fillField('Last Name', 'Pabst');
@@ -61,16 +51,19 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
     $this->getSession()->getPage()->selectFieldOption('civicrm_1_membership_1_membership_membership_type_id', '1');
 
     $this->getSession()->getPage()->pressButton('Next >');
+    $this->assertSession()->waitForField('wf-crm-billing-items');
+    $this->htmlOutput();
 
     $this->assertSession()->elementExists('css', '#wf-crm-billing-items');
     $this->htmlOutput();
     $this->assertSession()->elementTextContains('css', '#wf-crm-billing-total', '1.00');
+    $this->assertSession()->elementTextContains('css', '.civicrm_1_membership_1', 'Basic: Frederick Pabst');
 
     // Wait for the credit card form to load in.
     $this->assertSession()->waitForField('credit_card_number');
     $this->getSession()->getPage()->fillField('Card Number', '4222222222222220');
     $this->getSession()->getPage()->fillField('Security Code', '123');
-    $this->getSession()->getPage()->selectFieldOption('credit_card_exp_date[M]', '11');
+    $this->getSession()->getPage()->selectFieldOption($this->getCreditCardMonthFieldName(), '11');
     $this_year = date('Y');
     $this->getSession()->getPage()->selectFieldOption('credit_card_exp_date[Y]', $this_year + 1);
     $billingValues = [
@@ -93,8 +86,7 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
     // $this->assertPageNoErrorMessages();
 
     // Assert if recur is attached to the created membership.
-    $utils = \Drupal::service('webform_civicrm.utils');
-    $api_result = $utils->wf_civicrm_api('membership', 'get', [
+    $api_result = $this->utils->wf_civicrm_api('membership', 'get', [
       'sequential' => 1,
       'return' => 'contribution_recur_id',
     ]);
@@ -102,7 +94,7 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
     $this->assertNotEmpty($membership['contribution_recur_id']);
 
     // Let's make sure we have a Contribution by ensuring we have a Transaction ID
-    $api_result = $utils->wf_civicrm_api('contribution', 'get', [
+    $api_result = $this->utils->wf_civicrm_api('contribution', 'get', [
       'sequential' => 1,
     ]);
     $contribution = reset($api_result['values']);
@@ -121,17 +113,41 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
       'webform' => $this->webform->id(),
     ]));
     // The label has a <div> in it which can cause weird failures here.
-    $this->assertSession()->waitForText('Enable CiviCRM Processing');
-    $this->assertSession()->waitForField('nid');
-    $this->getSession()->getPage()->checkField('nid');
+    $this->enableCivicrmOnWebform();
     $this->getSession()->getPage()->clickLink('Memberships');
 
     $this->getSession()->getPage()->selectFieldOption('membership_1_number_of_membership', 1);
     $this->assertSession()->assertWaitOnAjaxRequest();
     $this->htmlOutput();
 
-    $this->getSession()->getPage()->pressButton('Save Settings');
-    $this->assertSession()->pageTextContains('Saved CiviCRM settings');
+    $this->saveCiviCRMSettings();
+
+    // Create two memberships with the same status with the first membership
+    // having an end date after the second membership's end date.
+    $this->utils->wf_civicrm_api('membership', 'create', [
+      'membership_type_id' => 'Basic',
+      'contact_id' => 2,
+      'join_date' => '08/10/21',
+      'start_date' => '08/10/21',
+      'end_date' => '08/10/22',
+      'is_override' => 1,
+      'status_id' => 'Expired',
+    ]);
+
+    $this->utils->wf_civicrm_api('membership', 'create', [
+      'membership_type_id' => 'Basic',
+      'contact_id' => 2,
+      'join_date' => '01/01/21',
+      'start_date' => '01/01/21',
+      'end_date' => '01/01/22',
+      'is_override' => 1,
+      'status_id' => 'Expired',
+    ]);
+
+    $this->drupalGet($this->webform->toUrl('canonical'));
+    $this->assertSession()->elementExists('xpath', $this->assertSession()->buildXPathQuery('//div[@data-drupal-messages]//div[contains(., :message)]', [
+      ':message' => 'Basic membership for ' . mb_strtolower($this->adminUser->getEmail()) . ' has a status of "Expired". Expired ' . \CRM_Utils_Date::customFormat('2022-08-10'),
+    ]));
 
     $this->drupalLogout();
     $this->drupalGet($this->webform->toUrl('canonical'));
@@ -147,22 +163,22 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
     $this->assertPageNoErrorMessages();
     $this->assertSession()->pageTextContains('New submission added to CiviCRM Webform Test.');
 
-    $api_result = \Drupal::service('webform_civicrm.utils')->wf_civicrm_api('membership', 'get', [
+    $api_result = $this->utils->wf_civicrm_api('membership', 'get', [
       'sequential' => 1,
+      'options' => ['sort' => 'id DESC'],
     ]);
-    $this->assertEquals(1, $api_result['count']);
+    $this->assertEquals(3, $api_result['count']);
     $membership = reset($api_result['values']);
 
     $this->assertEquals('Basic', $membership['membership_name']);
     $this->assertEquals('1', $membership['status_id']);
 
     $today = date('Y-m-d');
-    // throw new \Exception(var_export($today, TRUE));
 
     $this->assertEquals($today,  $membership['join_date']);
     $this->assertEquals($today,  $membership['start_date']);
 
-    $this->assertEquals(date('Y-m-d', strtotime($today. ' +364 days')),  $membership['end_date']);
+    $this->assertEquals(date('Y-m-d', strtotime($today. ' +365 days')),  $membership['end_date']);
   }
 
   /**
@@ -224,7 +240,7 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
 
     $this->assertSession()->pageTextContains('New submission added to CiviCRM Webform Test.');
 
-    $api_result = \Drupal::service('webform_civicrm.utils')->wf_civicrm_api('membership', 'get', [
+    $api_result = $this->utils->wf_civicrm_api('membership', 'get', [
       'sequential' => 1,
     ]);
     $this->assertEquals(1, $api_result['count']);
@@ -266,7 +282,7 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
 
     // Configure Contribution tab.
     $params = [
-      'pp' => $payment_processor['id'],
+      'payment_processor_id' => $payment_processor['id'],
       'financial_type_id' => 2,
     ];
     $this->configureContributionTab($params);
@@ -281,8 +297,7 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
 
     $this->htmlOutput();
 
-    $this->getSession()->getPage()->pressButton('Save Settings');
-    $this->assertSession()->pageTextContains('Saved CiviCRM settings');
+    $this->saveCiviCRMSettings();
 
     $this->drupalLogout();
 
@@ -291,7 +306,6 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
   }
 
   public function purchaseMembershipProvince($province) {
-    $utils = \Drupal::service('webform_civicrm.utils');
     $this->drupalGet($this->webform->toUrl('canonical'));
     $this->assertPageNoErrorMessages();
 
@@ -308,14 +322,18 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
       $expected_tax_amount = 13;
     }
 
+    $provinceId = $this->utils->wf_civicrm_api('StateProvince', 'getvalue', [
+      'return' => "id",
+      'name' => "Alberta",
+    ]);
     $this->assertSession()->waitForField('First Name');
 
-    $this->getSession()->getPage()->fillField('First Name', $province .'_first');
+    $this->getSession()->getPage()->fillField('First Name', $province . '_first');
     $this->getSession()->getPage()->fillField('Last Name', $province . '_last');
     $this->getSession()->getPage()->fillField('Street Address', '39 Street');
     $this->getSession()->getPage()->fillField('City', 'City');
     $this->getSession()->getPage()->fillField('Postal Code', 'A0B 1C2');
-    $this->getSession()->getPage()->selectFieldOption('civicrm_1_contact_1_address_state_province_id', 'AB');
+    $this->getSession()->getPage()->selectFieldOption('civicrm_1_contact_1_address_state_province_id', $provinceId);
     $this->getSession()->getPage()->fillField('Email', $province . '@example.com');
 
     $this->getSession()->getPage()->selectFieldOption('civicrm_1_membership_1_membership_financial_type_id', $financial_type_id);
@@ -325,6 +343,11 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
     // $this->createScreenshot($this->htmlOutputDirectory . 'KG.png');
 
     $this->getSession()->getPage()->pressButton('Next >');
+    $this->assertSession()->waitForField('wf-crm-billing-items');
+    $this->htmlOutput();
+
+    $this->assertSession()->elementExists('css', '#wf-crm-billing-items');
+    $this->assertSession()->elementTextContains('css', '.civicrm_1_membership_1', "Basic: {$province}_first {$province}_last");
 
     $this->fillCardAndSubmit();
 
@@ -335,6 +358,14 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
     $api_result = $this->utils->wf_civicrm_api('contribution', 'get', [
       'sequential' => 1,
     ]);
+    $addresses = $this->utils->wf_crm_apivalues('address', 'get', [
+      'sequential' => 1,
+    ]);
+    foreach ($addresses as $address) {
+      if ($address['location_type_id'] == 5) {
+        $this->assertEquals(1048, $address['state_province_id']);
+      }
+    }
 
     if ($province == 'Alberta') {
       $this->assertEquals(1, $api_result['count']);
@@ -381,7 +412,7 @@ final class MembershipSubmissionTest extends WebformCivicrmTestBase {
       $this->assertEquals(2, $api_result['count']);
       $line_items = next($api_result['values']);
     }
-    $priceFieldID = $utils->wf_civicrm_api('PriceField', 'get', [
+    $priceFieldID = $this->utils->wf_civicrm_api('PriceField', 'get', [
       'sequential' => 1,
       'price_set_id' => 'default_membership_type_amount',
       'options' => ['limit' => 1],

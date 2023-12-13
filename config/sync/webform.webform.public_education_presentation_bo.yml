@@ -11,7 +11,7 @@ archive: false
 id: public_education_presentation_bo
 title: 'SACE Booking Requests'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   markup:
     '#type': processed_text

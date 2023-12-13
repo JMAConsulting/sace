@@ -159,6 +159,16 @@ class ThemeSwitcherRuleForm extends EntityForm {
       '#default_value' => $entity->getAdminTheme() ?? '',
     ];
 
+    $form['conjunction'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Set conjunction operator for the visibility conditions below'),
+      '#default_value' => $entity->getConjunction(),
+      '#options' => [
+        'and' => $this->t('@and: all conditions should pass.', ['@and' => 'AND']),
+        'or' => $this->t('@or: at least one of the conditions should pass.', ['@or' => 'OR']),
+      ],
+    ];
+
     // Build the visibility UI form and follow this
     // https://www.drupal.org/node/2284687
     $form['visibility'] = [
@@ -281,8 +291,12 @@ class ThemeSwitcherRuleForm extends EntityForm {
    *   Whether the theme_switcher_rule exists.
    */
   public function exist($id) {
-    $entity = $this->entityTypeManager->getStorage('theme_switcher_rule')
-      ->getQuery()->condition('id', $id)->execute();
+    $entity = $this->entityTypeManager
+      ->getStorage('theme_switcher_rule')
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('id', $id)
+      ->execute();
     return (bool) $entity;
   }
 

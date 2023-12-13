@@ -193,7 +193,7 @@ class CivicrmOptions extends OptionsBase {
       $element['#options'] = $new;
     }
 
-    if (!empty($element['#default_option'])) {
+    if (empty($element['#default_value']) && !empty($element['#default_option'])) {
       $element['#default_value'] = $element['#default_option'];
     }
 
@@ -211,6 +211,18 @@ class CivicrmOptions extends OptionsBase {
     }
 
     parent::prepare($element, $webform_submission);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
+    // Disable default form validation on state select field, since options are loaded via js.
+    if (strpos($element['#form_key'], 'state_province_id') !== false) {
+      unset($element['#needs_validation']);
+      $element['#validated'] = TRUE;
+    }
   }
 
   protected function getFieldOptions($element, $data = []) {
@@ -265,11 +277,7 @@ class CivicrmOptions extends OptionsBase {
    * {@inheritdoc}
    */
   public function hasMultipleValues(array $element) {
-    if (!empty($element['#extra']['multiple']) ||
-      (empty($element['#civicrm_live_options']) && !empty($element['#options']) && count($element['#options']) === 1)) {
-      return TRUE;
-    }
-    return FALSE;
+    return \Drupal::service('webform_civicrm.utils')->hasMultipleValues($element);
   }
 
   /**

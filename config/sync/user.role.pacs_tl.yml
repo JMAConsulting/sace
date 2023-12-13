@@ -1,9 +1,12 @@
 uuid: 75508dd9-5c71-4ff2-9c0d-b19becdeee0f
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: pacs_tl
 label: 'PACS TL'
 weight: 7
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

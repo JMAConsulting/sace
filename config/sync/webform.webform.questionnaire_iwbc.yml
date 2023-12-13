@@ -13,7 +13,7 @@ archive: false
 id: questionnaire_iwbc
 title: 'CLIN Questionnaire - IWBC'
 description: ''
-category: Client
+categories: {  }
 elements: |-
   civicrm_2_contact_1_cg6_custom_96:
     '#type': civicrm_options
@@ -385,6 +385,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -529,7 +531,7 @@ handlers:
       2_contact_type: individual
       2_webform_label: Client
       civicrm_2_contact_1_contact_contact_sub_type:
-        client: client
+        Client: Client
       contact_2_number_of_cg6: '1'
       civicrm_2_contact_1_cg6_custom_95: create_civicrm_webform_element
       civicrm_2_contact_1_cg6_custom_96: create_civicrm_webform_element
@@ -703,7 +705,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  client: client
+                  Client: Client
                 webform_label: Client
             number_of_cg6: '1'
             number_of_cg10: '0'

@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\webform_civicrm\FunctionalJavascript;
 
+use Civi\Api4\Contribution;
 use Drupal\Core\Url;
 use Drupal\webform\Entity\Webform;
 
@@ -15,6 +16,7 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
   public function testReceiptParams() {
     $this->drupalLogin($this->rootUser);
     $this->redirectEmailsToDB();
+    $this->setOrgInfo();
 
     $this->drupalGet(Url::fromRoute('entity.webform.civicrm', [
       'webform' => $this->webform->id(),
@@ -22,13 +24,14 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
     $this->enableCivicrmOnWebform();
 
     $params = [
-      'pp' => 'Pay Later',
+      'payment_processor_id' => 'Pay Later',
+      'financial_type_id' => 'create_civicrm_webform_element',
       'receipt' => [
         'receipt_from_name' => 'Admin',
         'receipt_from_email' => 'admin@example.com',
         'pay_later_receipt' => 'Payment by Direct Credit to: ABC. Please quote invoice number and name.',
         'receipt_text' => 'Thank you for your contribution.',
-      ]
+      ],
     ];
     $this->configureContributionTab($params);
     $this->getSession()->getPage()->selectFieldOption('Enable Billing Address?', 'No');
@@ -50,16 +53,21 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
     $this->assertSession()->elementExists('css', '#wf-crm-billing-items');
     $this->htmlOutput();
     $this->assertSession()->elementTextContains('css', '#wf-crm-billing-total', '30.00');
+    $this->getSession()->getPage()->selectFieldOption('civicrm_1_contribution_1_contribution_financial_type_id', 2);
 
     $this->getSession()->getPage()->pressButton('Submit');
     $this->assertPageNoErrorMessages();
     $this->assertSession()->pageTextContains('New submission added to CiviCRM Webform Test.');
 
-    $contribution = \Civi\Api4\Contribution::get()
-      ->addSelect('source', 'total_amount', 'contribution_status_id:label', 'currency')
+    $contribution = Contribution::get()
+      ->addSelect('source', 'total_amount', 'contribution_status_id:label', 'currency', 'financial_type_id:label')
       ->setLimit(1)
       ->execute()
       ->first();
+    $this->assertEquals('30.00', $contribution['total_amount']);
+    $this->assertEquals('Pending', $contribution['contribution_status_id:label']);
+    $this->assertEquals('Member Dues', $contribution['financial_type_id:label']);
+    $this->assertEquals('USD', $contribution['currency']);
 
     $sent_email = $this->getMostRecentEmail();
     $this->assertStringContainsString('From: Admin <admin@example.com>', $sent_email);
@@ -67,15 +75,28 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
     $this->assertStringContainsString('Payment by Direct Credit to: ABC. Please quote invoice number and name.', $sent_email);
     $this->assertStringContainsString('Thank you for your contribution', $sent_email);
 
+    // "Hack" for versions before 5.54 - it doesn't pick up the setting we set earlier.
+    if (version_compare(\CRM_Core_BAO_Domain::version(), '5.54.alpha1', '<')) {
+      $mb = \Civi::settings()->get('mailing_backend');
+      $mb['outBound_option'] = \CRM_Mailing_Config::OUTBOUND_OPTION_REDIRECT_TO_DB;
+      \Civi::settings()->set('mailing_backend', $mb);
+    }
+
     // Complete the contribution and recheck receipt.
     civicrm_api3('Contribution', 'completetransaction', [
       'id' => $contribution['id'],
       'is_email_receipt' => 1,
     ]);
     $sent_email = $this->getMostRecentEmail();
-    $this->assertStringContainsString('From: Admin <admin@example.com>', $sent_email);
+    $this->assertStringContainsString('From: Pay Laterers <pay.later@example.org>', $sent_email);
     $this->assertStringContainsString('To: Frederick Pabst <fred@example.com>', $sent_email);
-    $this->assertStringContainsString('Thank you for your contribution', $sent_email);
+    // Adjust for fix in core - since status is now completed, it shouldn't say invoice.
+    if (version_compare(\CRM_Core_BAO_Domain::version(), '5.63.alpha1', '<')) {
+      $this->assertStringContainsString('Subject: Invoice - Contribution - Frederick Pabst', $sent_email);
+    }
+    else {
+      $this->assertStringContainsString('Subject: Receipt - Contribution - Frederick Pabst', $sent_email);
+    }
   }
 
   public function testSubmitContribution() {
@@ -96,7 +117,7 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
     $this->assertSession()->checkboxChecked('Country');
 
     $params = [
-      'pp' => 'Pay Later',
+      'payment_processor_id' => 'Pay Later',
     ];
     $this->configureContributionTab($params);
     $this->getSession()->getPage()->checkField('Contribution Amount');
@@ -225,7 +246,7 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
    */
   private function verifyResult() {
     $cfName = $this->_customGroup['Donation']['name'] . '.' . $this->_customFields['Donation']['name'];
-    $contribution = \Civi\Api4\Contribution::get()
+    $contribution = Contribution::get()
       ->addSelect('source', 'total_amount', 'contribution_status_id:label', 'currency', $cfName)
       ->setLimit(1)
       ->execute()
@@ -275,6 +296,7 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
 
     if ($changeTypeToOption) {
       $this->assertSession()->elementExists('css', '[data-drupal-selector="edit-change-type"]')->click();
+      $this->assertSession()->assertWaitOnAjaxRequest();
       $this->assertSession()->waitForElementVisible('css', "[data-drupal-selector='edit-elements-civicrm-options-operation']", 3000)->click();
       $this->assertSession()->waitForElementVisible('css', "[data-drupal-selector='edit-cancel']", 3000);
     }
@@ -292,6 +314,95 @@ final class ContributionPayLaterTest extends WebformCivicrmTestBase {
 
     $this->getSession()->getPage()->pressButton('Save');
     $this->assertSession()->waitForText('has been updated.');
+  }
+
+  /**
+   * Set the info at Administer - Communications - Organization Info
+   */
+  private function setOrgInfo() {
+    // This fails - see https://lab.civicrm.org/dev/drupal/-/issues/133
+    // $this->drupalGet(\CRM_Utils_System::url('civicrm/admin/domain', 'action=update&reset=1', TRUE, NULL, FALSE));
+    // $this->getSession()->getPage()->fillField('name', 'Pay Laterers');
+    // $this->getSession()->getPage()->fillField('email_1_email', 'pay.later@example.org');
+    // $this->getSession()->getPage()->pressButton('_qf_Domain_next_view-bottom');
+
+    civicrm_api3('Domain', 'create', ['id' => 1, 'name' => 'Pay Laterers']);
+    $option_value = civicrm_api3('OptionValue', 'get', [
+      'option_group_id' => 'from_email_address',
+      'is_default' => 1,
+    ]);
+    civicrm_api3('OptionValue', 'create', [
+      'id' => $option_value['id'],
+      'label' => '"Pay Laterers" <pay.later@example.org>',
+    ]);
+  }
+
+  /**
+   * Test if default value on the civicrm option element
+   * is not passed to civicrm on webform submit.
+   */
+  public function testCivicrmOptionsDefaultSubmission() {
+    $this->drupalLogin($this->rootUser);
+    $this->drupalGet(Url::fromRoute('entity.webform.civicrm', [
+      'webform' => $this->webform->id(),
+    ]));
+    $this->enableCivicrmOnWebform();
+    $this->getSession()->getPage()->checkField('Gender');
+
+    $params = [
+      'payment_processor_id' => 'Pay Later',
+    ];
+    $this->configureContributionTab($params);
+
+    $this->getSession()->getPage()->selectFieldOption('Enable Billing Address?', 'No');
+    $this->assertSession()->assertWaitOnAjaxRequest();
+    $this->getSession()->getPage()->checkField('Contribution Amount');
+
+    $this->saveCiviCRMSettings();
+
+    $this->drupalGet($this->webform->toUrl('edit-form'));
+    $this->assertPageNoErrorMessages();
+
+    // Set Male to be the default option.
+    $maleID = $this->utils->wf_crm_apivalues('OptionValue', 'get', [
+      'sequential' => 1,
+      'option_group_id' => "gender",
+      'name' => "Male",
+    ], 'value')[0] ?? NULL;
+    $this->editCivicrmOptionElement('edit-webform-ui-elements-civicrm-1-contact-1-contact-gender-id-operations', FALSE, FALSE, $maleID);
+
+    $this->drupalLogout();
+
+    $this->drupalGet($this->webform->toUrl('canonical'));
+    $this->assertPageNoErrorMessages();
+    $this->getSession()->getPage()->fillField('First Name', 'Mei');
+    $this->getSession()->getPage()->fillField('Last Name', 'Parker');
+    $this->getSession()->getPage()->fillField('Email', 'meiparker@example.com');
+    $femaleID = $this->utils->wf_crm_apivalues('OptionValue', 'get', [
+      'sequential' => 1,
+      'option_group_id' => "gender",
+      'name' => "Female",
+    ], 'value')[0] ?? NULL;
+    $this->getSession()->getPage()->selectFieldOption("civicrm_1_contact_1_contact_gender_id", $femaleID);
+
+    $this->getSession()->getPage()->pressButton('Next >');
+    $this->assertPageNoErrorMessages();
+    $this->getSession()->getPage()->fillField('Contribution Amount', '20');
+
+    $this->assertSession()->elementExists('css', '#wf-crm-billing-items');
+    $this->htmlOutput();
+    $this->assertSession()->elementTextContains('css', '#wf-crm-billing-total', '20.00');
+
+    $this->getSession()->getPage()->pressButton('Submit');
+    $this->assertPageNoErrorMessages();
+    $this->assertSession()->pageTextContains('New submission added to CiviCRM Webform Test.');
+
+    $contact = $this->utils->wf_crm_apivalues('Contact', 'get', [
+      'sequential' => 1,
+      'first_name' => "Mei",
+      'last_name' => "Parker",
+    ])[0] ?? [];
+    $this->assertEquals('Female', $contact['gender']);
   }
 
 }

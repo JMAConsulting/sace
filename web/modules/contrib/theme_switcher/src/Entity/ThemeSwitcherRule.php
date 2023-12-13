@@ -40,11 +40,12 @@ use Drupal\theme_switcher\ThemeSwitcherRuleInterface;
  *     "status",
  *     "theme",
  *     "admin_theme",
+ *     "conjunction",
  *     "visibility",
  *   },
  *   links = {
- *     "edit-form" = "/admin/config/theme_switcher/{rule}",
- *     "delete-form" = "/admin/config/theme_switcher/{rule}/delete",
+ *     "edit-form" = "/admin/config/theme_switcher/{theme_switcher_rule}",
+ *     "delete-form" = "/admin/config/theme_switcher/{theme_switcher_rule}/delete",
  *   }
  * )
  */
@@ -86,18 +87,18 @@ class ThemeSwitcherRule extends ConfigEntityBase implements ThemeSwitcherRuleInt
   protected $admin_theme;
 
   /**
+   * The conjunction.
+   *
+   * @var string
+   */
+  protected $conjunction = 'and';
+
+  /**
    * Switchers instance IDs.
    *
    * @var array
    */
   protected $visibility = [];
-
-  /**
-   * The plugin collection that holds the block plugin for this entity.
-   *
-   * @var \Drupal\block\BlockPluginCollection
-   */
-  protected $pluginCollection;
 
   /**
    * The visibility collection.
@@ -132,6 +133,13 @@ class ThemeSwitcherRule extends ConfigEntityBase implements ThemeSwitcherRuleInt
    */
   public function getAdminTheme() {
     return $this->admin_theme;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConjunction() {
+    return $this->conjunction;
   }
 
   /**

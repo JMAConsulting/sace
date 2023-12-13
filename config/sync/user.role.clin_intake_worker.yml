@@ -1,9 +1,12 @@
 uuid: 18943a16-a62f-4c5e-bcfa-c2dd89fb6c7a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: clin_intake_worker
 label: 'CLIN Intake Worker'
 weight: 1
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

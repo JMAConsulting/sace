@@ -34,7 +34,9 @@ class CivicrmEntity extends ContentEntityBase {
    *
    * @var bool
    */
+  // @codingStandardsIgnoreStart
   public $drupal_crud = FALSE;
+  // @codingStandardsIgnoreEnd
 
   /**
    * {@inheritdoc}
@@ -104,18 +106,18 @@ class CivicrmEntity extends ContentEntityBase {
     $field_definition_provider = \Drupal::service('civicrm_entity.field_definition_provider');
     $civicrm_fields = \Drupal::service('civicrm_entity.api')->getFields($entity_type->get('civicrm_entity'), 'create');
 
-    foreach ($civicrm_fields as $civicrm_field) {
+    foreach ($civicrm_fields as $name => $civicrm_field) {
       // Apply any additional field data provided by the module.
-      if (!empty($civicrm_entity_info['fields'][$civicrm_field['name']])) {
-        $civicrm_field = $civicrm_entity_info['fields'][$civicrm_field['name']] + $civicrm_field;
+      if (!empty($civicrm_entity_info['fields'][$name])) {
+        $civicrm_field = $civicrm_entity_info['fields'][$name] + $civicrm_field;
       }
 
-      $fields[$civicrm_field['name']] = $field_definition_provider->getBaseFieldDefinition($civicrm_field);
-      $fields[$civicrm_field['name']]->setRequired(isset($civicrm_required_fields[$civicrm_field['name']]));
+      $fields[$name] = $field_definition_provider->getBaseFieldDefinition($civicrm_field);
+      $fields[$name]->setRequired(isset($civicrm_required_fields[$name]));
 
-      if ($values = \Drupal::service('civicrm_entity.api')->getCustomFieldMetadata($civicrm_field['name'])) {
-        $fields[$civicrm_field['name']]->setSetting('civicrm_entity_field_metadata', $values);
-        $fields[$civicrm_field['name']]->setRequired((bool) $civicrm_field['is_required']);
+      if (str_starts_with($name, 'custom_') && $values = \Drupal::service('civicrm_entity.api')->getCustomFieldMetadata($name)) {
+        $fields[$name]->setSetting('civicrm_entity_field_metadata', $values);
+        $fields[$name]->setRequired((bool) $civicrm_field['is_required']);
       }
     }
 
@@ -180,6 +182,9 @@ class CivicrmEntity extends ContentEntityBase {
     return $violations;
   }
 
+  /**
+   * Normalize CiviCRM API data.
+   */
   public function civicrmApiNormalize() {
     $params = [];
     /** @var \Drupal\Core\Field\FieldItemListInterface $items */

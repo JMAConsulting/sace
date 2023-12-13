@@ -103,6 +103,14 @@ class WebformCivicrmPreProcess extends WebformCivicrmBase implements WebformCivi
     $this->form['#attributes']['data-form-defaults'] = Json::encode($this->getWebformDefaults());
     // Early return if the form (or page) was already submitted
     $triggering_element = $this->form_state->getTriggeringElement();
+
+    // When user uploads a file using a managed_file element, avoid making any change to $this->form.
+    if ($this->form_state->hasFileElement()
+      && is_array($triggering_element['#submit'])
+      && in_array('file_managed_file_submit', $triggering_element['#submit'], TRUE)) {
+      return;
+    }
+
     if ($triggering_element && $triggering_element['#id'] == 'edit-wizard-prev'
       || (empty($this->form_state->isRebuilding()) && !empty($this->form_state->getValues()) && empty($this->form['#submission']->is_draft))
       // When resuming from a draft
@@ -212,6 +220,22 @@ class WebformCivicrmPreProcess extends WebformCivicrmBase implements WebformCivi
           '#markup' => Markup::create('<div class="crm-container crm-public" id="billing-payment-block"></div>'),
         ],
       ];
+
+      // Copy first address values from Contact 1 to Billing Address.
+      $form_data = $this->form_state->getValues();
+      if (!empty($form_data) && !empty($this->data['contact'][1]['address'][1])) {
+        $billing_fields = ['country_id', 'first_name', 'last_name', 'street_address', 'city', 'postal_code', 'state_province_id'];
+        $billing_values = [];
+        foreach ($billing_fields as $value) {
+          $addressKey = 'civicrm_1_contact_1_address_' . $value;
+          $contactKey = 'civicrm_1_contact_1_contact_' . $value;
+          if (empty($this->node->getElement($addressKey)) && empty($this->node->getElement($contactKey))) {
+            continue;
+          }
+          $billing_values[$value] = $form_data[$addressKey] ?? $form_data[$contactKey] ?? NULL;
+        }
+        $this->form['#attached']['drupalSettings']['webform_civicrm']['billing_values'] = $billing_values;
+      }
     }
   }
 
@@ -396,6 +420,7 @@ class WebformCivicrmPreProcess extends WebformCivicrmBase implements WebformCivi
     $n = $this->data['participant_reg_type'] == 'separate' ? $c : 1;
     $p = wf_crm_aval($this->data, "participant:$n:participant");
     if ($p) {
+      $urlParam = '';
       foreach ($p as $e => $value) {
         $event_ids = [];
         // Get the available event list from the component
@@ -412,7 +437,7 @@ class WebformCivicrmPreProcess extends WebformCivicrmBase implements WebformCivi
           $urlParam = "c{$c}event{$e}";
         }
         foreach (explode(',', wf_crm_aval($_GET, $urlParam)) as $url_param_value) {
-          if (isset($eids[$url_param_value])){
+          if (isset($eids[$url_param_value])) {
             $event_ids[] = $eids[$url_param_value];
           }
         }
@@ -540,6 +565,19 @@ class WebformCivicrmPreProcess extends WebformCivicrmBase implements WebformCivi
               $options = $this->utils->wf_crm_field_options($element, '', $this->data);
               $val = wf_crm_aval($options, $val);
             }
+            //Ensure value from webform default is loaded when the field is null in civicrm.
+            if (!empty($element['#options']) && isset($val)) {
+              if (!is_array($val) && !isset($element['#options'][$val])) {
+                $val = NULL;
+              }
+              if ((empty($val) || (is_array($val) && empty(array_filter($val)))) && !empty($this->form['#attributes']['data-form-defaults'])) {
+                $formDefaults = Json::decode($this->form['#attributes']['data-form-defaults']);
+                $key = str_replace('_', '-', $element['#form_key']);
+                if (isset($formDefaults[$key])) {
+                  $val = $formDefaults[$key];
+                }
+              }
+            }
             // Contact image & custom file fields
             if ($dt == 'File') {
               $fileInfo = $this->getFileInfo($name, $val, $ent, $n);
@@ -549,6 +587,11 @@ class WebformCivicrmPreProcess extends WebformCivicrmBase implements WebformCivi
                   'eid' => $eid,
                   'fileInfo' => $fileInfo
                 ];
+                // Unset required attribute on the file if its loaded from civicrm.
+                if (!empty($val)) {
+                  $element['#required'] = FALSE;
+                  unset($element['#states']['required']);
+                }
               }
             }
             // Set value for "secure value" elements
@@ -568,6 +611,9 @@ class WebformCivicrmPreProcess extends WebformCivicrmBase implements WebformCivi
             else {
               $element['#default_value'] = $val;
             }
+          }
+          if (in_array($name, ['state_province_id', 'county_id', 'billing_address_state_province_id', 'billing_address_county_id'])) {
+            $element['#attributes']['data-val'] = $element['#default_value'] ?? NULL;
           }
           if ($name == 'existing') {
             CivicrmContact::wf_crm_fill_contact_value($this->node, $element, $this->ent);

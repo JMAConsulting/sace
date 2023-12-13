@@ -13,7 +13,7 @@ archive: false
 id: _backup_staff_update_profile
 title: '[BACKUP] - Staff - Update Profile'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   civicrm_1_contact_1_contact_existing:
     '#type': civicrm_contact
@@ -528,14 +528,31 @@ elements: |-
         '#parent': civicrm_1_contact_1_fieldset_fieldset
         '#title': 'Postal Code'
       civicrm_1_contact_1_address_state_province_id:
-        '#type': textfield
+        '#type': civicrm_options
         '#extra':
-          maxlength: 5
-          width: 4
+          aslist: 1
         '#data_type': state_province_abbr
         '#form_key': civicrm_1_contact_1_address_state_province_id
         '#parent': civicrm_1_contact_1_fieldset_fieldset
         '#title': State/Province
+        '#webform': _backup_staff_update_profile
+        '#webform_id': _backup_staff_update_profile--civicrm_1_contact_1_address_state_province_id
+        '#webform_key': civicrm_1_contact_1_address_state_province_id
+        '#webform_parent_key': flexbox_07
+        '#webform_parent_flexbox': true
+        '#webform_depth': 2
+        '#webform_children': {  }
+        '#webform_multiple': false
+        '#webform_composite': false
+        '#webform_parents':
+          - staff_personal_info
+          - flexbox_07
+          - civicrm_1_contact_1_address_state_province_id
+        '#admin_title': State/Province
+        '#webform_plugin_id': civicrm_options
+        '#civicrm_live_options': 0
+        '#empty_option': '- None -'
+        '#options': {  }
   civicrm_2_contact_1_contact_existing:
     '#type': civicrm_contact
     '#title': 'Existing Contact'
@@ -884,6 +901,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -992,7 +1011,7 @@ handlers:
       1_contact_type: individual
       1_webform_label: 'Staff Member'
       civicrm_1_contact_1_contact_contact_sub_type:
-        staff: staff
+        Staff: Staff
       contact_1_number_of_cg14: '1'
       contact_1_settings_dynamic_custom_cg14: 1
       civicrm_1_contact_1_cg14_custom_131: create_civicrm_webform_element
@@ -1248,7 +1267,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  staff: staff
+                  Staff: Staff
                 webform_label: 'Staff Member'
             number_of_cg14: '1'
             dynamic_custom_cg14: 1

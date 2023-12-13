@@ -1,9 +1,12 @@
 uuid: 4d31cffe-ade5-4cb2-9cb7-aa3d619d174d
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: fund_development_officer
 label: 'Fund Development'
 weight: -9
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

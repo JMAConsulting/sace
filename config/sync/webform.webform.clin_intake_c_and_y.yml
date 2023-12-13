@@ -13,7 +13,7 @@ archive: false
 id: clin_intake_c_and_y
 title: 'OLD - CLIN Intake C and Y'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   civicrm_1_contact_1_fieldset_fieldset:
     '#type': fieldset
@@ -60,17 +60,16 @@ elements: |-
     '#type': processed_text
     '#text': |
       <p>Consent and Confidentiality</p>
-      
+
       <p>We would like you to know the intake process is confidential and the information you provide will become a part of the child/youth's SACE client record. Here at SACE we adhere to the Canadian Psychological Association Code of ethics. Even though what we talk about will be confidential, there may be times where we need to breach that confidentiality. This includes:</p>
-      
+
       <ul>
       	<li>If you share that a vulnerable person (child/youth or dependant adult) is at risk of harm, then we need to have a conversation about how to keep that person safe. Please note additionally that we may not be able to move forward with this intake if this reporting has not yet occurred.</li>
       	<li>If you share that you have or have thoughts of harming yourself or somebody else, then we need to have a conversation about keeping you or that person safe.</li>
       	<li>If this record is subpoenaed, then the information you have provided today is part of that record. We will make every effort to protect this information.</li>
       </ul>
-      
+
       <p>It's important for you to be aware of the limits to confidentiality so you can make informed choices on the information you share with me today.</p>
-      
     '#format': html
   verbal_informed_consent_achieved_:
     '#type': checkbox
@@ -166,14 +165,31 @@ elements: |-
         '#parent': civicrm_2_contact_1_fieldset_fieldset
         '#title': 'Postal Code'
       civicrm_2_contact_1_address_state_province_id:
-        '#type': textfield
+        '#type': civicrm_options
         '#extra':
-          maxlength: 5
-          width: 4
+          aslist: 1
         '#data_type': state_province_abbr
         '#form_key': civicrm_2_contact_1_address_state_province_id
         '#parent': civicrm_2_contact_1_fieldset_fieldset
         '#title': State/Province
+        '#webform': clin_intake_c_and_y
+        '#webform_id': clin_intake_c_and_y--civicrm_2_contact_1_address_state_province_id
+        '#webform_key': civicrm_2_contact_1_address_state_province_id
+        '#webform_parent_key': flexbox_03
+        '#webform_parent_flexbox': true
+        '#webform_depth': 2
+        '#webform_children': {  }
+        '#webform_multiple': false
+        '#webform_composite': false
+        '#webform_parents':
+          - civicrm_2_contact_1_fieldset_fieldset
+          - flexbox_03
+          - civicrm_2_contact_1_address_state_province_id
+        '#admin_title': State/Province
+        '#webform_plugin_id': civicrm_options
+        '#civicrm_live_options': 0
+        '#empty_option': '- None -'
+        '#options': {  }
     flexbox_04:
       '#type': webform_flexbox
       civicrm_2_contact_1_phone_phone:
@@ -414,7 +430,6 @@ elements: |-
           ProfessionalPrivatepractitioner|Professional (Private practitioner)
           SIL|SIL
           Zebra|Zebra
-          
       '#data_type': 0
       '#civicrm_condition':
         andor: or
@@ -461,7 +476,6 @@ elements: |-
       '#type': processed_text
       '#text': |
         <p><strong>Reporting Information</strong></p>
-        
       '#format': html
     civicrm_2_contact_1_cg10_custom_254:
       '#type': textfield
@@ -492,7 +506,7 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_2_contact_1_cg10_fieldset
-      '#title': 'If reported to ''Other'''
+      '#title': "If reported to 'Other'"
     civicrm_2_contact_1_cg10_custom_256:
       '#type': textfield
       '#data_type': String
@@ -546,7 +560,6 @@ elements: |-
         items: |
           1|Yes
           0|No
-          
       '#data_type': 0
       '#civicrm_condition':
         andor: or
@@ -569,7 +582,6 @@ elements: |-
         items: |
           1|Yes
           0|No
-          
       '#data_type': 0
       '#civicrm_condition':
         andor: or
@@ -592,7 +604,6 @@ elements: |-
         items: |
           1|Yes
           0|No
-          
       '#data_type': 0
       '#civicrm_condition':
         andor: or
@@ -615,7 +626,6 @@ elements: |-
         items: |
           1|Yes
           0|No
-          
       '#data_type': 0
       '#civicrm_condition':
         andor: or
@@ -652,7 +662,6 @@ elements: |-
       '#type': processed_text
       '#text': |
         <p><strong>Additional Information</strong></p>
-        
       '#format': html
     civicrm_2_contact_1_cg10_custom_108:
       '#type': civicrm_options
@@ -669,7 +678,6 @@ elements: |-
         items: |
           Yes|Yes
           No|No
-          
       '#form_key': civicrm_2_contact_1_cg10_custom_108
       '#options':
         'Yes': 'Yes'
@@ -782,6 +790,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -928,7 +938,7 @@ handlers:
       2_contact_type: individual
       2_webform_label: Client
       civicrm_2_contact_1_contact_contact_sub_type:
-        client: client
+        Client: Client
       contact_2_number_of_cg6: '0'
       contact_2_number_of_cg10: '1'
       contact_2_settings_dynamic_custom_cg10: 0
@@ -1085,7 +1095,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  client: client
+                  Client: Client
                 webform_label: Client
             number_of_cg6: '0'
             number_of_cg10: '1'

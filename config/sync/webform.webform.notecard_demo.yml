@@ -13,7 +13,7 @@ archive: false
 id: notecard_demo
 title: 'Note Cards'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   donation_page:
     '#type': webform_wizard_page
@@ -182,12 +182,11 @@ elements: |-
       flexbox_02:
         '#type': webform_flexbox
         civicrm_1_contact_1_address_state_province_id:
-          '#type': textfield
+          '#type': civicrm_options
           '#title': Province
           '#required': true
           '#extra':
-            maxlength: 5
-            width: 4
+            aslist: 1
           '#data_type': state_province_abbr
           '#form_key': civicrm_1_contact_1_address_state_province_id
           '#parent': civicrm_1_contact_1_fieldset_fieldset
@@ -202,11 +201,15 @@ elements: |-
           '#webform_composite': false
           '#webform_parents':
             - donation_page
+            - donation_page
             - purchaser_information
             - flexbox_02
             - civicrm_1_contact_1_address_state_province_id
           '#admin_title': Province
-          '#webform_plugin_id': textfield
+          '#webform_plugin_id': civicrm_options
+          '#civicrm_live_options': 0
+          '#empty_option': '- None -'
+          '#options': {  }
         civicrm_1_contact_1_address_postal_code:
           '#type': textfield
           '#extra':
@@ -602,10 +605,9 @@ elements: |-
         '#admin_title': Country
         '#webform_plugin_id': civicrm_options
       civicrm_1_contribution_1_contribution_billing_address_state_province_id:
-        '#type': textfield
+        '#type': civicrm_options
         '#extra':
-          maxlength: 5
-          width: 4
+          aslist: 1
         '#data_type': state_province_abbr
         '#set': billing_1_number_of_billing
         '#parent': civicrm_1_billing_1_number_of_billing_1_fieldset_fieldset
@@ -622,10 +624,14 @@ elements: |-
         '#webform_composite': false
         '#webform_parents':
           - contribution_pagebreak
+          - contribution_pagebreak
           - civicrm_1_billing_1_number_of_billing_1_fieldset_fieldset
           - civicrm_1_contribution_1_contribution_billing_address_state_province_id
         '#admin_title': State/Province
-        '#webform_plugin_id': textfield
+        '#webform_plugin_id': civicrm_options
+        '#civicrm_live_options': 0
+        '#empty_option': '- None -'
+        '#options': {  }
       '#webform': notecard_demo
       '#webform_id': notecard_demo--civicrm_1_billing_1_number_of_billing_1_fieldset_fieldset
       '#webform_key': civicrm_1_billing_1_number_of_billing_1_fieldset_fieldset
@@ -740,6 +746,8 @@ settings:
   wizard_toggle: true
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -902,7 +910,7 @@ handlers:
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 1
-      message: 'You are viewing this form as [display name]. Please {click here if that''s not you}.'
+      message: "You are viewing this form as [display name]. Please {click here if that's not you}."
       activity_number_of_activity: '0'
       participant_reg_type: '0'
       reg_options:
@@ -1001,6 +1009,7 @@ handlers:
                 is_test: '0'
                 honor_type_id: '1'
                 financial_type_id: '1'
+                contact_id: 1
         billing:
           number_number_of_billing: '1'
         lineitem:
@@ -1032,4 +1041,5 @@ handlers:
           block_form: 0
           disable_unregister: 0
           allow_url_load: 0
+      civicrm_1_contribution_1_contribution_contact_id: 1
 variants: {  }

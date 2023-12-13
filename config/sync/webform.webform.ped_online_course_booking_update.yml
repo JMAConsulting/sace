@@ -15,7 +15,7 @@ archive: false
 id: ped_online_course_booking_update
 title: ' PED Online Course Booking Update'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   processed_text:
     '#type': processed_text
@@ -185,15 +185,76 @@ elements: |-
       '#parent': civicrm_2_contact_1_fieldset_fieldset
       '#title': 'Postal Code'
     civicrm_2_contact_1_address_state_province_id:
-      '#type': textfield
+      '#type': civicrm_options
       '#title': State/Province
       '#description': 'Please click <a href="#" id="existing-org">here</a> to choose a different organization. Changing the details above will not create a new organization, but edit the current one associated with the booking'
       '#extra':
-        maxlength: 5
-        width: 4
+        aslist: 1
       '#data_type': state_province_abbr
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
+      '#webform': ped_online_course_booking_update
+      '#webform_id': ped_online_course_booking_update--civicrm_2_contact_1_address_state_province_id
+      '#webform_key': civicrm_2_contact_1_address_state_province_id
+      '#webform_parent_key': civicrm_2_contact_1_fieldset_fieldset
+      '#webform_parent_flexbox': false
+      '#webform_depth': 1
+      '#webform_children': {  }
+      '#webform_multiple': false
+      '#webform_composite': false
+      '#webform_parents':
+        - civicrm_2_contact_1_fieldset_fieldset
+        - civicrm_2_contact_1_address_state_province_id
+      '#admin_title': State/Province
+      '#webform_plugin_id': civicrm_options
+      '#civicrm_live_options': 0
+      '#empty_option': '- None -'
+      '#options': {  }
+    civicrm_1_activity_1_cg2_custom_657:
+      '#type': civicrm_options
+      '#title': 'This booking is for a smaller group, program, department or committee within my organization'
+      '#options':
+        'Yes': 'Yes'
+        'No': 'No'
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_657
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
+    civicrm_2_contact_1_cg52_custom_663:
+      '#type': textfield
+      '#title': 'Group Name'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+            value: 'No'
+      '#data_type': String
+      '#form_key': civicrm_2_contact_1_cg52_custom_663
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_2_contact_1_cg52_custom_664:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        visible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+            value: 'Yes'
+      '#form_key': civicrm_2_contact_1_cg52_custom_664
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Group Details'
   civicrm_2_contact_1_other_tag:
     '#type': civicrm_options
     '#title': Tag(s)
