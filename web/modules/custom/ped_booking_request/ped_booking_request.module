@@ -14,9 +14,6 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     $form['#attached']['library'][] = 'ped_booking_request/ped_booking_request';
     $elements = WebformFormHelper::flattenElements($form);
     $bt = \Drupal::request()->query->get('booking_type') ?? 0;
-    $isStaff = in_array('Staff', (\Civi\Api4\Contact::get(FALSE)
-     ->addWhere('id', '=', CRM_Core_Session::getLoggedInContactID() ?? 0)
-     ->execute()->first()['contact_sub_type'] ?? []));
 
     $mapper = ($bt == 204) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation']);
     $options = [];
@@ -28,7 +25,7 @@ function ped_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     if ($bt == 55 || $bt == 201) {
       unset($elements['civicrm_1_activity_1_cg2_custom_25']['#options']['Adults (ages 18+)']);
     }
-    if (in_array($bt, [55, 59]) && !$isStaff) {
+    if (in_array($bt, [55, 59])) {
       $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent', 'CustomUnsure'];
       $selectedOptions = $bt == 55 ? $selectedOptions : array_merge($selectedOptions, ['HealthCareSystemsandSexualViolence', 'BystanderIntervention', 'ChildSexualAbuse', 'CreatingSaferSpacesandRespondingtoSexualViolence', 'SACEandtheSPEAKProgram', 'SupportiveResponsestoSexualViolence', 'TechnologyFacilitatedSexualViolence']);
       foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
