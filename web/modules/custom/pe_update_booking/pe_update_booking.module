@@ -47,18 +47,6 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
     //Get booking type
     $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];
 
-    //Youth presentation
-    if ($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {
-      //  Presentation topic dropdown options
-      $elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#options'] = [
-        'SexualHarassment' => 'Sexual Harassment',
-        'SexualAssaultConsent' => 'Sexual Assault & Consent',
-        'NonConsensualPhotoSharing' => 'Non-Consensual Photo Sharing',
-        'SACEServices' => 'SACE Services',
-        'CustomSomethingDifferent' => 'Custom/Unsure',
-      ];
-    }
-
     $mapper = ($bt == 204) ? ['Online Meeting', 'In-Person Meeting'] : (($bt == 203) ? ['In-Person Event', 'Online Event'] : ['In-Person Presentation', 'Online Presentation']);
     $options = [];
     foreach($mapper as $value) {
