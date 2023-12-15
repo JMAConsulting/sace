@@ -136,7 +136,7 @@ durationLegend.innerHTML = `
 const durationButtonSection = document.createElement("div");
 durationButtonSection.className = "duration-button-section";
 durationButtonSection.innerHTML = `
-<button id="toggleMonthly" class="toggle-btn active">Monthly</button>
+<button id="toggleMonthly" class="toggle-btn">Monthly</button>
 <button id="toggleOneTime" class="toggle-btn">One-Time</button>
 `;
 const pricesetParent = pricesetContainer.parentNode;
@@ -145,21 +145,39 @@ if (monthlySection) {
 	pricesetParent.insertBefore(durationButtonSection, pricesetContainer);
 }
 
+let url = window.location.href;
+
 // Actions for monthly/One Time toggle buttons
 const hasToggleButtons = document.querySelector(".duration-button-section");
 if (hasToggleButtons) {
-	monthlySection.classList.add("active");
-	let isRecurInput;
-	if (isRecurSection) {
-		isRecurInput = isRecurSection.querySelector(".content input");
-		// isRecurInput.click()
-		isRecurInput.checked = true;
-	}
-
 	const toggleMonthly = document.getElementById("toggleMonthly");
 	const toggleOneTime = document.getElementById("toggleOneTime");
 	const noneMonthly = monthlySection.querySelector(".monthly-content .price-set-row:last-of-type input");
 	const noneOneTime = oneTimeSection.querySelector(".one_time-content .price-set-row:last-of-type input");
+
+  let isRecurInput;
+  if (isRecurSection) {
+    isRecurInput = isRecurSection.querySelector(".content input");
+    if (url.indexOf('id=') != -1) {
+      // isRecurInput.click()
+      isRecurInput.checked = true;
+      monthlySection.classList.add("active");
+      toggleMonthly.classList.add('active');
+    } else {
+      let monthlySet = false;
+      let monthlySelectedOption = CRM.$('.monthly-content').find('input:checked');
+      if (monthlySelectedOption.attr('id') != CRM.$(noneMonthly).attr('id')) {
+        monthlySet = true;
+      }
+      if (monthlySet) {
+        monthlySection.classList.add("active");
+        toggleMonthly.classList.add('active');
+      } else {
+        toggleOneTime.classList.add("active");
+        oneTimeSection.classList.add("active");
+      }
+    }
+  }
 
 	toggleMonthly.addEventListener("click", (e) => {
 		e.preventDefault();
@@ -204,7 +222,7 @@ if (onBehalf) {
 	const onbehalfOfButtonSection = document.createElement("div");
 	onbehalfOfButtonSection.className = "onbehalf-button-section";
 	onbehalfOfButtonSection.innerHTML = `
-<button id="togglePersonal" class="toggle-btn active">Personal Donation</button>
+<button id="togglePersonal" class="toggle-btn">Personal Donation</button>
 <button id="toggleOrganization" class="toggle-btn">Organizational Donation</button>
 `;
 	onBehalfOfOrgSection.prepend(onbehalfOfButtonSection);
@@ -212,12 +230,30 @@ if (onBehalf) {
 	const togglePersonal = document.getElementById("togglePersonal");
 	const toggleOrganization = document.getElementById("toggleOrganization");
 
+  if (url.indexOf('id=') != -1) {
+    onBehalfOfOrgInput.checked = false;
+    onBehalfBlock.style.display = "none";
+    togglePersonal.classList.add("active");
+  } else {
+    let onbehalfofstreetvalue = CRM.$('#onbehalf_organization_name').val();
+    if (onbehalfofstreetvalue.length) {
+      onBehalfOfOrgInput.checked = true;
+      onBehalfBlock.style.display = "block";
+      toggleOrganization.classList.add("active");
+    } else {
+      onBehalfOfOrgInput.checked = false;
+      onBehalfBlock.style.display = "none";
+      togglePersonal.classList.add("active");
+    }
+  }
+
 	togglePersonal.addEventListener("click", (e) => {
 		e.preventDefault();
 		onBehalfOfOrgInput.checked = false;
 		onBehalfBlock.style.display = "none";
 		togglePersonal.classList.add("active");
 		toggleOrganization.classList.remove("active");
+    CRM.$("#on-behalf-block input:not('.select2-offscreen,.select2-input')").val('').trigger('change');
 	});
 
 	toggleOrganization.addEventListener("click", (e) => {
