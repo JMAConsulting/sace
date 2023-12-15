@@ -40,9 +40,6 @@ function sace_activity_schedule_modification_form_alter(&$form, \Drupal\Core\For
     ];
 
     foreach ($activityContacts as $activityContact) {
-      if (empty($type['user_team']) && !empty($activityContact['activity.CE_External_Activities.User_Team_filter'])) {
-        $type['user_team'] = explode(',', $activityContact['activity.CE_External_Activities.User_Team_filter']);
-      }
       if ($activityContact['contact.contact_type'] == 'Organization') {
         $type['org'][] = $activityContact['contact_id'];
           
