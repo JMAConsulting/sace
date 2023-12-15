@@ -235,7 +235,7 @@ if (onBehalf) {
     onBehalfBlock.style.display = "none";
     togglePersonal.classList.add("active");
   } else {
-    let onbehalfofstreetvalue = CRM.$('input[id*="onbehalf_street_address"]').val();
+    let onbehalfofstreetvalue = CRM.$('#onbehalf_organization_name').val();
     if (onbehalfofstreetvalue.length) {
       onBehalfOfOrgInput.checked = true;
       onBehalfBlock.style.display = "block";
@@ -253,6 +253,7 @@ if (onBehalf) {
 		onBehalfBlock.style.display = "none";
 		togglePersonal.classList.add("active");
 		toggleOrganization.classList.remove("active");
+    CRM.$("#on-behalf-block input:not('.select2-offscreen,.select2-input')").val('').trigger('change');
 	});
 
 	toggleOrganization.addEventListener("click", (e) => {
