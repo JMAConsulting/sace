@@ -337,6 +337,36 @@ elements: |-
         '#parent': civicrm_3_contact_1_fieldset_fieldset
         '#default_option': ''
         '#default_value': ''
+  civicrm_1_activity_1_cg2_custom_657:
+    '#type': civicrm_options
+    '#title': 'This booking is for a smaller group, program, department or committee within my organization'
+    '#options':
+      'Yes': 'Yes'
+      'No': 'No'
+    '#default_value': 'No'
+    '#extra':
+      aslist: 1
+      multiple: 0
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_657
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': 'No'
+    '#civicrm_live_options': '1'
+  civicrm_1_activity_1_cg2_custom_658:
+    '#type': textfield
+    '#title': 'Name of a smaller group, program, department or committee within my organization'
+    '#counter_type': character
+    '#counter_maximum': 255
+    '#counter_maximum_message': ' '
+    '#states':
+      invisible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+          value: 'No'
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_658
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
   processed_text_08:
     '#type': processed_text
     '#states':
@@ -1068,7 +1098,7 @@ css: |-
 
   .webform-submission-add-form #edit-civicrm-4-contact-1-fieldset-fieldset {
     display: none;
-  } 
+  }
 javascript: ''
 settings:
   ajax: false
@@ -1259,6 +1289,7 @@ handlers:
     conditions: {  }
     weight: -50
     settings:
+      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '4'
       1_contact_type: individual
@@ -1479,8 +1510,8 @@ handlers:
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
       activity_1_settings_dynamic_custom_cg2: 0
-      civicrm_1_activity_1_cg2_custom_333: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_332: 0
+      civicrm_1_activity_1_cg2_custom_333: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_334: 0
       civicrm_1_activity_1_cg2_custom_331: 0
       civicrm_1_activity_1_cg2_custom_330: 0
@@ -1507,8 +1538,8 @@ handlers:
       civicrm_1_activity_1_cg2_custom_341: 0
       civicrm_1_activity_1_cg2_custom_655: 0
       civicrm_1_activity_1_cg2_custom_656: 0
-      civicrm_1_activity_1_cg2_custom_657: 0
-      civicrm_1_activity_1_cg2_custom_658: 0
+      civicrm_1_activity_1_cg2_custom_657: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_658: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_659: 0
       civicrm_1_activity_1_cg2_custom_660: 0
       civicrm_1_activity_1_cg2_custom_661: 0
@@ -1521,6 +1552,8 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_1234: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_1261: 0
+      civicrm_1_activity_1_cg2_custom_1288: 0
+      civicrm_1_activity_1_cg2_custom_1289: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
