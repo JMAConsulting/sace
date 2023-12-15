@@ -103,7 +103,7 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
           ->addWhere('record_type_id:name', '=', 'Activity Assignees')
           ->execute();
         foreach ($activityContacts as $activityContact) {
-          \Civi\Api4\ActivityContact::delete()->addWhere('id', '=', $activityContact['id'])->execute();
+          \Civi\Api4\ActivityContact::delete(FALSE)->addWhere('id', '=', $activityContact['id'])->execute();
         }
         $unique_contacts = array_unique($contacts);
         foreach ($unique_contacts as $contact_id) {
