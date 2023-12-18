@@ -1,0 +1,6 @@
+administer xhprof:
+  title: 'Administer xhprof profiling settings'
+  restrict access: true
+
+access xhprof data:
+  title: 'Access XHProf data'

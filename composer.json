@@ -67,6 +67,7 @@
         "drupal/super_login": "^2.0",
         "drupal/theme_switcher": "^2.0",
         "drupal/token": "^1.7",
+        "drupal/tracer": "^1.0",
         "drupal/twig_tweak": "^3.2",
         "drupal/upgrade_status": "^4.0",
         "drupal/views_aggregator": "^2.0",
@@ -74,7 +75,9 @@
         "drupal/views_ical": "^1.0@alpha",
         "drupal/viewsreference": "^2.0@beta",
         "drupal/webform": "^6.2@beta",
-        "drush/drush": "^12"
+        "drupal/webprofiler": "^10.1",
+        "drupal/xhprof": "^1.0@beta",
+        "drush/drush": "^12.4"
     },
     "conflict": {
         "drupal/drupal": "*"

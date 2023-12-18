@@ -207,7 +207,7 @@ class CRM_Report_Form_Case_Detail extends CRM_Report_Form {
         'filters' => [
           'country_id' => [
             'title' => ts('Country'),
-            'type' => CRM_Utils_Type::T_INT,
+            'type' => CRM_Utils_Type::T_STRING,
             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
             'options' => CRM_Core_PseudoConstant::country(),
           ],
