@@ -1115,7 +1115,7 @@ css: |-
 
   .webform-submission-add-form #edit-civicrm-4-contact-1-fieldset-fieldset {
     display: none;
-  } 
+  }
 javascript: ''
 settings:
   ajax: false
