@@ -353,6 +353,8 @@ elements: |-
         'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator -- This option can be offered in-person or online.'
         "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module -- Only available for Consent: Ask Me About It! online course.'
         "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_ -- Only available for Consent: Ask Me About It! online course."
+        'Racism & Sexual Violence': "Racism & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more about the deep connection between racism and sexual violence to empower\_ individuals and communities to enact meaningful change."
+        '2SLGBTQ+ Community & Sexual Violence': "2SLGBTQ+ Community & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more\_ about the connection between queer history, queer trauma, and sexual\_violence."
       '#default_value': '0'
       '#wrapper_attributes':
         class:

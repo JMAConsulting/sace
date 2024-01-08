@@ -282,6 +282,10 @@ elements: |-
           196: 'PED - Youth Online Course Booking'
           199: 'Adult Online Course Booking Request'
         '#required': true
+        '#states':
+          disabled:
+            ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              filled: true
         '#states_clear': false
         '#format_items': ul
         '#extra':
@@ -341,31 +345,36 @@ elements: |-
       '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_662:
-      '#type': civicrm_options
-      '#title': 'Optional Add-Ons'
-      '#empty_option': '- Select Optional Add-Ons -'
-      '#civicrm_live_options': 0
+      '#type': checkboxes
+      '#title': 'Youth Online Course Optional Add-Ons'
       '#options':
-        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator'
-        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module'
-        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": 'Non-Consensual Photo Sharing Add-On Module'
-        None: None
+        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator -- This option can be offered in-person or online.'
+        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module -- Only available for Consent: Ask Me About It! online course.'
+        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_ -- Only available for Consent: Ask Me About It! online course."
+        'Racism & Sexual Violence': "Racism & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more about the deep connection between racism and sexual violence to empower\_ individuals and communities to enact meaningful change."
+        '2SLGBTQ+ Community & Sexual Violence': "2SLGBTQ+ Community & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more\_ about the connection between queer history, queer trauma, and sexual\_violence."
       '#states':
-        visible:
-          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '196'
         disabled:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            '!value': '196'
-      '#states_clear': false
+            value: '199'
+        invisible:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '199'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-3
+      '#civicrm_live_options': 0
       '#extra':
-        aslist: 0
+        aslist: 1
+        items: |-
+          Live Q&A with a SACE Educator|Live Q&A with a SACE Educator
+          Sexual Harassment Add-On Module (High School Only)\_|Sexual Harassment Add-On Module (High School Only)\_
+          Non-Consensual Photo Sharing Add-On Module (High School Only)\_|Non-Consensual Photo Sharing Add-On Module (High School Only)\_
         multiple: 1
       '#data_type': String
-      '#default_option': None
       '#form_key': civicrm_1_activity_1_cg2_custom_662
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_value': None
   container:
     '#type': container
     processed_text_08:

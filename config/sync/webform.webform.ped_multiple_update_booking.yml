@@ -407,8 +407,7 @@ settings:
 access:
   create:
     roles:
-      - ped_team_lead
-      - wheel
+      - authenticated
     users: {  }
     permissions: {  }
   view_any:

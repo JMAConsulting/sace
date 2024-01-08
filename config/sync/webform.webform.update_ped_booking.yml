@@ -308,6 +308,10 @@ elements: |-
         196: 'PE - Youth Online Course Booking'
         199: 'PE - Adult Online Course Booking Request'
       '#required': true
+      '#states':
+        disabled:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            filled: true
       '#states_clear': false
       '#format_items': ul
       '#extra':
