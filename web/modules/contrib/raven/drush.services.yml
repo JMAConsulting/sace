@@ -1,0 +1,11 @@
+services:
+  raven.commands:
+    class: \Drupal\raven\Commands\RavenCommands
+    tags:
+      - { name: drush.command }
+    arguments:
+      - '@config.factory'
+      - '@service_container'
+      - '@event_dispatcher'
+      - '@logger.raven'
+      - '@datetime.time'
