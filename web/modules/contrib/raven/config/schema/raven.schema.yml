@@ -1,0 +1,143 @@
+raven.settings:
+  type: config_object
+  label: 'Raven settings'
+  mapping:
+    client_key:
+      type: string
+      label: 'Sentry DSN (PHP)'
+    environment:
+      type: string
+      label: 'Environment'
+    release:
+      type: string
+      label: 'Release'
+    log_levels:
+      type: mapping
+      label: 'Log levels'
+      mapping:
+        1:
+          type: integer
+          label: 'Emergency'
+        2:
+          type: integer
+          label: 'Alert'
+        3:
+          type: integer
+          label: 'Critical'
+        4:
+          type: integer
+          label: 'Error'
+        5:
+          type: integer
+          label: 'Warning'
+        6:
+          type: integer
+          label: 'Notice'
+        7:
+          type: integer
+          label: 'Info'
+        8:
+          type: integer
+          label: 'Debug'
+    stack:
+      type: boolean
+      label: 'Stacktraces'
+    timeout:
+      type: float
+      label: 'Timeout'
+    message_limit:
+      type: integer
+      label: 'Message limit'
+    trace:
+      type: boolean
+      label: 'Reflection tracing'
+    fatal_error_handler:
+      type: boolean
+      label: 'Fatal error handler'
+    fatal_error_handler_memory:
+      type: integer
+      label: 'Reserved memory'
+    javascript_error_handler:
+      type: boolean
+      label: 'JavaScript error handler'
+    drush_error_handler:
+      type: boolean
+      label: 'Drush error handler'
+    public_dsn:
+      type: string
+      label: 'Sentry DSN (JavaScript)'
+    ssl:
+      type: string
+      label: 'Options to Verify SSL'
+    ca_cert:
+      type: string
+      label: 'Path to the CA certificate file of the Sentry server specified in the DSN'
+    ignored_channels:
+      type: sequence
+      label: 'Log channels that should be ignored'
+      sequence:
+        type: string
+        label: 'Log channel'
+    send_user_data:
+      type: boolean
+      label: 'Send user data'
+    rate_limit:
+      type: integer
+      label: 'Rate limit'
+    send_request_body:
+      type: boolean
+      label: 'Send request body'
+    request_tracing:
+      type: boolean
+      label: 'Request/response performance tracing'
+    traces_sample_rate:
+      type: float
+      label: 'Performance traces sample rate'
+    browser_traces_sample_rate:
+      type: float
+      label: 'Browser performance traces sample rate'
+    database_tracing:
+      type: boolean
+      label: 'Database performance tracing'
+    twig_tracing:
+      type: boolean
+      label: 'Twig performance tracing'
+    auto_session_tracking:
+      type: boolean
+      label: 'Auto session tracking'
+    send_client_reports:
+      type: boolean
+      label: 'Send client reports'
+    drush_tracing:
+      type: boolean
+      label: 'Drush performance tracing'
+    seckit_set_report_uri:
+      type: boolean
+      label: 'Send security header reports to Sentry'
+    send_monitoring_sensor_status_changes:
+      type: boolean
+      label: 'Send Monitoring sensor status changes to Sentry'
+    404_tracing:
+      type: boolean
+      label: '404 response performance tracing'
+    show_report_dialog:
+      type: boolean
+      label: 'Show user feedback dialog'
+    error_embed_url:
+      type: string
+      label: 'Error embed URL'
+    tunnel:
+      type: boolean
+      label: 'Enables tunneling of Sentry requests through the website'
+    modules:
+      type: boolean
+      label: 'Send list of installed Composer packages to Sentry, including the root project.'
+    cron_monitor_id:
+      type: string
+      label: 'Cron monitor slug'
+    profiles_sample_rate:
+      type: float
+      label: 'Profiling sample rate'
+    disable_deprecated_alter:
+      type: boolean
+      label: 'Disable deprecated alter hooks'

@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * @file
+ * Requirements for Raven module.
+ */
+
+use Sentry\Client;
+use Sentry\SentrySdk;
+
+/**
+ * Implements hook_requirements().
+ *
+ * @phpstan-ignore-next-line Hook implementations should not duplicate @return
+ *   documentation.
+ */
+function raven_requirements(string $phase): array {
+  $requirements['raven_library']['title'] = t('Sentry PHP SDK');
+  if (defined(Client::class . '::SDK_VERSION')) {
+    $requirements['raven_library']['value'] = Client::SDK_VERSION;
+    if ($phase == 'runtime') {
+      if ($client = SentrySdk::getCurrentHub()->getClient()) {
+        if ($client->getOptions()->getEnvironment()) {
+          $requirements['raven_environment'] = [
+            'title' => t('Sentry environment'),
+            'value' => $client->getOptions()->getEnvironment(),
+          ];
+        }
+        if ($client->getOptions()->getRelease()) {
+          $requirements['raven_release'] = [
+            'title' => t('Sentry release'),
+            'value' => $client->getOptions()->getRelease(),
+          ];
+        }
+        if ($client->getOptions()->getDsn()) {
+          $requirements['raven_dsn'] = [
+            'description' => t('Sentry client key is configured. Events will be sent to Sentry.'),
+            'value' => t('Configured'),
+          ];
+        }
+        else {
+          $requirements['raven_dsn'] = [
+            'description' => t('Sentry client key is not configured. No events will be sent to Sentry.'),
+            'value' => gettype($client->getOptions()->getDsn()),
+          ];
+        }
+        $requirements['raven_dsn']['title'] = t('Sentry DSN');
+        $requirements['raven_trace']['title'] = t('Sentry reflection tracing');
+        if (\Drupal::config('raven.settings')->get('trace')) {
+          $requirements['raven_trace']['description'] = t('Sentry reflection tracing is enabled, which may result in sensitive data being logged by Sentry.');
+          $requirements['raven_trace']['value'] = t('Enabled');
+        }
+        else {
+          $requirements['raven_trace']['value'] = t('Disabled');
+        }
+      }
+      else {
+        try {
+          \Drupal::service('logger.raven')->getClient(FALSE, TRUE);
+        }
+        catch (\Exception $e) {
+          $requirements['raven_client'] = [
+            'title' => t('Sentry client'),
+            'value' => get_class($e),
+            'description' => $e->getMessage(),
+            'severity' => REQUIREMENT_ERROR,
+          ];
+        }
+      }
+      $requirements['raven_excimer']['title'] = t('Sentry optional Excimer extension');
+      $requirements['raven_excimer']['description'] = t('Sentry profiling requires the Excimer PHP extension.');
+      $requirements['raven_excimer']['value'] = extension_loaded('excimer') ? t('Enabled') : t('Not enabled');
+    }
+  }
+  else {
+    $requirements['raven_library']['description'] = t('Sentry PHP SDK version 3.x is required by Raven module, but is not available. Run <code>composer require drupal/raven</code> to install dependencies automatically (or <code>composer require sentry/sdk:^3</code> to install the missing SDK only).');
+    $requirements['raven_library']['severity'] = REQUIREMENT_ERROR;
+    $requirements['raven_library']['value'] = t('Not found');
+  }
+  return $requirements;
+}
+
+/**
+ * Remove obsolete polyfill_promise config.
+ */
+function raven_update_8201(): void {
+  \Drupal::configFactory()->getEditable('raven.settings')
+    ->clear('polyfill_promise')
+    ->save();
+}
+
+/**
+ * Remove obsolete send_attempts config.
+ */
+function raven_update_8301(): void {
+  \Drupal::configFactory()->getEditable('raven.settings')
+    ->clear('send_attempts')
+    ->save();
+}
