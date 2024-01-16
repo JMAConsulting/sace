@@ -13,8 +13,8 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
@@ -34,7 +34,8 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'bad842bce63596a608e2623519fb382c' => __DIR__ . '/..' . '/xkerman/restricted-unserialize/src/function.php',
         '59969633dcdb4ee3e2fec945065028d6' => __DIR__ . '/..' . '/civicrm/civicrm-core/guzzle_php81_shim.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        '014237dd13e595931c6755e8f8e26793' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
+        'fb4ca2d97fe7ba6af750497425204e70' => __DIR__ . '/..' . '/sentry/sentry/src/functions.php',
+        'a321afe5b5ec99bd361b396b4b67d157' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -105,6 +106,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
             'Symfony\\Component\\Serializer\\' => 29,
             'Symfony\\Component\\Routing\\' => 26,
             'Symfony\\Component\\Process\\' => 26,
+            'Symfony\\Component\\OptionsResolver\\' => 34,
             'Symfony\\Component\\Mime\\' => 23,
             'Symfony\\Component\\HttpKernel\\' => 29,
             'Symfony\\Component\\HttpFoundation\\' => 33,
@@ -118,6 +120,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
             'Svg\\' => 4,
             'Spatie\\CalendarLinks\\' => 21,
+            'Sentry\\' => 7,
             'SelfUpdate\\' => 11,
             'ScssPhp\\ScssPhp\\' => 16,
             'Sabberworm\\CSS\\' => 15,
@@ -167,6 +170,10 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
             'Laminas\\Stdlib\\' => 15,
             'Laminas\\ServiceManager\\' => 23,
             'Laminas\\Escaper\\' => 16,
+        ),
+        'J' => 
+        array (
+            'Jean85\\' => 7,
         ),
         'H' => 
         array (
@@ -389,6 +396,10 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
         ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
         'Symfony\\Component\\Mime\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/mime',
@@ -440,6 +451,10 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'Spatie\\CalendarLinks\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/calendar-links/src',
+        ),
+        'Sentry\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sentry/sentry/src',
         ),
         'SelfUpdate\\' => 
         array (
@@ -590,6 +605,10 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'Laminas\\Escaper\\' => 
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-escaper/src',
+        ),
+        'Jean85\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jean85/pretty-package-versions/src',
         ),
         'Html2Text\\' => 
         array (

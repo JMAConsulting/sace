@@ -55,6 +55,7 @@
         "drupal/paragraphs_jquery_ui_accordion": "^1.6",
         "drupal/pathauto": "^1.8",
         "drupal/quick_node_clone": "^1.16",
+        "drupal/raven": "^5.0",
         "drupal/redirect": "^1.6",
         "drupal/seven": "^1.0",
         "drupal/slick": "^2.2",
