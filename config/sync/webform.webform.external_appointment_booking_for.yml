@@ -234,6 +234,28 @@ elements: |-
   markup:
     '#type': webform_markup
     '#markup': '<h2>Attendees</h2>'
+  civicrm_1_activity_1_cg2_custom_332:
+    '#type': civicrm_options
+    '#title': 'Facilitating Program'
+    '#description': 'If this activity is being undertaken by a specific SACE program or committee, please indicate this here. SACE reports will attribute the activity to the program or committee listed here, and to general SACE work if left blank.'
+    '#title_display': inline
+    '#description_display': after
+    '#options':
+      PublicEducation: 'Public Education'
+      InstitutionalSupport: 'Institutional Support'
+      DiversityInclusionOutreach: 'Diversity & Inclusion/Outreach'
+      WiseGuyz: WiseGuyz
+      CommunityEngagement: 'Community Engagement'
+      VolunteerServices: 'Volunteer Services'
+      CommunityAgencyDevelopment: 'Community & Agency Development'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
+    '#form_key': civicrm_1_activity_1_cg2_custom_332
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': PublicEducation
+    '#default_value': PublicEducation
+    '#civicrm_live_options': '1'
   flexbox_06:
     '#type': webform_flexbox
     staff:
@@ -916,8 +938,8 @@ handlers:
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
       activity_1_settings_dynamic_custom_cg2: 0
+      civicrm_1_activity_1_cg2_custom_332: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_333: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_332: 0
       civicrm_1_activity_1_cg2_custom_334: 0
       civicrm_1_activity_1_cg2_custom_331: 0
       civicrm_1_activity_1_cg2_custom_330: 0
@@ -958,6 +980,8 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
       civicrm_1_activity_1_cg2_custom_1261: 0
+      civicrm_1_activity_1_cg2_custom_1288: 0
+      civicrm_1_activity_1_cg2_custom_1289: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1239,6 +1263,7 @@ handlers:
       civicrm_1_activity_1_cg58_custom_1265: create_civicrm_webform_element
       civicrm_1_activity_1_cg58_custom_1266: create_civicrm_webform_element
       civicrm_1_activity_1_cg58_custom_1267: create_civicrm_webform_element
+      civicrm_1_activity_1_cg58_custom_1287: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
