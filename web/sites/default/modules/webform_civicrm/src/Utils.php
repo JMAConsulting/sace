@@ -482,7 +482,7 @@ class Utils implements UtilsInterface {
             if (!$show_all && ($ent == 'contact' || $ent == 'participant') && empty($handler_configuration['settings']['data']['contact'][$i])) {
               continue;
             }
-            if ($submission) {
+	    if ($submission && isset($c['#form_key'])) {
               $enabled[$key] = wf_crm_aval($submission, $c['#form_key'], NULL, TRUE);
             }
             else {
