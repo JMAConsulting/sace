@@ -38,6 +38,8 @@ function ped_online_course_booking_request_form_alter(&$form, \Drupal\Core\Form\
 
       //Hide youth optional addons
       $elements[PED_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS]['#access'] = FALSE;
+//      $elements[PED_ONLINE_COURSE_BOOKING_GRADES_AND_AGES]['#access'] = FALSE;
+      $elements[PED_ONLINE_COURSE_BOOKING_GRADES_AND_AGES]['#default_value'] = 'Adults (ages 18+)';
     }
     elseif ($bt == PED_ONLINE_COURSE_BOOKING_YOUTH_ACTIVITY) {
       $elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'] = array_intersect($elements[PED_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'], [
