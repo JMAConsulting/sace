@@ -1,0 +1,26 @@
+uuid: c4616cda-0f59-4c08-afaa-2c61de005144
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - views_exposed_filter_blocks
+  theme:
+    - oliverolocal
+id: oliverolocal_viewsexposedfilterblock
+theme: oliverolocal
+region: content
+weight: -7
+provider: null
+plugin: views_exposed_filter_blocks_block
+settings:
+  id: views_exposed_filter_blocks_block
+  label: 'Views exposed filter block'
+  label_display: '0'
+  provider: views_exposed_filter_blocks
+  view_display: 'kg_duplicate_of_ped_booking_calendar:page_1'
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /calendar-block
