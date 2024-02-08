@@ -53,5 +53,5 @@ return array(
     '952683d815ff0a7bf322b93c0be7e4e4' => $vendorDir . '/chi-teck/drupal-code-generator/src/bootstrap.php',
     '59969633dcdb4ee3e2fec945065028d6' => $vendorDir . '/civicrm/civicrm-core/guzzle_php81_shim.php',
     '801c31d8ed748cfa537fa45402288c95' => $vendorDir . '/psy/psysh/src/functions.php',
-    'a321afe5b5ec99bd361b396b4b67d157' => $vendorDir . '/composer/autoload_civicrm_asset.php',
+    '6480296ea635cda0e91f36d66ca37b68' => $vendorDir . '/composer/autoload_civicrm_asset.php',
 );
