@@ -161,14 +161,11 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
       '#title': 'Delivery Format'
+      '#civicrm_live_options': 0
       '#options':
-        'In-Person Presentation': 'In-Person Presentation'
-        'Online Presentation': 'Online Presentation'
-        'Online Course': 'Online Course'
-        'In-Person Meeting': 'In-Person Meeting'
-        'Online Meeting': 'Online Meeting'
-        'In-Person Event': 'In-Person Event'
-        'Online Event': 'Online Event'
+        'In-Person Activity': 'In-Person Activity'
+        'Online Activity': 'Online Activity'
+        'Phone Activity': 'Phone Activity'
       '#extra':
         aslist: 1
         multiple: 0
@@ -177,7 +174,6 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
       '#default_value': ''
-      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_119:
       '#type': civicrm_options
       '#title': 'Online Platform'
@@ -187,14 +183,15 @@ elements: |-
         Zoom: Zoom
         Other: Other
         TBD: TBD
+        N/A: N/A
+      '#default_value': TBD
       '#extra':
         aslist: 1
         multiple: 0
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_119
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': TBD
-      '#default_value': TBD
+      '#default_option': N/A
       '#civicrm_live_options': '1'
   flexbox_18:
     '#type': webform_flexbox
@@ -234,28 +231,6 @@ elements: |-
   markup:
     '#type': webform_markup
     '#markup': '<h2>Attendees</h2>'
-  civicrm_1_activity_1_cg2_custom_332:
-    '#type': civicrm_options
-    '#title': 'Facilitating Program'
-    '#description': 'If this activity is being undertaken by a specific SACE program or committee, please indicate this here. SACE reports will attribute the activity to the program or committee listed here, and to general SACE work if left blank.'
-    '#title_display': inline
-    '#description_display': after
-    '#options':
-      PublicEducation: 'Public Education'
-      InstitutionalSupport: 'Institutional Support'
-      DiversityInclusionOutreach: 'Diversity & Inclusion/Outreach'
-      WiseGuyz: WiseGuyz
-      CommunityEngagement: 'Community Engagement'
-      VolunteerServices: 'Volunteer Services'
-      CommunityAgencyDevelopment: 'Community & Agency Development'
-    '#wrapper_attributes':
-      class:
-        - jma-grid-4
-    '#form_key': civicrm_1_activity_1_cg2_custom_332
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': PublicEducation
-    '#default_value': PublicEducation
-    '#civicrm_live_options': '1'
   flexbox_06:
     '#type': webform_flexbox
     staff:
@@ -306,6 +281,7 @@ elements: |-
       '#title': 'Activity Type'
       '#description': 'Select the activity that best aligns with the primary focus of your work/meeting for this session. Additional details may be listed in the outputs/deliverables completed and the Activity Notes fields. Depending on submissions/how it&#39;s being used we may build out more features such as custom fields for recurring content in the Notes field and other improvements to keep improving this form.'
       '#options':
+        334: '_Cancelled Activity'
         207: 'AD - Best/ Promising Practices Research'
         208: 'AD - Governance Review & Development'
         209: 'AD - Policy/ Practice Review & Development'
@@ -324,6 +300,7 @@ elements: |-
         222: 'Consultation - Internal Cross-Collaborations'
         223: 'Consultation - Program or Service Delivery Debriefs'
         224: 'Consultation Provided - Agency Development'
+        95: 'Consultation Provided - Clinical'
         225: 'Consultation Provided - Creating Safer Spaces'
         226: 'Consultation Provided - Disclosure Consult'
         227: 'Consultation Provided - Incident Consult'
@@ -376,8 +353,10 @@ elements: |-
         270: 'HR - Records Information Management'
         271: 'HR - Staff Onboarding & Training'
         272: 'HR - Time Management'
+        335: 'Inter-Agency Collaboration or Partnership - Event'
         273: 'Inter-Agency Collaboration or Partnership - Meeting'
         274: 'Inter-Agency Collaboration or Partnership - Work Session'
+        332: 'Inter-Agency Committee - Event'
         275: 'Inter-Agency Committee - Meeting'
         276: 'Inter-Agency Committee - Work Session'
         277: 'Internal EDI Working Group - Meeting'
@@ -401,13 +380,13 @@ elements: |-
         294: 'PD - Multi-Disciplinary Cross Training'
         295: 'PD - Program & Agency Development'
         296: 'PD - Sexual Violence'
-        303: 'PR - Op Eds, News Articles, Statements, & Press Releases'
         297: 'PE - Bookings and Calendar Management'
         298: 'PE - Presentation Delivery'
         299: 'PE - Presentation Prep'
         300: 'PR - Agency Development & Networking'
         301: 'PR - Media Interview/Response'
         302: 'PR - Media Prep/Speaking Notes'
+        303: 'PR - Op Eds, News Articles, Statements, & Press Releases'
         86: 'PR - Media Relations'
         94: 'PR - Social Media Engagement'
         92: 'PR - Speaking Engagement/Discussion Panel'
@@ -416,13 +395,12 @@ elements: |-
         305: 'Program Development - Operations Policies & Practices'
         306: 'Program Development - Research & Development'
         307: 'Reception Coverage'
-        308: 'SIL - Administration'
         102: 'SIL - Primary'
         103: 'SIL - Secondary'
         309: 'SIL - System Maintenance'
         101: 'SIL - Training'
-        310: 'Staff -  Training & Support'
         311: 'Staff - Check-In'
+        330: 'Staff: Day of Note'
         312: 'Staff - Lunch'
         313: 'Staff - Office Closed'
         314: 'Staff - Personal (after hours)'
@@ -431,18 +409,19 @@ elements: |-
         317: 'Staff - Team Care & Appreciation Activity'
         318: 'Staff - Team Care & Appreciation Planning and Prep'
         104: 'Staff - TOIL'
+        310: 'Staff - Training & Support'
         319: 'Staff - Travel'
         320: 'Staff - Vacation'
-        321: 'Tech - Set-Up, Development, Maintenance. or Support'
         322: 'Tech - General Ops Support'
-        323: 'Volunteer Debrief'
-        324: 'Volunteer Interview'
-        325: 'Volunteer Meeting'
-        326: 'Volunteer Readiness Assessment'
-        327: 'Volunteer Role Play'
-        328: 'Volunteer Stewardship'
-        329: 'Volunteer Training'
-        235: 'PACS - Testifying'
+        321: 'Tech - Set-Up, Development, Maintenance. or Support'
+        308: 'VS - Administration'
+        323: 'VS - Volunteer Debrief'
+        324: 'VS - Volunteer Interview'
+        325: 'VS - Meeting'
+        326: 'VS - Readiness Assessment'
+        327: 'VS - Role Play'
+        328: 'VS - Volunteer Stewardship'
+        329: 'VS - Training General'
       '#empty_option': '- select -'
       '#select2': true
       '#required': true
@@ -465,13 +444,38 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_332:
+      '#type': civicrm_options
+      '#title': 'Facilitating Program'
+      '#description': 'If this activity is being undertaken by a specific SACE program or committee, please indicate this here. SACE reports will attribute the activity to the program or committee listed here, and to general SACE work if left blank.'
+      '#title_display': inline
+      '#description_display': after
+      '#options':
+        PublicEducation: 'Public Education'
+        InstitutionalSupport: 'Institutional Support'
+        DiversityInclusionOutreach: 'Diversity & Inclusion/Outreach'
+        WiseGuyz: WiseGuyz
+        CommunityEngagement: 'Community Engagement'
+        VolunteerServices: 'Volunteer Services'
+        CommunityAgencyDevelopment: 'Community & Agency Development'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#form_key': civicrm_1_activity_1_cg2_custom_332
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': PublicEducation
+      '#default_value': PublicEducation
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg58_custom_1265:
       '#type': text_format
+      '#title': 'Outputs or Deliverables Completed'
+      '#description': |-
+        This field allows us to run reports on all deliverables completed across reporting periods. Please include all *completed* outputs or deliverables here so they can be captured in program reporting. For collaborative work or work that happens over many sessions/weeks/months, please ensure you include what you were working on only the once, when it&#39;s considered ready to share with the world. Decide who from your working group will be responsible for recording it if you have separate activities scheduled.<br />
+        Examples of outputs/deliverables include handouts/articles, new courses/presentations, internal resources like policy, procedures, land acknowledgements, original social content/campaigns, volunteer resources, HR resources... Anything you might report on to funders as part of the activities and accomplishments for your program/committee/area.
       '#data_type': Memo
       '#form_key': civicrm_1_activity_1_cg58_custom_1265
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#extra': {  }
-      '#title': 'Outputs or Deliverables Completed'
     civicrm_1_activity_1_activity_details:
       '#type': text_format
       '#title': 'Activity Notes'

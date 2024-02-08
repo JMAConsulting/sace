@@ -567,10 +567,6 @@ elements: |-
       '#text': |
         <h2><span style="color:#2e416c;">Assigned Staff</span></h2>
       '#format': html
-    calendar:
-      '#type': view
-      '#name': duplicate_of_ped_booking_calendar
-      '#display_id': page_2
     flexbox_05:
       '#type': webform_flexbox
       civicrm_1_activity_1_activity_activity_date_time:
@@ -605,13 +601,17 @@ elements: |-
         '#extra': {  }
     civicrm_1_activity_1_cg2_custom_698:
       '#type': textarea
+      '#title': 'Is there anything else you would like us to know'
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '199'
       '#data_type': Memo
       '#extra':
         cols: '60'
         rows: '4'
       '#form_key': civicrm_1_activity_1_cg2_custom_698
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Is there anything else you would like us to know'
   flexbox_14:
     '#type': webform_flexbox
     civicrm_3_contact_1_contact_existing:

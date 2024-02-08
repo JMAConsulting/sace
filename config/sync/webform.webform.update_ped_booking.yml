@@ -355,14 +355,11 @@ elements: |-
       '#type': civicrm_options
       '#title': 'Delivery Format'
       '#empty_option': '-Select-'
+      '#civicrm_live_options': 0
       '#options':
         'In-Person Presentation': 'In-Person Presentation'
-        'Online Presentation': 'Online Presentation'
-        'Online Course': 'Online Course'
-        'In-Person Meeting': 'In-Person Meeting'
-        'Online Meeting': 'Online Meeting'
-        'In-Person Event': 'In-Person Event'
-        'Online Event': 'Online Event'
+        'In-Person Activity': 'In-Person Activity'
+        'Phone Activity': 'Phone Activity'
       '#required': true
       '#format_items': ul
       '#extra':
@@ -372,7 +369,6 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
       '#default_value': ''
-      '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_1232:
     '#type': civicrm_options
     '#title': 'Consultation Topic'
@@ -941,10 +937,6 @@ elements: |-
     '#text': |
       <h2><span style="color:#2e416c;">Assigned Staff</span></h2>
     '#format': html
-  duplicate_of_ped_booking_calendar:
-    '#type': view
-    '#name': duplicate_of_ped_booking_calendar
-    '#display_id': page_2
   flexbox_04:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_activity_date_time:

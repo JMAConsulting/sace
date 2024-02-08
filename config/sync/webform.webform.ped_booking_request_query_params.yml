@@ -645,23 +645,19 @@ elements: |-
       '#type': civicrm_options
       '#title': 'Delivery Format'
       '#empty_option': '- select -'
+      '#civicrm_live_options': 0
       '#options':
         'In-Person Presentation': 'In-Person Presentation'
         'Online Presentation': 'Online Presentation'
-        'Online Course': 'Online Course'
-        'In-Person Activity': 'In-Person Activity'
-        'Online Activity': 'Online Activity'
-        'Phone Activity': 'Phone Activity'
       '#required': true
+      '#default_value': 'In-Person Presentation'
       '#format_items': ul
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_88
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
+      '#default_option': 'In-Person Presentation'
     civicrm_1_activity_1_cg2_custom_90:
       '#type': civicrm_options
       '#title': 'Youth or Adult'

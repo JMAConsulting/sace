@@ -1,0 +1,47 @@
+_core:
+  default_config_hash: W_UmsfOggDA5avFwJuVQyyCJGQvNRs56Cvi8Uej7620
+client_key: 'https://f6110f269332243ec91e6949b7124b5b@o4506558532419584.ingest.sentry.io/4506578971328512'
+environment: Production
+release: '1.0'
+log_levels:
+  1: 0
+  2: 0
+  3: 3
+  4: 4
+  5: 0
+  6: 0
+  7: 0
+  8: 0
+stack: true
+timeout: !!float 2
+message_limit: 2048
+trace: false
+fatal_error_handler: false
+fatal_error_handler_memory: 2560
+javascript_error_handler: true
+drush_error_handler: false
+public_dsn: 'https://f6110f269332243ec91e6949b7124b5b@o4506558532419584.ingest.sentry.io/4506578971328512'
+ssl: verify_ssl
+ca_cert: ''
+ignored_channels: {  }
+send_user_data: false
+rate_limit: 0
+send_request_body: true
+request_tracing: true
+traces_sample_rate: !!float 1
+browser_traces_sample_rate: null
+database_tracing: true
+twig_tracing: false
+auto_session_tracking: false
+send_client_reports: false
+drush_tracing: false
+seckit_set_report_uri: false
+send_monitoring_sensor_status_changes: false
+404_tracing: false
+show_report_dialog: false
+error_embed_url: ''
+tunnel: true
+modules: false
+cron_monitor_id: ''
+profiles_sample_rate: !!float 1
+disable_deprecated_alter: true

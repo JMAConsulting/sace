@@ -1,23 +1,23 @@
-uuid: b14b93ff-c04e-433e-978a-6c934fac27e0
+uuid: 85177a5c-f309-4d2e-80e9-a843700552ed
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:contact_block:16fb3116-5b95-4770-80dc-0615f97a382b'
+    - 'block_content:html_block:9209a82f-bc18-4c44-af82-75ec436dc549'
   module:
     - block_content
     - system
   theme:
     - oliverolocal
-id: oliverolocal_progressbar
+id: calendarload
 theme: oliverolocal
 region: content
-weight: -6
+weight: 0
 provider: null
-plugin: 'block_content:16fb3116-5b95-4770-80dc-0615f97a382b'
+plugin: 'block_content:9209a82f-bc18-4c44-af82-75ec436dc549'
 settings:
-  id: 'block_content:16fb3116-5b95-4770-80dc-0615f97a382b'
-  label: 'Progress bar'
+  id: 'block_content:9209a82f-bc18-4c44-af82-75ec436dc549'
+  label: 'Calendar Load'
   label_display: '0'
   provider: block_content
   status: true
@@ -27,4 +27,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: /calendar-block
+    pages: /ce-bookings-calendar
