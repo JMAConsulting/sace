@@ -59,4 +59,6 @@ $('#new-org-block').on('click', function (e) {
     $('div.js-form-type-textfield form-item-civicrm-1-activity-1-cg58-custom-1267').insertAfter($('#edit-flexbox-08'));
   }
 
+  $('#block-oliverolocal-fullcalendarblock').insertAfter($('#edit-civicrm-1-activity-1-activity-details-value').parent().parent());
+
 });

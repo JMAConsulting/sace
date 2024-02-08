@@ -3,11 +3,11 @@
     function eventCalendarBeforeBuild(event, calendarOptions) {
       calendarOptions.loading = function (isLoading) {
         if (isLoading) {
-          $('div#block-oliverolocal-progressbar').show();
+          $('#cover-spin').show();
         //  $('div#block-oliverolocal-fullcalendarblock').hide();
         }
         else {
-          $('div#block-oliverolocal-progressbar').hide();
+          $('#cover-spin').hide();
         //  $('div#block-oliverolocal-fullcalendarblock').show();
         }
       }

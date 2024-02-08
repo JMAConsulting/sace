@@ -40,6 +40,8 @@ if ($('#edit-civicrm-1-activity-1-cg2-custom-90').val() == 'Adult') {
           $(`${field1}`).hide();
       });
 
+     $('#block-oliverolocal-fullcalendarblock').insertAfter($('#edit-civicrm-1-activity-1-activity-details-value').parent().parent());
+
       // let optional_addons_select = document.getElementById(`${drupalSettings.ped_online_course_booking_update.optional_addons_select}`);
       // let option = optional_addons_select.options[1].value;
       // $(`#${drupalSettings.ped_online_course_booking_update.optional_addons_select} option`).each(function() {
