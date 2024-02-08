@@ -3,6 +3,11 @@ sace_calendar_customisations:
   js:
     js/sace_calendar_customisations.js: {}
 
+calendar_block:
+  version: 1.0
+  js:
+    js/calendar_block.js: {}
+
 sace_calendar_booking_calendar_copy:
   version: 1.0
   js:
