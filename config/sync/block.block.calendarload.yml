@@ -27,4 +27,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: /ce-bookings-calendar
+    pages: "/ce-bookings-calendar\r\n/my-calendar\r\n/calendar-team"

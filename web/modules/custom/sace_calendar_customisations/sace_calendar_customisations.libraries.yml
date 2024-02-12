@@ -8,6 +8,11 @@ calendar_block:
   js:
     js/calendar_block.js: {}
 
+team_calendar:
+  version: 1.0
+  js:
+    js/team_calendar.js: {}
+
 sace_calendar_booking_calendar_copy:
   version: 1.0
   js:

@@ -11,6 +11,8 @@ dependencies:
     - datetime
     - fullcalendar_view
     - options
+    - rest
+    - serialization
     - user
 id: calendar_counsellors
 label: 'My Calendar'
@@ -144,10 +146,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: datetime_default
+          type: datetime_custom
           settings:
             timezone_override: ''
-            format_type: medium
+            date_format: 'Y-m-d H:i:s'
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -716,7 +718,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: true
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -1701,6 +1703,101 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
+        - user
+        - user.roles
+      tags:
+        - 'config:field.storage.user.field_calendar_colour'
+  rest_export_1:
+    id: rest_export_1
+    display_title: 'REST export'
+    display_plugin: rest_export
+    position: 2
+    display_options:
+      pager:
+        type: none
+        options:
+          offset: 0
+      style:
+        type: serializer
+        options:
+          formats:
+            json: json
+      row:
+        type: data_field
+        options:
+          field_options:
+            subject:
+              alias: dialogTitle
+              raw_output: false
+            activity_date_time:
+              alias: start
+              raw_output: true
+            id:
+              alias: ''
+              raw_output: false
+            activity_type_id:
+              alias: ''
+              raw_output: false
+            activity_end_datetime:
+              alias: ''
+              raw_output: false
+            nothing:
+              alias: title
+              raw_output: false
+            sort_name:
+              alias: ''
+              raw_output: false
+            id_1:
+              alias: ''
+              raw_output: false
+            id_2:
+              alias: ''
+              raw_output: false
+            sort_name_1:
+              alias: ''
+              raw_output: false
+            field_calendar_colour:
+              alias: backgroundColor
+              raw_output: false
+            activity_assignees_string:
+              alias: ''
+              raw_output: false
+            id_3:
+              alias: ''
+              raw_output: false
+            status_id:
+              alias: ''
+              raw_output: false
+            sort_name_2:
+              alias: ''
+              raw_output: false
+            end_date_661:
+              alias: end
+              raw_output: true
+            number_of_participants_per_cours_815:
+              alias: ''
+              raw_output: false
+            building_room_location_details_1266:
+              alias: ''
+              raw_output: false
+            online_meeting_link_1267:
+              alias: ''
+              raw_output: false
+            id_4:
+              alias: ''
+              raw_output: false
+            nothing_1:
+              alias: ''
+              raw_output: false
+      display_extenders: {  }
+      path: my-calendar-block
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
         - url
         - user
         - user.roles

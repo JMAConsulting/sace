@@ -1,0 +1,36 @@
+uuid: 557ab1cc-f59e-4c84-9350-fc57bacc69ad
+langcode: en
+status: true
+dependencies:
+  module:
+    - fullcalendar_block
+    - system
+  theme:
+    - oliverolocal
+id: oliverolocal_fullcalendarteam
+theme: oliverolocal
+region: content
+weight: -5
+provider: null
+plugin: fullcalendar_block
+settings:
+  id: fullcalendarteam_block
+  label: 'FullCalendar Team block'
+  label_display: '0'
+  provider: fullcalendar_block
+  event_source: 'https://secure.sace.ca/team-calendar-block?_format=json'
+  use_token: false
+  initial_view: timeGridWeek
+  header_start: 'prev,next today'
+  header_center: 'title - eventType'
+  header_end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+  open_dialog: 1
+  dialog_width: 800
+  plugins: {  }
+  advanced: ''
+  advanced_drupal: ''
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /calendar-team

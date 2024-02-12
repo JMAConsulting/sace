@@ -15,16 +15,25 @@ function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
     $view->element['#attached']['library'][] = 'fontawesome/fontawesome.svg.solid';
     $view->element['#attached']['library'][] = 'sace_calendar_customisations/sace_calendar_booking_calendar_copy';
   }
+  if ($view->id() === 'team_calendar') {
+    $view->element['#attached']['library'][] = 'sace_calendar_customisations/team_calendar';
+  }
 }
 
 function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
-  if ($view->current_display == 'rest_export_1' && $view->id() == 'kg_duplicate_of_ped_booking_calendar') {
+  if ($view->current_display == 'rest_export_1' && in_array($view->id(), ['kg_duplicate_of_ped_booking_calendar', 'calendar_counsellors', 'team_calendar'])) {
     if (!empty($_GET['start'])) {
       $view->build_info['query']->where("((DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $_GET['start'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')))");
     }
     if (!empty($_GET['end'])) {
       $view->build_info['query']->where("((DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $_GET['end'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')))");
-    }   
+    }
+    if ($view->id() == 'calendar_counsellors' && ($uid = \Drupal::currentUser()->id())) {
+      $view->build_info['query']->where("((users_field_data_civicrm_uf_match.uid = '" . $uid . "'))");
+    }
+    if ($view->id() == 'team_calendar' && ($tid = $_GET['tid'])) {
+      $view->build_info['query']->where("((taxonomy_term_field_data_user__field_user_team.tid = $tid ))");
+    }
   }
   if ($view->id() == 'activity_detail') {
     $view->build_info['query']->groupby('civicrm_activity.id');
