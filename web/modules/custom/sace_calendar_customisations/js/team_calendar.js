@@ -2,5 +2,5 @@
   $('#block-mainpagecontent').insertBefore($('#block-oliverolocal-fullcalendarteam'));
   $('#edit-tid').parent().hide();
   
-  $('#block-pagetitle > h1').text($('#edit-tid option:selected').text() + ' Team Calendar');
+  $('#block-pagetitle > h1').text($('#edit-tid option:selected').text().replace('- Any -', 'All Staff') + ' Team Calendar');
 })(jQuery, Drupal, once, drupalSettings);

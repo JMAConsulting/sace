@@ -32,7 +32,8 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
       $view->build_info['query']->where("((users_field_data_civicrm_uf_match.uid = '" . $uid . "'))");
     }
     if ($view->id() == 'team_calendar' && ($tid = $_GET['tid'])) {
-      $view->build_info['query']->where("((taxonomy_term_field_data_user__field_user_team.tid = $tid ))");
+      $tid = $tid == 'All' ? 'IS NOT NULL' : "= $tid";
+      $view->build_info['query']->where("((taxonomy_term_field_data_user__field_user_team.tid $tid ))");
     }
   }
   if ($view->id() == 'activity_detail') {
