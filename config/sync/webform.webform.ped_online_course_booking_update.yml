@@ -970,7 +970,7 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url
-  confirmation_url: '/ped-bookings-calendar?status_id%5B0%5D=2&status_id%5B1%5D=9'
+  confirmation_url: '/ce-bookings-calendar?status_id%5B0%5D=2&status_id%5B1%5D=9'
   confirmation_title: ''
   confirmation_message: ''
   confirmation_attributes: {  }

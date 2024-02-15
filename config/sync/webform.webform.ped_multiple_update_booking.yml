@@ -348,14 +348,14 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: /ped-bookings-calendar/12
+  confirmation_url: '/ce-bookings-calendar?tid=12'
   confirmation_title: ''
   confirmation_message: 'The PED booking has been updated successfully!'
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
   confirmation_back_attributes: {  }
-  confirmation_exclude_query: false
+  confirmation_exclude_query: true
   confirmation_exclude_token: false
   confirmation_update: false
   limit_total: null

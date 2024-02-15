@@ -1345,7 +1345,7 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: /ped-bookings-calendar
+  confirmation_url: /ce-bookings-calendar
   confirmation_title: ''
   confirmation_message: 'The PED booking has been updated successfully!'
   confirmation_attributes: {  }
