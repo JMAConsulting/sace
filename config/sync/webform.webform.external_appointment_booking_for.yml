@@ -463,8 +463,6 @@ elements: |-
           - jma-grid-4
       '#form_key': civicrm_1_activity_1_cg2_custom_332
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': PublicEducation
-      '#default_value': PublicEducation
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg58_custom_1265:
       '#type': text_format
