@@ -1969,7 +1969,7 @@ display:
             ad_governance_review_development: '#3a87ad'
             ad_policy_practice_review_development: '#3a87ad'
             ad_regulation_legislation_or_compliance_research_review: '#3a87ad'
-            ad_strategic_planning: '#3a87ad'
+            ad_strategic_and_operational_planning: '#3a87ad'
             board_administration: '#3a87ad'
             case_management: '#3a87ad'
             board_meeting: '#3a87ad'
@@ -2065,13 +2065,13 @@ display:
             program_development_operations_policies_practices: '#3a87ad'
             program_development_research_development: '#3a87ad'
             reception_coverage: '#3a87ad'
-            sil_administration: '#3a87ad'
+            vs_administration: '#3a87ad'
             sil_system_maintenance: '#3a87ad'
             staff_training_support: '#3a87ad'
             staff_check_in: '#3a87ad'
             staff_lunch: '#3a87ad'
             staff_office_closed: '#3a87ad'
-            staff_personal_after_hours_: '#3a87ad'
+            staff_personal: '#3a87ad'
             staff_shared_space_maintenance: '#3a87ad'
             staff_sick: '#3a87ad'
             staff_team_care_appreciation_activity: '#3a87ad'
@@ -2086,7 +2086,13 @@ display:
             volunteer_readiness_assessment: '#3a87ad'
             volunteer_role_play: '#3a87ad'
             volunteer_stewardship: '#3a87ad'
-            volunteer_training: '#3a87ad'
+            volunteer_training_general: '#3a87ad'
+            staff_day_of_note: '#3a87ad'
+            sil_call_ticket_auditing_review: '#3a87ad'
+            inter_agency_committee_event: '#3a87ad'
+            _cancelled_activity: '#3a87ad'
+            volunteer_services_administration: '#3a87ad'
+            inter_agency_collaboration_or_partnership_event: '#3a87ad'
           rrule: ''
           duration: ''
           bundle_type: ''
@@ -2157,6 +2163,7 @@ display:
             128: '#d28514'
             8: '#d96262'
             104: '#da627d'
+            134: '#daff99'
             62: '#db9370'
             29: '#ddcdba'
             105: '#3a87ad'
@@ -2750,6 +2757,12 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+              activity_date_time:
+                plugin_id: bef_hidden
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  is_secondary: false
       access:
         type: role
         options:
@@ -3066,28 +3079,58 @@ display:
           entity_type: civicrm_activity
           entity_field: activity_date_time
           plugin_id: datetime
-          operator: '='
+          operator: '>='
           value:
             min: ''
             max: ''
-            value: '- 1 month'
-            type: offset
+            value: ''
+            type: date
           group: 1
-          exposed: false
+          exposed: true
           expose:
-            operator_id: ''
-            label: ''
+            operator_id: activity_date_time_op
+            label: 'Start Date'
             description: ''
             use_operator: false
-            operator: ''
+            operator: activity_date_time_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: ''
+            identifier: activity_date_time
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              reception: '0'
+              indigenous_cl: '0'
+              couns_tl: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
@@ -4260,10 +4303,10 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          type: datetime_default
+          type: datetime_custom
           settings:
-            timezone_override: ''
-            format_type: medium
+            timezone_override: America/Edmonton
+            date_format: 'Y-m-d H:i:s'
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -4486,6 +4529,55 @@ display:
             alt: ''
             rel: ''
             link_class: 'btn btn-primary'
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+        nothing_2:
+          id: nothing_2
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: custom
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "{% set difference = end_date_661.diff(activity_date_time) %}\r\n{% set endDay = end_date_661 | date(\"d\") %}\r\n{% set endMonth = end_date_661 | date(\"m\") %}\r\n{% set startDay = activity_date_time | date(\"d\") %}\r\n{% set startMonth = activity_date_time | date(\"m\") %}\r\n{% if ((endMonth == startMonth) and ((endDay - startDay) > 0) or ((endMonth - startMonth) > 0)) %}\r\n true\r\n{% endif %}"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
             prefix: ''
             suffix: ''
             target: ''
@@ -4882,7 +4974,7 @@ display:
               raw_output: false
             end_date_661:
               alias: end
-              raw_output: true
+              raw_output: false
             number_of_participants_per_cours_815:
               alias: ''
               raw_output: false
@@ -4894,6 +4986,9 @@ display:
               raw_output: false
             nothing_1:
               alias: url
+              raw_output: false
+            nothing_2:
+              alias: allDay
               raw_output: false
       defaults:
         fields: false

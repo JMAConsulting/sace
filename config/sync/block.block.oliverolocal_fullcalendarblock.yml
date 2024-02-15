@@ -30,13 +30,13 @@ settings:
   plugins: {  }
   advanced: |-
     progressiveEventRendering: true
-    allDay: true
+    navLinks: true
   advanced_drupal: ''
 visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/ce-bookings-calendar\r\n/ped-update-booking\r\n/ped-online-course-booking-update"
+    pages: "/ce-bookings-calendar\r\n/ped-update-booking\r\n/ped-online-course-booking-update\r\n/form/ped-multiple-update-booking"
   user_role:
     id: user_role
     negate: false

@@ -159,10 +159,6 @@ elements: |-
   markup_01:
     '#type': webform_markup
     '#markup': '<h2>Additional Bookings</h2>'
-  duplicate_of_ped_booking_calendar:
-    '#type': view
-    '#name': duplicate_of_ped_booking_calendar
-    '#display_id': page_2
   flexbox_05:
     '#type': webform_flexbox
     '#title': 'Subsequent Appointment 1'
@@ -248,28 +244,7 @@ elements: |-
     '#type': hidden
     '#title': 'activity id'
 css: ''
-javascript: |-
-  (function($) {
-    let date_fields = $('[name^="additional_appointment"].form-date');
-    date_fields.each(function(key, element) {
-      $(element).on('change', function() {
-        if ($(this).val().length) {
-          let elementId = $(this).prop('id');
-          let timeElement = $('#' + elementId.replace('-date', '-time'));
-          timeElement.prop('required', 'required');
-          timeElement.prop('aria-required', true);
-          timeElement.trigger('change');
-        }
-        else {
-          let elementId = $(this).prop('id');
-          let timeElement = $('#' + elementId.replace('-date', '-time'));
-          timeElement.removeAttr('required');
-          timeElement.removeProp('aria-required');
-          timeElement.trigger('change');
-        }
-      });
-    });
-  })(jQuery);
+javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-05'));\r\n  let date_fields = $('[name^=\"additional_appointment\"].form-date');\r\n  date_fields.each(function(key, element) {\r\n    $(element).on('change', function() {\r\n      if ($(this).val().length) {\r\n        let elementId = $(this).prop('id');\r\n        let timeElement = $('#' + elementId.replace('-date', '-time'));\r\n        timeElement.prop('required', 'required');\r\n        timeElement.prop('aria-required', true);\r\n        timeElement.trigger('change');\r\n      }\r\n      else {\r\n        let elementId = $(this).prop('id');\r\n        let timeElement = $('#' + elementId.replace('-date', '-time'));\r\n        timeElement.removeAttr('required');\r\n        timeElement.removeProp('aria-required');\r\n        timeElement.trigger('change');\r\n      }\r\n    });\r\n  });\r\n})(jQuery);"
 settings:
   ajax: false
   ajax_scroll_top: form
