@@ -59,7 +59,7 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
         'SexualAssaultConsent' => 'Sexual Assault & Consent',
         'NonConsensualPhotoSharing' => 'Non-Consensual Photo Sharing',
         'SACEServices' => 'SACE Services',
-        'CustomSomethingDifferent' => 'Custom/Unsure',
+        'CustomUnsure' => 'Custom/Unsure',
       ];
     }
 
