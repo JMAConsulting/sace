@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - system
+    - user
     - views_exposed_filter_blocks
   theme:
     - oliverolocal
@@ -23,4 +24,11 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: /calendar-block
+    pages: /ce-bookings-calendar
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

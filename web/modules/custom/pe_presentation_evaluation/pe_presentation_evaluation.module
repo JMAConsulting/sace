@@ -67,6 +67,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     if (!empty($result['Booking_Information.Online_Courses'])) {
       $topics = \Civi\Api4\OptionValue::get(FALSE)
         ->addSelect('description')
+        ->addWhere('option_group_id:name', '=', 'PED_Booking_Information_Online_Courses')
         ->addWhere('value', 'LIKE', $result['Booking_Information.Online_Courses'])
         ->execute()->first()['description'];
     }

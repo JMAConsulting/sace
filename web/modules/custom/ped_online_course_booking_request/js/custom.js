@@ -39,5 +39,9 @@
     });
     // visually hide the youth and adult field so that it can still be submitted by webform.
     $("[name='civicrm_1_activity_1_cg2_custom_90']").parent().hide();
+    if ($('#edit-civicrm-1-activity-1-cg2-custom-90').val() == 'Adult') {
+      $('#edit-civicrm-1-activity-1-cg2-custom-25--wrapper').hide();
+      $('#edit-civicrm-1-activity-1-cg2-custom-25-adults-ages-18').trigger('click');
+    }
   });
 })(jQuery, Drupal, drupalSettings);

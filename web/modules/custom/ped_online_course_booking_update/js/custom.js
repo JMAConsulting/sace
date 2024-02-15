@@ -1,5 +1,9 @@
 (function ($, Drupal, drupalSettings) {
     $(document).ready(function () {
+if ($('#edit-civicrm-1-activity-1-cg2-custom-90').val() == 'Adult') {
+      $('#edit-civicrm-1-activity-1-cg2-custom-25--wrapper').hide();
+      $('#edit-civicrm-1-activity-1-cg2-custom-25-adults-ages-18').trigger('click');
+    }
       $(`${drupalSettings.ped_online_course_booking_update.start_date}-date, ${drupalSettings.ped_online_course_booking_update.start_date}-time, ${drupalSettings.ped_online_course_booking_update.end_date}-date, ${drupalSettings.ped_online_course_booking_update.end_date}-time`).on('input', function () {
         var end = $(`${drupalSettings.ped_online_course_booking_update.end_date}-date`).val();
         var endTime = $(`${drupalSettings.ped_online_course_booking_update.end_date}-time`).val();
@@ -35,6 +39,8 @@
           $(`${fieldset}`).show();
           $(`${field1}`).hide();
       });
+
+     $('#block-oliverolocal-fullcalendarblock').insertAfter($('#edit-civicrm-1-activity-1-activity-details-value').parent().parent());
 
       // let optional_addons_select = document.getElementById(`${drupalSettings.ped_online_course_booking_update.optional_addons_select}`);
       // let option = optional_addons_select.options[1].value;

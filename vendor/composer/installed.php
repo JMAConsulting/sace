@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '4259a8112ac501d07b544df866feb298aa025d22',
+        'reference' => 'f8774095ee8c9add199751c5a7fdf5c2ca3dee93',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -700,6 +700,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'drupal/fullcalendar_block' => array(
+            'pretty_version' => '1.0.5',
+            'version' => '1.0.5.0',
+            'reference' => '1.0.5',
+            'type' => 'drupal-module',
+            'install_path' => __DIR__ . '/../../web/modules/contrib/fullcalendar_block',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'drupal/fullcalendar_view' => array(
             'pretty_version' => '5.1.12',
             'version' => '5.1.12.0',
@@ -883,7 +892,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '4259a8112ac501d07b544df866feb298aa025d22',
+            'reference' => 'f8774095ee8c9add199751c5a7fdf5c2ca3dee93',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1039,6 +1048,15 @@
             'reference' => '8.x-1.5',
             'type' => 'drupal-module',
             'install_path' => __DIR__ . '/../../web/modules/contrib/views_conditional',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'drupal/views_exposed_filter_blocks' => array(
+            'pretty_version' => '1.3.0',
+            'version' => '1.3.0.0',
+            'reference' => '8.x-1.3',
+            'type' => 'drupal-module',
+            'install_path' => __DIR__ . '/../../web/modules/contrib/views_exposed_filter_blocks',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -1716,7 +1734,9 @@
         'psr/http-factory-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
+                0 => '^1.0',
+                1 => '1.0',
+                2 => '*',
             ),
         ),
         'psr/http-message' => array(
