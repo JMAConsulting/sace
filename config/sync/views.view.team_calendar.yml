@@ -3724,7 +3724,14 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+              reset_button_always_show: false
             filter:
+              activity_date_time:
+                plugin_id: bef_datepicker
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  is_secondary: false
               uf_select:
                 plugin_id: bef
                 advanced:
@@ -3742,6 +3749,14 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
+              field_user_team_target_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
       filters:
         activity_date_time:
           id: activity_date_time
@@ -3757,24 +3772,54 @@ display:
           value:
             min: ''
             max: ''
-            value: '-1 year'
+            value: ''
             type: offset
           group: 1
-          exposed: false
+          exposed: true
           expose:
-            operator_id: ''
-            label: ''
+            operator_id: activity_date_time_op
+            label: 'Go to'
             description: ''
             use_operator: false
-            operator: ''
+            operator: activity_date_time_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: ''
+            identifier: activity_date_time
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              reception: '0'
+              indigenous_cl: '0'
+              couns_tl: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
