@@ -17,7 +17,7 @@ jQuery(document).ready(function ($, settings) {
         $('#edit-civicrm-1-activity-1-activity-duration').val(duration);
       }
 
-  let checkbox = "#edit-civicrm-1-activity-1-cg2-custom-40-customsomethingdifferent";
+  let checkbox = "#edit-civicrm-1-activity-1-cg2-custom-40-customunsure";
   let field = "#edit-civicrm-1-activity-1-cg2-custom-41";
   let lable = 'label[for="edit-civicrm-1-activity-1-cg2-custom-41"]';
   let bt = $('#edit-civicrm-1-activity-1-activity-activity-type-id').val();
