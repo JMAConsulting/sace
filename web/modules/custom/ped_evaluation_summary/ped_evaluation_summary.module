@@ -271,7 +271,7 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
     'total' => 'custom_802',
   ],
   //q212
-  'custom_813' => [
+  'custom_1264' => [
     'Strongly Agree' => 'custom_1268',
     'Agree' => 'custom_1269',
     'Somewhat Agree' => 'custom_1270',
@@ -281,7 +281,7 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
     'total' => 'custom_1274',
   ],
   //q24
-  'custom_703' => [
+  'custom_813' => [
     'Strongly Agree' => 'custom_805',
     'Agree' => 'custom_806',
     'Somewhat Agree' => 'custom_807',

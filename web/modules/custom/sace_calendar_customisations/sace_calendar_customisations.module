@@ -31,6 +31,8 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
      ) OR (
       (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $_GET['start'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND 
       (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $_GET['end'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
+     ) OR (
+      (cf.end_date_661 IS NULL AND (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $_GET['start'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))) 
      ))");
     }
     elseif (!empty($_GET['start'])) {
