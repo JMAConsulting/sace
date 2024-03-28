@@ -89,7 +89,7 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
       }
       if (!empty($webform_submission_data['user_team'])) {
         $user_ids = array_keys(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['field_user_team' => $webform_submission_data['user_team']]));
-        $team_contact_ids = UFMatch::get(FALSE)->addWhere('uf_id', 'IN', $user_ids)->execute()->column('contact_id');
+        $team_contact_ids = UFMatch::get(FALSE)->addWhere('uf_id', 'IN', $user_ids)->addWhere('contact_id.contact_sub_type', '!=', 'Former_Staff')->execute()->column('contact_id');
         $contacts = array_merge($contacts, $team_contact_ids);
         $user_team = implode(',', $webform_submission_data['user_team']);
         Activity::update(FALSE)
