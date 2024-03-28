@@ -37,10 +37,18 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
 
     // Get style options.
     $style_options = $view->getStyle()->options;
+    $tids = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery()
+      ->condition('vid', 'calendar_colour')->accessCheck(TRUE)
+      ->execute();
+    $taxonomies = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
+    $color_taxonomies = [];
+    foreach ($taxonomies as $taxonomy) {
+      $color_taxonomies[$taxonomy->id()] = $taxonomy->name->value;
+    }
 
     // Check for a fullcalendar legend based on a user taxonomy.
     $is_user_taxonomy_color_legend = FALSE;
-    if (!empty($style_options['tax_field']) && !empty($style_options['color_taxonomies'])) {
+    if (!empty($style_options['tax_field']) && !empty($color_taxonomies)) {
       $user_fields = array_keys(\Drupal::service('entity_field.manager')->getFieldDefinitions('user', 'user'));
       if (in_array($style_options['tax_field'], $user_fields)) {
         $is_user_taxonomy_color_legend = TRUE;
@@ -81,14 +89,14 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
       $contact_ids[$tc['contact_id']] = $tc['contact_id'];
       $team_contact_id_map[$tc['contact_id']] = $tc['uf_id'];
     }
-    
+
     $contact_staff = \Drupal::service('civicrm_entity.api')->get('Contact', [
       'return' => ['id'],
       'id' => ['IN' => $contact_ids],
       'contact_sub_type' => "Staff",
       'options' => ['limit' => 0],
     ]);
-    
+
     foreach ($contact_ids as $k => $value) {
       if (!array_key_exists($value, $contact_staff)) {
         unset($contact_ids[$k]);
@@ -158,9 +166,9 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
 
         $tid = $contact_tids[$contact_id];
 
-        if (!empty($style_options['color_taxonomies'][$tid])) {
+        if (!empty($color_taxonomies[$tid])) {
 
-          $color = $style_options['color_taxonomies'][$tid];
+          $color = $color_taxonomies[$tid];
 
           $options_attributes[$contact_id] = [
             'style' => 'background-color:' . $color . ';border-color:' . $color . ';' . 'color:' . $color . ';',
