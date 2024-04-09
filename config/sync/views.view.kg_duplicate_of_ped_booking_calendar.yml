@@ -2758,7 +2758,7 @@ display:
                   collapsible: false
                   is_secondary: false
               activity_date_time:
-                plugin_id: bef_hidden
+                plugin_id: bef_datepicker
                 advanced:
                   placeholder_text: ''
                   collapsible: false
@@ -3089,7 +3089,7 @@ display:
           exposed: true
           expose:
             operator_id: activity_date_time_op
-            label: 'Start Date'
+            label: 'Go to'
             description: ''
             use_operator: false
             operator: activity_date_time_op

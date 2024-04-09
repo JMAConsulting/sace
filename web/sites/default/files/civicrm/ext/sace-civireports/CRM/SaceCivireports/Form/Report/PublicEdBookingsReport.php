@@ -16,9 +16,6 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
   protected $_customGroupExtends = 'Activity';
 
   public $_demographicFields = [];
-  /**
-   * protected $_customGroupExtends = ['Activity'];
-   */
   public function __construct() {
     $this->_columns = [
       'civicrm_activity' => [
@@ -33,19 +30,6 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
             'title' => ts('Length (in minutes)'),
             'required' => TRUE,
           ],
-          /*
-          'activity_type_id' => [
-            // 'no_display' => TRUE,
-            'title' => ts('Activity Type ID'),
-            'required' => TRUE,
-          ],
-          'activity_date_time' => [
-            // 'no_display' => TRUE,
-            'title' => ts('Activity Date'),
-            'required' => TRUE,
-            'dbAlias' => 'DATE(activity_date_time)'
-          ],
-          */
         ],
         'filters' => [
           'activity_date_time' => [
@@ -55,57 +39,6 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           ],
         ],
       ],
-/*
-      'civicrm_value_ped_booking_r_53' => [
-        'dao' => 'CRM_Activity_DAO_Activity',
-        'fields' => [
-          'custom_706' => [
-            'title' => ts('Booking Ref'),
-            'required' => TRUE,
-            'no_display' => TRUE,
-            'dbAlias' => 'booking_reference_id_706',
-          ],
-        ],
-      ],
-
-      'civicrm_value_booking_infor_2' => [
-        'dao' => 'CRM_Activity_DAO_Activity',
-        // 'extends' => 'Activity',
-        'fields' => [
-          'custom_40' => [
-            'title' => ts('Presentation Topics'),
-            'required' => TRUE,
-            'dbAlias' => 'presentation_topics_40'
-          ],
-          'custom_332' => [
-            'title' => ts('Facilitating Program'),
-            'required' => TRUE,
-            'dbAlias' => 'facilitating_program_332',
-          ],
-          'custom_88' => [
-            'title' => ts('Presentation Method'),
-            'required' => TRUE,
-            'dbAlias' => 'contact_method_88',
-          ],
-          'custom_90' => [
-            'title' => ts('Youth or Adult'),
-            'dbAlias' => 'youth_or_adult_90',
-            'required' => TRUE,
-          ],
-          'custom_341' => [
-            'title' => ts('Audience'),
-            'required' => TRUE,
-            'dbAlias' => 'audience_341',
-          ],
-          'custom_815' => [
-            'title' => ts('Number of Participants'),
-            'required' => TRUE,
-            'dbAlias' => 'number_of_participants_per_cours_815',
-          ],
-        ],
-        'filters' => [],
-      ],
-*/
       'civicrm_contact_sc' => [
         'dao'     => 'CRM_Contact_DAO_Contact',
         'fields' => [
@@ -135,19 +68,6 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           ],
         ],
       ],
-/*
-      'civicrm_contact_ac' => [
-        'dao'     => 'CRM_Contact_DAO_Contact',
-        'fields' => [
-          'display_name'   => [
-            'title'     => ts('Booking Contact'),
-            'alias'     => 'ac',
-            'required' => TRUE,
-            'dbAlias' => "GROUP_CONCAT(DISTINCT ac.display_name)",
-          ],
-        ],
-      ],
-*/
       'civicrm_contact_tc' => [
         'dao'     => 'CRM_Contact_DAO_Contact',
         'fields' => [
@@ -169,6 +89,8 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
     $mapping = \Civi\Api4\OptionValue::get(FALSE)
       ->addSelect('value', 'label')
       ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
+      ->addWhere('is_active', '=', TRUE)
+      ->addOrderBy('weight', 'ASC')
       ->execute();
     $questionMapper = [];
     foreach($mapping as $value) {
@@ -243,8 +165,8 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
     }
 
     $this->_mapper = $questionMapper;
+//CRM_Core_Error::debug('questionMapper', $questionMapper);
     foreach ($questionMapper as $Q => $mapper) {
-      if ($Q == 211 || $Q == 26) {continue;}
       if ($mapper['type'] == 'Radio') {
         foreach ([
           'SA' => 'Strongly Agree',
@@ -254,7 +176,6 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           'D' => 'Disagree',
           'SD' => 'Strongly Disagree',
         ] as $key => $label) {
-          $Q = $Q == 212 ? 21 : $Q;
           $this->_columns[$cg['table_name']]['fields'][$mapper['options'][$key]['column_name']] = [
             'title' => $label,
             'required' => TRUE,
@@ -383,26 +304,19 @@ WHERE cg.is_active = 1 AND
     $this->_groupBy = "
       GROUP BY {$this->_aliases['civicrm_activity']}.id";
   }
-/*
-  public function where() {
-    $this->_where = "WHERE {$this->_aliases['civicrm_activity']}.activity_type_id = 200";
-  }
-*/
+
   public function alterDisplay(&$rows) {
-//    print_r($this->_columnHeaders);
     $selectedAids = CRM_Utils_Array::collect('civicrm_activity_id', $rows);
     foreach ($this->_demographicFields as $ov => $name) {
       if (!empty($this->_params['fields'][$name])) {
         $sql = sprintf("SELECT count(bi.entity_id) as count, pb.booking_reference_id_706 as aid
         FROM civicrm_value_booking_infor_2 bi 
-        INNER JOIN civicrm_activity ca ON ca.id = bi.entity_id AND ca.activity_type_id = 197
-        INNER JOIN civicrm_value_ped_booking_r_53 pb ON pb.entity_id = ca.id
-        INNER JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = ca.id
+        INNER JOIN civicrm_value_ped_booking_r_53 pb ON pb.booking_reference_id_706 = bi.entity_id
+        INNER JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = pb.entity_id
         WHERE demographic_information_1262 REGEXP '([[:cntrl:]]|^){$ov}([[:cntrl:]]|$)' AND pb.booking_reference_id_706 IN (%s)
         GROUP BY pb.booking_reference_id_706" , implode(',', $selectedAids));
-
+        $this->addToDeveloperTab($sql);
         $result = CRM_Core_DAO::executeQuery($sql)->fetchAll();
-        print_r($result);
         foreach ($result as $value) {
 	   if (!empty($value['count'])) {
              $key = array_search($value['aid'], $selectedAids);
@@ -480,6 +394,9 @@ WHERE cg.is_active = 1 AND
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_20sa_789') {
        $CH2['Q20'] = ['title' => $this->_mapper[20]['label'], 'colspan' => 6];
       }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_21sa_796') {
+       $CH2['Q211'] = ['title' => $this->_mapper[211]['label'], 'colspan' => 6];
+      }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_22_1279') {
        $CH2['Q22'] = ['title' => $this->_mapper[22]['label'], 'colspan' => 3];
       }
@@ -493,6 +410,7 @@ WHERE cg.is_active = 1 AND
        $CH2['Q24'] = ['title' => $this->_mapper[24]['label'], 'colspan' => 6];
       }
     }
+
     $this->assign('_columnHeaders1', $CH2);
     foreach ($rows as $rowNum => &$row) {
       if (!empty($row['civicrm_contact_sc_presenter_1'])) {
