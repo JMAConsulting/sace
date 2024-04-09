@@ -22,7 +22,7 @@ function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
 
 function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
   if ($view->current_display == 'rest_export_1' && in_array($view->id(), ['kg_duplicate_of_ped_booking_calendar', 'calendar_counsellors', 'team_calendar'])) {
-    if (\Drupal::request()->query->has('start') && \Drupal::request()->query->has('end')
+    if (\Drupal::request()->query->has('start') && \Drupal::request()->query->has('end')) {
       $start = \Drupal::request()->query->all()['start'];
       $end = \Drupal::request()->query->all()['end'];
       $view->build_info['query']->leftJoin('civicrm_value_booking_infor_2', 'cf', 'cf.entity_id = civicrm_activity.id ');
