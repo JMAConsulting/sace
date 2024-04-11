@@ -22,24 +22,24 @@ function sace_calendar_customisations_views_pre_render(ViewExecutable $view) {
 
 function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
   if ($view->current_display == 'rest_export_1' && in_array($view->id(), ['kg_duplicate_of_ped_booking_calendar', 'calendar_counsellors', 'team_calendar'])) {
-    $view->build_info['query']->leftJoin('civicrm_value_booking_infor_2', 'cf', 'cf.entity_id = civicrm_activity.id ');
-    if (!empty($_GET['start']) && !empty($_GET['end'])) {
+    if (\Drupal::request()->query->has('start') && \Drupal::request()->query->has('end')) {
+      $start = \Drupal::request()->query->all()['start'];
+      $end = \Drupal::request()->query->all()['end'];
+      $view->build_info['query']->leftJoin('civicrm_value_booking_infor_2', 'cf', 'cf.entity_id = civicrm_activity.id ');
       $view->build_info['query']->where("(
-     (
-      (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $_GET['start'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND 
-      (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $_GET['end'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
-     ) OR (
-      (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $_GET['start'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND 
-      (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $_GET['end'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
-     ) OR (
-      (cf.end_date_661 IS NULL AND (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $_GET['start'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))) 
-     ))");
-    }
-    elseif (!empty($_GET['start'])) {
-      $view->build_info['query']->where("((DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $_GET['start'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')))");
-    }
-    elseif (!empty($_GET['end'])) {
-      $view->build_info['query']->where("((DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $_GET['end'] . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')))");
+        (
+          (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
+          (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $end . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
+        ) OR (
+          (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
+          (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $end . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
+        ) OR (
+          (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
+          (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $end . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
+          (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
+         ) OR (
+          (cf.end_date_661 IS NULL AND (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')))
+      ))");
     }
     if ($view->id() == 'calendar_counsellors' && ($uid = \Drupal::currentUser()->id())) {
       $view->build_info['query']->where("((users_field_data_civicrm_uf_match.uid = '" . $uid . "'))");
