@@ -20,8 +20,6 @@ class CRM_SaceCivireports_Form_Report_ActivitySystem extends CRM_Report_Form_Act
     $this->_columns['civicrm_contact']['filters']['contact_assignee']['title'] = ts('Staff');
     $requiredFields = [
       'civicrm_activity' => ['activity_date_time'],
-      'civicrm_value_booking_infor_2' => ['custom_334', 'custom_331', 'custom_330', 'custom_126', 'custom_125', 'custom_124', 'custom_123', 'custom_122', 'custom_121', 'custom_119', 'custom_90', 'custom_43', 'custom_25', 'custom_34', 'custom_35', 'custom_127', 'custom_128', 'custom_658', 'custom_662', 'custom_1233', 'custom_815', 'custom_1261',],
-      'civicrm_value_sace_staff_fi_14' => 'all',
     ];
     foreach ($requiredFields as $tableName => $fields) {
       if ($fields == 'all') {
