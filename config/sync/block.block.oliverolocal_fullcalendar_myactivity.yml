@@ -27,7 +27,9 @@ settings:
   open_dialog: 1
   dialog_width: 800
   plugins: {  }
-  advanced: ''
+  advanced: |-
+    navLinks: true
+    progressiveEventRendering: true
   advanced_drupal: ''
 visibility:
   request_path:

@@ -879,6 +879,10 @@ elements: |-
     '#type': webform_flexbox
     civicrm_1_activity_1_cg54_custom_739:
       '#type': number
+      '#title': 'Strongly Agree'
+      '#description': 'Somewhat Agree'
+      '#title_display': invisible
+      '#field_prefix': '#'
       '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
@@ -887,10 +891,6 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Somewhat Agree'
-      '#description': 'Somewhat Agree'
-      '#title_display': invisible
-      '#field_prefix': '#'
     civicrm_1_activity_1_cg54_custom_740:
       '#type': number
       '#data_type': String
@@ -1790,7 +1790,8 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg54_custom_79:
       '#type': number
-      '#title': 'Strongly Disagree '
+      '#title': 'Strongly Disagree'
+      '#description': 'Strongly Disagree'
       '#title_display': invisible
       '#field_prefix': '#'
       '#placeholder': '0'
@@ -1914,7 +1915,7 @@ elements: |-
   question_markup_212:
     '#type': processed_text
     '#text': |
-      <p><strong>The content was effective.</strong></p>
+      <p><strong>The course content was effective.</strong></p>
     '#format': html
   flexbox_q212:
     '#type': webform_flexbox

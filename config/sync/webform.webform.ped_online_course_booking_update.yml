@@ -1055,7 +1055,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -48
+    weight: -49
     settings:
       disable: 'Leave Fields and Save Settings'
       nid: 1
@@ -1897,7 +1897,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -49
+    weight: -48
     settings: {  }
   ped_online_course_booking_update_handler:
     id: ped_online_course_booking_update_handler

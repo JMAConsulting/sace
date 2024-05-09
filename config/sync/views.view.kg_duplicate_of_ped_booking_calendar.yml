@@ -1658,34 +1658,36 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
               anonymous: '0'
               clin_team_lead: '0'
               clin_intake_worker: '0'
               clin_counsellor: '0'
               ped_team_lead: '0'
-              wheel: '0'
-              finance: '0'
-              taxreceipts: '0'
               supervisors: '0'
               clin_director: '0'
               intake: '0'
               pacs_tl: '0'
               clin_tl: '0'
               pacsa: '0'
-              cad_tl: '0'
               reception: '0'
-              ce_director: '0'
-              pe_tl: '0'
-              vsil: '0'
               indigenous_cl: '0'
-              eval: '0'
-              vsil_tl: '0'
               couns_tl: '0'
-              is_staff: '0'
               wiseguyz_staff: '0'
               volunteer_supervisor: '0'
-              fund_development_officer: '0'
-              pe: '0'
             reduce: true
           is_grouped: false
           group_info:
@@ -2750,13 +2752,16 @@ display:
                   collapsible: false
                   is_secondary: false
               status_id:
-                plugin_id: default
+                plugin_id: bef
                 advanced:
                   sort_options: false
                   rewrite:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
               activity_date_time:
                 plugin_id: bef_datepicker
                 advanced:
@@ -2941,37 +2946,39 @@ display:
             identifier: status_id
             required: false
             remember: false
-            multiple: false
+            multiple: true
             remember_roles:
               authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
               anonymous: '0'
               clin_team_lead: '0'
               clin_intake_worker: '0'
               clin_counsellor: '0'
               ped_team_lead: '0'
-              wheel: '0'
-              finance: '0'
-              taxreceipts: '0'
               supervisors: '0'
               clin_director: '0'
               intake: '0'
               pacs_tl: '0'
               clin_tl: '0'
               pacsa: '0'
-              cad_tl: '0'
               reception: '0'
-              ce_director: '0'
-              pe_tl: '0'
-              vsil: '0'
               indigenous_cl: '0'
-              eval: '0'
-              vsil_tl: '0'
               couns_tl: '0'
-              is_staff: '0'
               wiseguyz_staff: '0'
               volunteer_supervisor: '0'
-              fund_development_officer: '0'
-              pe: '0'
             reduce: true
           is_grouped: false
           group_info:
@@ -4767,7 +4774,6 @@ display:
           operator: or
           value:
             2: '2'
-            3: '3'
             9: '9'
           group: 1
           exposed: true
@@ -4785,34 +4791,36 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
               anonymous: '0'
               clin_team_lead: '0'
               clin_intake_worker: '0'
               clin_counsellor: '0'
               ped_team_lead: '0'
-              wheel: '0'
-              finance: '0'
-              taxreceipts: '0'
               supervisors: '0'
               clin_director: '0'
               intake: '0'
               pacs_tl: '0'
               clin_tl: '0'
               pacsa: '0'
-              cad_tl: '0'
               reception: '0'
-              ce_director: '0'
-              pe_tl: '0'
-              vsil: '0'
               indigenous_cl: '0'
-              eval: '0'
-              vsil_tl: '0'
               couns_tl: '0'
-              is_staff: '0'
               wiseguyz_staff: '0'
               volunteer_supervisor: '0'
-              fund_development_officer: '0'
-              pe: '0'
             reduce: true
           is_grouped: false
           group_info:

@@ -7,7 +7,9 @@ logo:
   use_default: 0
   path: 'public://sace.jpg'
 favicon:
-  use_default: 1
+  use_default: 0
+  path: 'public://favicon_0.png'
+  mimetype: image/png
 mobile_menu_all_widths: 0
 site_branding_bg_color: white
 debug: 0
