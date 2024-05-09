@@ -16,65 +16,26 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
   protected $_customGroupExtends = 'Activity';
 
   public $_demographicFields = [];
-  public $__audienceFields = [];
   public function __construct() {
     $this->_columns = [
       'civicrm_activity' => [
         'dao' => 'CRM_Activity_DAO_Activity',
         'fields' => [
           'id' => [
-            'title' => ts('Booking Reference ID'),
+            'no_display' => TRUE,
+            'title' => ts('Activity ID'),
             'required' => TRUE,
-          ],
-          'activity_type_id' => [
-           'title' => E::ts('Booking Type'),
-           'required' => TRUE,
-          ],
-          'activity_date_time' => [
-            'title' => E::ts('Start Date'),
-            'required' => TRUE,
-          ],
-          'subject' => [
-            'title' => E::ts('Calendar Title'),
           ],
           'duration' => [
             'title' => ts('Length (in minutes)'),
             'required' => TRUE,
-          ],
-          'details' => [
-            'title' => E::ts('Staff Notes'),
-          ],
-          'participant_count' => [
-            'title' => ts('Number of participants'),
-            'dbAlias' => '0',
           ],
         ],
         'filters' => [
-          'activity_type_id' => [
-            'title' => ts('Booking Type'),
-            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
-            'options' => CRM_Core_OptionGroup::values('activity_type'),
-          ],
-          'activity_subject' => ['title' => ts('Calendar Title')],
           'activity_date_time' => [
             'type' => CRM_Utils_Type::T_DATE,
-            'title' => E::ts('Start date'),
+            'title' => E::ts('Activity date'),
             'operatorType' => CRM_Report_Form::OP_DATE,
-          ],
-          'duration' => [
-            'title' => ts('Length (in minutes)'),
-            'type' => CRM_Utils_Type::T_INT,
-          ],
-'contact_id' => [
-            'name' => 'contact_id',
-            'title' => ts('Presenter(s)'),
-            'dbAlias' => 'sc.id',
-            'operatorType' => CRM_Report_Form::OP_ENTITYREF,
-            'type' => CRM_Utils_Type::T_INT,
-            'attributes' => [
-              'entity' => 'Contact',
-              'select' => ['minimumInputLength' => 0],
-            ],
           ],
         ],
       ],
@@ -84,21 +45,25 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           'presenter_1'   => [
             'title'     => ts('Presenter 1'),
             'alias'     => 'sc',
-            'dbAlias' => "GROUP_CONCAT(DISTINCT CONCAT(sc.id, '-', sc.display_name))",
+            'required' => TRUE,
+            'dbAlias' => "GROUP_CONCAT(CONCAT(sc.id, '-', sc.display_name))",
           ],
           'presenter_2'   => [
             'title'     => ts('Presenter 2'),
             'alias'     => 'sc',
+            'required' => TRUE,
             'dbAlias' => "1",
           ],
           'presenter_3'   => [
             'title'     => ts('Presenter 3'),
             'alias'     => 'sc',
+            'required' => TRUE,
             'dbAlias' => "1",
           ],
           'presenter_4'   => [
             'title'     => ts('Presenter 4'),
             'alias'     => 'sc',
+            'required' => TRUE,
             'dbAlias' => '1',
           ],
         ],
@@ -114,19 +79,8 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           ],
           'postal_code' => [
             'title'     => ts('Postal Code'),
+            'required' => TRUE,
             'dbAlias' => "tc_add.postal_code",
-          ],
-          'tag_id' => [
-            'title' => ts('Tags (for Organization/School)'),
-            'dbAlias' => 'GROUP_CONCAT(DISTINCT tc_tag.name SEPARATOR \', \')',
-          ],
-        ],
-        'filters' => [
-          'tag' => [
-            'title' => ts('Tags (for Organization/School)'),
-            'dbAlias' => 'tc_tag.id',
-            'operatorType' => CRM_Report_Form::OP_MULTISELECT,
-            'options' => CRM_Core_BAO_Tag::getTags('civicrm_contact'),
           ],
         ],
       ],
@@ -211,9 +165,9 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
     }
 
     $this->_mapper = $questionMapper;
+//CRM_Core_Error::debug('questionMapper', $questionMapper);
     foreach ($questionMapper as $Q => $mapper) {
       if ($mapper['type'] == 'Radio') {
-        $dbAlias = [];
         foreach ([
           'SA' => 'Strongly Agree',
           'A' => 'Agree',
@@ -226,40 +180,23 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
             'title' => $label,
             'required' => TRUE,
           ];
-          $dbAlias[] = $mapper['options'][$key]['column_name'];
         }
-        $this->_columns[$cg['table_name']]['fields'][$Q . '_responses'] = [
-        'title' => 'Number of respondents',
-        'required' => TRUE,
-        'dbAlias' => sprintf("(%s)", implode(' + ', $dbAlias)),
-        ];
       }
       if ($mapper['type'] == 'TextArea') {
        $this->_columns[$cg['table_name']]['fields'][$mapper['options']['total']['column_name']] = [
          'title' => (strstr($Q, '_staff') ? 'Qualitative staff evaluations' : (strstr($Q, '_note') ? 'Noteworthy comments from evaluations' : 'Number Surveyed Able to List Something Learned')),
          'required' => TRUE,
        ];
-       if (strstr($Q, '_note')) {
-          $this->_columns[$cg['table_name']]['fields'][str_replace('_note', '', $Q) . '_responses'] = [
-            'title' => 'Number of respondents',
-            'required' => TRUE,
-            'dbAlias' => sprintf("(%s + %s)", $questionMapper[str_replace('_note', '', $Q)]['options']['total']['column_name'], $questionMapper[str_replace('_note', '', $Q) . '_staff']['options']['total']['column_name']),
-          ];
-       }
        if (!empty($mapper['options']['total']['dbAlias'])) {
          $this->_columns[$cg['table_name']]['fields'][$mapper['options']['total']['column_name']]['dbAlias'] = $mapper['options']['total']['dbAlias'];
        }
       }
     }
-//CRM_Core_Error::debug('questionMapper', $this->_columns[$cg['table_name']]['fields']);
 
     parent::__construct();
     $keys = ['civicrm_value_ped_booking_r_53', 'civicrm_value_booking_infor_2', 'civicrm_contact_sc', 'civicrm_activity', 'civicrm_contact_tc', 'civicrm_value_ped_presentat_54'];
     foreach (array_keys($this->_columns) as $key) {
       if (!in_array($key, $keys)) {unset($this->_columns[$key]);}
-    }
-    foreach (['custom_332'] as $key) {
-      $this->_columns['civicrm_value_booking_infor_2']['fields'][$key]['required'] = 1;
     }
     foreach (array_keys($this->_columns['civicrm_value_ped_presentat_54']['fields']) as $key) {
       if (strstr($key, 'custom_')) {
@@ -271,16 +208,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
     $this->_columns['civicrm_value_ped_participa_49'] = [
       'extends' => 'Activity',
       'group_title' => 'PE - Participant Presentation Feedback',
-      'fields' => [
-        'age' => [
-          'title' => ts('Age (Demographic information open field)'),
-          'dbAlias' => 'GROUP_CONCAT(pp.age_1263)',
-        ],
-        'demo_questions' => [
-          'title' => ts('Number of respondents to demo questions'),
-          'dbAlias' => '0',
-        ]
-      ],
+      'fields' => [],
     ];
     $values = \Civi\Api4\OptionValue::get(FALSE)
       ->addSelect('value', 'label', 'name')
@@ -294,22 +222,6 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
       ];
       $this->_demographicFields[$value['value']] = $value['name'];
     }
-
-    unset($this->_columns['civicrm_value_booking_infor_2']['fields']['custom_341']);
-    $values = \Civi\Api4\OptionValue::get(FALSE)
-      ->addSelect('value', 'label', 'name')
-      ->addWhere('option_group_id', '=', 234)
-      ->addWhere('is_active', '=', TRUE)
-      ->execute();
-    foreach ($values as $value) {
-      $this->_columns['civicrm_value_booking_infor_2']['fields']['audience_' . $value['name']] = [
-        'title' => sprintf('Audience - %s', $value['label']),
-        'dbAlias' => '0',
-        'type' => CRM_Utils_Type::T_INT,
-      ];
-      $this->_audienceFields['audience_' . $value['value']] = $value['name'];
-    }
-
     $lastkey = $this->_columns['civicrm_value_ped_presentat_54'];
     unset($this->_columns['civicrm_value_ped_presentat_54']);
     $this->_columns['civicrm_value_ped_presentat_54'] = $lastkey;
@@ -336,10 +248,7 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
       LEFT JOIN civicrm_contact ac ON ac.id = assignee.contact_id
       LEFT JOIN civicrm_contact tc ON tc.id = target.contact_id
       LEFT JOIN civicrm_address tc_add ON tc_add.contact_id = tc.id AND tc_add.is_primary = 1
-      LEFT JOIN civicrm_entity_tag tc_entity_tag ON tc_entity_tag.entity_id = tc.id AND tc_entity_tag.entity_table = 'civicrm_contact' 
-      LEFT JOIN civicrm_tag tc_tag ON tc_tag.id = tc_entity_tag.tag_id
       LEFT JOIN civicrm_contact sc ON sc.id = source.contact_id
-      LEFT JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.entity_id
     ";
 
   }
@@ -397,27 +306,10 @@ WHERE cg.is_active = 1 AND
   }
 
   public function alterDisplay(&$rows) {
-    $activityType = CRM_Core_PseudoConstant::activityType(TRUE, TRUE, FALSE, 'label', TRUE);
     $selectedAids = CRM_Utils_Array::collect('civicrm_activity_id', $rows);
-    if (!empty($this->_params['fields']['demo_questions']) && !empty($selectedAids)) {
-      $sql = sprintf("SELECT  count(pp.entity_id) as count, pb.booking_reference_id_706 as aid
-            FROM civicrm_value_booking_infor_2 bi 
-            INNER JOIN civicrm_value_ped_booking_r_53 pb ON pb.booking_reference_id_706 = bi.entity_id
-            INNER JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = pb.entity_id
-            WHERE demographic_information_1262 <> '' AND pb.booking_reference_id_706 IN (%s)
-            GROUP BY pb.booking_reference_id_706" , implode(',', $selectedAids));
-      $this->addToDeveloperTab($sql);
-      $result = CRM_Core_DAO::executeQuery($sql)->fetchAll();
-      foreach ($result as $value) {
-        if (!empty($value['count'])) {
-          $key = array_search($value['aid'], $selectedAids);
-          $rows[$key]['civicrm_value_ped_participa_49_demo_questions'] = $value['count'];
-        }
-      }
-    }
     foreach ($this->_demographicFields as $ov => $name) {
-      if (!empty($this->_params['fields'][$name]) && !empty($selectedAids)) {
-        $sql = sprintf("SELECT  count(pp.entity_id) as count, pb.booking_reference_id_706 as aid
+      if (!empty($this->_params['fields'][$name])) {
+        $sql = sprintf("SELECT count(bi.entity_id) as count, pb.booking_reference_id_706 as aid
         FROM civicrm_value_booking_infor_2 bi 
         INNER JOIN civicrm_value_ped_booking_r_53 pb ON pb.booking_reference_id_706 = bi.entity_id
         INNER JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = pb.entity_id
@@ -428,29 +320,12 @@ WHERE cg.is_active = 1 AND
         foreach ($result as $value) {
 	   if (!empty($value['count'])) {
              $key = array_search($value['aid'], $selectedAids);
-             $rows[$key]['civicrm_value_ped_participa_49_' . $name] = $value['count'];
+             $rows[$key]['civicrm_value_booking_infor_2_' . $name] = $value['count'];
            }
         }
       }
     }
 
-    
-  foreach ($this->_audienceFields as $ov => $name) {
-  if (!empty($this->_params['fields'][$name]) && !empty($selectedAids)) {
-    $sql = sprintf("SELECT count(entity_id) as count, entity_id as aid
-    FROM civicrm_value_booking_infor_2 
-    WHERE audience_341 REGEXP '([[:cntrl:]]|^){$ov}([[:cntrl:]]|$)' AND entity_id IN (%s)
-    GROUP BY entity_id" , implode(',', $selectedAids));
-    $this->addToDeveloperTab($sql);
-    $result = CRM_Core_DAO::executeQuery($sql)->fetchAll();
-    foreach ($result as $value) {
-       if (!empty($value['count'])) {
-         $key = array_search($value['aid'], $selectedAids);
-         $rows[$key]['civicrm_value_booking_infor_2_' . $name] = $value['count'];
-       }
-    }
-  }
-  }
     $count = 1;
     $CH2 = ['PI' => ['title' => 'Presentation Information', 'colspan' => $count]];
     foreach ($this->_columnHeaders as $key => $header) {
@@ -460,90 +335,85 @@ WHERE cg.is_active = 1 AND
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_1sa_48') {
        $CH2['PI']['colspan'] = $count - 1;
        $count = 0;
-       $CH2['Q1'] = ['title' => $this->_mapper[1]['label'], 'colspan' => 7];
+       $CH2['Q1'] = ['title' => $this->_mapper[1]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_2_59') {
-        $CH2['Q2'] = ['title' => $this->_mapper[2]['label'], 'colspan' => 4];
+        $CH2['Q2'] = ['title' => $this->_mapper[2]['label'], 'colspan' => 3];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_3sa_60') {
-        $CH2['Q3'] = ['title' => $this->_mapper[3]['label'], 'colspan' => 7];
+        $CH2['Q3'] = ['title' => $this->_mapper[3]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_5sa_68') {
-       $CH2['Q4'] = ['title' => $this->_mapper[4]['label'], 'colspan' => 7];
+       $CH2['Q4'] = ['title' => $this->_mapper[4]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_5_1276') {
-       $CH2['Q5'] = ['title' => $this->_mapper[5]['label'], 'colspan' => 4];
+       $CH2['Q5'] = ['title' => $this->_mapper[5]['label'], 'colspan' => 3];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_7sa_75') {
-       $CH2['Q6'] = ['title' => $this->_mapper[6]['label'], 'colspan' => 7];
+       $CH2['Q6'] = ['title' => $this->_mapper[6]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_8sa_81') {
-       $CH2['Q7'] = ['title' => $this->_mapper[7]['label'], 'colspan' => 7];
+       $CH2['Q7'] = ['title' => $this->_mapper[7]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_8sa_716') {
-       $CH2['Q8'] = ['title' => $this->_mapper[8]['label'], 'colspan' => 7];
+       $CH2['Q8'] = ['title' => $this->_mapper[8]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_9_1277') {
-       $CH2['Q9'] = ['title' => $this->_mapper[9]['label'], 'colspan' => 4];
+       $CH2['Q9'] = ['title' => $this->_mapper[9]['label'], 'colspan' => 3];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_10sa_725') {
-       $CH2['Q10'] = ['title' => $this->_mapper[10]['label'], 'colspan' => 7];
+       $CH2['Q10'] = ['title' => $this->_mapper[10]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_11sa_732') {
-       $CH2['Q11'] = ['title' => $this->_mapper[11]['label'], 'colspan' => 7];
+       $CH2['Q11'] = ['title' => $this->_mapper[11]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_12sa_739') {
-       $CH2['Q12'] = ['title' => $this->_mapper[12]['label'], 'colspan' => 7];
+       $CH2['Q12'] = ['title' => $this->_mapper[12]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_13sa_746') {
-       $CH2['Q13'] = ['title' => $this->_mapper[13]['label'], 'colspan' => 7];
+       $CH2['Q13'] = ['title' => $this->_mapper[13]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_14sa_753') {
-       $CH2['Q14'] = ['title' => $this->_mapper[14]['label'], 'colspan' => 7];
+       $CH2['Q14'] = ['title' => $this->_mapper[14]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_15sa_760') {
-       $CH2['Q15'] = ['title' => $this->_mapper[15]['label'], 'colspan' => 7];
+       $CH2['Q15'] = ['title' => $this->_mapper[15]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_16sa_767') {
-       $CH2['Q16'] = ['title' => $this->_mapper[16]['label'], 'colspan' => 7];
+       $CH2['Q16'] = ['title' => $this->_mapper[16]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_17sa_774') {
-       $CH2['Q17'] = ['title' => $this->_mapper[17]['label'], 'colspan' => 7];
+       $CH2['Q17'] = ['title' => $this->_mapper[17]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_18_1278') {
-       $CH2['Q18'] = ['title' => $this->_mapper[18]['label'], 'colspan' => 4];
+       $CH2['Q18'] = ['title' => $this->_mapper[18]['label'], 'colspan' => 3];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_18sa_781') {
-       $CH2['Q19'] = ['title' => $this->_mapper[19]['label'], 'colspan' => 7];
+       $CH2['Q19'] = ['title' => $this->_mapper[19]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_20sa_789') {
-       $CH2['Q20'] = ['title' => $this->_mapper[20]['label'], 'colspan' => 7];
+       $CH2['Q20'] = ['title' => $this->_mapper[20]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_21sa_796') {
-       $CH2['Q211'] = ['title' => $this->_mapper[211]['label'], 'colspan' => 7];
+       $CH2['Q211'] = ['title' => $this->_mapper[211]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_22_1279') {
-       $CH2['Q22'] = ['title' => $this->_mapper[22]['label'], 'colspan' => 4];
+       $CH2['Q22'] = ['title' => $this->_mapper[22]['label'], 'colspan' => 3];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_23_1280') {
-       $CH2['Q23'] = ['title' => $this->_mapper[23]['label'], 'colspan' => 4];
+       $CH2['Q23'] = ['title' => $this->_mapper[23]['label'], 'colspan' => 3];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_25sa_1268') {
-       $CH2['Q212'] = ['title' => $this->_mapper[212]['label'], 'colspan' => 4];
+       $CH2['Q212'] = ['title' => $this->_mapper[212]['label'], 'colspan' => 6];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_24sa_805') {
-       $CH2['Q24'] = ['title' => $this->_mapper[24]['label'], 'colspan' => 4];
+       $CH2['Q24'] = ['title' => $this->_mapper[24]['label'], 'colspan' => 6];
       }
     }
 
     $this->assign('_columnHeaders1', $CH2);
     foreach ($rows as $rowNum => &$row) {
-      if (array_key_exists('civicrm_activity_activity_type_id', $row)) {
-        if ($value = $row['civicrm_activity_activity_type_id']) {
-          $rows[$rowNum]['civicrm_activity_activity_type_id'] = $activityType[$value];
-        }
-     }
-     if (!empty($row['civicrm_contact_sc_presenter_1'])) {
+      if (!empty($row['civicrm_contact_sc_presenter_1'])) {
         $contacts = explode(',', $row['civicrm_contact_sc_presenter_1']);
         $count = 1;
         foreach ($contacts as $contact) {
@@ -555,7 +425,6 @@ WHERE cg.is_active = 1 AND
           $row['civicrm_contact_sc_presenter_' . $count] = '';
           $count++;
         }
-        $row['civicrm_activity_participant_count'] = count($contacts);
       }
       else {
         $row['civicrm_contact_sc_presenter_2'] = $row['civicrm_contact_sc_presenter_3'] = $row['civicrm_contact_sc_presenter_4'] = '';

@@ -158,16 +158,17 @@ if (hasToggleButtons) {
   let isRecurInput;
   if (isRecurSection) {
     isRecurInput = isRecurSection.querySelector(".content input");
-    if (isRecurInput.checked) {
+    if (url.indexOf('id=') != -1) {
       // isRecurInput.click()
+      isRecurInput.checked = true;
       monthlySection.classList.add("active");
       toggleMonthly.classList.add('active');
     } else {
       let monthlySet = false;
       let monthlySelectedOption = CRM.$('.monthly-content').find('input:checked');
-      /*if (monthlySelectedOption.attr('id') != CRM.$(noneMonthly).attr('id')) {
+      if (monthlySelectedOption.attr('id') != CRM.$(noneMonthly).attr('id')) {
         monthlySet = true;
-      }*/
+      }
       if (monthlySet) {
         monthlySection.classList.add("active");
         toggleMonthly.classList.add('active');
