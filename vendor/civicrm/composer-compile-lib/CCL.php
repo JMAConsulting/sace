@@ -1,5 +1,5 @@
 <?php
-// AUTO-GENERATED VIA /var/www/saced10.jmaconsulting.biz/htdocs/vendor/civicrm/composer-compile-lib/src/StubsTpl.php
+// AUTO-GENERATED VIA /var/www/secure.sace.ca/htdocs/vendor/civicrm/composer-compile-lib/src/StubsTpl.php
 // If this file somehow becomes invalid (eg when patching CCL), you may safely delete and re-run install.
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -311,7 +311,7 @@ class CCL {
     return self::_ccl()->globMap($matchPat, $outPat, $flip);
   }
 
-
+     
   public static function chdir($directory) {
     self::_ccl()->chdir($directory);
   }

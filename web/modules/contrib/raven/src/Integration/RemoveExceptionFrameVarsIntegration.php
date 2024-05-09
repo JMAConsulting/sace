@@ -43,8 +43,10 @@ class RemoveExceptionFrameVarsIntegration implements IntegrationInterface {
 
     // Remove function calling arguments from exception stack frames.
     foreach ($event->getExceptions() as $exception) {
-      foreach ($exception->getStacktrace()->getFrames() as $frame) {
-        $frame->setVars([]);
+      if ($stacktrace = $exception->getStacktrace()) {
+        foreach ($stacktrace->getFrames() as $frame) {
+          $frame->setVars([]);
+        }
       }
     }
 

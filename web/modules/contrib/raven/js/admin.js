@@ -19,7 +19,17 @@
     });
   }
   const phpButton = document.getElementById('edit-raven-php-test');
-  if (phpButton && phpButton.classList.contains('installed')) {
+  if (phpButton) {
+    const displayLog = (logs) => {
+      logs.forEach((log) => {
+        const div = document.createElement('div');
+        div.innerHTML = Drupal.t('Logged @level: @message', {
+          '@level': log.level,
+          '@message': log.message,
+        });
+        phpButton.parentNode.insertBefore(div, phpButton.nextSibling);
+      });
+    };
     phpButton.disabled = false;
     phpButton.classList.remove('is-disabled');
     phpButton.addEventListener('click', (event) => {
@@ -32,6 +42,7 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          displayLog(data.log);
           const div = document.createElement('div');
           div.innerHTML = Drupal.t(
             data.id ? 'Message sent as event %id.' : 'Send failed.',

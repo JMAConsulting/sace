@@ -2,10 +2,11 @@
 
 namespace Drupal\viewsreference\Plugin\Field\FieldFormatter;
 
-use Drupal\views\Views;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 
 /**
  * Field formatter for Viewsreference Field.
@@ -35,7 +36,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
     $types = Views::pluginList();
     $options = [];
     foreach ($types as $key => $type) {
-      if ($type['type'] == 'display') {
+      if ('display' === $type['type']) {
         $options[str_replace('display:', '', $key)] = $type['title']->render();
       }
     }
@@ -69,13 +70,20 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
+
+    // Get the information for the parent entity and field to allow
+    // customizing the view / view results.
+    $parent_entity_type = $items->getEntity()->getEntityTypeId();
+    $parent_entity_id = $items->getEntity()->id();
+    $parent_field_name = $items->getFieldDefinition()->getName();
+
     foreach ($items as $delta => $item) {
       $view_name = $item->getValue()['target_id'];
       $display_id = $item->getValue()['display_id'];
-      $data = unserialize($item->getValue()['data'], ['allowed_classes' => FALSE]);
       $view = Views::getView($view_name);
+
       // Add an extra check because the view could have been deleted.
-      if (!is_object($view)) {
+      if (!$view instanceof ViewExecutable) {
         continue;
       }
 
@@ -87,45 +95,46 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       // behaviour in views. The hook_views_pre_build() needs to know if the
       // view was part of a viewsreference field or not.
       $view->element['#viewsreference'] = [
-        'data' => $data,
+        'data' => unserialize($item->getValue()['data'], ['allowed_classes' => FALSE]),
         'enabled_settings' => $enabled_settings,
+        'parent_entity_type' => $parent_entity_type,
+        'parent_entity_id' => $parent_entity_id,
+        'parent_field_name' => $parent_field_name,
       ];
 
       $view->preExecute();
       $view->execute($display_id);
 
-      if (!empty($view->result) || !empty($view->empty) || !empty($view->exposed_widgets)) {
-        // Show view if there are results or empty behaviour defined or exposed widgets.
-        if ($this->getSetting('plugin_types')) {
+      $render_array = $view->buildRenderable($display_id, $view->args, FALSE);
+      if (!empty(array_filter($this->getSetting('plugin_types')))) {
+        if (!empty($view->result) || !empty($view->empty)) {
           // Add a custom template if the title is available.
           $title = $view->getTitle();
           if (!empty($title)) {
             // If the title contains tokens, we need to render the view to
             // populate the rowTokens.
-            if (strpos($title, '{{') !== FALSE) {
+            if (mb_strpos($title, '{{') !== FALSE) {
               $view->render();
               $title = $view->getTitle();
             }
-            $elements[$delta]['title'] = [
+            $render_array['title'] = [
               '#theme' => 'viewsreference__view_title',
               '#title' => $title,
             ];
           }
+          // The views_add_contextual_links() function needs the following
+          // information in the render array in order to attach the contextual
+          // links to the view.
+          $render_array['#view_id'] = $view->storage->id();
+          $render_array['#view_display_show_admin_links'] = $view->getShowAdminLinks();
+          $render_array['#view_display_plugin_id'] = $view->getDisplay()->getPluginId();
+          views_add_contextual_links($render_array, $render_array['#view_display_plugin_id'], $display_id);
+
+          $elements[$delta]['contents'] = $render_array;
         }
-
-        $render_array = $view->buildRenderable($display_id, $view->args, FALSE);
-
-        // The views_add_contextual_links() function needs the following
-        // information in the render array in order to attach the contextual
-        // links to the view.
-        $render_array['#view_id'] = $view->storage->id();
-        $render_array['#view_display_show_admin_links'] = $view->getShowAdminLinks();
-        $render_array['#view_display_plugin_id'] = $view->getDisplay()->getPluginId();
-        views_add_contextual_links($render_array, $render_array['#view_display_plugin_id'], $display_id);
-
-        $elements[$delta]['contents'] = $render_array;
       }
     }
+
     return $elements;
   }
 

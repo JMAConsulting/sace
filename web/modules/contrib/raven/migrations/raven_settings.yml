@@ -49,7 +49,7 @@ process:
     plugin: callback
     callable:
       - 'Drupal\raven\Form\RavenConfigForm'
-      - extractIgnoredChannels
+      - extractListFromString
     source: raven_ignored_types
   send_user_data: raven_send_user_data
   rate_limit: raven_rate_limit

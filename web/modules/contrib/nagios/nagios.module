@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Form\FormStateInterface;
@@ -70,7 +71,13 @@ function _nagios_update_os_user(): array {
   $state = Drupal::state();
   $os_user = $state->get('nagios.os_user', []);
   if (function_exists('posix_getpwuid')) {
-    $current_user = posix_getpwuid(posix_geteuid())['name'];
+    $euid = posix_geteuid();
+    if ($euid) {
+      $pwuid = posix_getpwuid($euid);
+      if ($pwuid) {
+        $current_user = $pwuid['name'];
+      }
+    }
   }
   if (empty($current_user)) {
     $current_user = getenv('UID') ?: getenv('USERNAME');
@@ -224,8 +231,7 @@ function nagios_nagios_settings() {
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * Modify the module display view by adding a nagios ignore link to every module
- * description.
+ * Add a checkbox to all themes’ settings pages to ignore in Nagios monitoring.
  *
  * @param array $form
  * @param FormStateInterface $form_state
@@ -238,28 +244,39 @@ function nagios_form_system_theme_settings_alter(&$form, FormStateInterface $for
 
   // Grab the name of the theme.
   $buildinfo = $form_state->getBuildInfo();
-  if (!empty($buildinfo['args'][0])) {
-    $theme_name = Html::escape($buildinfo['args'][0]);
+  if (empty($buildinfo['args'][0])) {
+    return;
+  }
+  $theme_name = Html::escape($buildinfo['args'][0]);
 
-    $config = Drupal::config('nagios.settings');
-    $nagios_ignored_themes = $config->get('nagios.ignored_themes') ?: [];
+  $config = Drupal::config('nagios.settings');
+  $nagios_ignored_themes = $config->get('nagios.ignored_themes') ?: [];
 
-    // Check to see if the theme is provided by core, or if it's contrib/custom.
+  // Check to see if the theme is provided by core, or if it's contrib/custom.
+  try {
     $projects_data = Drupal::service('update.manager')->getProjects();
-    if (array_key_exists($theme_name, $projects_data)) {
+  } catch (Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException $e) {
+    // Core’s update manager module is optional, and not a dependency of the Nagios module.
+    return;
+  }
+  unset($projects_data['drupal']); // Only show checkbox for non-core themes
+
+  foreach ($projects_data as $details) {
+    if (array_key_exists($theme_name, $details['includes'])) {
       // This is a settings page for a non-core theme, so add the checkbox.
       $form['nagios'] = [
         '#type' => 'fieldset',
         '#title' => t('Nagios Monitoring'),
         'nagios_ignore' => [
           '#type' => 'checkbox',
-          '#title' => t('Ignore from Nagios'),
+          '#title' => t('Ignore this theme in the updates and requirements check'),
           '#weight' => 200,
           '#default_value' => !empty($nagios_ignored_themes[$theme_name]),
         ],
       ];
 
       $form['#submit'][] = 'nagios_system_theme_settings_form_submit';
+      break;
     }
   }
 }
@@ -267,7 +284,7 @@ function nagios_form_system_theme_settings_alter(&$form, FormStateInterface $for
 /**
  * Additional system theme settings form submit handler.
  *
- * Saves the Nagios theme ignore status to the 'nagios_ignored_themes' variable.
+ * Saves the Nagios theme ignore status to the 'nagios.ignored_themes' variable.
  * Variable contains an array of theme names to be ignored in the form
  * 'theme_machine_name' => TRUE.
  *
@@ -350,27 +367,57 @@ function nagios_nagios(string $id = '') {
 }
 
 /**
- * Check is all Drupal requirenemts are satisfied.
+ * Get available update data for modules and themes.
  *
- * Calls hook_requirements on all modules to gather info.
- *
- * @return array
- *   Array containing state data
+ * @return array[]
+ *   An array of installed projects with current update status information.
+ *   Keyed by project name; module and theme names are in the include section.
  */
-function nagios_check_requirements() {
-  $config = Drupal::config('nagios.settings');
-  /** @noinspection PhpIncludeInspection */
-  // Load .install files:
-  include_once DRUPAL_ROOT . '/core/includes/install.inc';
-  module_load_include('inc', 'update', 'update.compare');
+function _nagios_get_projects_with_updates(ImmutableConfig $config): array {
+  $available = update_get_available(TRUE);
+  if (!$available) {
+    return [];
+  }
+  $projects = update_calculate_project_data($available);
 
-  drupal_load_updates();
-
-  $enabled_projects = Drupal::service('update.manager')->getProjects();
+  // Unset any data referencing projects we're not interested in.
   $nagios_ignored_modules = $config->get('nagios.ignored_modules') ?: [];
   $nagios_ignored_themes = $config->get('nagios.ignored_themes') ?: [];
-  /** @var string[] $nagios_ignored_extensions */
   $nagios_ignored_extensions = $nagios_ignored_modules + $nagios_ignored_themes;
+  $installed_extensions = _nagios_extensions_to_check($nagios_ignored_extensions);
+
+  foreach($projects as $name => $details) {
+    // Remove ignored extensions from project
+    foreach (array_keys($nagios_ignored_extensions) as $key) {
+      unset($details['includes'][$key]);
+    }
+
+    // Does this project still contain installed extensions?
+    $remaining_extensions_in_project = array_intersect_key($details['includes'], $installed_extensions);
+    if (!$remaining_extensions_in_project) {
+      // contains no further installed extensions.
+      unset($projects[$name]);
+    }
+  }
+
+  return $projects;
+}
+
+/**
+ * Installed modules and themes.
+ *
+ * @param string[] $nagios_ignored_extensions
+ *
+ * @return string[] $extensions to check
+ *   The key and the value of each array element are identical, for example:
+ *   ['webform' => 'webform']
+ */
+function _nagios_extensions_to_check(array $nagios_ignored_extensions): array {
+  static $cached_result;
+
+  if ($cached_result) {
+    return $cached_result;
+  }
 
   /** @var array<string, \Drupal\Core\Extension\Extension> $modules_to_check */
   $modules_to_check = Drupal::service('extension.list.module')
@@ -388,28 +435,47 @@ function nagios_check_requirements() {
     return $module;
   }, $modules_to_check + $themes_to_check);
 
-  /** @var string[] $extensions_to_check */
-  $extensions_to_check = array_diff($installed_extensions, $nagios_ignored_extensions);
+  return $cached_result = array_diff($installed_extensions, $nagios_ignored_extensions);
+}
 
-  // Copied from update_requirements(). Get available update data for projects.
-  $project_update_status = [];
-  // TODO: The TRUE param should be made configurable when writing a drush
-  // command, so we don't rely on cached data.
-  if ($available = update_get_available(TRUE)) {
-    module_load_include('inc', 'update', 'update.compare');
-    $project_update_status = update_calculate_project_data($available);
-  }
-  // Remove from the update data array the projects ignored.
+/**
+ * Check is all Drupal requirenemts are satisfied.
+ *
+ * Calls hook_requirements on all modules to gather info.
+ *
+ * @return array
+ *   Array containing state data
+ */
+function nagios_check_requirements() {
+  $config = Drupal::config('nagios.settings');
+  /** @noinspection PhpIncludeInspection */
+  // Load .install files:
+  include_once DRUPAL_ROOT . '/core/includes/install.inc';
+  drupal_load_updates();
+
+  // Get currently enabled projects:
+  $projects = Drupal::service('update.manager')->getProjects();
+
+  $nagios_ignored_modules = $config->get('nagios.ignored_modules') ?: [];
+  $nagios_ignored_themes = $config->get('nagios.ignored_themes') ?: [];
+  /** @var string[] $nagios_ignored_extensions */
+  $nagios_ignored_extensions = $nagios_ignored_modules + $nagios_ignored_themes;
+
+  // Get available update data for modules and extensions.
+  $project_update_status = _nagios_get_projects_with_updates($config);
+
+  // Remove from the update data array the ignored projects.
   foreach ($nagios_ignored_extensions as $key => $value) {
     unset($project_update_status[$key]);
   }
 
   // Cycle through enabled modules for requirements checks.
-  $req_controller = new RequirementsController($config);
-  $req_controller->collectRequirements($extensions_to_check, $project_update_status, $enabled_projects);
+  $extensions = _nagios_extensions_to_check($nagios_ignored_extensions);
+  $req_ctrl = new RequirementsController($config);
+  $req_ctrl->collectRequirements($extensions, $project_update_status, $projects);
 
   // Check the requirements as to the most severe status:
-  [$severity, $desc] = $req_controller->findMostSevereProblem();
+  [$severity, $desc] = $req_ctrl->findMostSevereProblem();
 
   // Create a status to pass back, and a text description too:
   switch ($severity) {

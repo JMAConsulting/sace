@@ -6,7 +6,7 @@ import { Plugin, icons } from "ckeditor5/src/core";
 import {
   ButtonView,
   ContextualBalloon,
-  clickOutsideHandler
+  clickOutsideHandler,
 } from "ckeditor5/src/ui";
 
 import { getBalloonPositionData } from "@ckeditor/ckeditor5-image/src/image/ui/utils";
@@ -36,6 +36,17 @@ export default class EditorAdvancedImageUI extends Plugin {
    * @inheritdoc
    */
   init() {
+    const options = this.editor.config.get("editorAdvancedImageOptions");
+
+    // Prevent creation of Editor Advanced Button & Form when the option "Disable Balloon" is enabled.
+    if (
+      options !== undefined &&
+      options.disable_balloon !== undefined &&
+      options.disable_balloon
+    ) {
+      return;
+    }
+
     this._createButton();
     this._createForm();
   }
@@ -63,14 +74,14 @@ export default class EditorAdvancedImageUI extends Plugin {
     const editor = this.editor;
 
     // The name on the component factory must be the same as in editor_advanced_image.ckeditor5.yml.
-    editor.ui.componentFactory.add("editorAdvancedImageButton", locale => {
+    editor.ui.componentFactory.add("editorAdvancedImageButton", (locale) => {
       const command = editor.commands.get("EditorAdvancedImageCmd");
       const view = new ButtonView(locale);
 
       view.set({
         label: Drupal.t("Editor Advanced Image"),
         icon: icons.threeVerticalDots,
-        tooltip: true
+        tooltip: true,
       });
 
       // Enable the UI if and only if the command is enabled.
@@ -122,7 +133,7 @@ export default class EditorAdvancedImageUI extends Plugin {
           : false,
         id: options.allowedAttributes.includes("id")
           ? this._form.idAttrInput.fieldView.element.value
-          : false
+          : false,
       });
 
       this._hideForm(true);
@@ -144,7 +155,7 @@ export default class EditorAdvancedImageUI extends Plugin {
       emitter: this._form,
       activator: () => this._isVisible,
       contextElements: [this._balloon.view.element],
-      callback: () => this._hideForm()
+      callback: () => this._hideForm(),
     });
   }
 
@@ -163,14 +174,12 @@ export default class EditorAdvancedImageUI extends Plugin {
     // @see \Drupal\editor_advanced_image\Plugin\CKEditor5Plugin\EditorAdvancedImage::getDynamicPluginConfig
     const options = editor.config.get(`editorAdvancedImageOptions`);
 
-    // this._form.disableCssTransitions();
-
     if (!this._isInBalloon) {
       // Place the form into the Balloon.
       this._balloon.add({
         view: this._form,
         // Be sure to keep the Balloon at the same centered position.
-        position: getBalloonPositionData(editor)
+        position: getBalloonPositionData(editor),
       });
     }
 
@@ -182,21 +191,23 @@ export default class EditorAdvancedImageUI extends Plugin {
     if (options.allowedAttributes.includes("title")) {
       this._form.titleAttrInput.fieldView.element.value =
         command.attributes.title || "";
-      this._form.titleAttrInput.fieldView.value = this._form.titleAttrInput.fieldView.element.value;
+      this._form.titleAttrInput.fieldView.value =
+        this._form.titleAttrInput.fieldView.element.value;
     }
 
     if (options.allowedAttributes.includes("class")) {
       this._form.classAttrInput.fieldView.element.value =
         command.attributes.class || "";
-      this._form.classAttrInput.fieldView.value = this._form.classAttrInput.fieldView.element.value;
+      this._form.classAttrInput.fieldView.value =
+        this._form.classAttrInput.fieldView.element.value;
     }
 
     if (options.allowedAttributes.includes("id")) {
       this._form.idAttrInput.fieldView.element.value =
         command.attributes.id || "";
-      this._form.idAttrInput.fieldView.value = this._form.idAttrInput.fieldView.element.value;
+      this._form.idAttrInput.fieldView.value =
+        this._form.idAttrInput.fieldView.element.value;
     }
-    // this._form.enableCssTransitions();
   }
 
   /**

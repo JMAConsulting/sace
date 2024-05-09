@@ -18,7 +18,6 @@
             }
         }
     },
-    "minimum-stability": "stable",
     "support": {
         "issues": "https://www.drupal.org/project/issues/nagios?version=8.x"
     }

@@ -5,9 +5,6 @@ namespace Drupal\raven\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Url;
-use Sentry\CheckIn;
-use Sentry\Profiling\Profile;
-use Sentry\SentrySdk;
 
 /**
  * Implements a Raven Config form.
@@ -22,6 +19,7 @@ class RavenConfigForm {
    */
   public static function buildForm(array &$form): void {
     $config = \Drupal::configFactory()->getEditable('raven.settings');
+    assert(!isset($form['#attached']) || is_array($form['#attached']));
     $form['#attached']['library'][] = 'raven/admin';
     $form['raven'] = [
       '#type'           => 'details',
@@ -57,6 +55,14 @@ class RavenConfigForm {
       '#max'            => 1,
       '#step'           => 0.000001,
     ];
+    $trace_propagation_targets_frontend = $config->get('trace_propagation_targets_frontend') ?: [];
+    assert(is_array($trace_propagation_targets_frontend));
+    $form['raven']['js']['trace_propagation_targets_frontend'] = [
+      '#type'           => 'textarea',
+      '#title'          => t('Trace propagation targets'),
+      '#default_value'  => implode("\n", $trace_propagation_targets_frontend),
+      '#description'    => t('If the URL of a frontend HTTP request is a same-origin URL or matches one of the additional regular expressions you list here, a baggage HTTP header will be added to the request, allowing traces to be linked across frontend services. Each regular expression will be flagged as case-insensitive, and will match across the entire URL, not just the host. Do not include the pattern delimiter slashes in your regular expressions. For example, entering <code>^https://api\.example\.org/</code> here will configure the regular expression <code>/^https:\/\/api\.example\.org\//i</code>. The baggage header will contain data such as the current route path, environment and release.'),
+    ];
     $form['raven']['js']['auto_session_tracking'] = [
       '#type'           => 'checkbox',
       '#title'          => t('Enable auto session tracking'),
@@ -68,6 +74,21 @@ class RavenConfigForm {
       '#title'          => t('Send client reports'),
       '#description'    => t('Send client report (e.g. number of discarded events), if any, when tab is hidden or closed.'),
       '#default_value'  => $config->get('send_client_reports'),
+    ];
+    $form['raven']['js']['send_inp_spans'] = [
+      '#type'           => 'checkbox',
+      '#title'          => t('Send Interaction to Next Paint (INP) spans'),
+      '#description'    => t('Check to automatically send an interaction span when an INP event is detected.'),
+      '#default_value'  => $config->get('send_inp_spans'),
+    ];
+    $form['raven']['js']['interactions_sample_rate'] = [
+      '#type'           => 'number',
+      '#title'          => t('Interactions sample rate'),
+      '#description'    => t('The sample rate for sending interaction spans. The configured sample rate will be multiplied by the browser performance tracing sample rate to determine the actual sample rate. If blank, the browser performance tracing sample rate will be used.'),
+      '#default_value'  => $config->get('interactions_sample_rate'),
+      '#min'            => 0,
+      '#max'            => 1,
+      '#step'           => 0.000001,
     ];
     $form['raven']['js']['seckit_set_report_uri'] = [
       '#type'           => 'checkbox',
@@ -92,7 +113,7 @@ class RavenConfigForm {
     $form['raven']['js']['tunnel'] = [
       '#type'           => 'checkbox',
       '#title'          => t('Enable error tunneling'),
-      '#description'    => t('Tunnel Sentry events through the website. This is useful, for example, to prevent Sentry requests from getting ad-blocked, or for reaching non-public Sentry servers. See more details in <a href=":url" rel="noreferrer">Sentry\'s JavaScript troubleshooting documentation</a>. Note that CSP reports and user feedback reports, if enabled, will not be tunneled. Tunneled requests will use the timeout specified in the PHP section below.', [
+      '#description'    => t('Tunnel Sentry events through the website. This is useful, for example, to prevent Sentry requests from getting ad-blocked, or for reaching non-public Sentry servers. See more details in <a href=":url" rel="noreferrer">Sentry\'s JavaScript troubleshooting documentation</a>. Note that CSP reports and user feedback reports, if enabled, will not be tunneled. Tunneled requests will use the timeout and HTTP compression settings configured in the PHP section below.', [
         ':url' => 'https://docs.sentry.io/platforms/javascript/troubleshooting/#using-the-tunnel-option',
       ]),
       '#default_value'  => $config->get('tunnel'),
@@ -126,11 +147,13 @@ class RavenConfigForm {
       '#description'    => t('Check the log levels that should be captured by Sentry.'),
       '#options'        => $log_levels,
     ];
+    $ignored_channels = $config->get('ignored_channels') ?: [];
+    assert(is_array($ignored_channels));
     $form['raven']['php']['ignored_channels'] = [
       '#type'           => 'textarea',
       '#title'          => t('Ignored channels'),
       '#description'    => t('A list of log channels for which messages will not be sent to Sentry (one channel per line). Commonly-configured log channels include <em>access denied</em> for 403 errors and <em>page not found</em> for 404 errors.'),
-      '#default_value'  => implode("\n", $config->get('ignored_channels') ?: []),
+      '#default_value'  => implode("\n", $ignored_channels),
     ];
     $form['raven']['php']['fatal_error_handler'] = [
       '#type'           => 'checkbox',
@@ -197,6 +220,13 @@ class RavenConfigForm {
       '#min'            => 0,
       '#step'           => 0.001,
     ];
+    $form['raven']['php']['http_compression'] = [
+      '#type'           => 'checkbox',
+      '#title'          => t('HTTP compression'),
+      '#default_value'  => $config->get('http_compression'),
+      '#description'    => t('Check to enable HTTP compression, which is recommended unless Sentry or Sentry Relay is running locally. Requires the Zlib PHP extension.'),
+      '#disabled'       => !\extension_loaded('zlib'),
+    ];
     $form['raven']['php']['performance'] = [
       '#type'           => 'details',
       '#title'          => t('Performance tracing'),
@@ -241,12 +271,19 @@ class RavenConfigForm {
       '#max'            => 1,
       '#step'           => 0.000001,
     ];
+    $trace_propagation_targets_backend = $config->get('trace_propagation_targets_backend') ?: [];
+    assert(is_array($trace_propagation_targets_backend));
+    $form['raven']['php']['performance']['trace_propagation_targets_backend'] = [
+      '#type'           => 'textarea',
+      '#title'          => t('Trace propagation targets'),
+      '#default_value'  => implode("\n", $trace_propagation_targets_backend),
+      '#description'    => t('If the host of a backend HTTP request matches one of the trace propagation targets you list here, a baggage HTTP header will be added to the request, allowing traces to be linked across backend services. Each target should be only a host, not any other parts of the URL. The baggage header will contain data such as the current route path, Drush command, environment and release.'),
+    ];
     $form['raven']['php']['cron_monitor_id'] = [
       '#type'           => 'textfield',
       '#title'          => t('Cron monitor slug'),
       '#description'    => t('To enable cron monitoring, add a cron monitor in the Sentry dashboard and specify the monitor slug here.'),
       '#default_value'  => $config->get('cron_monitor_id'),
-      '#disabled'       => !class_exists(CheckIn::class),
     ];
     $form['raven']['php']['performance']['profiles_sample_rate'] = [
       '#type'           => 'number',
@@ -256,19 +293,12 @@ class RavenConfigForm {
       '#min'            => 0,
       '#max'            => 1,
       '#step'           => 0.000001,
-      '#disabled'       => !class_exists(Profile::class) || !extension_loaded('excimer'),
-    ];
-    $form['raven']['php']['disable_deprecated_alter'] = [
-      '#type'           => 'checkbox',
-      '#title'          => t('Disable deprecated alter hooks'),
-      '#default_value'  => $config->get('disable_deprecated_alter'),
-      '#description'    => t('Check to disable the deprecated alter hooks, or uncheck if you have code that implements hook_raven_breadcrumb_alter(), hook_raven_filter_alter(), or hook_raven_options_alter().'),
+      '#disabled'       => !\extension_loaded('excimer'),
     ];
     $form['raven']['php']['test'] = [
       '#type'           => 'button',
       '#value'          => t('Send PHP test message to Sentry'),
       '#disabled'       => TRUE,
-      '#attributes'     => ['class' => [class_exists(SentrySdk::class) ? 'installed' : 'missing']],
     ];
     $form['raven']['environment'] = [
       '#type'           => 'textfield',
@@ -294,6 +324,21 @@ class RavenConfigForm {
    *   The form state.
    */
   public static function submitForm(array &$form, FormStateInterface $form_state): void {
+    $ignored_channels = $form_state->getValue(['raven', 'php', 'ignored_channels']);
+    assert(is_string($ignored_channels));
+    $trace_propagation_targets_backend = $form_state->getValue([
+      'raven',
+      'php',
+      'performance',
+      'trace_propagation_targets_backend',
+    ]);
+    assert(is_string($trace_propagation_targets_backend));
+    $trace_propagation_targets_frontend = $form_state->getValue([
+      'raven',
+      'js',
+      'trace_propagation_targets_frontend',
+    ]);
+    assert(is_string($trace_propagation_targets_frontend));
     \Drupal::configFactory()->getEditable('raven.settings')
       ->set('client_key',
         $form_state->getValue(['raven', 'php', 'client_key']))
@@ -321,6 +366,8 @@ class RavenConfigForm {
         $form_state->getValue(['raven', 'php', 'rate_limit']))
       ->set('timeout',
         $form_state->getValue(['raven', 'php', 'timeout']))
+      ->set('http_compression',
+        $form_state->getValue(['raven', 'php', 'http_compression']))
       ->set('request_tracing',
         $form_state->getValue([
           'raven',
@@ -363,6 +410,8 @@ class RavenConfigForm {
           'performance',
           '404_tracing',
         ]))
+      ->set('trace_propagation_targets_backend',
+        static::extractListFromString($trace_propagation_targets_backend))
       ->set('profiles_sample_rate',
         $form_state->getValue([
           'raven',
@@ -371,19 +420,9 @@ class RavenConfigForm {
           'profiles_sample_rate',
         ]))
       ->set('ignored_channels',
-        static::extractIgnoredChannels($form_state->getValue([
-          'raven',
-          'php',
-          'ignored_channels',
-        ])))
+        static::extractListFromString($ignored_channels))
       ->set('cron_monitor_id',
         $form_state->getValue(['raven', 'php', 'cron_monitor_id']))
-      ->set('disable_deprecated_alter',
-        $form_state->getValue([
-          'raven',
-          'php',
-          'disable_deprecated_alter',
-        ]))
       ->set('javascript_error_handler',
         $form_state->getValue(['raven', 'js', 'javascript_error_handler']))
       ->set('public_dsn',
@@ -394,10 +433,16 @@ class RavenConfigForm {
           'js',
           'browser_traces_sample_rate',
         ]))
+      ->set('trace_propagation_targets_frontend',
+        static::extractListFromString($trace_propagation_targets_frontend))
       ->set('auto_session_tracking',
         $form_state->getValue(['raven', 'js', 'auto_session_tracking']))
       ->set('send_client_reports',
         $form_state->getValue(['raven', 'js', 'send_client_reports']))
+      ->set('send_inp_spans',
+        $form_state->getValue(['raven', 'js', 'send_inp_spans']))
+      ->set('interactions_sample_rate',
+        $form_state->getValue(['raven', 'js', 'interactions_sample_rate']))
       ->set('seckit_set_report_uri',
         $form_state->getValue(['raven', 'js', 'seckit_set_report_uri']))
       ->set('show_report_dialog',
@@ -420,7 +465,19 @@ class RavenConfigForm {
    *   Array of ignored channels.
    */
   public static function extractIgnoredChannels(string $string): array {
-    return array_map('trim', preg_split('/\R/', $string, -1, PREG_SPLIT_NO_EMPTY));
+    return static::extractListFromString($string);
+  }
+
+  /**
+   * Extracts configuration list from string.
+   *
+   * @return string[]
+   *   Configuration as an array of strings.
+   */
+  public static function extractListFromString(string $string): array {
+    $ignored_channels = preg_split('/\R/', $string, -1, PREG_SPLIT_NO_EMPTY);
+    assert(is_array($ignored_channels));
+    return array_map('trim', $ignored_channels);
   }
 
 }

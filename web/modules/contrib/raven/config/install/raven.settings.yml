@@ -34,4 +34,8 @@ tunnel: false
 modules: false
 cron_monitor_id: null
 profiles_sample_rate: null
-disable_deprecated_alter: true
+http_compression: true
+send_inp_spans: false
+trace_propagation_targets_backend: []
+trace_propagation_targets_frontend: []
+interactions_sample_rate: null

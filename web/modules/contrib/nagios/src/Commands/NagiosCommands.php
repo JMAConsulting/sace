@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file Used by Drush 9 and beyond.
+ */
+
 namespace Drupal\nagios\Commands;
 
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;

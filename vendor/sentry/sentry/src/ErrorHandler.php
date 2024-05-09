@@ -155,7 +155,7 @@ final class ErrorHandler
      */
     public static function registerOnceErrorHandler(): self
     {
-        if (null === self::$handlerInstance) {
+        if (self::$handlerInstance === null) {
             self::$handlerInstance = new self();
         }
 
@@ -168,7 +168,7 @@ final class ErrorHandler
         self::$handlerInstance->isErrorHandlerRegistered = true;
         self::$handlerInstance->previousErrorHandler = set_error_handler($errorHandlerCallback);
 
-        if (null === self::$handlerInstance->previousErrorHandler) {
+        if (self::$handlerInstance->previousErrorHandler === null) {
             restore_error_handler();
 
             // Specifying the error types caught by the error handler with the
@@ -195,7 +195,7 @@ final class ErrorHandler
             throw new \InvalidArgumentException('The $reservedMemorySize argument must be greater than 0.');
         }
 
-        if (null === self::$handlerInstance) {
+        if (self::$handlerInstance === null) {
             self::$handlerInstance = new self();
         }
 
@@ -218,7 +218,7 @@ final class ErrorHandler
      */
     public static function registerOnceExceptionHandler(): self
     {
-        if (null === self::$handlerInstance) {
+        if (self::$handlerInstance === null) {
             self::$handlerInstance = new self();
         }
 
@@ -284,7 +284,7 @@ final class ErrorHandler
      */
     public function setMemoryLimitIncreaseOnOutOfMemoryErrorInBytes(?int $valueInBytes): void
     {
-        if (null !== $valueInBytes && $valueInBytes <= 0) {
+        if ($valueInBytes !== null && $valueInBytes <= 0) {
             throw new \InvalidArgumentException('The $valueInBytes argument must be greater than 0 or null.');
         }
 
@@ -309,7 +309,7 @@ final class ErrorHandler
      */
     private function handleError(int $level, string $message, string $file, int $line, ?array $errcontext = []): bool
     {
-        $isSilencedError = 0 === error_reporting();
+        $isSilencedError = error_reporting() === 0;
 
         if (\PHP_MAJOR_VERSION >= 8) {
             // Starting from PHP8, when a silenced error occurs the `error_reporting()`
@@ -338,7 +338,7 @@ final class ErrorHandler
 
         $this->invokeListeners($this->errorListeners, $errorAsException);
 
-        if (null !== $this->previousErrorHandler) {
+        if ($this->previousErrorHandler !== null) {
             return false !== ($this->previousErrorHandler)($level, $message, $file, $line, $errcontext);
         }
 
@@ -363,9 +363,9 @@ final class ErrorHandler
 
         if (!empty($error) && $error['type'] & (\E_ERROR | \E_PARSE | \E_CORE_ERROR | \E_CORE_WARNING | \E_COMPILE_ERROR | \E_COMPILE_WARNING)) {
             // If we did not do so already and we are allowed to increase the memory limit, we do so when we detect an OOM error
-            if (false === self::$didIncreaseMemoryLimit
-                && null !== $this->memoryLimitIncreaseOnOutOfMemoryErrorValue
-                && 1 === preg_match(self::OOM_MESSAGE_MATCHER, $error['message'], $matches)
+            if (self::$didIncreaseMemoryLimit === false
+                && $this->memoryLimitIncreaseOnOutOfMemoryErrorValue !== null
+                && preg_match(self::OOM_MESSAGE_MATCHER, $error['message'], $matches) === 1
             ) {
                 $currentMemoryLimit = (int) $matches['memory_limit'];
 
@@ -402,7 +402,7 @@ final class ErrorHandler
         $this->previousExceptionHandler = null;
 
         try {
-            if (null !== $previousExceptionHandler) {
+            if ($previousExceptionHandler !== null) {
                 $previousExceptionHandler($exception);
 
                 return;

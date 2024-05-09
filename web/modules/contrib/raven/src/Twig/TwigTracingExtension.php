@@ -17,33 +17,23 @@ use Twig\Profiler\Profile;
 class TwigTracingExtension extends AbstractExtension {
 
   /**
-   * Config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * The currently active spans.
    *
-   * @var \SplObjectStorage
-   *   @phpstan-ignore-next-line For compatibility with drupal/coder.
+   * @var \SplObjectStorage<\Twig\Profiler\Profile, \Sentry\Tracing\Span>
    */
-  private $spans;
+  private \SplObjectStorage $spans;
 
   /**
    * The currently active parents.
    *
-   * @var \SplObjectStorage
-   *   @phpstan-ignore-next-line For compatibility with drupal/coder.
+   * @var \SplObjectStorage<\Twig\Profiler\Profile, \Sentry\Tracing\Span>
    */
-  private $parents;
+  private \SplObjectStorage $parents;
 
   /**
    * Extension constructor.
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
-    $this->configFactory = $config_factory;
+  public function __construct(protected ConfigFactoryInterface $configFactory) {
     $this->spans = new \SplObjectStorage();
     $this->parents = new \SplObjectStorage();
   }
@@ -55,7 +45,7 @@ class TwigTracingExtension extends AbstractExtension {
    *   The profiling data.
    */
   public function enter(Profile $profile): void {
-    if (!$this->configFactory->get('raven.settings')->get('twig_tracing') || !class_exists(SentrySdk::class)) {
+    if (!$this->configFactory->get('raven.settings')->get('twig_tracing')) {
       return;
     }
 
@@ -64,9 +54,9 @@ class TwigTracingExtension extends AbstractExtension {
       return;
     }
 
-    $spanContext = new SpanContext();
-    $spanContext->setOp('template.render');
-    $spanContext->setDescription($this->getSpanDescription($profile));
+    $spanContext = SpanContext::make()
+      ->setOp('template.render')
+      ->setDescription($this->getSpanDescription($profile));
 
     $this->spans[$profile] = $parent->startChild($spanContext);
     $this->parents[$profile] = $parent;

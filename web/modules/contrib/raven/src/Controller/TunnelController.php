@@ -16,26 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
 class TunnelController extends ControllerBase {
 
   /**
-   * The HTTP client to fetch the feed data with.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $httpClient;
-
-  /**
    * Constructs a new TunnelController instance.
-   *
-   * @param \GuzzleHttp\ClientInterface $httpClient
-   *   The theme handler.
    */
-  final public function __construct(ClientInterface $httpClient) {
-    $this->httpClient = $httpClient;
+  final public function __construct(protected ClientInterface $httpClient) {
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container): self {
+  public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('http_client')
     );
@@ -56,7 +45,7 @@ class TunnelController extends ControllerBase {
 
     $pieces = explode("\n", $envelope, 2);
     $header = json_decode($pieces[0], TRUE);
-    if (!isset($header["dsn"])) {
+    if (!is_array($header) || !isset($header["dsn"])) {
       return new Response(NULL, Response::HTTP_BAD_REQUEST);
     }
     $dsn = Dsn::createFromString($header["dsn"]);
@@ -81,6 +70,10 @@ class TunnelController extends ControllerBase {
       $timeout = $config->get('timeout');
       if (NULL !== $timeout) {
         $options['connect_timeout'] = $options['timeout'] = $timeout;
+      }
+      if (\extension_loaded('zlib') && $config->get('http_compression')) {
+        $options['body'] = gzcompress($options['body'], -1, \ZLIB_ENCODING_GZIP);
+        $options['headers']['Content-Encoding'] = 'gzip';
       }
       $response = $this->httpClient->request('POST', $url, $options);
     }

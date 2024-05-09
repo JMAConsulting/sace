@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\raven\FunctionalJavascript;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 
 /**
@@ -29,6 +30,7 @@ class RavenTest extends WebDriverTestBase {
       'administer site configuration',
       'send javascript errors to sentry',
     ]);
+    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
     $this->drupalGet('admin/config/development/logging');
     $this->submitForm(['raven[js][javascript_error_handler]' => TRUE], 'Save configuration');

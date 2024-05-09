@@ -23,5 +23,4 @@ return array(
     'CA_Config' => array($vendorDir . '/totten/ca-config/src'),
     'Auth' => array($vendorDir . '/pear/auth_sasl'),
     'Archive_Tar' => array($vendorDir . '/pear/archive_tar'),
-    '' => array($vendorDir . '/pear/pear-core-minimal/src'),
 );

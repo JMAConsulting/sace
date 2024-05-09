@@ -4,9 +4,12 @@ namespace Drupal\Tests\raven\Unit;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LogMessageParserInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\raven\Logger\Raven;
 use Drupal\Tests\UnitTestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Test proxy configuration.
@@ -17,24 +20,35 @@ class ProxyConfigTest extends UnitTestCase {
 
   /**
    * Environment.
-   *
-   * @var string
    */
-  protected $environment;
+  protected string $environment;
 
   /**
    * The module handler.
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
-  protected $moduleHandler;
+  protected ModuleHandlerInterface $moduleHandler;
 
   /**
    * The message's placeholders parser.
-   *
-   * @var \Drupal\Core\Logger\LogMessageParserInterface
    */
-  protected $parser;
+  protected LogMessageParserInterface $parser;
+
+  /**
+   * Mock user.
+   */
+  protected AccountInterface $currentUser;
+
+  /**
+   * Mock request stack.
+   */
+  protected RequestStack $requestStack;
+
+  /**
+   * Mock event dispatcher.
+   */
+  protected EventDispatcherInterface $eventDispatcher;
 
   /**
    * {@inheritdoc}
@@ -44,6 +58,9 @@ class ProxyConfigTest extends UnitTestCase {
     $this->parser = $this->createMock(LogMessageParserInterface::class);
     $this->moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $this->environment = 'testing';
+    $this->currentUser = $this->createMock(AccountInterface::class);
+    $this->requestStack = $this->createMock(RequestStack::class);
+    $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
   }
 
   /**
@@ -270,18 +287,20 @@ class ProxyConfigTest extends UnitTestCase {
       ],
     ]);
 
-    new Settings([
+    $settings = new Settings([
       'http_client_config' => [
         'proxy' => $config,
       ],
     ]);
 
-    $raven = new Raven($configFactory, $this->parser, $this->moduleHandler, $this->environment);
+    $raven = new Raven($configFactory, $this->parser, $this->moduleHandler, $this->environment, $this->currentUser, $this->requestStack, $settings, $this->eventDispatcher);
     if ($proxy === 'no') {
-      self::assertEmpty($raven->getClient(TRUE)->getOptions()->getHttpProxy(), 'No proxy configured for Sentry\Client');
+      $this->assertNotNull($client = $raven->getClient(TRUE));
+      $this->assertEmpty($client->getOptions()->getHttpProxy(), 'No proxy configured for Sentry\Client');
     }
     else {
-      self::assertSame($config[$proxy], $raven->getClient(TRUE)->getOptions()->getHttpProxy(), strtoupper($proxy) . ' proxy configured for Sentry\Client');
+      $this->assertNotNull($client = $raven->getClient(TRUE));
+      $this->assertSame($config[$proxy], $client->getOptions()->getHttpProxy(), strtoupper($proxy) . ' proxy configured for Sentry\Client');
     }
   }
 

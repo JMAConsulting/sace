@@ -138,6 +138,24 @@ raven.settings:
     profiles_sample_rate:
       type: float
       label: 'Profiling sample rate'
-    disable_deprecated_alter:
+    http_compression:
       type: boolean
-      label: 'Disable deprecated alter hooks'
+      label: 'HTTP compression (requires Zlib PHP extension)'
+    send_inp_spans:
+      type: boolean
+      label: 'Send Interaction to Next Paint (INP) spans'
+    trace_propagation_targets_backend:
+      type: sequence
+      label: 'Frontend trace propagation targets'
+      sequence:
+        type: string
+        label: 'Host'
+    trace_propagation_targets_frontend:
+      type: sequence
+      label: 'Backend trace propagation targets'
+      sequence:
+        type: string
+        label: 'Regular expression'
+    interactions_sample_rate:
+      type: float
+      label: 'Interactions sample rate'

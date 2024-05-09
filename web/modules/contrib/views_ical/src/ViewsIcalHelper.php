@@ -461,14 +461,11 @@ final class ViewsIcalHelper implements ViewsIcalHelperInterface {
   public function convertOffset($offset) {
     // determine whether this has a leading or
     $hours = abs($offset / 60 / 60);
-    if ($offset > 0) {
-      $direction = '+';
-    }
-    else if ($offset < 0) {
+    if ($offset < 0) {
       $direction = '-';
     }
     else {
-      $direction = '';
+      $direction = '+';
     }
 
     // Determine if it should have any leading zeros.

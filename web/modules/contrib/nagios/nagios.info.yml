@@ -5,7 +5,7 @@ type: module
 core_version_requirement: ^8 || ^9 || ^10
 configure: nagios.settings
 
-# Information added by Drupal.org packaging script on 2022-12-29
-version: '8.x-1.17'
+# Information added by Drupal.org packaging script on 2023-12-02
+version: '8.x-1.19'
 project: 'nagios'
-datestamp: 1672318273
+datestamp: 1701518678

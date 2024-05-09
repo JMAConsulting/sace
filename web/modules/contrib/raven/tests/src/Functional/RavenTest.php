@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\raven\Functional;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -26,13 +27,14 @@ class RavenTest extends BrowserTestBase {
    */
   public function testRavenConfigAndHooks(): void {
     $admin_user = $this->drupalCreateUser(['administer site configuration']);
+    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
     $config['raven[php][client_key]'] = 'https://user@sentry.test/123456';
     $config['raven[php][fatal_error_handler]'] = 1;
-    foreach (range(1, 8) as $level) {
+    // Enable all log levels except debug.
+    foreach (range(1, 7) as $level) {
       $config["raven[php][log_levels][$level]"] = '1';
     }
-    $config['raven[php][disable_deprecated_alter]'] = 0;
     $this->drupalGet('admin/config/development/logging');
     $this->submitForm($config, 'Save configuration');
     $this->assertSession()->responseHeaderEquals('X-Logged', 'Logged');
@@ -74,6 +76,7 @@ class RavenTest extends BrowserTestBase {
    */
   public function testRavenTracing(): void {
     $admin_user = $this->drupalCreateUser(['administer site configuration']);
+    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
     $this->drupalGet('admin/config/development/logging');
     $config['raven[php][client_key]'] = 'https://user@sentry.test/123456';

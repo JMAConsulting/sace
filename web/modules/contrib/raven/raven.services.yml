@@ -3,18 +3,21 @@ services:
     class: Drupal\raven\Http\HttpClientMiddleware
     tags:
       - { name: http_client_middleware }
+    arguments:
+      - '@raven.request_subscriber'
 
   logger.raven:
     class: Drupal\raven\Logger\Raven
     arguments:
       - '@config.factory'
       - '@logger.log_message_parser'
-      - '@module_handler'
+      - null
       - '%kernel.environment%'
-      - '@?current_user'
-      - '@?request_stack'
-      - '@?settings'
-      - '@?event_dispatcher'
+      - '@current_user'
+      - '@request_stack'
+      - '@settings'
+      - '@event_dispatcher'
+      - '@?raven.request_fetcher'
     tags:
       - { name: logger }
 
@@ -27,13 +30,12 @@ services:
 
   raven.request_subscriber:
     class: Drupal\raven\EventSubscriber\RequestSubscriber
-    calls:
-      - [setContainer, ['@service_container']]
     arguments:
       - '@config.factory'
       - '@logger.raven'
       - '@datetime.time'
       - '@event_dispatcher'
+      - '@service_container'
     tags:
       - { name: event_subscriber }
 
@@ -50,3 +52,9 @@ services:
       - '@config.factory'
     tags:
       - { name: config.factory.override }
+
+  raven.request_fetcher:
+    class: Drupal\raven\Integration\RequestFetcher
+    arguments:
+      - '@request_stack'
+      - '@psr7.http_message_factory'

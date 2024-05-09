@@ -48,6 +48,7 @@
         "drupal/layout_builder_restrictions": "^2.19",
         "drupal/libraries": "^4.0",
         "drupal/link_class": "^2.1",
+        "drupal/masquerade": "^2.0@RC",
         "drupal/migrate_plus": "^6.0",
         "drupal/migrate_tools": "^6.0",
         "drupal/nagios": "^1.15",
@@ -56,6 +57,7 @@
         "drupal/paragraphs_jquery_ui_accordion": "^1.6",
         "drupal/pathauto": "^1.8",
         "drupal/quick_node_clone": "^1.16",
+        "drupal/raven": "^5.0",
         "drupal/redirect": "^1.6",
         "drupal/seven": "^1.0",
         "drupal/slick": "^2.2",
@@ -85,7 +87,8 @@
     "prefer-stable": true,
     "config": {
         "sort-packages": true,
-        "allow-plugins": true
+        "allow-plugins": true,
+        "platform-check": false
     },
     "scripts": {
        "post-drupal-scaffold-cmd": [

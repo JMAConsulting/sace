@@ -1,7 +1,6 @@
 version: '3.6'
 
 services:
-
   drupal:
     build: .
     depends_on:
@@ -14,7 +13,7 @@ services:
     restart: always
 
   db:
-    image: mariadb:10.3.7
+    image: mariadb:10.3.8
     environment:
       MYSQL_USER: drupal
       MYSQL_PASSWORD: drupal
@@ -31,11 +30,11 @@ services:
         soft: -1
         hard: -1
     ports:
-      - "4444:4444"
-      - "9515:9515"
+      - '4444:4444'
+      - '9515:9515'
     entrypoint:
       - chromedriver
-      - "--log-path=/tmp/chromedriver.log"
-      - "--verbose"
-      - "--whitelisted-ips="
-      - "--allowed-origins=*"
+      - '--log-path=/tmp/chromedriver.log'
+      - '--verbose'
+      - '--whitelisted-ips='
+      - '--allowed-origins=*'

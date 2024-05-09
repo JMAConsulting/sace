@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\raven\Functional;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -31,7 +32,7 @@ class CspTest extends BrowserTestBase {
       'administer site configuration',
       'send javascript errors to sentry',
     ]);
-
+    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
 
     $this->drupalGet('admin/config/development/logging');
@@ -53,7 +54,7 @@ class CspTest extends BrowserTestBase {
       'report-only[directives][connect-src][base]' => 'self',
     ], 'Save configuration');
 
-    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "connect-src 'self' https://domain.test/api/1/store/ https://domain.test/api/1/envelope/; object-src 'none'; script-src 'self'; style-src 'self'; frame-ancestors 'self'; report-uri https://domain.test/api/1/security/?sentry_key=a");
+    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "connect-src 'self' https://domain.test/api/1/envelope/; object-src 'none'; script-src 'self'; style-src 'self'; frame-ancestors 'self'; report-uri https://domain.test/api/1/security/?sentry_key=a");
   }
 
 }

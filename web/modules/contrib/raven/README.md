@@ -102,7 +102,7 @@ options.
 
 The Sentry JavaScript SDK configuration can be modified via the
 `hook_js_settings_alter($settings)` hook or
-`$page['#attached']['drupalSettings']['raven']['options']` object in PHP or the
+`$page['#attached']['drupalSettings']['raven']['options']` array in PHP or the
 `drupalSettings.raven.options` object in JavaScript. Sentry callbacks can be
 configured via custom JavaScript (using library weight to ensure your custom
 configuration is added early enough), for example:
@@ -258,4 +258,4 @@ is currently community-supported rather than commercially-supported, patches or
 merge requests providing improvements, new features and bug fixes are welcome
 and encouraged.
 
-- [Build status](https://www.drupal.org/node/2599354/qa)
+- [Build status](https://git.drupalcode.org/project/raven/-/pipelines?ref=5.x)

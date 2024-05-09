@@ -15,6 +15,17 @@ use Sentry\SentrySdk;
  *   documentation.
  */
 function raven_requirements(string $phase): array {
+  $requirements['raven_curl'] = [
+    'title' => t('cURL PHP extension'),
+    'description' => t('Sentry requires the cURL PHP extension to send events.'),
+  ];
+  if (extension_loaded('curl')) {
+    $requirements['raven_curl']['value'] = t('Enabled');
+  }
+  else {
+    $requirements['raven_curl']['value'] = t('Not enabled');
+    $requirements['raven_curl']['severity'] = REQUIREMENT_WARNING;
+  }
   $requirements['raven_library']['title'] = t('Sentry PHP SDK');
   if (defined(Client::class . '::SDK_VERSION')) {
     $requirements['raven_library']['value'] = Client::SDK_VERSION;
@@ -46,19 +57,24 @@ function raven_requirements(string $phase): array {
         }
         $requirements['raven_dsn']['title'] = t('Sentry DSN');
         $requirements['raven_trace']['title'] = t('Sentry reflection tracing');
-        if (\Drupal::config('raven.settings')->get('trace')) {
+        if (Drupal::config('raven.settings')->get('trace')) {
           $requirements['raven_trace']['description'] = t('Sentry reflection tracing is enabled, which may result in sensitive data being logged by Sentry.');
           $requirements['raven_trace']['value'] = t('Enabled');
         }
         else {
           $requirements['raven_trace']['value'] = t('Disabled');
         }
+        if (Drupal::config('raven.settings')->get('http_compression')) {
+          $requirements['raven_zlib']['title'] = t('Zlib PHP extension');
+          $requirements['raven_zlib']['description'] = t('Sentry HTTP request compression requires the Zlib PHP extension.');
+          $requirements['raven_zlib']['value'] = extension_loaded('zlib') ? t('Enabled') : t('Not enabled');
+        }
       }
       else {
         try {
-          \Drupal::service('logger.raven')->getClient(FALSE, TRUE);
+          Drupal::service('logger.raven')->getClient(FALSE, TRUE);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
           $requirements['raven_client'] = [
             'title' => t('Sentry client'),
             'value' => get_class($e),
@@ -67,13 +83,13 @@ function raven_requirements(string $phase): array {
           ];
         }
       }
-      $requirements['raven_excimer']['title'] = t('Sentry optional Excimer extension');
+      $requirements['raven_excimer']['title'] = t('Excimer PHP extension (optional)');
       $requirements['raven_excimer']['description'] = t('Sentry profiling requires the Excimer PHP extension.');
       $requirements['raven_excimer']['value'] = extension_loaded('excimer') ? t('Enabled') : t('Not enabled');
     }
   }
   else {
-    $requirements['raven_library']['description'] = t('Sentry PHP SDK version 3.x is required by Raven module, but is not available. Run <code>composer require drupal/raven</code> to install dependencies automatically (or <code>composer require sentry/sdk:^3</code> to install the missing SDK only).');
+    $requirements['raven_library']['description'] = t('Sentry PHP SDK version 4.x is required by Raven module, but is not available. Run <code>composer require drupal/raven</code> to install dependencies automatically (or <code>composer require sentry/sentry:^4</code> to install the missing SDK only).');
     $requirements['raven_library']['severity'] = REQUIREMENT_ERROR;
     $requirements['raven_library']['value'] = t('Not found');
   }
@@ -84,7 +100,7 @@ function raven_requirements(string $phase): array {
  * Remove obsolete polyfill_promise config.
  */
 function raven_update_8201(): void {
-  \Drupal::configFactory()->getEditable('raven.settings')
+  Drupal::configFactory()->getEditable('raven.settings')
     ->clear('polyfill_promise')
     ->save();
 }
@@ -93,7 +109,7 @@ function raven_update_8201(): void {
  * Remove obsolete send_attempts config.
  */
 function raven_update_8301(): void {
-  \Drupal::configFactory()->getEditable('raven.settings')
+  Drupal::configFactory()->getEditable('raven.settings')
     ->clear('send_attempts')
     ->save();
 }

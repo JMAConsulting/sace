@@ -29,7 +29,7 @@ nagios.settings:
           label: 'Mininum report severity'
         ua:
           type: string
-          label: 'Unique ID'
+          label: 'Unique ID for HTTP status page'
         statuspage:
           type: mapping
           label: 'Status page settings'

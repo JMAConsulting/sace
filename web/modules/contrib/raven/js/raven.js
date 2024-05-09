@@ -6,7 +6,11 @@
 ((drupalSettings, Sentry) => {
   // Add the browser performance tracing integration.
   drupalSettings.raven.options.integrations.push(
-    new Sentry.Integrations.BrowserTracing(),
+    // Additional browser tracing options can be applied by modifying
+    // drupalSettings.raven.browserTracingOptions in custom PHP or JavaScript.
+    Sentry.browserTracingIntegration(
+      drupalSettings.raven.browserTracingOptions,
+    ),
   );
 
   // Show report dialog via beforeSend callback, if enabled.
@@ -17,6 +21,19 @@
       }
       return event;
     };
+  }
+
+  // Set trace propagation targets, if configured.
+  if (drupalSettings.raven.tracePropagationTargets) {
+    drupalSettings.raven.options.tracePropagationTargets =
+      drupalSettings.raven.options.tracePropagationTargets || [];
+    // Automatically add same-origin relative URL pattern to the list.
+    drupalSettings.raven.options.tracePropagationTargets.push(/^\/(?!\/)/);
+    drupalSettings.raven.tracePropagationTargets.forEach((value) =>
+      drupalSettings.raven.options.tracePropagationTargets.push(
+        new RegExp(value, 'i'),
+      ),
+    );
   }
 
   // Additional Sentry configuration can be applied by modifying

@@ -7,7 +7,7 @@ core_version_requirement: ^8 || ^9 || ^10
 dependencies:
   - drupal:views
 
-# Information added by Drupal.org packaging script on 2023-06-30
-version: '8.x-1.0-alpha11'
+# Information added by Drupal.org packaging script on 2024-02-26
+version: '8.x-1.0-alpha13'
 project: 'views_ical'
-datestamp: 1688138276
+datestamp: 1708983542

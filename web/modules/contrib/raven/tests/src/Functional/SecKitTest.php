@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\raven\Functional;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -31,7 +32,7 @@ class SecKitTest extends BrowserTestBase {
       'send javascript errors to sentry',
       'administer seckit',
     ]);
-
+    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
 
     $this->drupalGet('admin/config/development/logging');
@@ -52,7 +53,7 @@ class SecKitTest extends BrowserTestBase {
     $this->submitForm([
       'seckit_xss[csp][default-src]' => "'self'",
     ], 'Save configuration');
-    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "default-src 'self'; connect-src 'self' https://domain.test/api/1/store/ https://domain.test/api/1/envelope/; report-uri https://domain.test/api/1/security/?sentry_key=a");
+    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "default-src 'self'; connect-src 'self' https://domain.test/api/1/envelope/; report-uri https://domain.test/api/1/security/?sentry_key=a");
   }
 
 }

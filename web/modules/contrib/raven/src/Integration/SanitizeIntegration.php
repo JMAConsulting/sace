@@ -46,7 +46,7 @@ class SanitizeIntegration implements IntegrationInterface {
    */
   private function processEvent(Event $event, Options $options): void {
     $request = $event->getRequest();
-    if (!empty($request['data']['pass'])) {
+    if (isset($request['data']) && is_array($request['data']) && !empty($request['data']['pass'])) {
       $request['data']['pass'] = self::STRING_MASK;
     }
     $event->setRequest($request);

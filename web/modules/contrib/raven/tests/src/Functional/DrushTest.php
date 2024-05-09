@@ -32,7 +32,11 @@ class DrushTest extends BrowserTestBase {
     $output = $this->getOutputRaw();
     $this->assertEmpty($output);
     $errorOutput = $this->getErrorOutputRaw();
-    $this->assertStringContainsString('[success] Message sent as event', $errorOutput);
+    $this->assertStringContainsString('Message sent as event', $errorOutput);
+    // Test capturing a message with debug logging enabled.
+    $this->drush('raven:captureMessage --debug');
+    $errorOutput = $this->getErrorOutputRaw();
+    $this->assertStringContainsString('The "Sentry\Integration\RequestIntegration, Sentry\Integration\TransactionIntegration, Sentry\Integration\FrameContextifierIntegration, Sentry\Integration\EnvironmentIntegration, Drupal\raven\Integration\SanitizeIntegration, Drupal\raven\Integration\RemoveExceptionFrameVarsIntegration" integration(s) have been installed.', $errorOutput);
   }
 
 }

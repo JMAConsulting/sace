@@ -22,20 +22,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The configuration factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * {@inheritdoc}
    *
    * @phpstan-ignore-next-line CSP doesn't yet document the configuration array.
    */
-  final public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory) {
+  final public function __construct(array $configuration, $plugin_id, $plugin_definition, protected ConfigFactoryInterface $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->configFactory = $configFactory;
   }
 
   /**
@@ -43,7 +35,7 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
    *
    * @phpstan-ignore-next-line CSP doesn't yet document the configuration array.
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     return new static(
       $configuration,
       $plugin_id,
@@ -56,9 +48,6 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function alterPolicy(Csp $policy): void {
-    if (!class_exists(Dsn::class)) {
-      return;
-    }
     $config = $this->configFactory->get('raven.settings');
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
     if (NULL === $dsn) {

@@ -15,20 +15,9 @@ use Sentry\Dsn;
 class SecKitOverrides implements ConfigFactoryOverrideInterface {
 
   /**
-   * Config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * Constructs the Security Kit config overrider.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The configuration factory object.
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
-    $this->configFactory = $config_factory;
+  public function __construct(protected ConfigFactoryInterface $configFactory) {
   }
 
   /**
@@ -39,9 +28,6 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
   public function loadOverrides($names) {
     $overrides = [];
     if (!in_array('seckit.settings', $names)) {
-      return $overrides;
-    }
-    if (!class_exists(Dsn::class)) {
       return $overrides;
     }
     $config = $this->configFactory->get('raven.settings');
@@ -71,22 +57,24 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
       $seckitConfig = $this->configFactory->getEditable('seckit.settings');
       if ($config->get('show_report_dialog')) {
         $src[] = str_replace(
-          ["/{$dsn->getProjectId(TRUE)}/", '/store/'],
+          ["/{$dsn->getProjectId()}/", '/envelope/'],
           ['/embed/', '/error-page/'],
-          $dsn->getStoreApiEndpointUrl()
+          $dsn->getEnvelopeApiEndpointUrl()
         );
-        if ($url = $config->get('error_embed_url')) {
+        if (($url = $config->get('error_embed_url')) && is_string($url)) {
           $src[] = "$url/api/embed/error-page/";
         }
         if ($script_src = $seckitConfig->get('seckit_xss.csp.script-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
           $overrides['seckit.settings']['seckit_xss']['csp']['script-src'] = implode(' ', array_merge([$script_src], $src));
         }
         if ($img_src = $seckitConfig->get('seckit_xss.csp.img-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
+          assert(is_string($img_src));
           $img = explode(' ', $img_src);
           $img[] = 'data:';
           $overrides['seckit.settings']['seckit_xss']['csp']['img-src'] = implode(' ', array_unique($img));
         }
         if ($style_src = $seckitConfig->get('seckit_xss.csp.style-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
+          assert(is_string($style_src));
           $style = explode(' ', $style_src);
           $style[] = "'unsafe-inline'";
           $overrides['seckit.settings']['seckit_xss']['csp']['style-src'] = implode(' ', array_unique($style));
@@ -95,7 +83,6 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
       if ($connect_src = $seckitConfig->get('seckit_xss.csp.connect-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
         $connect = [$connect_src];
         if (!$config->get('tunnel')) {
-          $connect[] = $dsn->getStoreApiEndpointUrl();
           $connect[] = $dsn->getEnvelopeApiEndpointUrl();
         }
         if (isset($src)) {

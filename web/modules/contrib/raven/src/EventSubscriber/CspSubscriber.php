@@ -15,13 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CspSubscriber implements EventSubscriberInterface {
 
   /**
-   * The configuration factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  private $configFactory;
-
-  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
@@ -35,12 +28,8 @@ class CspSubscriber implements EventSubscriberInterface {
 
   /**
    * CspSubscriber constructor.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory service.
    */
-  public function __construct(ConfigFactoryInterface $configFactory) {
-    $this->configFactory = $configFactory;
+  public function __construct(protected ConfigFactoryInterface $configFactory) {
   }
 
   /**
@@ -53,9 +42,6 @@ class CspSubscriber implements EventSubscriberInterface {
     $policy = $alterEvent->getPolicy();
     $config = $this->configFactory->get('raven.settings');
     if (!$config->get('javascript_error_handler')) {
-      return;
-    }
-    if (!class_exists(Dsn::class)) {
       return;
     }
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
@@ -71,17 +57,16 @@ class CspSubscriber implements EventSubscriberInterface {
     }
     $connect = [];
     if (!$config->get('tunnel')) {
-      $connect[] = $dsn->getStoreApiEndpointUrl();
       $connect[] = $dsn->getEnvelopeApiEndpointUrl();
     }
     if ($config->get('show_report_dialog')) {
       $initial_url = str_replace(
-        ["/{$dsn->getProjectId(TRUE)}/", '/store/'],
+        ["/{$dsn->getProjectId()}/", '/envelope/'],
         ['/embed/', '/error-page/'],
-        $dsn->getStoreApiEndpointUrl()
+        $dsn->getEnvelopeApiEndpointUrl()
       );
       $script[] = $initial_url;
-      if ($final_url = $config->get('error_embed_url')) {
+      if (($final_url = $config->get('error_embed_url')) && is_string($final_url)) {
         $connect[] = $script[] = "$final_url/api/embed/error-page/";
       }
       else {

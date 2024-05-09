@@ -17,7 +17,7 @@
    * Event render handler
    */
   function eventRender (info) {
-    let viewIndex = parseInt(this.el.getAttribute("calendar-view-index"));
+    let viewIndex = parseInt(this.el.getAttribute("data-calendar-view-index"));
     let viewSettings = drupalSettings.fullCalendarView[viewIndex];
     // Event title html markup.
     let eventTitleEle = info.el.getElementsByClassName('fc-title');
@@ -38,13 +38,25 @@
     if (viewSettings.dialogModal) {
       if ($(info.el).is('a')) {
         $(info.el).addClass('use-ajax');
-        $(info.el).attr('data-dialog-type', 'modal');
+        if (!viewSettings.dialogCanvas) {
+          $(info.el).attr('data-dialog-type', 'modal');
+        }
+        else {
+          $(info.el).attr('data-dialog-type', 'dialog');
+          $(info.el).attr('data-dialog-renderer', 'off_canvas');
+        }
         $(info.el).attr('data-dialog-options', viewSettings.dialog_modal_options);
         $(info.el).attr('href', $(info.el).attr('href').replaceAll('&amp;', '&'));
       }
       else {
         $(info.el).find('a').each(function(){
-          $(this).attr('data-dialog-type', 'modal');
+          if (!viewSettings.dialogCanvas) {
+            $(this).attr('data-dialog-type', 'modal');
+          }
+          else {
+            $(this).attr('data-dialog-type', 'dialog');
+            $(this).attr('data-dialog-renderer', 'off_canvas');
+          }
           $(this).attr('data-dialog-options', viewSettings.dialog_modal_options);
           $(this).addClass('use-ajax');
           $(this).attr('href', $(this).attr('href').replaceAll('&amp;', '&'));
@@ -60,7 +72,7 @@
     const start = info.event.start;
     let strEnd = '';
     let strStart = '';
-    let viewIndex = parseInt(this.el.getAttribute("calendar-view-index"));
+    let viewIndex = parseInt(this.el.getAttribute("data-calendar-view-index"));
     let viewSettings = drupalSettings.fullCalendarView[viewIndex];
     const formatSettings = {
         month: '2-digit',
@@ -129,18 +141,18 @@
         });
     }
   }
-  
+
   // Day entry click call back function.
   function dayClickCallback(info) {
     slotDate = info.dateStr;
   }
-  
+
   // Event click call back function.
   function eventClick(info) {
     slotDate = null;
     info.jsEvent.preventDefault();
     let thisEvent = info.event;
-    let viewIndex = parseInt(this.el.getAttribute("calendar-view-index"));
+    let viewIndex = parseInt(this.el.getAttribute("data-calendar-view-index"));
     let viewSettings = drupalSettings.fullCalendarView[viewIndex];
     let des = thisEvent.extendedProps.des;
     // Show the event detail in a pop up dialog.
@@ -149,7 +161,7 @@
       if ( des == '') {
         return false;
       }
-      
+
       const jsFrame = new JSFrame({
         parentElement:info.el,//Set the parent element to which the jsFrame is attached here
       });
@@ -163,10 +175,7 @@
       dialogOptions.html = des;
       //Create window
       dialogs[dialogIndex] = jsFrame.create(dialogOptions);
-      
-      let jsFrameEvent = $.Event('jsframe_create');
-      jsFrameEvent.jsFrame = dialogs[dialogIndex];
-      $(this.el).trigger(jsFrameEvent);
+
       dialogs[dialogIndex].show();
       dialogIndex++;
 
@@ -193,14 +202,14 @@
 
     return false;
   }
-  
+
   // Event drop call back function.
   function eventDrop(info) {
     const end = info.event.end;
     const start = info.event.start;
     let strEnd = '';
     let strStart = '';
-    let viewIndex = parseInt(this.el.getAttribute("calendar-view-index"));
+    let viewIndex = parseInt(this.el.getAttribute("data-calendar-view-index"));
     let viewSettings = drupalSettings.fullCalendarView[viewIndex];
     const formatSettings = {
         month: '2-digit',
@@ -282,11 +291,15 @@
   // Build the calendar objects.
   function buildCalendars() {
     $('.js-drupal-fullcalendar')
-    .each(function() {              
+    .each(function() {
       let calendarEl = this;
-      let viewIndex = parseInt(calendarEl.getAttribute("calendar-view-index"));
+      let viewIndex = parseInt(calendarEl.getAttribute("data-calendar-view-index"));
       let viewSettings = drupalSettings.fullCalendarView[viewIndex];
       var calendarOptions = JSON.parse(viewSettings.calendar_options);
+      // Switch default view at mobile widths.
+      if (calendarOptions.mobileWidth !== undefined && calendarOptions.defaultMobileView !== undefined && $(window).width() <= calendarOptions.mobileWidth) {
+       calendarOptions.defaultView = calendarOptions.defaultMobileView;
+      }
       // Bind the render event handler.
       calendarOptions.eventRender = eventRender;
       // Bind the resize event handler.
@@ -333,7 +346,7 @@
           // when the selected option changes, dynamically change the calendar option
           localeSelectorEl.addEventListener('change', function() {
             if (this.value) {
-              let viewIndex = parseInt(this.getAttribute("calendar-view-index")); 
+              let viewIndex = parseInt(this.getAttribute("data-calendar-view-index"));
               drupalSettings.calendar[viewIndex].setOption('locale', this.value);
             }
           });
@@ -341,10 +354,10 @@
         else if (localeSelectorEl){
           localeSelectorEl.style.display = "none";
         }
-        
+
         // Double click event.
         calendarEl.addEventListener('dblclick' , function(e) {
-          let viewIndex = parseInt(this.getAttribute("calendar-view-index"));
+          let viewIndex = parseInt(this.getAttribute("data-calendar-view-index"));
           let viewSettings = drupalSettings.fullCalendarView[viewIndex];
           // New event window can be open if following conditions match.
           // * The new event content type are specified.
@@ -374,7 +387,7 @@
       }
     });
   }
-  
+
   // document.ready event does not work with BigPipe.
   // The workaround is to ckeck the document state
   // every 100 milliseconds until it is completed.
@@ -389,10 +402,10 @@
       buildCalendars();
     }
   }, 100);
-  
+
   // After an Ajax call, the calendar objects need to rebuild,
   // to reflect the changes, such as Ajax filter.
-  $( document ).ajaxComplete(function( event, request, settings ) {    
+  $( document ).ajaxComplete(function( event, request, settings ) {
     // Remove the existing calendars except updating Ajax events.
     if (
         drupalSettings.calendar &&
@@ -407,5 +420,5 @@
       buildCalendars();
     }
   });
-  
+
 })(jQuery, Drupal);

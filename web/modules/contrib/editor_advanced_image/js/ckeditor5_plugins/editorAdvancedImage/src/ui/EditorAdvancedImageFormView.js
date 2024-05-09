@@ -7,7 +7,8 @@ import {
   LabeledFieldView,
   LabelView,
   View,
-  createLabeledInputText
+  createLabeledInputText,
+  FormHeaderView,
 } from "ckeditor5/src/ui";
 import { KeystrokeHandler } from "ckeditor5/src/utils";
 import { icons } from "ckeditor5/src/core";
@@ -29,6 +30,14 @@ export default class EditorAdvancedImageFormView extends View {
     this.options = options;
 
     /**
+     * A collection of child views in the form.
+     *
+     * @readonly
+     * @type {module:ui/viewcollection~ViewCollection}
+     */
+    this.children = this.createCollection();
+
+    /**
      * An instance of the {@link module:utils/keystrokehandler~KeystrokeHandler}.
      *
      * @readonly
@@ -37,20 +46,13 @@ export default class EditorAdvancedImageFormView extends View {
     this.keystrokes = new KeystrokeHandler();
 
     /**
-     * The form title.
-     *
-     * @member {module:ui/label/labelview~LabelView} #classAttrInput
-     */
-    this.formTitle = this._createLabelView("Editor Advanced Image");
-
-    /**
      * The Class attribute input.
      *
      * @member {module:ui/labeledfield/labeledfieldview~LabeledFieldView} #classAttrInput
      */
     this.classAttrInput = this._createLabeledInputView(
       "CSS classes",
-      "List of CSS classes to be added to the image, separated by spaces."
+      "List of CSS classes to be added to the image, separated by spaces.",
     );
 
     /**
@@ -60,7 +62,7 @@ export default class EditorAdvancedImageFormView extends View {
      */
     this.titleAttrInput = this._createLabeledInputView(
       "Title",
-      "Populates the title attribute of the image, usually shown as a small tooltip on hover."
+      "Populates the title attribute of the image, usually shown as a small tooltip on hover.",
     );
 
     /**
@@ -70,7 +72,7 @@ export default class EditorAdvancedImageFormView extends View {
      */
     this.idAttrInput = this._createLabeledInputView(
       "ID",
-      "Usually used to linking to this content using a https://en.wikipedia.org/wiki/Fragment_identifier. Must be unique on the page."
+      "Usually used to linking to this content using a https://en.wikipedia.org/wiki/Fragment_identifier. Must be unique on the page.",
     );
 
     /**
@@ -82,7 +84,7 @@ export default class EditorAdvancedImageFormView extends View {
       Drupal.t("Save"),
       icons.check,
       "ck-button-save",
-      "save"
+      "save",
     );
 
     /**
@@ -94,57 +96,56 @@ export default class EditorAdvancedImageFormView extends View {
       Drupal.t("Cancel"),
       icons.cancel,
       "ck-button-cancel",
-      "cancel"
+      "cancel",
     );
 
-    // Build the children form items.
-    const children = [
-      {
-        tag: "div",
-        attributes: {
-          class: ["ck"]
-        },
-        children: [this.formTitle]
-      }
-    ];
+    // Form header.
+    this.children.add(
+      new FormHeaderView(locale, {
+        label: this.t("Editor Advanced Image"),
+      }),
+    );
+
+    // Properties Form Panel (ID, Class, Title) Input(s) row.
+    // ------------------------------------------------
+    this.children.add(
+      this._createRowView([this._createLabelView("Properties")]),
+    );
 
     // Add each inputs only if the attribute is allowed.
+    // The "class" input.
     if (this.options.allowedAttributes.includes("class")) {
-      children.push(this.classAttrInput);
+      this.children.add(this._createRowView([this.classAttrInput]));
     }
 
-    // Add each inputs only if the attribute is allowed.
+    // The "title" input.
     if (this.options.allowedAttributes.includes("title")) {
-      children.push(this.titleAttrInput);
+      this.children.add(this._createRowView([this.titleAttrInput]));
     }
 
-    // Add each inputs only if the attribute is allowed.
+    // The "id" input.
     if (this.options.allowedAttributes.includes("id")) {
-      children.push(this.idAttrInput);
+      this.children.add(this._createRowView([this.idAttrInput]));
     }
 
-    children.push(this.saveButtonView);
-    children.push(this.cancelButtonView);
+    // Actions (Save & Cancel). row.
+    // ------------------------------------------------
+    this.children.add(
+      this._createRowView(
+        [this.saveButtonView, this.cancelButtonView],
+        ["ck-table-form__action-row"],
+      ),
+    );
 
     this.setTemplate({
       tag: "form",
-
       attributes: {
-        class: [
-          "ck",
-          "ck-vertical-form",
-          "ck-editor-advanced-image",
-          "ck-responsive-form"
-        ],
-
-        // https://github.com/ckeditor/ckeditor5-image/issues/40
-        tabindex: "-1"
+        class: ["ck", "ck-form", "ck-editor-advanced-image"],
+        // https://github.com/ckeditor/ckeditor5-link/issues/90 & https://github.com/ckeditor/ckeditor5-image/issues/40
+        tabindex: "-1",
       },
-
-      children
+      children: this.children,
     });
-
-    // injectCssTransitionDisabler(this);
   }
 
   /**
@@ -192,13 +193,13 @@ export default class EditorAdvancedImageFormView extends View {
     button.set({
       label,
       icon,
-      tooltip: true
+      withText: true,
     });
 
     button.extendTemplate({
       attributes: {
-        class: className
-      }
+        class: className,
+      },
     });
 
     if (eventName) {
@@ -219,12 +220,33 @@ export default class EditorAdvancedImageFormView extends View {
   _createLabeledInputView(label, infoText) {
     const labeledInput = new LabeledFieldView(
       this.locale,
-      createLabeledInputText
+      createLabeledInputText,
     );
 
     labeledInput.label = Drupal.t(label);
     labeledInput.infoText = Drupal.t(infoText);
 
     return labeledInput;
+  }
+
+  /**
+   * Creates a complex Row View.
+   *
+   * @returns {module:ui/view~View}
+   *   The Row view.
+   *
+   * @private
+   */
+  _createRowView(children, classes) {
+    const view = new View();
+    view.setTemplate({
+      tag: "div",
+      attributes: {
+        class: ["ck", "ck-form__row", classes !== undefined ? classes : ""],
+      },
+      children,
+    });
+
+    return view;
   }
 }

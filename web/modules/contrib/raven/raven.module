@@ -27,48 +27,86 @@ function raven_page_attachments(array &$page): void {
     return;
   }
   // Other modules can attach Sentry browser client options to the page.
-  if (!isset($page['#attached']['drupalSettings']['raven']['options'])) {
-    $page['#attached']['drupalSettings']['raven']['options'] = new \stdClass();
-  }
-  $page['#attached']['drupalSettings']['raven']['options']->dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-  $page['#attached']['drupalSettings']['raven']['options']->environment = empty($_SERVER['SENTRY_ENVIRONMENT']) ? ($config->get('environment') ?: \Drupal::getContainer()->getParameter('kernel.environment')) : $_SERVER['SENTRY_ENVIRONMENT'];
+  $page['#attached']['drupalSettings']['raven']['options']['dsn'] = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
+  $page['#attached']['drupalSettings']['raven']['options']['environment'] = empty($_SERVER['SENTRY_ENVIRONMENT']) ? ($config->get('environment') ?: \Drupal::getContainer()->getParameter('kernel.environment')) : $_SERVER['SENTRY_ENVIRONMENT'];
   if (!empty($_SERVER['SENTRY_RELEASE'])) {
-    $page['#attached']['drupalSettings']['raven']['options']->release = $_SERVER['SENTRY_RELEASE'];
+    $page['#attached']['drupalSettings']['raven']['options']['release'] = $_SERVER['SENTRY_RELEASE'];
   }
   elseif ($release = $config->get('release')) {
-    $page['#attached']['drupalSettings']['raven']['options']->release = $release;
+    $page['#attached']['drupalSettings']['raven']['options']['release'] = $release;
   }
-  $page['#attached']['drupalSettings']['raven']['options']->integrations = [];
+  $page['#attached']['drupalSettings']['raven']['options']['integrations'] = [];
   if (!is_null($traces = $config->get('browser_traces_sample_rate'))) {
-    $page['#attached']['drupalSettings']['raven']['options']->tracesSampleRate = $traces;
+    $page['#attached']['drupalSettings']['raven']['options']['tracesSampleRate'] = $traces;
   }
-  $page['#attached']['drupalSettings']['raven']['options']->autoSessionTracking = $config->get('auto_session_tracking');
-  $page['#attached']['drupalSettings']['raven']['options']->sendClientReports = $config->get('send_client_reports');
+  $page['#attached']['drupalSettings']['raven']['options']['autoSessionTracking'] = $config->get('auto_session_tracking');
+  $page['#attached']['drupalSettings']['raven']['options']['sendClientReports'] = $config->get('send_client_reports');
 
   if ($config->get('tunnel')) {
     $url = Url::fromRoute('raven.tunnel');
-    $page['#attached']['drupalSettings']['raven']['options']->tunnel = $url->toString();
+    $page['#attached']['drupalSettings']['raven']['options']['tunnel'] = $url->toString();
   }
   $page['#attached']['drupalSettings']['raven']['showReportDialog'] = $config->get('show_report_dialog');
+  // Other modules can attach browser tracing options to the page.
+  $page['#attached']['drupalSettings']['raven']['browserTracingOptions']['enableInp'] = $config->get('send_inp_spans');
+  $page['#attached']['drupalSettings']['raven']['browserTracingOptions']['interactionsSampleRate'] = $config->get('interactions_sample_rate') ?? 1;
+  if ($trace_propagation_targets = $config->get('trace_propagation_targets_frontend')) {
+    $page['#attached']['drupalSettings']['raven']['tracePropagationTargets'] = $trace_propagation_targets;
+  }
   $page['#attached']['library'][] = 'raven/raven';
-  // Add sentry-trace meta tag for attaching traces to errors.
-  $placeholder = Crypt::randomBytesBase64();
+  // Add meta tag placeholders for attaching traces to errors.
+  $random = Crypt::randomBytesBase64(45);
+  $placeholders = [substr($random, 0, 20), substr($random, 20, 20), substr($random, 40, 20)];
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' => 'baggage',
+        'content' => $placeholders[0],
+      ],
+      '#attached' => [
+        'placeholders' => [
+          $placeholders[0] => [
+            '#lazy_builder' => ['raven.request_subscriber:getBaggage', []],
+          ],
+        ],
+      ],
+    ],
+    'raven_baggage',
+  ];
   $page['#attached']['html_head'][] = [
     [
       '#tag' => 'meta',
       '#attributes' => [
         'name' => 'sentry-trace',
-        'content' => $placeholder,
+        'content' => $placeholders[1],
       ],
       '#attached' => [
         'placeholders' => [
-          $placeholder => [
+          $placeholders[1] => [
             '#lazy_builder' => ['raven.request_subscriber:getTraceparent', []],
           ],
         ],
       ],
     ],
     'raven_sentry_trace',
+  ];
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' => 'traceparent',
+        'content' => $placeholders[2],
+      ],
+      '#attached' => [
+        'placeholders' => [
+          $placeholders[2] => [
+            '#lazy_builder' => ['raven.request_subscriber:getW3cTraceparent', []],
+          ],
+        ],
+      ],
+    ],
+    'raven_traceparent',
   ];
 }
 
@@ -117,10 +155,7 @@ function raven_help(?string $route_name): array {
  * Implements hook_cron().
  */
 function raven_cron(): void {
-  if (!$slug = \Drupal::config('raven.settings')->get('cron_monitor_id')) {
-    return;
-  }
-  if (!class_exists(CheckIn::class)) {
+  if ((!$slug = \Drupal::config('raven.settings')->get('cron_monitor_id')) || !is_string($slug)) {
     return;
   }
   $hub = SentrySdk::getCurrentHub();
@@ -149,9 +184,6 @@ function raven_cron(): void {
  */
 function raven_monitoring_run_sensors(array $results): void {
   if (!\Drupal::config('raven.settings')->get('send_monitoring_sensor_status_changes')) {
-    return;
-  }
-  if (!class_exists(Severity::class)) {
     return;
   }
   $levels = [
