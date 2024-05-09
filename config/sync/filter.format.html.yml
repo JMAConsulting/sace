@@ -4,27 +4,32 @@ status: true
 dependencies:
   module:
     - blazy
-    - media
+    - slick
 name: html
 format: html
 weight: 0
 filters:
-  filter_url:
-    id: filter_url
+  blazy_filter:
+    id: blazy_filter
+    provider: blazy
+    status: false
+    weight: 3
+    settings:
+      filter_tags:
+        img: img
+        iframe: iframe
+      media_switch: ''
+      box_style: ''
+      box_media_style: ''
+      hybrid_style: ''
+      use_data_uri: '0'
+      box_caption: ''
+  filter_autop:
+    id: filter_autop
     provider: filter
     status: true
     weight: 0
-    settings:
-      filter_url_length: 72
-  media_embed:
-    id: media_embed
-    provider: media
-    status: false
-    weight: 100
-    settings:
-      default_view_mode: default
-      allowed_view_modes: {  }
-      allowed_media_types: {  }
+    settings: {  }
   filter_html:
     id: filter_html
     provider: filter
@@ -34,23 +39,18 @@ filters:
       allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <span> <sup> <sub> <hr> <img src alt data-entity-type data-entity-uuid> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <p> <h1> <pre>'
       filter_html_help: true
       filter_html_nofollow: false
-  blazy_filter:
-    id: blazy_filter
-    provider: blazy
-    status: false
-    weight: 3
-    settings:
-      media_switch: ''
-      hybrid_style: ''
-      box_style: ''
-      box_caption: ''
-      filter_tags:
-        img: img
-        iframe: iframe
-      use_data_uri: '0'
-  filter_autop:
-    id: filter_autop
+  filter_url:
+    id: filter_url
     provider: filter
     status: true
     weight: 0
-    settings: {  }
+    settings:
+      filter_url_length: 72
+  slick_filter:
+    id: slick_filter
+    provider: slick
+    status: false
+    weight: 4
+    settings:
+      optionset: default
+      media_switch: ''

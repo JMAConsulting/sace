@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - filter.format.html
+    - filter.format.webform_default
   module:
     - civicrm
     - file
@@ -30,6 +31,7 @@ permissions:
   - 'profile view'
   - 'register for events'
   - 'use text format html'
+  - 'use text format webform_default'
   - 'view event info'
   - 'view event participants'
   - 'view media'

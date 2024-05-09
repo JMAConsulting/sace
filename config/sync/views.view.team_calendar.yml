@@ -1530,7 +1530,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: ''
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -4139,7 +4138,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - user
         - user.roles
       tags:
         - 'config:field.storage.user.field_calendar_colour'
@@ -5733,11 +5731,10 @@ display:
             title_enable: false
             title: All
           title_enable: true
-          title: '{{ arguments.tid|replace({''No name'': ''''}) }} Team Calendar'
+          title: "{{ arguments.tid|replace({'No name': ''}) }} Team Calendar"
           default_argument_type: fixed
           default_argument_options:
             argument: ''
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true

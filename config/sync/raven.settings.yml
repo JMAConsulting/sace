@@ -13,7 +13,7 @@ log_levels:
   7: 0
   8: 0
 stack: true
-timeout: !!float 2
+timeout: 2.0
 message_limit: 2048
 trace: false
 fatal_error_handler: false
@@ -28,7 +28,7 @@ send_user_data: false
 rate_limit: 0
 send_request_body: true
 request_tracing: true
-traces_sample_rate: !!float 1
+traces_sample_rate: 1.0
 browser_traces_sample_rate: null
 database_tracing: true
 twig_tracing: false
@@ -43,5 +43,5 @@ error_embed_url: ''
 tunnel: true
 modules: false
 cron_monitor_id: ''
-profiles_sample_rate: !!float 1
-disable_deprecated_alter: true
+profiles_sample_rate: 1.0
+http_compression: true
