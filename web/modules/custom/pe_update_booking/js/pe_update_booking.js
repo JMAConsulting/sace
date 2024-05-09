@@ -47,12 +47,14 @@ $('#existing-org').on('click', function (e) {
   e.preventDefault();
   $(`${field1}`).show();
   $(`${fieldset}`).hide();
+  $(this).parent().hide();
 });
 
 $('#new-org-block').on('click', function (e) {
     e.preventDefault();
     $(`${fieldset}`).show();
     $(`${field1}`).hide();
+    $('#existing-org').parent().hide();
 });
 
   if (bt == 204 || bt == 203) {
