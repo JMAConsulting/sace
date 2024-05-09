@@ -13,7 +13,7 @@ archive: false
 id: intake_adult
 title: 'OLD - CLIN Intake Form Adult'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   civicrm_1_contact_1_fieldset_fieldset:
     '#type': fieldset
@@ -438,6 +438,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -582,7 +584,7 @@ handlers:
       2_contact_type: individual
       2_webform_label: Client
       civicrm_2_contact_1_contact_contact_sub_type:
-        client: client
+        Client: Client
       contact_2_number_of_cg6: '0'
       contact_2_number_of_cg10: '1'
       contact_2_settings_dynamic_custom_cg10: 0
@@ -756,7 +758,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  client: client
+                  Client: Client
                 webform_label: Client
             number_of_cg6: '0'
             number_of_cg10: '1'

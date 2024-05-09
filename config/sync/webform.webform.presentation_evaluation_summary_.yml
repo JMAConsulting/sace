@@ -13,7 +13,7 @@ archive: false
 id: presentation_evaluation_summary_
 title: 'Evaluation Summary'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   booking_request_summary_view:
     '#type': view

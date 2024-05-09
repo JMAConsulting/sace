@@ -26,14 +26,6 @@ class CivicrmEntityStorageSchema extends SqlContentEntityStorageSchema {
    */
   public function onEntityTypeCreate(EntityTypeInterface $entity_type) {
     $this->checkEntityType($entity_type);
-
-    // Create dedicated field tables.
-    $table_mapping = $this->storage->getTableMapping();
-    foreach ($this->fieldStorageDefinitions as $field_storage_definition) {
-      if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
-        $this->createDedicatedTableSchema($field_storage_definition);
-      }
-    }
   }
 
   /**
@@ -56,6 +48,13 @@ class CivicrmEntityStorageSchema extends SqlContentEntityStorageSchema {
    */
   public function requiresFieldStorageSchemaChanges(FieldStorageDefinitionInterface $storage_definition, FieldStorageDefinitionInterface $original) {
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function onFieldableEntityTypeCreate(EntityTypeInterface $entity_type, array $field_storage_definitions) {
+    return;
   }
 
 }

@@ -9,7 +9,7 @@ namespace Drupal\webform_civicrm;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
-use Drupal\File\Entity\File;
+use Drupal\file\Entity\File;
 
 /**
  * Class WebformCivicrmBase
@@ -184,10 +184,6 @@ abstract class WebformCivicrmBase {
           // Extra processing for addresses
           if ($ent == 'address') {
             foreach ($result as &$address) {
-              // Translate to abbr
-              if (!empty($address['state_province_id'])) {
-                $address['state_province_id'] = $this->utils->wf_crm_state_abbr($address['state_province_id']);
-              }
               // Load custom data
               if (isset($address['id'])){
                 $custom = $this->getCustomData($address['id'], 'address');
@@ -369,7 +365,7 @@ abstract class WebformCivicrmBase {
    * @param array $values
    * @return array $reorderedArray
    */
-  protected function matchLocationTypes($c, $ent, &$values){
+  protected function matchLocationTypes($c, $ent, &$values) {
     // create temporary settings array to include 'user-select' fields
     // on the right place in array
     $settingsArray = $this->add_user_select_field_placeholder($ent, $this->settings['data']['contact'][$c]);
@@ -377,34 +373,34 @@ abstract class WebformCivicrmBase {
     // Go through the array and match up locations by type
     // Put placeholder 'user-select' where location_type_id is empty for second pass
     foreach ($settingsArray[$ent] as $setting) {
-      $valueFound = false;
-      foreach($values as $key => $value){
+      $valueFound = FALSE;
+      foreach ($values as $key => $value) {
         if ((in_array($ent, ['address', 'email']) && $value['location_type_id'] == $setting['location_type_id'])
-            || (
-              $value['location_type_id'] == $setting['location_type_id'] &&
-              (
-                !isset($setting[$ent.'_type_id']) ||
-                (isset($value[$ent.'_type_id'])) && $value[$ent.'_type_id'] == $setting[$ent.'_type_id']
-              )
+          || (
+            isset($setting['location_type_id']) && $value['location_type_id'] == $setting['location_type_id'] &&
+            (
+              !isset($setting[$ent . '_type_id']) ||
+              (isset($value[$ent . '_type_id'])) && $value[$ent . '_type_id'] == $setting[$ent . '_type_id']
             )
+          )
         ) {
-            $reorderedArray[$key] = $value;
-            $valueFound = true;
-            unset($values[$key]);
-            break;
+          $reorderedArray[$key] = $value;
+          $valueFound = TRUE;
+          unset($values[$key]);
+          break;
         }
         // For 'user-select' fields
-        else if (empty($setting['location_type_id'])) {
-          $valueFound = true;
-          $reorderedArray['us'.$userSelectIndex] = 'user-select';
-          $userSelectIndex ++;
+        elseif (empty($setting['location_type_id'])) {
+          $valueFound = TRUE;
+          $reorderedArray['us' . $userSelectIndex] = 'user-select';
+          $userSelectIndex++;
           break;
         }
       }
 
       // always keep number of returned values equal to chosen settings
       // if value is not found then set an empty array
-      if (!$valueFound){
+      if (!$valueFound) {
         $reorderedArray[] = [];
       }
     }
@@ -608,6 +604,7 @@ abstract class WebformCivicrmBase {
       'membership_type_id' => ['IN' => $membership_types],
       // skip membership through Inheritance.
       'owner_membership_id' => ['IS NULL' => 1],
+      'options' => ['sort' => 'end_date DESC'],
     ]);
     if (!$existing) {
       return [];
@@ -621,8 +618,9 @@ abstract class WebformCivicrmBase {
       $membership['is_active'] = $status_types[$membership['status_id']]['is_current_member'];
       $membership['status'] = $status_types[$membership['status_id']]['label'];
       $list = $membership['is_active'] ? 'active' : 'expired';
-      array_unshift($$list, $membership);
+      $$list[] = $membership;
     }
+
     return array_merge($active, $expired);
   }
 

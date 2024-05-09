@@ -23,6 +23,9 @@ theme_switcher.rule.*:
     admin_theme:
       type: string
       label: 'Admin theme'
+    conjunction:
+      type: string
+      label: 'Conjunction'
     visibility:
       type: sequence
       label: 'Visibility Conditions'

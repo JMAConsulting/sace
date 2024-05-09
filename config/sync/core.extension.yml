@@ -14,7 +14,6 @@ module:
   charts: 0
   charts_google: 0
   civicrm: 0
-  civicrm_entity: 0
   civicrm_entity_vf: 0
   civicrmtheme: 0
   ckeditor: 0
@@ -73,6 +72,7 @@ module:
   ped_online_course_booking_request: 0
   ped_online_course_booking_update: 0
   raven: 0
+  phpass: 0
   redirect: 0
   rest: 0
   sace_activity_schedule_modification: 0
@@ -105,9 +105,12 @@ module:
   webform_attachment: 0
   webform_civicrm: 0
   webform_examples: 0
+  webform_jqueryui_datepicker: 0
+  webform_location_places: 0
   webform_options_limit: 0
   webform_templates: 0
   webform_ui: 0
+  civicrm_entity: 1
   pathauto: 1
   views: 10
   minimal: 1000

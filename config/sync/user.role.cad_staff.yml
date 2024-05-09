@@ -1,9 +1,12 @@
 uuid: 3f65358f-3f25-4819-abfd-d76f5d5f4392
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: cad_staff
 label: 'CAD Staff'
 weight: -16
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

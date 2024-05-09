@@ -29,7 +29,7 @@ class FieldOptions implements FieldOptionsInterface {
         list($contact_types, $sub_types) = $utils->wf_crm_get_contact_types();
         $ret = wf_crm_aval($sub_types, $data['contact'][$c]['contact'][1]['contact_type'], []);
       }
-      elseif (isset($field['type']) && $field['type'] === 'civicrm_number') {
+      elseif ((strpos($name, 'state_province_id') !== false) || (isset($field['type']) && $field['type'] === 'civicrm_number')) {
         return [];
       }
       elseif ($name === 'relationship_type_id') {
@@ -67,7 +67,12 @@ class FieldOptions implements FieldOptionsInterface {
         $ret = $utils->wf_crm_get_tags($ent, wf_crm_aval($split, 1));
       }
       elseif (isset($field['table']) && $field['table'] === 'group') {
-        $ret = $utils->wf_crm_apivalues('group', 'get', ['is_hidden' => 0], 'title');
+        $params = ['is_hidden' => 0];
+        $options = wf_crm_aval($data, "contact:$c:other:1:group");
+        if (!empty($options) && !empty($options['public_groups'])) {
+          $params['visibility'] = "Public Pages";
+        }
+        $ret = $utils->wf_crm_apivalues('group', 'get',  $params, 'title');
       }
       elseif ($name === 'survey_id') {
         $ret = $utils->wf_crm_get_surveys(wf_crm_aval($data, "activity:$c:activity:1", []));

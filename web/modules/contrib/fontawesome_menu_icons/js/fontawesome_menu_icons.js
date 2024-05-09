@@ -13,14 +13,12 @@
    */
   Drupal.behaviors.initFontAwesomeIconPicker = {
     attach: function (context) {
-      $(context)
-        .find('input[name="fa_icon"]')
-        .once('init-font-awesome-icon-picker')
-        .each(function () {
+      once('init-font-awesome-icon-picker', 'input[name="fa_icon"]', context)
+        .forEach(function (item) {
           if ($.fn.iconpicker) {
-            var $this = $(this);
+            var $item = $(item);
 
-            $this.iconpicker({
+            $item.iconpicker({
               placement: 'topRight',
               hideOnSelect: true,
               templates: {
@@ -35,7 +33,7 @@
               }
             });
 
-            $this.on('iconpickerSelected', function (event) {
+            $item.on('iconpickerSelected', function (event) {
               var $input = $('input[name="fa_icon"]');
               var $type = $('select[name="fa_icon_prefix"]');
               var parts = event.iconpickerValue.split(' ');

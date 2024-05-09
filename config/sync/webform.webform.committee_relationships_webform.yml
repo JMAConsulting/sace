@@ -13,7 +13,7 @@ archive: false
 id: committee_relationships_webform
 title: 'ADMIN Committee Relationships'
 description: ''
-category: ADMIN
+categories: {  }
 elements: |-
   flexbox:
     '#type': webform_flexbox
@@ -193,6 +193,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -373,7 +375,7 @@ handlers:
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 1
-      message: 'You are viewing this form as [display name]. Please {click here if that''s not you}.'
+      message: "You are viewing this form as [display name]. Please {click here if that's not you}."
       activity_number_of_activity: '0'
       participant_reg_type: '0'
       reg_options:

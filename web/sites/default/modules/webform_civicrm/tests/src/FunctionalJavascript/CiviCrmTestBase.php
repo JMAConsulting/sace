@@ -11,7 +11,7 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 // @todo move into civicrm-drupal-8 package - DONE
 abstract class CiviCrmTestBase extends WebDriverTestBase {
 
-  protected $defaultTheme = 'classy';
+  protected $defaultTheme = 'starterkit_theme';
 
   protected static $modules = [
     'block',
@@ -21,7 +21,7 @@ abstract class CiviCrmTestBase extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->drupalPlaceBlock('page_title_block');
     $this->drupalPlaceBlock('local_tasks_block');

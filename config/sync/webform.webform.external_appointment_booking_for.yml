@@ -14,7 +14,7 @@ archive: false
 id: external_appointment_booking_for
 title: 'Schedule an Activity'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   civicrm_1_contact_1_cg52_fieldset:
     '#type': fieldset
@@ -88,14 +88,30 @@ elements: |-
       '#parent': civicrm_1_contact_1_fieldset_fieldset
       '#title': 'Postal Code'
     civicrm_1_contact_1_address_state_province_id:
-      '#type': textfield
+      '#type': civicrm_options
       '#extra':
-        maxlength: 5
-        width: 4
+        aslist: 1
       '#data_type': state_province_abbr
       '#form_key': civicrm_1_contact_1_address_state_province_id
       '#parent': civicrm_1_contact_1_fieldset_fieldset
       '#title': State/Province
+      '#webform': external_appointment_booking_for
+      '#webform_id': external_appointment_booking_for--civicrm_1_contact_1_address_state_province_id
+      '#webform_key': civicrm_1_contact_1_address_state_province_id
+      '#webform_parent_key': civicrm_1_contact_1_fieldset_fieldset
+      '#webform_parent_flexbox': false
+      '#webform_depth': 1
+      '#webform_children': {  }
+      '#webform_multiple': false
+      '#webform_composite': false
+      '#webform_parents':
+        - civicrm_1_contact_1_fieldset_fieldset
+        - civicrm_1_contact_1_address_state_province_id
+      '#admin_title': State/Province
+      '#webform_plugin_id': civicrm_options
+      '#civicrm_live_options': 0
+      '#empty_option': '- None -'
+      '#options': {  }
     civicrm_1_contact_1_phone_phone:
       '#type': textfield
       '#counter_type': character

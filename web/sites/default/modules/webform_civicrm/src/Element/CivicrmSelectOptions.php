@@ -104,6 +104,10 @@ class CivicrmSelectOptions extends FormElement {
       $element['options']['#tabledrag'] = [];
       $element['options']['#tableselect'] = FALSE;
     }
+    if (strpos($element['#form_key'], 'address_state_province_id') !== false || strpos($key, 'address_county_id') !== false) {
+      $parent_label = (strpos($element['#form_key'], 'address_state_province_id') !== false) ? 'Country' : 'State/Province';
+      $element['options']['#empty'] = t('Options are loaded dynamically on the webform based on the value selected in @key field.', ['@key' => $parent_label]);
+    }
 
     $current_options = $element['#default_value'];
     $weight = 0;
@@ -163,6 +167,14 @@ class CivicrmSelectOptions extends FormElement {
         '#parents' => array_merge($element['#parents'], ['default']),
         '#return_value' => $key,
       ];
+      // Avoid 0 value to be selected as default. The patch from https://www.drupal.org/project/drupal/issues/1381140
+      // renders 0 as the default option due to some casting equation check in preRenderRadio() function.
+      // Pay later holds the value 0 and is always loaded as default on the edit element page.
+      // Setting false for the #value key mitigates this problem.
+      // https://www.drupal.org/project/drupal/issues/2908602 is an open ticket on drupal which looks similar.
+      if ($key === 0 && $element['#default_option'] != $key) {
+        $element['options'][$row_key]['default_option']['#value'] = FALSE;
+      }
       $element['options'][$row_key]['weight'] = [
         '#type' => 'weight',
         '#title' => t('Weight for @option', ['@option' => $option]),

@@ -1,10 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Drupal\Tests\civicrm_entity\FunctionalJavascript\Views;
 
 use Drupal\Core\Database\Database;
 use Drupal\Tests\civicrm_entity\FunctionalJavascript\CivicrmEntityTestBase;
 
+/**
+ * Tests for CiviCRM Contact to User Views Relationships.
+ */
 final class CivicrmContactUserRelationshipTest extends CivicrmEntityTestBase {
 
   /**
@@ -20,7 +25,7 @@ final class CivicrmContactUserRelationshipTest extends CivicrmEntityTestBase {
   protected static $modules = [
     'views',
     'views_ui',
-    'civicrm_entity_views_test',
+    'civicrm_entity_test_views',
   ];
 
   /**
@@ -82,7 +87,7 @@ final class CivicrmContactUserRelationshipTest extends CivicrmEntityTestBase {
       ->save();
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   protected function changeDatabasePrefix() {
@@ -93,7 +98,7 @@ final class CivicrmContactUserRelationshipTest extends CivicrmEntityTestBase {
       Database::removeConnection('civicrm_test');
       Database::removeConnection('civicrm');
 
-      $database = Database::convertDbUrlToConnectionInfo($db_url, isset($this->root) ? $this->root : DRUPAL_ROOT);
+      $database = Database::convertDbUrlToConnectionInfo($db_url, $this->root ?? DRUPAL_ROOT);
       Database::addConnectionInfo('civicrm_test', 'default', $database);
       Database::addConnectionInfo('civicrm', 'default', $database);
     }

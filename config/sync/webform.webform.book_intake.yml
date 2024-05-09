@@ -13,7 +13,7 @@ archive: false
 id: book_intake
 title: 'CLIN Schedule Intake Booking'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   are_you_looking_for_services_for_yourself_or_for_someone_else_:
     '#type': radios
@@ -256,7 +256,7 @@ elements: |-
       civicrm_2_contact_1_cg12_custom_116:
         '#type': webform_computed_twig
         '#title': SACEID
-        '#template': '{{ (data.civicrm_2_contact_1_contact_first_name ~ '''')|slice (0,3)|upper }}{{ (data.civicrm_2_contact_1_contact_last_name ~ '''')|slice (0,3)|upper }}{{ data.civicrm_2_contact_1_contact_birth_date|replace({''-'': ''''}) }}'
+        '#template': "{{ (data.civicrm_2_contact_1_contact_first_name ~ '')|slice (0,3)|upper }}{{ (data.civicrm_2_contact_1_contact_last_name ~ '')|slice (0,3)|upper }}{{ data.civicrm_2_contact_1_contact_birth_date|replace({'-': ''}) }}"
         '#ajax': true
         '#data_type': String
         '#form_key': civicrm_2_contact_1_cg12_custom_116
@@ -288,14 +288,31 @@ elements: |-
         '#form_key': civicrm_2_contact_1_address_postal_code
         '#parent': civicrm_2_contact_1_fieldset_fieldset
       civicrm_2_contact_1_address_state_province_id:
-        '#type': textfield
+        '#type': civicrm_options
         '#title': Province
         '#extra':
-          maxlength: 5
-          width: 4
+          aslist: 1
         '#data_type': state_province_abbr
         '#form_key': civicrm_2_contact_1_address_state_province_id
         '#parent': civicrm_2_contact_1_fieldset_fieldset
+        '#webform': book_intake
+        '#webform_id': book_intake--civicrm_2_contact_1_address_state_province_id
+        '#webform_key': civicrm_2_contact_1_address_state_province_id
+        '#webform_parent_key': flexbox_05
+        '#webform_parent_flexbox': true
+        '#webform_depth': 2
+        '#webform_children': {  }
+        '#webform_multiple': false
+        '#webform_composite': false
+        '#webform_parents':
+          - civicrm_2_contact_1_fieldset_fieldset
+          - flexbox_05
+          - civicrm_2_contact_1_address_state_province_id
+        '#admin_title': Province
+        '#webform_plugin_id': civicrm_options
+        '#civicrm_live_options': 0
+        '#empty_option': '- None -'
+        '#options': {  }
     flexbox_06:
       '#type': webform_flexbox
       civicrm_2_contact_1_phone_phone:
@@ -790,6 +807,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -938,7 +957,7 @@ handlers:
       2_contact_type: individual
       2_webform_label: '(New) Client'
       civicrm_2_contact_1_contact_contact_sub_type:
-        client: client
+        Client: Client
       contact_2_number_of_cg6: '0'
       contact_2_number_of_cg10: '0'
       contact_2_number_of_cg19: '1'
@@ -1291,7 +1310,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  client: client
+                  Client: Client
                 webform_label: '(New) Client'
             number_of_cg6: '0'
             number_of_cg10: '0'

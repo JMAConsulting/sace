@@ -1,9 +1,12 @@
 uuid: 20911aee-f976-4094-97a4-c527cb387f08
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: is_staff
 label: 'IS Staff'
 weight: -3
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

@@ -122,4 +122,10 @@ class IcalDisplay extends Feed {
     }
   }
 
+  public static function buildResponse($view_id, $display_id, array $args = []) {
+    $response = parent::buildResponse($view_id, $display_id, $args);
+    $response->headers->set('Content-Type', 'text/calendar');
+    return $response;
+  }
+
 }

@@ -15,7 +15,7 @@ archive: false
 id: update_ped_booking
 title: 'PED Update Booking'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   civicrm_1_contact_1_contact_existing:
     '#type': civicrm_contact
@@ -186,15 +186,31 @@ elements: |-
       '#parent': civicrm_2_contact_1_fieldset_fieldset
       '#title': 'Postal Code'
     civicrm_2_contact_1_address_state_province_id:
-      '#type': textfield
+      '#type': civicrm_options
       '#title': State/Province
       '#description': 'Please click <a href="#" id="existing-org">here</a> to choose a different organization.&nbsp;Changing the details above will not create a new organization, but edit the current one associated with the booking'
       '#extra':
-        maxlength: 5
-        width: 4
+        aslist: 1
       '#data_type': state_province_abbr
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
+      '#webform': update_ped_booking
+      '#webform_id': update_ped_booking--civicrm_2_contact_1_address_state_province_id
+      '#webform_key': civicrm_2_contact_1_address_state_province_id
+      '#webform_parent_key': civicrm_2_contact_1_fieldset_fieldset
+      '#webform_parent_flexbox': false
+      '#webform_depth': 1
+      '#webform_children': {  }
+      '#webform_multiple': false
+      '#webform_composite': false
+      '#webform_parents':
+        - civicrm_2_contact_1_fieldset_fieldset
+        - civicrm_2_contact_1_address_state_province_id
+      '#admin_title': State/Province
+      '#webform_plugin_id': civicrm_options
+      '#civicrm_live_options': 0
+      '#empty_option': '- None -'
+      '#options': {  }
     civicrm_2_contact_1_contact_contact_sub_type:
       '#type': civicrm_options
       '#title': 'Type of Organization'

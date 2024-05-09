@@ -7,16 +7,13 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Validate' => array($vendorDir . '/pear/validate_finance_creditcard'),
-    'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'TOGoS_GitIgnore_' => array($vendorDir . '/togos/gitignore/src/main/php'),
-    'Stack' => array($vendorDir . '/stack/builder/src'),
     'PHPUnit_' => array($vendorDir . '/civicrm/civicrm-core/packages'),
     'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),
     'Mail' => array($vendorDir . '/pear/mail', $vendorDir . '/pear/mail_mime'),
     'Lurker' => array($vendorDir . '/totten/lurkerlite/src'),
     'Log' => array($vendorDir . '/pear/log'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
-    'Dflydev\\DotAccessData' => array($vendorDir . '/dflydev/dot-access-data/src'),
     'Dflydev\\ApacheMimeTypes' => array($vendorDir . '/dflydev/apache-mime-types/src'),
     'DB' => array($vendorDir . '/pear/db'),
     'Console' => array($vendorDir . '/pear/console_getopt'),

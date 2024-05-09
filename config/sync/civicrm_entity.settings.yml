@@ -3,3 +3,4 @@ _core:
 filter_format: plain_text
 enabled_entity_types: {  }
 disable_hooks: false
+enable_links_per_type: {  }

@@ -28,11 +28,12 @@ class CalendarLinkTwigExtension extends AbstractExtension {
    *
    * @see \Spatie\CalendarLinks\Link
    */
-  protected static $types = [
+  protected static array $types = [
     'google' => 'Google',
     'ics' => 'iCal',
     'yahoo' => 'Yahoo!',
     'webOutlook' => 'Outlook.com',
+    'webOffice' => 'Office365',
   ];
 
   /**
@@ -69,7 +70,7 @@ class CalendarLinkTwigExtension extends AbstractExtension {
    * @return string
    *   URL for the specific calendar type.
    */
-  public function calendarLink(string $type, $title, $from, $to, $all_day = FALSE, $description = '', $address = ''): string {
+  public function calendarLink(string $type, mixed $title, mixed $from, mixed $to, mixed $all_day = FALSE, mixed $description = '', mixed $address = ''): string {
     if (!isset(self::$types[$type])) {
       throw new CalendarLinkException('Invalid calendar link type.');
     }
@@ -83,7 +84,7 @@ class CalendarLinkTwigExtension extends AbstractExtension {
       );
     }
     catch (InvalidLink $e) {
-      throw new CalendarLinkException('Invalid calendar link data.');
+      throw new CalendarLinkException($e->getMessage());
     }
 
     if ($description) {
@@ -125,7 +126,7 @@ class CalendarLinkTwigExtension extends AbstractExtension {
    *
    * @see \Drupal\calendar_link\Twig\CalendarLinkTwigExtension::calendarLink()
    */
-  public function calendarLinks($title, $from, $to, $all_day = FALSE, $description = '', $address = ''): array {
+  public function calendarLinks(mixed $title, mixed $from, mixed $to, mixed $all_day = FALSE, mixed $description = '', mixed $address = ''): array {
     $links = [];
 
     foreach (self::$types as $type => $name) {
@@ -150,7 +151,7 @@ class CalendarLinkTwigExtension extends AbstractExtension {
    *
    * @throws \Drupal\calendar_link\CalendarLinkException
    */
-  private function getBoolean($data): bool {
+  private function getBoolean(mixed $data): bool {
     if (is_bool($data)) {
       return $data;
     }
@@ -159,7 +160,7 @@ class CalendarLinkTwigExtension extends AbstractExtension {
       $data = $this->getString($data);
       return (bool) $data;
     }
-    catch (CalendarLinkException $e) {
+    catch (CalendarLinkException) {
       throw new CalendarLinkException('Could not get valid boolean from input.');
     }
   }
@@ -175,7 +176,7 @@ class CalendarLinkTwigExtension extends AbstractExtension {
    *
    * @throws \Drupal\calendar_link\CalendarLinkException
    */
-  private function getString($data): string {
+  private function getString(mixed $data): string {
     // Content field array. E.g. `label`.
     if (is_array($data)) {
       if (isset($data['#items'])) {
@@ -202,6 +203,10 @@ class CalendarLinkTwigExtension extends AbstractExtension {
       }
     }
 
+    if (is_int($data)) {
+      return (string) $data;
+    }
+
     if (is_string($data)) {
       return $data;
     }
@@ -220,7 +225,7 @@ class CalendarLinkTwigExtension extends AbstractExtension {
    *
    * @throws \Drupal\calendar_link\CalendarLinkException
    */
-  private function getDateTime($date): \DateTime {
+  private function getDateTime(mixed $date): \DateTime {
     // Content field array. E.g. `content.field_start`.
     if (is_array($date) && isset($date['#items'])) {
       $date = $date['#items'];

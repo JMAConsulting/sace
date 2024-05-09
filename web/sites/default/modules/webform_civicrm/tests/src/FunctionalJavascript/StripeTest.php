@@ -14,15 +14,11 @@ final class StripeTest extends WebformCivicrmTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
-    // Download installs and enables!
-    $this->utils->wf_civicrm_api('Extension', 'download', [
-      'key' => "mjwshared",
-    ]);
-    $this->utils->wf_civicrm_api('Extension', 'download', [
-      'key' => "com.drastikbydesign.stripe",
-    ]);
+
+    $this->setUpExtension('mjwshared,firewall,com.drastikbydesign.stripe');
+
     $params = [];
     $result = $this->utils->wf_civicrm_api('Stripe', 'setuptest', $params);
     $this->paymentProcessorID = $result['id'];

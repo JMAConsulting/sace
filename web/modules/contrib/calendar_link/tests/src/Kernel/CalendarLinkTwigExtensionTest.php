@@ -5,6 +5,7 @@ namespace Drupal\Tests\calendar_link\Kernel;
 use Drupal\calendar_link\Twig\CalendarLinkTwigExtension;
 use Drupal\Component\Utility\Html;
 use Drupal\KernelTests\KernelTestBase;
+use Twig\TwigFunction;
 
 /**
  * Tests Twig extensions.
@@ -18,7 +19,7 @@ class CalendarLinkTwigExtensionTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['calendar_link'];
+  protected static $modules = ['calendar_link'];
 
   /**
    * Tests that Twig extension loads appropriately.
@@ -37,7 +38,7 @@ class CalendarLinkTwigExtensionTest extends KernelTestBase {
    * Tests that the Twig extension functions are registered properly.
    */
   public function testFunctionsRegistered() {
-    /** @var \Twig_SimpleFunction[] $functions */
+    /** @var \Twig\TwigFunction $functions */
     $registered_functions = \Drupal::service('twig')
       ->getFunctions();
 
@@ -45,9 +46,9 @@ class CalendarLinkTwigExtensionTest extends KernelTestBase {
 
     foreach ($functions as $name) {
       $function = $registered_functions[$name];
-      $this->assertTrue($function instanceof \Twig_SimpleFunction);
+      $this->assertTrue($function instanceof TwigFunction);
       $this->assertEquals($function->getName(), $name);
-      is_callable($function->getCallable(), TRUE, $callable);
+      is_callable($function->getCallable(), TRUE);
     }
   }
 
@@ -68,7 +69,7 @@ class CalendarLinkTwigExtensionTest extends KernelTestBase {
    */
   public function testCalendarLinksFunction() {
     $template = "{% set title = 'title'|t %}{% set startDate = date('2019-02-24 10:00', 'Etc/UTC') %}{% set endDate = date('2019-02-24 12:00', 'Etc/UTC') %}{% set links = calendar_links(title, startDate, endDate, false, 'description', 'address') %}{% for link in links %}<a href=\"{{ link.url }}\" class=\"calendar-type-{{ link.type_key }}\">Add to {{ link.type_name }}</a>{% endfor %}";
-    $expected_template_output = '<a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;dates=20190223T230000Z/20190224T010000Z&amp;ctz=Etc/UTC&amp;text=title&amp;details=description&amp;location=address" class="calendar-type-google">Add to Google</a><a href="data:text/calendar;charset=utf8;base64,QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KQkVHSU46VkVWRU5UDQpVSUQ6ODdiOGU5OTllNjUzYWNkZmZmN2Y2Yzc4MmQ0YWE5MGUNClNVTU1BUlk6dGl0bGUNCkRUU1RBUlQ7VFpJRD1FdGMvVVRDOjIwMTkwMjIzVDIzMDAwMA0KRFRFTkQ7VFpJRD1FdGMvVVRDOjIwMTkwMjI0VDAxMDAwMA0KREVTQ1JJUFRJT046ZGVzY3JpcHRpb24NCkxPQ0FUSU9OOmFkZHJlc3MNCkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVI=" class="calendar-type-ics">Add to iCal</a><a href="https://calendar.yahoo.com/?v=60&amp;view=d&amp;type=20&amp;ST=20190223T230000Z&amp;ET=20190224T010000Z&amp;TITLE=title&amp;DESC=description&amp;in_loc=address" class="calendar-type-yahoo">Add to Yahoo!</a><a href="https://outlook.live.com/calendar/deeplink/compose?path=/calendar/action/compose&amp;rru=addevent&amp;startdt=2019-02-23T23:00:00Z&amp;enddt=2019-02-24T01:00:00Z&amp;subject=title&amp;body=description&amp;location=address" class="calendar-type-webOutlook">Add to Outlook.com</a>';
+    $expected_template_output = '<a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;dates=20190223T230000Z/20190224T010000Z&amp;ctz=Etc/UTC&amp;text=title&amp;details=description&amp;location=address" class="calendar-type-google">Add to Google</a><a href="data:text/calendar;charset=utf8;base64,QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOlNwYXRpZSBjYWxlbmRhci1saW5rcw0KQkVHSU46VkVWRU5UDQpVSUQ6ODdiOGU5OTllNjUzYWNkZmZmN2Y2Yzc4MmQ0YWE5MGUNClNVTU1BUlk6dGl0bGUNCkRUU1RBTVA7VFpJRD1FdGMvVVRDOjIwMTkwMjIzVDIzMDAwMA0KRFRTVEFSVDtUWklEPUV0Yy9VVEM6MjAxOTAyMjNUMjMwMDAwDQpEVEVORDtUWklEPUV0Yy9VVEM6MjAxOTAyMjRUMDEwMDAwDQpYLUFMVC1ERVNDO0ZNVFRZUEU9dGV4dC9odG1sOmRlc2NyaXB0aW9uDQpMT0NBVElPTjphZGRyZXNzDQpFTkQ6VkVWRU5UDQpFTkQ6VkNBTEVOREFS" class="calendar-type-ics">Add to iCal</a><a href="https://calendar.yahoo.com/?v=60&amp;view=d&amp;type=20&amp;ST=20190223T230000Z&amp;ET=20190224T010000Z&amp;TITLE=title&amp;DESC=description&amp;in_loc=address" class="calendar-type-yahoo">Add to Yahoo!</a><a href="https://outlook.live.com/calendar/deeplink/compose?path=/calendar/action/compose&amp;rru=addevent&amp;startdt=2019-02-23T23:00:00Z&amp;enddt=2019-02-24T01:00:00Z&amp;subject=title&amp;body=description&amp;location=address" class="calendar-type-webOutlook">Add to Outlook.com</a><a href="https://outlook.office.com/calendar/deeplink/compose?path=/calendar/action/compose&amp;rru=addevent&amp;startdt=2019-02-23T23:00:00Z&amp;enddt=2019-02-24T01:00:00Z&amp;subject=title&amp;body=description&amp;location=address" class="calendar-type-webOffice">Add to Office365</a>';
 
     /** @var \Drupal\Core\Template\TwigEnvironment $environment */
     $environment = \Drupal::service('twig');
@@ -95,7 +96,7 @@ class CalendarLinkTwigExtensionTest extends KernelTestBase {
       // Dates as simple objects.
       [
         "{% set title = 'title'|t %}{% set startDate = date('2019-02-24 10:00', 'Etc/UTC') %}{% set endDate = date('2019-02-24 12:00', 'Etc/UTC') %}{% set link = calendar_link('ics', title, startDate, endDate, false, 'description', 'location') %}<a href=\"{{ link }}\">Add to calendar</a>",
-        '<a href="data:text/calendar;charset=utf8;base64,QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KQkVHSU46VkVWRU5UDQpVSUQ6YTc4ZDRjM2NjNzA3YzRjZGU3NjBiYWQzZmJmZjhlYTENClNVTU1BUlk6dGl0bGUNCkRUU1RBUlQ7VFpJRD1FdGMvVVRDOjIwMTkwMjIzVDIzMDAwMA0KRFRFTkQ7VFpJRD1FdGMvVVRDOjIwMTkwMjI0VDAxMDAwMA0KREVTQ1JJUFRJT046ZGVzY3JpcHRpb24NCkxPQ0FUSU9OOmxvY2F0aW9uDQpFTkQ6VkVWRU5UDQpFTkQ6VkNBTEVOREFS">Add to calendar</a>',
+        '<a href="data:text/calendar;charset=utf8;base64,QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOlNwYXRpZSBjYWxlbmRhci1saW5rcw0KQkVHSU46VkVWRU5UDQpVSUQ6YTc4ZDRjM2NjNzA3YzRjZGU3NjBiYWQzZmJmZjhlYTENClNVTU1BUlk6dGl0bGUNCkRUU1RBTVA7VFpJRD1FdGMvVVRDOjIwMTkwMjIzVDIzMDAwMA0KRFRTVEFSVDtUWklEPUV0Yy9VVEM6MjAxOTAyMjNUMjMwMDAwDQpEVEVORDtUWklEPUV0Yy9VVEM6MjAxOTAyMjRUMDEwMDAwDQpYLUFMVC1ERVNDO0ZNVFRZUEU9dGV4dC9odG1sOmRlc2NyaXB0aW9uDQpMT0NBVElPTjpsb2NhdGlvbg0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg==">Add to calendar</a>',
       ],
       // Dates as `<time>` HTML elements (Views behavior).
       [

@@ -37,7 +37,14 @@ class CiviEntityStorage extends SqlContentEntityStorage {
   protected $configFactory;
 
   /**
-   * Gets the CiviCRM API
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManager
+   */
+  protected $entityFieldManager;
+
+  /**
+   * Gets the CiviCRM API.
    *
    * @return \Drupal\civicrm_entity\CiviCrmApiInterface
    *   The CiviCRM APi.
@@ -60,22 +67,6 @@ class CiviEntityStorage extends SqlContentEntityStorage {
       $this->configFactory = \Drupal::configFactory();
     }
     return $this->configFactory;
-  }
-
-  /**
-   * Get the entity field manager.
-   *
-   * This is a BC layer for Drupal 8.6 entity.manager and
-   * Drupal 8.7 entity_field.manager properties.
-   *
-   * @return \Drupal\Core\Entity\EntityFieldManagerInterface
-   *   The entity field manager.
-   */
-  private function getEntityFieldManager() {
-    if (property_exists(static::class, 'entityManager')) {
-      return $this->entityManager;
-    }
-    return $this->entityFieldManager;
   }
 
   /**
@@ -110,10 +101,11 @@ class CiviEntityStorage extends SqlContentEntityStorage {
    * {@inheritdoc}
    */
   protected function doDeleteFieldItems($entities) {
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
     $table_mapping = $this->getTableMapping();
 
     foreach ($entities as $entity) {
-      foreach ($this->getEntityFieldManager()->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle()) as $field_definition) {
+      foreach ($this->entityFieldManager->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle()) as $field_definition) {
         $storage_definition = $field_definition->getFieldStorageDefinition();
         if (!$table_mapping->requiresDedicatedTableStorage($storage_definition)) {
           continue;
@@ -164,44 +156,54 @@ class CiviEntityStorage extends SqlContentEntityStorage {
       $entities[$entity->id()] = $entity;
     }
 
-    // get all the fields
+    // Get all the fields.
     $fields = $this->getCiviCrmApi()->getFields($this->entityType->get('civicrm_entity'));
     $field_names = [];
     foreach ($fields as $field) {
       $field_names[] = $field['name'];
     }
 
-    $options = [
-      'id' => ['IN' => $ids],
-      'return' => $field_names,
-      'options' => ['limit' => 0],
-    ];
+    $ids = $this->cleanIds($ids);
 
-    if ($this->entityType->get('civicrm_entity') === 'participant') {
-      unset($options['return']);
-    }
+    if (!empty($ids)) {
+      $options = [
+        'id' => ['IN' => $ids],
+        'return' => $field_names,
+        'options' => ['limit' => 0],
+      ];
 
-    $civicrm_entities = $this->getCiviCrmApi()->get($this->entityType->get('civicrm_entity'), $options);
-
-    foreach ($civicrm_entities as $civicrm_entity) {
       if ($this->entityType->get('civicrm_entity') === 'participant') {
-        // Massage the values.
-        $temporary = [];
-        foreach ($civicrm_entity as $key => $value) {
-          if (strpos($key, 'participant_') === 0) {
-            $temporary[str_replace('participant_', '', $key)] = $value;
-          }
-          else {
-            $temporary[$key] = $value;
-          }
-        }
-
-        $civicrm_entity = $temporary;
+        unset($options['return']);
       }
 
-      $entity = $this->prepareLoadedEntity($civicrm_entity);
-      $entities[$entity->id()] = $entity;
+      try {
+        $civicrm_entities = $this->getCiviCrmApi()->get($this->entityType->get('civicrm_entity'), $options);
+
+        foreach ($civicrm_entities as $civicrm_entity) {
+          if ($this->entityType->get('civicrm_entity') === 'participant') {
+            // Massage the values.
+            $temporary = [];
+            foreach ($civicrm_entity as $key => $value) {
+              if (strpos($key, 'participant_') === 0) {
+                $temporary[str_replace('participant_', '', $key)] = $value;
+              }
+              else {
+                $temporary[$key] = $value;
+              }
+            }
+
+            $civicrm_entity = $temporary;
+          }
+
+          $entity = $this->prepareLoadedEntity($civicrm_entity);
+          $entities[$entity->id()] = $entity;
+        }
+      }
+      catch (\Exception $e) {
+        watchdog_exception('civicrm_entity', $e);
+      }
     }
+
     return $entities;
   }
 
@@ -231,7 +233,8 @@ class CiviEntityStorage extends SqlContentEntityStorage {
       $transliteration = \Drupal::transliteration();
       $bundle = SupportedEntities::optionToMachineName($bundle, $transliteration);
     }
-    $entity = new $this->entityClass([], $this->entityTypeId, $bundle);
+    $entity_class = $this->getEntityClass();
+    $entity = new $entity_class([], $this->entityTypeId, $bundle);
     // Use initFieldValues to fix CiviCRM data array to Drupal.
     $this->initFieldValues($entity, $civicrm_entity);
     return $entity;
@@ -254,6 +257,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
     // storage definition is added, so bypass the internal storage definitions
     // and fetch the table mapping using the passed in storage definition.
     // @todo Fix this in https://www.drupal.org/node/2705205.
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
     $table_mapping = $this->getTableMapping();
 
     if ($table_mapping->requiresDedicatedTableStorage($storage_definition)) {
@@ -303,6 +307,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
     }
     return $this->getCiviCrmApi()->getCount($this->entityType->get('civicrm_entity')) > 0;
   }
+
   /**
    * {@inheritdoc}
    */
@@ -313,8 +318,9 @@ class CiviEntityStorage extends SqlContentEntityStorage {
    */
   protected function doSaveFieldItems(ContentEntityInterface $entity, array $names = []) {
     $update = !$entity->isNew();
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
     $table_mapping = $this->getTableMapping();
-    $storage_definitions = $this->getEntityFieldManager()->getFieldStorageDefinitions($this->entityTypeId);
+    $storage_definitions = $this->entityFieldManager->getFieldStorageDefinitions($this->entityTypeId);
     $dedicated_table_fields = [];
 
     // Collect the name of fields to be written in dedicated tables and check
@@ -351,8 +357,9 @@ class CiviEntityStorage extends SqlContentEntityStorage {
    * {@inheritdoc}
    */
   public function onFieldStorageDefinitionDelete(FieldStorageDefinitionInterface $storage_definition) {
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
     $table_mapping = $this->getTableMapping(
-      $this->getEntityFieldManager()->getActiveFieldStorageDefinitions($this->entityType->id())
+      $this->entityFieldManager->getActiveFieldStorageDefinitions($this->entityType->id())
     );
 
     if ($storage_definition instanceof FieldStorageConfigInterface && $table_mapping->requiresDedicatedTableStorage($storage_definition)) {
@@ -459,7 +466,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
     }
 
     $table_mapping_class = DefaultTableMapping::class;
-    $definitions = $this->getEntityFieldManager()->getFieldStorageDefinitions($this->entityTypeId);
+    $definitions = $this->entityFieldManager->getFieldStorageDefinitions($this->entityTypeId);
     /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping|\Drupal\Core\Entity\Sql\TemporaryTableMapping $table_mapping */
     $table_mapping = new $table_mapping_class($this->entityType, $definitions);
 
@@ -492,6 +499,8 @@ class CiviEntityStorage extends SqlContentEntityStorage {
    * @param array &$values
    *   An array of values keyed by entity ID.
    *   defaults to FALSE.
+   * @param bool $load_from_revision
+   *   Boolean to load from revision.
    *
    * @throws \Drupal\Core\Entity\Sql\SqlContentEntityStorageException
    */
@@ -502,9 +511,10 @@ class CiviEntityStorage extends SqlContentEntityStorage {
 
     // Collect impacted fields.
     $storage_definitions = [];
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
     $table_mapping = $this->getTableMapping();
 
-    $definitions = $this->getEntityFieldManager()->getFieldDefinitions($this->entityTypeId, $this->entityTypeId);
+    $definitions = $this->entityFieldManager->getFieldDefinitions($this->entityTypeId, $this->entityTypeId);
     foreach ($definitions as $field_name => $field_definition) {
       $storage_definition = $field_definition->getFieldStorageDefinition();
       if ($table_mapping->requiresDedicatedTableStorage($storage_definition)) {
@@ -586,6 +596,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
     $entity_type = $entity->getEntityTypeId();
     $default_langcode = $entity->getUntranslated()->language()->getId();
     $translation_langcodes = array_keys($entity->getTranslationLanguages());
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
     $table_mapping = $this->getTableMapping();
 
     if (!isset($vid)) {
@@ -595,7 +606,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
     $original = !empty($entity->original) ? $entity->original : NULL;
 
     // Determine which fields should be actually stored.
-    $definitions = $this->getEntityFieldManager()->getFieldDefinitions($entity_type, $bundle);
+    $definitions = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
     if ($names) {
       $definitions = array_intersect_key($definitions, array_flip($names));
     }
@@ -668,7 +679,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
             $record[$column_name] = SqlContentEntityStorageSchema::castValue($attributes, $value);
           }
           $query->values($record);
-          if ($this->entityType->isRevisionable()) {
+          if ($this->entityType->isRevisionable() && isset($revision_query)) {
             $revision_query->values($record);
           }
 
@@ -685,7 +696,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
         if ($entity->isDefaultRevision()) {
           $query->execute();
         }
-        if ($this->entityType->isRevisionable()) {
+        if ($this->entityType->isRevisionable() && isset($revision_query)) {
           $revision_query->execute();
         }
       }
@@ -715,7 +726,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The saved entity.
-   * @param $update
+   * @param bool $update
    *   Specifies whether the entity is being updated or created.
    *
    * @see \Drupal\Core\Entity\ContentEntityStorageBase::doPostSave
@@ -769,9 +780,9 @@ class CiviEntityStorage extends SqlContentEntityStorage {
    * applies. This provides the lookup to determing the ID of the EntityTag
    * object itself.
    *
-   * @param $entityId
+   * @param int $entityId
    *   The entity ID.
-   * @param $entityTable
+   * @param string $entityTable
    *   The entity table.
    *
    * @return int|null
@@ -791,6 +802,7 @@ class CiviEntityStorage extends SqlContentEntityStorage {
         }
       }
     }
+    return NULL;
   }
 
   /**

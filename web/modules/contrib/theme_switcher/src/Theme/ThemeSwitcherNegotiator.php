@@ -79,7 +79,7 @@ class ThemeSwitcherNegotiator implements ThemeNegotiatorInterface {
    */
   public function applies(RouteMatchInterface $route_match) {
     $storage = $this->entityTypeManager->getStorage('theme_switcher_rule');
-    $configEntities = $storage->getQuery()->sort('weight', 'ASC')->execute();
+    $configEntities = $storage->getQuery()->accessCheck()->sort('weight', 'ASC')->execute();
 
     $rules = $storage->loadMultiple($configEntities);
     foreach ($rules as $rule) {
@@ -114,7 +114,7 @@ class ThemeSwitcherNegotiator implements ThemeNegotiatorInterface {
         }
 
         // Check whether the conditions are resolved positively.
-        if ($this->resolveConditions($conditions, 'and') !== FALSE) {
+        if ($this->resolveConditions($conditions, $rule->getConjunction()) !== FALSE) {
 
           // Are we in a admin route?
           $route = $route_match->getRouteObject();

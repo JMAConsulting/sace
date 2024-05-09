@@ -1,11 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Drupal\Tests\civicrm_entity\FunctionalJavascript;
 
-use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\civicrm_entity\SupportedEntities;
 use Drupal\Core\Url;
 
+/**
+ * Base class for CiviCRM Entity Views tests.
+ */
 abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
 
   /**
@@ -37,6 +41,7 @@ abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
   /**
    * {@inheritdoc}
    */
+  // @codingStandardsIgnoreStart
   protected function doInstall() {
     parent::doInstall();
 
@@ -52,27 +57,28 @@ abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
     /*
     $connection = Database::getConnection('default', 'civicrm_test')->getConnectionOptions();
     $settings['databases']['civicrm_test']['default'] = (object) [
-      'value'    => [
-        'driver' => $connection['driver'],
-        'username' => $connection['username'],
-        'password' => $connection['password'],
-        'host' => $connection['host'],
-        'database' => $connection['database'],
-        'namespace' => $connection['namespace'],
-        'port' => $connection['port'],
-        // CiviCRM does not use prefixes.
-        'prefix' => '',
-      ],
-      'required' => TRUE,
+    'value'    => [
+    'driver' => $connection['driver'],
+    'username' => $connection['username'],
+    'password' => $connection['password'],
+    'host' => $connection['host'],
+    'database' => $connection['database'],
+    'namespace' => $connection['namespace'],
+    'port' => $connection['port'],
+    // CiviCRM does not use prefixes.
+    'prefix' => '',
+    ],
+    'required' => TRUE,
     ];
     $this->writeSettings($settings);
-    */
+     */
   }
+  // @codingStandardsIgnoreEnd
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp() : void {
     parent::setUp();
     $admin_user = $this->createUser([
       'access content',
@@ -144,22 +150,57 @@ abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
     $this->assertViewWithRelationshipsResults();
   }
 
-  // @todo testCreateViewWithFilters()
-  // @todo testCreateViewWithSorts()
-  // @todo testCreateViewWithRelationships()
+  /**
+   * Tests creating a view with filters for the entity type.
+   */
+  public function testViewWithFilters() {
+    $this->createNewView();
+    $this->doSetupViewWithFilters();
+    $this->getSession()->getPage()->pressButton('Save');
+    $this->drupalGet('/' . static::$civicrmEntityTypeId);
+    $this->htmlOutput();
+    $this->assertViewWithFiltersResults();
+  }
+
+  /**
+   * Tests creating a view with sorts for the entity type.
+   */
+  public function testViewWithSorts() {
+    $this->createNewView();
+    $this->doSetupViewWithSorts();
+    $this->getSession()->getPage()->pressButton('Save');
+    $this->drupalGet('/' . static::$civicrmEntityTypeId);
+    $this->htmlOutput();
+    $this->assertViewWithSortsResults();
+  }
+
+  /**
+   * Tests creating a view with arguments for the entity type.
+   *
+   * @param array $arguments
+   *   The views arguments.
+   *
+   * @dataProvider dataArgumentValues
+   */
+  public function testViewWithArguments(array $arguments) {
+    $this->createNewView();
+    $this->doSetupViewWithArguments();
+    $this->getSession()->getPage()->pressButton('Save');
+    $this->drupalGet('/' . static::$civicrmEntityTypeId . '/' . implode('/', $arguments));
+    $this->htmlOutput();
+    $this->assertViewWithArgumentsResults($arguments);
+  }
 
 
   /**
    * Creates sample data for each test.
    *
-   * @return void
+   * @todo Should this use data providers?
    */
   abstract protected function createSampleData();
 
   /**
    * Runs setup for the ::testCreateView test.
-   *
-   * @return void
    */
   abstract protected function doSetupCreateView();
 
@@ -179,10 +220,49 @@ abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
 
   /**
    * Runs assertions for the ::testViewWithRelationships test.
-   *
-   * @return void
    */
   abstract protected function assertViewWithRelationshipsResults();
+
+  /**
+   * Runs setup for the ::testViewWithFilters test.
+   */
+  abstract protected function doSetupViewWithFilters();
+
+  /**
+   * Runs assertions for the ::testViewWithFilters test.
+   */
+  abstract protected function assertViewWithFiltersResults();
+
+  /**
+   * Runs setup for the ::testViewWithSorts test.
+   */
+  abstract protected function doSetupViewWithSorts();
+
+  /**
+   * Runs assertions for the ::testViewWithSorts test.
+   */
+  abstract protected function assertViewWithSortsResults();
+
+  /**
+   * Runs setup for the ::testViewWithArguments test.
+   */
+  abstract protected function doSetupViewWithArguments();
+
+  /**
+   * Runs assertions for the ::testViewWithArguments test.
+   *
+   * @param array $arguments
+   *   The views arguments.
+   */
+  abstract protected function assertViewWithArgumentsResults(array $arguments);
+
+  /**
+   * The arguments test data provider.
+   *
+   * @return \Generator
+   *   The arguments test data.
+   */
+  abstract public function dataArgumentValues();
 
   /**
    * Creates a new View for the tested entity type.
@@ -206,7 +286,7 @@ abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
    * Adds a field to a Views display.
    *
    * @param string $name_locator
-   *   The field's checkbox locator
+   *   The field's checkbox locator.
    * @param array $configuration
    *   The field's display configuration.
    *
@@ -224,8 +304,81 @@ abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
     $this->submitViewsDialog();
   }
 
+  /**
+   * Adds a relationship to a Views display.
+   *
+   * @param string $name_locator
+   *   The relationship's checkbox locator.
+   * @param array $configuration
+   *   The relationship's display configuration.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
   protected function addRelationshipToDisplay(string $name_locator, array $configuration = []) {
     $this->clickAjaxLink('views-add-relationship');
+    $this->getSession()->getPage()->checkField($name_locator);
+    $this->submitViewsDialog();
+    foreach ($configuration as $field_name => $value) {
+      $field = $this->assertSession()->fieldExists($field_name);
+      $field->setValue($value);
+    }
+    $this->submitViewsDialog();
+  }
+
+  /**
+   * Adds a sort to a Views display.
+   *
+   * @param string $name_locator
+   *   The filter's checkbox locator.
+   * @param array $configuration
+   *   The filter's display configuration.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  protected function addSortToDisplay(string $name_locator, array $configuration = []) {
+    $this->clickAjaxLink('views-add-sort');
+    $this->getSession()->getPage()->checkField($name_locator);
+    $this->submitViewsDialog();
+    foreach ($configuration as $field_name => $value) {
+      $field = $this->assertSession()->fieldExists($field_name);
+      $field->setValue($value);
+    }
+    $this->submitViewsDialog();
+  }
+
+  /**
+   * Adds a filter to a Views display.
+   *
+   * @param string $name_locator
+   *   The filter's checkbox locator.
+   * @param array $configuration
+   *   The filter's display configuration.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  protected function addFilterToDisplay(string $name_locator, array $configuration = []) {
+    $this->clickAjaxLink('views-add-filter');
+    $this->getSession()->getPage()->checkField($name_locator);
+    $this->submitViewsDialog();
+    foreach ($configuration as $field_name => $value) {
+      $field = $this->assertSession()->fieldExists($field_name);
+      $field->setValue($value);
+    }
+    $this->submitViewsDialog();
+  }
+
+  /**
+   * Adds a argument to a Views display.
+   *
+   * @param string $name_locator
+   *   The filter's checkbox locator.
+   * @param array $configuration
+   *   The filter's display configuration.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  protected function addArgumentToDisplay(string $name_locator, array $configuration = []) {
+    $this->clickAjaxLink('views-add-argument');
     $this->getSession()->getPage()->checkField($name_locator);
     $this->submitViewsDialog();
     foreach ($configuration as $field_name => $value) {
@@ -249,14 +402,13 @@ abstract class CivicrmEntityViewsTestBase extends CivicrmEntityTestBase {
    * Clicks an AJAX link with specified locator.
    *
    * @param string $locator
-   *    The link id, title, text or image alt.
+   *   The link id, title, text or image alt.
    *
-   * @throws ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
   protected function clickAjaxLink(string $locator): void {
     $this->getSession()->getPage()->clickLink($locator);
     $this->assertSession()->assertWaitOnAjaxRequest();
   }
-
 
 }

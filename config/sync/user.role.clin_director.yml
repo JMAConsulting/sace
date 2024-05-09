@@ -1,9 +1,12 @@
 uuid: 510e5e84-99c6-4e46-94bf-f03a9afacb17
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: clin_director
 label: 'CLIN Director'
 weight: 5
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

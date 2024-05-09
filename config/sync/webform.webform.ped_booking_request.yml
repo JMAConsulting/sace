@@ -13,7 +13,7 @@ archive: false
 id: ped_booking_request
 title: 'PED Booking Request [ORG]'
 description: ''
-category: ''
+categories: {  }
 elements: |-
   intro_markup:
     '#type': processed_text
@@ -1283,6 +1283,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -1435,7 +1437,7 @@ handlers:
       2_contact_type: organization
       2_webform_label: School
       civicrm_2_contact_1_contact_contact_sub_type:
-        school: school
+        School: School
       contact_2_number_of_cg1: '0'
       civicrm_2_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_2_contact_1_contact_organization_name: 0
@@ -1933,7 +1935,7 @@ handlers:
               1:
                 contact_type: organization
                 contact_sub_type:
-                  school: school
+                  School: School
                 webform_label: School
             number_of_cg1: '0'
             matching_rule: Unsupervised
