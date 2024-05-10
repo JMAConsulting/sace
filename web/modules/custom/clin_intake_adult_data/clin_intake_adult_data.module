@@ -1,0 +1,52 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+@require_once 'clin_intake_adult_data.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_update_ped_booking_add_form") {
+
+
+  }
+}
+
+function clin_intake_adult_data_preprocess_page_title(&$variables, $hook) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($current_path == '/webform/clin_intake_adult_data') {
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    \Drupal::service('civicrm')->initialize();
+    //Get booking type from activity
+    $activity = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('activity_type_id')
+      ->addWhere('id', '=', $aid)
+      ->setLimit(1)
+      ->execute();
+    $bt = $activity->first()['activity_type_id'];
+
+    var_dump($variables);
+    exit;
+
+    if ($bt == CLIN_INTAKE_BOOKING_ADULT) {
+      $variables['title'] = [
+        '#markup' => 'Adult Intake Booking Data',
+      ];
+    }
+    elseif ($bt == CLIN_INTAKE_BOOKING_C_Y) {
+      $variables['title'] = [
+        '#markup' => 'C & Y Intake Booking Data',
+      ];
+    }
+  }
+}
