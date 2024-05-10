@@ -11,42 +11,35 @@ use Drupal\webform\Utility\WebformFormHelper;
  * @param $form_id
  */
 function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_update_ped_booking_add_form") {
+  if ($form_id == "clin_adult_intake_data") {
+    // Get custom field constants
+    $constants = get_defined_constants(FALSE);
 
+    //Attach library
+    $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
 
-  }
-}
-
-function clin_intake_adult_data_preprocess_page_title(&$variables, $hook) {
-  $current_path = \Drupal::service('path.current')->getPath();
-  if ($current_path == '/webform/clin_intake_adult_data') {
-    //Activity ID
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if (empty($aid) || !is_numeric($aid)) {
       return;
     }
+    else {
+      \Drupal::service('civicrm')->initialize();
+      //Get booking type from activity
+      $activityRef = \Civi\Api4\Activity::get(FALSE)
+        ->addWhere('id', '=', $aid)
+        ->setLimit(1)
+        ->execute();
+      $activityRef = $activityRef->first();
 
-    \Drupal::service('civicrm')->initialize();
-    //Get booking type from activity
-    $activity = \Civi\Api4\Activity::get(FALSE)
-      ->addSelect('activity_type_id')
-      ->addWhere('id', '=', $aid)
-      ->setLimit(1)
-      ->execute();
-    $bt = $activity->first()['activity_type_id'];
+      //Get webform form elements
+      $elements = WebformFormHelper::flattenElements($form);
+      if (empty($elements)) {
+        return;
+      }
 
-    var_dump($variables);
-    exit;
-
-    if ($bt == CLIN_INTAKE_BOOKING_ADULT) {
-      $variables['title'] = [
-        '#markup' => 'Adult Intake Booking Data',
-      ];
+      $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $activityRef['created_date'];
+      $elements[CLIN_INTAKE_ADULT_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
     }
-    elseif ($bt == CLIN_INTAKE_BOOKING_C_Y) {
-      $variables['title'] = [
-        '#markup' => 'C & Y Intake Booking Data',
-      ];
-    }
+
   }
 }
