@@ -4,7 +4,7 @@ status: true
 dependencies:
   module:
     - blazy
-    - slick
+    - media
 name: html
 format: html
 weight: 0
@@ -15,15 +15,14 @@ filters:
     status: false
     weight: 3
     settings:
+      media_switch: ''
+      hybrid_style: ''
+      box_style: ''
+      box_caption: ''
       filter_tags:
         img: img
         iframe: iframe
-      media_switch: ''
-      box_style: ''
-      box_media_style: ''
-      hybrid_style: ''
       use_data_uri: '0'
-      box_caption: ''
   filter_autop:
     id: filter_autop
     provider: filter
@@ -46,11 +45,3 @@ filters:
     weight: 0
     settings:
       filter_url_length: 72
-  slick_filter:
-    id: slick_filter
-    provider: slick
-    status: false
-    weight: 4
-    settings:
-      optionset: default
-      media_switch: ''

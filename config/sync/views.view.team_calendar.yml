@@ -1820,8 +1820,6 @@ display:
           right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
           default_view: dayGridMonth
           firstDay: '1'
-          minTime: '00:00:00'
-          maxTime: '23:59:00'
           nav_links: 1
           timeFormat: 'hh:mm a'
           allowEventOverlap: 1
@@ -1831,10 +1829,8 @@ display:
           languageSelector: 0
           dialogWindow: 1
           openEntityInNewTab: 1
-          dialogModal: 0
           createEventLink: 0
           eventLimit: '5'
-          slotDuration: '00:30:00'
           tax_field: field_calendar_colour
           vocabularies: calendar_colour
           color_bundle:
@@ -2064,7 +2060,11 @@ display:
             volunteer_stewardship: '#3a87ad'
             volunteer_training: '#3a87ad'
           rrule: ''
+          dialogModal: false
           duration: ''
+          slotDuration: '00:30:00'
+          minTime: '00:00:00'
+          maxTime: '23:59:00'
           bundle_type: ''
           classes: ''
           color_taxonomies:
@@ -4138,6 +4138,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - user
         - user.roles
       tags:
         - 'config:field.storage.user.field_calendar_colour'

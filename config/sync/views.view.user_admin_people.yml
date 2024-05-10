@@ -14,6 +14,7 @@ dependencies:
     - 'taxonomy_term:user_team:212073fb-cf52-4c79-b9ab-bf0ff88a8cd2'
     - 'taxonomy_term:user_team:2600b814-4d66-4e6e-828d-df4dfca4e0d4'
     - 'taxonomy_term:user_team:2b28eb55-be3e-470f-8b4a-084036f1f65c'
+    - 'taxonomy_term:user_team:349b6cac-07ab-4b4b-a9aa-7a784d5bebc6'
     - 'taxonomy_term:user_team:4c5b1129-54b5-4fbc-9b81-2e8a2c73ca5f'
     - 'taxonomy_term:user_team:51704fc8-24c3-4bc9-b372-ad8e6a7b17db'
     - 'taxonomy_term:user_team:6593bd2e-8c7b-4852-8089-7c83b46aba39'
@@ -1148,6 +1149,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.permissions
       tags:
         - 'config:field.storage.user.field_calendar_colour'
@@ -1183,6 +1185,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.permissions
       tags:
         - 'config:field.storage.user.field_calendar_colour'

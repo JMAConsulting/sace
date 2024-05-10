@@ -1751,7 +1751,7 @@ display:
           entity_type: civicrm_contact
           entity_field: contact_sub_type
           plugin_id: list_field
-          operator: or
+          operator: in
           value:
             Staff: Staff
           group: 1
@@ -1847,8 +1847,6 @@ display:
           right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
           default_view: timeGridWeek
           firstDay: '1'
-          minTime: '00:00:00'
-          maxTime: '23:59:00'
           nav_links: 1
           timeFormat: 'hh:mm a'
           allowEventOverlap: 1
@@ -1858,10 +1856,8 @@ display:
           languageSelector: 0
           dialogWindow: 1
           openEntityInNewTab: 1
-          dialogModal: 0
           createEventLink: 0
           eventLimit: '3'
-          slotDuration: '00:30:00'
           tax_field: field_calendar_colour
           vocabularies: calendar_colour
           color_bundle:
@@ -2095,7 +2091,11 @@ display:
             volunteer_services_administration: '#3a87ad'
             inter_agency_collaboration_or_partnership_event: '#3a87ad'
           rrule: ''
+          dialogModal: false
           duration: ''
+          slotDuration: '00:30:00'
+          minTime: '00:00:00'
+          maxTime: '23:59:00'
           bundle_type: ''
           classes: ''
           color_taxonomies:
@@ -3042,7 +3042,7 @@ display:
           entity_type: civicrm_contact
           entity_field: contact_sub_type
           plugin_id: list_field
-          operator: or
+          operator: in
           value:
             Staff: Staff
           group: 1
@@ -4884,7 +4884,7 @@ display:
           entity_type: civicrm_contact
           entity_field: contact_sub_type
           plugin_id: list_field
-          operator: or
+          operator: in
           value:
             Staff: Staff
           group: 1
