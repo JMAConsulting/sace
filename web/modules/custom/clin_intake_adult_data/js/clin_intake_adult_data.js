@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($, settings) {
-
   let currRow = 2;
 
   // Hide extra fields
@@ -8,7 +7,7 @@ jQuery(document).ready(function ($, settings) {
   $("#edit-civicrm-1-contact-4-cg70-fieldset").hide();
   $("#edit-civicrm-1-contact-5-cg70-fieldset").hide();
 
-  // Create the button element
+  // Add button element to unhide extra SA history fields
   var addAnother = $("<input>", {
     class: "webform-button button button--primary",
     type: "button",
@@ -27,4 +26,14 @@ jQuery(document).ready(function ($, settings) {
   // Insert the button before mental health section
   $("#edit-medical-mental-health-history").before(button);
 
+  // Hide details text area unless either box is checked
+  var detailsText = $(".form-item-civicrm-1-contact-1-cg68-custom-1340");
+  detailsText.hide();
+
+  if (
+    $("#edit-civicrm-1-contact-1-cg68-custom-1339-1").prop("checked") ||
+    $("#edit-civicrm-1-contact-1-cg68-custom-1339-2").prop("checked")
+  ) {
+    detailsText.show();
+  }
 });
