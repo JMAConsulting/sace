@@ -28,8 +28,6 @@ jQuery(document).ready(function ($) {
 
   // Hide details text area unless either box is checked
   var detailsText = $(".form-item-civicrm-1-contact-1-cg68-custom-1340");
-  detailsText.hide();
-  $(".form-item-civicrm-1-contact-1-cg68-custom-1326").hide();
 
   // Attach change event handlers to mental health checkboxes
   $("#edit-civicrm-1-contact-1-cg68-custom-1325-8").change(function () {
