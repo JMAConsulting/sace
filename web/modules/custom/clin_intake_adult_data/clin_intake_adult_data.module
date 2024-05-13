@@ -17,32 +17,43 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
 
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
+    $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
+    if (!empty($cid1) && is_numeric($cid1)) {
+      \Drupal::service('civicrm')->initialize();
+      // Get contact information
+      $contact1 = \Civi\Api4\Contact::get(FALSE)
+        ->addWhere('id', '=', $cid1)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      // Get webform form elements
+      $elements = WebformFormHelper::flattenElements($form);
+      if (!empty($elements)) {
+        // Set default values for contact
+      }
+    }
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
-    if (empty($aid) || !is_numeric($aid)) {
-      return;
-    }
-    else {
+    if (!empty($aid) && is_numeric($aid)) {
       \Drupal::service('civicrm')->initialize();
-      //Get booking type from activity
+      // Get booking type from activity
       $activityRef = \Civi\Api4\Activity::get(FALSE)
         ->addWhere('id', '=', $aid)
         ->setLimit(1)
-        ->execute();
-      $activityRef = $activityRef->first();
+        ->execute()
+        ->first();
 
-      //Get webform form elements
+      // Get webform form elements
       $elements = WebformFormHelper::flattenElements($form);
-      if (empty($elements)) {
-        return;
+      if (!empty($elements)) {
+        // Set default values for initial call date and intake number
+        $dateTime = new DateTime($activityRef['created_date']);
+        $formattedDate = $dateTime->format('Y-m-d');
+
+        $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
+        $elements[CLIN_INTAKE_ADULT_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
       }
-
-      $dateTime = new DateTime($activityRef['created_date']);
-      $formattedDate = $dateTime->format('Y-m-d');
-
-      $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
-      $elements[CLIN_INTAKE_ADULT_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
     }
-
   }
 }
