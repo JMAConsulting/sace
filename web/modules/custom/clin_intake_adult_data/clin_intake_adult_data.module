@@ -11,7 +11,7 @@ use Drupal\webform\Utility\WebformFormHelper;
  * @param $form_id
  */
 function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform-submission-clin-adult-intake-data-add-form") {
+  if ($form_id == "webform_submission_clin_adult_intake_data_add_form") {
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
