@@ -37,7 +37,10 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
         return;
       }
 
-      $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $activityRef['created_date'];
+      $dateTime = new DateTime($activityRef['created_date']);
+      $formattedDate = $dateTime->format('Y-m-d');
+
+      $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
       $elements[CLIN_INTAKE_ADULT_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
     }
 
