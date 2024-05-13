@@ -31,8 +31,7 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       // Get webform form elements
       $elements = WebformFormHelper::flattenElements($form);
       if (!empty($elements)) {
-        // Set default value for caller name field
-        $elements[CLIN_INTAKE_CY_DATA_CALLER_NAME]['#default_value'] = $contact1['display_name'];
+        // Set default values using contact data
       }
     }
 
