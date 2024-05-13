@@ -132,7 +132,7 @@ display:
           entity_type: civicrm_contact
           entity_field: contact_sub_type
           plugin_id: civicrm_entity_in_operator
-          operator: or
+          operator: in
           value:
             Staff: Staff
           group: 1

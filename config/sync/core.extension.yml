@@ -17,7 +17,6 @@ module:
   civicrm_entity_vf: 0
   civicrmtheme: 0
   ckeditor: 0
-  ckeditor5: 0
   colorbutton: 0
   config: 0
   contact: 0
@@ -50,6 +49,7 @@ module:
   libraries: 0
   link: 0
   link_class: 0
+  masquerade: 0
   media: 0
   media_library: 0
   menu_link_content: 0

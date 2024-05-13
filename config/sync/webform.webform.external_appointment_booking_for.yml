@@ -486,8 +486,11 @@ elements: |-
       '#type': text_format
       '#title': 'Outputs or Deliverables Completed'
       '#description': |-
-        This field allows us to run reports on all deliverables completed across reporting periods. Please include all *completed* outputs or deliverables here so they can be captured in program reporting. For collaborative work or work that happens over many sessions/weeks/months, please ensure you include what you were working on only the once, when it&#39;s considered ready to share with the world. Decide who from your working group will be responsible for recording it if you have separate activities scheduled.<br />
-        Examples of outputs/deliverables include handouts/articles, new courses/presentations, internal resources like policy, procedures, land acknowledgements, original social content/campaigns, volunteer resources, HR resources... Anything you might report on to funders as part of the activities and accomplishments for your program/committee/area.
+        <p>This field allows us to run reports on all deliverables completed across reporting periods. Please include all *completed* outputs or deliverables here so they can be captured in program reporting. For collaborative work or work that happens over many sessions/weeks/months, please ensure you include what you were working on only the once, when it's considered ready to share with the world. Decide who from your working group will be responsible for recording it if you have separate activities scheduled.<br />
+        Examples of outputs/deliverables include handouts/articles, new courses/presentations, internal resources like policy, procedures, land acknowledgements, original social content/campaigns, volunteer resources, HR resources... Anything you might report on to funders as part of the activities and accomplishments for your program/committee/area.</p>
+      '#allowed_formats':
+        webform_default: webform_default
+      '#hide_help': true
       '#data_type': Memo
       '#form_key': civicrm_1_activity_1_cg58_custom_1265
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -495,6 +498,9 @@ elements: |-
     civicrm_1_activity_1_activity_details:
       '#type': text_format
       '#title': 'Activity Notes'
+      '#allowed_formats':
+        webform_default: webform_default
+      '#hide_help': true
       '#form_key': civicrm_1_activity_1_activity_details
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#extra': {  }
