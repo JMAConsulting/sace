@@ -31,19 +31,17 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         ->execute();
       $activityRef = $activityRef->first();
 
-      $dateTime = new DateTime($activityRef['created_date']);
-      $formattedDate = $dateTime->format('Y-m-d');
-
-      $elements[CLIN_INTAKE_CY_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
-      $elements[CLIN_INTAKE_CY_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
-
       //Get webform form elements
       $elements = WebformFormHelper::flattenElements($form);
       if (empty($elements)) {
         return;
       }
 
+      $dateTime = new DateTime($activityRef['created_date']);
+      $formattedDate = $dateTime->format('Y-m-d');
 
+      $elements[CLIN_INTAKE_CY_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
+      $elements[CLIN_INTAKE_CY_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
     }
   }
 }
