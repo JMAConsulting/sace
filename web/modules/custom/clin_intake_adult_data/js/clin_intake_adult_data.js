@@ -30,10 +30,25 @@ jQuery(document).ready(function ($) {
   var detailsText = $(".form-item-civicrm-1-contact-1-cg68-custom-1340");
   detailsText.hide();
 
-  if (
-    $("#edit-civicrm-1-contact-1-cg68-custom-1339-1").prop("checked") ||
-    $("#edit-civicrm-1-contact-1-cg68-custom-1339-2").prop("checked")
-  ) {
-    detailsText.show();
+  // Function to show/hide details text based on checkbox state
+  function updateDetailsTextVisibility() {
+    if (
+      $("#edit-civicrm-1-contact-1-cg68-custom-1339-1").prop("checked") ||
+      $("#edit-civicrm-1-contact-1-cg68-custom-1339-2").prop("checked")
+    ) {
+      detailsText.show();
+    } else {
+      detailsText.hide();
+    }
   }
+
+  // Initially update visibility based on checkbox state
+  updateDetailsTextVisibility();
+
+  // Attach change event handlers to checkboxes
+  $(
+    "#edit-civicrm-1-contact-1-cg68-custom-1339-1, #edit-civicrm-1-contact-1-cg68-custom-1339-2"
+  ).change(function () {
+    updateDetailsTextVisibility();
+  });
 });
