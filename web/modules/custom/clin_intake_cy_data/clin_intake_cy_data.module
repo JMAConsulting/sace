@@ -16,7 +16,7 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     $constants = get_defined_constants(FALSE);
 
     //Attach library
-    $form['#attached']['library'][] = 'clin_c_y_intake_data/clin_c_y_intake_data';
+    $form['#attached']['library'][] = 'clin_intake_cy_data/clin_intake_cy_data';
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if (empty($aid) || !is_numeric($aid)) {
