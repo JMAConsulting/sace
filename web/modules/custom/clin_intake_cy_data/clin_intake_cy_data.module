@@ -18,6 +18,28 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_cy_data/clin_intake_cy_data';
 
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+    if (empty($elements)) {
+      return;
+    }
+
+    $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
+    if (empty($cid1) || !is_numeric($cid1)) {
+      return;
+    }
+    else {
+      \Drupal::service('civicrm')->initialize();
+      //Get booking type from activity
+      $contact1 = \Civi\Api4\Contact::get(FALSE)
+        ->addWhere('id', '=', $cid1)
+        ->setLimit(1)
+        ->execute();
+      $contact1 = $contact1->first();
+
+      $elements[CLIN_INTAKE_CY_DATA_CALLER_NAME]['#default_value'] = $contact1['display_name'];
+    }
+
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if (empty($aid) || !is_numeric($aid)) {
       return;
@@ -30,12 +52,6 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         ->setLimit(1)
         ->execute();
       $activityRef = $activityRef->first();
-
-      //Get webform form elements
-      $elements = WebformFormHelper::flattenElements($form);
-      if (empty($elements)) {
-        return;
-      }
 
       $dateTime = new DateTime($activityRef['created_date']);
       $formattedDate = $dateTime->format('Y-m-d');
