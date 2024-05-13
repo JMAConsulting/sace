@@ -29,9 +29,21 @@ jQuery(document).ready(function ($) {
   // Hide details text area unless either box is checked
   var detailsText = $(".form-item-civicrm-1-contact-1-cg68-custom-1340");
   detailsText.hide();
+  $(".form-item-civicrm-1-contact-1-cg68-custom-1326").hide();
 
-  // Function to show/hide details text based on checkbox state
-  function updateDetailsTextVisibility() {
+  // Attach change event handlers to mental health checkboxes
+  $("#edit-civicrm-1-contact-1-cg68-custom-1325-8").change(function () {
+    if ($("#edit-civicrm-1-contact-1-cg68-custom-1325-8").prop("checked")) {
+      $(".form-item-civicrm-1-contact-1-cg68-custom-1326").show();
+    } else {
+      $(".form-item-civicrm-1-contact-1-cg68-custom-1326").hide();
+    }
+  });
+
+  // Attach change event handlers to checkboxes
+  $(
+    "#edit-civicrm-1-contact-1-cg68-custom-1339-1, #edit-civicrm-1-contact-1-cg68-custom-1339-2"
+  ).change(function () {
     if (
       $("#edit-civicrm-1-contact-1-cg68-custom-1339-1").prop("checked") ||
       $("#edit-civicrm-1-contact-1-cg68-custom-1339-2").prop("checked")
@@ -40,15 +52,5 @@ jQuery(document).ready(function ($) {
     } else {
       detailsText.hide();
     }
-  }
-
-  // Initially update visibility based on checkbox state
-  updateDetailsTextVisibility();
-
-  // Attach change event handlers to checkboxes
-  $(
-    "#edit-civicrm-1-contact-1-cg68-custom-1339-1, #edit-civicrm-1-contact-1-cg68-custom-1339-2"
-  ).change(function () {
-    updateDetailsTextVisibility();
   });
 });
