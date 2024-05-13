@@ -65,4 +65,5 @@ jQuery(document).ready(function ($) {
 
   // Uncheck auto-checked element
   $("#edit-civicrm-1-contact-1-cg68-custom-1371-0").removeAttr("checked");
+  $("#edit-civicrm-1-contact-1-cg68-custom-1418-0").removeAttr("checked");
 });
