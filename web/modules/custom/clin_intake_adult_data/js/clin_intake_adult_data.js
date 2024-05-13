@@ -64,5 +64,5 @@ jQuery(document).ready(function ($) {
   updateReferralSource();
 
   // Uncheck auto-checked element
-  $("edit-civicrm-1-contact-1-cg68-custom-1371-0").removeAttr("checked");
+  $("#edit-civicrm-1-contact-1-cg68-custom-1371-0").removeAttribute("checked");
 });
