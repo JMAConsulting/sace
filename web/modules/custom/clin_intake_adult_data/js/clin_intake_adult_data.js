@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($, settings) {
+jQuery(document).ready(function ($) {
   let currRow = 2;
 
   // Hide extra fields
@@ -24,7 +24,7 @@ jQuery(document).ready(function ($, settings) {
   });
 
   // Insert the button before mental health section
-  $("#edit-medical-mental-health-history").before(button);
+  $("#edit-medical-mental-health-history").before(addAnother);
 
   // Hide details text area unless either box is checked
   var detailsText = $(".form-item-civicrm-1-contact-1-cg68-custom-1340");
