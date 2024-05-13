@@ -12,4 +12,8 @@ jQuery(document).ready(function ($) {
     }
   }
   updateReferralSource();
+
+  // Uncheck elements
+  $("#edit-civicrm-1-contact-1-cg65-custom-1383-0").removeAttr("checked");
+  $("#edit-civicrm-1-contact-1-cg65-custom-1410-0").removeAttr("checked");
 });
