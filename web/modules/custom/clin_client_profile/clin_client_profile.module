@@ -23,6 +23,7 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       \Drupal::service('civicrm')->initialize();
       // Get contact information
       $contact = \Civi\Api4\Contact::get(FALSE)
+        ->addSelect('custom.*', '*')
         ->addWhere('id', '=', $cid)
         ->setLimit(1)
         ->execute()
@@ -31,7 +32,7 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       // Get webform form elements
       $elements = WebformFormHelper::flattenElements($form);
       if (!empty($elements)) {
-        $elements[CLIN_CLIENT_PROFILE_CLIENT_ID]['#default_value'] = $cid;
+        $elements[CLIN_CLIENT_PROFILE_SACEID]['#default_value'] = $contact['CLIN_Custom_Data.SACEID'];
       }
     }
   }
