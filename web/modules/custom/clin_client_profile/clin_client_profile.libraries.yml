@@ -1,0 +1,4 @@
+clin_client_profile:
+  version: 1.0
+  js:
+    js/clin_client_profile.js: {}
