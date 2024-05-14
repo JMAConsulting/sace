@@ -1,5 +1,7 @@
 <?php
 
+@require_once 'clin_client_profile.variables.php';
+
 use Drupal\webform\Utility\WebformFormHelper;
 
 /**
