@@ -20,11 +20,19 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
 
+    // Load the Webform entity for the specific form.
+    $webform = Webform::load($form_id);
+
+    // Get the configuration object for the Webform.
+    $webform_config = $webform->get('settings');
+
+    // Now you can access the specific settings for the form, for example, the confirmation URL.
+    $confirmation_url = $webform_config->get('confirmation_url');
+    print_r($confirmation_url);
+    exit;
+
+
     // Add redirect to current user's calendar
-    $form['confirmation_url'] = [
-      '#type' => 'value',
-      '#value' => '/clin-calendar',
-    ];
     //$form->setSetting('confirmation_url', '/clin-calendar');
     //$form['#attached']['drupalSettings']['confirmation_url'] ='/clin-calendar';
     
