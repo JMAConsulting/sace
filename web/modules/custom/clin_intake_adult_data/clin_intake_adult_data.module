@@ -22,7 +22,11 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
 
     // Add redirect to current user's calendar
-var_dump($form['#attributes']);
+    print('<pre>') ;
+    foreach ($form as $key => $value) {
+        print($key . ': ' . print_r($value, true) . "\n") ;
+    }
+    print('</pre>') ;
 
     exit;
     //$form['#attached']['drupalSettings']['confirmation_url'] ='/clin-calendar';
