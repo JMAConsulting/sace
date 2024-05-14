@@ -23,7 +23,7 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     
 
     // Load the Webform entity.
-$webform = Webform::load('webform_submission_clin_adult_intake_data_add_form');
+$webform = Webform::load('clin_adult_intake_data');
 
 // Set the confirmation URL to <front>.
 
