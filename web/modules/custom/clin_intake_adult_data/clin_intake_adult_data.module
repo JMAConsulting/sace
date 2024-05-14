@@ -20,15 +20,8 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
 
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
+    $form->setSetting('confirmation_url', '/clin-calendar');
 
-    // Add redirect to current user's calendar
-    print('<pre>') ;
-    foreach ($form as $key => $value) {
-        print($key . ': ' . print_r($value, true) . "\n") ;
-    }
-    print('</pre>') ;
-
-    exit;
     //$form['#attached']['drupalSettings']['confirmation_url'] ='/clin-calendar';
     
     $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
