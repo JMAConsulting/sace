@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
 
 @require_once 'clin_intake_adult_data.variables.php';
 
