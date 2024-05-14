@@ -20,11 +20,15 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
 
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
-    //$form->setSetting('confirmation_url', '/clin-calendar');
+    
 
-    $test = $form->getSetting('confirmation_url');
-    var_dump($test);
-    exit;
+    // Load the Webform entity.
+$webform = Webform::load('webform_submission_clin_adult_intake_data_add_form');
+
+// Set the confirmation URL to <front>.
+
+// Set the confirmation URL to an internal path.
+$webform->setSetting('confirmation_url', '/clin-calendar')->save();
 
     //$form['#attached']['drupalSettings']['confirmation_url'] ='/clin-calendar';
     
