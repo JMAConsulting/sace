@@ -15,8 +15,14 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
+    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
+
+    // Add redirect to current user's calendar
+    $form['#attached']['drupalSettings']['clin_intake_adult_data']['confirmation_url'] += '/' + $user->get('uid')->value;
+    
     $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
     if (!empty($cid1) && is_numeric($cid1)) {
       \Drupal::service('civicrm')->initialize();
