@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Saceflags</base>
+  <class>Saceflags</class>
+  <name>civicrm_appointment_colours</name>
+  <comment>FIXME</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique Saceflags ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>activity_type_id</name>
+    <type>int unsigned</type>
+    <comment>Activity Type</comment>
+  </field>
+  
+  <field>
+    <name>used_for_flagging_contacts</name>
+    <type>boolean</type>
+    <comment>Used for flagging contacts?</comment>
+  </field>
+
+</table>

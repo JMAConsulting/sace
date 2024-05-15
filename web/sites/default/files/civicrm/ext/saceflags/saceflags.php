@@ -79,6 +79,55 @@ function saceflags_civicrm_entityTypes(&$entityTypes): void {
   _saceflags_civix_civicrm_entityTypes($entityTypes);
 }
 
+function saceflags_civicrm_buildForm($formName, &$form) {
+  if ($formName == "CRM_Admin_Form_Options") {
+    if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE) {
+      //Get colour from AppointmentColours Entity
+      $isFlags = \Civi\Api4\AppointmentColours::get()
+        ->addSelect('colour_hex')
+        ->addWhere('activity_type_id', '=', $form->getVar('_defaultValues')['value'])
+        ->execute();
+      //Pass colour to tpl
+      $form->assign( 'activity_col_hex', $appointmentColourses[0]['colour_hex'] );
+      //Add field to form
+      $form->add('flag', 'saceflags', ts('Used for flagging contacts?'));
+      CRM_Core_Region::instance('page-body')->add([
+        'template' => 'saceflags.tpl',
+      ]);
+    }
+  }
+}
+
+function saceflags_civicrm_postProcess($formName, &$form) {
+  if ($formName == "CRM_Admin_Form_Options") {
+    //Get form values
+    $submitted = $form->getVar('_submitValues');
+    $default_values = $form->getVar('_defaultValues');
+    if(!$submitted['saceflags']){
+      return;
+    }
+
+    $activityTypeID = $form->ajaxResponse['optionValue']['value'] ?: \Civi\Api4\OptionValue::get()->addSelect('value')->addWhere('id', '=',  $form->ajaxResponse['optionValue']['id'])->execute()->first()['value'];
+    $id = \Civi\Api4\AppointmentColours::get(FALSE)
+      ->addWhere('activity_type_id', '=', $activityTypeID)
+      ->execute()->first()['id'];
+
+    if (!$id) {
+      \Civi\Api4\AppointmentColours::create()
+        ->addValue('activity_type_id', $activityTypeID)
+        ->addValue('is_flag', ltrim($submitted['activitycolor'], '#'))
+        ->execute();
+    }
+    else {
+      \Civi\Api4\AppointmentColours::update(FALSE)
+        ->addWhere('id', '=', $id)
+        ->addValue('colour_hex', ltrim($submitted['activitycolor'], '#'))
+        ->execute();
+    }
+  }
+}
+
+
 // --- Functions below this ship commented out. Uncomment as required. ---
 
 /**
