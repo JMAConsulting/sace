@@ -1,0 +1,69 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
+
+@require_once 'clin_intake_adult_data.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_clin_adult_intake_data_add_form") {
+    // Get custom field constants
+    $constants = get_defined_constants(FALSE);
+
+    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
+    //Attach library
+    $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
+    
+    // Load the Webform entity.
+    $webform = Webform::load('clin_adult_intake_data');
+
+    // Set the confirmation URL to user's calendar
+    $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
+    
+    $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
+    if (!empty($cid1) && is_numeric($cid1)) {
+      \Drupal::service('civicrm')->initialize();
+      // Get contact information
+      $contact1 = \Civi\Api4\Contact::get(FALSE)
+        ->addWhere('id', '=', $cid1)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      // Get webform form elements
+      $elements = WebformFormHelper::flattenElements($form);
+      if (!empty($elements)) {
+        // Set default values for contact
+      }
+    }
+
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (!empty($aid) && is_numeric($aid)) {
+      \Drupal::service('civicrm')->initialize();
+      // Get booking type from activity
+      $activityRef = \Civi\Api4\Activity::get(FALSE)
+        ->addWhere('id', '=', $aid)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      // Get webform form elements
+      $elements = WebformFormHelper::flattenElements($form);
+      if (!empty($elements)) {
+        // Set default values for initial call date and intake number
+        $dateTime = new DateTime($activityRef['created_date']);
+        $formattedDate = $dateTime->format('Y-m-d');
+
+        $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
+        $elements[CLIN_INTAKE_ADULT_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
+      }
+    }
+  }
+}
