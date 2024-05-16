@@ -4,6 +4,9 @@
 
 use Drupal\webform\Utility\WebformFormHelper;
 
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+
 /**
  * Implements hook_form_alter().
  * @param $form
@@ -37,3 +40,16 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     }
   }
 }
+
+
+// /**
+//  * Implements hook_views_query_alter().
+//  */
+// function clin_client_profile_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+
+//   if ($view->id() == 'clin_flags') {
+//     $query->leftJoin('staging_sace_civicrm.civicrm_saceflags', 'saceflags', 'sace_activity.id = saceflags.activity_id');
+//     $query->condition('saceflags.used_for_contact_flagging', TRUE);
+//   }
+
+// }
