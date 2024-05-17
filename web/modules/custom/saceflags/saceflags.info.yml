@@ -1,6 +1,6 @@
 name: 'Saceflags'
 type: module
-description: 'Support for flagging acivity types'
+description: 'Support for flagging activity types'
 core_version_requirement: ^9 || ^10
 package: 'sace'
 dependencies:
