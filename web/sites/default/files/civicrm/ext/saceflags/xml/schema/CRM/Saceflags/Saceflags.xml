@@ -3,7 +3,7 @@
 <table>
   <base>CRM/Saceflags</base>
   <class>Saceflags</class>
-  <name>civicrm_appointment_colours</name>
+  <name>civicrm_saceflags</name>
   <comment>FIXME</comment>
   <log>true</log>
 

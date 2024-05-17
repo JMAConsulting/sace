@@ -73,7 +73,7 @@ class CRM_Saceflags_DAO_Saceflags extends CRM_Core_DAO {
    *   Whether to return the plural version of the title.
    */
   public static function getEntityTitle($plural = FALSE) {
-    return $plural ? E::ts('Appointment Colourses') : E::ts('Appointment Colours');
+    return $plural ? E::ts('Saceflags') : E::ts('Saceflags');
   }
 
   /**
