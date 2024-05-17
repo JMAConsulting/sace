@@ -87,6 +87,7 @@ class CRM_Saceflags_DAO_Saceflags extends CRM_Core_DAO {
         'id' => [
           'name' => 'id',
           'type' => CRM_Utils_Type::T_INT,
+          'title' => E::ts('Saceflags ID'),
           'description' => E::ts('Unique Saceflags ID'),
           'required' => TRUE,
           'where' => 'civicrm_saceflags.id',
@@ -103,6 +104,7 @@ class CRM_Saceflags_DAO_Saceflags extends CRM_Core_DAO {
         'activity_type_id' => [
           'name' => 'activity_type_id',
           'type' => CRM_Utils_Type::T_INT,
+          'title' => E::ts('Activity Type ID'),
           'description' => E::ts('Activity Type'),
           'where' => 'civicrm_saceflags.activity_type_id',
           'table_name' => 'civicrm_saceflags',
