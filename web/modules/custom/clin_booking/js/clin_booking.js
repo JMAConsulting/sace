@@ -16,4 +16,7 @@ jQuery(document).ready(function ($) {
   $('input[name="has_this_been_reported_"]').change(updateButtonLabel);
 
   updateButtonLabel();
+
+  // Removing blank create new contact option
+  $('#edit-civicrm-3-contact-1-contact-existing option[value="-"]').remove();
 });
