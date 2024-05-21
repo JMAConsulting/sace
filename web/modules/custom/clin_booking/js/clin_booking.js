@@ -3,7 +3,7 @@ jQuery(document).ready(function ($) {
   function updateButtonLabel() {
     if (
       $("#edit-are-you-the-legal-guardian-no").is(":checked") ||
-      $("edit-has-this-been-reported-no").is(":checked")
+      $("#edit-has-this-been-reported-no").is(":checked")
     ) {
       $("#edit-actions-submit").val("Submit");
     } else {
