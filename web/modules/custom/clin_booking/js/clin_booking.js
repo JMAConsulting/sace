@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-  // Change button value to Submit if legal guardian is no
+  // Change button value to Submit if legal guardian or has been reported is no
   function updateButtonLabel() {
     if (
       $("#edit-are-you-the-legal-guardian-no").is(":checked") ||
@@ -19,4 +19,23 @@ jQuery(document).ready(function ($) {
 
   // Removing blank create new contact option
   $('#edit-civicrm-3-contact-1-contact-existing option[value="-"]').remove();
+
+  // Making caller checkboxes mutually exclusive
+  function makeMutuallyExclusive(checkboxes) {
+    checkboxes.change(function () {
+      if (this.checked) {
+        checkboxes.not(this).prop("checked", false);
+      }
+    });
+  }
+
+  // Select caller checkboxes
+  var checkboxes = $(
+    "#edit-civicrm-2-contact-1-cg23-custom-300-1, " +
+      "#edit-civicrm-2-contact-1-cg19-custom-301-1, " +
+      "#edit-civicrm-2-contact-1-cg22-custom-299-1, " +
+      "#edit-civicrm-2-contact-1-cg21-custom-298-1"
+  );
+
+  makeMutuallyExclusive(checkboxes);
 });
