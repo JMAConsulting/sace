@@ -27,12 +27,14 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
     // Set the confirmation URL to user's calendar
     $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
-    // Add 'Submit' to the list of acceptable submit labels.
-    if (isset($form['actions']['#submit__label'])) {
-      $form['actions']['#submit__label'][] = 'Submit';
-    } else {
-      $form['actions']['#submit__label'] = ['Submit'];
-    }
+    \Drupal::logger('clin_booking')->notice('<pre>' . print_r($form['actions'], true) . '</pre>');
+
+      // Add 'Submit' to the list of acceptable submit labels.
+      if (isset($form['actions']['submit']['#value'])) {
+        $form['actions']['submit']['#value'] .= 'Submit';
+      } else {
+        $form['actions']['submit']['#value'] = 'Submit';
+      }
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
