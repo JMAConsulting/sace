@@ -2,7 +2,6 @@
 
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Entity\Webform;
-use Drupal\webform\Element\WebformActions;
 
 @require_once 'clin_booking.variables.php';
 
@@ -27,6 +26,31 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
 
     // Set the confirmation URL to user's calendar
     $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
+
+
+    // Define the YAML configuration as an array.
+    $new_field = [
+      'actions' => [
+        '#type' => 'webform_actions',
+        '#title' => 'Submit button(s)',
+        '#submit__label' => [
+          'Submit',
+          'Book Intake',
+        ],
+        '#submit__attributes' => [
+          'class' => [
+            'button',
+            'button--secondary',
+          ],
+        ],
+      ],
+    ];
+
+    // Merge the new field configuration with the existing elements of the webform.
+    $new_element_arrangement = array_merge($webform->getElementsDecoded(), $new_field);
+
+    // Set the updated elements configuration to the webform and save it.
+    $webform->setElements($new_element_arrangement)->save();
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
