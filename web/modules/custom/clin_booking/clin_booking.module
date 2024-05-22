@@ -2,6 +2,7 @@
 
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Entity\Webform;
+use Symfony\Component\Yaml\Yaml;
 
 @require_once 'clin_booking.variables.php';
 
