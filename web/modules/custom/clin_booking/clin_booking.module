@@ -27,27 +27,6 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
     // Set the confirmation URL to user's calendar
     $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
-
-    // Define the YAML configuration as an array.
-    $new_field = [
-      'actions' => [
-        '#type' => 'webform_actions',
-        '#title' => 'Submit button(s)',
-        '#submit__label' =>'Book Intake',
-        '#submit__attributes' => [
-          'class' => [
-            'button',
-            'button--secondary',
-          ],
-        ],
-      ],
-    ];
-
-$webform->setElement('actions', $new_field);
-
-// Save the Webform entity.
-$webform->save();
-
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
     }
