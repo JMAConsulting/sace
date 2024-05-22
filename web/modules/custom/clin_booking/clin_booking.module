@@ -27,14 +27,29 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
     // Set the confirmation URL to user's calendar
     $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
-    \Drupal::logger('clin_booking')->notice('<pre>' . print_r($form['actions'], true) . '</pre>');
+    // Define the YAML configuration as an array.
+    $buttons = [
+      'actions' => [
+        '#type' => 'webform_actions',
+        '#title' => 'Submit button(s)',
+        '#submit__label' => [
+          'Submit',
+          'Book Intake',
+        ],
+        '#submit__attributes' => [
+          'class' => [
+            'button',
+            'button--secondary',
+          ],
+        ],
+      ],
+    ];
 
-      // Add 'Submit' to the list of acceptable submit labels.
-      if (isset($form['actions']['submit']['#value'])) {
-        $form['actions']['submit']['#value'] .= 'Submit';
-      } else {
-        $form['actions']['submit']['#value'] = 'Submit';
-      }
+    // Merge the new field configuration with the existing elements of the webform.
+    $new_element_arrangement = array_merge($webform->getElementsDecoded(), $buttons);
+
+    // Set the updated elements configuration to the webform and save it.
+    $webform->setElements($new_element_arrangement)->save();
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
