@@ -52,13 +52,13 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    */
-  public function preSave(WebformSubmissionInterface $webform_submission) {
-    $webform_submission_data = $webform_submission->getData();
-    if ($webform_submission_data && $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] == PED_ONLINE_COURSE_BOOKING_UPDATE_ADULT_ACTIVITY) {
-      $webform_submission_data[PED_ONLINE_COURSE_BOOKING_UPDATE_OPTIONAL_ADDONS] = 'None';
-      $webform_submission->setData($webform_submission_data);
-    }
-  }
+  // public function preSave(WebformSubmissionInterface $webform_submission) {
+  //   $webform_submission_data = $webform_submission->getData();
+  //   if ($webform_submission_data && $webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No') {
+  //     $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
+  //     $webform_submission->setData($webform_submission_data);
+  //   }
+  // }
 
   /**
    * {@inheritdoc}
@@ -66,11 +66,29 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
-    $logger = \Drupal::logger('clin_booking');
-    $logger->info('Webform submission data: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
-    // if ($webform_submission_data) {
-      
-    // }
-  }
+  //   if ($webform_submission_data) {
+  //     $activityParams = [
+  //       'activity_type_id' => $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'], 
+  //       'activity_date_time' => $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'],
+  //     ];
 
+  //     $dateTime = new DateTime($webform_submission_data['civicrm_1_activity_1_activity_activity_date_time']);
+  //     $year = $dateTime->format('Y');
+
+  //     $existingActivity = civicrm_api4('Activity', 'get', $activityParams);
+  //     if ($existingActivity) {
+  //       $activityParams['id'] = $existingActivity[0]['id'];
+  //       $activityParams['CLIN_Adult_Intake_Activity_Data.Intake_Number'] = generateIntakeNumber($year);
+  //     }
+
+  //     $activityResult = civicrm_api4('Activity', 'update', $activityParams);
+  //   }
+   }
+   // private function generateIntakeNumber($year) {
+//   $activityParams = [
+//     'activity_type_id' => $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'], 
+//   ];
+// }
 }
+
+
