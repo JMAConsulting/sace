@@ -2,6 +2,7 @@
 
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Entity\Webform;
+use Drupal\webform\Element\WebformActions;
 
 @require_once 'clin_booking.variables.php';
 
