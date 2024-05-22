@@ -43,11 +43,10 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
       ],
     ];
 
-    // Merge the new field configuration with the existing elements of the webform.
-    $new_element_arrangement = array_merge($webform->getElementsDecoded(), $new_field);
+$webform->setElement('actions', $new_field);
 
-    // Set the updated elements configuration to the webform and save it.
-    $webform->setElements($new_element_arrangement)->save();
+// Save the Webform entity.
+$webform->save();
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
