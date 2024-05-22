@@ -28,21 +28,31 @@ jQuery(document).ready(function ($) {
   // Set the concatenated value to the third input element
   $("#edit-civicrm-1-contact-1-cg65-custom-1391").val(concatenatedValue);
 
-  if ($("#edit-civicrm-2-contact-1-cg23-custom-300-1").prop("checked")) {
+  if ($("#edit-civicrm-1-contact-1-cg21-custom-298-1").prop("checked")) {
+    $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
+      $("#edit-civicrm-1-contact-1-cg21-custom-234").val()
+    );
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
+      $("#edit-civicrm-1-contact-1-cg21-custom-238").val()
+    );
+  } else if ($("#edit-civicrm-1-contact-1-cg23-custom-300-1").prop("checked")) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
       $("#edit-civicrm-1-contact-1-cg23-custom-242").val()
     );
-  } else if ($("#edit-civicrm-1-contact-1-cg21-custom-298-1").prop("checked")) {
-    $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
-      $("#edit-civicrm-1-contact-1-cg21-custom-234").val()
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
+      $("#edit-civicrm-1-contact-1-cg23-custom-244").val()
     );
   } else if ($("#edit-civicrm-1-contact-1-cg19-custom-301-1").prop("checked")) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
       $("#edit-civicrm-1-contact-1-cg19-custom-175").val()
     );
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val("Case Worker");
   } else if ($("#edit-civicrm-1-contact-1-cg22-custom-299-1").prop("checked")) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
       $("#edit-civicrm-1-contact-1-cg22-custom-236").val()
+    );
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
+      "Family Support Worker"
     );
   }
 });
