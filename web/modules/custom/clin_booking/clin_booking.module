@@ -2,7 +2,6 @@
 
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Entity\Webform;
-use Symfony\Component\Yaml\Yaml;
 
 @require_once 'clin_booking.variables.php';
 
@@ -46,15 +45,14 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
       ],
     ];
 
-    \Drupal::logger('clin_booking')->notice('<pre>' . print_r($webform->getElementsDecoded(), true) . '</pre>');
+    // Create a new WebformActions element.
+    $actions_element = WebformActions::create($buttons);
 
-    // Merge the new field configuration with the existing elements of the webform.
-    $merged_elements = array_merge($webform->getElementsDecoded(), $buttons);
+    // Set the actions element to the Webform.
+    $webform->setElement('actions', $actions_element);
 
-    // Convert array back to YAML string.
-    $yaml_string = Yaml::dump($merged_elements);
-
-    $webform->setElements($yaml_string)->save();
+    // Save the Webform entity.
+    $webform->save();
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
