@@ -33,10 +33,7 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
       'actions' => [
         '#type' => 'webform_actions',
         '#title' => 'Submit button(s)',
-        '#submit__label' => [
-          'Submit',
-          'Book Intake',
-        ],
+        '#submit__label' =>'Book Intake',
         '#submit__attributes' => [
           'class' => [
             'button',
