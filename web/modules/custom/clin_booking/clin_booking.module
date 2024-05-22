@@ -46,14 +46,14 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
       ],
     ];
 
-    // Create a new WebformActions element.
-    $actions_element = WebformActions::create($buttons);
-
     // Set the actions element to the Webform.
-    $webform->setElement('actions', $actions_element);
+    $actions = $webform->getElement('actions');
 
-    // Save the Webform entity.
-    $webform->save();
+    \Drupal::logger('clin_booking')->notice('<pre>' . print_r($actions, true) . '</pre>');
+
+
+    // // Save the Webform entity.
+    // $webform->save();
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
