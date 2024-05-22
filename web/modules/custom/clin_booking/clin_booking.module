@@ -45,6 +45,8 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
       ],
     ];
 
+    \Drupal::logger('clin_booking')->notice('<pre>' . print_r($webform->getElementsDecoded(), true) . '</pre>');
+
     // Merge the new field configuration with the existing elements of the webform.
     $new_element_arrangement = array_merge($webform->getElementsDecoded(), $buttons);
 
