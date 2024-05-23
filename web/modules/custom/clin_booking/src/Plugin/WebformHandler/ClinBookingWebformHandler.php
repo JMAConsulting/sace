@@ -6,7 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Civi\Api4\EntityTag;
 
 /**
  * Sace CiviCRM Activity Update Handler.
@@ -72,15 +71,17 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
+    \Drupal::logger('clin_booking')->debug('Webform submission data: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
     if ($webform_submission_data) {
-      $activityParams = [
-        'activity_type_id' => $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'], 
-        'activity_date_time' => $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'],
-      ];
-      $existingActivity = civicrm_api4('Activity', 'get', $activityParams);
-
+      $existingActivity = \Civi\Api4\Activity::get(FALSE)
+      ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
+      ->addWhere('activity_date_time', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
+      ->execute()
+      ->first();
+      
       if ($existingActivity) {
         generateIntakeNumber($existingActivity);
+
         civicrm_api4('Activity', 'update', $existingActivity); 
       }
     }
@@ -93,17 +94,17 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
     $year = date("Y");
 
     // Update intake number
-    if($existingActivity[0]['activity_type_id'] === 77)
+    if($existingActivity['activity_type_id'] === 77)
       $prefix = 'A';
-    else if ($existingActivity[0]['activity_type_id'] === 78)
+    else if ($existingActivity['activity_type_id'] === 78)
       $prefix = 'C';
     else
       return;
 
-    $mostRecent = \Civi\Api4\Activity::get(TRUE)
+    $mostRecent = \Civi\Api4\Activity::get(FALSE)
       ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Number')
       ->addWhere('CLIN_Adult_Intake_Activity_Data.Intake_Number', 'IS NOT NULL')
-      ->addWhere('activity_type_id', '=', $existingActivity[0]['activity_type_id'])
+      ->addWhere('activity_type_id', '=', $existingActivity['activity_type_id'])
       ->addOrderBy('id', 'DESC')
       ->setLimit(1)
       ->execute()
@@ -128,7 +129,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           $newIntake = '001';
       }
     // Set intake number
-    $existingActivity[0]['CLIN_Adult_Intake_Activity_Data.Intake_Number'] = $year . $prefix . '-' . $newIntake;
+    $existingActivity['CLIN_Adult_Intake_Activity_Data.Intake_Number'] = $year . $prefix . '-' . $newIntake;
   }
 }
 
