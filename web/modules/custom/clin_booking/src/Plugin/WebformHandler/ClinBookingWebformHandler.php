@@ -51,19 +51,19 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    */
-  // public function preSave(WebformSubmissionInterface $webform_submission) {
-  //   $webform_submission_data = $webform_submission->getData();
+  public function preSave(WebformSubmissionInterface $webform_submission) {
+    $webform_submission_data = $webform_submission->getData();
     
-  //   \Drupal::logger('clin_booking')->debug('Webform submission data: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
+    \Drupal::logger('clin_booking')->debug('Webform submission data: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
     
-  //   if ($webform_submission_data && ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')) {
-  //     $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
+    if ($webform_submission_data && ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')) {
+      $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
       
-  //     \Drupal::logger('clin_booking')->debug('Webform submission data: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
+      \Drupal::logger('clin_booking')->debug('Webform submission data: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
       
-  //     $webform_submission->setData($webform_submission_data);
-  //   }
-  // }
+      $webform_submission->setData($webform_submission_data);
+    }
+  }
 
   /**
    * {@inheritdoc}
