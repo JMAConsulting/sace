@@ -118,9 +118,9 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
         $newIntake = '001';
 
       // Use regular expression to extract the year and the number at the end
-      else if (preg_match('/^(\d{4}A-)(\d{3})$/', $mostRecent['CLIN_Adult_Intake_Activity_Data.Intake_Number'], $matches)) {
+      else if (preg_match('/^(\d{4})([AC])-?(\d+)$/', $mostRecent['CLIN_Adult_Intake_Activity_Data.Intake_Number'], $matches)) {
         $mostRecentYear = $matches[1];
-        $lastIntakeNum = $matches[2];
+        $lastIntakeNum = $matches[3];
         
         if($mostRecentYear === $year)
         {
