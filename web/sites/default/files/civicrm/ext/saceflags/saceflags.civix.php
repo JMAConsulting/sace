@@ -304,5 +304,11 @@ function _saceflags_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parentID)
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
 function _saceflags_civix_civicrm_entityTypes(&$entityTypes) {
-  $entityTypes = array_merge($entityTypes, []);
+  $entityTypes = array_merge($entityTypes, [
+    'CRM_Saceflags_DAO_Saceflags' => [
+      'name' => 'Saceflags',
+      'class' => 'CRM_Saceflags_DAO_Saceflags',
+      'table' => 'civicrm_saceflags',
+    ],
+  ]);
 }

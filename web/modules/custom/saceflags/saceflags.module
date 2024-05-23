@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains saceflags.module.
+ */
+function saceflags_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
+  $civicrm_entity_info['civicrm_saceflags'] = [
+    'civicrm entity label' => ts('Saceflags'),
+    'civicrm entity name' => 'saceflags',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+}

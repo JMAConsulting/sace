@@ -79,6 +79,62 @@ function saceflags_civicrm_entityTypes(&$entityTypes): void {
   _saceflags_civix_civicrm_entityTypes($entityTypes);
 }
 
+function saceflags_civicrm_buildForm($formName, &$form) {
+  if ($formName == "CRM_Admin_Form_Options") {
+    if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE) {
+      // Get if activity is used for flagging
+      $isFlag = \Civi\Api4\Saceflags::get()
+        ->addSelect('used_for_flagging_contacts')
+        ->addWhere('activity_type_id', '=', $form->getVar('_defaultValues')['value'])
+        ->execute()
+        ->first();
+      $flagValue = '';
+      if(!empty($isFlag) && $isFlag) {
+        $flagValue = $isFlag['used_for_flagging_contacts'] ? '1' : '0';
+      }
+      //Pass flag to tpl
+      $form->assign('used_for_flagging_contacts', $flagValue);
+      //Add field to form
+      $form->add('select', 'saceflags', ts('Used for flagging contacts?'), ['' => ts('- Select -'), '1' => ts('Yes'), '0' => ts('No')]);
+      CRM_Core_Region::instance('page-body')->add([
+        'template' => 'saceflags.tpl',
+      ]);
+    }
+  }
+}
+
+function saceflags_civicrm_postProcess($formName, &$form) {
+  if ($formName == "CRM_Admin_Form_Options") {
+    //Get form values
+    $submitted = $form->getVar('_submitValues');
+    $default_values = $form->getVar('_defaultValues');
+
+    if($submitted['saceflags'] == ''){
+      return;
+    }
+
+    $activityTypeID = $form->ajaxResponse['optionValue']['value'] ?: \Civi\Api4\OptionValue::get()->addSelect('value')->addWhere('id', '=',  $form->ajaxResponse['optionValue']['id'])->execute()->first()['value'];
+    $id = \Civi\Api4\Saceflags::get(FALSE)
+      ->addWhere('activity_type_id', '=', $activityTypeID)
+      ->execute()->first()['id'];
+
+    if (!$id) {
+      \Civi\Api4\Saceflags::create()
+        ->addValue('activity_type_id', $activityTypeID)
+        ->addValue('used_for_flagging_contacts', $submitted['saceflags'])
+        ->execute();
+    }
+    else {
+      \Civi\Api4\Saceflags::update(FALSE)
+        ->addWhere('id', '=', $id)
+        ->addValue('used_for_flagging_contacts', $submitted['saceflags'])
+        ->execute();
+    }
+  }
+}
+
+
+
 // --- Functions below this ship commented out. Uncomment as required. ---
 
 /**

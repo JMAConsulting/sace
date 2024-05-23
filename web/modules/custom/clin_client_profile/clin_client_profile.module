@@ -4,6 +4,9 @@
 
 use Drupal\webform\Utility\WebformFormHelper;
 
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+
 /**
  * Implements hook_form_alter().
  * @param $form
