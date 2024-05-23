@@ -80,7 +80,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
       ->first();
       
       if ($existingActivity) {
-        generateIntakeNumber($existingActivity);
+        $this->generateIntakeNumber($existingActivity);
 
         civicrm_api4('Activity', 'update', $existingActivity); 
       }
