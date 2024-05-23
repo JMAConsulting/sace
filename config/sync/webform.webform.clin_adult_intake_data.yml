@@ -11,7 +11,7 @@ uid: 88
 template: false
 archive: false
 id: clin_adult_intake_data
-title: 'CLIN Adult Intake Data '
+title: 'CLIN Adult Intake Data'
 description: ''
 categories: {  }
 elements: |-
