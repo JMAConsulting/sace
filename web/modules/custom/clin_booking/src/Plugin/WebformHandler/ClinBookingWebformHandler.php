@@ -76,12 +76,14 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
       if ($existingActivity) {
         if ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')
         {
+          \Drupal::logger('clin_booking')->debug('This ran: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
           \Civi\Api4\Activity::update(FALSE)
             ->addValue('activity_type_id', 336)
             ->addWhere('id', '=', $existingActivity['id'])
             ->execute();
         }
         else {
+          \Drupal::logger('clin_booking')->debug('This did not run: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
           $intakeNumber = $this->generateIntakeNumber($existingActivity);
           if($intakeNumber != NULL){
             \Civi\Api4\Activity::update(FALSE)
