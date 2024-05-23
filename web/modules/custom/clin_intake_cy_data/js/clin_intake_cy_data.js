@@ -16,7 +16,22 @@ jQuery(document).ready(function ($) {
   // Uncheck elements
   $("#edit-civicrm-1-contact-1-cg65-custom-1383-0").removeAttr("checked");
   $("#edit-civicrm-1-contact-1-cg65-custom-1410-0").removeAttr("checked");
-  //$(".form-item-civicrm-1-contact-1-cg65-custom-1384").hide();
+  
+  function toggleCustom1384() {
+    if ($("#edit-civicrm-1-contact-1-cg65-custom-1383-0").is(":checked")) {
+      // If "No" is checked, show element
+      $(".form-item-civicrm-1-contact-1-cg65-custom-1384").show();
+    } else {
+      // If "Yes" is checked, hide element
+      $(".form-item-civicrm-1-contact-1-cg65-custom-1384").hide();
+    }
+  }
+
+  $(
+    "#edit-civicrm-1-contact-1-cg65-custom-1383-0, #edit-civicrm-1-contact-1-cg65-custom-1383-1"
+  ).on("change", toggleCustom1384);
+
+  toggleCustom1384();
 
   // Populating parent and guardian field
   var guardian1 = $("#edit-civicrm-1-contact-1-cg21-custom-234").val();
