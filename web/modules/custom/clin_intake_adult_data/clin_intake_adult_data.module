@@ -30,12 +30,6 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
     if (!empty($cid1) && is_numeric($cid1)) {
       \Drupal::service('civicrm')->initialize();
-      // Get contact information
-      $contact1 = \Civi\Api4\Contact::get(FALSE)
-        ->addWhere('id', '=', $cid1)
-        ->setLimit(1)
-        ->execute()
-        ->first();
 
       // Get webform form elements
       $elements = WebformFormHelper::flattenElements($form);
@@ -62,7 +56,6 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
         $formattedDate = $dateTime->format('Y-m-d');
 
         $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
-        $elements[CLIN_INTAKE_ADULT_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
       }
     }
   }
