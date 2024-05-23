@@ -44,91 +44,100 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
     return $instance;
   }
 
-  /**
-   * Process webform submission when it is about to be saved. Called by the following hook:
-   *
-   * @see webform_civicrm_webform_submission_presave
-   *
-   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
-   */
-  public function preSave(WebformSubmissionInterface $webform_submission) {
-    $webform_submission_data = $webform_submission->getData();
+  // /**
+  //  * Process webform submission when it is about to be saved. Called by the following hook:
+  //  *
+  //  * @see webform_civicrm_webform_submission_presave
+  //  *
+  //  * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+  //  */
+  // public function preSave(WebformSubmissionInterface $webform_submission) {
+  //   $webform_submission_data = $webform_submission->getData();
     
-    if ($webform_submission_data && ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')) {
-      $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
-      $webform_submission->setData($webform_submission_data);
+  //   if ($webform_submission_data && ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')) {
+  //     $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
+  //     $webform_submission->setData($webform_submission_data);
+  //   }
+  // }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
+    $this->civicrm->initialize();
+    $webform_submission_data = $webform_submission->getData();
+    if ($webform_submission_data) {
+      $existingActivity = \Civi\Api4\Activity::get(FALSE)
+      ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
+      ->addWhere('activity_date_time', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
+      ->execute()
+      ->first();
+      
+      if ($existingActivity) {
+        if ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')
+        {
+          \Civi\Api4\Activity::update(FALSE)
+            ->addValue('activity_type_id', 336)
+            ->addWhere('id', '=', $existingActivity['id'])
+            ->execute();
+        }
+        else {
+          $intakeNumber = $this->generateIntakeNumber($existingActivity);
+          if($intakeNumber != NULL){
+            \Civi\Api4\Activity::update(FALSE)
+            ->addValue('CLIN_Adult_Intake_Activity_Data.Intake_Number', $intakeNumber)
+            ->addWhere('id', '=', $existingActivity['id'])
+            ->execute();
+          }
+        }
+      }
     }
   }
 
-//   /**
-//    * {@inheritdoc}
-//    */
-//   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
-//     $this->civicrm->initialize();
-//     $webform_submission_data = $webform_submission->getData();
-//     if ($webform_submission_data) {
-//       $existingActivity = \Civi\Api4\Activity::get(FALSE)
-//       ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
-//       ->addWhere('activity_date_time', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
-//       ->execute()
-//       ->first();
-      
-//       if ($existingActivity) {
-//         $intakeNumber = $this->generateIntakeNumber($existingActivity);
-//         if($intakeNumber != NULL){
-//           \Civi\Api4\Activity::update(FALSE)
-//           ->addValue('CLIN_Adult_Intake_Activity_Data.Intake_Number', $intakeNumber)
-//           ->addWhere('id', '=', $existingActivity['id'])
-//           ->execute();
-//         }
-//       }
-//     }
-//   }
 
+  private function generateIntakeNumber($existingActivity)
+  {
+    // Get current year
+    $year = date("Y");
 
-//   private function generateIntakeNumber($existingActivity)
-//   {
-//     // Get current year
-//     $year = date("Y");
+    // Update intake number
+    if($existingActivity['activity_type_id'] === 77)
+      $prefix = 'A';
+    else if ($existingActivity['activity_type_id'] === 78)
+      $prefix = 'C';
+    else
+      return;
 
-//     // Update intake number
-//     if($existingActivity['activity_type_id'] === 77)
-//       $prefix = 'A';
-//     else if ($existingActivity['activity_type_id'] === 78)
-//       $prefix = 'C';
-//     else
-//       return;
+    $mostRecent = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Number')
+      ->addWhere('CLIN_Adult_Intake_Activity_Data.Intake_Number', 'IS NOT NULL')
+      ->addWhere('activity_type_id', '=', $existingActivity['activity_type_id'])
+      ->addOrderBy('id', 'DESC')
+      ->setLimit(1)
+      ->execute()
+      ->first();
 
-//     $mostRecent = \Civi\Api4\Activity::get(FALSE)
-//       ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Number')
-//       ->addWhere('CLIN_Adult_Intake_Activity_Data.Intake_Number', 'IS NOT NULL')
-//       ->addWhere('activity_type_id', '=', $existingActivity['activity_type_id'])
-//       ->addOrderBy('id', 'DESC')
-//       ->setLimit(1)
-//       ->execute()
-//       ->first();
+      // If no intake numbers for activity type found, start at 001
+      if(empty($mostRecent))
+        $newIntake = '001';
 
-//       // If no intake numbers for activity type found, start at 001
-//       if(empty($mostRecent))
-//         $newIntake = '001';
-
-//       // Use regular expression to extract the year and the number at the end
-//       else if (preg_match('/^(\d{4})([AC])-?(\d+)$/', $mostRecent['CLIN_Adult_Intake_Activity_Data.Intake_Number'], $matches)) {
-//         $mostRecentYear = $matches[1];
-//         $lastIntakeNum = $matches[3];
+      // Use regular expression to extract the year and the number at the end
+      else if (preg_match('/^(\d{4})([AC])-?(\d+)$/', $mostRecent['CLIN_Adult_Intake_Activity_Data.Intake_Number'], $matches)) {
+        $mostRecentYear = $matches[1];
+        $lastIntakeNum = $matches[3];
         
-//         if($mostRecentYear === $year)
-//         {
-//           // Increment intake num by one
-//           $newIntake = str_pad((int)$lastIntakeNum + 1, 3, '0', STR_PAD_LEFT);
-//         }
-//         // If it is the start of a new year? Restart to 001
-//         else
-//           $newIntake = '001';
-//       }
-//     // Set intake number
-//     return $year . $prefix . '-' . $newIntake;
-//   }
- }
+        if($mostRecentYear === $year)
+        {
+          // Increment intake num by one
+          $newIntake = str_pad((int)$lastIntakeNum + 1, 3, '0', STR_PAD_LEFT);
+        }
+        // If it is the start of a new year? Restart to 001
+        else
+          $newIntake = '001';
+      }
+    // Set intake number
+    return $year . $prefix . '-' . $newIntake;
+  }
+}
 
 
