@@ -1,13 +1,15 @@
 jQuery(document).ready(function ($) {
-  // Change button value to Submit if legal guardian or has been reported is no
+  // Hide/show different submit buttons depending on input
   function updateButtonLabel() {
     if (
       $("#edit-are-you-the-legal-guardian-no").is(":checked") ||
       $("#edit-has-this-been-reported-no").is(":checked")
     ) {
-      $("#edit-actions-submit").val("Submit");
+      $("#edit-actions-01-submit").show();
+      $("#edit-actions-submit").hide();
     } else {
-      $("#edit-actions-submit").val("Book Intake");
+      $("#edit-actions-01-submit").hide();
+      $("#edit-actions-submit").show();
     }
   }
 
