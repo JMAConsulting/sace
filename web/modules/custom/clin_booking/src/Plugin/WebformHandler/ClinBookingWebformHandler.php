@@ -71,7 +71,6 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
-    \Drupal::logger('clin_booking')->debug('Webform submission data: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
     if ($webform_submission_data) {
       $existingActivity = \Civi\Api4\Activity::get(FALSE)
       ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
@@ -82,7 +81,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
       if ($existingActivity) {
         $intakeNumber = $this->generateIntakeNumber($existingActivity);
         if($intakeNumber != NULL){
-          \Civi\Api4\Activity::update(TRUE)
+          \Civi\Api4\Activity::update(FALSE)
           ->addValue('CLIN_Adult_Intake_Activity_Data.Intake_Number', $intakeNumber)
           ->addWhere('id', '=', $existingActivity['id'])
           ->execute();
