@@ -80,15 +80,19 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
       ->first();
       
       if ($existingActivity) {
-        $this->generateIntakeNumber($existingActivity);
-
-        civicrm_api4('Activity', 'update', $existingActivity); 
+        $intakeNumber = $this->generateIntakeNumber($existingActivity);
+        if($intakeNumber != NULL){
+          \Civi\Api4\Activity::update(TRUE)
+          ->addValue('CLIN_Adult_Intake_Activity_Data.Intake_Number', $intakeNumber)
+          ->addWhere('id', '=', $existingActivity['id'])
+          ->execute();
+        }
       }
     }
   }
 
 
-  private function generateIntakeNumber(&$existingActivity)
+  private function generateIntakeNumber($existingActivity)
   {
     // Get current year
     $year = date("Y");
@@ -129,7 +133,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           $newIntake = '001';
       }
     // Set intake number
-    $existingActivity['CLIN_Adult_Intake_Activity_Data.Intake_Number'] = $year . $prefix . '-' . $newIntake;
+    return $year . $prefix . '-' . $newIntake;
   }
 }
 
