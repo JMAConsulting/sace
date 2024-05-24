@@ -868,11 +868,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-<<<<<<< HEAD
             'reference' => 'd6527284cab3f9d3784e599775d3d6c9acab31ac',
-=======
-            'reference' => '26610e7e84296de16ccb2d7da1f72470b05f3b95',
->>>>>>> 16af60725 (Fix file permissions)
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
