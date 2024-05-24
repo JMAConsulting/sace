@@ -46,12 +46,4 @@ jQuery(document).ready(function ($) {
     'label[for="edit-civicrm-1-activity-1-activity-activity-type-id-336"]'
   ).hide();
   $("#edit-civicrm-1-activity-1-activity-activity-type-id-336").hide();
-  $("#edit-has-this-been-reported-no").change(function () {
-    if ($(this).is(":checked")) {
-      $("#edit-civicrm-1-activity-1-activity-activity-type-id-336").prop(
-        "checked",
-        true
-      );
-    }
-  });
 });
