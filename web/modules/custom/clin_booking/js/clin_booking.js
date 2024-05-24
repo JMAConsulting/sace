@@ -40,4 +40,16 @@ jQuery(document).ready(function ($) {
   );
 
   makeMutuallyExclusive(checkboxes);
+
+  // Hide default activity type option
+  $(
+    'label[for="edit-civicrm-1-activity-1-activity-activity-type-id-336"]'
+  ).hide();
+  $("#edit-civicrm-1-activity-1-activity-activity-type-id-336").hide();
+  $("#edit-actions-01-submit").click(function () {
+    $("#edit-civicrm-1-activity-1-activity-activity-type-id-336").prop(
+      "checked",
+      true
+    );
+  });
 });
