@@ -51,14 +51,15 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
   //  *
   //  * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
   //  */
-  // public function preSave(WebformSubmissionInterface $webform_submission) {
-  //   $webform_submission_data = $webform_submission->getData();
+  public function preSave(WebformSubmissionInterface $webform_submission) {
+    $webform_submission_data = $webform_submission->getData();
     
-  //   if ($webform_submission_data && ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')) {
-  //     $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
-  //     $webform_submission->setData($webform_submission_data);
-  //   }
-  // }
+    if ($webform_submission_data && ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')) {
+      $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
+      $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'] = date('Y-m-d H:i:s', time());
+      $webform_submission->setData($webform_submission_data);
+    }
+  }
 
   /**
    * {@inheritdoc}
@@ -76,12 +77,13 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
       if ($existingActivity) {
         if ($existingActivity['activity_type_id'] === 336)
         {
-          \Drupal::logger('clin_booking')->debug('This ran: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
+          \Drupal::logger('clin_booking')->debug('Activity with correct ID was found: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
           // \Civi\Api4\Activity::update(FALSE)
           //   ->addWhere('id', '=', $existingActivity['id'])
           //   ->execute();
         }
         else {
+          \Drupal::logger('clin_booking')->debug('Activity type was not updated: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
           \Drupal::logger('clin_booking')->debug('This did not run: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
           $intakeNumber = $this->generateIntakeNumber($existingActivity);
           if($intakeNumber != NULL){
@@ -92,6 +94,15 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           }
         }
       }
+    }
+    else {
+      \Civi\Api4\Activity::create(FALSE)
+        ->addValue('activity_type_id', 336)
+        ->addValue('activity_date_time', '')
+        ->addValue('assignee_contact_id', [
+          'user_contact_id',
+        ])
+        ->execute();
     }
   }
 
