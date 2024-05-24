@@ -54,7 +54,8 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
   public function preSave(WebformSubmissionInterface $webform_submission) {
     $webform_submission_data = $webform_submission->getData();
     
-    if ($webform_submission_data && ($webform_submission_data['are_you_the_legal_guardian'] === 'No' || $webform_submission_data['has_this_been_reported_'] === 'No')) {
+    if ($webform_submission_data && ((isset($webform_submission_data['are_you_the_legal_guardian']) && $webform_submission_data['are_you_the_legal_guardian'] === 'No') 
+    || (isset($webform_submission_data['has_this_been_reported_']) && $webform_submission_data['has_this_been_reported_'] === 'No'))) {
       $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
       $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'] = date('Y-m-d H:i:s', time());
       $webform_submission->setData($webform_submission_data);
