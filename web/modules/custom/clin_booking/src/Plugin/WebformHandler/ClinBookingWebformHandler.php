@@ -73,6 +73,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
     if ($webform_submission_data) {
         $existingActivity = \Civi\Api4\Activity::get(FALSE)
         ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
+        ->addVaaddWherelue('source_contact_id','=' ,['user_contact_id',])
         ->addOrderBy('id', 'DESC')
         ->execute()
         ->first();
