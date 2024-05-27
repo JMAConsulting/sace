@@ -73,7 +73,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
     if ($webform_submission_data) {
         $existingActivity = \Civi\Api4\Activity::get(FALSE)
         ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
-        ->addWhere('source_contact_id','=' ,['user_contact_id',])
+        ->addWhere('source_contact_id','=' ,'user_contact_id')
         ->addOrderBy('id', 'DESC')
         ->execute()
         ->first();
@@ -83,9 +83,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           ->addValue('activity_type_id', 336)
           ->addValue('activity_date_time', date('Y-m-d H:i:s', time()))
           ->addValue('subject','TEST')
-          ->addValue('source_contact_id', [
-            'user_contact_id',
-          ])
+          ->addValue('source_contact_id', 'user_contact_id')
           ->execute();
         \Drupal::logger('clin_booking')->debug('Creating new activity: @data', ['@data' => print_r($newActivity, TRUE)]);
       }
