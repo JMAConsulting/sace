@@ -69,48 +69,45 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
-    \Drupal::logger('clin_booking')->debug('webform_submission_data @data', ['@data' => print_r($webform_submission_data, TRUE)]);
+
     if ($webform_submission_data) {
         $existingActivity = \Civi\Api4\Activity::get(FALSE)
         ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
-        ->addWhere('activity_date_time', '=', 'created_date')
         ->addOrderBy('id', 'DESC')
         ->execute()
         ->first();
 
-        if(empty($existingActivity)){
-          \Drupal::logger('clin_booking')->debug('trying to create new activity: @data', ['@data' => print_r($existingActivity, TRUE)]);
-          \Civi\Api4\Activity::create(FALSE)
-            ->addValue('activity_type_id', 336)
-            ->addValue('activity_date_time', date('Y-m-d H:i:s', time()))
-            ->addValue('subject','TEST')
-            ->addValue('assignee_contact_id', [
-              'user_contact_id',
-            ])
-            ->execute();
-            }
-        
+      if(empty($existingActivity)){
+        $newActivity = \Civi\Api4\Activity::create(FALSE)
+          ->addValue('activity_type_id', 336)
+          ->addValue('activity_date_time', date('Y-m-d H:i:s', time()))
+          ->addValue('subject','TEST')
+          ->addValue('source_contact_id', [
+            'user_contact_id',
+          ])
+          ->execute();
+        \Drupal::logger('clin_booking')->debug('Creating new activity: @data', ['@data' => print_r($newActivity, TRUE)]);
+      }
+      else {
+        \Drupal::logger('clin_booking')->debug('is this running?: @data', ['@data' => print_r($existingActivity, TRUE)]);
+        if ($existingActivity['activity_type_id'] === 336) {
+          \Drupal::logger('clin_booking')->debug('Activity with correct ID was found: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
+          // \Civi\Api4\Activity::update(FALSE)
+          //   ->addWhere('id', '=', $existingActivity['id'])
+          //   ->execute();
+        }
         else {
-          \Drupal::logger('clin_booking')->debug('acstivity exists: @data', ['@data' => print_r($existingActivity, TRUE)]);
-          if ($existingActivity['activity_type_id'] === 336)
-          {
-            \Drupal::logger('clin_booking')->debug('Activity with correct ID was found: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
-            // \Civi\Api4\Activity::update(FALSE)
-            //   ->addWhere('id', '=', $existingActivity['id'])
-            //   ->execute();
-          }
-          else {
-            \Drupal::logger('clin_booking')->debug('Activity type was not updated: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
-            $intakeNumber = $this->generateIntakeNumber($existingActivity);
-            if($intakeNumber != NULL){
-              \Civi\Api4\Activity::update(FALSE)
-              ->addValue('CLIN_Adult_Intake_Activity_Data.Intake_Number', $intakeNumber)
-              ->addWhere('id', '=', $existingActivity['id'])
-              ->execute();
-            }
+          \Drupal::logger('clin_booking')->debug('Activity type was not updated: @data', ['@data' => print_r($webform_submission_data, TRUE)]);
+          $intakeNumber = $this->generateIntakeNumber($existingActivity);
+          if($intakeNumber != NULL){
+            \Civi\Api4\Activity::update(FALSE)
+            ->addValue('CLIN_Adult_Intake_Activity_Data.Intake_Number', $intakeNumber)
+            ->addWhere('id', '=', $existingActivity['id'])
+            ->execute();
           }
         }
       }
+    }
   }
 
 
