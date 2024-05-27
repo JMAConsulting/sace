@@ -71,14 +71,10 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
     $webform_submission_data = $webform_submission->getData();
     \Drupal::logger('clin_booking')->debug('webform_submission_data @data', ['@data' => print_r($webform_submission_data, TRUE)]);
     if ($webform_submission_data) {
-      if(!isset($webform_submission_data['civicrm_1_activity_1_activity_activity_date_time']))
-      {
-        \Drupal::logger('clin_booking')->debug('no datetime: @data', ['@data' => print_r($existingActivity, TRUE)]);
-      }
-      else {
         $existingActivity = \Civi\Api4\Activity::get(FALSE)
         ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
-        ->addWhere('activity_date_time', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
+        ->addWhere('activity_date_time', '=', 'created_date')
+        ->addOrderBy('id', 'DESC')
         ->execute()
         ->first();
         \Drupal::logger('clin_booking')->debug('API ran: @data', ['@data' => print_r($existingActivity, TRUE)]);
@@ -103,7 +99,6 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
             }
           }
         }
-      }
     }
     else {
       \Drupal::logger('clin_booking')->debug('trying to create new activity: @data', ['@data' => print_r($existingActivity, TRUE)]);
