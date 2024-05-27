@@ -77,9 +77,20 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
         ->addOrderBy('id', 'DESC')
         ->execute()
         ->first();
-        \Drupal::logger('clin_booking')->debug('API ran: @data', ['@data' => print_r($existingActivity, TRUE)]);
+
+        if(empty($existingActivity)){
+          \Drupal::logger('clin_booking')->debug('trying to create new activity: @data', ['@data' => print_r($existingActivity, TRUE)]);
+          \Civi\Api4\Activity::create(FALSE)
+            ->addValue('activity_type_id', 336)
+            ->addValue('activity_date_time', date('Y-m-d H:i:s', time()))
+            ->addValue('subject','TEST')
+            ->addValue('assignee_contact_id', [
+              'user_contact_id',
+            ])
+            ->execute();
+            }
         
-        if ($existingActivity) {
+        else {
           \Drupal::logger('clin_booking')->debug('acstivity exists: @data', ['@data' => print_r($existingActivity, TRUE)]);
           if ($existingActivity['activity_type_id'] === 336)
           {
@@ -99,17 +110,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
             }
           }
         }
-    }
-    else {
-      \Drupal::logger('clin_booking')->debug('trying to create new activity: @data', ['@data' => print_r($existingActivity, TRUE)]);
-      \Civi\Api4\Activity::create(FALSE)
-        ->addValue('activity_type_id', 336)
-        ->addValue('activity_date_time', date('Y-m-d H:i:s', time()))
-        // ->addValue('assignee_contact_id', [
-        //   'user_contact_id',
-        // ])
-        ->execute();
-    }
+      }
   }
 
 
