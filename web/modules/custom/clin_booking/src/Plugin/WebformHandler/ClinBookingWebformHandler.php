@@ -92,7 +92,6 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           \Civi\Api4\Activity::update(FALSE)
             ->addWhere('id', '=', $existingActivity['id'])
             ->addValue('activity_type_id', 336)
-            ->addValue('activity_date_time', date('Y-m-d H:i:s', time()))
             ->addValue('subject','OLD')
             ->execute();
           \Drupal::logger('clin_booking')->debug('Updatinging old activity: @data', ['@data' => print_r($newActivity, TRUE)]);
