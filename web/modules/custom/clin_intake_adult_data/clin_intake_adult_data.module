@@ -25,7 +25,7 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     $webform = Webform::load('clin_adult_intake_data');
 
     // Set the confirmation URL to user's calendar
-    $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
+    // $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
     
     $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
     if (!empty($cid1) && is_numeric($cid1)) {

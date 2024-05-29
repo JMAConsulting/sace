@@ -25,7 +25,7 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
     $webform = Webform::load('book_intake');
 
     // Set the confirmation URL to user's calendar
-    $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
+    // $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
