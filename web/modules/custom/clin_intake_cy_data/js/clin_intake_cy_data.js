@@ -80,7 +80,7 @@ jQuery(document).ready(function ($) {
     $("#edit-civicrm-1-contact-1-cg21-fieldset").addClass(
       "form-readonly webform-readonly"
     );
-    $("#edit-civicrm-1-contact-1-cg23-fieldset")
+    $("#edit-civicrm-1-contact-1-cg21-fieldset")
       .find("input")
       .each(function () {
         $(this).prop("readonly", true);
