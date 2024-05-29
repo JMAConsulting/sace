@@ -36,9 +36,13 @@ jQuery(document).ready(function ($) {
   // Populating parent and guardian field
   var guardian1 = $("#edit-civicrm-1-contact-1-cg21-custom-234").val();
   var guardian2 = $("#edit-civicrm-1-contact-1-cg23-custom-242").val();
+  var concatenatedValue;
 
-  // Concatenate the values with "&" symbol
-  var concatenatedValue = guardian1 + " & " + guardian2;
+  if (guardian1 != "" && guardian2 != "") {
+    concatenatedValue = guardian1 + " & " + guardian2;
+  } else {
+    concatenatedValue = guardian1 + guardian2;
+  }
 
   // Set the concatenated value to the third input element
   $("#edit-civicrm-1-contact-1-cg65-custom-1391").val(concatenatedValue);
