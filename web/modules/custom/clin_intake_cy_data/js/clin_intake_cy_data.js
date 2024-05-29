@@ -87,7 +87,7 @@ jQuery(document).ready(function ($) {
       });
   }
 
-  if ($("#edit-civicrm-1-contact-1-cg21-custom-234").val() != "") {
+  if ($("#edit-civicrm-1-contact-1-cg23-custom-242").val() != "") {
     $("#edit-civicrm-1-contact-1-cg23-fieldset").addClass(
       "form-readonly webform-readonly"
     );
