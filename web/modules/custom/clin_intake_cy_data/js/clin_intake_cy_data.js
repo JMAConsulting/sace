@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
   // Uncheck elements
   $("#edit-civicrm-1-contact-1-cg65-custom-1383-0").removeAttr("checked");
   $("#edit-civicrm-1-contact-1-cg65-custom-1410-0").removeAttr("checked");
-  
+
   function toggleCustom1384() {
     if ($("#edit-civicrm-1-contact-1-cg65-custom-1383-0").is(":checked")) {
       // If "No" is checked, show element
@@ -44,7 +44,6 @@ jQuery(document).ready(function ($) {
     concatenatedValue = guardian1 + guardian2;
   }
 
-  // Set the concatenated value to the third input element
   $("#edit-civicrm-1-contact-1-cg65-custom-1391").val(concatenatedValue);
 
   if ($("#edit-civicrm-1-contact-1-cg21-custom-298-1").prop("checked")) {
@@ -75,5 +74,49 @@ jQuery(document).ready(function ($) {
     );
   } else {
     $("#edit-civicrm-1-contact-1-cg65-custom-1390").val("Self Intake");
+  }
+
+  if ($("#edit-civicrm-1-contact-1-cg21-custom-234").val() != "") {
+    $("#edit-civicrm-1-contact-1-cg21-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("#edit-civicrm-1-contact-1-cg23-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+  }
+
+  if ($("#edit-civicrm-1-contact-1-cg21-custom-234").val() != "") {
+    $("#edit-civicrm-1-contact-1-cg23-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("edit-civicrm-1-contact-1-cg23-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+  }
+
+  if ($("#edit-civicrm-1-contact-1-cg19-custom-175").val() != "") {
+    $("#edit-civicrm-1-contact-1-cg19-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("#edit-civicrm-1-contact-1-cg19-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+  }
+
+  if ($("#edit-civicrm-1-contact-1-cg22-custom-236").val() != "") {
+    $("#edit-civicrm-1-contact-1-cg22-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("#edit-civicrm-1-contact-1-cg22-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
   }
 });
