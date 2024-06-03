@@ -44,25 +44,6 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
     return $instance;
   }
 
-  // /**
-  //  * Process webform submission when it is about to be saved. Called by the following hook:
-  //  *
-  //  * @see webform_civicrm_webform_submission_presave
-  //  *
-  //  * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
-  //  */
-  // public function preSave(WebformSubmissionInterface $webform_submission) {
-  //   \Drupal::logger('clin_booking')->debug('presave ran: @data', ['@data' => print_r($webform_submission, TRUE)]);
-  //   $webform_submission_data = $webform_submission->getData();
-    
-  //   if ($webform_submission_data && ((isset($webform_submission_data['are_you_the_legal_guardian']) && $webform_submission_data['are_you_the_legal_guardian'] === 'No') 
-  //   || (isset($webform_submission_data['has_this_been_reported_']) && $webform_submission_data['has_this_been_reported_'] === 'No'))) {
-  //     $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] = 336;
-  //     $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'] = date('Y-m-d H:i:s', time());
-  //     $webform_submission->setData($webform_submission_data);
-  //   }
-  // }
-
   /**
    * {@inheritdoc}
    */
@@ -87,13 +68,11 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           ->execute();
       }
       else {
-        if($webform_submission_data && ((isset($webform_submission_data['are_you_the_legal_guardian']) && $webform_submission_data['are_you_the_legal_guardian'] === 'No') 
-        || (isset($webform_submission_data['proceed_with_booking_an_intake']) && $webform_submission_data['	proceed_with_booking_an_intake'] === 'No'))) {
+        if($webform_submission_data && ((isset($webform_submission_data['has_this_been_reported_']) && $webform_submission_data['has_this_been_reported_'] === 'No') || (isset($webform_submission_data['proceed_with_booking_an_intake']) && $webform_submission_data['proceed_with_booking_an_intake'] === 'No'))) {
           \Civi\Api4\Activity::update(FALSE)
             ->addWhere('id', '=', $existingActivity['id'])
             ->addValue('activity_type_id', 336)
             ->execute();
-          \Drupal::logger('clin_booking')->debug('Updatinging old activity: @data', ['@data' => print_r($newActivity, TRUE)]);
         }
         else {
           $intakeNumber = $this->generateIntakeNumber($existingActivity);
