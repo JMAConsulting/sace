@@ -46,4 +46,20 @@ jQuery(document).ready(function ($) {
     'label[for="edit-civicrm-1-activity-1-activity-activity-type-id-336"]'
   ).hide();
   $("#edit-civicrm-1-activity-1-activity-activity-type-id-336").hide();
+
+  // Hide new client option unless selected in autocomplete
+  function toggleFieldVisibility() {
+    var selectValue = $(".token-input-token p").text();
+    if (selectValue === "+ Create new +") {
+      $("#edit-civicrm-2-contact-1-fieldset-fieldset").show();
+    } else {
+      $("#edit-civicrm-2-contact-1-fieldset-fieldset").hide();
+    }
+  }
+
+  toggleFieldVisibility();
+
+  $("#edit-civicrm-2-contact-1-contact-existing").change(function () {
+    toggleFieldVisibility();
+  });
 });
