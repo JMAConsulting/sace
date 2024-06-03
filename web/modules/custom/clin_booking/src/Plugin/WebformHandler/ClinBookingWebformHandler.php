@@ -85,10 +85,10 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           ->addValue('subject','NEW')
           ->addValue('source_contact_id', 'user_contact_id')
           ->execute();
-        \Drupal::logger('clin_booking')->debug('Creating new activity: @data', ['@data' => print_r($newActivity, TRUE)]);
       }
       else {
-        if ($existingActivity['activity_date_time'] === $existingActivity['created_date']) {
+        if($webform_submission_data && ((isset($webform_submission_data['are_you_the_legal_guardian']) && $webform_submission_data['are_you_the_legal_guardian'] === 'No') 
+        || (isset($webform_submission_data['proceed_with_booking_an_intake']) && $webform_submission_data['	proceed_with_booking_an_intake'] === 'No'))) {
           \Civi\Api4\Activity::update(FALSE)
             ->addWhere('id', '=', $existingActivity['id'])
             ->addValue('activity_type_id', 336)
