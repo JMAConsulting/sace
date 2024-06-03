@@ -42,7 +42,7 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       if (!empty($elements)) {
         // Set default values for initial call date and intake number
         $dateTime = new DateTime($activityRef['created_date']);
-        $formattedDate = $dateTime->format('Y-m-d');
+        $formattedDate = $dateTime->format('d M Y');
 
         $elements[CLIN_INTAKE_CY_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
         $elements[CLIN_INTAKE_CY_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
