@@ -52,7 +52,7 @@
    */
   function skipPaymentMethod() {
     var isHide = false;
-    var isMultiple = {/literal}{$event.is_multiple_registrations|@json_encode}{literal};
+    var isMultiple = {/literal}{$event?.is_multiple_registrations|@json_encode}{literal};
     var alwaysShowFlag = (isMultiple && cj("#additional_participants").val());
     var alwaysHideFlag = (cj("#bypass_payment").val() == 1);
     var total_amount_tmp =  cj('#pricevalue').data('raw-total');
@@ -85,7 +85,7 @@
       {else}
         {capture assign='preProfileID'}{/capture}
       {/if}
-      {if $urlPathVar}
+      {if isset($urlPathVar)}
         {capture assign='urlPathVar'}{$urlPathVar}&{/capture}
       {else}
         {capture assign='urlPathVar'}{/capture}

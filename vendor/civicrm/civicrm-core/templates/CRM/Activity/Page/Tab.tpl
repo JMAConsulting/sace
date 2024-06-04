@@ -10,7 +10,7 @@
 
 
 {* Include links to enter Activities if session has 'edit' permission *}
-{if $action EQ 16 and $permission EQ 'edit' and !$addAssigneeContact and !$addTargetContact}
+{if $action EQ 16 and $permission EQ 'edit' and (!isset($addAssigneeContact) or !$addAssigneeContact) and (!isset($addTargetContact) or !$addTargetContact)}
     <div class="action-link crm-activityLinks" style="text-align: left">{include file="CRM/Activity/Form/ActivityLinks.tpl" as_select=true}</div>
 {/if}
 

@@ -18,7 +18,7 @@
 
     // Putting these functions directly in template so they are available for standalone forms
     function useAmountOther() {
-      var priceset = {/literal}{if $contriPriceset}'{$contriPriceset}'{else}0{/if}{literal};
+      var priceset = {/literal}{if isset($contriPriceset)}'{$contriPriceset}'{else}0{/if}{literal};
 
       for( i=0; i < document.Main.elements.length; i++ ) {
         element = document.Main.elements[i];
@@ -34,7 +34,7 @@
     }
 
     function clearAmountOther() {
-      var priceset = {/literal}{if $priceset}'#{$priceset}'{else}0{/if}{literal}
+      var priceset = {/literal}{if isset($priceset)}'#{$priceset}'{else}0{/if}{literal};
       if( priceset ){
         cj(priceset).val('');
         cj(priceset).blur();
@@ -72,7 +72,7 @@
     </div>
     {include file="CRM/common/cidzero.tpl"}
 
-    {if $islifetime or $ispricelifetime}
+    {if (isset($islifetime) and $islifetime) or (isset($ispricelifetime) and $ispricelifetime)}
       <div class="help">{ts}You have a current Lifetime Membership which does not need to be renewed.{/ts}</div>
     {/if}
 
@@ -101,7 +101,7 @@
 
     {if !$ccid}
       {crmRegion name='contribution-main-pledge-block'}
-      {if $pledgeBlock}
+      {if isset($pledgeBlock) && $pledgeBlock}
         {if $is_pledge_payment}
           <div class="crm-public-form-item crm-section {$form.pledge_amount.name}-section">
             <div class="label">{$form.pledge_amount.label}&nbsp;<span class="crm-marker">*</span></div>
@@ -162,14 +162,14 @@
           <div class="clear"></div>
         </div>
       {/if}
-      {if $pcpSupporterText}
+      {if isset($pcpSupporterText) && $pcpSupporterText}
         <div class="crm-public-form-item crm-section pcpSupporterText-section">
           <div class="label">&nbsp;</div>
           <div class="content">{$pcpSupporterText}</div>
           <div class="clear"></div>
         </div>
       {/if}
-      {if $showMainEmail}
+      {if isset($showMainEmail) && $showMainEmail}
         {assign var=n value=email-$bltID}
         <div class="crm-public-form-item crm-section {$form.$n.name}-section">
           <div class="label">{$form.$n.label}</div>
@@ -323,7 +323,7 @@
 
     function toggleRecur() {
       var isRecur = cj('input[id="is_recur"]:checked');
-      var allowAutoRenew = {/literal}'{$allowAutoRenewMembership}'{literal};
+      var allowAutoRenew = {/literal}{if isset($allowAutoRenewMembership)}{$allowAutoRenewMembership}{else}false{/if}{literal};
       var quickConfig = {/literal}{$quickConfig}{literal};
       if (allowAutoRenew && cj("#auto_renew") && quickConfig) {
         showHideAutoRenew(null);

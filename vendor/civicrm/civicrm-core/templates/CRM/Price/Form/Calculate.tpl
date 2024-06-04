@@ -8,7 +8,7 @@
  +--------------------------------------------------------------------+
 *}
 
-{assign var='hideTotal' value=$quickConfig+$noCalcValueDisplay}
+{assign var='hideTotal' value=$quickConfig+{if isset($noCalcValueDisplay)}$noCalcValueDisplay{else}0{/if}}
 
 <div id="pricesetTotal" class="crm-section section-pricesetTotal">
   <div id="pricelabel" class="label {if $hideTotal}hiddenElement{/if}">

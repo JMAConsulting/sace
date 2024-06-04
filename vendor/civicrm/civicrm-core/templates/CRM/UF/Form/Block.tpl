@@ -15,21 +15,21 @@
     {assign var=fieldset  value=$zeroField}
     {include file="CRM/UF/Form/Fields.tpl"}
 
-    {if $field.groupHelpPost && $action neq 4  && $action neq 1028}
+    {if isset($field.groupHelpPost) && $field.groupHelpPost && $action neq 4  && $action neq 1028}
       <div class="messages help">{$field.groupHelpPost}</div>
     {/if}
 
-    {if $mode eq 4}
+    {if isset($mode) && $mode eq 4}
       <div class="crm-submit-buttons">
         {$form.buttons.html}
       </div>
     {/if}
 
-    {if $mode ne 8 && $action neq 1028 && !$hideFieldset}
+    {if $mode ne 8 && $action neq 1028 && (!isset($hideFieldset) || !$hideFieldset)}
     </fieldset>
     {/if}
 
-    {if $help_post && $action neq 4}<br /><div class="messages help">{$help_post}</div>{/if}
+    {if isset($help_post) && $help_post && $action neq 4}<br /><div class="messages help">{$help_post}</div>{/if}
   {/strip}
 
 {/if} {* fields array is not empty *}

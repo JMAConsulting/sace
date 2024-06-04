@@ -7,7 +7,7 @@
  | and copyright information, see https://civicrm.org/licensing       |
  +--------------------------------------------------------------------+
 *}
-{if $trackingFields and ! empty($trackingFields)}
+{if isset($trackingFields) and $trackingFields and ! empty($trackingFields)}
 {literal}
 <script type="text/javascript">
 CRM.$(function($) {
