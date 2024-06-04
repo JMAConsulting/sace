@@ -48,6 +48,8 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
       $elements[PED_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'] = 'PublicEducation';
     }
 
+    $bt = null;
+
     //Get booking type
     if (isset($elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'])) {
       $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];
