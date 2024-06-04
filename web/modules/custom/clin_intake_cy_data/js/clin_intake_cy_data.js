@@ -121,7 +121,7 @@ jQuery(document).ready(function ($) {
   }
 
   function convertDateFormat() {
-    var originalDate = $("#civicrm_1_activity_1_cg67_custom_1414").val();
+    var originalDate = $("#edit-civicrm-1-activity-1-cg67-custom-1414").val();
     if (originalDate.trim() !== "") {
       // Convert the date format using JavaScript Date object
       var convertedDate = new Date(originalDate).toLocaleDateString("en-GB", {
@@ -129,7 +129,7 @@ jQuery(document).ready(function ($) {
         month: "short",
         year: "numeric",
       });
-      $("#civicrm_1_activity_1_cg67_custom_1414").val(convertedDate);
+      $("#edit-civicrm-1-activity-1-cg67-custom-1414").val(convertedDate);
     }
   }
 
