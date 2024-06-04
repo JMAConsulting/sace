@@ -66,11 +66,10 @@ jQuery(document).ready(function ($) {
 
   function convertDateFormat() {
     var originalDate = $("#edit-civicrm-2-contact-1-contact-birth-date").val();
-
     if (originalDate.trim() !== "") {
       // Convert the date format using JavaScript Date object
       var convertedDate = new Date(originalDate).toLocaleDateString("en-GB", {
-        day: "numeric",
+        day: "2-digit",
         month: "short",
         year: "numeric",
       });
@@ -78,7 +77,9 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  $("#edit-civicrm-2-contact-1-contact-birth-date").on("input", function () {
+  $("#edit-civicrm-2-contact-1-contact-birth-date").on("change", function () {
     convertDateFormat();
   });
+
+  convertDateFormat();
 });
