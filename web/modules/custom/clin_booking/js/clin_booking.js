@@ -62,4 +62,17 @@ jQuery(document).ready(function ($) {
   $("#edit-civicrm-2-contact-1-contact-existing").change(function () {
     toggleFieldVisibility();
   });
+
+  // If date is prepopulated, convert to correct format
+  $("#edit-civicrm-2-contact-1-contact-birth-date").on("input", function () {
+    var originalDate = $(this).val();
+    if (originalDate.trim() !== "") {
+      var convertedDate = new Date(originalDate).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+      $(this).val(convertedDate);
+    }
+  });
 });
