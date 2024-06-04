@@ -161,7 +161,7 @@ class ContactComponent implements ContactComponentInterface {
     }
     // Select results
     else {
-      if (!empty($element['#allow_create'])) {
+      if (!empty($element['#allow_create']) && isset($element['#none_prompt'])) {
         $ret['-'] = Xss::filter($element['#none_prompt']);
       }
       foreach ($result as $contact) {

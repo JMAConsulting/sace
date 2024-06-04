@@ -36,20 +36,24 @@ function pe_update_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
     unset($elements['civicrm_6_contact_1_contact_existing']['#group']);
 
     //Toggle text field if Presentation Topic is Custom/Something Different
-    if ($elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#default_value'][0] == "CustomSomethingDifferent") {
+    if (isset($elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#default_value'][0]) && $elements[PE_UPDATE_BOOKING_PRESENTATION_TOPICS]['#default_value'][0] == "CustomSomethingDifferent") {
       $elements[PE_UPDATE_BOOKING_OTHER_PRESENTATION_TOPICS]['#wrapper_attributes']['class'][0] = "";
     }
 
     //Hide Virtual Session fields if Presentation Method is not Online Presentaion
-    if ($elements[PE_UPDATE_BOOKING_PRESENTATION_METHOD]['#default_value'] != 'Online Presentation') {
+    if (isset($elements[PE_UPDATE_BOOKING_PRESENTATION_METHOD]['#default_value']) && $elements[PE_UPDATE_BOOKING_PRESENTATION_METHOD]['#default_value'] != 'Online Presentation') {
       $elements[PE_UPDATE_BOOKING_VIRTUAL_SESSION_FIELDSET]['#access'] = FALSE;
     }
     if (empty($elements[PED_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'])) {
       $elements[PED_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'] = 'PublicEducation';
     }
 
+    $bt = null;
+
     //Get booking type
-    $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];
+    if (isset($elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'])) {
+      $bt = $elements[PE_UPDATE_BOOKING_BOOKING_TYPE]['#default_value'];
+    }
 
     //Youth presentation
     if ($bt == PE_UPDATE_BOOKING_YOUTH_ACTIVITY) {

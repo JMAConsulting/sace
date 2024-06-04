@@ -117,9 +117,9 @@
 
     function setLocationDetails(contactID , reset) {
       resetValues();
-      var locationUrl = {/literal}'{$locDataURL}'{literal} + contactID;
-      var submittedOnBehalfInfo = {/literal}'{$submittedOnBehalfInfo}'{literal};
-      var submittedCID = {/literal}"{$submittedOnBehalf}"{literal};
+      var locationUrl = var locationUrl = {/literal}{if isset($locDataURL)}'{$locDataURL}'{/if}{literal} + contactID;
+      var submittedOnBehalfInfo = {/literal}'{$submittedOnBehalfInfo}'{literal};var submittedCID = {/literal}"{if isset($submittedOnBehalf)}{$submittedOnBehalf}{else}{/if}"{literal};
+      var submittedCID = {/literal}{if isset($submittedOnBehalf)}'{$submittedOnBehalf}'{/if}{literal};
 
       if (submittedOnBehalfInfo) {
         submittedOnBehalfInfo = $.parseJSON(submittedOnBehalfInfo);

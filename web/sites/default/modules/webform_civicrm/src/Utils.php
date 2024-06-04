@@ -21,12 +21,17 @@ class Utils implements UtilsInterface {
    * @return array or NULL
    */
   public function wf_crm_explode_key($key) {
+    // Check if $key is a non-empty string
+    if (!is_string($key) || empty($key)) {
+        return NULL;
+    }
+    
     $pieces = explode('_', $key, 6);
     if (count($pieces) !== 6 || $pieces[0] !== 'civicrm') {
-      return NULL;
+        return NULL;
     }
     return $pieces;
-  }
+}
 
   /**
    * Get options for a specific field

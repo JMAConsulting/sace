@@ -1038,22 +1038,24 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
   private function saveRelationships($contact, $cid, $c) {
     // Process relationships
     foreach (wf_crm_aval($contact, 'relationship', []) as $n => $params) {
-      $relationship_type_id = (array) wf_crm_aval($params, 'relationship_type_id');
+      if (isset($params['relationship_type_id'])) {
+        $relationship_type_id = (array) $params['relationship_type_id'];
 
-      // Expire un-selected relationships.
-      $field_key = "civicrm_{$c}_contact_{$n}_relationship_relationship_type_id";
-      $remove = array_keys($this->getExposedOptions($field_key, (array) $params['relationship_type_id']));
-      if (!empty($remove)) {
-        $this->expireRelationship($remove, $cid, $this->ent['contact'][$n]['id']);
-      }
+        // Expire un-selected relationships.
+        $field_key = "civicrm_{$c}_contact_{$n}_relationship_relationship_type_id";
+        $remove = array_keys($this->getExposedOptions($field_key, (array) $params['relationship_type_id']));
+        if (!empty($remove)) {
+            $this->expireRelationship($remove, $cid, $this->ent['contact'][$n]['id']);
+        }
 
-      // Create new relationships.
-      if (!empty($relationship_type_id)) {
-        foreach ($relationship_type_id as $params['relationship_type_id']) {
-          $this->processRelationship($params, $cid, $this->ent['contact'][$n]['id']);
+        // Create new relationships.
+        if (!empty($relationship_type_id)) {
+            foreach ($relationship_type_id as $params['relationship_type_id']) {
+                $this->processRelationship($params, $cid, $this->ent['contact'][$n]['id']);
+            }
         }
       }
-    }
+    }  
   }
 
   /**
