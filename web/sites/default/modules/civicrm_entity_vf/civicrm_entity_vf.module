@@ -59,7 +59,7 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
     $user_team_target_ids = [];
     foreach ($view->display_handler->getHandlers('argument') as $handler) {
       if ('taxonomy_term.tid' == $handler->getEntityType() . $handler->getField()) {
-        $tids = !empty($_GET['tid']) ? [$_GET['tid']] : explode(' ', $handler->getValue());
+        $tids = !empty($_GET['tid']) ? [$_GET['tid']] : explode(' ', $handler->getValue() ?? '');
         $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
         if (!empty($terms)) {
           foreach ($terms as $term) {
