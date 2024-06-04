@@ -54,6 +54,7 @@ jQuery(document).ready(function ($) {
       $("#edit-civicrm-2-contact-1-fieldset-fieldset").show();
     } else {
       $("#edit-civicrm-2-contact-1-fieldset-fieldset").hide();
+      convertDateFormat();
     }
   }
 
@@ -63,16 +64,21 @@ jQuery(document).ready(function ($) {
     toggleFieldVisibility();
   });
 
-  // If date is prepopulated, convert to correct format
-  $("#edit-civicrm-2-contact-1-contact-birth-date").on("input", function () {
-    var originalDate = $(this).val();
+  function convertDateFormat() {
+    var originalDate = $("#edit-civicrm-2-contact-1-contact-birth-date").val();
+
     if (originalDate.trim() !== "") {
+      // Convert the date format using JavaScript Date object
       var convertedDate = new Date(originalDate).toLocaleDateString("en-GB", {
         day: "numeric",
         month: "short",
         year: "numeric",
       });
-      $(this).val(convertedDate);
+      $("#edit-civicrm-2-contact-1-contact-birth-date").val(convertedDate);
     }
+  }
+
+  $("#edit-civicrm-2-contact-1-contact-birth-date").on("input", function () {
+    convertDateFormat();
   });
 });
