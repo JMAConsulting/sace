@@ -19,9 +19,6 @@ class PlainTextOutput implements OutputStrategyInterface {
    * {@inheritdoc}
    */
   public static function renderFromHtml($string) {
-    if (!is_string($string)) {
-      $string = '';
-    }
     return Html::decodeEntities(strip_tags($string));
   }
 
