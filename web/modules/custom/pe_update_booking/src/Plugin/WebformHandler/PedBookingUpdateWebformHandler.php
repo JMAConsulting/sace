@@ -82,7 +82,6 @@ class PedBookingUpdateWebformHandler extends WebformHandlerBase {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
-\CRM_Core_Error::debug_var('a', $webform_submission_data);
     if ($webform_submission_data) {
       $entityTagID = EntityTag::get(FALSE)
         ->addWhere('entity_id', '=', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
