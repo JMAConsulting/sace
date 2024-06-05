@@ -31,6 +31,10 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
           (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
           (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $end . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
         ) OR (
+          (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
+          (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $end . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
+          (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $end . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
+        ) OR (
           (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') <= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')) AND
           (DATE_FORMAT((cf.end_date_661 + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $end . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s'))
         ) OR (
