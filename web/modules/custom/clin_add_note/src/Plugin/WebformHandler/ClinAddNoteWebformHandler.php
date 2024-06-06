@@ -62,10 +62,23 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
 
       if(isset($webform_submission_data['upload_attachment'])) {
         foreach($webform_submission_data['upload_attachment'] as $attachment_id) {
-          $attachment = \Civi\Api4\AppointmentNotes::create(FALSE)
-          ->addValue('note_id', $note[0]['id'])
-          ->addValue('attachment', $attachment_id)
-          ->execute();
+          $file = \Drupal\file\Entity\File::load($attachment_id);
+          if ($file) {
+            $file_uri = $file->getFileUri();
+            $mime_type = \Drupal::service('file.mime_type.guesser')->guess($file_uri);
+            
+            $attachment = \Civi\Api4\File::create(FALSE)
+              ->addValue('file_type_id', 1)
+              ->addValue('uri', $file_uri)
+              ->addValue('mime_type', $mime_type)
+              ->execute();
+
+            $results = \Civi\Api4\EntityFile::create(TRUE)
+              ->addValue('entity_table', 'civicrm_note')
+              ->addValue('entity_id', $note[0]['id'])
+              ->addValue('file_id', $attachment[0]['id'])
+              ->execute();
+          }
         }
       }
     }
