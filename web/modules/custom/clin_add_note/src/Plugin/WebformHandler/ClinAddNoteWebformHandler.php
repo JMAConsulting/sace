@@ -69,7 +69,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
           $file = \Drupal\file\Entity\File::load($attachment_id);
           if ($file) {
             $file_uri = $file->getFileUri();
-            $mime_type = $this->mimeTypeGuesser->guess($file_uri);;
+            $mime_type = $this->mimeTypeGuesser->guessMimeType($file_uri);
             
             $attachment = \Civi\Api4\File::create(FALSE)
               ->addValue('file_type_id', 1)
