@@ -1,0 +1,28 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
+
+function clin_add_note_preprocess_page_title(&$variables, $hook) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($current_path == '/webform/add_note_to_appointment') {
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    \Drupal::service('civicrm')->initialize();
+    //Get activity type from activity
+    $activity = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('activity_type_id')
+      ->addWhere('id', '=', $aid)
+      ->setLimit(1)
+      ->execute()
+      ->first();
+
+      $variables['title'] = [
+        '#markup' => 'Add Note to '.$activity['activity_type_id:name'],
+      ];
+  }
+}
