@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\File\MimeType\MimeTypeGuesserInterface;
 
 /**
  * Sace CiviCRM Activity Update Handler.
@@ -33,6 +34,13 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
    * @var \Drupal\Core\Database\Connection
    */
   private $database;
+
+  // Inject the MimeTypeGuesser service.
+  protected $mimeTypeGuesser;
+
+  public function __construct(MimeTypeGuesserInterface $mimeTypeGuesser) {
+    $this->mimeTypeGuesser = $mimeTypeGuesser;
+  }
 
   /**
    * {@inheritdoc}
