@@ -53,12 +53,21 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
 
     if ($webform_submission_data) {
       $note = \Civi\Api4\Note::create(FALSE)
-        ->addValue('entity_table', 'civicrm_activity')
-        ->addValue('contact_id', 'user_contact_id')
-        ->addValue('note', $webform_submission_data['details'])
-        ->addValue('entity_id', $webform_submission_data['aid'])
-        ->addValue('subject', $webform_submission_data['subject'])
-        ->execute();
+      ->addValue('entity_table', 'civicrm_activity')
+      ->addValue('contact_id', 'user_contact_id')
+      ->addValue('note', $webform_submission_data['details'])
+      ->addValue('entity_id', $webform_submission_data['aid'])
+      ->addValue('subject', $webform_submission_data['subject'])
+      ->execute();
+
+      if(isset($webform_submission_data['upload_attachment'])) {
+        foreach($webform_submission_data['upload_attachment'] as $attachment_id) {
+          $attachment = \Civi\Api4\AppointmentNotes::create(FALSE)
+          ->addValue('note_id', $note[0]['id'])
+          ->addValue('attachment', $attachment_id)
+          ->execute();
+        }
+      }
     }
   }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/AppointmentNotes</base>
+  <class>AppointmentNotes</class>
+  <name>civicrm_appointment_notes</name>
+  <comment>FIXME</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique AppointmentNotes ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>note_id</name>
+    <type>int unsigned</type>
+    <comment>Note ID</comment>
+  </field>
+  
+  <field>
+    <name>attachment_id</name>
+    <type>int unsigned</type>
+    <comment>Attachment ID</comment>
+  </field>
+
+</table>
