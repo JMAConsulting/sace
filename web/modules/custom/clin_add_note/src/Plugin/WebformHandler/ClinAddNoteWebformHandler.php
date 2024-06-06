@@ -36,22 +36,13 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
   private $database;
 
   /**
-   * @var \Drupal\Core\File\MimeType\MimeTypeGuesserInterface
-   */
-  protected $mimeTypeGuesser;
-
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MimeTypeGuesserInterface $mimeTypeGuesser) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->mimeTypeGuesser = $mimeTypeGuesser;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->civicrm = $container->get('civicrm');
     $instance->database = \Drupal::database();
+    $instance->mimeTypeGuesser = $container->get('file.mime_type.guesser');
     return $instance;
   }
 
@@ -76,7 +67,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
           $file = \Drupal\file\Entity\File::load($attachment_id);
           if ($file) {
             $file_uri = $file->getFileUri();
-            $mime_type = \Drupal::service('file.mime_type.guesser')->guess($file_uri);
+            $mime_type = $this->mimeTypeGuesser->guess($file_uri);;
             
             $attachment = \Civi\Api4\File::create(FALSE)
               ->addValue('file_type_id', 1)
