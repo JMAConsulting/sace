@@ -35,6 +35,8 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
    */
   private $database;
 
+  protected $mimeTypeGuesser;
+
   /**
    * {@inheritdoc}
    */
