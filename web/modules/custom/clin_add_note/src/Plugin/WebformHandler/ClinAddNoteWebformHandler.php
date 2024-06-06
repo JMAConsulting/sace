@@ -35,10 +35,13 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
    */
   private $database;
 
-  // Inject the MimeTypeGuesser service.
+  /**
+   * @var \Drupal\Core\File\MimeType\MimeTypeGuesserInterface
+   */
   protected $mimeTypeGuesser;
 
-  public function __construct(MimeTypeGuesserInterface $mimeTypeGuesser) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MimeTypeGuesserInterface $mimeTypeGuesser) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->mimeTypeGuesser = $mimeTypeGuesser;
   }
 
