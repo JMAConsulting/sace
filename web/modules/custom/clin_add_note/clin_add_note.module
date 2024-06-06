@@ -15,7 +15,7 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
     \Drupal::service('civicrm')->initialize();
     //Get activity type from activity
     $activity = \Civi\Api4\Activity::get(FALSE)
-      ->addSelect('activity_type_id')
+      ->addSelect('activity_type_id:name')
       ->addWhere('id', '=', $aid)
       ->setLimit(1)
       ->execute()

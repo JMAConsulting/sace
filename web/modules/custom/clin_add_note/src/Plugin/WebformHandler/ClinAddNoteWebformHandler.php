@@ -52,7 +52,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
     $webform_submission_data = $webform_submission->getData();
 
     if ($webform_submission_data) {
-      $note = \Civi\Api4\Note::create(TRUE)
+      $note = \Civi\Api4\Note::create(FALSE)
         ->addValue('entity_table', 'civicrm_activity')
         ->addValue('contact_id', 'user_contact_id')
         ->addValue('note', $webform_submission_data['details'])
