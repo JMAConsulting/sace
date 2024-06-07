@@ -4,6 +4,7 @@
   background-color: #f1f1f1;
   padding: 10px;
   margin-bottom: -1px;
+  border: 1px solid #ccc;
   position: relative;
 }
 
@@ -17,7 +18,6 @@
 .inner-accordion-content {
   display: none;
   padding: 10px;
-  border: 1px solid #ccc;
 }
 
 .inner-accordion-header {
