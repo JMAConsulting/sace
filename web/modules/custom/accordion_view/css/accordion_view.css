@@ -1,0 +1,32 @@
+.accordion-header {
+  cursor: pointer;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: -1px;
+  position: relative; /* Needed for absolute positioning */
+}
+
+.accordion-header.active {
+  background-color: #ccc;
+}
+
+.accordion-header.active::after {
+  content: '\25B2'; /* Unicode for up triangle */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.first-header {
+  background-color: #e0e0e0; /* Different background color for the first header */
+}
+
+.first-header::after {
+  content: '\25BC'; /* Unicode for down triangle */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}

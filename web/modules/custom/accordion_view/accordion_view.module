@@ -1,0 +1,7 @@
+<?php
+
+function accordion_view_preprocess_views_view_unformatted(&$variables) {
+  if ($variables['view']->id() == 'appointments' && $variables['view']->current_display == 'page_1') {
+    $variables['#attached']['library'][] = 'accordion_view/accordion';
+  }
+}

@@ -1,0 +1,7 @@
+name: 'Accordion View'
+type: module
+description: 'Provides an accordion view for Drupal.'
+core_version_requirement: ^9 || ^10
+package: Custom
+dependencies:
+  - drupal:views
