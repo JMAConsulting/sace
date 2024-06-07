@@ -1,32 +1,45 @@
-.accordion-header {
+.accordion-header,
+.inner-accordion-header {
   cursor: pointer;
   background-color: #f1f1f1;
   padding: 10px;
-  border: 1px solid #ccc;
   margin-bottom: -1px;
-  position: relative; /* Needed for absolute positioning */
+  position: relative;
 }
 
-.accordion-header.active {
+.accordion-header.active,
+.inner-accordion-header.active,
+.first-header {
   background-color: #ccc;
 }
 
-.accordion-header.active::after {
-  content: '\25B2'; /* Unicode for up triangle */
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
+.accordion-content,
+.inner-accordion-content {
+  display: none;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
-.first-header {
-  background-color: #e0e0e0; /* Different background color for the first header */
+.inner-accordion-header {
+  padding-left: 20px;
+  background-color: #e8e8e8;
 }
 
-.first-header::after {
-  content: '\25BC'; /* Unicode for down triangle */
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
+.inner-accordion-content {
+  padding-left: 20px;
+  background-color: #f9f9f9;
+}
+
+.accordion-header::after,
+.inner-accordion-header::after {
+  content: '\25BC';
+  /* Downward arrow */
+  float: right;
+  margin-left: 10px;
+}
+
+.accordion-header.active::after,
+.inner-accordion-header.active::after {
+  content: '\25B2';
+  /* Upward arrow */
 }

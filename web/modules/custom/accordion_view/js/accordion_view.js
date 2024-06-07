@@ -1,27 +1,34 @@
 (function ($) {
   $(document).ready(function () {
-    $(".view-content .views-row").each(function (index) {
+    function createAccordionItem(item, headerClass, contentClass) {
       var accordionItem = $('<div class="accordion-item"></div>');
 
-      // Move fields in views-row inside accordion item
-      $(this).children().appendTo(accordionItem);
+      // Move fields inside accordion item
+      item.children().appendTo(accordionItem);
+      item.replaceWith(accordionItem);
 
-      // Replace views-row with the accordion item
-      $(this).replaceWith(accordionItem);
-
-      var header = accordionItem.find(".views-field").first();
-      header.addClass("accordion-header");
+      // Find first field to be header
+      var header = accordionItem.children().first();
+      header.addClass(headerClass);
       header.on("click", function () {
-        $(this).nextAll().slideToggle();
+        $(this)
+          .nextAll("." + contentClass)
+          .slideToggle();
         $(this).toggleClass("active");
       });
+      accordionItem.children().not(header).addClass(contentClass).hide();
+    }
 
-      // Hide tabs
-      accordionItem.find(".views-field").not(header).hide();
+    $(".view-appointment-notes .view-content .views-row").each(function () {
+      createAccordionItem(
+        $(this),
+        "inner-accordion-header",
+        "inner-accordion-content"
+      );
+    });
 
-      if (index === 0) {
-        header.addClass("first-header");
-      }
+    $(".view-content > .views-row").each(function () {
+      createAccordionItem($(this), "accordion-header", "accordion-content");
     });
   });
 })(jQuery);
