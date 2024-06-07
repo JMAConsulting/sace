@@ -18,7 +18,7 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
       }
       $note = \Civi\Api4\Note::get(FALSE)
       ->addSelect('subject')
-      ->addWhere('id', '=', $aid)
+      ->addWhere('id', '=', $nid)
       ->setLimit(1)
       ->execute()
       ->first();
