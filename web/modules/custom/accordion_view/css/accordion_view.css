@@ -43,3 +43,9 @@
   content: '\25B2';
   /* Upward arrow */
 }
+
+.accordion-wrapper {
+  border: 2px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+}

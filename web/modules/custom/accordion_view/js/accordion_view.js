@@ -19,6 +19,9 @@
       accordionItem.children().not(header).addClass(contentClass).hide();
     }
 
+    // Add wrapper for outer border
+    $(".view-content").wrap('<div class="accordion-wrapper"></div>');
+
     $(".view-appointment-notes .view-content .views-row").each(function () {
       createAccordionItem(
         $(this),
