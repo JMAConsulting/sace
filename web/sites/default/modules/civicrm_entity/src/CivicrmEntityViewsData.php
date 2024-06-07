@@ -713,6 +713,24 @@ class CivicrmEntityViewsData extends EntityViewsData {
               ]],
           ],
         ];
+        break;
+
+        case 'civicrm_entity_file':
+          $views_field[$base_table]['file'] = [
+            'title' => $this->t('File'),
+            'help' => $this->t('Relate CiviCRM EntityFile to File via file_id.'),
+            'relationship' => [
+                'id' => 'standard',
+                'base' => 'civicrm_file',
+                'base field' => 'file_id',
+                'field' => 'id',
+                'extra' => [[
+                        'field' => 'entity_table',
+                        'value' => $base_table,
+                ]],
+            ],
+          ];
+          break;
     }
   }
 
