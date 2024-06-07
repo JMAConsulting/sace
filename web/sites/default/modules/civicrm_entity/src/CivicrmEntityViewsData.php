@@ -406,6 +406,21 @@ class CivicrmEntityViewsData extends EntityViewsData {
           ],
         ];
 
+        $views_field[$base_table]['note'] = [
+          'title' => $this->t('Note'),
+          'help' => $this->t('Relate CiviCRM activity to CiviCRM contact.'),
+          'relationship' => [
+              'id' => 'standard',
+              'base' => 'civicrm_note',
+              'base field' => 'entity_id',
+              'field' => 'id',
+              'extra' => [[
+                      'field' => 'entity_table',
+                      'value' => $base_table,
+              ]],
+          ],
+        ];
+
         unset(
           $views_field['civicrm_contact']['reverse__civicrm_activity__assignee_id'],
           $views_field['civicrm_contact']['reverse__civicrm_activity__target_id'],
