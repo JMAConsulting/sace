@@ -408,7 +408,7 @@ class CivicrmEntityViewsData extends EntityViewsData {
 
         $views_field[$base_table]['note'] = [
           'title' => $this->t('Note'),
-          'help' => $this->t('Relate CiviCRM activity to CiviCRM contact.'),
+          'help' => $this->t('Relate CiviCRM Activity to Note via entity_id.'),
           'relationship' => [
               'id' => 'standard',
               'base' => 'civicrm_note',
