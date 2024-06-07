@@ -697,6 +697,22 @@ class CivicrmEntityViewsData extends EntityViewsData {
       case 'civicrm_participant':
         $views_field[$base_table]['transferred_to_contact_id']['help'] = $this->t('FK to "Transferred to" Contact ID');
         break;
+
+      case 'civicrm_note':
+        $views_field[$base_table]['entity_file'] = [
+          'title' => $this->t('EntityFile'),
+          'help' => $this->t('Relate CiviCRM Note to EntityFile via entity_id.'),
+          'relationship' => [
+              'id' => 'standard',
+              'base' => 'civicrm_entity_file',
+              'base field' => 'entity_id',
+              'field' => 'id',
+              'extra' => [[
+                      'field' => 'entity_table',
+                      'value' => $base_table,
+              ]],
+          ],
+        ];
     }
   }
 
