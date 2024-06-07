@@ -55,14 +55,25 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
 
-    if ($webform_submission_data && $webform_submission_data['aid'] != '') {
-      $note = \Civi\Api4\Note::create(FALSE)
-      ->addValue('entity_table', 'civicrm_activity')
-      ->addValue('contact_id', 'user_contact_id')
-      ->addValue('note', $webform_submission_data['details'])
-      ->addValue('entity_id', $webform_submission_data['aid'])
-      ->addValue('subject', $webform_submission_data['subject'])
-      ->execute();
+    if ($webform_submission_data) {
+      if($webform_submission_data['aid'] != '') {
+        $note = \Civi\Api4\Note::create(FALSE)
+        ->addValue('entity_table', 'civicrm_activity')
+        ->addValue('contact_id', 'user_contact_id')
+        ->addValue('note', $webform_submission_data['details'])
+        ->addValue('entity_id', $webform_submission_data['aid'])
+        ->addValue('subject', $webform_submission_data['subject'])
+        ->execute();
+      }
+      elseif($webform_submission_data['nid'] != '') {
+        $note = \Civi\Api4\Note::create(FALSE)
+        ->addValue('entity_table', 'civicrm_note')
+        ->addValue('contact_id', 'user_contact_id')
+        ->addValue('note', $webform_submission_data['details'])
+        ->addValue('entity_id', $webform_submission_data['nid'])
+        ->addValue('subject', $webform_submission_data['subject'])
+        ->execute();
+      }
 
       if(isset($webform_submission_data['upload_attachment'])) {
         foreach($webform_submission_data['upload_attachment'] as $attachment_id) {
