@@ -33,5 +33,26 @@
     $(".view-content > .views-row").each(function () {
       createAccordionItem($(this), "accordion-header", "accordion-content");
     });
+
+    $(".views-field-note .field-content").each(function () {
+      var $this = $(this);
+      var uri = $this.text().trim();
+
+      // Convert uri to the correct url path
+      if (uri.startsWith("private://")) {
+        var url = uri.replace("private://", "/system/files/");
+
+        var fileName = url.split("/").pop();
+        var downloadButton = `
+          <a href="${url}" download class="download-button">
+            Download ${fileName}
+          </a>
+          <span class="file__size"></span>
+        `;
+
+        // Replace the text content with the download button
+        $this.html(downloadButton);
+      }
+    });
   });
 })(jQuery);
