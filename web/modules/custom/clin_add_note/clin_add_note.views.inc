@@ -29,47 +29,21 @@ $data['civicrm_entity_file']['table']['base'] = array(
 $data['civicrm_entity_file']['id'] = array(
   'title' => t('Entity File ID'),
   'help' => t('The numeric ID entity file record of the Attachment'),
-  'field' => array(
-    'handler' => 'views_handler_field_numeric',
-    'click sortable' => TRUE,
-  ),
-  'argument' => array(
-    'handler' => 'views_handler_argument_numeric',
-    'numeric' => TRUE,
-  ),
-  'filter' => array(
-    'handler' => 'views_handler_filter_numeric',
-  ),
-  'sort' => array(
-    'handler' => 'views_handler_sort',
-  ),
 );
   //EntityTable
 $data['civicrm_entity_file']['entity_table'] = array(
   'title' => t('Entity Table'),
   'help' => t('The content type associated with the attachment'),
-  'field' => array(
-    'handler' => 'civicrm_handler_field',
-    'click sortable' => TRUE,
-  ),
 );
 //Entity ID
 $data['civicrm_entity_file']['file_id'] = array(
   'title' => t('File ID'),
   'help' => t('FK to the ID of the file in civicrm_file table'),
-  'field' => array(
-    'handler' => 'views_handler_field_numeric',
-    'click sortable' => TRUE,
-  ),
 );
 //Entity ID
 $data['civicrm_entity_file']['file_id'] = array(
   'title' => t('File ID'),
   'help' => t('FK to the ID of the file in civicrm_file table'),
-  'field' => array(
-    'handler' => 'views_handler_field_numeric',
-    'click sortable' => TRUE,
-  ),
 );
 
   $data['civicrm_file']['table']['group'] = t('CiviCRM Files');
@@ -84,72 +58,26 @@ $data['civicrm_entity_file']['file_id'] = array(
       $data['civicrm_file']['id'] = array(
         'title' => t('File ID'),
         'help' => t('The numeric ID of the Attachment'),
-        'field' => array(
-          'handler' => 'views_handler_field_numeric',
-          'click sortable' => TRUE,
-        ),
-        'argument' => array(
-          'handler' => 'views_handler_argument_numeric',
-          'numeric' => TRUE,
-        ),
-        'filter' => array(
-          'handler' => 'views_handler_filter_numeric',
-        ),
-        'sort' => array(
-          'handler' => 'views_handler_sort',
-        ),
       );
         //URI
       $data['civicrm_file']['uri'] = array(
         'title' => t('URI'),
         'help' => t('The URI of the Attachment'),
-        'field' => array(
-          'handler' => 'views_handler_field_file',
-          'click sortable' => TRUE,
-        ),
       );
       //File Upload Date
       $data['civicrm_file']['upload_date'] = array(
         'title' => t('File Upload Date'),
         'help' => t('The date the Attachment was uploaded'),
-        'field' => array(
-          'handler' => 'civicrm_handler_field_datetime',
-          'click sortable' => TRUE,
-        ),
-        'filter' => array(
-          'handler' => 'civicrm_handler_filter_datetime',
-        ),
-        'sort' => array(
-          'handler' => 'civicrm_handler_sort_date',
-        ),
       );
       //File Description
       $data['civicrm_file']['description'] = array(
         'title' => t('Description'),
         'help' => t('The description of the Attachment'),
-        'field' => array(
-          'handler' => 'civicrm_handler_field',
-          'click sortable' => TRUE,
-        ),
-        'argument' => array(
-          'handler' => 'views_handler_argument_string',
-          'numeric' => TRUE,
-        ),
-        'filter' => array(
-          'handler' => 'views_handler_filter_string',
-        ),
-        'sort' => array(
-          'handler' => 'views_handler_sort',
-        ),
       );
       //File Mime Type
       $data['civicrm_file']['mime_type'] = array(
         'title' => t('Mime Type'),
         'help' => t('The mime type of the Attachment'),
-        'field' => array(
-        'handler' => 'views_handler_field_file_filemime',
-        'click sortable' => TRUE,
-       ),
      );
 
      //check this join....
