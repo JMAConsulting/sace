@@ -424,30 +424,6 @@ final class SupportedEntities {
         'delete' => [],
       ],
     ];
-    $civicrm_entity_info['civicrm_file'] = [
-      'civicrm entity label' => t('File'),
-      'civicrm entity name' => 'file',
-      'label property' => 'id',
-      'permissions' => [
-        'view' => [],
-
-        'update' => [],
-        'create' => [],
-        'delete' => [],
-      ],
-    ];
-    $civicrm_entity_info['civicrm_entity_file'] = [
-      'civicrm entity label' => t('EntityFile'),
-      'civicrm entity name' => 'entity_file',
-      'label property' => 'id',
-      'permissions' => [
-        'view' => [],
-
-        'update' => [],
-        'create' => [],
-        'delete' => [],
-      ],
-    ];
     $civicrm_entity_info['civicrm_participant'] = [
       'civicrm entity label' => t('Participant'),
       'civicrm entity name' => 'participant',
