@@ -42,3 +42,18 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
       ];
   }
 }
+
+
+function clin_add_note_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
+  $civicrm_entity_info['civicrm_entity_file'] = [
+    'civicrm entity label' => ts('EntityFile'),
+    'civicrm entity name' => 'entity_file',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+}
