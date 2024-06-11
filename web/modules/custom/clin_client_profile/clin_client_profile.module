@@ -18,9 +18,6 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
-    //Attach library
-    $form['#attached']['library'][] = 'clin_client_profile/clin_client_profile';
-
     $cid = \Drupal::request()->query->get('cid') ?? 0;
     if (!empty($cid) && is_numeric($cid)) {
       \Drupal::service('civicrm')->initialize();
@@ -38,5 +35,15 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         $elements[CLIN_CLIENT_PROFILE_SACEID]['#default_value'] = $contact['CLIN_Custom_Data.SACEID'];
       }
     }
+  }
+}
+
+function clin_client_profile_preprocess_page(&$variables) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  $pattern = '/^\/client-home(?:\/\w+)?\/\d+$/';
+
+  // Add JS to /client-home pages
+  if (preg_match($pattern, $current_path)) {
+    $variables['#attached']['library'][] = 'clin_client_profile/clin_client_profile';
   }
 }
