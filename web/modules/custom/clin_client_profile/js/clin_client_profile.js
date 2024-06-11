@@ -5,7 +5,6 @@
 
     // Define a regular expression to match the specified pattern.
     var urlPattern = /\/client-home(?:\/\w+)*\/(\d+)/;
-    console.log(urlPattern.test(currentUrl));
     if (urlPattern.test(currentUrl)) {
       var cid = currentUrl.match(urlPattern)[1];
       // Update the href of the contact info tab
