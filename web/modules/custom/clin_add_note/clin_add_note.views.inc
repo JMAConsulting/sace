@@ -31,14 +31,14 @@ function clin_add_note_views_data_alter(&$data) {
     'title' => t('Entity File ID'),
     'help' => t('The numeric ID entity file record of the Attachment'),
     'field' => [
-      'id' => 'numeric_field',
+      'id' => 'standard',
       'click sortable' => TRUE,
     ],
     'argument' => [
-      'id' => 'numeric_argument',
+      'id' => 'standard',
     ],
     'filter' => [
-      'id' => 'numeric_filter',
+      'id' => 'standard',
     ],
     'sort' => [
       'id' => 'sort',
@@ -60,7 +60,7 @@ function clin_add_note_views_data_alter(&$data) {
     'title' => t('File ID'),
     'help' => t('FK to the ID of the file in civicrm_file table'),
     'field' => [
-      'id' => 'numeric_field',
+      'id' => 'standard',
       'click sortable' => TRUE,
     ],
   ];
@@ -76,16 +76,16 @@ function clin_add_note_views_data_alter(&$data) {
   // Numeric File ID
   $data['civicrm_file']['id'] = [
     'title' => t('File ID'),
-    'help' => t('The numeric ID of the Attachment'),
+    'help' => t('The ID of the Attachment'),
     'field' => [
-      'id' => 'numeric_field',
+      'id' => 'standard',
       'click sortable' => TRUE,
     ],
     'argument' => [
-      'id' => 'numeric_argument',
+      'id' => 'standard',
     ],
     'filter' => [
-      'id' => 'numeric_filter',
+      'id' => 'standard',
     ],
     'sort' => [
       'id' => 'sort',
@@ -97,7 +97,7 @@ function clin_add_note_views_data_alter(&$data) {
     'title' => t('URI'),
     'help' => t('The URI of the Attachment'),
     'field' => [
-      'id' => 'file_uri',
+      'id' => 'standard',
       'click sortable' => TRUE,
     ],
   ];
@@ -142,7 +142,7 @@ function clin_add_note_views_data_alter(&$data) {
     'title' => t('Mime Type'),
     'help' => t('The mime type of the Attachment'),
     'field' => [
-      'id' => 'file_mime',
+      'id' => 'standard',
       'click sortable' => TRUE,
     ],
   ];
