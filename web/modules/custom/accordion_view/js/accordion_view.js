@@ -34,25 +34,25 @@
       createAccordionItem($(this), "accordion-header", "accordion-content");
     });
 
-    $(".views-field-note .field-content").each(function () {
-      var $this = $(this);
-      var uri = $this.text().trim();
+    $('span:contains("private://webform/add_note_to_appointment")').each(
+      function () {
+        var url = $(this).text().trim();
+        if (url.startsWith("private://webform/add_note_to_appointment")) {
+          // Create a download link from the URL
+          var fileName = url.split("/").pop(); // Extract the file name from the URL
+          var downloadUrl = url.replace("private://", "/system/files/"); // Convert to public path
 
-      // Convert uri to the correct url path
-      if (uri.startsWith("private://")) {
-        var url = uri.replace("private://", "/system/files/");
+          // Create the download button
+          var downloadButton = $("<a>")
+            .attr("href", downloadUrl)
+            .attr("download", fileName)
+            .addClass("download-button")
+            .text("Download " + fileName);
 
-        var fileName = url.split("/").pop();
-        var downloadButton = `
-          <a href="${url}" download class="download-button">
-            Download ${fileName}
-          </a>
-          <span class="file__size"></span>
-        `;
-
-        // Replace the text content with the download button
-        $this.html(downloadButton);
+          // Replace the text with the download button
+          $(this).html(downloadButton);
+        }
       }
-    });
+    );
   });
 })(jQuery);

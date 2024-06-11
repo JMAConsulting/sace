@@ -56,15 +56,4 @@ function clin_add_note_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
       'delete' => [],
     ],
   ];
-  // $civicrm_entity_info['civicrm_file'] = [
-  //   'civicrm entity label' => ts('File'),
-  //   'civicrm entity name' => 'file',
-  //   'label property' => 'id',
-  //   'permissions' => [
-  //     'view' => [],
-  //     'update' => [],
-  //     'create' => [],
-  //     'delete' => [],
-  //   ],
-  // ];
 }
