@@ -39,8 +39,8 @@
         var url = $(this).text().trim();
         if (url.startsWith("private://webform/add_note_to_appointment")) {
           // Create a download link from the URL
-          var fileName = url.split("/").pop(); // Extract the file name from the URL
-          var downloadUrl = url.replace("private://", "/system/files/"); // Convert to public path
+          var fileName = url.split("/").pop();
+          var downloadUrl = url.replace("private://", "/system/files/");
 
           // Create the download button
           var downloadButton = $("<a>")
