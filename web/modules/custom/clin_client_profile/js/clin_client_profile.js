@@ -4,7 +4,7 @@
     var currentUrl = window.location.href;
 
     // Define a regular expression to match the specified pattern.
-    var urlPattern = /\/client-home(?:\/\w+)?\/(\d+)/;
+    var urlPattern = /\/client-home(?:\/\w+)*\/(\d+)/;
     console.log(urlPattern.test(currentUrl));
     if (urlPattern.test(currentUrl)) {
       var cid = currentUrl.match(urlPattern)[1];
