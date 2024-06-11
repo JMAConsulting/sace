@@ -51,7 +51,18 @@ class ClinSecurityWebformHandler extends WebformHandlerBase {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
     if ($webform_submission_data) {
-        
+      if(isset($webform_submission_data['is_active']) && $webform_submission_data['is_active'] != '') {
+        $results = \Civi\Api4\Relationship::update(TRUE)
+        ->addValue('is_active', TRUE)
+        ->addWhere('id', 'IN', '['.$webform_submission_data['is_active'].']')
+        ->execute();
+      }
+      if(isset($webform_submission_data['is_not_active']) && $webform_submission_data['is_not_active'] != ''){
+        $results = \Civi\Api4\Relationship::update(TRUE)
+        ->addValue('is_active', FALSE)
+        ->addWhere('id', 'IN', '['.$webform_submission_data['is_not_active'].']')
+        ->execute();
+      }
     }
   }
 }
