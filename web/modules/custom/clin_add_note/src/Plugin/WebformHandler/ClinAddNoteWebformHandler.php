@@ -57,7 +57,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
 
     if ($webform_submission_data) {
       if($webform_submission_data['aid'] != '') {
-        $note = \Civi\Api4\Note::create(FALSE)
+        $note = \Civi\Api4\Note::create(TRUE)
         ->addValue('entity_table', 'civicrm_activity')
         ->addValue('contact_id', 'user_contact_id')
         ->addValue('note', $webform_submission_data['details'])
@@ -66,7 +66,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
         ->execute();
       }
       elseif($webform_submission_data['nid'] != '') {
-        $note = \Civi\Api4\Note::create(FALSE)
+        $note = \Civi\Api4\Note::create(TRUE)
         ->addValue('entity_table', 'civicrm_note')
         ->addValue('contact_id', 'user_contact_id')
         ->addValue('note', $webform_submission_data['details'])
@@ -82,7 +82,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
             $file_uri = $file->getFileUri();
             $mime_type = $this->mimeTypeGuesser->guessMimeType($file_uri);
             
-            $attachment = \Civi\Api4\File::create(FALSE)
+            $attachment = \Civi\Api4\File::create(TRUE)
               ->addValue('file_type_id', 1)
               ->addValue('uri', $file_uri)
               ->addValue('mime_type', $mime_type)
