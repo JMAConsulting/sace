@@ -1,20 +1,24 @@
 (function ($) {
   $(document).ready(function () {
-    // Define the URL pattern to match.
-    var urlPattern =
-      /^https:\/\/staging\.sace\.jmaconsulting\.biz\/client-home\/\d+$/;
     // Get the current URL.
     var currentUrl = window.location.href;
 
-    // Check if the current URL matches the defined pattern.
+    // Define a regular expression to match the specified pattern.
+    var urlPattern = /\/client-home(?:\/\w+)?\/(\d+)/;
+
     if (urlPattern.test(currentUrl)) {
-      // Update the href attribute of the anchor element.
-      $(".tabs__link.js-tabs-link.is-active").attr(
-        "href",
-        function (index, oldHref) {
-          return oldHref + "?cid=" + oldHref.match(/\d+$/)[0];
+      var cid = currentUrl.match(urlPattern)[2];
+
+      // Update the href of the contact info tab
+      $(".tabs__link").each(function () {
+        var $this = $(this);
+        var href = $this.attr("href");
+        if (href.indexOf("/client-home/contact-information/" + cid) !== -1) {
+          var newHref =
+            "/client-home/contact-information/" + cid + "?cid=" + numbers;
+          $this.attr("href", newHref);
         }
-      );
+      });
     }
   });
 })(jQuery);
