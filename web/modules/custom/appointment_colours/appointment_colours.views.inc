@@ -17,7 +17,7 @@ use Drupal\field\FieldStorageConfigInterface;
  * @see views_views_data()
  * @see views_views_data_alter()
  */
-function saceflags_views_data_alter(&$data) {
+function appointment_colours_views_data_alter(&$data) {
 
   $data['civicrm_appointment_colours']['activity_type_id']['relationship'] = [
     'base' => 'civicrm_activity',
