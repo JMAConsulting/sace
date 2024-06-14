@@ -91,3 +91,45 @@ function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAsse
     }
   }
 }
+
+// Preprocess background colours to pull from CiviCRM Appointment Colours extension versus UI 
+function sace_calendar_customisations_preprocess_views_view_fullcalendar(&$variables) {
+  if ($variables['view']->id() == 'clin_calendar') {
+    // Fetch appointment colours based on activity type.
+    $appointmentColours = \Civi\Api4\AppointmentColours::get(FALSE)
+      ->addSelect('colour_hex', 'option_value.label')
+      ->addJoin('OptionValue AS option_value', 'LEFT', ['activity_type_id', '=', 'option_value.value'])
+      ->addWhere('option_value.option_group_id', '=', 2)
+      ->execute();
+
+    $mapping = [];
+    foreach ($appointmentColours as $item) {
+      $value = $item['option_value.label'];
+      $colourHex = $item['colour_hex'];
+      $mapping[$value] = $colourHex;
+    }
+    $events = [];
+    if (isset($variables['#attached']['drupalSettings']['fullCalendarView'][$variables['view_index']]['calendar_options'])) {
+      $events = $variables['#attached']['drupalSettings']['fullCalendarView'][$variables['view_index']]['calendar_options'];
+    }
+    // Decode event data from JSON into array for modification
+    $eventData = json_decode($events, true);
+
+    // Get title of event and match to activity type + hex code
+    if ($eventData !== null) {
+    $events = $eventData['events'];
+    foreach ($events as &$event) {
+     $title = $event['title'];
+
+      $parts = explode('-', $title, 2);
+      $extractedTitle = trim($parts[1]);
+      if (isset($mapping[$extractedTitle])) {
+        $event['backgroundColor'] = '#'.$mapping[$extractedTitle];
+      }
+    }
+  }
+  $eventData['events']=$events;
+  // Encode modified data back to JSON
+  $variables['#attached']['drupalSettings']['fullCalendarView'][$variables['view_index']]['calendar_options']  = json_encode($eventData);
+  }
+}
