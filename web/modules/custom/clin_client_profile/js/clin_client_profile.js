@@ -17,8 +17,9 @@
           $this.attr("href", newHref);
         }
         // Filter security form by cid
-        if (href.indexOf("/contact-information/security/" + cid) !== -1) {
-          var newHref = "/contact-information/security/" + cid + "?cid=" + cid;
+        if (href.indexOf("/contact-information/assigned-staff/" + cid) !== -1) {
+          var newHref =
+            "/contact-information/assigned-staff/" + cid + "?cid=" + cid;
           $this.attr("href", newHref);
         }
       });
