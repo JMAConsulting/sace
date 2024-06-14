@@ -4,7 +4,7 @@
   background-color: #f1f1f1;
   padding: 10px;
   margin-bottom: -1px;
-  border: 1px solid #ccc;
+  border: 1px solid #313f57;
   position: relative;
 }
 
@@ -45,6 +45,6 @@
 }
 
 .accordion-wrapper {
-  border: 1px solid #ccc;
+  border: 1px solid #313f57;
     margin-bottom: 10px;
 }
