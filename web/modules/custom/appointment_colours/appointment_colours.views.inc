@@ -18,24 +18,24 @@ use Drupal\field\FieldStorageConfigInterface;
  * @see views_views_data_alter()
  */
 function appointment_colours_views_data_alter(&$data) {
-  $data['civicrm_appointment_colours']['activity_type_id']['relationship'] = [
-    'base' => 'civicrm_activity',
-    'base_field' => 'activity_type_id',
-    'field' => 'activity_type_id',
-    'id' => 'standard',
-    'label' => t('Activity Appointment Colours Join'),
-  ];
+  // $data['civicrm_appointment_colours']['activity_type_id']['relationship'] = [
+  //   'base' => 'civicrm_activity',
+  //   'base_field' => 'activity_type_id',
+  //   'field' => 'activity_type_id',
+  //   'id' => 'standard',
+  //   'label' => t('Activity Appointment Colours Join'),
+  // ];
 
-  $data['civicrm_activity']['appointment_colours_activity_type_id'] = [
-    'title' => t('Appointment Colours Activity Type ID'),
-    'relationship' => [
-      'base' => 'civicrm_appointment_colours',
-      'base_field' => 'activity_type_id',
-      'field' => 'activity_type_id',
-      'id' => 'standard',
-      'label' => t('Appointment Colours Join'),
-    ],
-  ];
+  // $data['civicrm_activity']['appointment_colours_activity_type_id'] = [
+  //   'title' => t('Appointment Colours Activity Type ID'),
+  //   'relationship' => [
+  //     'base' => 'civicrm_appointment_colours',
+  //     'base_field' => 'activity_type_id',
+  //     'field' => 'activity_type_id',
+  //     'id' => 'standard',
+  //     'label' => t('Appointment Colours Join'),
+  //   ],
+  // ];
 
   // Expose the colour_hex field in civicrm_activity
   $data['civicrm_activity']['colour_hex'] = [
