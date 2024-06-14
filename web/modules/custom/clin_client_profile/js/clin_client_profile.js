@@ -4,7 +4,7 @@
     var currentUrl = window.location.href;
 
     // Define a regular expression to match the specified pattern.
-    var urlPattern = /\/client-home(?:\/[\w-]+)*\/(\d+)/;
+    var urlPattern = /\/contact-information(?:\/[\w-]+)*\/(\d+)/;
     if (urlPattern.test(currentUrl)) {
       var cid = currentUrl.match(urlPattern)[1];
       // Update the href of form tabs
@@ -12,14 +12,13 @@
         var $this = $(this);
         var href = $this.attr("href");
         // Filter contact info form by cid
-        if (href.indexOf("/client-home/contact-information/" + cid) !== -1) {
-          var newHref =
-            "/client-home/contact-information/" + cid + "?cid=" + cid;
+        if (href.indexOf("/contact-information/edit/" + cid) !== -1) {
+          var newHref = "/contact-information/edit/" + cid + "?cid=" + cid;
           $this.attr("href", newHref);
         }
         // Filter security form by cid
-        if (href.indexOf("/client-home/security/" + cid) !== -1) {
-          var newHref = "/client-home/security/" + cid + "?cid=" + cid;
+        if (href.indexOf("/contact-information/security/" + cid) !== -1) {
+          var newHref = "/contact-information/security/" + cid + "?cid=" + cid;
           $this.attr("href", newHref);
         }
       });
