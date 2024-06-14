@@ -18,26 +18,33 @@ use Drupal\field\FieldStorageConfigInterface;
  * @see views_views_data_alter()
  */
 function appointment_colours_views_data_alter(&$data) {
-  $data['civicrm_appointment_colours']['activity_type_id']['relationship'] = [
-    'base' => 'civicrm_activity',
-    'base_field' => 'activity_type_id',
-    'field' => 'activity_type_id',
-    'id' => 'standard',
-    'label' => t('Activity Appointment Colours Join'),
+  $data['civicrm_appointment_colours']['table']['group'] = t('CiviCRM Appointment Colours');
+
+  $data['civicrm_appointment_colours']['table']['base'] = [
+    'field' => 'id',
+    'title' => t('CiviCRM Entity Files'),
+    'help' => t('View displays CiviCRM Attachments create link to download'),
   ];
 
-  // $data['civicrm_activity']['appointment_colours_activity_type_id'] = [
-  //   'title' => t('Appointment Colours Activity Type ID'),
-  //   'relationship' => [
-  //     'base' => 'civicrm_appointment_colours',
-  //     'base_field' => 'activity_type_id',
-  //     'field' => 'activity_type_id',
-  //     'id' => 'standard',
-  //     'label' => t('Appointment Colours Join'),
-  //   ],
-  // ];
+  $data['civicrm_appointment_colours']['actvity_type_id'] = [
+    'title' => t('Activity Type ID'),
+    'help' => t('The Activity Type ID associated with the colour'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+    'argument' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'sort',
+    ],
+  ];
 
-  // Expose the colour_hex field in civicrm_activity
+  // Entity Table
   $data['civicrm_appointment_colours']['colour_hex'] = [
     'title' => t('Colour Hex'),
     'help' => t('Hex code of the colour associated with the activity.'),
@@ -45,13 +52,11 @@ function appointment_colours_views_data_alter(&$data) {
       'id' => 'standard',
       'click sortable' => TRUE,
     ],
-    'relationship' => [
-      'title' => t('Activity Appointment Colours Join'),
-      'label' => t('Appointment Colours Join'),
-      'base' => 'civicrm_appointment_colours',
-      'base_field' => 'activity_type_id',
-      'field' => 'activity_type_id',
-      'id' => 'standard',
-    ],
+  ];
+
+
+  $data['civicrm_appointment_colours']['table']['join']['civicrm_activity'] = [
+    'left_field' => 'activity_type_id',
+    'field' => 'activity_type_id',
   ];
 }
