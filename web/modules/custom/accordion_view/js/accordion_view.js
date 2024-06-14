@@ -54,5 +54,31 @@
         }
       }
     );
+
+    // Calculate luminance (to see if text colour needs to be black/white)
+    function calculateLuminance(hex) {
+      var r = parseInt(hex.slice(0, 2), 16) / 255;
+      var g = parseInt(hex.slice(2, 4), 16) / 255;
+      var b = parseInt(hex.slice(4, 6), 16) / 255;
+
+      var a = [r, g, b].map(function (v) {
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+
+      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+    }
+
+    $(".accordion-header").each(function () {
+      var hexColor = $(this).find("b").attr("class");
+      $(this).css("background-color", "#" + hexColor);
+
+      // Set text color based on luminance
+      var luminance = calculateLuminance(hexColor);
+      if (luminance < 0.5) {
+        $(this).css("color", "white");
+      } else {
+        $(this).css("color", "black");
+      }
+    });
   });
 })(jQuery);
