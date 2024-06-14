@@ -6,7 +6,23 @@
     // Define a regular expression to match the specified pattern.
     var urlPattern = /\/contact-information(?:\/[\w-]+)*\/(\d+)/;
     if (urlPattern.test(currentUrl)) {
+      // Get page title and split into two titles
+      var $pageTitle = $("#block-pagetitle .page-title");
+      var titleText = $pageTitle.text();
+      var titleParts = titleText.split(" - ");
+      $pageTitle.text(titleParts[0]);
+
+      var $newPageTitle = $("<h2>")
+        .addClass("title page-title")
+        .text(titleParts[0]);
+      $("#block-pagetitle .page-title").replaceWith($newPageTitle);
+
+      // Create new title with client name
+      var $newHeader = $("<h1>").text(titleParts[1]);
+      $("#block-tabs").before($newHeader);
+
       var cid = currentUrl.match(urlPattern)[1];
+
       // Update the href of form tabs
       $(".tabs__link").each(function () {
         var $this = $(this);
