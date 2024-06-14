@@ -37,16 +37,30 @@ function appointment_colours_views_data_alter(&$data) {
       'label' => t('Appointment Colours Join'),
     ],
   ];
-  // what to do here???
-  // $data['civicrm_option_value']['saceflagsvalue'] = [
-  //   'title' => t('Saceflags Activity Type ID'),
-  //   'relationship' => [
-  //     'base' => 'civicrm_appointment_colours',
-  //     'base_field' => 'activity_type_id',
-  //     'base field' => 'activity_type_id',
-  //     'field' => 'value',
-  //     'id' => 'standard',
-  //     'label' => t('Saceflags Join Option Value'),
-  //   ],
-  // ];
+  // Expose the colour_hex field
+  $data['civicrm_activity']['colour_hex'] = [
+    'title' => t('Colour Hex'),
+    'help' => t('Hex code of the colour associated with the activity.'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+    'argument' => [
+      'id' => 'string_argument',
+    ],
+    'filter' => [
+      'id' => 'string_filter',
+    ],
+    'sort' => [
+      'id' => 'sort',
+    ],
+    'relationship' => [
+      'title' => t('Activity Appointment Colours Join'),
+      'label' => t('Appointment Colours Join'),
+      'base' => 'civicrm_appointment_colours',
+      'base_field' => 'activity_type_id',
+      'field' => 'activity_type_id',
+      'id' => 'standard',
+    ],
+  ];
 }
