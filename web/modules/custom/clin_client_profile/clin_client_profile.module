@@ -1,42 +1,8 @@
 <?php
 
-@require_once 'clin_client_profile.variables.php';
-
-use Drupal\webform\Utility\WebformFormHelper;
-
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 
-/**
- * Implements hook_form_alter().
- * @param $form
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- * @param $form_id
- */
-function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_client_profile_add_form") {
-    // Get custom field constants
-    $constants = get_defined_constants(FALSE);
-
-    $cid = \Drupal::request()->query->get('cid') ?? 0;
-    if (!empty($cid) && is_numeric($cid)) {
-      \Drupal::service('civicrm')->initialize();
-      // Get contact information
-      $contact = \Civi\Api4\Contact::get(FALSE)
-        ->addSelect('custom.*', '*')
-        ->addWhere('id', '=', $cid)
-        ->setLimit(1)
-        ->execute()
-        ->first();
-
-      // Get webform form elements
-      $elements = WebformFormHelper::flattenElements($form);
-      if (!empty($elements)) {
-        $elements[CLIN_CLIENT_PROFILE_SACEID]['#default_value'] = $contact['CLIN_Custom_Data.SACEID'];
-      }
-    }
-  }
-}
 
 function clin_client_profile_preprocess_page(&$variables) {
   $current_path = \Drupal::service('path.current')->getPath();
