@@ -135,4 +135,13 @@ jQuery(document).ready(function ($) {
 
   convertDateFormat("#edit-civicrm-1-activity-1-cg67-custom-1414");
   convertDateFormat("#edit-civicrm-1-activity-1-cg67-custom-1413");
+
+  function freezeDates(fieldName) {
+    $(fieldName + "-date").prop("disabled", true);
+    $(fieldName + "-time").prop("disabled", true);
+    fieldName.addClass("webform-readonly");
+  }
+
+  freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1413");
+  freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
 });
