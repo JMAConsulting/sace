@@ -3,8 +3,6 @@
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Entity\Webform;
 
-@require_once 'clin_booking.variables.php';
-
 /**
  * Implements hook_form_alter().
  * @param $form
