@@ -127,19 +127,27 @@ function activity_type_program_civicrm_postProcess($formName, &$form) {
     
     $selectedUserTeamIds = $submitted['user_teams'];
 
-    foreach ($selectedUserTeamIds as $userTeamId) {
-      $existingProgram = \Civi\Api4\ActivityTypeProgram::get()
-        ->addWhere('activity_type_id', '=', $activityTypeID)
-        ->addWhere('user_team_id', '=', $userTeamId)
-        ->execute()
-        ->first();
+    $existingPrograms = \Civi\Api4\ActivityTypeProgram::get()
+    ->addWhere('activity_type_id', '=', $activityTypeID)
+    ->execute();
 
-      if (!$existingProgram) {
-        \Civi\Api4\ActivityTypeProgram::create()
-          ->addValue('activity_type_id', $activityTypeID)
-          ->addValue('user_team_id', $userTeamId)
-          ->execute();
-      }
+    $existingUserTeamIds = array_column($existingPrograms, 'user_team_id');
+
+    $newUserTeamIds = array_diff($submittedUserTeamIds, $existingUserTeamIds);
+    $missingUserTeamIds = array_diff($existingUserTeamIds, $submittedUserTeamIds);
+
+    foreach ($newUserTeamIds as $newUserTeamId) {
+      \Civi\Api4\ActivityTypeProgram::create(TRUE)
+        ->addValue('activity_type_id', $activityTypeID)
+        ->addValue('user_team_id', $newUserTeamId)
+        ->execute();
+    }
+
+    foreach ($missingUserTeamIds as $missingUserTeamId) {
+      \Civi\Api4\ActivityTypeProgram::delete(TRUE)
+        ->addWhere('activity_type_id', '=', $activityTypeID)
+        ->addWhere('user_team_id', '=', $missingUserTeamId)
+        ->execute();
     }
   }
 }
