@@ -28,26 +28,6 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     // $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
-    if (!empty($aid) && is_numeric($aid)) {
-      \Drupal::service('civicrm')->initialize();
-      // Get booking type from activity
-      $activityRef = \Civi\Api4\Activity::get(FALSE)
-        ->addWhere('id', '=', $aid)
-        ->setLimit(1)
-        ->execute()
-        ->first();
-
-      // Get webform form elements
-      $elements = WebformFormHelper::flattenElements($form);
-      if (!empty($elements)) {
-        // Set default values for initial call date and intake number
-        $dateTime = new DateTime($activityRef['created_date']);
-        $formattedDate = $dateTime->format('d M Y');
-
-        $elements[CLIN_INTAKE_CY_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
-        $elements[CLIN_INTAKE_CY_DATA_INTAKE_NUMBER]['#default_value'] = $aid;
-      }
-    }
 
     $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
     if (!empty($cid1) && is_numeric($cid1)) {

@@ -39,24 +39,5 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     }
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
-    if (!empty($aid) && is_numeric($aid)) {
-      \Drupal::service('civicrm')->initialize();
-      // Get booking type from activity
-      $activityRef = \Civi\Api4\Activity::get(FALSE)
-        ->addWhere('id', '=', $aid)
-        ->setLimit(1)
-        ->execute()
-        ->first();
-
-      // Get webform form elements
-      $elements = WebformFormHelper::flattenElements($form);
-      if (!empty($elements)) {
-        // Set default values for initial call date and intake number
-        $dateTime = new DateTime($activityRef['created_date']);
-        $formattedDate = $dateTime->format('d M Y');
-
-        $elements[CLIN_INTAKE_ADULT_DATA_INITIAL_CALL]['#default_value'] = $formattedDate;
-      }
-    }
   }
 }
