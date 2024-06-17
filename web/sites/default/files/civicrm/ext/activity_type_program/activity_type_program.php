@@ -101,7 +101,7 @@ function activity_type_program_civicrm_buildForm($formName, &$form) {
       }
       // Add the select element to the form
       $form->add('select', 'user_teams', ts('User Team'),
-      $options, TRUE, ['class' => 'crm-select2 huge', 'multiple' => 1]);
+      $options, FALSE, ['class' => 'crm-select2 huge', 'multiple' => 1]);
 
       if (!empty($userTeamIds)) {
         $form->setDefaults(['user_teams' => $userTeamIds]);
@@ -127,15 +127,16 @@ function activity_type_program_civicrm_postProcess($formName, &$form) {
     
     $selectedUserTeamIds = $submitted['user_teams'];
 
-    $existingPrograms = \Civi\Api4\ActivityTypeProgram::get()
+    $existingPrograms = \Civi\Api4\ActivityTypeProgram::get(TRUE)
     ->addWhere('activity_type_id', '=', $activityTypeID)
     ->execute();
-
-    $existingUserTeamIds = array_column($existingPrograms, 'user_team_id');
-
-    $newUserTeamIds = array_diff($submittedUserTeamIds, $existingUserTeamIds);
-    $missingUserTeamIds = array_diff($existingUserTeamIds, $submittedUserTeamIds);
-
+    $existingUserTeamIds = [];
+    foreach ($existingPrograms as $program) {
+	    $existingUserTeamIds[] = $program['user_team_id'];
+    } 
+    $newUserTeamIds = array_diff($selectedUserTeamIds, $existingUserTeamIds);
+    $missingUserTeamIds = array_diff($existingUserTeamIds, $selectedUserTeamIds);
+   
     foreach ($newUserTeamIds as $newUserTeamId) {
       \Civi\Api4\ActivityTypeProgram::create(TRUE)
         ->addValue('activity_type_id', $activityTypeID)
