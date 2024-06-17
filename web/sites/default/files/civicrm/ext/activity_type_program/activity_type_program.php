@@ -82,7 +82,7 @@ function activity_type_program_civicrm_entityTypes(&$entityTypes): void {
 function activity_type_program_civicrm_buildForm($formName, &$form) {
   if ($formName == "CRM_Admin_Form_Options") {
     if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE) {
-      //Get colour from ActivityTypeProgram Entity
+      // Get existing activity type programs and set as default
       $activityTypePrograms = \Civi\Api4\ActivityTypeProgram::get()
         ->addSelect('user_team_id')
         ->addWhere('activity_type_id', '=', $form->getVar('_defaultValues')['value'])
@@ -93,12 +93,14 @@ function activity_type_program_civicrm_buildForm($formName, &$form) {
         $userTeamIds[] = $program['user_team_id'];
       }
 
-      //Add field to form
+      // Get Drupal user teams
       $teams = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('user_team');
       $options = [];
+
       foreach ($teams as $team) {
-          $options[$team->tid] = $team->name;
+        $options[$team->tid] = $team->name;
       }
+
       // Add the select element to the form
       $form->add('select', 'user_teams', ts('User Team'),
       $options, FALSE, ['class' => 'crm-select2 huge', 'multiple' => 1]);
@@ -119,24 +121,31 @@ function activity_type_program_civicrm_postProcess($formName, &$form) {
     //Get form values
     $submitted = $form->getVar('_submitValues');
     $default_values = $form->getVar('_defaultValues');
+    
     if(!$submitted['user_teams']){
       return;
     }
 
     $activityTypeID = $form->ajaxResponse['optionValue']['value'] ?: \Civi\Api4\OptionValue::get()->addSelect('value')->addWhere('id', '=',  $form->ajaxResponse['optionValue']['id'])->execute()->first()['value'];
     
+    // Get submitted user team IDs
     $selectedUserTeamIds = $submitted['user_teams'];
 
+    // Get ActivityTypePrograms already associated with the Activity Type
     $existingPrograms = \Civi\Api4\ActivityTypeProgram::get(TRUE)
-    ->addWhere('activity_type_id', '=', $activityTypeID)
-    ->execute();
+      ->addWhere('activity_type_id', '=', $activityTypeID)
+      ->execute();
+
     $existingUserTeamIds = [];
+
     foreach ($existingPrograms as $program) {
 	    $existingUserTeamIds[] = $program['user_team_id'];
     } 
+
     $newUserTeamIds = array_diff($selectedUserTeamIds, $existingUserTeamIds);
     $missingUserTeamIds = array_diff($existingUserTeamIds, $selectedUserTeamIds);
    
+    // Add newly selected ActivityTypePrograms
     foreach ($newUserTeamIds as $newUserTeamId) {
       \Civi\Api4\ActivityTypeProgram::create(TRUE)
         ->addValue('activity_type_id', $activityTypeID)
@@ -144,6 +153,7 @@ function activity_type_program_civicrm_postProcess($formName, &$form) {
         ->execute();
     }
 
+    // Delete unselected ActivityTypeProgram
     foreach ($missingUserTeamIds as $missingUserTeamId) {
       \Civi\Api4\ActivityTypeProgram::delete(TRUE)
         ->addWhere('activity_type_id', '=', $activityTypeID)
