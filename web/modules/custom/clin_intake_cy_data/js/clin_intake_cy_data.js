@@ -139,7 +139,7 @@ jQuery(document).ready(function ($) {
   function freezeDates(fieldName) {
     $(fieldName + "-date").prop("disabled", true);
     $(fieldName + "-time").prop("disabled", true);
-    fieldName.addClass("webform-readonly");
+    $(fieldName).addClass("webform-readonly");
   }
 
   freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1413");
