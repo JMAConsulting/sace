@@ -79,6 +79,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
           if($intakeNumber != NULL){
             \Civi\Api4\Activity::update(FALSE)
             ->addValue('CLIN_Adult_Intake_Activity_Data.Intake_Number', $intakeNumber)
+            ->addValue('CLIN_Adult_Intake_Activity_Data.Initial_Call', $existingActivity['created_date'])
             ->addWhere('id', '=', $existingActivity['id'])
             ->execute();
           }
