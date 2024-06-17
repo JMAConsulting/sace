@@ -67,8 +67,8 @@ jQuery(document).ready(function ($) {
   $("#edit-civicrm-1-contact-1-cg68-custom-1371-0").removeAttr("checked");
   $("#edit-civicrm-1-contact-1-cg68-custom-1418-0").removeAttr("checked");
 
-  function convertDateFormat() {
-    var originalDate = $("#edit-civicrm-1-activity-1-cg67-custom-1414").val();
+  function convertDateFormat(fieldName) {
+    var originalDate = $(fieldName).val();
     if (originalDate.trim() !== "") {
       // Convert the date format using JavaScript Date object
       var convertedDate = new Date(originalDate).toLocaleDateString("en-GB", {
@@ -76,9 +76,10 @@ jQuery(document).ready(function ($) {
         month: "short",
         year: "numeric",
       });
-      $("#edit-civicrm-1-activity-1-cg67-custom-1414").val(convertedDate);
+      $(fieldName).val(convertedDate);
     }
   }
 
-  convertDateFormat();
+  convertDateFormat("#edit-civicrm-1-activity-1-cg67-custom-1414");
+  convertDateFormat("#edit-civicrm-1-activity-1-cg67-custom-1413");
 });
