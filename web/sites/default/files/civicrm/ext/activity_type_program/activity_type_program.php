@@ -101,7 +101,7 @@ function activity_type_program_civicrm_buildForm($formName, &$form) {
       }
       // Add the select element to the form
       $form->add('select', 'user_teams', ts('User Team'),
-      $options, TRUE, ['class' => 'crm-select2', 'multiple' => 1]);
+      $options, TRUE, ['class' => 'crm-select2 huge', 'multiple' => 1]);
 
       if (!empty($userTeamIds)) {
         $form->setDefaults(['user_teams' => $userTeamIds]);
