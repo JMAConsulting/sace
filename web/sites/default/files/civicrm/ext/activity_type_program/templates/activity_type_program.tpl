@@ -8,6 +8,7 @@
         <td>{/literal}{$form.user_teams.html}{literal}</td>
       </tr>
     `);
+    $('#user_teams').select2();
   });
   </script>
 {/literal}

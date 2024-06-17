@@ -96,11 +96,12 @@ function activity_type_program_civicrm_buildForm($formName, &$form) {
       //Add field to form
       $teams = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('user_team');
       $options = [];
-      foreach ($terms as $term) {
-          $options[$term->tid] = $term->name;
+      foreach ($teams as $team) {
+          $options[$team->tid] = $team->name;
       }
       // Add the select element to the form
-      $form->add('multiselect', 'user_teams', ts('User Team'), $options, true);
+      $form->add('select', 'user_teams', ts('User Team'),
+      $options, TRUE, ['class' => 'crm-select2', 'multiple' => 1]);
 
       if (!empty($userTeamIds)) {
         $form->setDefaults(['user_teams' => $userTeamIds]);
