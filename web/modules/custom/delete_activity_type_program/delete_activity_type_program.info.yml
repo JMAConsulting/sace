@@ -1,0 +1,5 @@
+name: 'DeleteActivityTypePrograms'
+type: module
+description: 'Adding confirmation message when deleting user teams terms'
+core_version_requirement: ^9 || ^10
+package: 'sace'

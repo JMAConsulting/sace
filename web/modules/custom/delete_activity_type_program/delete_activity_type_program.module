@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * Implements hook_taxonomy_term_predelete().
+ */
+function delete_activity_type_program_taxonomy_term_predelete(array $terms) {
+  foreach ($terms as $term) {
+    if ($term->bundle() == 'user_team') {
+      // Initialize CiviCRM.
+      \Drupal::service('civicrm')->initialize();
+
+      // Check for ActivityTypePrograms linked to this user team ID
+      $results = \Civi\Api4\ActivityTypeProgram::get()
+        ->addWhere('user_team_id', '=', $term->id())
+        ->execute();
+
+      // If entities are linked, throw error and prevent deletion until they are removed
+      if (!empty($results)) {
+        \Drupal::messenger()->addWarning(t('The term "@term" cannot be deleted because it is linked to one or more CiviCRM ActivityTypePrograms.', ['@term' => $term->getName()]));
+        throw new \Drupal\Core\Entity\EntityStorageException('The term is linked to CiviCRM ActivityTypePrograms.');
+      }
+    }
+  }
+}
