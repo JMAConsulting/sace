@@ -51,11 +51,13 @@ class ClinAddFlagsWebformHandler extends WebformHandlerBase {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
     if ($webform_submission_data) {
-      \Drupal::logger('clin_client_profile')->info('@term', ['@term' => print_var($webform_submission_data)]);
-      // $results = \Civi\Api4\Activity::create(TRUE)
-      //   ->addValue('activity_type_id', $webform_submission_data[''])
-      //   ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
-      //   ->execute();
+      $results = \Civi\Api4\Activity::create(TRUE)
+        ->addValue('activity_type_id', $webform_submission_data['type_of_flag'])
+        ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
+        ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
+        ->addValue('subject', $webform_submission_data['civicrm_1_activity_1_activity_subject'])
+        ->addValue('details', $webform_submission_data['civicrm_1_activity_1_activity_details']['value'])
+        ->execute();
     }
   }
 }
