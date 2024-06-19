@@ -1,0 +1,7 @@
+clin_flags:
+  version: 1
+  js:
+    js/clin_add_flags.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
