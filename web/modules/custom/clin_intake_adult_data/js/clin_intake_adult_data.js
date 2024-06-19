@@ -91,4 +91,19 @@ jQuery(document).ready(function ($) {
 
   freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1413");
   freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
+
+  // Hide button is client does not comply with SACE policy
+  function toggleButton() {
+    if ($("#edit-civicrm-1-contact-1-cg68-custom-1432-1").is(":checked")) {
+      $("#add-row-button").hide();
+    } else {
+      $("#add-row-button").show();
+    }
+  }
+
+  toggleButton();
+
+  $('input[name="civicrm_1_contact_1_cg68_custom_1432"]').change(function () {
+    toggleButton();
+  });
 });
