@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
   let currRow = 2;
-  let currRow2 = 3;
+  let currRow2 = 2;
 
   // Hide extra incident fields
   $("#edit-civicrm-1-contact-2-cg70-fieldset").hide();
@@ -25,6 +25,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Hide extra referral fields
+  $("#edit-civicrm-2-contact-1-fieldset-fieldset").hide();
   $("#edit-civicrm-3-contact-1-fieldset-fieldset").hide();
   $("#edit-civicrm-4-contact-1-fieldset-fieldset").hide();
 
@@ -32,7 +33,7 @@ jQuery(document).ready(function ($) {
     class: "webform-button button button--primary",
     type: "button",
     id: "add-referral-button",
-    value: "Add Another",
+    value: "Add Another Referral",
     click: function () {
       elementUnhide =
         "#edit-civicrm-" + currRow2 + "-contact-1-fieldset-fieldset";
