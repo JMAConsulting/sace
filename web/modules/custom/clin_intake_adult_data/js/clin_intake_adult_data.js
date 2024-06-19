@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
     class: "webform-button button button--primary",
     type: "button",
     id: "add-row-button",
-    value: "Add Another",
+    value: "Add Another Incident",
     click: function () {
       elementUnhide = "#edit-civicrm-1-contact-" + currRow + "-cg70-fieldset";
       $(elementUnhide).show();
