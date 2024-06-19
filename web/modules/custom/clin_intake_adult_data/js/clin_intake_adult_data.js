@@ -1,7 +1,8 @@
 jQuery(document).ready(function ($) {
   let currRow = 2;
+  let currRow2 = 3;
 
-  // Hide extra fields
+  // Hide extra incident fields
   $("#edit-civicrm-1-contact-2-cg70-fieldset").hide();
   $("#edit-civicrm-1-contact-3-cg70-fieldset").hide();
   $("#edit-civicrm-1-contact-4-cg70-fieldset").hide();
@@ -23,8 +24,33 @@ jQuery(document).ready(function ($) {
     },
   });
 
+  // Hide extra referral fields
+  $("#edit-civicrm-3-contact-1-fieldset-fieldset").hide();
+  $("#edit-civicrm-4-contact-1-fieldset-fieldset").hide();
+
+  var addAnotherRef = $("<input>", {
+    class: "webform-button button button--primary",
+    type: "button",
+    id: "add-referral-button",
+    value: "Add Another",
+    click: function () {
+      elementUnhide =
+        "#edit-civicrm-" + currRow2 + "-contact-1-fieldset-fieldset";
+      $(elementUnhide).show();
+      currRow2 += 1;
+      if (currRow2 == 5) {
+        addAnotherRef.hide();
+      }
+    },
+  });
+
   // Insert the button before mental health section
   $("#edit-medical-mental-health-history").before(addAnother);
+
+  // Insert button after first referral
+  $("#edit-civicrm-1-contact-1-cg68-custom-1366--wrapper").before(
+    addAnotherRef
+  );
 
   // Hide details text area unless either box is checked
   var detailsText = $(".form-item-civicrm-1-contact-1-cg68-custom-1340");
@@ -95,8 +121,10 @@ jQuery(document).ready(function ($) {
   function toggleButton() {
     if ($("#edit-civicrm-1-contact-1-cg68-custom-1432-1").is(":checked")) {
       $("#add-row-button").hide();
+      $("#add-referral-button").hide();
     } else {
       $("#add-row-button").show();
+      $("#add-referral-button").show();
     }
   }
 
