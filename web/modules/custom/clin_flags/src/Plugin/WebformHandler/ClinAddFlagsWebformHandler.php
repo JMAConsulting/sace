@@ -43,20 +43,25 @@ class ClinAddFlagsWebformHandler extends WebformHandlerBase {
     $instance->database = \Drupal::database();
     return $instance;
   }
-
-  /**
+    /**
    * {@inheritdoc}
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
     if ($webform_submission_data) {
+      $optionValue = \Civi\Api4\OptionValue::get(TRUE)
+      ->addWhere('option_group_id', '=', 2)
+      ->addWhere('id', '=',  $webform_submission_data['type_of_flag'])
+      ->execute()
+      ->first();
+
       $results = \Civi\Api4\Activity::create(TRUE)
-        ->addValue('activity_type_id', $webform_submission_data['type_of_flag'])
+        ->addValue('activity_type_id', $optionValue['value'])
         ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
         ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
-        ->addValue('subject', $webform_submission_data['civicrm_1_activity_1_activity_subject'])
-        ->addValue('details', $webform_submission_data['civicrm_1_activity_1_activity_details']['value'])
+        ->addValue('subject', $webform_submission_data['flag_name'])
+        ->addValue('details', $webform_submission_data['description'])
         ->execute();
     }
   }
