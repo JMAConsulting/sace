@@ -116,8 +116,6 @@ jQuery(document).ready(function ($) {
     $(fieldName).addClass("webform-readonly");
   }
 
-  freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
-
   // Hide button is client does not comply with SACE policy
   function toggleButton() {
     if ($("#edit-civicrm-1-contact-1-cg68-custom-1432-1").is(":checked")) {
@@ -134,4 +132,15 @@ jQuery(document).ready(function ($) {
   $('input[name="civicrm_1_contact_1_cg68_custom_1432"]').change(function () {
     toggleButton();
   });
+
+  // Add styling and show submitted date if form is locked
+  if ($(".webform-locked-message").length) {
+    $("#webform-submission-clin-c-y-intake-data-add-form div").addClass(
+      "webform-readonly"
+    );
+    $("#edit-civicrm-1-activity-1-cg67-custom-1414").show();
+    freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
+  } else {
+    $("#edit-civicrm-1-activity-1-cg67-custom-1414").hide();
+  }
 });
