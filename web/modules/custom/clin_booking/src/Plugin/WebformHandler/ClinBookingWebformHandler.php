@@ -105,6 +105,7 @@ class ClinBookingWebformHandler extends WebformHandlerBase {
     $mostRecent = \Civi\Api4\Activity::get(FALSE)
       ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Number')
       ->addWhere('CLIN_Adult_Intake_Activity_Data.Intake_Number', 'IS NOT NULL')
+      ->addWhere('CLIN_Adult_Intake_Activity_Data.Intake_Number', 'REGEXP', '^[0-9]{4}[AC]-?[0-9]+$')
       ->addWhere('activity_type_id', '=', $existingActivity['activity_type_id'])
       ->addOrderBy('id', 'DESC')
       ->setLimit(1)
