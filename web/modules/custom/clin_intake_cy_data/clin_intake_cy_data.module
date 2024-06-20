@@ -49,7 +49,7 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       \Drupal::service('civicrm')->initialize();
       // Get contact information
       $contact = \Civi\Api4\Contact::get(FALSE)
-      ->addSelect('Case_Worker.Caller', 'Legal_Guardian.Caller', 'Family_Support_Worker.Caller', 'Legal_Guardian_Additional.Caller', 'first_name', 'last_name', 'Case_Worker.Caller:name', 'Legal_Guardian_Additional.Caller:name', 'Family_Support_Worker.Caller:name', 'Legal_Guardian.Caller:name')
+      ->addSelect('birth_date', 'Case_Worker.Caller', 'Legal_Guardian.Caller', 'Family_Support_Worker.Caller', 'Legal_Guardian_Additional.Caller', 'first_name', 'last_name', 'Case_Worker.Caller:name', 'Legal_Guardian_Additional.Caller:name', 'Family_Support_Worker.Caller:name', 'Legal_Guardian.Caller:name')
       ->addWhere('id', '=', $cid1)
       ->setLimit(1)
       ->execute()
@@ -75,10 +75,13 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
             break;
         }
       }
-
-      // Get webform form elements
+   \Drupal::logger('clin_intake_cy_data')->info('Variable value: @variable', ['@variable' => $contact['birth_date']]); 
+     // Get webform form elements
       $elements = WebformFormHelper::flattenElements($form);
       if (!empty($elements)) {
+	     $dateTime = new DateTime($contact['birth_date']);
+        $formattedBirthDate = $dateTime->format('d M Y');
+	      $elements[CLIN_INTAKE_CY_DATA_BDAY]['#default_value'] = $formattedBirthDate;
         if($containsOne == false) {
           $elements[CLIN_INTAKE_CY_DATA_CALLER_NAME]['#default_value'] = $contact['first_name'] . ' ' . $contact['last_name'];
         }
