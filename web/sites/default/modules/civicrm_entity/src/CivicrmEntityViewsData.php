@@ -493,7 +493,22 @@ class CivicrmEntityViewsData extends EntityViewsData {
               ['field' => 'entity_table', 'value' => 'civicrm_contact'],
             ],
           ],
-        ];
+	];
+
+        $views_field[$base_table]['note'] = [
+          'title' => $this->t('Note'),
+          'help' => $this->t('Relate CiviCRM Contact to Note via entity_id.'),
+          'relationship' => [
+              'id' => 'standard',
+              'base' => 'civicrm_note',
+              'base field' => 'entity_id',
+              'field' => 'id',
+              'extra' => [[
+                      'field' => 'entity_table',
+                      'value' => $base_table,
+              ]],
+          ],
+	];
 
         if (isset($views_field['civicrm_contact']['contact_sub_type'])) {
           $views_field['civicrm_contact']['contact_sub_type']['filter']['id'] = 'civicrm_entity_in_operator';
