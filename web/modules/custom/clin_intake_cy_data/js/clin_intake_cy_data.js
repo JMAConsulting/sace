@@ -142,7 +142,6 @@ jQuery(document).ready(function ($) {
     $(fieldName).addClass("webform-readonly");
   }
 
-//  freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
   let currRow2 = 2;
   $("#edit-civicrm-2-contact-1-fieldset-fieldset").hide();
   $("#edit-civicrm-3-contact-1-fieldset-fieldset").hide();
@@ -163,7 +162,16 @@ jQuery(document).ready(function ($) {
       }
     },
   });
-	  $(".form-item-civicrm-1-contact-1-cg65-custom-1407").before(
-    addAnotherRef
-  );
+  $(".form-item-civicrm-1-contact-1-cg65-custom-1407").before(addAnotherRef);
+
+  // Add styling and show submitted date if form is locked
+  if ($(".webform-locked-message").length) {
+    $("#webform-submission-clin-c-y-intake-data-add-form div").addClass(
+      "webform-readonly"
+    );
+    $("#edit-civicrm-1-activity-1-cg67-custom-1414").show();
+    freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
+  } else {
+    $("#edit-civicrm-1-activity-1-cg67-custom-1414").hide();
+  }
 });
