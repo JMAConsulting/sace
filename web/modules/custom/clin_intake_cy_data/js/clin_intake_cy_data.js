@@ -134,7 +134,6 @@ jQuery(document).ready(function ($) {
   }
 
   convertDateFormat("#edit-civicrm-1-activity-1-cg67-custom-1414");
-  convertDateFormat("#edit-civicrm-1-contact-1-contact-birth-date");
 
   function freezeDates(fieldName) {
     $(fieldName + "-date").prop("disabled", true);
@@ -171,6 +170,20 @@ jQuery(document).ready(function ($) {
     );
     $(".form-item-civicrm-1-activity-1-cg67-custom-1414").show();
     freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
+
+    for (let currContact = 2; currContact < 5; currContact++) {
+      var orgNameText = $(
+        "#civicrm_" + currContact + "_contact_1_contact_organization_name"
+      )
+        .text()
+        .trim();
+
+      if (orgNameText.length > 0) {
+        $(
+          "#edit-civicrm-" + currContact + "-contact-1-fieldset-fieldset"
+        ).show();
+      }
+    }
   } else {
     $(".form-item-civicrm-1-activity-1-cg67-custom-1414").hide();
   }
