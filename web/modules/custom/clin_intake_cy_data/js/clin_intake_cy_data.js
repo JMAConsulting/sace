@@ -142,5 +142,5 @@ jQuery(document).ready(function ($) {
     $(fieldName).addClass("webform-readonly");
   }
 
-  freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
+//  freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
 });

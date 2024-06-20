@@ -40,7 +40,7 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         $form['#attributes']['class'][] = 'webform-locked';
         $form['#prefix'] = '<div class="webform-locked-message">' . t('A submission for this CID and AID already exists. You cannot submit another one.') . '</div>';
 	      $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
-	      make_form_read_only($form);
+	     cy_make_form_read_only($form);
       } 
     }
 
@@ -90,7 +90,7 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
   }
 }
 
-function make_form_read_only(&$elements) {
+function cy_make_form_read_only(&$elements) {
   foreach ($elements as $key => &$element) {
     if (is_array($element)) {
       if (isset($element['#type']) && in_array($element['#type'], ['textfield', 'textarea', 'select', 'checkbox', 'radios', 'checkboxes', 'date', 'email', 'number', 'tel', 'url'])) {
