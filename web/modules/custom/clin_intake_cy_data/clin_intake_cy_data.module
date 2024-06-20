@@ -16,7 +16,7 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
-    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+    //$user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
 
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_cy_data/clin_intake_cy_data';
@@ -28,6 +28,21 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     // $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if(!empty($aid) && is_numeric($aid)) {
+      \Drupal::service('civicrm')->initialize();
+      $activityRef = \Civi\Api4\Activity::get(TRUE)
+        ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Completed')
+        ->addWhere('id', '=', $aid)
+        ->execute()
+        ->first();
+
+      if (isset($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed']) && !is_null($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed'])) {
+        $form['#attributes']['class'][] = 'webform-locked';
+        $form['#prefix'] = '<div class="webform-locked-message">' . t('A submission for this CID and AID already exists. You cannot submit another one.') . '</div>';
+	      $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
+	      make_form_read_only($form);
+      } 
+    }
 
     $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
     if (!empty($cid1) && is_numeric($cid1)) {
@@ -70,6 +85,24 @@ function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         else {
           $elements[CLIN_INTAKE_CY_DATA_CALLER_NAME]['#default_value'] = $contact[$callerNameField];
         }
+      }
+    }
+  }
+}
+
+function make_form_read_only(&$elements) {
+  foreach ($elements as $key => &$element) {
+    if (is_array($element)) {
+      if (isset($element['#type']) && in_array($element['#type'], ['textfield', 'textarea', 'select', 'checkbox', 'radios', 'checkboxes', 'date', 'email', 'number', 'tel', 'url'])) {
+        $element['#attributes']['readonly'] = 'readonly';
+        if ($element['#type'] == 'select') {
+          $element['#attributes']['disabled'] = 'disabled';
+        }
+        if ($element['#type'] == 'checkbox' || $element['#type'] == 'radios' || $element['#type'] == 'checkboxes') {
+          $element['#disabled'] = TRUE;
+        }
+      } elseif (!empty($element)) {
+        make_form_read_only($element);
       }
     }
   }
