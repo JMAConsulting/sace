@@ -138,9 +138,9 @@ jQuery(document).ready(function ($) {
     $("#webform-submission-clin-c-y-intake-data-add-form div").addClass(
       "webform-readonly"
     );
-    $("#edit-civicrm-1-activity-1-cg67-custom-1414").show();
+    $(".form-item-civicrm-1-activity-1-cg67-custom-1414").show();
     freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
   } else {
-    $("#edit-civicrm-1-activity-1-cg67-custom-1414").hide();
+    $(".form-item-civicrm-1-activity-1-cg67-custom-1414").hide();
   }
 });
