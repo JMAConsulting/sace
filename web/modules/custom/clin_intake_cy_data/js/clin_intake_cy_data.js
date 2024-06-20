@@ -184,6 +184,8 @@ jQuery(document).ready(function ($) {
         ).show();
       }
     }
+
+    addAnotherRef.hide();
   } else {
     $(".form-item-civicrm-1-activity-1-cg67-custom-1414").hide();
   }

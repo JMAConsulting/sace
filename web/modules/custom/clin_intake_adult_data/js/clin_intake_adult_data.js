@@ -153,6 +153,27 @@ jQuery(document).ready(function ($) {
         ).show();
       }
     }
+    // Expose incidents if filled in
+    for (let currIncident = 2; currIncident < 5; currIncident++) {
+      var $fieldset = $(
+        "#edit-civicrm-1-contact-" + currIncident + "-cg70-fieldset"
+      );
+      var $textareas = $fieldset.find("textarea");
+      var hasText = false;
+      $textareas.each(function () {
+        var textareaText = $(this).val().trim();
+        if (textareaText.length > 0) {
+          hasText = true;
+          return false;
+        }
+      });
+
+      if (hasText) {
+        $("#edit-civicrm-1-contact-" + currIncident + "-cg70-fieldset").show();
+      }
+    }
+    addAnotherRef.hide();
+    addAnother.hide();
   } else {
     $(".form-item-civicrm-1-activity-1-cg67-custom-1414").hide();
   }
