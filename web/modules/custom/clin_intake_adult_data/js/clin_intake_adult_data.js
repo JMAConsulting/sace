@@ -135,7 +135,7 @@ jQuery(document).ready(function ($) {
 
   // Add styling and show submitted date if form is locked
   if ($(".webform-locked-message").length) {
-    $("#webform-submission-clin-c-y-intake-data-add-form div").addClass(
+    $("#webform-submission-clin-adult-intake-data-add-form div").addClass(
       "webform-readonly"
     );
     $(".form-item-civicrm-1-activity-1-cg67-custom-1414").show();

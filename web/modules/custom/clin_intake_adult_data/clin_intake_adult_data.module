@@ -43,8 +43,29 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
 	      make_form_read_only($form);
       } 
     }
+
+    $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
+    if (!empty($cid1) && is_numeric($cid1)) {
+      \Drupal::service('civicrm')->initialize();
+      // Get contact information
+      $contact = \Civi\Api4\Contact::get(FALSE)
+        ->addSelect('birth_date')
+        ->addWhere('id', '=', $cid1)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      // Get webform form elements
+      $elements = WebformFormHelper::flattenElements($form);
+      if (!empty($elements)) {
+	      $dateTime = new DateTime($contact['birth_date']);
+        $formattedBirthDate = $dateTime->format('d M Y');
+	      $elements[CLIN_INTAKE_ADULT_DATA_BDAY]['#default_value'] = $formattedBirthDate;
+      }
+    }
   }
 }
+
 function make_form_read_only(&$elements) {
   foreach ($elements as $key => &$element) {
     if (is_array($element)) {
