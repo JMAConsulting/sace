@@ -16,41 +16,31 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
-    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+    //$user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
 
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
     
     // Load the Webform entity.
-    $webform = Webform::load('clin_adult_intake_data');
+    //$webform = Webform::load('clin_adult_intake_data');
 
     // Set the confirmation URL to user's calendar
     // $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
-    
-    $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
-    if (!empty($cid1) && is_numeric($cid1)) {
-      \Drupal::service('civicrm')->initialize();
-
-      // Get webform form elements
-      $elements = WebformFormHelper::flattenElements($form);
-      if (!empty($elements)) {
-        // Set default values for contact
-      }
-    }
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if(!empty($aid) && is_numeric($aid)) {
+      \Drupal::service('civicrm')->initialize();
       $activityRef = \Civi\Api4\Activity::get(TRUE)
         ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Completed')
         ->addWhere('id', '=', $aid)
-	->execute()
-	->first();
+        ->execute()
+        ->first();
 
       if (isset($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed']) && !is_null($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed'])) {
         $form['#attributes']['class'][] = 'webform-locked';
         $form['#prefix'] = '<div class="webform-locked-message">' . t('A submission for this CID and AID already exists. You cannot submit another one.') . '</div>';
-	$form['actions']['submit']['#attributes']['disabled'] = 'disabled';
-	make_form_read_only($form);
+	      $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
+	      make_form_read_only($form);
       } 
     }
   }
