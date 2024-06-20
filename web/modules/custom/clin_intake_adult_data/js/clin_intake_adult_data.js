@@ -81,9 +81,9 @@ jQuery(document).ready(function ($) {
 
   function updateReferralSource() {
     if ($("#edit-civicrm-1-contact-1-cg68-custom-1325-8").prop("checked")) {
-      $(".form-item-civicrm-1-contact-1-cg68-custom-1326").show();
+      $("#edit-civicrm-5-contact-1-fieldset-fieldset").show();
     } else {
-      $(".form-item-civicrm-1-contact-1-cg68-custom-1326").hide();
+      $("#edit-civicrm-5-contact-1-fieldset-fieldset").hide();
     }
   }
 
