@@ -39,5 +39,18 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     }
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if(!empty($aid) && is_numeric($aid)) {
+      $activityRef = \Civi\Api4\Activity::get(TRUE)
+        ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Completed')
+        ->addWhere('id', '=', $aid)
+        ->execute();
+
+      if (isset($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed']) && is_null($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed'])) {
+        $form['#attributes']['class'][] = 'webform-locked';
+        $form['#prefix'] = '<div class="webform-locked-message">' . t('A submission for this CID and AID already exists. You cannot submit another one.') . '</div>';
+        $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
+      } 
+    }
   }
 }
+
