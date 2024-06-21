@@ -70,14 +70,16 @@
 
     $(".accordion-header").each(function () {
       var hexColor = $(this).find("b").attr("class");
-      $(this).css("background-color", "#" + hexColor);
+      if (hexColor) {
+        $(this).css("background-color", "#" + hexColor);
 
-      // Set text color based on luminance
-      var luminance = calculateLuminance(hexColor);
-      if (luminance < 0.5) {
-        $(this).css("color", "white");
-      } else {
-        $(this).css("color", "black");
+        // Set text color based on luminance
+        var luminance = calculateLuminance(hexColor);
+        if (luminance < 0.5) {
+          $(this).css("color", "white");
+        } else {
+          $(this).css("color", "black");
+        }
       }
     });
   });
