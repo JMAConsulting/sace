@@ -1,8 +1,13 @@
+:root {
+  --base-padding: 8px;
+}
+
+/* Base styles for accordion headers and content */
 .accordion-header,
 .inner-accordion-header {
   cursor: pointer;
   background-color: #f1f1f1;
-  padding: 10px;
+  padding: var(--base-padding);
   margin-bottom: 0;
   border: 1px solid #313f57;
   position: relative;
@@ -17,24 +22,45 @@
 .accordion-content,
 .inner-accordion-content {
   display: none;
-  padding: 10px;
+  padding: var(--base-padding);
   border-top: none;
 }
 
-.inner-accordion-header {
-  padding-left: 20px;
-  background-color: #e8e8e8;
+/* Initial padding for accordion wrappers */
+.accordion-wrapper {
+  margin-bottom: 10px;
+  padding: var(--base-padding);
 }
 
-.inner-accordion-content {
-  padding-left: 20px;
-  background-color: #f9f9f9;
+/* Increase padding for nested accordion wrappers */
+.accordion-wrapper .accordion-wrapper {
+  padding-left: calc(var(--base-padding) * 2);
 }
 
+.accordion-wrapper .accordion-wrapper .accordion-wrapper {
+  padding-left: calc(var(--base-padding) * 3);
+}
+
+.accordion-wrapper .accordion-wrapper .accordion-wrapper .accordion-wrapper {
+  padding-left: calc(var(--base-padding) * 4);
+}
+
+.accordion-wrapper .view-content .accordion-item {
+  border: 1px solid #313f57;
+  margin-bottom: 10px;
+}
+
+/* Remove border for attached files inside accordion */
+.accordion-wrapper .attached-files .views-field-uri {
+  border: none;
+  padding: var(--base-padding) 0;
+}
+
+/* Arrow indicators for accordion headers */
 .accordion-header::after,
 .inner-accordion-header::after {
   content: '\25BC';
-  /* Downward arrow */
+    /* Downward arrow */
   float: right;
   margin-left: 10px;
 }
@@ -42,14 +68,6 @@
 .accordion-header.active::after,
 .inner-accordion-header.active::after {
   content: '\25B2';
-  /* Upward arrow */
+    /* Upward arrow */
 }
 
-.accordion-wrapper .view-content .accordion-item {
- border: 1px solid #313f57;
-  margin-bottom: 10px;
-}
-.accordion-wrapper .attached-files .views-field-uri{ 
-border: none !important;
-  padding: 10px 0;
-}
