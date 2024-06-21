@@ -32,5 +32,5 @@ return array(
     '59969633dcdb4ee3e2fec945065028d6' => $vendorDir . '/civicrm/civicrm-core/guzzle_php81_shim.php',
     '801c31d8ed748cfa537fa45402288c95' => $vendorDir . '/psy/psysh/src/functions.php',
     'fb4ca2d97fe7ba6af750497425204e70' => $vendorDir . '/sentry/sentry/src/functions.php',
-    'a321afe5b5ec99bd361b396b4b67d157' => $vendorDir . '/composer/autoload_civicrm_asset.php',
+    '014237dd13e595931c6755e8f8e26793' => $vendorDir . '/composer/autoload_civicrm_asset.php',
 );
