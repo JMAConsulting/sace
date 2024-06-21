@@ -41,7 +41,7 @@ function extendedreport_version_at_least($version) {
 }
 
 function extendedreport_civicrm_tabset($tabsetName, &$tabs, $context) {
-  if (!isset($context['contact_id'])) {
+  if ($tabsetName !== 'civicrm/contact/view') {
     return;
   }
   $reports = civicrm_api3('ReportInstance', 'get', ['form_values' => ['LIKE' => '%contact_dashboard_tab";s:1:"1";%']]);
@@ -120,13 +120,4 @@ function extendedreport_civicrm_contactSummaryBlocks(&$blocks) {
     ];
   }
 
-}
-
-/**
- * Implements hook_civicrm_entityTypes().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
- */
-function extendedreport_civicrm_entityTypes(&$entityTypes) {
-  _extendedreport_civix_civicrm_entityTypes($entityTypes);
 }
