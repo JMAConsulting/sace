@@ -72,7 +72,6 @@ module:
   ped_online_course_booking_request: 0
   ped_online_course_booking_update: 0
   phpass: 0
-  raven: 0
   redirect: 0
   rest: 0
   sace_activity_schedule_modification: 0

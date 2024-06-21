@@ -511,8 +511,8 @@ elements: |-
         2SLGBTQ+: 2SLGBTQ+
         Adults: Adults
         'Child 3-12': 'Child 3-12'
-        FirstNations: 'First Nations, Métis, or Inuit/ Indigenous'
         Guardians: Guardians/Parents
+        FirstNationsMetisInuitIndigenous: 'First Nations, Métis, or Inuit/ Indigenous'
         Men/Boys: 'Men/Boys/Masc/NB (Trans-Inclusive)'
         Newcomer: Newcomer/Non-Status/Refugee/Immigrant
         'People With Disabilities': 'People With Disabilities'
@@ -538,7 +538,6 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_333
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
-      '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_40:
       '#type': checkboxes
@@ -549,6 +548,7 @@ elements: |-
         FRT: 'First Responders Training (FRT)'
         SexualAssaultConsent: 'Sexual Assault & Consent'
         SexualHarassment: 'Sexual Harassment'
+        GenderStereotypes: 'Gender Stereotypes'
         NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
         TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
         SACEServices: 'SACE Services'
@@ -572,10 +572,11 @@ elements: |-
         'Recognizing & Responding to Sexual Violence': 'Recognizing & Responding to Sexual Violence'
         'SACE Services Tour': 'SACE Services Tour'
         'Sexual Assault & Self-Care': 'Sexual Assault & Self-Care'
+        SexualAssaultConsentNonConsensualPhotosharing: 'Sexual Assault, Consent, and Non-Consensual Photosharing'
         SexualHealth: 'Sexual Health'
         SexualViolence: 'Sexual Violence'
         ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
-        CustomSomethingDifferent: 'Custom / Other'
+        CustomUnsure: 'Custom / Other'
       '#wrapper_attributes':
         class:
           - jma-grid-3
@@ -589,6 +590,7 @@ elements: |-
           SexualAssaultConsent|Sexual Assault & Consent
           SexualHarassment|Sexual Harassment
           NonConsensualPhotoSharing|Non-Consensual Photo Sharing
+          GenderStereotypes|Gender Stereotypes
           TechnologyFacilitatedSexualViolence|Technology-Facilitated Sexual Violence
           SACEServices|SACE Services
           BystanderIntervention|Bystander Intervention
@@ -611,10 +613,11 @@ elements: |-
           Recognizing & Responding to Sexual Violence|Recognizing & Responding to Sexual Violence
           SACE Services Tour|SACE Services Tour
           Sexual Assault & Self-Care|Sexual Assault & Self-Care
+          SexualAssaultConsentNonConsensualPhotosharing|Sexual Assault, Consent, and Non-Consensual Photosharing
           SexualHealth|Sexual Health
           SexualViolence|Sexual Violence
           ViolencePreventionAdvocacy|Violence Prevention and Advocacy
-          CustomSomethingDifferent|Custom / Unsure
+          CustomUnsure|Custom / Unsure
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_40
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -632,53 +635,49 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg2_custom_341:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |-
-          Professionals|Professionals
-          Students|Students
-          Service Providers|Service Providers
-          Educators|Educators
-          Guardians|Guardians
-          Volunteers|Volunteers
-          Older Adults|Older Adults
-          2SLGBTQ+|2SLGBTQ+
-          Indigenous|Indigenous
-          Racialized|Racialized
-          PeopleWithDisabilities|People With Disabilities
-          Newcomers|Newcomers
-          Community Group|Community Group
-          At-risk Youth|At-risk Youth
-          Men/Boys/Masc/NB|Men/Boys/Masc/NB
-          Women/Girls/Femme/NB|Women/Girls/Femme/NB
-          Adults|Adults
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_341
+      '#title': Audience
+      '#civicrm_live_options': 0
       '#options':
-        Professionals: Professionals
         Students: Students
-        'Service Providers': 'Service Providers'
-        Educators: Educators
-        Guardians: Guardians
         Volunteers: Volunteers
-        'Older Adults': 'Older Adults'
         2SLGBTQ+: 2SLGBTQ+
-        Indigenous: Indigenous
-        Racialized: Racialized
         PeopleWithDisabilities: 'People With Disabilities'
-        Newcomers: Newcomers
         'Community Group': 'Community Group'
-        'At-risk Youth': 'At-risk Youth'
         Men/Boys/Masc/NB: Men/Boys/Masc/NB
         Women/Girls/Femme/NB: Women/Girls/Femme/NB
-        Adults: Adults
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': Audience
-      '#civicrm_live_options': 1
+        'Children 3-11': 'Children 3-11'
+        'Deaf&HardofHearing': 'Deaf & Hard of Hearing'
+        EnglishLanguageLearners: 'English Language Learners'
+        GuardiansParents: Guardians/Parents
+        IndigenousFirstNationsMétisInuit: 'Indigenous/First Nations, Métis, or Inuit'
+        NewcomersNon-StatusRefugeeImmigrant: Newcomers/Non-Status/Refugee/Immigrant
+        PeopleExperiencingIncarceration: 'People Experiencing Incarceration'
+        PeopleWithCognitiveDisabilities: 'People With Cognitive Disabilities'
+        ProfessionalsArtsEntertainmentNightlife: 'Professionals - Arts, Entertainment, & Nightlife'
+        ProfessionalsGeneral: 'Professionals - General'
+        ProfessionalsServiceProviders: 'Professionals - Service Providers'
+        ProfessionalsStudentsEducation: 'Professionals/Students - Education'
+        ProfessionalsStudentsHealth: 'Professionals/Students - Health'
+        ProfessionalsStudentsLegal: 'Professionals/Students - Legal'
+        ProfessionalsStudentsSocialServices: 'Professionals/Students - Social Services'
+        RacializedPOC: Racialized/POC
+        Rural: Rural
+        'SACE Clients': 'SACE Clients'
+        SeniorsOlderAdults: 'Seniors/Older Adults'
+        Youth12-18: 'Youth 12-18'
+        Youth18-30: 'Youth 18-30'
+        YouthAtRisk: 'Youth At Risk'
       '#wrapper_attributes':
         class:
           - jma-grid-3
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_341
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
   aid:
     '#type': number
     '#title': aid

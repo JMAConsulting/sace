@@ -20,7 +20,6 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -269,7 +268,7 @@ class DB_dbase extends DB_common
     // }}}
     // {{{ &query()
 
-    function &query($query = null)
+    function &query($query = null, $params = array())
     {
         // emulate result resources
         $this->res_row[(int)$this->result] = 0;

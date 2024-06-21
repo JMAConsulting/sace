@@ -384,7 +384,9 @@ foreach ($mapper as $Q => $cfID) {
           break;
 
         case 15:
-          $flag = (bool) strstr('Professionals', implode('', $result["Booking_Information.Audience"]));
+        case 18:
+        case 13:
+          $flag = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
           break;
 
         case 16: 
@@ -417,11 +419,6 @@ foreach ($mapper as $Q => $cfID) {
 
         case 24:
           $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');      
-          break;
-
-        case 13:
-        case 18:
-          $flag = !empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]));
           break;
 
         case 6:
