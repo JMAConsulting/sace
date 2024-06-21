@@ -28,7 +28,12 @@ trait CRMTraits_Financial_PriceSetTrait {
    * @return int
    */
   protected function getPriceSetID(string $key = 'membership'):int {
-    return $this->ids['PriceSet'][$key];
+    if (isset($this->ids['PriceSet'][$key])) {
+      return $this->ids['PriceSet'][$key];
+    }
+    if (count($this->ids['PriceSet']) === 1) {
+      return reset($this->ids['PriceSet']);
+    }
   }
 
   /**
@@ -127,7 +132,7 @@ trait CRMTraits_Financial_PriceSetTrait {
     $labels = ['Shoe eating goat', 'Long Haired Goat', 'Pesky rabbit', 'Rabbits are goats too', 'Runaway rabbit'];
     $amounts = [10, 20, 259, 88, 133];
     $membershipNumTerms = [1, 1, 2, 1, 1, 1];
-    foreach ($this->ids['membership_type'] as $membershipKey => $membershipTypeID) {
+    foreach ($this->ids['MembershipType'] as $membershipKey => $membershipTypeID) {
       $this->ids['PriceFieldValue'][$membershipKey] = $this->callAPISuccess('price_field_value', 'create', [
         'price_set_id' => $this->ids['PriceSet'],
         'price_field_id' => $this->ids['PriceField']['membership'],
@@ -147,12 +152,10 @@ trait CRMTraits_Financial_PriceSetTrait {
    * page with non-quick config membership and an optional
    * additional contribution non-membership amount.
    *
-   * @param array $membershipTypeParams
-   *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
    */
-  protected function setUpMembershipBlockPriceSet(array $membershipTypeParams = []): void {
+  protected function setUpMembershipBlockPriceSet(): void {
     $this->ids['PriceSet']['membership_block'] = PriceSet::create(FALSE)
       ->setValues([
         'is_quick_config' => TRUE,
@@ -162,13 +165,7 @@ trait CRMTraits_Financial_PriceSetTrait {
       ])
       ->execute()->first()['id'];
 
-    if (empty($this->ids['MembershipType'])) {
-      $membershipTypeParams = array_merge([
-        'minimum_fee' => 2,
-      ], $membershipTypeParams);
-      $this->ids['MembershipType'] = [$this->membershipTypeCreate($membershipTypeParams)];
-    }
-    $priceField = $this->callAPISuccess('price_field', 'create', [
+    $priceField = $this->callAPISuccess('PriceField', 'create', [
       'price_set_id' => $this->ids['PriceSet']['membership_block'],
       'name' => 'membership_amount',
       'label' => 'Membership Amount',
@@ -192,7 +189,7 @@ trait CRMTraits_Financial_PriceSetTrait {
     }
     if (!empty($this->ids['MembershipType']['org2'])) {
       $priceField = $this->callAPISuccess('price_field', 'create', [
-        'price_set_id' => reset($this->_ids['price_set']),
+        'price_set_id' => reset($this->ids['PriceSet']),
         'name' => 'membership_org2',
         'label' => 'Membership Org2',
         'html_type' => 'Checkbox',

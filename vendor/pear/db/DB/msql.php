@@ -23,7 +23,6 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -443,7 +442,7 @@ class DB_msql extends DB_common
         $repeat = false;
         do {
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
-            $result = $this->query("SELECT _seq FROM ${seqname}");
+            $result = $this->query("SELECT _seq FROM {$seqname}");
             $this->popErrorHandling();
             if ($ondemand && DB::isError($result) &&
                 $result->getCode() == DB_ERROR_NOSUCHTABLE) {
@@ -490,7 +489,7 @@ class DB_msql extends DB_common
         if (DB::isError($res)) {
             return $res;
         }
-        $res = $this->query("CREATE SEQUENCE ON ${seqname}");
+        $res = $this->query("CREATE SEQUENCE ON {$seqname}");
         return $res;
     }
 

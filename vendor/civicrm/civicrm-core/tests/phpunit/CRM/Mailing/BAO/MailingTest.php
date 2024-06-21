@@ -9,6 +9,9 @@
  +--------------------------------------------------------------------+
  */
 
+use Civi\Api4\Mailing;
+use Civi\Api4\MailingJob;
+
 /**
  * Class CRM_Mailing_BAO_MailingTest
  */
@@ -161,9 +164,9 @@ class CRM_Mailing_BAO_MailingTest extends CiviUnitTestCase {
   }
 
   /**
-   * Test verify that a disabled mailing group doesn't prvent access to the mailing generated with the group.
+   * Test verify that a disabled mailing group doesn't prevent access to the mailing generated with the group.
    */
-  public function testGetMailingDisabledGroup() {
+  public function testGetMailingDisabledGroup(): void {
     $this->prepareForACLs();
     $this->createLoggedInUser();
     // create hook to build ACL where clause which choses $this->allowedContactId as the only contact to be considered as mail recipient
@@ -406,9 +409,24 @@ class CRM_Mailing_BAO_MailingTest extends CiviUnitTestCase {
   }
 
   /**
-   * Test That No BUlk Emails User Optt Out is resepected when constructing a mailing
+   * Test that the non-crud actions do not occur when creating a mailing using apiv4.
+   *
+   * @throws \CRM_Core_Exception
    */
-  public function testGetReceipientNoBulkEmails() {
+  public function testApiV4DoesNotSchedule(): void {
+    $mailing = Mailing::create(FALSE)->setValues(['name' => 'bob', 'scheduled_date' => 'tomorrow'])->execute()->first();
+    $jobs = MailingJob::get(FALSE)->execute();
+    $this->assertEquals(0, $jobs->rowCount);
+    MailingJob::create(FALSE)->setValues([
+      'mailing_id' => $mailing['id'],
+    ])->execute();
+    $this->assertEquals(0, CRM_Core_DAO::singleValueQuery('SELECT count(*) FROM civicrm_mailing_recipients'));
+  }
+
+  /**
+   * Test that No Bulk Emails User Out is respected when constructing a mailing
+   */
+  public function testGetReceipientNoBulkEmails(): void {
     // Set up groups; 3 standard, 4 smart
     $groupIDs = [];
     $params = [
@@ -451,7 +469,7 @@ class CRM_Mailing_BAO_MailingTest extends CiviUnitTestCase {
   /**
    * Test CRM_Mailing_BAO_Mailing::getRecipients() on sms mode
    */
-  public function testgetRecipientsSMS() {
+  public function testgetRecipientsSMS(): void {
     // Tests for SMS bulk mailing recipients
     // +CRM-21320 Ensure primary mobile number is selected over non-primary
     // +core/384 Ensure that a secondary mobile number is selected if the primary can not receive SMS
@@ -494,54 +512,54 @@ class CRM_Mailing_BAO_MailingTest extends CiviUnitTestCase {
 
     $contactIDPhoneRecords = [
       $contactID1 => [
-        'primary_phone_id' => CRM_Utils_Array::value('id', $this->callAPISuccess('Phone', 'create', [
+        'primary_phone_id' => $this->callAPISuccess('Phone', 'create', [
           'contact_id' => $contactID1,
           'phone' => "01 01",
           'location_type_id' => "Home",
           'phone_type_id' => "Mobile",
           'is_primary' => 1,
-        ])),
-        'other_phone_id' => CRM_Utils_Array::value('id', $this->callAPISuccess('Phone', 'create', [
+        ])['id'],
+        'other_phone_id' => $this->callAPISuccess('Phone', 'create', [
           'contact_id' => $contactID1,
           'phone' => "01 02",
           'location_type_id' => "Work",
           'phone_type_id' => "Mobile",
           'is_primary' => 0,
-        ])),
+        ])['id'],
       ],
       // Create the non-primary with a lower ID than the primary, to test CRM-21320
       $contactID2 => [
-        'other_phone_id' => CRM_Utils_Array::value('id', $this->callAPISuccess('Phone', 'create', [
+        'other_phone_id' => $this->callAPISuccess('Phone', 'create', [
           'contact_id' => $contactID2,
           'phone' => "02 01",
           'location_type_id' => "Home",
           'phone_type_id' => "Mobile",
           'is_primary' => 0,
-        ])),
-        'primary_phone_id' => CRM_Utils_Array::value('id', $this->callAPISuccess('Phone', 'create', [
+        ])['id'],
+        'primary_phone_id' => $this->callAPISuccess('Phone', 'create', [
           'contact_id' => $contactID2,
           'phone' => "02 02",
           'location_type_id' => "Work",
           'phone_type_id' => "Mobile",
           'is_primary' => 1,
-        ])),
+        ])['id'],
       ],
       // Create primary that cant recieve SMS but a secondary that can, to test core/384
       $contactID3 => [
-        'other_phone_id' => CRM_Utils_Array::value('id', $this->callAPISuccess('Phone', 'create', [
+        'other_phone_id' => $this->callAPISuccess('Phone', 'create', [
           'contact_id' => $contactID3,
           'phone' => "03 01",
           'location_type_id' => "Home",
           'phone_type_id' => "Mobile",
           'is_primary' => 0,
-        ])),
-        'primary_phone_id' => CRM_Utils_Array::value('id', $this->callAPISuccess('Phone', 'create', [
+        ])['id'],
+        'primary_phone_id' => $this->callAPISuccess('Phone', 'create', [
           'contact_id' => $contactID3,
           'phone' => "03 02",
           'location_type_id' => "Work",
           'phone_type_id' => "Phone",
           'is_primary' => 1,
-        ])),
+        ])['id'],
       ],
     ];
 
@@ -582,7 +600,7 @@ class CRM_Mailing_BAO_MailingTest extends CiviUnitTestCase {
    *  1. In the first call we will modify the mailing filter to include only deceased recipients
    *  2. In the second call we will check if only deceased recipient is populated in MailingRecipient table
    */
-  public function testAlterMailingRecipientsHook() {
+  public function testAlterMailingRecipientsHook(): void {
     $groupID = $this->groupCreate();
     $this->tagCreate(['name' => 'Tagged']);
 

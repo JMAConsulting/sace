@@ -20,8 +20,8 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
+ * @deprecated since 1.12.0
  */
 
 /**
@@ -51,6 +51,7 @@ require_once 'DB/common.php';
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/DB
+ * @deprecated since 1.12.0
  */
 class DB_mssql extends DB_common
 {
