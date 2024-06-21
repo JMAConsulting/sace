@@ -5,7 +5,7 @@ use Drupal\webform\Entity\Webform;
 
 function clin_add_note_preprocess_page_title(&$variables, $hook) {
   $current_path = \Drupal::service('path.current')->getPath();
-  if ($current_path == '/webform/add_note_to_appointment') {
+  if ($current_path == '/webform/add_note') {
     
     \Drupal::service('civicrm')->initialize();
 
@@ -14,7 +14,22 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
     if (empty($aid) || !is_numeric($aid)) {
       $nid = \Drupal::request()->query->get('nid') ?? 0;
       if (empty($nid) || !is_numeric($nid)) {
-        return;
+        $cid = \Drupal::request()->query->get('aid') ?? 0;
+        if (empty($cid) || !is_numeric($cid)) {
+          return;
+        }
+
+        $client = \Civi\Api4\Contact::get(FALSE)
+          ->addSelect('display_name')
+          ->addWhere('id', '=', $cid)
+          ->setLimit(1)
+          ->execute()
+          ->first();
+  
+        $variables['title'] = [
+          '#markup' => 'Add Note to '.$client['display_name'],
+        ];
+        
       }
       $note = \Civi\Api4\Note::get(FALSE)
       ->addSelect('subject')
