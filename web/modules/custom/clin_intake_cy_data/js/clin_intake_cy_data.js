@@ -35,7 +35,11 @@ jQuery(document).ready(function ($) {
 
   // Populating parent and guardian field
   var guardian1 = $("#edit-civicrm-1-contact-1-cg21-custom-234").val();
-  var guardian2 = $("#edit-civicrm-1-contact-1-cg23-custom-242").val();
+  if ($("#edit-civicrm-1-contact-1-cg23-custom-1424-1").prop("checked")) {
+    var guardian2 = $("#edit-civicrm-1-contact-1-cg23-custom-242").val();
+  } else {
+    guardian2 == "";
+  }
   var concatenatedValue;
 
   if (guardian1 != "" && guardian2 != "") {
