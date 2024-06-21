@@ -1,0 +1,24 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
+
+/**
+ * Implements hook_form_alter()
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $formstate
+ * @param $form_id
+ */
+function clin_waitlist_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $formstate, $form_id) {
+  if ($form_id == "edit-webform-submission-clin-assign-add-form" || $form_id == "webform-submission-clin-assign-add-form") {
+    // Populate the contact id for the calendar when a counsellor is selected
+    $elements = WebformFormHelper::flattenElements($form);
+    if (!empty($elements)) {
+      $contact_id = $formstate->getValue('civicrm_2_contact_1_contact_existing');
+      if (!empty($contact_id)) {
+        $form['counsellor_calendar']['#arguments'] = array((string) $contact_id);
+      }
+
+    }
+  }
+}
