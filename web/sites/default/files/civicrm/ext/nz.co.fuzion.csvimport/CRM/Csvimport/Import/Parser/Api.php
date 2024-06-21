@@ -127,8 +127,13 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
             if (count($fieldsInUniqueIndex) === 1) {
               $indexFieldName = $fieldsInUniqueIndex[0];
 
+              // skip special case fields (such as the address.external_identifier)
+              if (empty($entityFieldMetadata[$indexFieldName])) {
+                continue;
+              }
+
               $indexFieldMetadata = array_merge(
-                $entityFieldMetadata[$indexFieldName], [
+                (array) $entityFieldMetadata[$indexFieldName], [
                   'referenced_field' => $referenceField,
                   'entity_name' => $entityName,
                   'entity_field_name' => $indexFieldName,
@@ -331,7 +336,7 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
           }
         }
 
-        if (count($uniqueField) === $fieldCount) {
+        if (!empty($uniqueField) && count($uniqueField) === $fieldCount) {
           $tmp['sequential'] = 1;
           $tmp['return'] = ['id'];
           $existingEntity = civicrm_api3($this->getSubmittedValue('entity'), 'get', $tmp);
