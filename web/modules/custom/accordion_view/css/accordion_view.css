@@ -45,8 +45,11 @@
   /* Upward arrow */
 }
 
-.accordion-wrapper {
-  border: 1px solid #313f57;
+.accordion-wrapper .view-content .accordion-item {
+ border: 1px solid #313f57;
   margin-bottom: 10px;
 }
-
+.accordion-wrapper .attached-files .views-field-uri{ 
+border: none !important;
+  padding: 10px 0;
+}

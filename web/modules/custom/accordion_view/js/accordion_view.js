@@ -1,4 +1,5 @@
 (function ($) {
+    
   $(document).ready(function () {
     function createAccordionItem(item, headerClass, contentClass) {
       var accordionItem = $('<div class="accordion-item"></div>');
@@ -16,13 +17,35 @@
           .slideToggle();
         $(this).toggleClass("active");
       });
+
+      // Generate download links for private:// URLs
+      accordionItem.find("span.field-content").each(function () {
+        var url = $(this).text().trim();
+        if (url.startsWith("private://webform/add_note_to_appointment")) {
+          // Remove existing classes
+          $(this).removeClass();
+
+          // Create a download link from the URL
+          var fileName = url.split("/").pop();
+          var downloadUrl = url.replace("private://", "/system/files/");
+
+          // Create the download link
+          var downloadLink = $("<a>")
+            .attr("href", downloadUrl)
+            .attr("download", fileName)
+            .text("Download " + fileName);
+
+          // Replace the text with the download link
+          $(this).empty().append(downloadLink).append("<br>");
+        }
+      });
       accordionItem.children().not(header).addClass(contentClass).hide();
     }
 
     // Add wrapper for outer border
     $(".view-content").wrap('<div class="accordion-wrapper"></div>');
 
-    $(".view-appointment-notes .view-content .views-row").each(function () {
+    $(".view-appointment-notes .view-content .views-row:not(.attached-files)").each(function () {
       createAccordionItem(
         $(this),
         "inner-accordion-header",
@@ -30,30 +53,9 @@
       );
     });
 
-    $(".view-content > .views-row").each(function () {
+    $(".view-content > .views-row:not(.attached-files)").each(function () {
       createAccordionItem($(this), "accordion-header", "accordion-content");
     });
-
-    $('span:contains("private://webform/add_note_to_appointment")').each(
-      function () {
-        var url = $(this).text().trim();
-        if (url.startsWith("private://webform/add_note_to_appointment")) {
-          // Create a download link from the URL
-          var fileName = url.split("/").pop();
-          var downloadUrl = url.replace("private://", "/system/files/");
-
-          // Create the download button
-          var downloadButton = $("<a>")
-            .attr("href", downloadUrl)
-            .attr("download", fileName)
-            .addClass("download-button")
-            .text("Download " + fileName);
-
-          // Replace the text with the download button
-          $(this).html(downloadButton);
-        }
-      }
-    );
 
     // Calculate luminance (to see if text colour needs to be black/white)
     function calculateLuminance(hex) {
