@@ -139,6 +139,7 @@ jQuery(document).ready(function ($) {
     );
     $(".form-item-civicrm-1-activity-1-cg67-custom-1414").show();
     freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
+    $("#edit-submit").hide();
 
     for (let currContact = 2; currContact < 5; currContact++) {
       var orgNameText = $(
