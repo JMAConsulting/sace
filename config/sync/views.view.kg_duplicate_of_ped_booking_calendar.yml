@@ -4573,7 +4573,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set difference = end_date_661.diff(activity_date_time) %}\r\n{% set endDay = end_date_661 | date(\"d\") %}\r\n{% set endMonth = end_date_661 | date(\"m\") %}\r\n{% set startDay = activity_date_time | date(\"d\") %}\r\n{% set startMonth = activity_date_time | date(\"m\") %}\r\n{% if ((endMonth == startMonth) and ((endDay - startDay) > 0) or ((endMonth - startMonth) > 0)) %}\r\n true\r\n{% endif %}"
+            text: "{% set difference = end_date_661.diff(activity_date_time) %}\r\n{% set endYear = end_date_661 | date(\"Y\") %}\r\n{% set endDay = end_date_661 | date(\"d\") %}\r\n{% set endMonth = end_date_661 | date(\"m\") %}\r\n{% set startYear = activity_date_time | date(\"Y\") %}\r\n{% set startDay = activity_date_time | date(\"d\") %}\r\n{% set startMonth = activity_date_time | date(\"m\") %}\r\n{% if ((endMonth == startMonth) and ((endDay - startDay) > 0) or ((endMonth - startMonth) > 0) or (startYear < endYear)) %}\r\n true\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false

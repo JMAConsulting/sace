@@ -530,13 +530,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '1'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_331
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '1'
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_330:
       '#type': civicrm_options
@@ -545,13 +543,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '1'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_330
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '1'
     civicrm_1_activity_1_cg2_custom_334:
       '#type': civicrm_options
       '#title': 'Safer Spaces Programs Content'
@@ -559,13 +555,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '0'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_334
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
     civicrm_1_activity_1_cg2_custom_1261:
       '#type': civicrm_options
       '#title': 'Privilege & Oppression Content'
@@ -573,13 +567,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '0'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_1261
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
   civicrm_1_activity_1_cg2_custom_333:
     '#type': civicrm_options
     '#title': 'Presentation Population of Focus'
@@ -587,7 +579,7 @@ elements: |-
       2SLGBTQ+: 2SLGBTQ+
       Adults: Adults
       'Child 3-12': 'Child 3-12'
-      FirstNations: 'First Nations, Métis, or Inuit/ Indigenous'
+      FirstNationsMetisInuitIndigenous: 'First Nations, Métis, or Inuit/ Indigenous'
       Guardians: Guardians/Parents
       Men/Boys: 'Men/Boys/Masc/NB (Trans-Inclusive)'
       Newcomer: Newcomer/Non-Status/Refugee/Immigrant
@@ -604,14 +596,6 @@ elements: |-
       volunteers: Volunteers
       Women: 'Women/Girls/Femme/NB (Trans-Inclusive)'
       Youth: 'Youth 12-18'
-    '#wrapper_attributes':
-      class:
-        - jma-grid-4
-    '#extra':
-      aslist: 0
-      multiple: 1
-    '#form_key': civicrm_1_activity_1_cg2_custom_333
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#states':
       invisible:
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -622,6 +606,14 @@ elements: |-
         - xor
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '201'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
+    '#extra':
+      aslist: 0
+      multiple: 1
+    '#form_key': civicrm_1_activity_1_cg2_custom_333
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#default_option': ''
     '#default_value': ''
     '#civicrm_live_options': '1'

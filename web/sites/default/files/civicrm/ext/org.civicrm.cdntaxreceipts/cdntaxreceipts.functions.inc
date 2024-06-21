@@ -21,9 +21,6 @@ require_once('FPDI/src/autoload.php');
         }
         $this->useTemplate($this->_tplIdx);
       }
-      else {
-        $this->parsers = array();
-      }
     }
 
     function Footer() {}
@@ -140,10 +137,12 @@ function cdntaxreceipts_processTaxReceipt($receipt, &$collectedPdf = NULL, $mode
 
       // send a copy (without open tracking) to the tax archive
       $sendTemplateParams['toEmail'] = $email_archive;
+      $sendTemplateParams['tplParams']['archive_extra'] = ['is_archive' => TRUE, 'contact_email' => $contact['email']];
       list($sent, $subject, $message, $html) = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
 
       // send a copy (with open tracking) to the donor
       if ($sent && $receipt['issue_method'] == 'email' && $mode != CDNTAXRECEIPTS_MODE_WORKFLOW) {
+        $sendTemplateParams['tplParams']['archive_extra']['is_archive'] = FALSE;
         $sendTemplateParams['toEmail'] = $contact['email'];
         $sendTemplateParams['tplParams']['openTracking'] = "<img src=\"" . CRM_Utils_System::baseURL() .
           "civicrm/cdntaxreceipts/open?r={$receipt['email_tracking_id']}\" width='1' height='1' alt='' border='0'>";
@@ -501,27 +500,27 @@ function _cdntaxreceipts_writeReceipt(&$pdf, $pdf_variables) {
   $pdf->Write(10, ts("Received from: ", array('domain' => 'org.civicrm.cdntaxreceipts')), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
   $pdf->SetFont('Helvetica', 'B', 10);
   $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 20);
-  $pdf->Write(10, strtoupper($displayname), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+  $pdf->Write(10, mb_strtoupper($displayname), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
 
   if (!$address_line_1b){
     $pdf->SetFont('Helvetica', '', 10);
     $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 24);
-    $pdf->Write(10, strtoupper($address_line_1), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+    $pdf->Write(10, mb_strtoupper($address_line_1), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
     $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 28);
-    $pdf->Write(10, strtoupper($address_line_2), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+    $pdf->Write(10, mb_strtoupper($address_line_2), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
     $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 32);
-    $pdf->Write(10, strtoupper($address_line_3), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+    $pdf->Write(10, mb_strtoupper($address_line_3), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
   }
   else {
     $pdf->SetFont('Helvetica', '', 10);
     $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 24);
-    $pdf->Write(10, strtoupper($address_line_1), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+    $pdf->Write(10, mb_strtoupper($address_line_1), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
     $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 28);
-    $pdf->Write(10, strtoupper($address_line_1b), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+    $pdf->Write(10, mb_strtoupper($address_line_1b), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
     $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 32);
-    $pdf->Write(10, strtoupper($address_line_2), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+    $pdf->Write(10, mb_strtoupper($address_line_2), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
     $pdf->SetXY($mymargin_left+10, $mymargin_top + $y_detailscolumnstart + 36);
-    $pdf->Write(10, strtoupper($address_line_3), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
+    $pdf->Write(10, mb_strtoupper($address_line_3), '', 0, 'L', TRUE, 0, FALSE, FALSE, 0);
   }
 
   // Bottom left section
@@ -572,17 +571,19 @@ function _cdntaxreceipts_writeReceipt(&$pdf, $pdf_variables) {
 function cdntaxreceipts_configure_inkind_fields() {
 
   // check if the In-kind contribution type exists.  if not, create it.
-  $inkind_financial_type = \Civi\Api4\FinancialType::get(FALSE)->addSelect('id')->addWhere('name', '=', 'In-kind')->execute()->first();
-  if (empty($inkind_financial_type)) {
+  // Using `name` isn't reliable for financial types because people can change
+  // it, so we have our own setting.
+  $contrib_type_id = \Civi::settings()->get('cdntaxreceipts_inkind');
+  if (!$contrib_type_id) {
     $inkind_financial_type = \Civi\Api4\FinancialType::create(FALSE)
       ->addValue('name', 'In-kind')
       ->addValue('is_deductible', TRUE)
       ->addValue('is_reserved', FALSE)
       ->addValue('is_active', TRUE)
       ->execute()->first();
+    $contrib_type_id = $inkind_financial_type['id'];
+    \Civi::settings()->set('cdntaxreceipts_inkind', $contrib_type_id);
   }
-
-  $contrib_type_id = $inkind_financial_type['id'];
 
   // check if the custom group exists.  if not, create it.
   $params = array(
@@ -704,7 +705,7 @@ function cdntaxreceipts_issueTaxReceipt($contribution, &$collectedPdf = NULL, $m
 
   $inkind_values = array();
   // check if this is an 'In-kind" contribution.
-  if ( $contributiontype->name == 'In-kind' ) {
+  if ($contributiontype->id == \Civi::settings()->get('cdntaxreceipts_inkind')) {
     // in this case get the custom field values:
     require_once 'CRM/Core/BAO/CustomField.php';
     $groupTitle = 'In-kind donation fields';
@@ -790,7 +791,7 @@ function cdntaxreceipts_eligibleForReceipt( $contributionId ) {
   }
 
   // 1. check that contribution amount is deductible
-  $deductibleAmount = cdntaxreceipts_eligibleAmount($contributionId);;
+  $deductibleAmount = cdntaxreceipts_eligibleAmount($contributionId);
 
   // 2. we used to check here the financial type -- to see if it is deductible.
   // Since the introduction of split transactions (4.5 is the cleanest starting point, though they existed prior),
@@ -1458,7 +1459,8 @@ function _cdntaxreceipts_check_lineitems($contribution_id) {
     $line_item_totals += $line_item->line_total;
   }
 
-  if ($contribution['total_amount'] != $line_item_totals) {
+  // @todo Note that in writeReceipt it uses number_format, but leaving writeReceipt as-is for now. It seems like both do rounding?
+  if ($contribution['total_amount'] != round($line_item_totals, 2)) {
     CRM_Core_Error::statusBounce(
       ts('The total for contribution id <a %1>%2</a> does not match the line items. Please correct the contribution first.', [
         'domain' => 'org.civicrm.cdntaxreceipts',

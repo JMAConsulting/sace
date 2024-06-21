@@ -18,7 +18,6 @@
  * @author     Stig Bakken <stig@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -252,7 +251,7 @@ class DB_storage extends PEAR
                     if ($i > 0) {
                         $info .= ",";
                     }
-                    $info .= $this->$keyname[$i];
+                    $info .= $this->{$keyname[$i]};
                 }
                 $info .= ")";
             } else {

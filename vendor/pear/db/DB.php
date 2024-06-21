@@ -20,7 +20,6 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -589,7 +588,7 @@ class DB
      *
      * @return string  the DB API version number
      */
-    function apiVersion()
+    public static function apiVersion()
     {
         return '@package_version@';
     }
@@ -779,7 +778,11 @@ class DB
         if (is_array($dsn)) {
             $dsn = array_merge($parsed, $dsn);
             if (!$dsn['dbsyntax']) {
-                $dsn['dbsyntax'] = $dsn['phptype'];
+                if($dsn['phptype'] == "sqlite3") {
+                    $dsn['dbsyntax'] = "sqlite";
+                } else {
+                    $dsn['dbsyntax'] = $dsn['phptype'];
+                }
             }
             return $dsn;
         }

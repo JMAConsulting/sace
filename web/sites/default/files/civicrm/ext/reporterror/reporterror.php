@@ -5,8 +5,6 @@ require_once 'reporterror.civix.php';
 define('REPORTERROR_CIVICRM_SUBJECT_LEN', 100);
 define('REPORTERROR_EMAIL_SEPARATOR', ',');
 
-//require_once(__DIR__ . '/vendor/autoload.php');
-
 use CRM_ReportError_ExtensionUtil as E;
 
 /**
@@ -25,15 +23,6 @@ function reporterror_civicrm_config(&$config) {
  */
 function reporterror_civicrm_install() {
   _reporterror_civix_civicrm_install();
-}
-
-/**
- * Implements hook_civicrm_postInstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postInstall
- */
-function reporterror_civicrm_postInstall() {
-  _reporterror_civix_civicrm_postInstall();
 }
 
 /**
@@ -66,7 +55,6 @@ function reporterror_civicrm_uninstall() {
     ]);
   }
 
-  _reporterror_civix_civicrm_uninstall();
 }
 
 /**
@@ -74,26 +62,6 @@ function reporterror_civicrm_uninstall() {
  */
 function reporterror_civicrm_enable() {
   _reporterror_civix_civicrm_enable();
-}
-
-/**
- * Implementation of hook_civicrm_disable
- */
-function reporterror_civicrm_disable() {
-  return _reporterror_civix_civicrm_disable();
-}
-
-/**
- * Implementation of hook_civicrm_upgrade
- *
- * @param $op string, the type of operation being performed; 'check' or 'enqueue'
- * @param $queue CRM_Queue_Queue, (for 'enqueue') the modifiable list of pending up upgrade tasks
- *
- * @return mixed  based on op. for 'check', returns array(boolean) (TRUE if upgrades are pending)
- *                for 'enqueue', returns void
- */
-function reporterror_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _reporterror_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -277,12 +245,7 @@ function _reporterror_civicrm_parse_array($array) {
 
   foreach ($array as $key => $value) {
     if (is_array($value) || is_object($value)) {
-      //$value = print_r($value, TRUE);
-      $value = (new \Symfony\Component\VarDumper\Dumper\CliDumper('php://output'))
-          ->dump(
-            (new \Symfony\Component\VarDumper\Cloner\VarCloner())->cloneVar($value),
-            TRUE);
-
+      $value = print_r($value, TRUE);
     }
 
     $key = str_pad($key . ':', 20, ' ');
@@ -363,15 +326,18 @@ function _reporterror_civicrm_get_session_info($show_session_data = FALSE) {
     $output .= "HTTP_X_FORWARDED_FOR: " . $_SERVER['HTTP_X_FORWARDED_FOR'] . "\n";
   }
   $output .= "HTTP_USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n";
+  $output .= "HTTP_REFERER: " . $_SERVER['HTTP_REFERER'] . "\n";
+  $output .= "HTTP_HOST: " . $_SERVER['HTTP_HOST'] . "\n";
+  $output .= "REQUEST_URI: " . $_SERVER['REQUEST_URI'] . "\n";
+  $output .= "QUERY_STRING: " . $_SERVER['QUERY_STRING'] . "\n";
+  $output .= "REQUEST_METHOD: " . $_SERVER['REQUEST_METHOD'] . "\n";
 
   if ($show_session_data) {
     $output .= "\n\n***SESSION***\n";
     $output .= _reporterror_civicrm_parse_array($_SESSION);
   }
 
-  // $_SERVER
-  $output .= "\n\n***SERVER***\n";
-  return $output . _reporterror_civicrm_parse_array($_SERVER);
+  return $output;
 }
 
 /**
