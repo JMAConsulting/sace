@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__ . '../../BaseTestClass.php';
+namespace Civi\Extendedreport\Contribute;
+
+use Civi\Extendedreport\BaseTestClass;
 
 /**
  * Test contribution DetailExtended class.
@@ -189,8 +191,6 @@ class ContributionContributionsTest extends BaseTestClass {
 
   /**
    * Test that is doesn't matter if the having filter is selected.
-   *
-   * @throws \CRM_Core_Exception
    */
   public function testGetRowsFilterCustomData(): void {
     $this->enableAllComponents();
@@ -203,8 +203,6 @@ class ContributionContributionsTest extends BaseTestClass {
 
   /**
    * Test that is doesn't matter if the having filter is selected.
-   *
-   * @throws \CRM_Core_Exception
    */
   public function testGetRowsWithNotes(): void {
     $ids = $this->createTwoContactsWithContributions();
@@ -226,7 +224,7 @@ class ContributionContributionsTest extends BaseTestClass {
         'contact_note_note' => '1',
       ]
     ]);
-    $this->assertCount(2, $rows);
+    $this->assertCount(2, $rows, print_r($this->sql, TRUE) . "\n" . print_r($rows, TRUE));
     $this->assertEquals('first note, second note', $rows[0]['contribution_civicrm_note_contribution_note_note']);
     $this->assertEquals('first contact note, second contact note', $rows[0]['contact_civicrm_note_contact_note_note']);
 

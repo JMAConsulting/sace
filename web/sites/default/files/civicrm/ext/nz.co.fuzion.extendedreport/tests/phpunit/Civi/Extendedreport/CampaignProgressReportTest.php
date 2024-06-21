@@ -1,10 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../BaseTestClass.php';
-
-use Civi\Test\HeadlessInterface;
-use Civi\Test\HookInterface;
-use Civi\Test\TransactionalInterface;
+namespace Civi\Extendedreport;
 
 /**
  * Test contribution DetailExtended class.
@@ -20,33 +16,27 @@ use Civi\Test\TransactionalInterface;
  *
  * @group headless
  */
-class LineItemParticipantTest extends BaseTestClass implements HeadlessInterface, HookInterface, TransactionalInterface {
+class CampaignProgressReportTest extends BaseTestClass {
 
   protected $contacts = [];
 
   public function setUp(): void {
     parent::setUp();
-    $components = [];
-    $dao = new \CRM_Core_DAO_Component();
-    while ($dao->fetch()) {
-      $components[$dao->id] = $dao->name;
-    }
-    \civicrm_api3('Setting', 'create', ['enable_components' => $components]);
+    $this->enableAllComponents();
     $contact = $this->callAPISuccess('Contact', 'create', ['first_name' => 'Wonder', 'last_name' => 'Woman', 'contact_type' => 'Individual']);
     $this->contacts[] = $contact['id'];
   }
 
   /**
-   * Test the report runs.
+   * Test the Progress report.
    *
    * @dataProvider getReportParameters
    *
    * @param array $params
    *   Parameters to pass to the report
-   *
-   * @throws \CRM_Core_Exception
    */
-  public function testReport($params) {
+  public function testProgressReport(array $params): void {
+    $this->callAPISuccess('Order', 'create', ['contact_id' => $this->contacts[0], 'total_amount' => 5, 'financial_type_id' => 2, 'contribution_status_id' => 'Pending', 'api.Payment.create' => ['total_amount' => 5]]);
     // Just checking no error at the moment.
     $this->getRows($params);
   }
@@ -58,15 +48,30 @@ class LineItemParticipantTest extends BaseTestClass implements HeadlessInterface
     return [
       'basic' => [
         [
-          'report_id' => 'price/lineitemparticipant',
+          'report_id' => 'campaign/progress',
           'fields' => [
-            'event_event_id' => '1',
-            'civicrm_contact_display_name' => '1',
-            'contribution_payment_instrument_id' => 1,
-            'email_email' => 1,
+            'campaign_id' => '1',
+            'total_amount' => '1',
+            'paid_amount' => '1',
+            'balance_amount' => '1',
+          ],
+        ],
+      ],
+      'group_by_variant' => [
+        [
+          'report_id' => 'campaign/progress',
+          'fields' => [
+            'campaign_id' => '1',
+            'total_amount' => '1',
+            'paid_amount' => '1',
+            'balance_amount' => '1',
+          ],
+          'group_bys' => [
+            'campaign_id' => '1',
           ],
         ],
       ],
     ];
   }
+
 }
