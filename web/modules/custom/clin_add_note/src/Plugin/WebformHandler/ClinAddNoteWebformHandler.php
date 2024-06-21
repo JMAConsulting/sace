@@ -75,6 +75,16 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
         ->execute();
       }
 
+      elseif($webform_submission_data['cid'] != '') {
+        $note = \Civi\Api4\Note::create(TRUE)
+        ->addValue('entity_table', 'civicrm_note')
+        ->addValue('contact_id', 'user_contact_id')
+        ->addValue('note', $webform_submission_data['details'])
+        ->addValue('entity_id', $webform_submission_data['cid'])
+        ->addValue('subject', $webform_submission_data['subject'])
+        ->execute();
+      }
+
       if(isset($webform_submission_data['upload_attachment'])) {
         foreach($webform_submission_data['upload_attachment'] as $attachment_id) {
           $file = \Drupal\file\Entity\File::load($attachment_id);
