@@ -34,7 +34,7 @@ class XHProfRequestMatcher implements RequestMatcherInterface {
   /**
    * {@inheritdoc}
    */
-  public function matches(Request $request): bool {
+  public function matches(Request $request) {
     $path = $request->getPathInfo();
 
     $patterns = $this->configFactory->get('xhprof.config')->get('exclude');
