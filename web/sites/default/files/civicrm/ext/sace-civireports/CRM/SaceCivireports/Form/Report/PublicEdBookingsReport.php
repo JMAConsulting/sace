@@ -211,6 +211,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
     }
 
     $this->_mapper = $questionMapper;
+//CRM_Core_Error::debug('questionMapper', $questionMapper);
     foreach ($questionMapper as $Q => $mapper) {
       if ($mapper['type'] == 'Radio') {
         $dbAlias = [];
@@ -459,6 +460,85 @@ WHERE cg.is_active = 1 AND
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_1sa_48') {
        $CH2['PI']['colspan'] = $count - 1;
        $count = 0;
+       $CH2['Q1'] = ['title' => $this->_mapper[1]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_2_59') {
+        $CH2['Q2'] = ['title' => $this->_mapper[2]['label'], 'colspan' => 3];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_3sa_60') {
+        $CH2['Q3'] = ['title' => $this->_mapper[3]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_5sa_68') {
+       $CH2['Q4'] = ['title' => $this->_mapper[4]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_5_1276') {
+       $CH2['Q5'] = ['title' => $this->_mapper[5]['label'], 'colspan' => 3];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_7sa_75') {
+       $CH2['Q6'] = ['title' => $this->_mapper[6]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_8sa_81') {
+       $CH2['Q7'] = ['title' => $this->_mapper[7]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_8sa_716') {
+       $CH2['Q8'] = ['title' => $this->_mapper[8]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_9_1277') {
+       $CH2['Q9'] = ['title' => $this->_mapper[9]['label'], 'colspan' => 3];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_10sa_725') {
+       $CH2['Q10'] = ['title' => $this->_mapper[10]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_11sa_732') {
+       $CH2['Q11'] = ['title' => $this->_mapper[11]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_12sa_739') {
+       $CH2['Q12'] = ['title' => $this->_mapper[12]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_13sa_746') {
+       $CH2['Q13'] = ['title' => $this->_mapper[13]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_14sa_753') {
+       $CH2['Q14'] = ['title' => $this->_mapper[14]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_15sa_760') {
+       $CH2['Q15'] = ['title' => $this->_mapper[15]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_16sa_767') {
+       $CH2['Q16'] = ['title' => $this->_mapper[16]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_17sa_774') {
+       $CH2['Q17'] = ['title' => $this->_mapper[17]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_18_1278') {
+       $CH2['Q18'] = ['title' => $this->_mapper[18]['label'], 'colspan' => 3];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_18sa_781') {
+       $CH2['Q19'] = ['title' => $this->_mapper[19]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_20sa_789') {
+       $CH2['Q20'] = ['title' => $this->_mapper[20]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_21sa_796') {
+       $CH2['Q211'] = ['title' => $this->_mapper[211]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_22_1279') {
+       $CH2['Q22'] = ['title' => $this->_mapper[22]['label'], 'colspan' => 3];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_23_1280') {
+       $CH2['Q23'] = ['title' => $this->_mapper[23]['label'], 'colspan' => 3];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_25sa_1268') {
+       $CH2['Q212'] = ['title' => $this->_mapper[212]['label'], 'colspan' => 6];
+      }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_24sa_805') {
+       $CH2['Q24'] = ['title' => $this->_mapper[24]['label'], 'colspan' => 6];
+      }
+    }
+
+    $this->assign('_columnHeaders1', $CH2);
+    foreach ($rows as $rowNum => &$row) {
+      if (!empty($row['civicrm_contact_sc_presenter_1'])) {
         $contacts = explode(',', $row['civicrm_contact_sc_presenter_1']);
         $count = 1;
         foreach ($contacts as $contact) {
