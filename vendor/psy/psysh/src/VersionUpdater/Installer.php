@@ -25,11 +25,7 @@ class Installer
      */
     protected $tempDirectory;
 
-<<<<<<< HEAD
     public function __construct(string $tempDirectory = null)
-=======
-    public function __construct(?string $tempDirectory = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->tempDirectory = $tempDirectory ?: \sys_get_temp_dir();
         $this->installLocation = \Phar::running(false);

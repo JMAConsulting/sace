@@ -2,15 +2,6 @@
 
 All Notable changes to `League\Container` will be documented in this file
 
-<<<<<<< HEAD
-=======
-## 4.2.1
-
-### Fixed
-- Remove an unnecessary conditional in ServiceProviderAggregate. (@SubhanSh)
-- Fixed an infinite loop in resolving definitions. (@arai-ta)
-
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 ## 4.2.0
 
 ### Added

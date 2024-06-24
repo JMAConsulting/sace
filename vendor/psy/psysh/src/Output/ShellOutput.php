@@ -38,11 +38,7 @@ class ShellOutput extends ConsoleOutput
      * @param OutputFormatterInterface|null $formatter (default: null)
      * @param string|OutputPager|null       $pager     (default: null)
      */
-<<<<<<< HEAD
     public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null, $pager = null, $theme = null)
-=======
-    public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = null, ?OutputFormatterInterface $formatter = null, $pager = null, $theme = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         parent::__construct($verbosity, $decorated, $formatter);
 
@@ -123,7 +119,7 @@ class ShellOutput extends ConsoleOutput
      * @param bool         $newline  Whether to add a newline or not
      * @param int          $type     The type of output
      */
-    public function write($messages, $newline = false, $type = 0): void
+    public function write($messages, $newline = false, $type = 0)
     {
         if ($this->getVerbosity() === self::VERBOSITY_QUIET) {
             return;
@@ -158,7 +154,7 @@ class ShellOutput extends ConsoleOutput
      * @param string $message A message to write to the output
      * @param bool   $newline Whether to add a newline or not
      */
-    public function doWrite($message, $newline): void
+    public function doWrite($message, $newline)
     {
         if ($this->paging > 0) {
             $this->pager->doWrite($message, $newline);

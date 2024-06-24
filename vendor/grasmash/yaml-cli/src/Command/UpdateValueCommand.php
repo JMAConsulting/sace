@@ -8,10 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-<<<<<<< HEAD
 use Symfony\Component\Yaml\Yaml;
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 /**
  * Class CreateProjectCommand
@@ -20,16 +17,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class UpdateValueCommand extends CommandBase
 {
-<<<<<<< HEAD
   /**
    * {inheritdoc}
    */
-=======
-
-    /**
-     * {inheritdoc}
-     */
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     protected function configure()
     {
         $this
@@ -41,19 +31,11 @@ class UpdateValueCommand extends CommandBase
                 InputArgument::REQUIRED,
                 "The filename of the YAML file"
             )
-<<<<<<< HEAD
              ->addArgument(
                  'key',
                  InputArgument::REQUIRED,
                  "The key for the value to set, in dot notation"
              )
-=======
-            ->addArgument(
-                'key',
-                InputArgument::REQUIRED,
-                "The key for the value to set, in dot notation"
-            )
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
             ->addArgument(
                 'value',
                 InputArgument::REQUIRED,
@@ -62,7 +44,6 @@ class UpdateValueCommand extends CommandBase
             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Set the variable type for the value. Accepted types are int, integer, bool, boolean, str, and string.');
     }
 
-<<<<<<< HEAD
   /**
    * @param \Symfony\Component\Console\Input\InputInterface $input
    * @param \Symfony\Component\Console\Output\OutputInterface $output
@@ -70,15 +51,6 @@ class UpdateValueCommand extends CommandBase
    * @return int 0 if everything went fine, or an exit code
    */
     protected function execute(InputInterface $input, OutputInterface $output)
-=======
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int 0 if everything went fine, or an exit code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $filename = $input->getArgument('filename');
         $key = $input->getArgument('key');

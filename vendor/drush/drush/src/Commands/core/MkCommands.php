@@ -46,11 +46,7 @@ final class MkCommands extends DrushCommands implements SiteAliasManagerAwareInt
     }
 
     /**
-<<<<<<< HEAD
      * Build a Markdown document for each Drush command/generator that is available on a site.
-=======
-     * Build a Markdown document for each available Drush command/generator.
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      *
      * This command is an early step when building the www.drush.org static site. Adapt it to build a similar site listing the commands that are available on your site. Also see Drush's [Github Actions workflow](https://github.com/drush-ops/drush/blob/12.x/.github/workflows/main.yml).
      */

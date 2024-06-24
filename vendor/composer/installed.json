@@ -3492,7 +3492,7 @@
             "extra": {
                 "drupal": {
                     "version": "1.0.2",
-                    "datestamp": "1687261951",
+                    "datestamp": "1695740655",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5589,7 +5589,7 @@
                     }
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0-or-later"
@@ -6688,6 +6688,10 @@
                 {
                     "name": "Anybody",
                     "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
+                    "name": "Carlos Romero",
+                    "homepage": "https://www.drupal.org/user/3722452"
                 },
                 {
                     "name": "mkalkbrenner",

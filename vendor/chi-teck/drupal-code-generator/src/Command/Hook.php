@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 <?php declare(strict_types = 1);
-=======
-<?php
-
-declare(strict_types=1);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace DrupalCodeGenerator\Command;
 
@@ -50,11 +44,7 @@ final class Hook extends BaseGenerator {
 
     $assets->addFile('{machine_name}.{file_type}')
       ->inlineTemplate($hook_templates[$vars['hook_name']])
-<<<<<<< HEAD
       ->appendIfExists(7);
-=======
-      ->appendIfExists(9);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
   }
 
 }

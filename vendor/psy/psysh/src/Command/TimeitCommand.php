@@ -28,10 +28,7 @@ class TimeitCommand extends Command
     const AVG_RESULT_MSG = '<info>Command took %.6f seconds on average (%.6f median; %.6f total) to complete.</info>';
 
     // All times stored as nanoseconds!
-<<<<<<< HEAD
     private static $useHrtime;
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     private static $start = null;
     private static $times = [];
 
@@ -44,15 +41,11 @@ class TimeitCommand extends Command
      */
     public function __construct($name = null)
     {
-<<<<<<< HEAD
         // @todo Remove microtime use after we drop support for PHP < 7.3
         self::$useHrtime = \function_exists('hrtime');
 
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         $this->parser = new CodeArgumentParser();
 
-        // @todo Pass visitor directly to once we drop support for PHP-Parser 4.x
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor(new TimeitVisitor());
 
@@ -89,7 +82,7 @@ HELP
      *
      * @return int 0 if everything went fine, or an exit code
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->getArgument('code');
         $num = (int) ($input->getOption('num') ?: 1);
@@ -131,11 +124,7 @@ HELP
      */
     public static function markStart()
     {
-<<<<<<< HEAD
         self::$start = self::$useHrtime ? \hrtime(true) : (\microtime(true) * 1e+6);
-=======
-        self::$start = \hrtime(true);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     }
 
     /**
@@ -154,11 +143,7 @@ HELP
      */
     public static function markEnd($ret = null)
     {
-<<<<<<< HEAD
         self::$times[] = (self::$useHrtime ? \hrtime(true) : (\microtime(true) * 1e+6)) - self::$start;
-=======
-        self::$times[] = \hrtime(true) - self::$start;
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         self::$start = null;
 
         return $ret;

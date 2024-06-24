@@ -28,11 +28,7 @@ class ErrorException extends \ErrorException implements Exception
      * @param int|null        $lineno   (default: null)
      * @param \Throwable|null $previous (default: null)
      */
-<<<<<<< HEAD
     public function __construct($message = '', $code = 0, $severity = 1, $filename = null, $lineno = null, \Throwable $previous = null)
-=======
-    public function __construct($message = '', $code = 0, $severity = 1, $filename = null, $lineno = null, ?\Throwable $previous = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->rawMessage = $message;
 
@@ -111,6 +107,6 @@ class ErrorException extends \ErrorException implements Exception
      */
     public static function fromError(\Error $e): self
     {
-        @\trigger_error('PsySH no longer wraps Errors', \E_USER_DEPRECATED);
+        return new self($e->getMessage(), $e->getCode(), 1, $e->getFile(), $e->getLine(), $e);
     }
 }

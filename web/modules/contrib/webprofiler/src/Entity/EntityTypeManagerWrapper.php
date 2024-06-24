@@ -89,7 +89,7 @@ class EntityTypeManagerWrapper extends EntityTypeManager implements EntityTypeMa
     $entity_kind = ($handler instanceof ConfigEntityStorageInterface) ? 'config' : 'content';
 
     if (!isset($this->loaded[$entity_kind][$entity_type_id])) {
-      $handler = $this->getStorageDecorator($entity_type_id, $handler);
+      //$handler = $this->getStorageDecorator($entity_type_id, $handler);
       $this->loaded[$entity_kind][$entity_type_id] = $handler;
     }
     else {

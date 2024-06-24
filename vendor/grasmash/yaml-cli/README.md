@@ -1,18 +1,10 @@
 [![CI](https://github.com/grasmash/yaml-cli/actions/workflows/php.yml/badge.svg)](https://github.com/grasmash/yaml-cli/actions/workflows/php.yml) [![Packagist](https://img.shields.io/packagist/v/grasmash/yaml-cli.svg)](https://packagist.org/packages/grasmash/yaml-cli) [![Total Downloads](https://poser.pugx.org/grasmash/yaml-cli/downloads)](https://packagist.org/packages/grasmash/yaml-cli) [![Coverage Status](https://coveralls.io/repos/github/grasmash/yaml-cli/badge.svg?branch=master)](https://coveralls.io/github/grasmash/yaml-cli?branch=master)
 
-<<<<<<< HEAD
 Yet another  command line tool for reading and manipulating yaml files, built on the [Symfony console component](http://symfony.com/doc/current/components/console.html).
 
 ### Commands:
 
 
-=======
-Yet another command line tool for reading and manipulating yaml files, built on
-the [Symfony console component](http://symfony.com/doc/current/components/console.html).
-
-### Commands:
-
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 | Command      | Description                                         |
 |--------------| ----------------------------------------------------|
 | get:value    | Get a value for a specific key in a YAML file.      |
@@ -54,14 +46,6 @@ the [Symfony console component](http://symfony.com/doc/current/components/consol
     ./vendor/bin/yaml-cli update:value somefile.yml some-key 1.0 --type=double
     ./vendor/bin/yaml-cli update:value somefile.yml some-key 1.0 --type=real
 
-<<<<<<< HEAD
-=======
-    # Forcibly cast to string for values that would otherwise be boolean or null.
-    ./vendor/bin/yaml-cli update:value somefile.yml some-key true --type=string
-    ./vendor/bin/yaml-cli update:value somefile.yml some-key false --type=string
-    ./vendor/bin/yaml-cli update:value somefile.yml some-key null --type=string
-
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 ### Similar tools:
 
 - Javascript - https://github.com/pandastrike/yaml-cli

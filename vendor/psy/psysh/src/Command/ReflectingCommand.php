@@ -19,12 +19,8 @@ use Psy\ContextAware;
 use Psy\Exception\ErrorException;
 use Psy\Exception\RuntimeException;
 use Psy\Exception\UnexpectedTargetException;
-<<<<<<< HEAD
 use Psy\Reflection\ReflectionClassConstant;
 use Psy\Reflection\ReflectionConstant_;
-=======
-use Psy\Reflection\ReflectionConstant;
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Psy\Sudo\SudoVisitor;
 use Psy\Util\Mirror;
 
@@ -56,10 +52,6 @@ abstract class ReflectingCommand extends Command implements ContextAware
     {
         $this->parser = new CodeArgumentParser();
 
-<<<<<<< HEAD
-=======
-        // @todo Pass visitor directly to once we drop support for PHP-Parser 4.x
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor(new SudoVisitor());
 
@@ -236,7 +228,6 @@ abstract class ReflectingCommand extends Command implements ContextAware
     }
 
     /**
-<<<<<<< HEAD
      * @deprecated Use `resolveCode` instead
      *
      * @param string $name
@@ -251,8 +242,6 @@ abstract class ReflectingCommand extends Command implements ContextAware
     }
 
     /**
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * Get a variable from the current shell scope.
      *
      * @param string $name
@@ -325,6 +314,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
             case \ReflectionProperty::class:
             case \ReflectionClassConstant::class:
+            case ReflectionClassConstant::class:
                 $classReflector = $reflector->getDeclaringClass();
                 $vars['__class'] = $classReflector->name;
                 if ($classReflector->inNamespace()) {
@@ -337,7 +327,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
                 }
                 break;
 
-            case ReflectionConstant::class:
+            case ReflectionConstant_::class:
                 if ($reflector->inNamespace()) {
                     $vars['__namespace'] = $reflector->getNamespaceName();
                 }

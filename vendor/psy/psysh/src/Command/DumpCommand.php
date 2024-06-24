@@ -69,7 +69,7 @@ HELP
      *
      * @return int 0 if everything went fine, or an exit code
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $depth = $input->getOption('depth');
         $target = $this->resolveCode($input->getArgument('target'));
@@ -81,7 +81,6 @@ HELP
 
         return 0;
     }
-<<<<<<< HEAD
 
     /**
      * @deprecated Use `resolveCode` instead
@@ -96,6 +95,4 @@ HELP
 
         return $this->resolveCode($name);
     }
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 }

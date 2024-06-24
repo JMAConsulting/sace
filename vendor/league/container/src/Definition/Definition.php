@@ -12,10 +12,6 @@ use League\Container\Argument\{
 };
 use League\Container\ContainerAwareTrait;
 use League\Container\Exception\ContainerException;
-<<<<<<< HEAD
-=======
-use League\Container\Exception\NotFoundException;
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 
@@ -60,14 +56,6 @@ class Definition implements ArgumentResolverInterface, DefinitionInterface
     protected $resolved;
 
     /**
-<<<<<<< HEAD
-=======
-     * @var array
-     */
-    protected $recursiveCheck = [];
-
-    /**
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * @param string     $id
      * @param mixed|null $concrete
      */
@@ -197,22 +185,9 @@ class Definition implements ArgumentResolverInterface, DefinitionInterface
             $container = null;
         }
 
-<<<<<<< HEAD
         // if we still have a string, try to pull it from the container
         // this allows for `alias -> alias -> ... -> concrete
         if (is_string($concrete) && $container instanceof ContainerInterface && $container->has($concrete)) {
-=======
-        // stop recursive resolving
-        if (is_string($concrete) && in_array($concrete, $this->recursiveCheck)) {
-            $this->resolved = $concrete;
-            return $concrete;
-        }
-
-        // if we still have a string, try to pull it from the container
-        // this allows for `alias -> alias -> ... -> concrete
-        if (is_string($concrete) && $container instanceof ContainerInterface && $container->has($concrete)) {
-            $this->recursiveCheck[] = $concrete;
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
             $concrete = $container->get($concrete);
         }
 

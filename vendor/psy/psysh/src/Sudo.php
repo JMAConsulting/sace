@@ -95,17 +95,7 @@ class Sudo
     public static function assignStaticProperty($class, string $property, $value)
     {
         $prop = self::getProperty(new \ReflectionClass($class), $property);
-<<<<<<< HEAD
         $prop->setValue($value);
-=======
-        $refl = $prop->getDeclaringClass();
-
-        if (\method_exists($refl, 'setStaticPropertyValue')) {
-            $refl->setStaticPropertyValue($property, $value);
-        } else {
-            $prop->setValue($value);
-        }
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
         return $value;
     }
@@ -139,11 +129,6 @@ class Sudo
     public static function fetchClassConst($class, string $const)
     {
         $refl = new \ReflectionClass($class);
-
-        // Special case the ::class magic constant, because `getConstant` does the wrong thing here.
-        if ($const === 'class') {
-            return $refl->getName();
-        }
 
         do {
             if ($refl->hasConstant($const)) {

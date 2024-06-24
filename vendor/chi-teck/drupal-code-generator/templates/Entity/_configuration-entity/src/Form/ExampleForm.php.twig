@@ -1,16 +1,10 @@
 <?php declare(strict_types = 1);
 
-declare(strict_types=1);
-
 namespace Drupal\{{ machine_name }}\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
-<<<<<<< HEAD
 use Drupal\{{ machine_name }}\Entity\Example;
-=======
-use Drupal\{{ machine_name }}\Entity\{{ class_prefix }};
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 /**
  * {{ entity_type_label }} form.
@@ -36,11 +30,7 @@ final class {{ class_prefix }}Form extends EntityForm {
       '#type' => 'machine_name',
       '#default_value' => $this->entity->id(),
       '#machine_name' => [
-<<<<<<< HEAD
         'exists' => [Example::class, 'load'],
-=======
-        'exists' => [{{ class_prefix }}::class, 'load'],
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
       ],
       '#disabled' => !$this->entity->isNew(),
     ];

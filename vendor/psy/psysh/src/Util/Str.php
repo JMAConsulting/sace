@@ -60,10 +60,6 @@ EOS;
     public static function unvis(string $input): string
     {
         $output = \preg_replace_callback(self::UNVIS_RX, [self::class, 'unvisReplace'], $input);
-<<<<<<< HEAD
-=======
-
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         // other escapes & octal are handled by stripcslashes
         return \stripcslashes($output);
     }

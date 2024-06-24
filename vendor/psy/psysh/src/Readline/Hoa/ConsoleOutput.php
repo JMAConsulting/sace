@@ -57,11 +57,7 @@ class ConsoleOutput implements StreamOut
     /**
      * Wraps an `Hoa\Stream\IStream\Out` stream.
      */
-<<<<<<< HEAD
     public function __construct(StreamOut $output = null)
-=======
-    public function __construct(?StreamOut $output = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->_output = $output;
 

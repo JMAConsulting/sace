@@ -111,12 +111,7 @@ final class GenerateCommands extends DrushCommands
     public function generatorNameComplete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
         if ($input->mustSuggestArgumentValuesFor('generator')) {
-<<<<<<< HEAD
             $application = (new ApplicationFactory($this->container, $this->logger()))->create();
-=======
-            $application = (new ApplicationFactory($this->container, $this->drush_container, $this->logger()))->create(
-            );
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
             foreach ($application->all() as $name => $command) {
                 if ($command->isEnabled() && !$command->isHidden()) {
                     $suggestions->suggestValue($name);

@@ -12,7 +12,8 @@
 namespace Psy\Util;
 
 use Psy\Exception\RuntimeException;
-use Psy\Reflection\ReflectionConstant;
+use Psy\Reflection\ReflectionClassConstant;
+use Psy\Reflection\ReflectionConstant_;
 use Psy\Reflection\ReflectionNamespace;
 
 /**
@@ -42,17 +43,13 @@ class Mirror
      *
      * @return \Reflector
      */
-<<<<<<< HEAD
     public static function get($value, string $member = null, int $filter = 15): \Reflector
-=======
-    public static function get($value, ?string $member = null, int $filter = 15): \Reflector
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if ($member === null && \is_string($value)) {
             if (\function_exists($value)) {
                 return new \ReflectionFunction($value);
-            } elseif (\defined($value) || ReflectionConstant::isMagicConstant($value)) {
-                return new ReflectionConstant($value);
+            } elseif (\defined($value) || ReflectionConstant_::isMagicConstant($value)) {
+                return new ReflectionConstant_($value);
             }
         }
 
@@ -61,7 +58,7 @@ class Mirror
         if ($member === null) {
             return $class;
         } elseif ($filter & self::CONSTANT && $class->hasConstant($member)) {
-            return new \ReflectionClassConstant($value, $member);
+            return ReflectionClassConstant::create($value, $member);
         } elseif ($filter & self::METHOD && $class->hasMethod($member)) {
             return $class->getMethod($member);
         } elseif ($filter & self::PROPERTY && $class->hasProperty($member)) {

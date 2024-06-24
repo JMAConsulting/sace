@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 <?php declare(strict_types = 1);
-=======
-<?php
-
-declare(strict_types=1);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace DrupalCodeGenerator\Command\Entity;
 
@@ -118,11 +112,7 @@ final class EntityBundleClass extends BaseGenerator implements ContainerInjectio
 
     // @todo Handle duplicated hooks.
     $assets->addFile('{machine_name}.module', 'module.twig')
-<<<<<<< HEAD
       ->appendIfExists(7);
-=======
-      ->appendIfExists(9);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
   }
 
 }

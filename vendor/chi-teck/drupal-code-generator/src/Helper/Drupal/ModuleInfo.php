@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 <?php declare(strict_types = 1);
-=======
-<?php
-
-declare(strict_types=1);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace DrupalCodeGenerator\Helper\Drupal;
 
 use Drupal\Core\Extension\Extension;
-<<<<<<< HEAD
-=======
-use Drupal\Core\Extension\ModuleExtensionList;
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Path;
@@ -25,14 +15,7 @@ final class ModuleInfo extends Helper implements ExtensionInfoInterface {
   /**
    * Constructs the object.
    */
-<<<<<<< HEAD
   public function __construct(private readonly ModuleHandlerInterface $moduleHandler) {}
-=======
-  public function __construct(
-    private readonly ModuleHandlerInterface $moduleHandler,
-    private readonly ModuleExtensionList $moduleList,
-  ) {}
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
   /**
    * {@inheritdoc}
@@ -49,12 +32,7 @@ final class ModuleInfo extends Helper implements ExtensionInfoInterface {
   public function getExtensions(): array {
     $modules = [];
     foreach ($this->moduleHandler->getModuleList() as $machine_name => $module) {
-<<<<<<< HEAD
       $modules[$machine_name] = $this->moduleHandler->getName($machine_name);
-=======
-      /** @psalm-suppress InternalMethod */
-      $modules[$machine_name] = $this->moduleList->getName($machine_name);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     }
     return $modules;
   }

@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\Output;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class DevelCommands extends DrushCommands {
-  use AutowireTrait;
+  //use AutowireTrait;
   use ExecTrait;
 
   const REINSTALL = 'devel:reinstall';

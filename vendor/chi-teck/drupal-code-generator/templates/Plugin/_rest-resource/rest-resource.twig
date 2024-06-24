@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 <?php declare(strict_types = 1);
-=======
-<?php
-
-declare(strict_types=1);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace Drupal\{{ machine_name }}\Plugin\rest\resource;
 
@@ -70,11 +64,7 @@ final class {{ class }} extends ResourceBase {
     LoggerInterface $logger,
     KeyValueFactoryInterface $keyValueFactory,
   ) {
-<<<<<<< HEAD
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger, $keyValueFactory);
-=======
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     $this->storage = $keyValueFactory->get('{{ plugin_id }}');
   }
 

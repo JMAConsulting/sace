@@ -20,16 +20,9 @@ jobs:
         php:
           - "8.1"
           - "8.2"
-<<<<<<< HEAD
         drupal:
           - "10.0.x"
           - "10.1.x"
-=======
-          - "8.3"
-        drupal:
-          - "10.2.x"
-          - "10.3.x"
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         dependency-mode:
           - prefer-stable
           - prefer-lowest
@@ -41,10 +34,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-<<<<<<< HEAD
-=======
-          ini-values: zend.assertions=1
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
           tools: composer:v2
 
       - name: Install Symfony CLI
@@ -70,9 +59,4 @@ jobs:
         run: ./scripts/functional-tests.sh
 
       - name: Run SUT tests
-<<<<<<< HEAD
-=======
-        env:
-          DCG_DRUPAL_VERSION: ${{ matrix.drupal }}
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         run: ./scripts/sut-tests.sh

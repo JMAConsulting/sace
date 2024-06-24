@@ -1,12 +1,5 @@
 # Changelog
 
-<<<<<<< HEAD
-=======
-### 4.1.0 2024-04-05
-
-* Symfony 7 support
-
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 ### 4.0.1 2023-04-29
 
 * Automatically create new release from tags (#63)

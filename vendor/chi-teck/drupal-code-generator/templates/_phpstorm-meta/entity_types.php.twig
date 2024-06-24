@@ -1,29 +1,14 @@
-<<<<<<< HEAD
 <?php declare(strict_types = 1);
-=======
-<?php
-
-declare(strict_types=1);
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace PHPSTORM_META {
 
   // Entity types.
-<<<<<<< HEAD
   expectedReturnValues(
     \Drupal\Core\Entity\EntityInterface::getEntityTypeId(),
-=======
-  registerArgumentsSet('entity_type_ids',
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 {% for type, definition in definitions %}
     '{{ type }}',
 {% endfor %}
   );
-<<<<<<< HEAD
-=======
-  expectedArguments(\Drupal\KernelTests\KernelTestBase::installEntitySchema(), 0, argumentsSet('entity_type_ids'));
-  expectedReturnValues(\Drupal\Core\Entity\EntityInterface::getEntityTypeId(), argumentsSet('entity_type_ids'));
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
   // Storages.
   override(

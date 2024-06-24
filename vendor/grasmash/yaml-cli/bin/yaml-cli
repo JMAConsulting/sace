@@ -1,7 +1,3 @@
 #!/usr/bin/env php
 <?php
-<<<<<<< HEAD
 require __DIR__.'/application.php';
-=======
-require __DIR__ . '/application.php';
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498

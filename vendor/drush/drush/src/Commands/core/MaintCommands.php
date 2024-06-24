@@ -6,21 +6,11 @@ namespace Drush\Commands\core;
 
 use Drupal\Core\State\StateInterface;
 use Drush\Attributes as CLI;
-<<<<<<< HEAD
 use Drush\Commands\DrushCommands;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class MaintCommands extends DrushCommands
 {
-=======
-use Drush\Commands\AutowireTrait;
-use Drush\Commands\DrushCommands;
-
-final class MaintCommands extends DrushCommands
-{
-    use AutowireTrait;
-
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     const KEY = 'system.maintenance_mode';
     const GET = 'maint:get';
     const SET = 'maint:set';
@@ -28,7 +18,6 @@ final class MaintCommands extends DrushCommands
 
     public function __construct(protected StateInterface $state)
     {
-<<<<<<< HEAD
     }
 
     public static function create(ContainerInterface $container): self
@@ -38,9 +27,6 @@ final class MaintCommands extends DrushCommands
         );
 
         return $commandHandler;
-=======
-        parent::__construct();
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     }
 
     public function getState(): StateInterface

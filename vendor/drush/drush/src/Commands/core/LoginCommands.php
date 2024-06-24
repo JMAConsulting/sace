@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drush\Commands\core;
 
-<<<<<<< HEAD
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -24,30 +23,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class LoginCommands extends DrushCommands implements SiteAliasManagerAwareInterface
 {
-=======
-use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
-use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
-use Drupal\Core\Url;
-use Drupal\user\Entity\User;
-use Drush\Attributes as CLI;
-use Drush\Boot\BootstrapManager;
-use Drush\Boot\DrupalBootLevels;
-use Drush\Commands\AutowireTrait;
-use Drush\Commands\DrushCommands;
-use Drush\Drush;
-use Drush\Exec\ExecTrait;
-
-#[CLI\Bootstrap(level: DrupalBootLevels::NONE)]
-final class LoginCommands extends DrushCommands implements SiteAliasManagerAwareInterface
-{
-    use AutowireTrait;
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     use SiteAliasManagerAwareTrait;
     use ExecTrait;
 
     const LOGIN = 'user:login';
 
-<<<<<<< HEAD
     public function __construct(private BootstrapManager $bootstrapManager)
     {
         parent::__construct();
@@ -62,14 +42,6 @@ final class LoginCommands extends DrushCommands implements SiteAliasManagerAware
         return $commandHandler;
     }
 
-=======
-    public function __construct(
-        private BootstrapManager $bootstrapManager
-    ) {
-        parent::__construct();
-    }
-
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     /**
      * Display a one time login link for user ID 1, or another user.
      */

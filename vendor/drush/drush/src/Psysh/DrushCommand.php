@@ -60,7 +60,7 @@ class DrushCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $args = $input->getArguments();
         $first = array_shift($args);
@@ -88,8 +88,6 @@ class DrushCommand extends BaseCommand
         } else {
             $output->page($process->getOutput());
         }
-
-        return $process->getExitCode();
     }
 
     /**

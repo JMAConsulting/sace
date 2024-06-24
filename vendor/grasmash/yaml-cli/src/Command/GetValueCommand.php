@@ -15,16 +15,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class GetValueCommand extends CommandBase
 {
-<<<<<<< HEAD
   /**
    * {inheritdoc}
    */
-=======
-
-    /**
-     * {inheritdoc}
-     */
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     protected function configure()
     {
         $this
@@ -36,7 +29,6 @@ class GetValueCommand extends CommandBase
                 InputArgument::REQUIRED,
                 "The filename of the YAML file"
             )
-<<<<<<< HEAD
              ->addArgument(
                  'key',
                  InputArgument::REQUIRED,
@@ -51,22 +43,6 @@ class GetValueCommand extends CommandBase
    * @return int 0 if everything went fine, or an exit code
    */
     protected function execute(InputInterface $input, OutputInterface $output)
-=======
-            ->addArgument(
-                'key',
-                InputArgument::REQUIRED,
-                "The key for the value to get, in dot notation."
-            );
-    }
-
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int 0 if everything went fine, or an exit code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $filename = $input->getArgument('filename');
         $key = $input->getArgument('key');

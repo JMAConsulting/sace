@@ -53,11 +53,7 @@ class ConsoleInput implements StreamIn
     /**
      * Wraps an `Hoa\Stream\IStream\In` stream.
      */
-<<<<<<< HEAD
     public function __construct(StreamIn $input = null)
-=======
-    public function __construct(?StreamIn $input = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if (null === $input) {
             if (\defined('STDIN') &&

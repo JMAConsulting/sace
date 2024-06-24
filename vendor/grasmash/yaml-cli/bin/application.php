@@ -22,10 +22,6 @@ if (empty($autoloader)) {
     exit(1);
 }
 
-<<<<<<< HEAD
-=======
-use Grasmash\YamlCli\Command\GetTypeCommand;
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Grasmash\YamlCli\Command\GetValueCommand;
 use Grasmash\YamlCli\Command\LintCommand;
 use Grasmash\YamlCli\Command\UnsetKeyCommand;
@@ -35,10 +31,6 @@ use Symfony\Component\Console\Application;
 
 $application = new Application('yaml-cli', '@package_version@');
 $application->add(new GetValueCommand());
-<<<<<<< HEAD
-=======
-$application->add(new GetTypeCommand());
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 $application->add(new LintCommand());
 $application->add(new UnsetKeyCommand());
 $application->add(new UpdateKeyCommand());

@@ -13,21 +13,12 @@
         }
     ],
     "require": {
-<<<<<<< HEAD
         "php": "^8.0 || ^7.0.8",
         "ext-json": "*",
         "ext-tokenizer": "*",
         "symfony/console": "^6.0 || ^5.0 || ^4.0 || ^3.4",
         "symfony/var-dumper": "^6.0 || ^5.0 || ^4.0 || ^3.4",
         "nikic/php-parser": "^4.0 || ^3.1"
-=======
-        "php": "^8.0 || ^7.4",
-        "ext-json": "*",
-        "ext-tokenizer": "*",
-        "nikic/php-parser": "^5.0 || ^4.0",
-        "symfony/console": "^7.0 || ^6.0 || ^5.0 || ^4.0 || ^3.4",
-        "symfony/var-dumper": "^7.0 || ^6.0 || ^5.0 || ^4.0 || ^3.4"
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.2"
@@ -35,10 +26,7 @@
     "suggest": {
         "ext-pcntl": "Enabling the PCNTL extension makes PsySH a lot happier :)",
         "ext-posix": "If you have PCNTL, you'll want the POSIX extension as well.",
-<<<<<<< HEAD
         "ext-readline": "Enables support for arrow-key history navigation, and showing and manipulating command history.",
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         "ext-pdo-sqlite": "The doc command requires SQLite to work."
     },
     "autoload": {
@@ -60,11 +48,7 @@
     },
     "extra": {
         "branch-alias": {
-<<<<<<< HEAD
             "dev-main": "0.11.x-dev"
-=======
-            "dev-main": "0.12.x-dev"
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         },
         "bamarni-bin": {
             "bin-links": false,

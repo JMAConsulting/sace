@@ -24,17 +24,10 @@
     },
     "require": {
         "php": ">=8.0.14",
-<<<<<<< HEAD
         "consolidation/config": "^2",
         "consolidation/site-alias": "^3 || ^4",
         "symfony/process": "^6",
         "symfony/console": "^5.4 || ^6"
-=======
-        "consolidation/config": "^2 || ^3",
-        "consolidation/site-alias": "^3 || ^4",
-        "symfony/process": "^6 || ^7",
-        "symfony/console": "^5.4 || ^6 || ^7"
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3",
@@ -58,11 +51,7 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
-<<<<<<< HEAD
             "php": "8.0.14"
-=======
-            "php": "8.2.17"
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         },
         "allow-plugins": {
             "ocramius/package-versions": true

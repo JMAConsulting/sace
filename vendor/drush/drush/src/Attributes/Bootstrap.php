@@ -9,11 +9,7 @@ use Consolidation\AnnotatedCommand\Parser\CommandInfo;
 use Drush\Boot\DrupalBootLevels;
 use JetBrains\PhpStorm\ExpectedValues;
 
-<<<<<<< HEAD
 #[Attribute(Attribute::TARGET_METHOD)]
-=======
-#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 class Bootstrap
 {
     /**

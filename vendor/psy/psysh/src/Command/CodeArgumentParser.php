@@ -22,11 +22,7 @@ class CodeArgumentParser
 {
     private $parser;
 
-<<<<<<< HEAD
     public function __construct(Parser $parser = null)
-=======
-    public function __construct(?Parser $parser = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->parser = $parser ?? (new ParserFactory())->createParser();
     }

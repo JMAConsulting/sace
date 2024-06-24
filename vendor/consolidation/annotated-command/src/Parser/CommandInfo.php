@@ -31,14 +31,8 @@ class CommandInfo
     /**
      * @var boolean
      * @var string
-     */
+    */
     protected $docBlockIsParsed = false;
-
-    /**
-     * @var boolean
-     * @var string
-     */
-    protected $parsingInProgress = false;
 
     /**
      * @var string
@@ -170,9 +164,6 @@ class CommandInfo
         $this->simpleOptionParametersAllowed = empty($optionsFromParameters);
         $this->options = new DefaultsWithDescriptions($optionsFromParameters, false);
         $this->arguments = $this->determineAgumentClassifications();
-
-        // Construct the object from docblock annotations or php attributes
-        $this->parseDocBlock();
     }
 
     /**
@@ -192,7 +183,7 @@ class CommandInfo
      */
     public function getName()
     {
-        // getName() is the only attribute that may be used during parsing.
+        $this->parseDocBlock();
         return $this->name;
     }
 
@@ -236,13 +227,13 @@ class CommandInfo
 
     public function getReturnType()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->returnType;
     }
 
     public function getInjectedClasses()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->injectedClasses;
     }
 
@@ -267,7 +258,7 @@ class CommandInfo
      */
     public function getRawAnnotations()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->otherAnnotations;
     }
 
@@ -345,7 +336,7 @@ class CommandInfo
      */
     public function hasAnnotation($annotation)
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return isset($this->otherAnnotations[$annotation]);
     }
 
@@ -378,7 +369,7 @@ class CommandInfo
      */
     public function getDescription()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->description;
     }
 
@@ -406,7 +397,7 @@ class CommandInfo
      */
     public function getHelp()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->help;
     }
     /**
@@ -426,7 +417,7 @@ class CommandInfo
      */
     public function getAliases()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->aliases;
     }
 
@@ -450,7 +441,7 @@ class CommandInfo
      */
     public function getHidden()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->hasAnnotation('hidden');
     }
 
@@ -474,7 +465,7 @@ class CommandInfo
      */
     public function getExampleUsages()
     {
-        $this->requireConsistentState();
+        $this->parseDocBlock();
         return $this->exampleUsage;
     }
 
@@ -875,28 +866,16 @@ class CommandInfo
     }
 
     /**
-     * Guard against invalid usage of CommandInfo during parsing.
-     */
-    protected function requireConsistentState()
-    {
-        if ($this->parsingInProgress == true) {
-            throw new \Exception("Cannot use CommandInfo object while it is in an inconsistant state!");
-        }
-    }
-
-    /**
      * Parse the docBlock comment for this command, and set the
      * fields of this class with the data thereby obtained.
      */
     protected function parseDocBlock()
     {
         if (!$this->docBlockIsParsed) {
-            $this->docBlockIsParsed = true;
-            $this->parsingInProgress = true;
             // The parse function will insert data from the provided method
             // into this object, using our accessors.
             CommandDocBlockParserFactory::parse($this, $this->reflection);
-            $this->parsingInProgress = false;
+            $this->docBlockIsParsed = true;
             // Use method's return type if @return is not present.
             if ($this->reflection->hasReturnType() && !$this->getReturnType()) {
                 $type = $this->reflection->getReturnType();

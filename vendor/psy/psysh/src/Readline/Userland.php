@@ -138,11 +138,7 @@ class Userland implements Readline
      *
      * @return string
      */
-<<<<<<< HEAD
     public function readline(string $prompt = null)
-=======
-    public function readline(?string $prompt = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->lastPrompt = $prompt;
 

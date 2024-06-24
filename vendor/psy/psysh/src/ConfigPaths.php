@@ -31,11 +31,7 @@ class ConfigPaths
      * @param string[]     $overrides Directory overrides
      * @param EnvInterface $env
      */
-<<<<<<< HEAD
     public function __construct(array $overrides = [], EnvInterface $env = null)
-=======
-    public function __construct(array $overrides = [], ?EnvInterface $env = null)
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->overrideDirs($overrides);
 
@@ -125,7 +121,6 @@ class ConfigPaths
     }
 
     /**
-<<<<<<< HEAD
      * @deprecated
      */
     public static function getConfigDirs(): array
@@ -152,8 +147,6 @@ class ConfigPaths
     }
 
     /**
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * Get the current home config directory.
      *
      * Returns the highest precedence home config directory which actually
@@ -181,7 +174,6 @@ class ConfigPaths
     }
 
     /**
-<<<<<<< HEAD
      * @deprecated
      */
     public static function getCurrentConfigDir(): string
@@ -190,8 +182,6 @@ class ConfigPaths
     }
 
     /**
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * Find real config files in config directories.
      *
      * @param string[] $names Config file names
@@ -204,7 +194,6 @@ class ConfigPaths
     }
 
     /**
-<<<<<<< HEAD
      * @deprecated
      */
     public static function getConfigFiles(array $names, $configDir = null): array
@@ -213,8 +202,6 @@ class ConfigPaths
     }
 
     /**
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * Get potential data directory paths.
      *
      * If a `dataDir` option was explicitly set, returns an array containing
@@ -239,7 +226,6 @@ class ConfigPaths
     }
 
     /**
-<<<<<<< HEAD
      * @deprecated
      */
     public static function getDataDirs(): array
@@ -248,8 +234,6 @@ class ConfigPaths
     }
 
     /**
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * Find real data files in config directories.
      *
      * @param string[] $names Config file names
@@ -262,7 +246,6 @@ class ConfigPaths
     }
 
     /**
-<<<<<<< HEAD
      * @deprecated
      */
     public static function getDataFiles(array $names, $dataDir = null): array
@@ -271,8 +254,6 @@ class ConfigPaths
     }
 
     /**
-=======
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * Get a runtime directory.
      *
      * Defaults to `/psysh` inside the system's temp dir.
@@ -290,41 +271,11 @@ class ConfigPaths
     }
 
     /**
-     * Get a list of directories in PATH.
-     *
-     * If $PATH is unset/empty it defaults to '/usr/sbin:/usr/bin:/sbin:/bin'.
-     *
-     * @return string[]
+     * @deprecated
      */
-<<<<<<< HEAD
     public static function getRuntimeDir(): string
-=======
-    public function pathDirs(): array
->>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
-        return $this->getEnvArray('PATH') ?: ['/usr/sbin', '/usr/bin', '/sbin', '/bin'];
-    }
-
-    /**
-     * Locate a command (an executable) in $PATH.
-     *
-     * Behaves like 'command -v COMMAND' or 'which COMMAND'.
-     * If $PATH is unset/empty it defaults to '/usr/sbin:/usr/bin:/sbin:/bin'.
-     *
-     * @param string $command the executable to locate
-     *
-     * @return string
-     */
-    public function which($command)
-    {
-        foreach ($this->pathDirs() as $path) {
-            $fullpath = $path.\DIRECTORY_SEPARATOR.$command;
-            if (@\is_file($fullpath) && @\is_executable($fullpath)) {
-                return $fullpath;
-            }
-        }
-
-        return null;
+        return (new self())->runtimeDir();
     }
 
     /**
