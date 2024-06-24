@@ -9,6 +9,7 @@ return [
     'entity' => 'OptionValue',
     'params' => [
       'version' => 4,
+      'match' => ['name', 'option_group_id'],
       'values' => [
         'label' => 'Extended Report - Relationships',
         'option_group_id:name' => 'report_template',
@@ -18,6 +19,5 @@ return [
         'component' => '',
       ],
     ],
-    'match' => ['name'],
   ],
 ];

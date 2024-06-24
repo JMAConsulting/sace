@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -109,7 +109,7 @@ class RequestDataCollector extends BaseRequestDataCollector implements HasPanelI
       ];
     }
 
-    if ($this->getContent()) {
+    if ($this->getContent() !== '') {
       $tabs[] = [
         'label' => 'Raw content',
         'content' => $this->renderContent($this->getContent()),
@@ -184,7 +184,7 @@ class RequestDataCollector extends BaseRequestDataCollector implements HasPanelI
    */
   public function addAccessCheck(
     string $service_id,
-    array $callable
+    array $callable,
   ): void {
     $this->accessChecks[] = [
       self::SERVICE_ID => $service_id,

@@ -15,7 +15,11 @@ use Drush\Drush;
     description: 'Generates a Drush site alias file.',
     aliases: ['daf'],
     templatePath: __DIR__,
+<<<<<<< HEAD
     type: GeneratorType::MODULE_COMPONENT,
+=======
+    type: GeneratorType::OTHER,
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 )]
 class DrushAliasFile extends BaseGenerator
 {

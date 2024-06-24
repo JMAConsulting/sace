@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler;
 
@@ -124,13 +124,6 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     // Replace the regular string_translation service with a traceable one.
     $container->getDefinition('string_translation')
       ->setClass('Drupal\webprofiler\StringTranslation\TranslationManagerWrapper');
-
-    // Replace the regular html_response.attachments_processor service with a
-    // traceable one.
-    $container->getDefinition('html_response.attachments_processor')
-      ->setClass('Drupal\webprofiler\Render\HtmlResponseAttachmentsProcessor')
-      ->addMethodCall('setDataCollector',
-        [new Reference('webprofiler.assets')]);
   }
 
 }

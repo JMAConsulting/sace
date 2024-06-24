@@ -116,7 +116,7 @@ class BasicCustomFieldTest extends CustomTestBase {
     $this->assertArrayNotHasKey('MyIndividualFields.FavColor', $contact);
   }
 
-  public function testWithTwoFields() {
+  public function testWithTwoFields(): void {
     $optionGroupCount = OptionGroup::get(FALSE)->selectRowCount()->execute()->count();
 
     // First custom set - use underscores in the names to ensure the API doesn't have a problem with them
@@ -149,6 +149,7 @@ class BasicCustomFieldTest extends CustomTestBase {
         ->addValue('custom_group_id', '$id')
         ->addValue('html_type', 'Text')
         ->addValue('is_required', TRUE)
+        ->addValue('is_view', TRUE)
         ->addValue('data_type', 'String'))
       ->execute();
 
@@ -163,6 +164,8 @@ class BasicCustomFieldTest extends CustomTestBase {
     $this->assertFalse($fields['MyContactFields_._Food']['required']);
     // But the api will report is_required as not nullable
     $this->assertFalse($fields['MyContactFields_._Food']['nullable']);
+    $this->assertEquals(['export', 'duplicate_matching', 'token', 'import'], $fields['MyContactFields._Food']['usage']);
+    $this->assertEquals(['export', 'duplicate_matching', 'token'], $fields['MyContactFields_._Food']['usage']);
 
     $contactId1 = $this->createTestRecord('Contact', [
       'first_name' => 'Johann',
@@ -269,7 +272,7 @@ class BasicCustomFieldTest extends CustomTestBase {
     $this->assertNotContains($contactId2, array_keys((array) $search));
   }
 
-  public function testRelationshipCacheCustomFields() {
+  public function testRelationshipCacheCustomFields(): void {
     $cgName = uniqid('RelFields');
 
     $customGroup = CustomGroup::create(FALSE)
@@ -340,7 +343,7 @@ class BasicCustomFieldTest extends CustomTestBase {
     $this->assertEquals('Buddy', $result["relative.$cgName.PetName"]);
   }
 
-  public function testMultipleJoinsToCustomTable() {
+  public function testMultipleJoinsToCustomTable(): void {
     $cgName = uniqid('My');
 
     CustomGroup::create(FALSE)
@@ -449,7 +452,7 @@ class BasicCustomFieldTest extends CustomTestBase {
       ->execute();
   }
 
-  public function testUpdateWeights() {
+  public function testUpdateWeights(): void {
     $getValues = function($groupName) {
       return CustomField::get(FALSE)
         ->addWhere('custom_group_id.name', '=', $groupName)
@@ -560,7 +563,7 @@ class BasicCustomFieldTest extends CustomTestBase {
     $this->assertEquals('2025-06-11 12:15:30', $contact["$cgName.DateTime"]);
   }
 
-  public function testExtendsIdFilter() {
+  public function testExtendsIdFilter(): void {
     $fieldUnfiltered = \Civi\Api4\CustomGroup::getFields(FALSE)
       ->setLoadOptions(['id', 'name', 'grouping'])
       ->addWhere('name', '=', 'extends_entity_column_id')
@@ -584,10 +587,10 @@ class BasicCustomFieldTest extends CustomTestBase {
       ->addWhere('name', '=', 'extends_entity_column_id')
       ->addValue('extends', 'Contact')
       ->execute()->first();
-    $this->assertFalse($fieldFilteredByContact['options']);
+    $this->assertEquals([], $fieldFilteredByContact['options']);
   }
 
-  public function testExtendsMetadata() {
+  public function testExtendsMetadata(): void {
     $field = \Civi\Api4\CustomGroup::getFields(FALSE)
       ->setLoadOptions(['id', 'name', 'grouping'])
       ->addWhere('name', '=', 'extends')
@@ -634,7 +637,7 @@ class BasicCustomFieldTest extends CustomTestBase {
     $this->assertArrayNotHasKey('Contribution_Fields.Dummy', $getFieldsWithoutTestType);
   }
 
-  public function testExtendsParticipantMetadata() {
+  public function testExtendsParticipantMetadata(): void {
     $event1 = $this->createTestRecord('Event', [
       'event_type_id:name' => 'Fundraiser',
       'title' => 'Test Fun Event',

@@ -76,12 +76,15 @@ class CodeFormatter implements ReflectorFormatter
     /**
      * Format the code represented by $reflector for shell output.
      *
-     * @param \Reflector  $reflector
-     * @param string|null $colorMode (deprecated and ignored)
+     * @param \Reflector $reflector
      *
      * @return string formatted code
      */
+<<<<<<< HEAD
     public static function format(\Reflector $reflector, string $colorMode = null): string
+=======
+    public static function format(\Reflector $reflector): string
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if (self::isReflectable($reflector)) {
             if ($code = @\file_get_contents($reflector->getFileName())) {
@@ -104,7 +107,11 @@ class CodeFormatter implements ReflectorFormatter
      *
      * @return string formatted code
      */
+<<<<<<< HEAD
     public static function formatCode(string $code, int $startLine = 1, int $endLine = null, int $markLine = null): string
+=======
+    public static function formatCode(string $code, int $startLine = 1, ?int $endLine = null, ?int $markLine = null): string
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $spans = self::tokenizeSpans($code);
         $lines = self::splitLines($spans, $startLine, $endLine);
@@ -207,7 +214,11 @@ class CodeFormatter implements ReflectorFormatter
      *
      * @return \Generator lines, each an array of [$spanType, $spanText] pairs
      */
+<<<<<<< HEAD
     private static function splitLines(\Generator $spans, int $startLine = 1, int $endLine = null): \Generator
+=======
+    private static function splitLines(\Generator $spans, int $startLine = 1, ?int $endLine = null): \Generator
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $lineNum = 1;
         $buffer = [];
@@ -274,7 +285,11 @@ class CodeFormatter implements ReflectorFormatter
      *
      * @return \Generator Numbered, formatted lines
      */
+<<<<<<< HEAD
     private static function numberLines(\Generator $lines, int $markLine = null): \Generator
+=======
+    private static function numberLines(\Generator $lines, ?int $markLine = null): \Generator
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $lines = \iterator_to_array($lines);
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -31,7 +31,7 @@ class ExtensionsDataCollector extends DataCollector implements HasPanelInterface
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,
     private readonly ThemeHandlerInterface $themeHandler,
-    private readonly string $root
+    private readonly string $root,
   ) {
     $this->data['modules'] = [];
     $this->data['themes'] = [];

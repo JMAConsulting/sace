@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\editor_advanced_image\FunctionalJavascript;
 
+use Drupal\editor\Entity\Editor;
 use Drupal\editor_advanced_image\Plugin\CKEditor5Plugin\EditorAdvancedImage;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\editor\Entity\Editor;
 use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\Tests\editor_advanced_image\Traits\CKEditor5InteractionTestTrait;
 
@@ -29,6 +29,11 @@ class CKEditor5EditorAdvancedImageEditorFormatTest extends WebDriverTestBase {
     'ckeditor5',
     'editor_advanced_image',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $allowedElements = '<br> <p> <strong> <em> <a href>';
 
   /**
    * The user to use during testing.
@@ -70,9 +75,14 @@ class CKEditor5EditorAdvancedImageEditorFormatTest extends WebDriverTestBase {
             'link',
             'bold',
             'italic',
+            'sourceEditing',
           ],
         ],
-        'plugins' => [],
+        'plugins' => [
+          'ckeditor5_sourceEditing' => [
+            'allowed_tags' => [],
+          ],
+        ],
       ],
       'image_upload' => [
         'status' => FALSE,
@@ -168,12 +178,24 @@ class CKEditor5EditorAdvancedImageEditorFormatTest extends WebDriverTestBase {
 
     // Enable the image toolbar item.
     // Enabling image uploads adds <img> with several attributes allowed.
+    $this->assertNotEmpty($assert_session->waitForElement('css', '.ckeditor5-toolbar-item-drupalInsertImage'));
     $this->triggerKeyUp('.ckeditor5-toolbar-item-drupalInsertImage', 'ArrowDown');
     $assert_session->assertWaitOnAjaxRequest();
+
+    // The image upload settings form should now be present.
+    $assert_session->elementExists('css', '[data-drupal-selector="edit-editor-settings-plugins-ckeditor5-image"]');
+
+    $this->assertNotEmpty($assert_session->waitForElement('css', '.ckeditor5-toolbar-active .ckeditor5-toolbar-item-drupalInsertImage'));
+
+    // The image insert plugin is enabled and inserting <img> is allowed.
+    $this->assertEquals($this->allowedElements . ' <img src alt height width class>', $allowed_html_field->getValue());
+
+    $page->clickLink('Image');
+    $assert_session->waitForText('Enable image uploads');
+
     $this->assertTrue($page->hasUncheckedField('editor[settings][plugins][ckeditor5_image][status]'));
     $page->checkField('editor[settings][plugins][ckeditor5_image][status]');
     $assert_session->assertWaitOnAjaxRequest();
-
     $allowed_html_field = $assert_session->fieldExists('filters[filter_html][settings][allowed_html]');
 
     // Assert that image uploads are enabled initially.
@@ -203,6 +225,7 @@ class CKEditor5EditorAdvancedImageEditorFormatTest extends WebDriverTestBase {
 
     // Assert that Editor Advanced Image attribute "class" is enabled by
     // default.
+    $this->assertFalse($page->hasCheckedField('Disable Balloon'));
     $this->assertTrue($page->hasCheckedField('CSS classes (class)'));
     $this->assertFalse($page->hasCheckedField('Title (title)'));
     $this->assertFalse($page->hasCheckedField('ID (id)'));
@@ -233,6 +256,7 @@ class CKEditor5EditorAdvancedImageEditorFormatTest extends WebDriverTestBase {
 
     // And for good measure, confirm the correct tags are in the form field when
     // returning to the form.
+    $this->assertFalse($page->hasCheckedField('Disable Balloon'));
     $this->assertTrue($page->hasCheckedField('CSS classes (class)'));
     $this->assertTrue($page->hasCheckedField('Title (title)'));
     $allowed_html_field = $assert_session->fieldExists('filters[filter_html][settings][allowed_html]');

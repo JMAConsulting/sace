@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Entity;
 
@@ -63,7 +63,15 @@ class EntityTypeManagerWrapper extends EntityTypeManager implements EntityTypeMa
    * @param \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface $entity_last_installed_schema_repository
    *   The entity last installed schema repository.
    */
-  public function __construct(EntityTypeManagerInterface $entity_manager, \Traversable $namespaces, ModuleHandlerInterface $module_handler, CacheBackendInterface $cache, TranslationInterface $string_translation, ClassResolverInterface $class_resolver, EntityLastInstalledSchemaRepositoryInterface $entity_last_installed_schema_repository) {
+  public function __construct(
+    EntityTypeManagerInterface $entity_manager,
+    \Traversable $namespaces,
+    ModuleHandlerInterface $module_handler,
+    CacheBackendInterface $cache,
+    TranslationInterface $string_translation,
+    ClassResolverInterface $class_resolver,
+    EntityLastInstalledSchemaRepositoryInterface $entity_last_installed_schema_repository,
+  ) {
     $this->entityManager = $entity_manager;
 
     $this->setCacheBackend($cache, 'entity_type', ['entity_types']);

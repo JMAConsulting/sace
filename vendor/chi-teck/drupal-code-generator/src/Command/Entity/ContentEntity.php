@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 <?php declare(strict_types = 1);
+=======
+<?php
+
+declare(strict_types=1);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace DrupalCodeGenerator\Command\Entity;
 
@@ -69,6 +75,15 @@ final class ContentEntity extends BaseGenerator {
       $vars['permissions']['create'] = 'create {entity_type_id}';
     }
 
+<<<<<<< HEAD
+=======
+    if ($vars['access_controller'] && $vars['revisionable']) {
+      $vars['permissions']['view_revision'] = 'view {entity_type_id} revision';
+      $vars['permissions']['revert_revision'] = 'revert {entity_type_id} revision';
+      $vars['permissions']['delete_revision'] = 'delete {entity_type_id} revision';
+    }
+
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     $vars['rest_configuration'] = $ir->confirm('Create REST configuration for the entity?', FALSE);
 
     if (!\str_starts_with($vars['entity_base_path'], '/')) {
@@ -136,7 +151,11 @@ final class ContentEntity extends BaseGenerator {
     if ($vars['template']) {
       $assets->addFile('templates/{entity_type_id|u2h}.html.twig', 'templates/model-example.html.twig.twig');
       $assets->addFile('{machine_name}.module', 'model.module.twig')
+<<<<<<< HEAD
         ->appendIfExists(7);
+=======
+        ->appendIfExists(9);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     }
 
     if ($vars['access_controller']) {

@@ -105,7 +105,11 @@ abstract class File extends FileGeneric implements StreamBufferable, StreamLocka
     public function __construct(
         string $streamName,
         string $mode,
+<<<<<<< HEAD
         string $context = null,
+=======
+        ?string $context = null,
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         bool $wait = false
     ) {
         $this->setMode($mode);
@@ -128,11 +132,15 @@ abstract class File extends FileGeneric implements StreamBufferable, StreamLocka
 
             default:
                 if (true === \ctype_digit($streamName)) {
+<<<<<<< HEAD
                     if (\PHP_VERSION_ID >= 50306) {
                         $streamName = 'php://fd/'.$streamName;
                     } else {
                         throw new FileException('You need PHP5.3.6 to use a file descriptor '.'other than 0, 1 or 2 (tried %d with PHP%s).', 0, [$streamName, \PHP_VERSION]);
                     }
+=======
+                    $streamName = 'php://fd/'.$streamName;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
                 }
         }
 
@@ -144,7 +152,11 @@ abstract class File extends FileGeneric implements StreamBufferable, StreamLocka
     /**
      * Open the stream and return the associated resource.
      */
+<<<<<<< HEAD
     protected function &_open(string $streamName, StreamContext $context = null)
+=======
+    protected function &_open(string $streamName, ?StreamContext $context = null)
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if (\substr($streamName, 0, 4) === 'file' &&
             false === \is_dir(\dirname($streamName))) {
@@ -185,11 +197,19 @@ abstract class File extends FileGeneric implements StreamBufferable, StreamLocka
      * Start a new buffer.
      * The callable acts like a light filter.
      */
+<<<<<<< HEAD
     public function newBuffer($callable = null, int $size = null): int
     {
         $this->setStreamBuffer($size);
 
         // @TODO manage $callable as a filter?
+=======
+    public function newBuffer($callable = null, ?int $size = null): int
+    {
+        $this->setStreamBuffer($size);
+
+        // @todo manage $callable as a filter?
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
         return 1;
     }

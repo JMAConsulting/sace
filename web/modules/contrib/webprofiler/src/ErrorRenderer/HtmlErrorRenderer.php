@@ -8,7 +8,7 @@ use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
+use Drupal\webprofiler\Debug\FileLinkFormatter;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
@@ -45,7 +45,7 @@ class HtmlErrorRenderer {
   private static string $template = 'error.html.php';
 
   /**
-   * @param \Symfony\Component\HttpKernel\Debug\FileLinkFormatter $fileLinkFormat
+   * @param \Drupal\webprofiler\Debug\FileLinkFormatter $fileLinkFormat
    *   The file link formatter.
    * @param \Psr\Log\LoggerInterface|null $logger
    *   The logger.

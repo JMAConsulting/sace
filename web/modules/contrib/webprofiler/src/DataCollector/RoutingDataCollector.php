@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -23,7 +23,9 @@ class RoutingDataCollector extends DataCollector implements HasPanelInterface {
    * @param \Drupal\Core\Routing\RouteProviderInterface $routeProvider
    *   The route provider.
    */
-  public function __construct(private readonly RouteProviderInterface $routeProvider) {
+  public function __construct(
+    private readonly RouteProviderInterface $routeProvider,
+  ) {
   }
 
   /**
@@ -37,6 +39,11 @@ class RoutingDataCollector extends DataCollector implements HasPanelInterface {
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Throwable $exception = NULL): void {
+    // If the data has already been collected, don't collect it again.
+    if ($this->data != NULL && count($this->data['routing']) > 0) {
+      return;
+    }
+
     $this->data['routing'] = [];
     foreach ($this->routeProvider->getAllRoutes() as $route_name => $route) {
       $this->data['routing'][] = [

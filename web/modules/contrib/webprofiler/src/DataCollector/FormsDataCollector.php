@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -23,7 +23,9 @@ class FormsDataCollector extends DataCollector implements HasPanelInterface {
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form builder.
    */
-  public function __construct(private readonly FormBuilderInterface $formBuilder) {
+  public function __construct(
+    private readonly FormBuilderInterface $formBuilder,
+  ) {
     $this->data['forms'] = [];
   }
 

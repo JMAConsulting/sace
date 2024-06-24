@@ -16,3 +16,14 @@
 {{ permissions.create }}:
   title: 'Create {{ entity_type_label|lower }}'
 {% endif %}
+<<<<<<< HEAD
+=======
+{% if revisionable and access_controller %}
+{{ permissions.view_revision }}:
+  title: 'View {{ entity_type_label|lower }} revision'
+{{ permissions.revert_revision }}:
+  title: 'Revert {{ entity_type_label|lower }} revision'
+{{ permissions.delete_revision }}:
+  title: 'Delete {{ entity_type_label|lower }} revision'
+{% endif %}
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498

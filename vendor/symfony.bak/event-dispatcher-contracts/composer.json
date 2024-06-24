@@ -1,0 +1,57 @@
+{
+<<<<<<<< HEAD:vendor/symfony/polyfill-intl-grapheme/composer.json
+    "name": "symfony/polyfill-intl-grapheme",
+    "type": "library",
+    "description": "Symfony polyfill for intl's grapheme_* functions",
+    "keywords": ["polyfill", "shim", "compatibility", "portable", "intl", "grapheme"],
+========
+    "name": "symfony/event-dispatcher-contracts",
+    "type": "library",
+    "description": "Generic abstractions related to dispatching event",
+    "keywords": ["abstractions", "contracts", "decoupling", "interfaces", "interoperability", "standards"],
+>>>>>>>> 6a554a825f521a86c6b530852924f3d817076498:vendor/symfony.bak/event-dispatcher-contracts/composer.json
+    "homepage": "https://symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolas Grekas",
+            "email": "p@tchwork.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://symfony.com/contributors"
+        }
+    ],
+    "require": {
+<<<<<<<< HEAD:vendor/symfony/polyfill-intl-grapheme/composer.json
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Polyfill\\Intl\\Grapheme\\": "" },
+        "files": [ "bootstrap.php" ]
+    },
+    "suggest": {
+        "ext-intl": "For best performance"
+========
+        "php": ">=8.1",
+        "psr/event-dispatcher": "^1"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Contracts\\EventDispatcher\\": "" }
+>>>>>>>> 6a554a825f521a86c6b530852924f3d817076498:vendor/symfony.bak/event-dispatcher-contracts/composer.json
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+<<<<<<<< HEAD:vendor/symfony/polyfill-intl-grapheme/composer.json
+            "dev-main": "1.27-dev"
+========
+            "dev-main": "3.4-dev"
+>>>>>>>> 6a554a825f521a86c6b530852924f3d817076498:vendor/symfony.bak/event-dispatcher-contracts/composer.json
+        },
+        "thanks": {
+            "name": "symfony/polyfill",
+            "url": "https://github.com/symfony/polyfill"
+        }
+    }
+}

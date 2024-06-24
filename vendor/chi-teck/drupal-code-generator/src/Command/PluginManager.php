@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 <?php declare(strict_types = 1);
+=======
+<?php
+
+declare(strict_types=1);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace DrupalCodeGenerator\Command;
 
@@ -13,6 +19,10 @@ use DrupalCodeGenerator\Validator\Required;
 #[Generator(
   name: 'plugin-manager',
   description: 'Generates plugin manager',
+<<<<<<< HEAD
+=======
+  aliases: ['plugin-manager'],
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
   templatePath: Application::TEMPLATE_PATH . '/_plugin-manager',
   type: GeneratorType::MODULE_COMPONENT,
 )]
@@ -35,6 +45,10 @@ final class PluginManager extends BaseGenerator {
 
     $discovery_types = [
       'annotation' => 'Annotation',
+<<<<<<< HEAD
+=======
+      'attribute' => 'Attribute',
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
       'yaml' => 'YAML',
       'hook' => 'Hook',
     ];
@@ -52,6 +66,15 @@ final class PluginManager extends BaseGenerator {
         $assets->addFile('src/Plugin/{class_prefix}/Foo.php', 'annotation/src/Plugin/Example/Foo.php.twig');
         break;
 
+<<<<<<< HEAD
+=======
+      case 'attribute':
+        $assets->addFile('src/Attribute/{class_prefix}.php', 'attribute/src/Attribute/Example.php.twig');
+        $assets->addFile('src/{class_prefix}PluginBase.php', 'attribute/src/ExamplePluginBase.php.twig');
+        $assets->addFile('src/Plugin/{class_prefix}/Foo.php', 'attribute/src/Plugin/Example/Foo.php.twig');
+        break;
+
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
       case 'yaml':
         $assets->addFile('{machine_name}.{plugin_type|pluralize}.yml', 'yaml/model.examples.yml.twig');
         $assets->addFile('src/{class_prefix}Default.php', 'yaml/src/ExampleDefault.php.twig');

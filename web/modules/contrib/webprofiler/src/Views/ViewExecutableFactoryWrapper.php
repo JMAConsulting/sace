@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Views;
 
@@ -27,7 +27,12 @@ class ViewExecutableFactoryWrapper extends ViewExecutableFactory {
   /**
    * {@inheritdoc}
    */
-  public function __construct(AccountInterface $user, RequestStack $request_stack, ViewsData $views_data, RouteProviderInterface $route_provider) {
+  public function __construct(
+    AccountInterface $user,
+    RequestStack $request_stack,
+    ViewsData $views_data,
+    RouteProviderInterface $route_provider,
+  ) {
     parent::__construct($user, $request_stack, $views_data, $route_provider);
 
     $this->views = [];

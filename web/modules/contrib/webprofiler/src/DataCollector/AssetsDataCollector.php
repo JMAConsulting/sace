@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -27,7 +27,7 @@ class AssetsDataCollector extends DataCollector implements HasPanelInterface {
    */
   public function __construct(
     private readonly string $root,
-    private readonly LibraryDiscoveryInterface $libraryDiscovery
+    private readonly LibraryDiscoveryInterface $libraryDiscovery,
   ) {
     $this->data['js'] = [];
     $this->data['css'] = [];

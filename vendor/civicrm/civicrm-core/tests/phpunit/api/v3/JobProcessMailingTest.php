@@ -18,6 +18,7 @@
  * @copyright CiviCRM LLC https://civicrm.org/licensing
  *
  */
+use Civi\Api4\MailingEventQueue;
 
 /**
  * Class api_v3_JobTest
@@ -87,23 +88,46 @@ class api_v3_JobProcessMailingTest extends CiviUnitTestCase {
     parent::tearDown();
   }
 
-  public function testBasic() {
+  public function testBasic(): void {
     $this->createContactsInGroup(10, $this->_groupID);
     Civi::settings()->add([
       'mailerBatchLimit' => 2,
     ]);
-    $this->callAPISuccess('mailing', 'create', $this->_params);
+    $this->callAPISuccess('Mailing', 'create', $this->_params);
     $this->_mut->assertRecipients([]);
     $this->callAPISuccess('job', 'process_mailing', []);
     $this->_mut->assertRecipients($this->getRecipients(1, 2));
+    $this->_mut->clearMessages();
+    // Now test forwarding from there
+    $queue = MailingEventQueue::get(FALSE)->execute()->first();
+    $this->callAPISuccess('Mailing', 'event_forward', [
+      'event_queue_id' => $queue['id'],
+      'job_id' => $queue['job_id'],
+      'hash' => $queue['hash'],
+      'email' => 'a@b.com',
+      'params' => ['body_html' => 'Hi there'],
+    ]);
+    $this->_mut->checkAllMailLog([
+      'civicrm/mailing/optout&reset=1&j',
+      'Return-Path: b',
+      'chaos.org',
+      'From: "FIXME" <info@EXAMPLE.ORG>',
+      'Subject: Accidents in cars cause children',
+      'List-Unsubscribe: <mailto:u.',
+      '@chaos.org>',
+      'To: <a@b.com>',
+      'Precedence: bulk',
+      'X-CiviMail-Bounce: b',
+      'Content-Type: text/plain; charset=utf-8',
+      'Content-Transfer-Encoding: 8bit',
+      'Hi there',
+    ]);
   }
 
   /**
    * Test that a contact deleted after the mailing is queued is not emailed.
-   *
-   * @throws \CRM_Core_Exception
    */
-  public function testDeletedRecipient() {
+  public function testDeletedRecipient(): void {
     $this->createContactsInGroup(2, $this->_groupID);
     $this->callAPISuccess('Mailing', 'create', $this->_params);
     $this->callAPISuccess('Contact', 'delete', ['id' => $this->callAPISuccessGetValue('GroupContact', ['return' => 'contact_id', 'options' => ['limit' => 1, 'sort' => 'id DESC']])]);
@@ -114,7 +138,7 @@ class api_v3_JobProcessMailingTest extends CiviUnitTestCase {
   /**
    * Test what happens when a contact is set to decesaed
    */
-  public function testDeceasedRecipient() {
+  public function testDeceasedRecipient(): void {
     $contactID = $this->individualCreate(['first_name' => 'test dead recipeint', 'email' => 'mailtestdead@civicrm.org']);
     $this->callAPISuccess('group_contact', 'create', [
       'contact_id' => $contactID,
@@ -138,7 +162,7 @@ class api_v3_JobProcessMailingTest extends CiviUnitTestCase {
   /**
    * Test that "multiple bulk email recipients" setting is respected.
    */
-  public function testMultipleBulkRecipients() {
+  public function testMultipleBulkRecipients(): void {
     Civi::settings()->add([
       'civimail_multiple_bulk_emails' => 1,
     ]);
@@ -213,7 +237,7 @@ class api_v3_JobProcessMailingTest extends CiviUnitTestCase {
    * Test mail when in non-production environment.
    *
    */
-  public function testMailNonProductionRun() {
+  public function testMailNonProductionRun(): void {
     // Test in non-production mode.
     $params = [
       'environment' => 'Staging',
@@ -260,7 +284,7 @@ class api_v3_JobProcessMailingTest extends CiviUnitTestCase {
     $this->_mut->assertRecipients($this->getRecipients(1, 2));
   }
 
-  public function concurrencyExamples() {
+  public function concurrencyExamples(): array {
     $es = [];
 
     // Launch 3 workers, but mailerJobsMax limits us to 1 worker.
@@ -489,7 +513,7 @@ class api_v3_JobProcessMailingTest extends CiviUnitTestCase {
    *
    * @throws \CRM_Core_Exception
    */
-  public function testBatchActivityTargets($isBulk) {
+  public function testBatchActivityTargets($isBulk): void {
     $loggedInUserId = $this->createLoggedInUser();
 
     \Civi::settings()->set('mailerBatchLimit', 2);

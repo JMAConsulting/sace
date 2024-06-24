@@ -84,7 +84,7 @@ class TimeitVisitor extends NodeVisitorAbstract
     public function afterTraverse(array $nodes)
     {
         // prepend a `markStart` call
-        \array_unshift($nodes, $this->maybeExpression($this->getStartCall()));
+        \array_unshift($nodes, new Expression($this->getStartCall(), []));
 
         // append a `markEnd` call (wrapping the final node, if it's an expression)
         $last = $nodes[\count($nodes) - 1];
@@ -97,7 +97,7 @@ class TimeitVisitor extends NodeVisitorAbstract
         } elseif ($last instanceof Return_) {
             // nothing to do here, we're already ending with a return call
         } else {
-            $nodes[] = $this->maybeExpression($this->getEndCall());
+            $nodes[] = new Expression($this->getEndCall(), []);
         }
 
         return $nodes;
@@ -120,7 +120,11 @@ class TimeitVisitor extends NodeVisitorAbstract
      *
      * @param Expr|null $arg
      */
+<<<<<<< HEAD
     private function getEndCall(Expr $arg = null): StaticCall
+=======
+    private function getEndCall(?Expr $arg = null): StaticCall
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if ($arg === null) {
             $arg = NoReturnValue::create();
@@ -128,6 +132,7 @@ class TimeitVisitor extends NodeVisitorAbstract
 
         return new StaticCall(new FullyQualifiedName(TimeitCommand::class), 'markEnd', [new Arg($arg)]);
     }
+<<<<<<< HEAD
 
     /**
      * Compatibility shim for PHP Parser 3.x.
@@ -143,4 +148,6 @@ class TimeitVisitor extends NodeVisitorAbstract
     {
         return \class_exists(Expression::class) ? new Expression($expr, $attrs) : $expr;
     }
+=======
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 }

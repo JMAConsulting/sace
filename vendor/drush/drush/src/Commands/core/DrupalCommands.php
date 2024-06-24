@@ -54,9 +54,16 @@ final class DrupalCommands extends DrushCommands
 
     /**
      * Run all cron hooks in all active modules for specified site.
+<<<<<<< HEAD
      */
     #[CLI\Command(name: self::CRON, aliases: ['cron', 'core-cron'])]
     #[CLI\Usage(name: 'drush maint:status && drush core:cron', description: 'Run cron unless maintenance mode is enabled')]
+=======
+     *
+     * Consider using `drush maint:status && drush core:cron` to avoid cache poisoning during maintenance mode.
+     */
+    #[CLI\Command(name: self::CRON, aliases: ['cron', 'core-cron'])]
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     #[CLI\Topics(topics: [DocsCommands::CRON])]
     public function cron(): void
     {

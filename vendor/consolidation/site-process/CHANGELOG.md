@@ -1,5 +1,16 @@
 # Changelog
 
+<<<<<<< HEAD
+=======
+### 5.4.0
+
+* Support Symfony 7
+
+### 5.3.0 - 2024/Apr/1
+
+* Allow short options. Needed to pass along -vvv (#76)
+
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 ### 5.2.0 - 2022/Dec/6
 
 * Transport support for Skpr (#66)

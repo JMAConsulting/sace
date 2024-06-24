@@ -106,5 +106,9 @@ interface StreamTouchable extends IStream
     /**
      * Change the current umask.
      */
+<<<<<<< HEAD
     public static function umask(int $umask = null): int;
+=======
+    public static function umask(?int $umask = null): int;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 }

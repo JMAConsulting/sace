@@ -3,6 +3,7 @@
 /**
  * @file
  * Provides drush integration for the Nagios module.
+ * Used by Drush 8 and earlier.
  */
 
 use Drupal\update\UpdateManagerInterface;
@@ -24,8 +25,8 @@ function nagios_drush_command() {
   $items['nagios-updates'] = [
     'description' => dt('Return a space delimited string of all monitored projects with available updates.'),
     'arguments' => [
-      'update type' => 'Type of update available, accepts either all or security.',
-      'nagios flag' => 'Send \'nagios\' as a flag to enable Nagios prefixes to the output.',
+      'update type' => "Type of update available, accepts either 'all' or 'security'.",
+      'nagios flag' => "Send 'nagios' as a flag to enable Nagios prefixes to the output.",
     ],
     'aliases' => ['nagios-up'],
   ];
@@ -135,19 +136,7 @@ function drush_nagios_updates($update_type = NULL, $nagios_flag = NULL) {
   $exit_status = NULL;
   $message = '';
   $config = \Drupal::config('nagios.settings');
-  if ($available = update_get_available(TRUE)) {
-    module_load_include('inc', 'update', 'update.compare');
-    $data = update_calculate_project_data($available);
-    // Unset any data referencing projects we're not interested in.
-    $nagios_ignored_modules = $config->get('nagios_ignored_modules') ?: [];
-    $nagios_ignored_themes = $config->get('nagios_ignored_themes') ?: [];
-    $nagios_ignored_projects = $nagios_ignored_modules + $nagios_ignored_themes;
-    foreach ($nagios_ignored_projects as $key => $value) {
-      if ($value == TRUE && isset($data[$key])) {
-        unset($data[$key]);
-      }
-    }
-
+  if ($data = _nagios_get_projects_with_updates($config)) {
     $module_list = [];
 
     $updates = nagios_updates($data);

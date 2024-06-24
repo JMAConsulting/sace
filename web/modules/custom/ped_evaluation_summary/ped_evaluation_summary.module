@@ -37,7 +37,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   $result = \Civi\Api4\Activity::get(FALSE)
 //    ->addSelect( 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
 //    ->addSelect('Booking_Information.Number_of_Participants_per_course', 'activity_type_id', 'Booking_Information.Online_Courses', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
-->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program')
+->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program', 'Booking_Information.Number_of_Participants_per_course')
 ->addJoin('ActivityContact AS activity_contact', 'INNER')
 ->addGroupBy('id')
 ->addWhere('activity_contact.record_type_id', '=', 3)
@@ -271,7 +271,7 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
     'total' => 'custom_802',
   ],
   //q212
-  'custom_813' => [
+  'custom_1264' => [
     'Strongly Agree' => 'custom_1268',
     'Agree' => 'custom_1269',
     'Somewhat Agree' => 'custom_1270',
@@ -281,7 +281,7 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
     'total' => 'custom_1274',
   ],
   //q24
-  'custom_703' => [
+  'custom_813' => [
     'Strongly Agree' => 'custom_805',
     'Agree' => 'custom_806',
     'Somewhat Agree' => 'custom_807',
@@ -382,7 +382,9 @@ foreach ($mapper as $Q => $cfID) {
           break;
 
         case 15:
-          $flag = (bool) strstr('Professionals', implode('', $result["Booking_Information.Audience"]));
+        case 18:
+        case 13:
+          $flag = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
           break;
 
         case 16: 
@@ -415,11 +417,6 @@ foreach ($mapper as $Q => $cfID) {
 
         case 24:
           $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');      
-          break;
-
-        case 13:
-        case 18:
-          $flag = !empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]));
           break;
 
         case 6:

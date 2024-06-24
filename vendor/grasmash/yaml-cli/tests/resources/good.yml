@@ -7,4 +7,11 @@ flat-array:
   - two
   - three
 null-value: ~
+<<<<<<< HEAD
 inline-array: [ one, two, three ]
+=======
+inline-array: [ one, two, three ]
+bool-value: true
+int-value: 1
+float-value: 1.0
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498

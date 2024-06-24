@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\tracer;
 
@@ -25,7 +25,11 @@ class TracerPluginManager extends DefaultPluginManager {
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler to invoke the alter hook with.
    */
-  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
+  public function __construct(
+      \Traversable $namespaces,
+      CacheBackendInterface $cache_backend,
+      ModuleHandlerInterface $module_handler,
+  ) {
     parent::__construct('Plugin/Tracer', $namespaces, $module_handler, TracerInterface::class, Tracer::class);
     $this->setCacheBackend($cache_backend, 'tracer_plugins');
     $this->alterInfo('tracer_info');

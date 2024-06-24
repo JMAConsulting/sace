@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Cache;
 
@@ -34,7 +34,7 @@ class CacheFactoryWrapper implements CacheFactoryInterface, ContainerAwareInterf
    */
   public function __construct(
     protected readonly CacheFactoryInterface $cacheFactory,
-    protected readonly CacheDataCollector $cacheDataCollector
+    protected readonly CacheDataCollector $cacheDataCollector,
   ) {
   }
 

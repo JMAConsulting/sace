@@ -24,7 +24,11 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
+<<<<<<< HEAD
           php-version: 8.0
+=======
+          php-version: 8.2
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
           coverage: none
 
       - name: Install dependencies
@@ -53,7 +57,11 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
+<<<<<<< HEAD
           php-version: 8.0
+=======
+          php-version: 8.2
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
           coverage: none
           extensions: intl
 
@@ -63,10 +71,10 @@ jobs:
       - name: Install roave/backward-compatibility-check
         run: |
           mkdir -p tools
-          composer --working-dir=tools require roave/backward-compatibility-check:^5
+          composer --working-dir=tools require roave/backward-compatibility-check:^7
 
       - name: Run roave/backward-compatibility-check
-        run: ./tools/vendor/bin/roave-backward-compatibility-check --from=2.0.1
+        run: ./tools/vendor/bin/roave-backward-compatibility-check --from=3.0.0
 
   tests:
     name: Tests
@@ -83,7 +91,11 @@ jobs:
           - windows-latest
 
         php-version:
+<<<<<<< HEAD
           - "8.0"
+=======
+          - "8.2"
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
         php-ini-values:
           - assert.exception=1, zend.assertions=1
@@ -103,6 +115,12 @@ jobs:
 
           - os: ubuntu-latest
             php-version: "8.1"
+            dependencies: highest
+            codecov: true
+            php-ini-values: assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit_buffer_size=4096M, opcache.jit=1205
+
+          - os: ubuntu-latest
+            php-version: "8.3"
             dependencies: highest
             codecov: true
             php-ini-values: assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit_buffer_size=4096M, opcache.jit=1205

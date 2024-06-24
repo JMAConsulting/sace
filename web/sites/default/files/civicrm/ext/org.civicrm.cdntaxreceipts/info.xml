@@ -12,11 +12,11 @@
     <author>KarinG and DaveD</author>
     <email>frontdesk@semper-it.com</email>
   </maintainer>
-  <releaseDate>2023-06-07</releaseDate>
-  <version>1.8.0</version>
+  <releaseDate>2024-05-02</releaseDate>
+  <version>1.9.1</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>5.57</ver>
+    <ver>5.69</ver>
   </compatibility>
   <urls>
     <url desc="documentation">https://lab.civicrm.org/extensions/cdntaxreceipts/blob/master/README.md</url>

@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+declare(strict_types=1);
+
 namespace Drupal\{{ machine_name }}\Entity;
 
 {% sort %}
@@ -52,6 +54,13 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *       "edit" = "Drupal\{{ machine_name }}\Form\{{ class }}Form",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *       "delete-multiple-confirm" = "Drupal\Core\Entity\Form\DeleteMultipleForm",
+<<<<<<< HEAD
+=======
+{% if revisionable %}
+ *       "revision-delete" = \Drupal\Core\Entity\Form\RevisionDeleteForm::class,
+ *       "revision-revert" = \Drupal\Core\Entity\Form\RevisionRevertForm::class,
+{% endif %}
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
  *     },
  *     "route_provider" = {
 {% if canonical %}
@@ -59,6 +68,12 @@ use Drupal\Core\Entity\EntityChangedTrait;
 {% else %}
  *       "html" = "Drupal\{{ machine_name }}\Routing\{{ class }}HtmlRouteProvider",
 {% endif %}
+<<<<<<< HEAD
+=======
+{% if revisionable %}
+ *       "revision" = \Drupal\Core\Entity\Routing\RevisionHtmlRouteProvider::class,
+{% endif %}
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
  *     },
  *   },
  *   base_table = "{{ entity_type_id }}",
@@ -99,12 +114,17 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *   },
 {% if revisionable %}
  *   revision_metadata_keys = {
+<<<<<<< HEAD
   {% if author_base_field %}
  *     "revision_user" = "revision_uid",
   {% endif %}
   {% if created_base_field %}
  *     "revision_created" = "revision_timestamp",
   {% endif %}
+=======
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
  *     "revision_log_message" = "revision_log",
  *   },
 {% endif %}
@@ -124,6 +144,15 @@ use Drupal\Core\Entity\EntityChangedTrait;
 {% endif %}
  *     "delete-form" = "{{ entity_base_path }}/{{ '{' }}{{ entity_type_id }}{{ '}' }}/delete",
  *     "delete-multiple-form" = "/admin/content/{{ entity_type_id_short|u2h }}/delete-multiple",
+<<<<<<< HEAD
+=======
+{% if revisionable %}
+ *     "revision" = "{{ entity_base_path }}/{{ '{' }}{{ entity_type_id }}{{ '}' }}/revision/{{ '{' }}{{ entity_type_id ~ '_revision' }}{{ '}' }}/view",
+ *     "revision-delete-form" = "{{ entity_base_path }}/{{ '{' }}{{ entity_type_id }}{{ '}' }}/revision/{{ '{' }}{{ entity_type_id ~ '_revision' }}{{ '}' }}/delete",
+ *     "revision-revert-form" = "{{ entity_base_path }}/{{ '{' }}{{ entity_type_id }}{{ '}' }}/revision/{{ '{' }}{{ entity_type_id ~ '_revision' }}{{ '}' }}/revert",
+ *     "version-history" = "{{ entity_base_path }}/{{ '{' }}{{ entity_type_id }}{{ '}' }}/revisions",
+{% endif %}
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
  *   },
 {% if bundle %}
  *   bundle_entity_type = "{{ entity_type_id }}_type",

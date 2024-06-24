@@ -10,6 +10,7 @@
       $(`${field}`).show();
       $(`${fieldset}`).hide();
       $(`${field} .token-input-delete-token`).trigger('click');
+      $(this).parent().hide();
     });
 
     $('#new-org-block').on('click', function (e) {
@@ -17,6 +18,7 @@
       $(`${fieldset}`).show();
       $(`${field}`).hide();
       $(`${field} .token-input-delete-token`).trigger('click');
+      $('#existing-org').parent().show();
     });
 
     $('#edit-civicrm-1-activity-1-cg2-custom-40-customunsure').on('click', function(e) {

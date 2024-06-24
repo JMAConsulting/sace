@@ -105,7 +105,11 @@ class Presenter
      * @param int   $depth   (default: null)
      * @param int   $options One of Presenter constants
      */
+<<<<<<< HEAD
     public function present($value, int $depth = null, int $options = 0): string
+=======
+    public function present($value, ?int $depth = null, int $options = 0): string
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $data = $this->cloner->cloneVar($value, !($options & self::VERBOSE) ? Caster::EXCLUDE_VERBOSE : 0);
 

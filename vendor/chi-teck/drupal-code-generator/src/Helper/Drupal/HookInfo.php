@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 <?php declare(strict_types = 1);
+=======
+<?php
+
+declare(strict_types=1);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace DrupalCodeGenerator\Helper\Drupal;
 
@@ -147,6 +153,7 @@ final class HookInfo extends Helper {
 
     $file_description = self::getFileDescription(self::getFileType($hook_name));
     return <<< TWIG
+<<<<<<< HEAD
         <?php declare(strict_types = 1);
 
         /**
@@ -159,6 +166,22 @@ final class HookInfo extends Helper {
          */
         $hook_template
         TWIG;
+=======
+      <?php
+
+      declare(strict_types=1);
+
+      /**
+       * @file
+       * $file_description
+       */
+
+      /**
+       * Implements hook_$hook_name().
+       */
+      $hook_template
+      TWIG;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
   }
 
   /**

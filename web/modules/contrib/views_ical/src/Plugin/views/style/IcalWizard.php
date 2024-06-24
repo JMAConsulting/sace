@@ -258,6 +258,9 @@ class IcalWizard extends StylePluginBase {
       $calendar->setName($this->view->getTitle());
     }
 
+    // Set correct mimetype.
+    $this->view->getResponse()->headers->set('Content-Type', 'text/calendar; charset=utf-8');
+
     $build =  [
 //      '#markup' => $render,
       '#markup' => $calendar->render(),

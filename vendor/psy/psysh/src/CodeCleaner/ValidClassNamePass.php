@@ -79,8 +79,11 @@ class ValidClassNamePass extends NamespaceAwarePass
     {
         if (self::isConditional($node)) {
             $this->conditionalScopes--;
+<<<<<<< HEAD
 
             return;
+=======
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         }
     }
 
@@ -262,6 +265,7 @@ class ValidClassNamePass extends NamespaceAwarePass
     }
 
     /**
+<<<<<<< HEAD
      * Get a symbol type key for storing in the scope name cache.
      *
      * @deprecated No longer used. Scope type should be passed into ensureCanDefine directly.
@@ -286,6 +290,8 @@ class ValidClassNamePass extends NamespaceAwarePass
     }
 
     /**
+=======
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      * Check whether a class exists, or has been defined in the current code snippet.
      *
      * Gives `self`, `static` and `parent` a free pass.
@@ -347,6 +353,6 @@ class ValidClassNamePass extends NamespaceAwarePass
      */
     protected function createError(string $msg, Stmt $stmt): FatalErrorException
     {
-        return new FatalErrorException($msg, 0, \E_ERROR, null, $stmt->getLine());
+        return new FatalErrorException($msg, 0, \E_ERROR, null, $stmt->getStartLine());
     }
 }

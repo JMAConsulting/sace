@@ -106,11 +106,31 @@ class Container implements DefinitionContainerInterface
         return $this;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @template RequestedType
+     *
+     * @param class-string<RequestedType>|string $id
+     *
+     * @return RequestedType|mixed
+     */
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     public function get($id)
     {
         return $this->resolve($id);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @template RequestedType
+     *
+     * @param class-string<RequestedType>|string $id
+     *
+     * @return RequestedType|mixed
+     */
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     public function getNew($id)
     {
         return $this->resolve($id, true);

@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.9.0](https://github.com/brick/money/releases/tag/0.9.0) - 2023-11-26
+
+💥 **Breaking changes**
+
+- Minimum PHP version is now 8.1
+- `PDOProviderConfiguration` no longer has getters, its properties are `public readonly`
+- `RoundingMode` from `brick/math` is now an enum, so:
+  - all methods accepting an `int` rounding mode now accept a `RoundingMode` instance instead
+  - this should be transparent to your application, as you'll be using the same constants such as `RoundingMode::UP`
+
+## [0.8.1](https://github.com/brick/money/releases/tag/0.8.1) - 2023-09-23
+
+👌 **Improvement**
+
+`Currency` now implements `JsonSerializable` ([#79](https://github.com/brick/money/pull/79)).
+
+Thanks [@joelvh](https://github.com/joelvh)!
+
 ## [0.8.0](https://github.com/brick/money/releases/tag/0.8.0) - 2023-01-16
 
 💥 **Breaking changes**

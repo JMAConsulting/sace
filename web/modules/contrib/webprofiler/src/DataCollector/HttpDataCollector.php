@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -22,7 +22,9 @@ class HttpDataCollector extends DataCollector implements HasPanelInterface {
    * @param \Drupal\webprofiler\Http\HttpClientMiddleware $middleware
    *   The http client middleware.
    */
-  public function __construct(private readonly HttpClientMiddleware $middleware) {
+  public function __construct(
+    private readonly HttpClientMiddleware $middleware,
+  ) {
     $this->data['completed'] = [];
     $this->data['failed'] = [];
   }

@@ -7,7 +7,7 @@ configure: blazy.settings
 dependencies:
   - blazy:blazy
 
-# Information added by Drupal.org packaging script on 2022-12-15
-version: '8.x-2.14'
+# Information added by Drupal.org packaging script on 2024-05-17
+version: '8.x-2.27'
 project: 'blazy'
-datestamp: 1671083288
+datestamp: 1715944094

@@ -2,11 +2,17 @@
 
 namespace Grasmash\YamlCli\Command;
 
+<<<<<<< HEAD
 use Dflydev\DotAccessData\Data;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
+=======
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 /**
  * Class CreateProjectCommand
@@ -15,6 +21,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class LintCommand extends CommandBase
 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     /**
      * {inheritdoc}
      */
@@ -37,7 +47,11 @@ class LintCommand extends CommandBase
      *
      * @return int 0 if everything went fine, or an exit code
      */
+<<<<<<< HEAD
     protected function execute(InputInterface $input, OutputInterface $output)
+=======
+    protected function execute(InputInterface $input, OutputInterface $output): int
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $filename = $input->getArgument('filename');
         $yaml_parsed = $this->loadYamlFile($filename);

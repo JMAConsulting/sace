@@ -5,6 +5,9 @@
  */
 class CRM_Cdntaxreceipts_SourceTest extends CRM_Cdntaxreceipts_Base {
 
+  private $custom_group_id;
+  private $custom_field_id;
+
   public function setUp(): void {
     parent::setUp();
     $this->custom_group_id = $this->callAPISuccess('CustomGroup', 'create', [

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\tracer\Http;
 
@@ -19,7 +19,7 @@ class HttpClientMiddleware {
    *   The tracer service.
    */
   public function __construct(
-    protected readonly TracerInterface $tracer
+    protected readonly TracerInterface $tracer,
   ) {
   }
 

@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+declare(strict_types=1);
+
 namespace DrupalCodeGenerator\Command;
 
 use DrupalCodeGenerator\InputOutput\DefaultOptions;
@@ -25,15 +27,16 @@ final class Navigation extends Command implements IOAwareInterface, LoggerAwareI
 
   /**
    * Menu tree.
-   *
-   * @var array
    */
   private array $menuTree = [];
 
   /**
    * Menu labels.
+<<<<<<< HEAD
    *
    * @var array
+=======
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
    */
   private array $labels = [
     'misc:d7' => 'Drupal 7',
@@ -171,7 +174,11 @@ final class Navigation extends Command implements IOAwareInterface, LoggerAwareI
   }
 
   /**
+<<<<<<< HEAD
    * Sort multi-dimensional array by keys.
+=======
+   * Sort multidimensional array by keys.
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
    *
    * @param array $array
    *   An array being sorted.

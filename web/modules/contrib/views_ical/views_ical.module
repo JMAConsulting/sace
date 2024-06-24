@@ -63,7 +63,7 @@ function views_ical_preprocess_views_view_icalwizard(&$variables) {
 
   // TODO: Need to load library
   $calendar = new Calendar('-//Drupal iCal API//EN');
-  $user_timezone = \drupal_get_user_timezone();
+  $user_timezone = \date_default_timezone_get();
 
   /** @var string $user_timezone */
   $v_timezone = new Timezone($user_timezone);

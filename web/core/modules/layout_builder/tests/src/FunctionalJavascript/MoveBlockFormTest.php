@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\layout_builder\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
@@ -94,7 +96,7 @@ class MoveBlockFormTest extends WebDriverTestBase {
   /**
    * Tests moving a block.
    */
-  public function testMoveBlock() {
+  public function testMoveBlock(): void {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 

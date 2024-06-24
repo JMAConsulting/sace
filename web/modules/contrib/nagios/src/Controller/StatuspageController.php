@@ -108,16 +108,11 @@ class StatuspageController {
   }
 
   private function buildModuleList(int $max_severity): array {
-    \Drupal::moduleHandler()->loadInclude('update', 'inc', 'update.compare');
-    $tmp_projects = update_calculate_project_data(\Drupal::service('update.manager')
-      ->getProjects());
-    $nagios_ignored_modules = $this->config->get('nagios.ignored_modules') ?: [];
-    $nagios_ignored_themes = $this->config->get('nagios.ignored_themes') ?: [];
-    $nagios_ignored_projects = array_flip($nagios_ignored_modules + $nagios_ignored_themes);
+    $tmp_projects = _nagios_get_projects_with_updates($this->config);
     $tmp_modules = '';
     $module_list = [];
     foreach ($tmp_projects as $project_name => $value) {
-      if (!isset($nagios_ignored_projects[$project_name]) && $value['status'] <= $max_severity && $value['status'] >= UpdateManagerInterface::NOT_SECURE) {
+      if ($value['status'] <= $max_severity && $value['status'] >= UpdateManagerInterface::NOT_SECURE) {
         switch ($value['status']) {
           case UpdateManagerInterface::NOT_SECURE:
             $project_status = $this->t('NOT SECURE');

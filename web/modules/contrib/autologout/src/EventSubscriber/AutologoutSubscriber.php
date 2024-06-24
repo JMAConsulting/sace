@@ -5,15 +5,15 @@ namespace Drupal\autologout\EventSubscriber;
 use Drupal\autologout\AutologoutManagerInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Theme\ThemeManager;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Defines autologout Subscriber.
@@ -25,49 +25,49 @@ class AutologoutSubscriber implements EventSubscriberInterface {
    *
    * @var \Drupal\autologout\AutologoutManagerInterface
    */
-  protected $autoLogoutManager;
+  protected AutologoutManagerInterface $autoLogoutManager;
 
   /**
    * The user account service.
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $currentUser;
+  protected AccountInterface $currentUser;
 
   /**
    * The Config service.
    *
    * @var \Drupal\Core\Config\ConfigFactory
    */
-  protected $config;
+  protected ConfigFactory $config;
 
   /**
    * The theme manager service.
    *
    * @var \Drupal\Core\Theme\ThemeManager
    */
-  protected $theme;
+  protected ThemeManager $theme;
 
   /**
    * The Time Service.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
    */
-  protected $time;
+  protected TimeInterface $time;
 
   /**
    * The request stacks service.
    *
    * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  protected $requestStack;
+  protected RequestStack $requestStack;
 
   /**
    * The language manager.
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
-  protected $languageManager;
+  protected LanguageManagerInterface $languageManager;
 
   /**
    * Constructs an AutologoutSubscriber object.
@@ -132,7 +132,12 @@ class AutologoutSubscriber implements EventSubscriberInterface {
       $parse_url = parse_url($referer, PHP_URL_QUERY);
       // If http referer url has 'destination' and session is not set,
       // then only redirect to user page if uid dosen't match.
-      if ($parse_url !== NULL && (strpos($parse_url, 'destination') !== FALSE) && empty($auto_redirect)) {
+      if (
+        $parse_url !== NULL &&
+        (strpos($parse_url, 'destination') !== FALSE &&
+        strpos($parse_url, 'destinations') === FALSE) &&
+        empty($auto_redirect)
+      ) {
         parse_str($parse_url, $output);
         $destination_uid = explode("/", $output['destination']);
 
@@ -169,9 +174,10 @@ class AutologoutSubscriber implements EventSubscriberInterface {
     $is_altlogout = strpos($event->getRequest()->getRequestUri(), '/autologout_alt_logout') !== FALSE;
 
     // We need a backup plan if JS is disabled.
-    if (!$is_altlogout && !$refresh_only && isset($_SESSION['autologout_last'])) {
+    $session = $this->requestStack->getCurrentRequest()->getSession()->get('autologout_last');
+    if (!$is_altlogout && !$refresh_only && isset($session)) {
       // If time since last access is > timeout + padding, log them out.
-      $diff = $now - $_SESSION['autologout_last'];
+      $diff = $now - $session;
       if ($diff >= ($timeout + (int) $timeout_padding)) {
         $autologout_manager->logout();
         // User has changed so force Drupal to remake decisions based on user.
@@ -183,18 +189,18 @@ class AutologoutSubscriber implements EventSubscriberInterface {
         $autologout_manager->inactivityMessage();
       }
       else {
-        $_SESSION['autologout_last'] = $now;
+        $this->requestStack->getCurrentRequest()->getSession()->set('autologout_last', $now);
       }
     }
     else {
-      $_SESSION['autologout_last'] = $now;
+      $this->requestStack->getCurrentRequest()->getSession()->set('autologout_last', $now);
     }
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events[KernelEvents::REQUEST][] = ['onRequest', 100];
 
     return $events;

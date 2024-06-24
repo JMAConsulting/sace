@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "338ce4b80d57c0a055bd5edd55611dca",
+=======
+    "content-hash": "a9c6f617e289f95553c5b68103e8b637",
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     "packages": [
         {
             "name": "chi-teck/drupal-code-generator",
@@ -149,6 +153,7 @@
         },
         {
             "name": "consolidation/annotated-command",
+<<<<<<< HEAD
             "version": "4.9.1",
             "source": {
                 "type": "git",
@@ -159,6 +164,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/e01152f698eff4cb5df3ebfe5e097ef335dbd3c9",
                 "reference": "e01152f698eff4cb5df3ebfe5e097ef335dbd3c9",
+=======
+            "version": "4.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/consolidation/annotated-command.git",
+                "reference": "b5255dcbee1de95036185062a103dabc622224de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/b5255dcbee1de95036185062a103dabc622224de",
+                "reference": "b5255dcbee1de95036185062a103dabc622224de",
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
                 "shasum": ""
             },
             "require": {
@@ -199,9 +216,15 @@
             "description": "Initialize Symfony Console commands from annotated command class methods.",
             "support": {
                 "issues": "https://github.com/consolidation/annotated-command/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/consolidation/annotated-command/tree/4.9.1"
             },
             "time": "2023-05-20T04:19:01+00:00"
+=======
+                "source": "https://github.com/consolidation/annotated-command/tree/4.9.2"
+            },
+            "time": "2023-12-26T14:30:50+00:00"
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         },
         {
             "name": "consolidation/config",
@@ -7688,5 +7711,9 @@
     "platform-overrides": {
         "php": "8.1"
     },
+<<<<<<< HEAD
     "plugin-api-version": "2.3.0"
+=======
+    "plugin-api-version": "2.6.0"
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 }

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 uuid: null
+=======
+uuid: 7a181762-0676-4c28-922b-70c6573ccdd9
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 langcode: en
 status: true
 dependencies:
@@ -8,6 +12,9 @@ dependencies:
 name: 'Webform (Default) - DO NOT EDIT'
 format: webform_default
 weight: 100
+<<<<<<< HEAD
 roles:
   - authenticated
+=======
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 filters: {  }

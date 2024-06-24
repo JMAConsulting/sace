@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\EventListener;
 
@@ -71,7 +71,11 @@ class ProfilerListener implements EventSubscriberInterface {
    * @param \Symfony\Component\HttpFoundation\RequestMatcherInterface|null $matcher
    *   The request matcher.
    */
-  public function __construct(Profiler $profiler, RequestStack $requestStack, RequestMatcherInterface $matcher = NULL) {
+  public function __construct(
+    Profiler $profiler,
+    RequestStack $requestStack,
+    RequestMatcherInterface $matcher = NULL,
+  ) {
     $this->profiler = $profiler;
     $this->matcher = $matcher;
     $this->profiles = new \SplObjectStorage();

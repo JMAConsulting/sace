@@ -45,6 +45,7 @@
 
 - github      : AHowiller
   name        : Andreas Howiller
+  organization: civiservice.de
 
 - github      : ajdavis
   name        : A. Jesse Jiryu Davis
@@ -161,7 +162,9 @@
 - github      : AsylumSeekersCentre
   name        : Asylum Seekers Centre
 
-- github      : avall-llovera
+- github      : avallllovera
+  name        : Albert Vall-Llovera
+  organization: iXiam
 
 - github      : artfulrobot
   name        : Rich Lott
@@ -196,6 +199,10 @@
 - github      : bastienho
   name        : Bastien Ho
   organization: N.O.U.S. Open Usefull and Simple
+
+- github      : bb
+  name        : Benjamin Bock
+  organization: European Centre for Press and Media Freedom (ECPMF)
 
 - github      : bdpfreizeiten
   name        : David Geisel
@@ -255,6 +262,8 @@
   name        : Joan Cervan Andreu
   organization: calbasi.net
 
+- github      : cdhassell
+
 - name        : Cath O'Connell
 
 - github      : chagrawil
@@ -275,6 +284,10 @@
 
 - name        : Cheryl Chase
   organization: Mathias Consulting
+
+- github      : chriscant
+  organization: PHD Computer Consultants Ltd
+  name        : Chris Cant
 
 - github      : chrisgaraffa
   name        : Chris Garaffa
@@ -318,6 +331,10 @@
 - github      : coolbit
   name        : Chandana Bandara
   organization: CompuCorp
+
+- github      : crusonweb
+  name        : Dan Cruson
+  organization: CrusonWeb
 
 - github      : CsarRamos
   name        : César Ramos
@@ -378,7 +395,10 @@
 
 - github      : detsieber
   name        : Detlev Sieber
-  organization: Digitalcourage
+  organization: civiservice.de
+
+- github      : devappsoftware
+  organization: DevApp
 
 - github      : devarun
   name        : Arun Singh
@@ -529,6 +549,9 @@
 
 - github      : francescbassas
   name        : Francesc Bassas i Bullich
+
+- github      : franslyml
+  name        : Fransly
 
 - github      : freeform-sg
   organization: Freeform Solutions
@@ -724,6 +747,9 @@
   name        : Josh Corlew
   organization: AGH Strategies
 
+- github      : JamesBugden314
+  name        : James Bugden
+
 - name        : Jane Hanley
   organization: AGH Strategies
 
@@ -823,6 +849,10 @@
   name        : Justin Freeman
   organization: Agileware
 
+- github      : justinmosier
+  name        : Justin Mosier
+  organization: Mosier Consulting
+
 - github      : jvos
 
 - github      : kainuk
@@ -832,6 +862,10 @@
 - github      : Kajakaran
   name        : Kajakaran Balakrishnan
   organization: Veda Consulting
+
+- github      : kapn1966
+  name        : Keith Nunn
+  organization: kapn*net Technology Services
 
 - github      : kartik1000
   name        : Kartik Kathuria
@@ -976,7 +1010,8 @@
 - name        : Manish Zope
 
 - github      : mariav0
-  name        : Maria
+  name        : Maria Vogel
+  organization: civiservice.de
 
 - github      : marcusjwilson
   name        : Marcus J Wilson
@@ -1066,6 +1101,9 @@
 
 - name        : Mick Collopy
 
+- github      : midtsveen
+  name        : Erik Midtsveen
+
 - github      : mihaelmladenov
   name        : Mihael Mladenov
 
@@ -1092,6 +1130,10 @@
 - github      : mlutfy
   name        : Mathieu Lutfy
   organization: Coop SymbioTIC
+
+  github      : 19ATf72
+  name        : Micah Hobby
+  organization: Circle Interactive
 
 - github      : michau
   name        : Michal Mach
@@ -1180,14 +1222,18 @@
 - github      : olivierh65
   name        : Olivier Hertrich
 
+- github      : omarlopesino
+  name        : Omar Mohamad
+  organization: MetaDrop
+
 - github      : otetard
   name        : Olivier Tétard
 
 - github      : nowszy
   name        : Pawel Nowak
 
-- github       : pboling
-  name         : Peter Boling
+- github      : pboling
+  name        : Peter Boling
 
 - name        : Peter Bull
 
@@ -1210,6 +1256,9 @@
 
 - github      : prondubuisi
   name        : Onyemenam Ndubuisi
+
+- github      : PrzemyslawTabor
+  name        : Przemysław Tabor
 
 - name        : Richard Edgar
 
@@ -1235,6 +1284,10 @@
 
 - name        : Patrick Corbett
   organization: Redfin Solutions
+
+- github      : patricklam
+  name        : Patrick Lam
+  organization: University of Waterloo
 
 - name        : Paul Barmak
 
@@ -1280,6 +1333,8 @@
 
 - github      : quimgil
   name        : Quim Gil
+
+- github      : ranjit-git
 
 - name        : Rareș Pamfil
 
@@ -1379,6 +1434,8 @@
   organization: Coop SymbioTIC
 
 - github      : sebalis
+  name        : Sebastian Lisken
+  organization: civiservice.de
 
 - github      : simonjohnparker
   name        : Simon John Parker
@@ -1411,10 +1468,6 @@
 - github      : seanmadsen
   name        : Sean Madsen
   organization: Left Join Labs
-
-- github      : sebalis
-  name        : Sebastian Lisken
-  organization: civiservice.de
 
 - github      : semseysandor
   name        : Sandor Semsey
@@ -1503,6 +1556,12 @@
 
 - name        : Bashar Makhay
 
+- github      : technomaz
+  name        : Mark
+
+- github      : TomRosenbloom
+  name        : Tom Rosenbloom
+
 - github      : trakos
   name        : Piotr Stankowski
 
@@ -1525,6 +1584,7 @@
 
 - github      : TobiasVoigt
   name        : Tobias Voigt
+  organization: civiservice.de
 
 - name        : Thomas Mannell
   organization: Registered Nurses' Association of Ontario
@@ -1604,6 +1664,10 @@
 - github      : varshith
   name        : Vinu Varshith Sekar
   organization: CompuCorp
+
+- github      : vinay-osseed
+  name        : Vinay Gawade
+  organization: OSSeed Technologies LLP
 
 - github      : vinuvarshith
   name        : Vinu Varshith Sekar
@@ -1700,6 +1764,8 @@
 
 - github      : YesusHDS
 
+- github      : yurg
+
 - github      : Toby-fz
   name        : Toby Messerli
   organization: Fuzion
@@ -1710,10 +1776,12 @@
 
 - github      : jofranz
   name        : Johannes Franz
-  organization: SYSTOPIA
+  organization: Systopia
 
 - github      : mikeybeck
   name        : Mike Beck
   organization: Fuzion
 
 - github      : ziljah
+
+- github      : 19ATF72

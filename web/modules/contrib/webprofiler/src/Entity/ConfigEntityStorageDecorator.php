@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Entity;
 
@@ -24,7 +24,9 @@ class ConfigEntityStorageDecorator extends EntityDecorator implements ConfigEnti
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $config_entity_storage
    *   The config entity storage to decorate.
    */
-  final public function __construct(ConfigEntityStorageInterface $config_entity_storage) {
+  final public function __construct(
+    ConfigEntityStorageInterface $config_entity_storage,
+  ) {
     parent::__construct($config_entity_storage);
 
     $this->entities = [];

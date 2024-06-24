@@ -5,7 +5,6 @@ services:
 
   tracer.tracer_factory:
     class: Drupal\tracer\TracerFactory
-    arguments: [ '@plugin.manager.tracer' ]
 
   tracer.tracer:
     class: Drupal\tracer\TracerInterface

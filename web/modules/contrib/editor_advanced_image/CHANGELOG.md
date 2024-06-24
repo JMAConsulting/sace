@@ -5,6 +5,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- fix latests phpcs latests changes
+
+### Added
+- add coverage of Drupal 10.1.x
+- add coverage of Drupal 10.2.x
+- add Drupal GitlabCI
+- add eslitrc.json from Drupal Core
+- add styleintrc.json from Drupal core
+- add cpsell project words for Gitlab-CI
+- add phpstan.neon in order to ignore new static() errors
+
+### Fixed
+- fix missing force execution in in order to set attributes even when the Balloon form has still not been used - Issue #3337618 by mvogel
+
+## [2.2.0] - 2023-10-17
+### Added
+- CKEditor 5: Allow disabling the Balloon - Issue #3337623 by mvogel, wengerk
+- CKEditor 5: automatically apply configured default CSS class - Issue #3337618 by mvogel
+
+### Fixed
+- fix running tests on multiple Drupal (9 & 10) with CKEditor4to5UpgradeCompletenessTest
+
+### Changed
+- improve UI of the EAI Ballon form Panel
+
+### Removed
+- remove hard dependency on ckeditor4 - #3337628
+- remove hard dependency on ckeditor5 - #3337628
 
 ## [2.1.0] - 2023-01-16
 ### Added
@@ -59,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - First draft.
 
-[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.1...HEAD
+[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.2...HEAD
+[2.2.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.1...8.x-2.2
 [2.1.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.0...8.x-2.1
 [2.0.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.0-beta1...8.x-2.0
 [2.0.0-beta1]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-1.0-beta5...8.x-2.0-beta1

@@ -21,7 +21,11 @@ class BreakException extends \Exception implements Exception
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function __construct($message = '', $code = 0, \Throwable $previous = null)
+=======
+    public function __construct($message = '', $code = 0, ?\Throwable $previous = null)
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->rawMessage = $message;
         parent::__construct(\sprintf('Exit:  %s', $message), $code, $previous);

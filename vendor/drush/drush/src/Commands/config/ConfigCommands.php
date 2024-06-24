@@ -26,6 +26,10 @@ use Drush\Exec\ExecTrait;
 use Drush\SiteAlias\SiteAliasManagerAwareInterface;
 use Drush\Utils\FsUtils;
 use Drush\Utils\StringUtils;
+<<<<<<< HEAD
+=======
+use JetBrains\PhpStorm\Deprecated;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Helper\Table;
@@ -276,7 +280,11 @@ final class ConfigCommands extends DrushCommands implements StdinAwareInterface,
     }
 
     /**
+<<<<<<< HEAD
      * Display status of configuration (differences between the filesystem configuration and database configuration).
+=======
+     * Display status of configuration (differences between the filesystem and database).
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
      */
     #[CLI\Command(name: self::STATUS, aliases: ['cst', 'config-status'])]
     #[CLI\Option(name: 'state', description: 'A comma-separated list of states to filter results.')]
@@ -486,6 +494,10 @@ final class ConfigCommands extends DrushCommands implements StdinAwareInterface,
     /**
      * Validate that a config name is valid.
      */
+<<<<<<< HEAD
+=======
+    #[Deprecated('Use CLI/ValidateConfigName Attribute instead')]
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR, selector: self::VALIDATE_CONFIG_NAME)]
     public function validateConfigName(CommandData $commandData): ?CommandError
     {

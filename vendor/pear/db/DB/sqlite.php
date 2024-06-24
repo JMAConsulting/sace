@@ -21,7 +21,6 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0 3.0
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -517,7 +516,7 @@ class DB_sqlite extends DB_common
         if (DB::isError($result)) {
             return($result);
         }
-        $query   = "CREATE TRIGGER ${seqname}_cleanup AFTER INSERT ON $seqname
+        $query   = "CREATE TRIGGER {$seqname}_cleanup AFTER INSERT ON $seqname
                     BEGIN
                         DELETE FROM $seqname WHERE id<LAST_INSERT_ROWID();
                     END ";

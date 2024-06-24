@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Entity;
 
@@ -23,7 +23,9 @@ class EntityViewBuilderDecorator extends EntityDecorator implements EntityHandle
    * @param \Drupal\Core\Entity\EntityViewBuilderInterface $config_entity_storage
    *   The config entity storage to decorate.
    */
-  final public function __construct(EntityViewBuilderInterface $config_entity_storage) {
+  final public function __construct(
+    EntityViewBuilderInterface $config_entity_storage,
+  ) {
     parent::__construct($config_entity_storage);
 
     $this->entities = [];

@@ -6,7 +6,10 @@ use Dflydev\DotAccessData\Data;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+<<<<<<< HEAD
 use Symfony\Component\Yaml\Yaml;
+=======
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 /**
  * Class CreateProjectCommand
@@ -15,6 +18,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class UnsetKeyCommand extends CommandBase
 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     /**
      * {inheritdoc}
      */
@@ -42,7 +49,11 @@ class UnsetKeyCommand extends CommandBase
      *
      * @return int 0 if everything went fine, or an exit code
      */
+<<<<<<< HEAD
     protected function execute(InputInterface $input, OutputInterface $output)
+=======
+    protected function execute(InputInterface $input, OutputInterface $output): int
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $filename = $input->getArgument('filename');
         $key = $input->getArgument('key');

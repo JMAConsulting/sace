@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Controller;
 
@@ -68,7 +68,13 @@ class ProfilerController extends ControllerBase {
    * @param \Drupal\webprofiler\Csp\ContentSecurityPolicyHandler $cspHandler
    *   The Content-Security-Policy service.
    */
-  final public function __construct(UrlGeneratorInterface $generator, Profiler $profiler, RendererInterface $renderer, TemplateManager $templateManager, ContentSecurityPolicyHandler $cspHandler) {
+  final public function __construct(
+    UrlGeneratorInterface $generator,
+    Profiler $profiler,
+    RendererInterface $renderer,
+    TemplateManager $templateManager,
+    ContentSecurityPolicyHandler $cspHandler,
+  ) {
     $this->generator = $generator;
     $this->profiler = $profiler;
     $this->renderer = $renderer;

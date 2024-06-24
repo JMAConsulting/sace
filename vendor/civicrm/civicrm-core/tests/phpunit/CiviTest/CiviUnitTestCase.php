@@ -25,8 +25,9 @@
  *   License along with this program.  If not, see
  *   <http://www.gnu.org/licenses/>.
  */
-
+declare(strict_types = 1);
 use Civi\Api4\Address;
+use Civi\Api4\CiviCase;
 use Civi\Api4\Contribution;
 use Civi\Api4\CustomField;
 use Civi\Api4\CustomGroup;
@@ -44,10 +45,11 @@ use Civi\Api4\UFGroup;
 use Civi\Core\Transaction\Manager;
 use Civi\Payment\System;
 use Civi\Api4\OptionValue;
-use Civi\Test\Api3DocTrait;
+use Civi\Test\Api3TestTrait;
 use Civi\Test\ContactTestTrait;
 use Civi\Test\DbTestTrait;
 use Civi\Test\EventTestTrait;
+use Civi\Test\FormTrait;
 use Civi\Test\GenericAssertionsTrait;
 use Civi\Test\LocaleTestTrait;
 use Civi\Test\MailingTestTrait;
@@ -79,13 +81,14 @@ define('API_LATEST_VERSION', 3);
  */
 class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
 
-  use Api3DocTrait;
+  use Api3TestTrait;
   use EventTestTrait;
   use GenericAssertionsTrait;
   use DbTestTrait;
   use ContactTestTrait;
   use MailingTestTrait;
   use LocaleTestTrait;
+  use FormTrait;
 
   /**
    * API version in use.
@@ -108,9 +111,14 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   protected $tempDirs;
 
   /**
-   * @var CRM_Core_Transaction|null
+   * @var CRM_Core_Transaction
    */
-  private $tx = NULL;
+  private $tx;
+
+  /**
+   * @var array
+   */
+  protected $originalSettings = [];
 
   /**
    * Array of IDs created to support the test.
@@ -197,6 +205,11 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   protected $formController;
 
   /**
+   * @var \CRM_Utils_AutoClean
+   */
+  private $frozenTime;
+
+  /**
    *  Constructor.
    *
    *  Because we are overriding the parent class constructor, we
@@ -222,6 +235,40 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     if (function_exists('_civix_phpunit_setUp')) {
       // FIXME: loosen coupling
       _civix_phpunit_setUp();
+    }
+  }
+
+  /**
+   * @param array $formValues
+   * @param string $identifier
+   *
+   * @return void
+   */
+  public function caseCreate(array $formValues, string $identifier): void {
+    if (!CRM_Core_Session::getLoggedInContactID()) {
+      $this->createLoggedInUser();
+    }
+    $this->getTestForm('CRM_Case_Form_Case',
+      array_merge([
+        'activity_subject' => 'Case Subject',
+        'case_type_id' => 1,
+        'status_id' => 1,
+        'case_type' => 'housing_support',
+        'subject' => 'Case Subject',
+        'start_date' => date('Y-m-d'),
+        'start_date_time' => date('YmdHis'),
+        'medium_id' => 2,
+        'activity_details' => '',
+      ], $formValues),
+      ['cid' => $formValues['client_id']]
+    )->processForm();
+    try {
+      $this->ids['Case'][$identifier] = CiviCase::get(FALSE)
+        ->addOrderBy('id', 'DESC')
+        ->execute()->first()['id'];
+    }
+    catch (CRM_Core_Exception $e) {
+      $this->fail('Case not retrieved');
     }
   }
 
@@ -285,8 +332,6 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     parent::setUp();
     CRM_Core_Session::singleton()->set('userID');
 
-    $this->_apiversion = 3;
-
     //  Use a temporary file for STDIN
     $GLOBALS['stdin'] = tmpfile();
     if ($GLOBALS['stdin'] === FALSE) {
@@ -333,6 +378,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     $this->renameLabels();
     $this->ensureMySQLMode(['IGNORE_SPACE', 'ERROR_FOR_DIVISION_BY_ZERO', 'STRICT_TRANS_TABLES']);
     putenv('CIVICRM_SMARTY_DEFAULT_ESCAPE=1');
+    $this->originalSettings = \Civi::settings()->all();
   }
 
   /**
@@ -451,6 +497,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   protected function tearDown(): void {
     $this->_apiversion = 3;
     $this->resetLabels();
+    $this->frozenTime = NULL;
 
     error_reporting(E_ALL & ~E_NOTICE);
     $this->resetHooks();
@@ -495,6 +542,13 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     }
     unset(CRM_Core_Config::singleton()->userPermissionClass->permissions);
     parent::tearDown();
+  }
+
+  /**
+   * @param string $setting
+   */
+  protected function revertSetting(string $setting): void {
+    \Civi::settings()->set($setting, $this->originalSettings[$setting]);
   }
 
   /**
@@ -567,7 +621,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    *
    * @return int
    */
-  public function membershipTypeCreate(array $params = [], $identifer = 'test'): int {
+  public function membershipTypeCreate(array $params = [], string $identifer = 'test'): int {
     CRM_Member_PseudoConstant::flush('membershipType');
     CRM_Core_Config::clearDBCache();
     $this->setupIDs['contact'] = $memberOfOrganization = $this->organizationCreate();
@@ -584,11 +638,10 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'visibility' => 'Public',
     ], $params);
 
-    $result = $this->callAPISuccess('MembershipType', 'Create', $params);
+    $result = $this->createTestEntity('MembershipType', $params, $identifer);
 
     CRM_Member_PseudoConstant::flush('membershipType');
     CRM_Utils_Cache::singleton()->flush();
-    $this->ids['MembershipType'][$identifer] = (int) $result['id'];
     return (int) $result['id'];
   }
 
@@ -744,36 +797,6 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   }
 
   /**
-   * Create test Authorize.net instance.
-   *
-   * @param array $params
-   *
-   * @return int
-   */
-  public function paymentProcessorAuthorizeNetCreate(array $params = []): int {
-    $params = array_merge([
-      'name' => 'Authorize',
-      'domain_id' => CRM_Core_Config::domainID(),
-      'payment_processor_type_id' => 'AuthNet',
-      'title' => 'AuthNet',
-      'is_active' => 1,
-      'is_default' => 0,
-      'is_test' => 1,
-      'is_recur' => 1,
-      'user_name' => '4y5BfuW7jm',
-      'password' => '4cAmW927n8uLf5J8',
-      'url_site' => 'https://test.authorize.net/gateway/transact.dll',
-      'url_recur' => 'https://apitest.authorize.net/xml/v1/request.api',
-      'class_name' => 'Payment_AuthorizeNet',
-      'billing_mode' => 1,
-    ], $params);
-
-    $result = $this->callAPISuccess('PaymentProcessor', 'create', $params);
-    $this->ids['PaymentProcessor']['authorize_net'] = (int) $result['id'];
-    return (int) $result['id'];
-  }
-
-  /**
    * Create Participant.
    *
    * @param array $params
@@ -794,7 +817,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'status_id' => 2,
       'role_id' => 1,
       'register_date' => 20070219,
-      'source' => 'Wimbeldon',
+      'source' => 'Wimbledon',
       'event_level' => 'Payment',
       'debug' => 1,
     ];
@@ -815,19 +838,19 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'domain_id' => 1,
       'name' => 'Dummy',
       'title' => 'Dummy',
-      'payment_processor_type_id' => 'Dummy',
+      'payment_processor_type_id:name' => 'Dummy',
       'financial_account_id' => 12,
       'is_test' => TRUE,
       'is_active' => 1,
       'user_name' => '',
-      'url_site' => 'http://dummy.com',
-      'url_recur' => 'http://dummy.com',
+      'url_site' => 'https://dummy.com',
+      'url_recur' => 'https://dummy.com',
       'billing_mode' => 1,
       'sequential' => 1,
-      'payment_instrument_id' => 'Debit Card',
+      'payment_instrument_id:name' => 'Debit Card',
     ];
     $processorParams = array_merge($processorParams, $params);
-    $processor = $this->callAPISuccess('PaymentProcessor', 'create', $processorParams);
+    $processor = $this->createTestEntity('PaymentProcessor', $processorParams, 'dummy');
     return $processor['id'];
   }
 
@@ -854,13 +877,13 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   /**
    * Create contribution page.
    *
-   * @param array $params
+   * @param array $contributionPageValues
    * @param string $identifier
    *
    * @return array
    *   Array of contribution page
    */
-  public function contributionPageCreate(array $params = [], string $identifier = 'test'): array {
+  public function contributionPageCreate(array $contributionPageValues = [], string $identifier = 'test'): array {
     return $this->createTestEntity('ContributionPage', array_merge([
       'title' => 'Test Contribution Page',
       'financial_type_id:name' => 'Donation',
@@ -870,7 +893,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'is_allow_other_amount' => 1,
       'min_amount' => 10,
       'max_amount' => 1000,
-    ], $params), $identifier);
+    ], $contributionPageValues), $identifier);
   }
 
   /**
@@ -903,6 +926,19 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     $params = array_merge($defaults, $params);
     $result = $this->callAPISuccess('Tag', 'create', $params);
     return $result['values'][$result['id']];
+  }
+
+  /**
+   * Temporarily freeze time, as perceived through `CRM_Utils_Time`.
+   */
+  protected function useFrozenTime(): void {
+    $oldTimeFunc = getenv('TIME_FUNC');
+    putenv('TIME_FUNC=frozen');
+    CRM_Utils_Time::setTime(date('Y-m-d H:i:s'));
+    $this->frozenTime = CRM_Utils_AutoClean::with(function () use ($oldTimeFunc) {
+      putenv($oldTimeFunc === NULL ? 'TIME_FUNC' : "TIME_FUNC=$oldTimeFunc");
+      CRM_Utils_Time::resetTime();
+    });
   }
 
   /**
@@ -943,13 +979,13 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    */
   public function pledgeCreate(array $params): int {
     $params = array_merge([
-      'pledge_create_date' => date('Ymd'),
+      'create_date' => date('Ymd'),
       'start_date' => date('Ymd'),
       'scheduled_date' => date('Ymd'),
       'amount' => 100.00,
-      'pledge_status_id' => '2',
+      'status_id' => '2',
       'financial_type_id' => '1',
-      'pledge_original_installment_amount' => 20,
+      'original_installment_amount' => 20,
       'frequency_interval' => 5,
       'frequency_unit' => 'year',
       'frequency_day' => 15,
@@ -957,7 +993,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     ],
       $params);
 
-    $result = $this->callAPISuccess('Pledge', 'create', $params);
+    $result = $this->createTestEntity('Pledge', $params);
     return $result['id'];
   }
 
@@ -1430,7 +1466,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   public function entityCustomGroupWithSingleFieldCreate($function, $filename): array {
     $params = ['title' => $function];
     $entity = substr(basename($filename), 0, strlen(basename($filename)) - 8);
-    $params['extends'] = $entity ? $entity : 'Contact';
+    $params['extends'] = $entity ?: 'Contact';
     $customGroup = $this->customGroupCreate($params);
     $customField = $this->customFieldCreate(['custom_group_id' => $customGroup['id'], 'label' => $function]);
     CRM_Core_PseudoConstant::flush();
@@ -1453,7 +1489,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   public function entityCustomGroupWithSingleStringMultiSelectFieldCreate($function, $filename) {
     $params = ['title' => $function];
     $entity = substr(basename($filename), 0, strlen(basename($filename)) - 8);
-    $params['extends'] = $entity ? $entity : 'Contact';
+    $params['extends'] = $entity ?: 'Contact';
     $customGroup = $this->customGroupCreate($params);
     $customField = $this->customFieldCreate(['custom_group_id' => $customGroup['id'], 'label' => $function, 'html_type' => 'Multi-Select', 'default_value' => 1]);
     CRM_Core_PseudoConstant::flush();
@@ -1649,6 +1685,9 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'civicrm_price_set_entity',
       'civicrm_price_field_value',
       'civicrm_price_field',
+      'civicrm_product',
+      'civicrm_premiums',
+      'civicrm_premiums_product',
     ];
     $this->quickCleanup($tablesToTruncate);
     CRM_Core_DAO::executeQuery("DELETE FROM civicrm_membership_status WHERE name NOT IN('New', 'Current', 'Grace', 'Expired', 'Pending', 'Cancelled', 'Deceased')");
@@ -1675,6 +1714,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     $this->organizeOptionValues();
     CRM_Core_PseudoConstant::flush('taxRates');
     System::singleton()->flushProcessors();
+    CRM_Core_BAO_ConfigSetting::enableComponent('CiviMember');
     // @fixme this parameter is leaking - it should not be defined as a class static
     // but for now we just handle in tear down.
     CRM_Contribute_BAO_Query::$_contribOrSoftCredit = 'only contribs';
@@ -1685,6 +1725,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    */
   public function restoreDefaultPriceSetConfig(): void {
     CRM_Core_DAO::executeQuery("DELETE FROM civicrm_price_set WHERE name NOT IN('default_contribution_amount', 'default_membership_type_amount')");
+    CRM_Core_DAO::executeQuery('UPDATE civicrm_price_set SET is_quick_config = 1, is_active = 1');
     CRM_Core_DAO::executeQuery("UPDATE civicrm_price_set SET id = 1 WHERE name ='default_contribution_amount'");
     CRM_Core_DAO::executeQuery("INSERT INTO `civicrm_price_field` (`id`, `price_set_id`, `name`, `label`, `html_type`, `is_enter_qty`, `help_pre`, `help_post`, `weight`, `is_display_amounts`, `options_per_line`, `is_active`, `is_required`, `active_on`, `expire_on`, `javascript`, `visibility_id`) VALUES (1, 1, 'contribution_amount', 'Contribution Amount', 'Text', 0, NULL, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, 1)");
     CRM_Core_DAO::executeQuery("INSERT INTO `civicrm_price_field_value` (`id`, `price_field_id`, `name`, `label`, `description`, `amount`, `count`, `max_value`, `weight`, `membership_type_id`, `membership_num_terms`, `is_default`, `is_active`, `financial_type_id`, `non_deductible_amount`) VALUES (1, 1, 'contribution_amount', 'Contribution Amount', NULL, '1', NULL, NULL, 1, NULL, NULL, 0, 1, 1, 0.00)");
@@ -1784,10 +1825,10 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     $fields = $this->callAPISuccess($entity, 'getfields', ['version' => 3, 'action' => 'get']);
     foreach ($fields['values'] as $field => $settings) {
       if (array_key_exists($field, $result)) {
-        $keys[CRM_Utils_Array::value('name', $settings, $field)] = $field;
+        $keys[($settings['name'] ?? $field)] = $field;
       }
       else {
-        $keys[CRM_Utils_Array::value('name', $settings, $field)] = CRM_Utils_Array::value('name', $settings, $field);
+        $keys[($settings['name'] ?? $field)] = ($settings['name'] ?? $field);
       }
       $type = $settings['type'] ?? NULL;
       if ($type === CRM_Utils_Type::T_DATE) {
@@ -1824,7 +1865,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       }
       if (in_array($key, $dateTimeFields, TRUE)) {
         $value = date('Y-m-d H:i:s', strtotime($value));
-        $result[$keys[$key]] = date('Y-m-d H:i:s', strtotime(CRM_Utils_Array::value($keys[$key], $result, CRM_Utils_Array::value($key, $result))));
+        $result[$keys[$key]] = date('Y-m-d H:i:s', strtotime(($result[$keys[$key]] ?? $result[$key])));
       }
       $this->assertEquals($value, $result[$keys[$key]], $key . " GetandCheck function determines that for key {$key} value: " . print_r($value, TRUE) . " doesn't match " . print_r($result[$keys[$key]], TRUE) . $errorText);
     }
@@ -2128,10 +2169,11 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    * & the best protection against that is the functions this class affords
    *
    * @param array $params
+   * @param string $identifier
    *
    * @return int $result['id'] payment processor id
    */
-  public function paymentProcessorCreate($params = []) {
+  public function paymentProcessorCreate(array $params = [], string $identifier = 'test'): int {
     $params = array_merge([
       'title' => $params['name'] ?? 'demo',
       'domain_id' => CRM_Core_Config::domainID(),
@@ -2150,7 +2192,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'financial_type_id' => 1,
       'financial_account_id' => 12,
       // Credit card = 1 so can pass 'by accident'.
-      'payment_instrument_id' => 'Debit Card',
+      'payment_instrument_id:name' => 'Debit Card',
     ], $params);
     if (!is_numeric($params['payment_processor_type_id'])) {
       // really the api should handle this through getoptions but it's not exactly api call so lets just sort it
@@ -2160,7 +2202,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
         'return' => 'id',
       ], 'integer');
     }
-    $result = $this->callAPISuccess('payment_processor', 'create', $params);
+    $result = $this->createTestEntity('PaymentProcessor', $params, $identifier);
     return $result['id'];
   }
 
@@ -2184,20 +2226,23 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    *
    * @param array $recurParams (Optional)
    * @param array $contributionParams (Optional)
+   * @param string $identifier
    */
-  public function setupRecurringPaymentProcessorTransaction(array $recurParams = [], array $contributionParams = []): void {
-    $this->ids['campaign'][0] = $this->callAPISuccess('Campaign', 'create', ['title' => 'get the money'])['id'];
+  public function setupRecurringPaymentProcessorTransaction(array $recurParams = [], array $contributionParams = [], string $identifier = 'default'): void {
+    if (empty($this->ids['Campaign'][$identifier]) && CRM_Core_Component::isEnabled('CiviCampaign')) {
+      $this->createTestEntity('Campaign', ['title' => 'get the money', 'name' => 'money'], $identifier)['id'];
+    }
     $contributionParams = array_merge([
       'total_amount' => '200',
       'invoice_id' => 'xyz',
       'financial_type_id' => 'Donation',
       'contact_id' => $this->ids['Contact']['individual_0'],
       'contribution_page_id' => $this->ids['ContributionPage'][0] ?? NULL,
-      'payment_processor_id' => $this->_paymentProcessorID,
+      'payment_processor_id' => $this->ids['PaymentProcessor']['test'],
       'receive_date' => '2019-07-25 07:34:23',
       'skipCleanMoney' => TRUE,
       'amount_level' => 'expensive',
-      'campaign_id' => $this->ids['campaign'][0],
+      'campaign_id' => $this->ids['Campaign'][$identifier] ?? NULL,
       'source' => 'Online Contribution: Page name',
     ], $contributionParams);
     $contributionRecur = $this->callAPISuccess('contribution_recur', 'create', array_merge([
@@ -2209,14 +2254,13 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'frequency_interval' => 1,
       'contribution_status_id' => 2,
       'invoice_id' => $contributionParams['invoice_id'],
-      'payment_processor_id' => $this->_paymentProcessorID,
+      'payment_processor_id' => $this->ids['PaymentProcessor']['test'],
       // processor provided ID - use contact ID as proxy.
       'processor_id' => $this->ids['Contact']['individual_0'],
       'api.Order.create' => $contributionParams,
     ], $recurParams))['values'][0];
-    $this->ids['ContributionRecur']['default'] = $this->_contributionRecurID = $contributionRecur['id'];
-    $this->ids['Contribution']['default'] = $this->_contributionID = $contributionRecur['api.Order.create']['id'];
-    $this->ids['Contribution'][0] = $this->_contributionID;
+    $this->ids['ContributionRecur'][$identifier] = $contributionRecur['id'];
+    $this->ids['Contribution'][$identifier] = $this->ids['Contribution'][0] = $contributionRecur['api.Order.create']['id'];
   }
 
   /**
@@ -2237,9 +2281,9 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       $recurParams['frequency_unit'] = $params['frequency_unit'];
     }
 
-    $this->ids['membership_type'] = $this->membershipTypeCreate($membershipParams);
+    $this->membershipTypeCreate($membershipParams);
     //create a contribution so our membership & contribution don't both have id = 1
-    if ($this->callAPISuccess('Contribution', 'getcount', []) === 0) {
+    if ($this->callAPISuccess('Contribution', 'getcount') === 0) {
       $this->contributionCreate([
         'contact_id' => $this->ids['Contact']['individual_0'],
         'is_test' => 1,
@@ -2260,12 +2304,12 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
               'unit_price' => 200,
               'line_total' => 200,
               'financial_type_id' => 1,
-              'membership_type_id' => $this->ids['membership_type'],
+              'membership_type_id' => $this->ids['MembershipType']['test'],
             ],
           ],
           'params' => [
             'contact_id' => $this->ids['Contact']['individual_0'],
-            'membership_type_id' => $this->ids['membership_type'],
+            'membership_type_id' => $this->ids['MembershipType']['test'],
             'source' => 'Payment',
           ],
         ],
@@ -2546,8 +2590,6 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     CRM_Contribute_PseudoConstant::flush('membershipType');
     // Pseudoconstants may be saved to the cache table.
     CRM_Core_DAO::executeQuery("TRUNCATE civicrm_cache");
-    CRM_Financial_BAO_FinancialType::$_statusACLFt = [];
-    CRM_Financial_BAO_FinancialType::$_availableFinancialTypes = NULL;
   }
 
   /**
@@ -2586,7 +2628,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     if ($context !== 'online' && $context !== 'payLater') {
       $compareParams = [
         'to_financial_account_id' => 6,
-        'total_amount' => (float) CRM_Utils_Array::value('total_amount', $params, 100.00),
+        'total_amount' => (float) ($params['total_amount'] ?? 100.00),
         'status_id' => 1,
       ];
     }
@@ -2596,15 +2638,15 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     elseif ($context === 'online') {
       $compareParams = [
         'to_financial_account_id' => 12,
-        'total_amount' => (float) CRM_Utils_Array::value('total_amount', $params, 100.00),
+        'total_amount' => (float) ($params['total_amount'] ?? 100.00),
         'status_id' => 1,
-        'payment_instrument_id' => CRM_Utils_Array::value('payment_instrument_id', $params, 1),
+        'payment_instrument_id' => $params['payment_instrument_id'] ?? 1,
       ];
     }
     elseif ($context === 'payLater') {
       $compareParams = [
         'to_financial_account_id' => 7,
-        'total_amount' => (float) CRM_Utils_Array::value('total_amount', $params, 100.00),
+        'total_amount' => (float) ($params['total_amount'] ?? 100.00),
         'status_id' => 2,
       ];
     }
@@ -2618,15 +2660,15 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'id' => $entityTrxn['entity_id'],
     ];
     $compareParams = [
-      'amount' => (float) CRM_Utils_Array::value('total_amount', $params, 100.00),
+      'amount' => (float) ($params['total_amount'] ?? 100.00),
       'status_id' => 1,
-      'financial_account_id' => CRM_Utils_Array::value('financial_account_id', $params, 1),
+      'financial_account_id' => $params['financial_account_id'] ?? 1,
     ];
     if ($context === 'payLater') {
       $compareParams = [
-        'amount' => (float) CRM_Utils_Array::value('total_amount', $params, 100.00),
+        'amount' => (float) ($params['total_amount'] ?? 100.00),
         'status_id' => 3,
-        'financial_account_id' => CRM_Utils_Array::value('financial_account_id', $params, 1),
+        'financial_account_id' => $params['financial_account_id'] ?? 1,
       ];
     }
     $this->assertDBCompareValues('CRM_Financial_DAO_FinancialItem', $fitemParams, $compareParams);
@@ -2764,6 +2806,8 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    * @noinspection PhpDocMissingThrowsInspection
    */
   protected function addTaxAccountToFinancialType(int $financialTypeID, array $accountParams = []): CRM_Financial_DAO_EntityFinancialAccount {
+    Civi::settings()->set('invoicing', TRUE);
+    unset(\Civi::$statics['CRM_Price_BAO_PriceField']);
     $params = array_merge([
       'name' => 'Sales tax account - test - ' . $financialTypeID,
       'financial_account_type_id' => key(CRM_Core_PseudoConstant::accountOptionValues('financial_account_type', NULL, " AND v.name LIKE 'Liability' ")),
@@ -2804,9 +2848,15 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    * @param $entity
    * @param array $params
    */
-  public function createPriceSetWithPage($entity = NULL, $params = []) {
-    $membershipTypeID = $this->membershipTypeCreate(['name' => 'Special']);
-    $contributionPageID = $this->callAPISuccess('contribution_page', 'create', [
+  public function createPriceSetWithPage($entity = NULL, $params = []): void {
+    $membershipTypeID = $this->createTestEntity('MembershipType', [
+      'name' => 'Special',
+      'member_of_contact_id' => CRM_Core_BAO_Domain::getDomain()->contact_id,
+      'financial_type_id:name' => 'Member Dues',
+      'duration_unit' => 'year',
+      'period_type:name' => 'rolling',
+    ], 'special')['id'];
+    $contributionPageID = $this->createTestEntity('ContributionPage', [
       'title' => 'Test Contribution Page',
       'financial_type_id' => 1,
       'currency' => 'NZD',
@@ -2815,19 +2865,24 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'is_monetary' => TRUE,
       'is_email_receipt' => FALSE,
     ])['id'];
-    $priceSet = $this->callAPISuccess('price_set', 'create', [
+    $priceSetID = $this->createTestEntity('PriceSet', [
       'is_quick_config' => 0,
       'extends' => 'CiviMember',
       'financial_type_id' => 1,
       'title' => 'my Page',
-    ]);
-    $priceSetID = $priceSet['id'];
+      'name' => 'member_not_quick_config',
+    ])['id'];
 
     CRM_Price_BAO_PriceSet::addTo('civicrm_contribution_page', $contributionPageID, $priceSetID);
     $priceField = $this->callAPISuccess('price_field', 'create', [
       'price_set_id' => $priceSetID,
       'label' => 'Goat Breed',
       'html_type' => 'Radio',
+    ]);
+    $addOnPriceField = $this->callAPISuccess('price_field', 'create', [
+      'price_set_id' => $priceSetID,
+      'label' => 'Goat Addons',
+      'html_type' => 'CheckBox',
     ]);
     $priceFieldValue = $this->callAPISuccess('price_field_value', 'create', [
       'price_set_id' => $priceSetID,
@@ -2863,27 +2918,24 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       'is_separate_payment' => FALSE,
     ])->execute();
     $this->_ids['price_field_value']['cont'] = $priceFieldValue['id'];
-
-    $this->_ids['price_set'] = $priceSetID;
+    $strawPriceFieldValue = $this->callAPISuccess('price_field_value', 'create', [
+      'price_set_id' => $priceSetID,
+      'price_field_id' => $addOnPriceField['id'],
+      'label' => 'Straw',
+      'amount' => 5,
+      'financial_type_id' => 'Donation',
+    ]);
+    $this->_ids['price_field_value']['straw'] = $strawPriceFieldValue['id'];
+    $feedPriceFieldValue = $this->callAPISuccess('price_field_value', 'create', [
+      'price_set_id' => $priceSetID,
+      'price_field_id' => $addOnPriceField['id'],
+      'label' => 'Feed',
+      'amount' => 30,
+      'financial_type_id' => 'Donation',
+    ]);
+    $this->_ids['price_field_value']['feed'] = $feedPriceFieldValue['id'];
     $this->_ids['contribution_page'] = $contributionPageID;
-    $this->_ids['price_field'] = [$priceField['id']];
-
-    $this->_ids['membership_type'] = $membershipTypeID;
-  }
-
-  /**
-   * Only specified contact returned.
-   *
-   * @implements CRM_Utils_Hook::aclWhereClause
-   *
-   * @param $type
-   * @param $tables
-   * @param $whereTables
-   * @param $contactID
-   * @param $where
-   */
-  public function aclWhereMultipleContacts($type, &$tables, &$whereTables, &$contactID, &$where) {
-    $where = " contact_a.id IN (" . implode(', ', $this->allowedContacts) . ")";
+    $this->_ids['price_field'] = [$priceField['id'], $addOnPriceField['id']];
   }
 
   /**
@@ -2935,28 +2987,19 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    *
    * @param array $formValues
    *
-   * @param string|null $pageName
-   *
-   * @param array $searchFormValues
-   *   Values for the search form if the form is a task eg.
-   *   for selected ids 6 & 8:
-   *   [
-   *      'radio_ts' => 'ts_sel',
-   *      'task' => CRM_Member_Task::PDF_LETTER,
-   *      'mark_x_6' => 1,
-   *      'mark_x_8' => 1,
-   *   ]
-   * @param \HTML_QuickForm_Controller|null $controller
+   * @param array $urlParameters
    *
    * @return \CRM_Core_Form|CRM_Event_Form_Registration_Register
    *
    * @noinspection PhpReturnDocTypeMismatchInspection
+   * @throws \CRM_Core_Exception
    */
-  public function getFormObject(string $class, array $formValues = [], ?string $pageName = '', array $searchFormValues = [], $controller = NULL) {
+  public function getFormObject(string $class, array $formValues = [], array $urlParameters = []) {
     $_POST = $formValues;
     /** @var CRM_Core_Form $form */
     $form = new $class();
     $_SERVER['REQUEST_METHOD'] = 'GET';
+    $_REQUEST += $urlParameters;
     switch ($class) {
       case 'CRM_Event_Cart_Form_Checkout_Payment':
       case 'CRM_Event_Cart_Form_Checkout_ParticipantsAndPrices':
@@ -2983,6 +3026,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
         break;
 
       case 'CRM_Contribute_Form_Contribution_Confirm':
+      case 'CRM_Contribute_Form_Contribution_ThankYou':
         $form->controller = new CRM_Contribute_Controller_Contribution();
         $form->controller->setStateMachine(new CRM_Contribute_StateMachine_Contribution($form->controller));
         // The submitted values are on the Main form.
@@ -2992,7 +3036,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       case 'CRM_Contact_Import_Form_DataSource':
       case 'CRM_Contact_Import_Form_MapField':
       case 'CRM_Contact_Import_Form_Preview':
-        $form->controller = new CRM_Contact_Import_Controller();
+        $form->controller = new CRM_Import_Controller('import contacts', ['entity' => 'Contact']);
         $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
         // The submitted values should be set on one or the other of the forms in the flow.
         // For test simplicity we set on all rather than figuring out which ones go where....
@@ -3009,7 +3053,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
           $form->controller = $this->formController;
         }
         else {
-          $form->controller = new CRM_Contribute_Import_Controller();
+          $form->controller = new CRM_Import_Controller('import contributions', ['entity' => 'Contribution']);
           $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
           $this->formController = $form->controller;
         }
@@ -3023,7 +3067,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       case 'CRM_Member_Import_Form_DataSource':
       case 'CRM_Member_Import_Form_MapField':
       case 'CRM_Member_Import_Form_Preview':
-        $form->controller = new CRM_Member_Import_Controller();
+        $form->controller = new CRM_Import_Controller('import memberships', ['entity' => 'Membership']);
         $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
         // The submitted values should be set on one or the other of the forms in the flow.
         // For test simplicity we set on all rather than figuring out which ones go where....
@@ -3035,7 +3079,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       case 'CRM_Event_Import_Form_DataSource':
       case 'CRM_Event_Import_Form_MapField':
       case 'CRM_Event_Import_Form_Preview':
-        $form->controller = new CRM_Event_Import_Controller();
+        $form->controller = new CRM_Import_Controller('import participants', ['entity' => 'Participant']);
         $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
         // The submitted values should be set on one or the other of the forms in the flow.
         // For test simplicity we set on all rather than figuring out which ones go where....
@@ -3047,7 +3091,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       case 'CRM_Activity_Import_Form_DataSource':
       case 'CRM_Activity_Import_Form_MapField':
       case 'CRM_Activity_Import_Form_Preview':
-        $form->controller = new CRM_Activity_Import_Controller();
+        $form->controller = new CRM_Import_Controller('import contributions', ['entity' => 'Activity']);
         $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
         // The submitted values should be set on one or the other of the forms in the flow.
         // For test simplicity we set on all rather than figuring out which ones go where....
@@ -3059,7 +3103,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       case 'CRM_Custom_Import_Form_DataSource':
       case 'CRM_Custom_Import_Form_MapField':
       case 'CRM_Custom_Import_Form_Preview':
-        $form->controller = new CRM_Custom_Import_Controller();
+        $form->controller = new CRM_Import_Controller('import custom data', ['class_prefix' => 'CRM_Custom_Import']);
         $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
         // The submitted values should be set on one or the other of the forms in the flow.
         // For test simplicity we set on all rather than figuring out which ones go where....
@@ -3073,23 +3117,60 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
         break;
 
       case strpos($class, '_Form_') !== FALSE:
-        $form->controller = new CRM_Core_Controller_Simple($class, $pageName);
+        $form->controller = new CRM_Core_Controller_Simple($class, $form->getName());
         break;
 
       default:
         $form->controller = new CRM_Core_Controller();
     }
-    if (!$pageName) {
-      $pageName = $form->getName();
-    }
+
     $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
-    $_SESSION['_' . $form->controller->_name . '_container']['values'][$pageName] = $formValues;
-    if ($searchFormValues) {
-      $_SESSION['_' . $form->controller->_name . '_container']['values']['Search'] = $searchFormValues;
-    }
+    $_SESSION['_' . $form->controller->_name . '_container']['values'][$form->getName()] = $formValues;
     if (isset($formValues['_qf_button_name'])) {
       $_SESSION['_' . $form->controller->_name . '_container']['_qf_button_name'] = $formValues['_qf_button_name'];
     }
+    return $form;
+  }
+
+  /**
+   * Instantiate form object.
+   *
+   * We need to instantiate the form to run preprocess, which means we have to trick it about the request method.
+   *
+   * @param string $class
+   *   Name of form class.
+   *
+   * @param array $formValues
+   * @param string|null $pageName
+   * @param array $searchFormValues
+   *   Values for the search form if the form is a task eg.
+   *   for selected ids 6 & 8:
+   *   [
+   *      'radio_ts' => 'ts_sel',
+   *      'task' => CRM_Member_Task::PDF_LETTER,
+   *      'mark_x_6' => 1,
+   *      'mark_x_8' => 1,
+   *   ]
+   *
+   * @return \CRM_Core_Form
+   *
+   * @noinspection PhpReturnDocTypeMismatchInspection
+   */
+  public function getSearchFormObject(string $class, array $formValues = [], ?string $pageName = 'Search', array $searchFormValues = []) {
+    $_POST = $formValues;
+    /** @var CRM_Core_Form $form */
+    $form = new $class();
+    $pageName = $pageName ?: $form->getName();
+    if (strpos($class, 'Search') !== FALSE) {
+      $form->controller = new CRM_Contact_Controller_Search();
+    }
+    else {
+      $form->controller = new CRM_Core_Controller_Simple($class, $pageName);
+    }
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $_SESSION['_' . $form->controller->_name . '_container']['values']['Search'] = $searchFormValues;
+    $form->controller->setStateMachine(new CRM_Core_StateMachine($form->controller));
+    $_SESSION['_' . $form->controller->_name . '_container']['values'][$pageName] = $formValues;
     return $form;
   }
 
@@ -3352,7 +3433,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
       foreach ($items as $item) {
         $itemTotal += $item['amount'];
       }
-      $this->assertEquals($payment['total_amount'], $itemTotal);
+      $this->assertEquals(round((float) $payment['total_amount'], 2), round($itemTotal, 2));
     }
   }
 
@@ -3381,13 +3462,14 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
         'contribution_id' => $contribution['id'],
         'return' => ['tax_amount', 'line_total', 'entity_table', 'entity_id', 'qty'],
       ])['values'];
+
       $total = 0;
       $taxTotal = 0;
       $memberships = [];
       $participants = [];
       foreach ($lineItems as $lineItem) {
         $total += $lineItem['line_total'];
-        $taxTotal += (float) ($lineItem['tax_amount'] ?? 0);
+        $taxTotal += (float) ($lineItem['tax_amount']);
         if ($lineItem['entity_table'] === 'civicrm_membership') {
           $memberships[] = $lineItem['entity_id'];
         }
@@ -3395,8 +3477,8 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
           $participants[$lineItem['entity_id']] = $lineItem['entity_id'];
         }
       }
-      $membershipPayments = $this->callAPISuccess('MembershipPayment', 'get', ['contribution_id' => $contribution['id'], 'return' => 'membership_id'])['values'];
-      $participantPayments = $this->callAPISuccess('ParticipantPayment', 'get', ['contribution_id' => $contribution['id'], 'return' => 'participant_id'])['values'];
+      $membershipPayments = $this->callAPISuccess('MembershipPayment', 'get', ['contribution_id' => $contribution['id'], 'return' => 'membership_id', 'version' => 3])['values'];
+      $participantPayments = $this->callAPISuccess('ParticipantPayment', 'get', ['contribution_id' => $contribution['id'], 'return' => 'participant_id', 'version' => 3])['values'];
       $this->assertCount(count($memberships), $membershipPayments);
       $this->assertCount(count($participants), $participantPayments);
       foreach ($membershipPayments as $payment) {
@@ -3432,7 +3514,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
    */
   protected function basicCreateTest(int $version): void {
     $this->_apiversion = $version;
-    $result = $this->callAPIAndDocument($this->_entity, 'create', $this->params, __FUNCTION__, __FILE__);
+    $result = $this->callAPISuccess($this->_entity, 'create', $this->params);
     $this->assertEquals(1, $result['count']);
     $this->assertNotNull($result['values'][$result['id']]['id']);
     $this->getAndCheck($this->params, $result['id'], $this->_entity);
@@ -3449,7 +3531,7 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
     $this->_apiversion = $version;
     $result = $this->callAPISuccess($this->_entity, 'create', $this->params);
     $deleteParams = ['id' => $result['id']];
-    $this->callAPIAndDocument($this->_entity, 'delete', $deleteParams, __FUNCTION__, __FILE__);
+    $this->callAPISuccess($this->_entity, 'delete', $deleteParams);
     $checkDeleted = $this->callAPISuccess($this->_entity, 'get', []);
     $this->assertEquals(0, $checkDeleted['count']);
   }
@@ -3457,28 +3539,24 @@ class CiviUnitTestCase extends PHPUnit\Framework\TestCase {
   /**
    * Create and return a case object for the given Client ID.
    *
+   * Note that calling caseCreate directly is preferred.
+   *
    * @param int $clientID
    * @param int|null $loggedInUser
    *   Omit or pass NULL to use the same as clientId
    * @param array $extra
    *   Optional specific parameters such as start_date
+   * @param string $identifier
    *
    * @return CRM_Case_BAO_Case
    */
-  public function createCase(int $clientID, ?int $loggedInUser = NULL, array $extra = []): CRM_Case_DAO_Case {
-    $caseParams = array_merge([
-      'activity_subject' => 'Case Subject',
-      'client_id'        => $clientID,
-      'case_type_id'     => 1,
-      'status_id'        => 1,
-      'case_type'        => 'housing_support',
-      'subject'          => 'Case Subject',
-      'start_date'       => date('Y-m-d'),
-      'start_date_time'  => date('YmdHis'),
-      'medium_id'        => 2,
-      'activity_details' => '',
-    ], $extra);
-    return (new CRM_Case_Form_Case())->testSubmit($caseParams, 'OpenCase', $loggedInUser ?: $clientID, 'standalone');
+  public function createCase(int $clientID, ?int $loggedInUser = NULL, array $extra = [], string $identifier = 'form-created'): CRM_Case_DAO_Case {
+    $extra['client_id'] = $clientID;
+    $this->caseCreate($extra, $identifier);
+    $case = new CRM_Case_BAO_Case();
+    $case->id = $this->ids['Case'][$identifier];
+    $case->find(TRUE);
+    return $case;
   }
 
   /**

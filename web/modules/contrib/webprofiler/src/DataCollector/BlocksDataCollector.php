@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -25,7 +25,9 @@ class BlocksDataCollector extends DataCollector implements HasPanelInterface {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
    *   The Entity type manager service.
    */
-  public function __construct(private readonly EntityTypeManagerInterface $entityManager) {
+  public function __construct(
+    private readonly EntityTypeManagerInterface $entityManager,
+  ) {
     $this->data['blocks']['loaded'] = [];
     $this->data['blocks']['rendered'] = [];
   }

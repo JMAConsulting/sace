@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\RequestMatcher;
 
@@ -32,7 +32,7 @@ class WebprofilerRequestMatcher implements RequestMatcherInterface {
    */
   public function __construct(
     protected readonly PathMatcherInterface $pathMatcher,
-    ConfigFactoryInterface $config
+    ConfigFactoryInterface $config,
   ) {
     $this->config = $config->get('webprofiler.settings');
   }

@@ -34,7 +34,7 @@ export default class EditorAdvancedImageCommand extends Command {
     const editor = this.editor;
     const imageUtils = editor.plugins.get("ImageUtils");
     const element = imageUtils.getClosestSelectedImageElement(
-      this.editor.model.document.selection
+      this.editor.model.document.selection,
     );
 
     this.isEnabled = !!element;
@@ -42,7 +42,7 @@ export default class EditorAdvancedImageCommand extends Command {
     this.attributes = {
       title: false,
       id: false,
-      class: false
+      class: false,
     };
 
     // Don't store any values
@@ -72,6 +72,9 @@ export default class EditorAdvancedImageCommand extends Command {
     if (element.hasAttribute("id")) {
       this.attributes.id = element.getAttribute("id");
     }
+
+    // Force an execution at refresh time in order to set attributes even when the Balloon form has still not been used.
+    this.execute(this.attributes);
   }
 
   /**
@@ -82,24 +85,24 @@ export default class EditorAdvancedImageCommand extends Command {
     const imageUtils = editor.plugins.get("ImageUtils");
     const model = editor.model;
     const imageElement = imageUtils.getClosestSelectedImageElement(
-      model.document.selection
+      model.document.selection,
     );
 
     if (attributes.title) {
-      model.change(writer =>
-        writer.setAttribute("title", attributes.title, imageElement)
+      model.change((writer) =>
+        writer.setAttribute("title", attributes.title, imageElement),
       );
     }
 
     if (attributes.id) {
-      model.change(writer =>
-        writer.setAttribute("id", attributes.id, imageElement)
+      model.change((writer) =>
+        writer.setAttribute("id", attributes.id, imageElement),
       );
     }
 
     if (attributes.class) {
-      model.change(writer =>
-        writer.setAttribute("class", attributes.class, imageElement)
+      model.change((writer) =>
+        writer.setAttribute("class", attributes.class, imageElement),
       );
     }
   }

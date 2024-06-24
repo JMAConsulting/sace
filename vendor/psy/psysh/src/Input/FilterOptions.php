@@ -85,7 +85,11 @@ class FilterOptions
      * @param string $string
      * @param array  $matches
      */
+<<<<<<< HEAD
     public function match(string $string, array &$matches = null): bool
+=======
+    public function match(string $string, ?array &$matches = null): bool
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         return $this->filter === false || (\preg_match($this->pattern, $string, $matches) xor $this->invert);
     }

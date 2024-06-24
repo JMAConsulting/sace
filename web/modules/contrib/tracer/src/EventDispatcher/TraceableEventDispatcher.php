@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\tracer\EventDispatcher;
 
@@ -46,7 +46,10 @@ class TraceableEventDispatcher extends ContainerAwareEventDispatcher implements 
   /**
    * {@inheritdoc}
    */
-  public function __construct(ContainerInterface $container, array $listeners = []) {
+  public function __construct(
+      ContainerInterface $container,
+      array $listeners = [],
+  ) {
     parent::__construct($container, $listeners);
 
     $this->notCalledListeners = $listeners;

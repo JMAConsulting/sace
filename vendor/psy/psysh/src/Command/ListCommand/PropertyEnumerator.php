@@ -21,7 +21,11 @@ class PropertyEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null): array
+=======
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null): array
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         // only list properties when a Reflector is present.
 

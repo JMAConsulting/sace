@@ -11,6 +11,7 @@ use DateTimeZone;
 use Drupal\views\Plugin\views\row\Fields;
 use Drupal\views\ResultRow;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Url;
 use Eluceo\iCal\Component\Event;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Eluceo\iCal\Component\Calendar;
@@ -224,18 +225,6 @@ class IcalFieldsWizard extends Fields {
 
     }
 
-    // URL field
-    if (isset($field_mapping['url_field']) && $entity->hasField($field_mapping['url_field'])) {
-      if ($field_mapping['url_field'] == 'body' && !$entity->get('body')->isEmpty()) {
-        $url = $entity->get('body')->getValue()[0]['value'];
-        $event->setUrl($url);
-      }
-      else {
-        $url = $entity->get($field_mapping['url_field'])->getValue()[0]['uri'];
-        $event->setUrl($url);
-      }
-    }
-
     // Rrule field.
     if (isset($field_mapping['rrule_field'])) {
 
@@ -292,14 +281,21 @@ class IcalFieldsWizard extends Fields {
     }
 
     // URL field
-    if (isset($field_mapping['url_field']) && $entity->hasField($field_mapping['url_field'])) {
-      if ($field_mapping['url_field'] == 'body' && !$entity->get('body')->isEmpty()) {
-        $url = $entity->get('body')->getValue()[0]['value'];
+    if (isset($field_mapping['url_field'])) {
+      if ($entity->hasField($field_mapping['url_field'])) {
+        if ($field_mapping['url_field'] == 'body'
+          && !$entity->get('body')->isEmpty()) {
+          $url = $entity->get('body')->getValue()[0]['value'];
+        }
+        else {
+          $url = $entity->get($field_mapping['url_field'])
+            ->getValue()[0]['uri'] ?? '';
+        }
         $event->setUrl($url);
       }
-      else {
-        $url = $entity->get($field_mapping['url_field'])->getValue()[0]['uri'] ?? '';
-        $event->setUrl($url);
+      elseif ($field_mapping['url_field'] == 'view_node') {
+        $urlObject = Url::fromRoute('entity.node.canonical', ['node' => $entity->id()], ['absolute' => TRUE]);
+        $event->setUrl($urlObject->toString());
       }
     }
 
@@ -360,6 +356,14 @@ class IcalFieldsWizard extends Fields {
     $utc_timezone = new \DateTimeZone('UTC');
     $datefield_values = $entity->get($field_mapping['date_field'])->getValue();
 
+    if (!$entity->hasField($field_mapping['date_field'])) {
+      // The view has been misconfigured with a field that does not exist on the entity.
+      $message = 'Field does not exist on entity for use in calendar. Please ensure that only entities with the correctly mapped date field appear in the iCal view.';
+      \Drupal::messenger()->addError(t($message));
+      \Drupal::logger('my_module')->error($message);
+      return;
+    }
+    
     // TODO: make these separate functions
     // Loop over the values to support multiple cardinality dates, which can
     // represent multiple events.
@@ -504,12 +508,12 @@ class IcalFieldsWizard extends Fields {
       $this->helper->addTimezone($timezone, $endDatetime);
 
       // Can the date be considered all-day?
-      if (SmartDateTrait::isAllDay($startDatetime->getTimestamp(), $endDatetime->getTimestamp(), $dateTZ)) {
+      if ((new class {use SmartDateTrait;})::isAllDay($startDatetime->getTimestamp(), $endDatetime->getTimestamp(), $dateTZ)) {
         $event->setNoTime(TRUE);
       }
 
       // Determine recurring rules.
-      if ($dateRrule) {
+      if (is_object($dateRrule)) {
         $smartDateRrule = SmartDateRule::load($dateRrule);
         // Gets the rule text.
         $recurRuleObject = $smartDateRrule->getAssembledRule();

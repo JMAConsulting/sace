@@ -1,5 +1,16 @@
 # Change Log
 
+<<<<<<< HEAD
+=======
+### 4.10.0 - 5 Apr 2024
+
+- Support Symfony 7
+
+### 4.9.2 - 26 Dec 2023
+
+- Avoid infinite loop in \Consolidation\AnnotatedCommand\Parser\CommandInfo::getName (#306)
+
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 ### 4.9.1, 4.9.0 - 19 May 2023
 
 - Inject command metadata: make AnnotationData and FormatterOptions available (#301)

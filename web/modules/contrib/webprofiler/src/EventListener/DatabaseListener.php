@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\EventListener;
 
@@ -16,7 +16,9 @@ class DatabaseListener implements EventSubscriberInterface {
   /**
    * DatabaseListener constructor.
    */
-  public function __construct(private readonly DatabaseDataCollector $collector) {
+  public function __construct(
+    private readonly DatabaseDataCollector $collector,
+  ) {
   }
 
   /**

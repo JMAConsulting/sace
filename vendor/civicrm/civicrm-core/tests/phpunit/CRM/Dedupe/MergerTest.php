@@ -204,7 +204,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
     $select = ['pn.is_selected' => 'is_selected'];
     $cacheKeyString = CRM_Dedupe_Merger::getMergeCacheKeyString($dao->id, $this->_groupId, [], TRUE, 0);
     $pnDupePairs = CRM_Core_BAO_PrevNextCache::retrieve($cacheKeyString, NULL, NULL, 0, 0, $select);
-    $this->assertEquals(count($foundDupes), count($pnDupePairs), 'Check number of dupe pairs in prev next cache.');
+    $this->assertCount(count($foundDupes), $pnDupePairs, 'Check number of dupe pairs in prev next cache.');
 
     // mark first two pairs as selected
     CRM_Core_DAO::singleValueQuery("UPDATE civicrm_prevnext_cache SET is_selected = 1 WHERE id IN ({$pnDupePairs[0]['prevnext_id']}, {$pnDupePairs[1]['prevnext_id']})");
@@ -234,7 +234,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
   /**
    * Test the batch merge.
    */
-  public function testBatchMergeAllDuplicates() {
+  public function testBatchMergeAllDuplicates(): void {
     $this->createDupeContacts();
 
     // verify that all contacts have been created separately
@@ -408,8 +408,6 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
 
   /**
    * Test results are returned when criteria are passed in.
-   *
-   * @throws \CRM_Core_Exception
    */
   public function testGetMatchesCriteriaMatched(): void {
     $this->setupMatchData();
@@ -418,6 +416,70 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
       'criteria' => ['contact' => ['id' => ['>' => 1]]],
     ])['values'];
     $this->assertCount(2, $pairs);
+  }
+
+  public function testGetMatchesUpdatesOnMerge(): void {
+    $this->individualCreate([
+      'first_name' => 'Mickey',
+      'last_name' => 'Mouse',
+      'email' => 'mickey@mouse.com',
+    ], 'mickey_1');
+    $this->individualCreate([
+      'first_name' => 'Mickey',
+      'last_name' => 'Mouse',
+      'nick_name' => 'MouseMeister',
+      'email' => 'mickey@mouse.com',
+    ], 'mickey_2');
+    $this->individualCreate([
+      'first_name' => 'Mickey',
+      'last_name' => 'Mouse',
+      'email' => 'mickey@mouse.com',
+    ], 'mickey_3');
+    $this->individualCreate([
+      'first_name' => 'Mickey',
+      'last_name' => 'Mouse',
+      'email' => 'mickey@mouse.com',
+    ], 'mickey_4');
+    $pairs = $this->callAPISuccess('Dedupe', 'getduplicates', [
+      'rule_group_id' => 1,
+      'criteria' => ['contact' => ['first_name' => 'Mickey']],
+    ])['values'];
+    // Each of the 4 Mickeys matches all the others 3+2+1 = 6 matches
+    $this->assertCount(6, $pairs);
+    // Merge 2 Mickeys
+    $this->callAPISuccess('Contact', 'merge', [
+      'to_keep_id' => $this->ids['Contact']['mickey_3'],
+      'to_remove_id' => $this->ids['Contact']['mickey_4'],
+    ]);
+    $pairs = $this->callAPISuccess('Dedupe', 'getduplicates', [
+      'rule_group_id' => 1,
+      'criteria' => ['contact' => ['first_name' => 'Mickey']],
+    ])['values'];
+    // Now we should have 3 motches as there are 3 Mickeys - 2 + 1 matches
+    $this->assertCount(3, $pairs);
+
+    // Now re-do our get limiting it by nick name - Mickey 2
+    // is the only mouse who matches the criteria - but Mickey 2
+    // matches both remaining mice.
+    $pairs = $this->callAPISuccess('Dedupe', 'getduplicates', [
+      'rule_group_id' => 1,
+      'criteria' => ['contact' => ['nick_name' => 'MouseMeister']],
+    ])['values'];
+    $this->assertCount(2, $pairs);
+
+    // Merge Mickey 2 into Mickey 3
+    $this->callAPISuccess('Contact', 'merge', [
+      'to_keep_id' => $this->ids['Contact']['mickey_3'],
+      'to_remove_id' => $this->ids['Contact']['mickey_2'],
+    ]);
+    // Now get our merge-able pairs again. Even though mickey_2 is gone
+    // the user is still expecting to see that merged mickey available
+    // to merge with Mickey 1.
+    $pairs = $this->callAPISuccess('Dedupe', 'getduplicates', [
+      'rule_group_id' => 1,
+      'criteria' => ['contact' => ['nick_name' => 'MouseMeister']],
+    ])['values'];
+    $this->assertCount(1, $pairs);
   }
 
   /**
@@ -481,7 +543,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
   /**
    * Test that if criteria are passed and there are no matching contacts no matches are returned.
    */
-  public function testGetMatchesCriteriaNotMatched() {
+  public function testGetMatchesCriteriaNotMatched(): void {
     $this->setupMatchData();
     $pairs = $this->callAPISuccess('Dedupe', 'getduplicates', [
       'rule_group_id' => 1,
@@ -574,7 +636,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
    *
    * @throws \Exception
    */
-  public function testGetOrganizationMatchesInGroup() {
+  public function testGetOrganizationMatchesInGroup(): void {
     $this->setupMatchData();
     $ruleGroups = $this->callAPISuccessGetSingle('RuleGroup', [
       'contact_type' => 'Organization',
@@ -662,7 +724,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
    * It turns out there are 2 code paths retrieving this data so my initial
    * focus is on ensuring they match.
    */
-  public function testGetMatchesInGroup() {
+  public function testGetMatchesInGroup(): void {
     $this->setupMatchData();
 
     $groupID = $this->groupCreate(['title' => 'she-mice']);
@@ -749,7 +811,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
   /**
    * Test migration of Membership.
    */
-  public function testMergeMembership() {
+  public function testMergeMembership(): void {
     // Contacts setup
     $this->setupMatchData();
     $originalContactID = $this->contacts[0]['id'];
@@ -884,7 +946,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
    * of the custom fields of that custom table are selected, the value is not
    * merged in.
    */
-  public function testMigrationOfUnselectedCustomDataOnEmptyCustomRecord() {
+  public function testMigrationOfUnselectedCustomDataOnEmptyCustomRecord(): void {
     // Create Custom Fields
     $createGroup = $this->setupCustomGroupForIndividual();
     $customField1 = $this->setupCustomField('TestField', $createGroup);
@@ -934,7 +996,7 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
    *
    * @throws \CRM_Core_Exception
    */
-  public function testMigrationOfSomeCustomDataOnEmptyCustomRecord() {
+  public function testMigrationOfSomeCustomDataOnEmptyCustomRecord(): void {
     // Create Custom Fields
     $createGroup = $this->setupCustomGroupForIndividual();
     $customField1 = $this->setupCustomField('Test1', $createGroup);
@@ -989,13 +1051,14 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
    * @throws \CRM_Core_Exception
    * @throws \Civi\API\Exception\UnauthorizedException
    */
-  public function testMigrationOfContactReferenceCustomField() {
+  public function testMigrationOfContactReferenceCustomField(): void {
     // Create Custom Fields
     $contactGroup = $this->setupCustomGroupForIndividual();
     $activityGroup = $this->customGroupCreate([
       'name'    => 'test_group_activity',
       'extends' => 'Activity',
     ]);
+    // Contact reference fields
     $refFieldContact = $this->customFieldCreate([
       'custom_group_id' => $contactGroup['id'],
       'label'           => 'field_1' . $contactGroup['id'],
@@ -1006,6 +1069,21 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
       'custom_group_id' => $activityGroup['id'],
       'label'           => 'field_1' . $activityGroup['id'],
       'data_type'       => 'ContactReference',
+      'default_value'   => NULL,
+    ]);
+    // Entity reference fields
+    $entityrefFieldContact = $this->customFieldCreate([
+      'custom_group_id' => $contactGroup['id'],
+      'label'           => 'field_2' . $contactGroup['id'],
+      'data_type'       => 'EntityReference',
+      'fk_entity'       => 'Individual',
+      'default_value'   => NULL,
+    ]);
+    $entityrefFieldActivity = $this->customFieldCreate([
+      'custom_group_id' => $activityGroup['id'],
+      'label'           => 'field_2' . $activityGroup['id'],
+      'data_type'       => 'EntityReference',
+      'fk_entity'       => 'Contact',
       'default_value'   => NULL,
     ]);
 
@@ -1021,11 +1099,13 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
       'last_name'               => 'Contact',
       'email'                    => 'unrelated@example.com',
       "custom_{$refFieldContact['id']}" => $duplicateContactID,
+      "custom_{$entityrefFieldContact['id']}" => $duplicateContactID,
     ]);
     // also create an activity with a ContactReference custom field
     $activity = $this->activityCreate([
       'target_contact_id'                => $unrelatedContact,
       "custom_{$refFieldActivity['id']}" => $duplicateContactID,
+      "custom_{$entityrefFieldActivity['id']}" => $duplicateContactID,
     ]);
 
     // verify that the fields were set
@@ -1037,7 +1117,76 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
 
     // verify that the ContactReference fields were updated to point to the surviving contact post-merge
     $this->assertCustomFieldValue($unrelatedContact, $originalContactID, "custom_{$refFieldContact['id']}");
+    $this->assertCustomFieldValue($unrelatedContact, $originalContactID, "custom_{$entityrefFieldContact['id']}");
     $this->assertEntityCustomFieldValue('Activity', $activity['id'], $originalContactID, "custom_{$refFieldActivity['id']}_id");
+
+    // cleanup created custom set
+    $this->callAPISuccess('CustomField', 'delete', ['id' => $refFieldContact['id']]);
+    $this->callAPISuccess('CustomField', 'delete', ['id' => $entityrefFieldContact['id']]);
+    $this->callAPISuccess('CustomGroup', 'delete', ['id' => $contactGroup['id']]);
+    $this->callAPISuccess('CustomField', 'delete', ['id' => $refFieldActivity['id']]);
+    $this->callAPISuccess('CustomField', 'delete', ['id' => $entityrefFieldActivity['id']]);
+    $this->callAPISuccess('CustomGroup', 'delete', ['id' => $activityGroup['id']]);
+  }
+
+  /**
+   * Test that EntityReference fields referencing a contact are updated to point
+   * to the main contact after a merge is performed and the duplicate contact is
+   * deleted.
+   *
+   * @dataProvider contactEntityNameProvider
+   */
+  public function testMigrationOfContactEntityReferenceCustomField(string $fkEntity): void {
+    // Create Custom Fields
+    $contactGroup = $this->setupCustomGroupForIndividual();
+    $activityGroup = $this->customGroupCreate([
+      'name' => 'test_group_activity',
+      'extends' => 'Activity',
+    ]);
+    $refFieldContact = $this->customFieldCreate([
+      'custom_group_id' => $contactGroup['id'],
+      'label' => 'field_1' . $contactGroup['id'],
+      'data_type' => 'EntityReference',
+      'fk_entity' => $fkEntity,
+      'default_value' => NULL,
+    ]);
+    $refFieldActivity = $this->customFieldCreate([
+      'custom_group_id' => $activityGroup['id'],
+      'label' => 'field_1' . $activityGroup['id'],
+      'data_type' => 'EntityReference',
+      'fk_entity' => $fkEntity,
+      'default_value' => NULL,
+    ]);
+
+    // Contacts setup
+    $this->setupMatchData();
+    $originalContactID = $this->contacts[0]['id'];
+    $duplicateContactID = $this->contacts[1]['id'];
+
+    // create a contact that won't be merged but has a EntityReference field
+    // pointing to the duplicate (to be deleted) contact
+    $unrelatedContact = $this->individualCreate([
+      'first_name' => 'Unrelated',
+      'last_name' => 'Contact',
+      'email' => 'unrelated@example.com',
+      "custom_{$refFieldContact['id']}" => $duplicateContactID,
+    ]);
+    // also create an activity with a EntityReference custom field
+    $activity = $this->activityCreate([
+      'target_contact_id' => $unrelatedContact,
+      "custom_{$refFieldActivity['id']}" => $duplicateContactID,
+    ]);
+
+    // verify that the fields were set
+    $this->assertCustomFieldValue($unrelatedContact, $duplicateContactID, "custom_{$refFieldContact['id']}");
+    $this->assertEntityCustomFieldValue('Activity', $activity['id'], $duplicateContactID, "custom_{$refFieldActivity['id']}");
+
+    // Perform merge
+    $this->mergeContacts($originalContactID, $duplicateContactID, []);
+
+    // verify that the ContactReference fields were updated to point to the surviving contact post-merge
+    $this->assertCustomFieldValue($unrelatedContact, $originalContactID, "custom_{$refFieldContact['id']}");
+    $this->assertEntityCustomFieldValue('Activity', $activity['id'], $originalContactID, "custom_{$refFieldActivity['id']}");
 
     // cleanup created custom set
     $this->callAPISuccess('CustomField', 'delete', ['id' => $refFieldContact['id']]);
@@ -1046,11 +1195,18 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
     $this->callAPISuccess('CustomGroup', 'delete', ['id' => $activityGroup['id']]);
   }
 
+  public function contactEntityNameProvider(): iterable {
+    yield ['Contact'];
+    yield ['Household'];
+    yield ['Individual'];
+    yield ['Organization'];
+  }
+
   /**
    * Verifies that when two contacts with view only custom fields are merged,
    * the view only field of the record being deleted is merged.
    */
-  public function testMigrationOfViewOnlyCustomData() {
+  public function testMigrationOfViewOnlyCustomData(): void {
     // Create Custom Fields
     $createGroup = $this->setupCustomGroupForIndividual();
     $customField = $this->setupCustomField('TestField', $createGroup);
@@ -1190,58 +1346,64 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
 
   /**
    * Set up some contacts for our matching.
-   *
-   * @throws \CRM_Core_Exception
    */
   public function setupMatchData(): void {
-    $fixtures = [
+    $individuals = [
       [
         'first_name' => 'Mickey',
         'last_name' => 'Mouse',
         'email' => 'mickey@mouse.com',
+        'identifier' => 'mickey_1',
       ],
       [
         'first_name' => 'Mickey',
         'last_name' => 'Mouse',
         'email' => 'mickey@mouse.com',
+        'identifier' => 'mickey_2',
       ],
       [
         'first_name' => 'Minnie',
         'last_name' => 'Mouse',
         'email' => 'mickey@mouse.com',
+        'identifier' => 'minnie_1',
       ],
       [
         'first_name' => 'Minnie',
         'last_name' => 'Mouse',
         'email' => 'mickey@mouse.com',
+        'identifier' => 'minnie_2',
       ],
     ];
-    foreach ($fixtures as $fixture) {
-      $contactID = $this->individualCreate($fixture);
-      $this->contacts[] = array_merge($fixture, ['id' => $contactID]);
+    foreach ($individuals as $individual) {
+      $contactID = $this->individualCreate($individual, $individual['identifier']);
+      $this->contacts[] = array_merge($individual, ['id' => $contactID]);
       sleep(2);
     }
-    $organizationFixtures = [
+    $organizations = [
       [
         'organization_name' => 'Walt Disney Ltd',
         'email' => 'walt@disney.com',
+        'identifier' => 'walt_1',
       ],
       [
         'organization_name' => 'Walt Disney Ltd',
         'email' => 'walt@disney.com',
+        'identifier' => 'walt_2',
       ],
       [
         'organization_name' => 'Walt Disney',
         'email' => 'walt@disney.com',
+        'identifier' => 'walt_3',
       ],
       [
         'organization_name' => 'Walt Disney',
         'email' => 'walter@disney.com',
+        'identifier' => 'walt_4',
       ],
     ];
-    foreach ($organizationFixtures as $fixture) {
-      $contactID = $this->organizationCreate($fixture);
-      $this->contacts[] = array_merge($fixture, ['id' => $contactID]);
+    foreach ($organizations as $organization) {
+      $contactID = $this->organizationCreate($organization, $organization['identifier']);
+      $this->contacts[] = array_merge($organization, ['id' => $contactID]);
     }
   }
 
@@ -1268,6 +1430,9 @@ class CRM_Dedupe_MergerTest extends CiviUnitTestCase {
         0 => 'contact_id',
       ],
       'civicrm_address' => [
+        0 => 'contact_id',
+      ],
+      'civicrm_afform_submission' => [
         0 => 'contact_id',
       ],
       'civicrm_batch' => [

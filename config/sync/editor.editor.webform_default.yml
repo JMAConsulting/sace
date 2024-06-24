@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+uuid: 42273afd-5d91-423d-9f6f-6af45ebed5d3
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 langcode: en
 status: true
 dependencies:
@@ -50,3 +54,7 @@ settings:
             - Source
             - Maximize
   plugins: {  }
+<<<<<<< HEAD
+=======
+image_upload: {  }
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498

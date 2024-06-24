@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Mail;
 
@@ -31,7 +31,7 @@ class MailManagerWrapper extends MailManager {
     TranslationInterface $string_translation,
     RendererInterface $renderer,
     private readonly MailManagerInterface $mailManager,
-    private readonly MailDataCollector $mailDataCollector
+    private readonly MailDataCollector $mailDataCollector,
   ) {
     parent::__construct($namespaces, $cache_backend, $module_handler, $config_factory, $logger_factory, $string_translation, $renderer);
 

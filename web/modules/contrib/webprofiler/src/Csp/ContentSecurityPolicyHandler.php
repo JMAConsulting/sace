@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Csp;
 
@@ -28,7 +28,7 @@ class ContentSecurityPolicyHandler {
    *   The nonce generator service.
    */
   public function __construct(
-    protected readonly NonceGenerator $nonceGenerator
+    protected readonly NonceGenerator $nonceGenerator,
   ) {
   }
 

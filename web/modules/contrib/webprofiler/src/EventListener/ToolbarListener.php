@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\EventListener;
 
@@ -51,7 +51,7 @@ class ToolbarListener implements EventSubscriberInterface {
     protected readonly UrlGeneratorInterface $urlGenerator,
     protected readonly ContentSecurityPolicyHandler $cspHandler,
     protected readonly DumpDataCollector $dumpDataCollector,
-    ConfigFactoryInterface $config
+    ConfigFactoryInterface $config,
   ) {
     $this->config = $config->get('webprofiler.settings');
   }

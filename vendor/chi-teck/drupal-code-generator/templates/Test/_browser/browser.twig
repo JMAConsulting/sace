@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\{{ machine_name }}\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -33,10 +35,14 @@ final class {{ class }} extends BrowserTestBase {
    * Test callback.
    */
   public function testSomething(): void {
+<<<<<<< HEAD
     $admin_user = $this->drupalCreateUser(['access administration pages']);
+=======
+    $admin_user = $this->drupalCreateUser(['administer site configuration']);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     $this->drupalLogin($admin_user);
-    $this->drupalGet('admin');
-    $this->assertSession()->elementExists('xpath', '//h1[text() = "Administration"]');
+    $this->drupalGet('/admin/config/system/site-information');
+    $this->assertSession()->elementExists('xpath', '//h1[text() = "Basic site settings"]');
   }
 
 }

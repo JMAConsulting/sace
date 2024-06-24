@@ -379,8 +379,8 @@ function _fontawesome_menu_icons_preprocess_menu(&$items) {
  */
 function _fontawesome_menu_icons_preprocess_menu_item(&$item) {
   /** @var \Drupal\Core\Url $url */
-  $url = $item['url'];
-  $options = $url->getOptions();
+  $url = $item['url'] ?? NULL;
+  $options = $url instanceof \Drupal\Core\Url ? $url->getOptions() : [];
 
   if (!empty($options['fa_icon']) && empty($options['already_processed'])) {
     $class = $options['fa_icon'];

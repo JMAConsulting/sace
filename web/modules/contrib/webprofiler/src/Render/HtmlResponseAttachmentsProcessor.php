@@ -1,43 +1,35 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Render;
 
-use Drupal\Core\Asset\AttachedAssetsInterface;
-use Drupal\Core\Render\HtmlResponseAttachmentsProcessor as HtmlResponseAttachmentsProcessorBase;
+use Drupal\Core\Render\AttachmentsInterface;
+use Drupal\Core\Render\AttachmentsResponseProcessorInterface;
 use Drupal\webprofiler\DataCollector\AssetsDataCollector;
 
 /**
  * Extends the Drupal core html_response.attachments_processor service.
  */
-class HtmlResponseAttachmentsProcessor extends HtmlResponseAttachmentsProcessorBase {
+class HtmlResponseAttachmentsProcessor implements AttachmentsResponseProcessorInterface {
 
-  /**
-   * The assets data collector.
-   *
-   * @var \Drupal\webprofiler\DataCollector\AssetsDataCollector
-   */
-  private AssetsDataCollector $dataCollector;
+  public function __construct(
+    private readonly AttachmentsResponseProcessorInterface $original,
+    private readonly AssetsDataCollector $dataCollector,
+  ) {
+  }
 
   /**
    * {@inheritdoc}
    */
-  protected function processAssetLibraries(AttachedAssetsInterface $assets, array $placeholders): array {
-    $this->dataCollector->setLibraries($assets->getLibraries());
-    $this->dataCollector->setPlaceholders($placeholders);
+  public function processAttachments(AttachmentsInterface $response): AttachmentsInterface {
+    $response = $this->original->processAttachments($response);
+    $attachments = $response->getAttachments();
 
-    return parent::processAssetLibraries($assets, $placeholders);
-  }
+    $this->dataCollector->setLibraries($attachments['library'] ?? []);
+    $this->dataCollector->setPlaceholders($attachments['big_pipe_placeholders'] ?? []);
 
-  /**
-   * Set the assets data collector.
-   *
-   * @param \Drupal\webprofiler\DataCollector\AssetsDataCollector $data_collector
-   *   The assets data collector.
-   */
-  public function setDataCollector(AssetsDataCollector $data_collector): void {
-    $this->dataCollector = $data_collector;
+    return $response;
   }
 
 }

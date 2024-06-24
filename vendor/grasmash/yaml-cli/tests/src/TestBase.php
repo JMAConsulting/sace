@@ -2,8 +2,13 @@
 
 namespace Grasmash\YamlCli\Tests;
 
+<<<<<<< HEAD
 use Symfony\Component\Console\Application;
 use PHPUnit\Framework\TestCase;
+=======
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 /**
  * Class BltTestBase.

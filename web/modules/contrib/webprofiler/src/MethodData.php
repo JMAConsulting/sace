@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler;
 
@@ -49,7 +49,12 @@ class MethodData {
    * @param int $line
    *   The method line in file.
    */
-  public function __construct(string $class, string $method, string $file, int $line) {
+  public function __construct(
+    string $class,
+    string $method,
+    string $file,
+    int $line,
+  ) {
     $this->class = $class;
     $this->method = $method;
     $this->file = $file;

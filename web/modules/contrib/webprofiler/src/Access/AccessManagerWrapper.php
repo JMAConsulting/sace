@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Access;
 
@@ -27,7 +27,7 @@ class AccessManagerWrapper extends AccessManager {
    */
   protected function performCheck(
     $service_id,
-    ArgumentsResolverInterface $arguments_resolver
+    ArgumentsResolverInterface $arguments_resolver,
   ): AccessResultInterface {
     $callable = $this->checkProvider->loadCheck($service_id);
     $arguments = $arguments_resolver->getArguments($callable);

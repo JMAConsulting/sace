@@ -112,9 +112,13 @@ if (PHP_VERSION_ID < 80000) {
         (function_exists('stream_get_wrappers') && in_array('phpvfscomposer', stream_get_wrappers(), true))
         || (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper'))
     ) {
+<<<<<<< HEAD
         include("phpvfscomposer://" . __DIR__ . '/..'.'/psy/psysh/bin/psysh');
         exit(0);
+=======
+        return include("phpvfscomposer://" . __DIR__ . '/..'.'/psy/psysh/bin/psysh');
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     }
 }
 
-include __DIR__ . '/..'.'/psy/psysh/bin/psysh';
+return include __DIR__ . '/..'.'/psy/psysh/bin/psysh';

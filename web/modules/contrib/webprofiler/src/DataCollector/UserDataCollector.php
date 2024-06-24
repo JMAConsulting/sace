@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -35,7 +35,7 @@ class UserDataCollector extends DataCollector {
     private readonly AccountInterface $currentUser,
     private readonly EntityTypeManagerInterface $entityManager,
     private readonly ConfigFactoryInterface $configFactory,
-    private readonly AuthenticationCollectorInterface $providerCollector
+    private readonly AuthenticationCollectorInterface $providerCollector,
   ) {
   }
 

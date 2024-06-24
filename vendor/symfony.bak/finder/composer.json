@@ -1,0 +1,45 @@
+{
+<<<<<<<< HEAD:vendor/symfony/stopwatch/composer.json
+    "name": "symfony/stopwatch",
+    "type": "library",
+    "description": "Provides a way to profile code",
+========
+    "name": "symfony/finder",
+    "type": "library",
+    "description": "Finds files and directories via an intuitive fluent interface",
+>>>>>>>> 6a554a825f521a86c6b530852924f3d817076498:vendor/symfony.bak/finder/composer.json
+    "keywords": [],
+    "homepage": "https://symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://symfony.com/contributors"
+        }
+    ],
+    "require": {
+<<<<<<<< HEAD:vendor/symfony/stopwatch/composer.json
+        "php": ">=8.1",
+        "symfony/service-contracts": "^2.5|^3"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Component\\Stopwatch\\": "" },
+========
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "symfony/filesystem": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Component\\Finder\\": "" },
+>>>>>>>> 6a554a825f521a86c6b530852924f3d817076498:vendor/symfony.bak/finder/composer.json
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "minimum-stability": "dev"
+}

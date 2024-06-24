@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Controller;
 
@@ -33,14 +33,14 @@ class DatabaseController extends ControllerBase {
   private Connection $database;
 
   /**
-   * Constructs a new WebprofilerController.
+   * DatabaseController constructor.
    *
    * @param \Symfony\Component\HttpKernel\Profiler\Profiler $profiler
    *   The Profiler service.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
    */
-  public function __construct(Profiler $profiler, Connection $database) {
+  final public function __construct(Profiler $profiler, Connection $database) {
     $this->profiler = $profiler;
     $this->database = $database;
   }
@@ -48,7 +48,7 @@ class DatabaseController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): DatabaseController {
     return new static(
       $container->get('webprofiler.profiler'),
       $container->get('database'),

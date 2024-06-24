@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Theme;
 
@@ -44,11 +44,11 @@ class ThemeNegotiatorWrapper extends ThemeNegotiator {
   /**
    * Return the current theme negotiator.
    *
-   * @return \Drupal\Core\Theme\ThemeNegotiatorInterface
+   * @return \Drupal\Core\Theme\ThemeNegotiatorInterface|null
    *   The current theme negotiator.
    */
-  public function getNegotiator(): ThemeNegotiatorInterface {
-    return $this->negotiator;
+  public function getNegotiator(): ?ThemeNegotiatorInterface {
+    return $this->negotiator ?? NULL;
   }
 
 }

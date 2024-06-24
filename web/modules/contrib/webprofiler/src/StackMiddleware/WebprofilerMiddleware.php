@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\StackMiddleware;
 
@@ -22,7 +22,9 @@ class WebprofilerMiddleware implements HttpKernelInterface {
    * @param \Symfony\Component\HttpKernel\HttpKernelInterface $httpKernel
    *   The decorated kernel.
    */
-  public function __construct(protected readonly HttpKernelInterface $httpKernel) {
+  public function __construct(
+    protected readonly HttpKernelInterface $httpKernel,
+  ) {
   }
 
   /**

@@ -62,7 +62,11 @@ class ProtocolNode implements \ArrayAccess, \IteratorAggregate
      * overload the `$_name` attribute), we can set the `$_name` attribute
      * dynamically. This is useful to create a node on-the-fly.
      */
+<<<<<<< HEAD
     public function __construct(string $name = null, string $reach = null, array $children = [])
+=======
+    public function __construct(?string $name = null, ?string $reach = null, array $children = [])
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if (null !== $name) {
             $this->_name = $name;
@@ -133,7 +137,11 @@ class ProtocolNode implements \ArrayAccess, \IteratorAggregate
      * Resolve a path, i.e. iterate the nodes tree and reach the queue of
      * the path.
      */
+<<<<<<< HEAD
     protected function _resolve(string $path, &$accumulator, string $id = null)
+=======
+    protected function _resolve(string $path, &$accumulator, ?string $id = null)
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if (\substr($path, 0, 6) === 'hoa://') {
             $path = \substr($path, 6);
@@ -246,7 +254,11 @@ class ProtocolNode implements \ArrayAccess, \IteratorAggregate
      * Queue of the node.
      * Generic one. Must be overrided in children classes.
      */
+<<<<<<< HEAD
     public function reach(string $queue = null)
+=======
+    public function reach(?string $queue = null)
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         return empty($queue) ? $this->_reach : $queue;
     }

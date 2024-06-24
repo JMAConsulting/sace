@@ -147,15 +147,7 @@ class IgnoredModulesForm extends ConfigFormBase {
     foreach ($modules as $filename => $module) {
       if (empty($module->info['hidden'])) {
         $options[$filename] = $this->buildRow($module);
-        $options[$filename]['#disabled'] = TRUE;
       }
-    }
-
-    // Set up the check boxes
-    $defaults = [];
-    $nagios_ignored_modules = $config->get('nagios.ignored_modules') ?: [];
-    foreach ($nagios_ignored_modules as $ignored_module) {
-      $defaults[$ignored_module] = 1;
     }
 
     $form['modules'] = [
@@ -163,13 +155,11 @@ class IgnoredModulesForm extends ConfigFormBase {
       '#header' => $header,
       '#options' => $options,
       '#empty' => $this->t('No modules available.'),
-      '#default_value' => $defaults,
+      '#default_value' => $config->get('nagios.ignored_modules') ?: [],
     ];
 
     if (!$enabled) {
-      foreach ($form['modules']['#options'] as $key => $value) {
-        $form['modules']['#options']['#disabled'] = TRUE;
-      }
+      $form['modules']['#disabled'] = TRUE;
     }
   }
 
@@ -194,7 +184,10 @@ class IgnoredModulesForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('nagios.settings');
-    $ignored_modules = array_keys(array_filter($form_state->getValue('modules')));
+    $ignored_modules = array_filter($form_state->getValue('modules'));
+    foreach(array_keys($ignored_modules) as $name) {
+      $ignored_modules[$name] = TRUE;
+    }
     $config->set('nagios.ignored_modules', $ignored_modules);
     $config->save();
     parent::submitForm($form, $form_state);

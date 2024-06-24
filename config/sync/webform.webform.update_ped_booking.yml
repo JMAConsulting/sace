@@ -324,6 +324,10 @@ elements: |-
         196: 'PE - Youth Online Course Booking'
         199: 'PE - Adult Online Course Booking Request'
       '#required': true
+      '#states':
+        disabled:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            filled: true
       '#states_clear': false
       '#format_items': ul
       '#extra':
@@ -367,14 +371,11 @@ elements: |-
       '#type': civicrm_options
       '#title': 'Delivery Format'
       '#empty_option': '-Select-'
+      '#civicrm_live_options': 0
       '#options':
         'In-Person Presentation': 'In-Person Presentation'
-        'Online Presentation': 'Online Presentation'
-        'Online Course': 'Online Course'
-        'In-Person Meeting': 'In-Person Meeting'
-        'Online Meeting': 'Online Meeting'
-        'In-Person Event': 'In-Person Event'
-        'Online Event': 'Online Event'
+        'In-Person Activity': 'In-Person Activity'
+        'Phone Activity': 'Phone Activity'
       '#required': true
       '#format_items': ul
       '#extra':
@@ -384,7 +385,6 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
       '#default_value': ''
-      '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_1232:
     '#type': civicrm_options
     '#title': 'Consultation Topic'
@@ -530,13 +530,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '1'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_331
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '1'
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_330:
       '#type': civicrm_options
@@ -545,13 +543,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '1'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_330
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '1'
     civicrm_1_activity_1_cg2_custom_334:
       '#type': civicrm_options
       '#title': 'Safer Spaces Programs Content'
@@ -559,13 +555,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '0'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_334
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
     civicrm_1_activity_1_cg2_custom_1261:
       '#type': civicrm_options
       '#title': 'Privilege & Oppression Content'
@@ -573,13 +567,11 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
-      '#default_value': '0'
       '#extra':
         aslist: 1
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_1261
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
   civicrm_1_activity_1_cg2_custom_333:
     '#type': civicrm_options
     '#title': 'Presentation Population of Focus'
@@ -587,7 +579,7 @@ elements: |-
       2SLGBTQ+: 2SLGBTQ+
       Adults: Adults
       'Child 3-12': 'Child 3-12'
-      FirstNations: 'First Nations, Métis, or Inuit/ Indigenous'
+      FirstNationsMetisInuitIndigenous: 'First Nations, Métis, or Inuit/ Indigenous'
       Guardians: Guardians/Parents
       Men/Boys: 'Men/Boys/Masc/NB (Trans-Inclusive)'
       Newcomer: Newcomer/Non-Status/Refugee/Immigrant
@@ -604,14 +596,6 @@ elements: |-
       volunteers: Volunteers
       Women: 'Women/Girls/Femme/NB (Trans-Inclusive)'
       Youth: 'Youth 12-18'
-    '#wrapper_attributes':
-      class:
-        - jma-grid-4
-    '#extra':
-      aslist: 0
-      multiple: 1
-    '#form_key': civicrm_1_activity_1_cg2_custom_333
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#states':
       invisible:
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -622,6 +606,14 @@ elements: |-
         - xor
         - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
             value: '201'
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
+    '#extra':
+      aslist: 0
+      multiple: 1
+    '#form_key': civicrm_1_activity_1_cg2_custom_333
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#default_option': ''
     '#default_value': ''
     '#civicrm_live_options': '1'
@@ -953,10 +945,6 @@ elements: |-
     '#text': |
       <h2><span style="color:#2e416c;">Assigned Staff</span></h2>
     '#format': html
-  duplicate_of_ped_booking_calendar:
-    '#type': view
-    '#name': duplicate_of_ped_booking_calendar
-    '#display_id': page_2
   flexbox_04:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_activity_date_time:
@@ -1365,7 +1353,7 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: /ped-bookings-calendar
+  confirmation_url: /ce-bookings-calendar
   confirmation_title: ''
   confirmation_message: 'The PED booking has been updated successfully!'
   confirmation_attributes: {  }

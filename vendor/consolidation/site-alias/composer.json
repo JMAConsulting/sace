@@ -24,9 +24,15 @@
     },
     "require": {
         "php": ">=7.4",
+<<<<<<< HEAD
         "consolidation/config": "^1.2.1 || ^2",
         "symfony/filesystem": "^5.4 || ^6",
         "symfony/finder": "^5 || ^6"
+=======
+        "consolidation/config": "^1.2.1 || ^2 || ^3",
+        "symfony/filesystem": "^5.4 || ^6 || ^7",
+        "symfony/finder": "^5 || ^6 || ^7"
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     },
     "require-dev": {
         "php-coveralls/php-coveralls": "^2.4.2",
@@ -53,7 +59,11 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
+<<<<<<< HEAD
             "php": "7.4"
+=======
+            "php": "8.2.17"
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         }
     },
     "extra": {

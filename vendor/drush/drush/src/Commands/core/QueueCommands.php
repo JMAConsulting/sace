@@ -18,12 +18,20 @@ use Drupal\Core\Queue\SuspendQueueException;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Queue\QueueGarbageCollectionInterface;
+<<<<<<< HEAD
+=======
+use JetBrains\PhpStorm\Deprecated;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class QueueCommands extends DrushCommands
 {
+<<<<<<< HEAD
+=======
+    #[Deprecated('Use CLI/ValidateQueueName Attribute instead')]
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     const VALIDATE_QUEUE = 'validate-queue';
     const RUN = 'queue:run';
     const LIST = 'queue:list';
@@ -73,11 +81,19 @@ final class QueueCommands extends DrushCommands
      * Run a specific queue by name.
      */
     #[CLI\Command(name: self::RUN, aliases: ['queue-run'])]
+<<<<<<< HEAD
     #[CLI\Argument(name: 'name', description: 'The name of the queue to run, as defined in either hook_queue_info or hook_cron_queue_info.')]
     #[CLI\Option(name: 'time-limit', description: 'The maximum number of seconds allowed to run the queue.')]
     #[CLI\Option(name: 'items-limit', description: 'The maximum number of items allowed to run the queue.')]
     #[CLI\Option(name: 'lease-time', description: 'The maximum number of seconds that an item remains claimed.')]
     #[CLI\HookSelector(name: self::VALIDATE_QUEUE, value: 'name')]
+=======
+    #[CLI\Argument(name: 'name', description: 'The name of the queue to run, as defined in QueueWorker annotation class.')]
+    #[CLI\Option(name: 'time-limit', description: 'The maximum number of seconds allowed to run the queue.')]
+    #[CLI\Option(name: 'items-limit', description: 'The maximum number of items allowed to run the queue.')]
+    #[CLI\Option(name: 'lease-time', description: 'The maximum number of seconds that an item remains claimed.')]
+    #[CLI\ValidateQueueName(argumentName: 'name')]
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     #[CLI\Complete(method_name_or_callable: 'queueComplete')]
     public function run(string $name, $options = ['time-limit' => self::REQ, 'items-limit' => self::REQ, 'lease-time' => self::REQ]): void
     {
@@ -98,7 +114,11 @@ final class QueueCommands extends DrushCommands
 
         while ((!$time_limit || $remaining > 0) && (!$items_limit || $count < $items_limit) && ($item = $queue->claimItem($lease_time))) {
             try {
+<<<<<<< HEAD
                 $this->logger()->info(dt('Processing item @id from @name queue.', ['@name' => $name, '@id' => $item->item_id]));
+=======
+                $this->logger()->info(dt('Processing item @id from @name queue.', ['@name' => $name, '@id' => $item->item_id ?? $item->qid]));
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
                 $worker->processItem($item->data);
                 $queue->deleteItem($item);
                 $count++;
@@ -157,7 +177,11 @@ final class QueueCommands extends DrushCommands
      */
     #[CLI\Command(name: self::DELETE, aliases: ['queue-delete'])]
     #[CLI\Argument(name: 'name', description: 'The name of the queue to delete, as defined in either hook_queue_info or hook_cron_queue_info.')]
+<<<<<<< HEAD
     #[CLI\HookSelector(name: self::VALIDATE_QUEUE, value: 'name')]
+=======
+    #[CLI\ValidateQueueName(argumentName: 'name')]
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     #[CLI\Complete(method_name_or_callable: 'queueComplete')]
     public function delete($name): void
     {
@@ -169,6 +193,10 @@ final class QueueCommands extends DrushCommands
     /**
      * Validate that a queue exists.
      */
+<<<<<<< HEAD
+=======
+    #[Deprecated('Use CLI/ValidateQueueName Attribute instead')]
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR, selector: self::VALIDATE_QUEUE)]
     public function validateQueueName(CommandData $commandData)
     {

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Profiler;
 
@@ -45,7 +45,11 @@ class TemplateManager {
    * @param array $templates
    *   Data collector templates retrieved by ProfilerPass class.
    */
-  public function __construct(Profiler $profiler, Environment $twig, array $templates) {
+  public function __construct(
+    Profiler $profiler,
+    Environment $twig,
+    array $templates,
+  ) {
     $this->profiler = $profiler;
     $this->twig = $twig;
     $this->templates = $templates;

@@ -153,7 +153,7 @@ if [ "$http_password" != "" ]; then
   ex -s +"g/HTTP\/1.1 401/d" -cwq "$temp"
 fi
 
-HTTP=`$GREP "HTTP/1" "$temp"`
+HTTP=`$GREP --text "HTTP/1" "$temp"`
 
 if [ "$RC" != 0 ]; then
   $ECHO "wget error: $RC: when accessing $host_name/$path. HTTP: $HTTP"
@@ -168,7 +168,7 @@ if [ "$HTTP_CODE" != "200" ]; then
   exit $STATE_CRITICAL
 fi
 
-DATA="`$GREP "nagios=" "$temp" | sed -e 's/^.*nagios=//g'`"
+DATA="`$GREP --text "nagios=" "$temp" | sed -e 's/^.*nagios=//g'`"
 
 STATUS=`$ECHO "$DATA" | awk -F, '{print $1}'`
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -33,7 +33,7 @@ trait DataCollectorTrait {
         $class,
         $method,
         $reflectedMethod->getFileName(),
-        $reflectedMethod->getStartLine() ?? '',
+        $reflectedMethod->getStartLine() ? $reflectedMethod->getStartLine() : '',
       );
     }
     catch (\ReflectionException $re) {

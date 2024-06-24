@@ -1,0 +1,30 @@
+uuid: 85177a5c-f309-4d2e-80e9-a843700552ed
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:html_block:9209a82f-bc18-4c44-af82-75ec436dc549'
+  module:
+    - block_content
+    - system
+  theme:
+    - oliverolocal
+id: calendarload
+theme: oliverolocal
+region: content
+weight: 0
+provider: null
+plugin: 'block_content:9209a82f-bc18-4c44-af82-75ec436dc549'
+settings:
+  id: 'block_content:9209a82f-bc18-4c44-af82-75ec436dc549'
+  label: 'Calendar Load'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/ce-bookings-calendar\r\n/my-calendar\r\n/calendar-team"

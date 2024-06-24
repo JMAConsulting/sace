@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Form;
 
@@ -35,7 +35,7 @@ class ReportFilterForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): ReportFilterForm {
     return new static(
       $container->get('webprofiler.profiler'),
     );

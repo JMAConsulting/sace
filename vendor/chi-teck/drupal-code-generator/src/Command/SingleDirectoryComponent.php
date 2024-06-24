@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php declare(strict_types = 1);
 
 namespace DrupalCodeGenerator\Command;
@@ -6,6 +7,18 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Asset\LibraryDiscovery;
+=======
+<?php
+
+declare(strict_types=1);
+
+namespace DrupalCodeGenerator\Command;
+
+use Drupal\Core\Asset\LibraryDiscoveryInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Extension\ThemeHandlerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use DrupalCodeGenerator\Application;
 use DrupalCodeGenerator\Asset\AssetCollection;
@@ -35,7 +48,11 @@ final class SingleDirectoryComponent extends BaseGenerator implements ContainerI
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,
     private readonly ThemeHandlerInterface $themeHandler,
+<<<<<<< HEAD
     private readonly LibraryDiscovery $libraryDiscovery,
+=======
+    private readonly LibraryDiscoveryInterface $libraryDiscovery,
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
   ) {
     parent::__construct();
   }
@@ -88,7 +105,11 @@ final class SingleDirectoryComponent extends BaseGenerator implements ContainerI
     if ($ir->confirm('Needs component props?')) {
       $vars['component_props'] = [];
       do {
+<<<<<<< HEAD
         $prop = $this->askProp($ir);
+=======
+        $prop = $this->askProp($vars, $ir);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         $vars['component_props'][] = $prop;
       } while ($ir->confirm('Add another prop?'));
     }
@@ -159,10 +180,20 @@ final class SingleDirectoryComponent extends BaseGenerator implements ContainerI
   /**
    * Asks for multiple questions to define a prop and its schema.
    *
+<<<<<<< HEAD
    * @return array
    *   The prop data, if any.
    */
   protected function askProp(Interviewer $ir): array {
+=======
+   * @psalm-param array{component_machine_name: mixed, ...<array-key, mixed>} $vars
+   *   The answers to the CLI questions.
+   *
+   * @return array
+   *   The prop data, if any.
+   */
+  protected function askProp(array $vars, Interviewer $ir): array {
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     $prop = [];
     $prop['title'] = $ir->ask('Prop title', '', new Required());
     $default = Utils::human2machine($prop['title']);
@@ -178,7 +209,14 @@ final class SingleDirectoryComponent extends BaseGenerator implements ContainerI
     ];
     $prop['type'] = $ir->choice('Prop type', $choices, 'String');
     if (!\in_array($prop['type'], ['string', 'number', 'boolean'])) {
+<<<<<<< HEAD
       $this->io()->warning('Unable to generate full schema for ' . $prop['type'] . '. Please edit metadata.json after generation.');
+=======
+      /** @psalm-var string $type */
+      $type = $prop['type'];
+      $component_schema_name = $vars['component_machine_name'] . '.component.yml';
+      $this->io()->warning(\sprintf('Unable to generate full schema for %s. Please edit %s after generation.', $type, $component_schema_name));
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     }
     return $prop;
   }

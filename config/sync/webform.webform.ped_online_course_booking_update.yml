@@ -193,6 +193,53 @@ elements: |-
       '#data_type': state_province_abbr
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
+      '#webform': ped_online_course_booking_update
+      '#webform_id': ped_online_course_booking_update--civicrm_2_contact_1_address_state_province_id
+      '#webform_key': civicrm_2_contact_1_address_state_province_id
+      '#webform_parent_key': civicrm_2_contact_1_fieldset_fieldset
+      '#webform_parent_flexbox': false
+      '#webform_depth': 1
+      '#webform_children': {  }
+      '#webform_multiple': false
+      '#webform_composite': false
+      '#webform_parents':
+        - civicrm_2_contact_1_fieldset_fieldset
+        - civicrm_2_contact_1_address_state_province_id
+      '#admin_title': State/Province
+      '#webform_plugin_id': civicrm_options
+      '#civicrm_live_options': 0
+      '#empty_option': '- None -'
+      '#options': {  }
+    civicrm_2_contact_1_cg52_custom_663:
+      '#type': textfield
+      '#title': 'Group Name'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+            value: 'No'
+      '#data_type': String
+      '#form_key': civicrm_2_contact_1_cg52_custom_663
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_2_contact_1_cg52_custom_664:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        visible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+            value: 'Yes'
+      '#form_key': civicrm_2_contact_1_cg52_custom_664
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Group Details'
   civicrm_2_contact_1_other_tag:
     '#type': civicrm_options
     '#title': Tag(s)
@@ -281,6 +328,10 @@ elements: |-
           196: 'PED - Youth Online Course Booking'
           199: 'Adult Online Course Booking Request'
         '#required': true
+        '#states':
+          disabled:
+            ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+              filled: true
         '#states_clear': false
         '#format_items': ul
         '#extra':
@@ -340,31 +391,36 @@ elements: |-
       '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_662:
-      '#type': civicrm_options
-      '#title': 'Optional Add-Ons'
-      '#empty_option': '- Select Optional Add-Ons -'
-      '#civicrm_live_options': 0
+      '#type': checkboxes
+      '#title': 'Youth Online Course Optional Add-Ons'
       '#options':
-        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator'
-        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module'
-        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": 'Non-Consensual Photo Sharing Add-On Module'
-        None: None
+        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator -- This option can be offered in-person or online.'
+        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module -- Only available for Consent: Ask Me About It! online course.'
+        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_ -- Only available for Consent: Ask Me About It! online course."
+        'Racism & Sexual Violence': "Racism & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more about the deep connection between racism and sexual violence to empower\_ individuals and communities to enact meaningful change."
+        '2SLGBTQ+ Community & Sexual Violence': "2SLGBTQ+ Community & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more\_ about the connection between queer history, queer trauma, and sexual\_violence."
       '#states':
-        visible:
-          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '196'
         disabled:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            '!value': '196'
-      '#states_clear': false
+            value: '199'
+        invisible:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '199'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-3
+      '#civicrm_live_options': 0
       '#extra':
-        aslist: 0
+        aslist: 1
+        items: |-
+          Live Q&A with a SACE Educator|Live Q&A with a SACE Educator
+          Sexual Harassment Add-On Module (High School Only)\_|Sexual Harassment Add-On Module (High School Only)\_
+          Non-Consensual Photo Sharing Add-On Module (High School Only)\_|Non-Consensual Photo Sharing Add-On Module (High School Only)\_
         multiple: 1
       '#data_type': String
-      '#default_option': None
       '#form_key': civicrm_1_activity_1_cg2_custom_662
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_value': None
   container:
     '#type': container
     processed_text_08:
@@ -377,7 +433,6 @@ elements: |-
       civicrm_1_activity_1_cg2_custom_331:
         '#type': civicrm_options
         '#title': 'Resources Content'
-        '#civicrm_live_options': 0
         '#options':
           1: 'Yes'
           0: 'No'
@@ -387,8 +442,7 @@ elements: |-
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_331
         '#parent': civicrm_1_activity_1_fieldset_fieldset
-        '#default_option': '1'
-        '#default_value': '1'
+        '#civicrm_live_options': '1'
       civicrm_1_activity_1_cg2_custom_330:
         '#type': civicrm_options
         '#title': 'Support Content'
@@ -402,8 +456,6 @@ elements: |-
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_330
         '#parent': civicrm_1_activity_1_fieldset_fieldset
-        '#default_option': '1'
-        '#default_value': '1'
     flexbox_17:
       '#type': webform_flexbox
       civicrm_1_activity_1_cg2_custom_334:
@@ -412,14 +464,12 @@ elements: |-
         '#options':
           1: 'Yes'
           0: 'No'
-        '#default_value': '0'
         '#extra':
           aslist: 1
           multiple: 0
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_334
         '#parent': civicrm_1_activity_1_fieldset_fieldset
-        '#default_option': '0'
         '#civicrm_live_options': '1'
       civicrm_1_activity_1_cg2_custom_1261:
         '#type': civicrm_options
@@ -434,8 +484,6 @@ elements: |-
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_1261
         '#parent': civicrm_1_activity_1_fieldset_fieldset
-        '#default_option': 0
-        '#default_value': 0
   processed_text_04:
     '#type': processed_text
     '#text': '<h3><span style="color:#2e416c;">Online Course Details</span></h3>'
@@ -557,10 +605,6 @@ elements: |-
       '#text': |
         <h2><span style="color:#2e416c;">Assigned Staff</span></h2>
       '#format': html
-    calendar:
-      '#type': view
-      '#name': duplicate_of_ped_booking_calendar
-      '#display_id': page_2
     flexbox_05:
       '#type': webform_flexbox
       civicrm_1_activity_1_activity_activity_date_time:
@@ -595,13 +639,17 @@ elements: |-
         '#extra': {  }
     civicrm_1_activity_1_cg2_custom_698:
       '#type': textarea
+      '#title': 'Is there anything else you would like us to know'
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '199'
       '#data_type': Memo
       '#extra':
         cols: '60'
         rows: '4'
       '#form_key': civicrm_1_activity_1_cg2_custom_698
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Is there anything else you would like us to know'
   flexbox_14:
     '#type': webform_flexbox
     civicrm_3_contact_1_contact_existing:
@@ -960,7 +1008,7 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url
-  confirmation_url: '/ped-bookings-calendar?status_id%5B0%5D=2&status_id%5B1%5D=9'
+  confirmation_url: '/ce-bookings-calendar?status_id%5B0%5D=2&status_id%5B1%5D=9'
   confirmation_title: ''
   confirmation_message: ''
   confirmation_attributes: {  }
@@ -1045,7 +1093,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -48
+    weight: -49
     settings:
       disable: 'Leave Fields and Save Settings'
       nid: 1
@@ -1886,7 +1934,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -49
+    weight: -48
     settings: {  }
   ped_online_course_booking_update_handler:
     id: ped_online_course_booking_update_handler

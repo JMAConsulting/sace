@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 <?php declare(strict_types = 1);
+=======
+<?php
+
+declare(strict_types=1);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace PHPSTORM_META {
 
@@ -19,4 +25,14 @@ namespace PHPSTORM_META {
     ])
   );
 
+<<<<<<< HEAD
+=======
+  expectedArguments(
+    \Symfony\Component\DependencyInjection\ContainerInterface::set(),
+    0,
+{% for service_id, class in services %}
+    '{{ service_id }}',
+{% endfor %}
+  );
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 }

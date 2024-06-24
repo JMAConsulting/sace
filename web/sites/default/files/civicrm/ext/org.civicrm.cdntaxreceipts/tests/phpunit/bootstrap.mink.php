@@ -7,8 +7,6 @@
  * @see phpunit.xml.dist
  */
 
-use Drupal\Component\Assertion\Handle;
-
 /**
  * This file is going to be in the extension, but we have no idea where the
  * extension is relative to drupal. If it's in a shared central location among
@@ -89,7 +87,7 @@ function drupal_phpunit_contrib_extension_directory_roots($root = NULL) {
     $paths[] = is_dir("$path/profiles") ? realpath("$path/profiles") : NULL;
     $paths[] = is_dir("$path/themes") ? realpath("$path/themes") : NULL;
   }
-  return array_filter($paths, 'file_exists');
+  return array_filter($paths);
 }
 
 /**
@@ -118,7 +116,7 @@ function drupal_phpunit_get_extension_namespaces($dirs) {
           $namespaces['Drupal\\Tests\\' . $extension . '\\' . $suite_name . '\\'][] = $suite_dir;
         }
       }
-      // Extensions can have a \Drupal\extension\Traits namespace for
+      // Extensions can have a \Drupal\Tests\extension\Traits namespace for
       // cross-suite trait code.
       $trait_dir = $test_dir . '/Traits';
       if (is_dir($trait_dir)) {
@@ -141,8 +139,8 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
  * Populate class loader with additional namespaces for tests.
  *
  * We run this in a function to avoid setting the class loader to a global
- * that can change. This change can cause unpredictable false positives for
- * phpunit's global state change watcher. The class loader can be retrieved from
+ * that can change. This change can cause unpredictable false positives for the
+ * PHPUnit global state change watcher. The class loader can be retrieved from
  * composer at any time by requiring autoload.php.
  */
 function drupal_phpunit_populate_class_loader($root) {
@@ -191,6 +189,7 @@ function drupal_phpunit_populate_class_loader($root) {
 
 // Do class loader population.
 $loader = drupal_phpunit_populate_class_loader($top_root);
+class_alias('\Drupal\Tests\DocumentElement', '\Behat\Mink\Element\DocumentElement', TRUE);
 
 if (file_exists($top_root . '/web/core/tests/Drupal/TestTools/PhpUnitCompatibility/ClassWriter.php')) {
   \Drupal\TestTools\PhpUnitCompatibility\ClassWriter::mutateTestBase($loader);
@@ -215,8 +214,13 @@ mb_language('uni');
 // reduce the fragility of the testing system in general.
 date_default_timezone_set('Australia/Sydney');
 
-// Runtime assertions. PHPUnit follows the php.ini assert.active setting for
-// runtime assertions. By default this setting is on. Ensure exceptions are
-// thrown if an assert fails, but this call does not turn runtime assertions on
-// if they weren't on already.
-Handle::register();
+// Ensure ignored deprecation patterns listed in .deprecation-ignore.txt are
+// considered in testing.
+if (getenv('SYMFONY_DEPRECATIONS_HELPER') === FALSE && file_exists("$top_root/web/core/.deprecation-ignore.txt")) {
+  $deprecation_ignore_filename = realpath($top_root . "/web/core/.deprecation-ignore.txt");
+  putenv("SYMFONY_DEPRECATIONS_HELPER=ignoreFile=$deprecation_ignore_filename");
+}
+
+// Drupal expects to be run from its root directory. This ensures all test types
+// are consistent.
+chdir($top_root . '/web');

@@ -7,9 +7,6 @@ class CRM_Cdntaxreceipts_ReceiptsIssuedReportTest extends CRM_Cdntaxreceipts_Bas
 
   public function setUp(): void {
     parent::setUp();
-    if (!\CRM_Core_BAO_Domain::isDBVersionAtLeast('5.43.alpha1')) {
-      $this->markTestIncomplete('Test requires E_NOTICE fix that is only in 5.43+');
-    }
     $this->setDeliveryMethod(CDNTAX_DELIVERY_PRINT_ONLY);
   }
 
@@ -51,13 +48,15 @@ class CRM_Cdntaxreceipts_ReceiptsIssuedReportTest extends CRM_Cdntaxreceipts_Bas
     // on earlier matrices.
     unset($data[0]['class']);
 
+    $expected_sort_name = \CRM_Core_BAO_Domain::isDBVersionAtLeast('5.69.alpha1') ? 'Miller, Joe II' : 'Miller, Joe';
+
     // I'm still a little confused about how this passes even when using assertSame.
     // The data types for the 'id' fields are strings in $data, so they
     // shouldn't match when using strict comparison. But is it worth caring
     // about.
     $this->assertEquals([
       [
-        'civicrm_contact_sort_name' => 'Miller, Joe',
+        'civicrm_contact_sort_name' => $expected_sort_name,
         'civicrm_contact_id' => $contact_id,
         'civicrm_cdntaxreceipts_log_issued_on' => $datestr,
         'civicrm_cdntaxreceipts_log_receipt_amount' => '10.00',
@@ -118,9 +117,11 @@ class CRM_Cdntaxreceipts_ReceiptsIssuedReportTest extends CRM_Cdntaxreceipts_Bas
     // on earlier matrices.
     unset($data[0]['class']);
 
+    $expected_sort_name = \CRM_Core_BAO_Domain::isDBVersionAtLeast('5.69.alpha1') ? 'Miller, Joe II' : 'Miller, Joe';
+
     $this->assertEquals([
       [
-        'civicrm_contact_sort_name' => 'Miller, Joe',
+        'civicrm_contact_sort_name' => $expected_sort_name,
         'civicrm_contact_id' => $contact_id,
         'civicrm_cdntaxreceipts_log_issued_on' => $datestr,
         'civicrm_cdntaxreceipts_log_receipt_amount' => '10.00',

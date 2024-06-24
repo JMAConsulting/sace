@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - filter.format.html
+    - filter.format.webform_default
   module:
     - civicrm
     - file
@@ -18,11 +19,16 @@ label: 'Authenticated user'
 weight: -1
 is_admin: false
 permissions:
+  - 'access AJAX API'
   - 'access CiviMail subscribe/unsubscribe pages'
   - 'access all custom data'
   - 'access content'
   - 'access fontawesome additional settings'
   - 'access uploaded files'
+<<<<<<< HEAD
+=======
+  - 'administer filters'
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
   - 'delete own files'
   - 'make online contributions'
   - 'profile create'
@@ -30,6 +36,7 @@ permissions:
   - 'profile view'
   - 'register for events'
   - 'use text format html'
+  - 'use text format webform_default'
   - 'view event info'
   - 'view event participants'
   - 'view media'

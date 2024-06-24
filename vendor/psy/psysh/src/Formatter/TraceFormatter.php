@@ -29,7 +29,11 @@ class TraceFormatter
      *
      * @return string[] Formatted stacktrace lines
      */
+<<<<<<< HEAD
     public static function formatTrace(\Throwable $throwable, FilterOptions $filter = null, int $count = null, bool $includePsy = true): array
+=======
+    public static function formatTrace(\Throwable $throwable, ?FilterOptions $filter = null, ?int $count = null, bool $includePsy = true): array
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         if ($cwd = \getcwd()) {
             $cwd = \rtrim($cwd, \DIRECTORY_SEPARATOR).\DIRECTORY_SEPARATOR;

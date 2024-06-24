@@ -16,17 +16,17 @@ final class PDOProvider implements ExchangeRateProvider
     /**
      * The SELECT statement.
      */
-    private \PDOStatement $statement;
+    private readonly \PDOStatement $statement;
 
     /**
      * The source currency code if fixed, or null if dynamic.
      */
-    private ?string $sourceCurrencyCode = null;
+    private readonly ?string $sourceCurrencyCode;
 
     /**
      * The target currency code if fixed, or null if dynamic.
      */
-    private ?string $targetCurrencyCode = null;
+    private readonly ?string $targetCurrencyCode;
 
     /**
      * Extra parameters set dynamically to resolve the query placeholders.
@@ -43,28 +43,34 @@ final class PDOProvider implements ExchangeRateProvider
     {
         $conditions = [];
 
-        if (null !== $whereConditions = $configuration->getWhereConditions()) {
-            $conditions[] = sprintf('(%s)', $whereConditions);
+        if ($configuration->whereConditions !== null) {
+            $conditions[] = sprintf('(%s)', $configuration->whereConditions);
         }
 
-        if (null !== $sourceCurrencyCode = $configuration->getSourceCurrencyCode()) {
-            $this->sourceCurrencyCode = $sourceCurrencyCode;
-        } elseif (null !== $sourceCurrencyColumnName = $configuration->getSourceCurrencyColumnName()) {
-            $conditions[] = sprintf('%s = ?', $sourceCurrencyColumnName);
+        $sourceCurrencyCode = null;
+        $targetCurrencyCode = null;
+
+        if ($configuration->sourceCurrencyCode !== null) {
+            $sourceCurrencyCode = $configuration->sourceCurrencyCode;
+        } elseif ($configuration->sourceCurrencyColumnName !== null) {
+            $conditions[] = sprintf('%s = ?', $configuration->sourceCurrencyColumnName);
         }
 
-        if (null !== $targetCurrencyCode = $configuration->getTargetCurrencyCode()) {
-            $this->targetCurrencyCode = $targetCurrencyCode;
-        } elseif (null !== $targetCurrencyColumnName = $configuration->getTargetCurrencyColumnName()) {
-            $conditions[] = sprintf('%s = ?', $targetCurrencyColumnName);
+        if ($configuration->targetCurrencyCode !== null) {
+            $targetCurrencyCode = $configuration->targetCurrencyCode;
+        } elseif ($configuration->targetCurrencyColumnName !== null) {
+            $conditions[] = sprintf('%s = ?', $configuration->targetCurrencyColumnName);
         }
+
+        $this->sourceCurrencyCode = $sourceCurrencyCode;
+        $this->targetCurrencyCode = $targetCurrencyCode;
 
         $conditions = implode(' AND ' , $conditions);
 
         $query = sprintf(
             'SELECT %s FROM %s WHERE %s',
-            $configuration->getExchangeRateColumnName(),
-            $configuration->getTableName(),
+            $configuration->exchangeRateColumnName,
+            $configuration->tableName,
             $conditions
         );
 

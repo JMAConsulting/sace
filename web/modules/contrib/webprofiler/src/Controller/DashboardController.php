@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Controller;
 
@@ -44,7 +44,7 @@ class DashboardController extends ControllerBase {
    */
   final public function __construct(
     Profiler $profiler,
-    TemplateManager $templateManager
+    TemplateManager $templateManager,
   ) {
     $this->profiler = $profiler;
     $this->templateManager = $templateManager;
@@ -53,7 +53,7 @@ class DashboardController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): DashboardController {
     return new static(
       $container->get('webprofiler.profiler'),
       $container->get('webprofiler.template_manager'),

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\DataCollector;
 
@@ -29,7 +29,7 @@ class DrupalDataCollector extends DataCollector implements LateDataCollectorInte
    */
   public function __construct(
     private readonly RedirectDestinationInterface $redirectDestination,
-    private readonly string $drupalProfile
+    private readonly string $drupalProfile,
   ) {
   }
 

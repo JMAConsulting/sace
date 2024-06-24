@@ -21,7 +21,11 @@ class UnexpectedTargetException extends RuntimeException
      * @param int             $code     (default: 0)
      * @param \Throwable|null $previous (default: null)
      */
+<<<<<<< HEAD
     public function __construct($target, string $message = '', int $code = 0, \Throwable $previous = null)
+=======
+    public function __construct($target, string $message = '', int $code = 0, ?\Throwable $previous = null)
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         $this->target = $target;
         parent::__construct($message, $code, $previous);

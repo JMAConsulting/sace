@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\tracer\Twig\Extension;
 
@@ -30,7 +30,7 @@ class TraceableProfilerExtension extends ProfilerExtension {
    */
   public function __construct(
     protected readonly Profile $profile,
-    protected readonly TracerInterface $tracer
+    protected readonly TracerInterface $tracer,
   ) {
     parent::__construct($profile);
     $this->events = new \SplObjectStorage();

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\Form;
 
@@ -31,7 +31,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): SettingsForm {
     $instance = parent::create($container);
 
     $instance->profiler = $container->get('webprofiler.profiler');
@@ -43,14 +43,14 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'webprofiler_settings';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
+  protected function getEditableConfigNames(): array {
     return [
       'webprofiler.settings',
     ];
@@ -59,7 +59,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $config = $this->config('webprofiler.settings');
 
     $form['purge_on_cache_clear'] = [
@@ -170,7 +170,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $this->config('webprofiler.settings')
       ->set('purge_on_cache_clear', $form_state->getValue('purge_on_cache_clear'))
       ->set('intercept_redirects', $form_state->getValue('intercept_redirects'))

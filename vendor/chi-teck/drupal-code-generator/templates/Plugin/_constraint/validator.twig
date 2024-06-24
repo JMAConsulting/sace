@@ -1,5 +1,11 @@
 {% import '@lib/di.twig' as di %}
+<<<<<<< HEAD
 <?php declare(strict_types = 1);
+=======
+<?php
+
+declare(strict_types=1);
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 namespace Drupal\{{ machine_name }}\Plugin\Validation\Constraint;
 
@@ -15,7 +21,11 @@ use Drupal\Core\Entity\EntityInterface;
   {% endif %}
   {% if services %}
 {{ di.use(services) }}
+<<<<<<< HEAD
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+=======
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 use Symfony\Component\DependencyInjection\ContainerInterface;
   {% endif %}
 {% endsort %}
@@ -23,13 +33,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Validates the {{ plugin_label }} constraint.
  */
+<<<<<<< HEAD
 final class {{ class }}Validator extends ConstraintValidator {% if services %}implements ContainerFactoryPluginInterface {% endif %}{
+=======
+final class {{ class }}Validator extends ConstraintValidator {% if services %}implements ContainerInjectionInterface {% endif %}{
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
 {% if services %}
   /**
    * Constructs the object.
    */
   public function __construct(
+<<<<<<< HEAD
     array $configuration,
     $plugin_id,
     $plugin_definition,
@@ -37,15 +52,24 @@ final class {{ class }}Validator extends ConstraintValidator {% if services %}im
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
+=======
+{{ di.signature(services) }}
+  ) {}
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 
   /**
    * {@inheritdoc}
    */
+<<<<<<< HEAD
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new self(
       $configuration,
       $plugin_id,
       $plugin_definition,
+=======
+  public static function create(ContainerInterface $container): self {
+    return new self(
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
 {{ di.container(services) }}
     );
   }

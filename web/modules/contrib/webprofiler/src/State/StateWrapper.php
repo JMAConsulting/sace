@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\webprofiler\State;
 
@@ -27,7 +27,7 @@ class StateWrapper extends State {
   public function __construct(
     KeyValueFactoryInterface $key_value_factory,
     private readonly StateInterface $state,
-    private readonly StateDataCollector $dataCollector
+    private readonly StateDataCollector $dataCollector,
   ) {
     parent::__construct($key_value_factory);
   }

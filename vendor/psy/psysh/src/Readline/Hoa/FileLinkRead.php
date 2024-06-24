@@ -57,7 +57,11 @@ class FileLinkRead extends FileLink implements StreamIn
     public function __construct(
         string $streamName,
         string $mode = parent::MODE_READ,
+<<<<<<< HEAD
         string $context = null,
+=======
+        ?string $context = null,
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
         bool $wait = false
     ) {
         parent::__construct($streamName, $mode, $context, $wait);
@@ -76,7 +80,11 @@ class FileLinkRead extends FileLink implements StreamIn
      * @throws \Hoa\File\Exception\FileDoesNotExist
      * @throws \Hoa\File\Exception
      */
+<<<<<<< HEAD
     protected function &_open(string $streamName, StreamContext $context = null)
+=======
+    protected function &_open(string $streamName, ?StreamContext $context = null)
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         static $createModes = [
             parent::MODE_READ,
@@ -190,7 +198,11 @@ class FileLinkRead extends FileLink implements StreamIn
      *
      * @return array
      */
+<<<<<<< HEAD
     public function readArray(string $format = null)
+=======
+    public function readArray(?string $format = null)
+>>>>>>> 6a554a825f521a86c6b530852924f3d817076498
     {
         return $this->scanf($format);
     }
