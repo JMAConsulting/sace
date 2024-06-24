@@ -11,7 +11,6 @@ return array(
     $vendorDir . '/pear/auth_sasl',
     $vendorDir . '/pear/console_getopt',
     $vendorDir . '/pear/db',
-    $vendorDir . '/pear/log',
     $vendorDir . '/pear/mail',
     $vendorDir . '/pear/mail_mime',
     $vendorDir . '/pear/net_smtp',
@@ -19,4 +18,5 @@ return array(
     $vendorDir . '/pear/pear-core-minimal/src',
     $vendorDir . '/pear/pear_exception',
     $vendorDir . '/pear/validate_finance_creditcard',
+    $vendorDir . '/pear/log',
 );

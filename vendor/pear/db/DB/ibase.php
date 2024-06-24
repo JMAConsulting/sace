@@ -23,7 +23,6 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2007 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 
@@ -707,9 +706,9 @@ class DB_ibase extends DB_common
         $repeat = 0;
         do {
             $this->pushErrorHandling(PEAR_ERROR_RETURN);
-            $result = $this->query("SELECT GEN_ID(${sqn}, 1) "
+            $result = $this->query("SELECT GEN_ID({$sqn}, 1) "
                                    . 'FROM RDB$GENERATORS '
-                                   . "WHERE RDB\$GENERATOR_NAME='${sqn}'");
+                                   . "WHERE RDB\$GENERATOR_NAME='{$sqn}'");
             $this->popErrorHandling();
             if ($ondemand && DB::isError($result)) {
                 $repeat = 1;
@@ -746,7 +745,7 @@ class DB_ibase extends DB_common
     {
         $sqn = strtoupper($this->getSequenceName($seq_name));
         $this->pushErrorHandling(PEAR_ERROR_RETURN);
-        $result = $this->query("CREATE GENERATOR ${sqn}");
+        $result = $this->query("CREATE GENERATOR {$sqn}");
         $this->popErrorHandling();
 
         return $result;

@@ -1,0 +1,13 @@
+--- CRM/Core/Error.php
++++ CRM/Core/Error.php
+@@ -655,7 +655,9 @@ public static function debug_query_result($query) {
+    */
+   public static function createDebugLogger($prefix = '') {
+     self::generateLogFileName($prefix);
+-    return Log::singleton('file', \Civi::$statics[__CLASS__]['logger_file' . $prefix], '');
++    return Log::singleton('file', \Civi::$statics[__CLASS__]['logger_file' . $prefix], '', [
++      'timeFormat' => '%Y-%m-%d %H:%M:%S%z',
++    ]);
+   }
+ 
+   /**

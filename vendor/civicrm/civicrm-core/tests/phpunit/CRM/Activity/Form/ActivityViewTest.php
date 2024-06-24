@@ -63,7 +63,6 @@ class CRM_Activity_Form_ActivityViewTest extends CiviUnitTestCase {
    * Test that the smarty template for ActivityView contains what we expect
    * after preProcess().
    *
-   * @throws \CRM_Core_Exception
    */
   public function testActivityViewPreProcess(): void {
     // create activity
@@ -82,13 +81,13 @@ class CRM_Activity_Form_ActivityViewTest extends CiviUnitTestCase {
 
     // check one of the smarty template vars
     // not checking EVERYTHING
-    $templateVar = CRM_Activity_Form_ActivityView::getTemplate()->get_template_vars('values');
+    $templateVar = CRM_Activity_Form_ActivityView::getTemplate()->getTemplateVars('values');
     $expected = [
       'assignee_contact' => [0 => $activity['target_contact_id']],
       // it's always Julia
-      'assignee_contact_value' => 'Anderson, Julia',
+      'assignee_contact_value' => 'Anderson, Julia II',
       'target_contact' => [0 => $activity['target_contact_id']],
-      'target_contact_value' => 'Anderson, Julia',
+      'target_contact_value' => 'Anderson, Julia II',
       'source_contact' => $activityMoreInfo['source_contact_sort_name'],
       'case_subject' => NULL,
       'id' => $activity['id'],

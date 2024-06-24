@@ -26,6 +26,7 @@ class api_v3_MultilingualTest extends CiviUnitTestCase {
    */
   protected function setUp(): void {
     parent::setUp();
+    CRM_Core_BAO_ConfigSetting::enableAllComponents();
     $this->useTransaction(TRUE);
   }
 
@@ -79,7 +80,7 @@ class api_v3_MultilingualTest extends CiviUnitTestCase {
    * CRM-19677: Ensure that entity apis are not affected on Multilingual setup
    *  with check_permissions = TRUE
    */
-  public function testAllEntities() {
+  public function testAllEntities(): void {
     $this->enableMultilingual();
 
     // list of entities which has mandatory attributes
