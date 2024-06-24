@@ -56,9 +56,9 @@ class ClinAddFlagsWebformHandler extends WebformHandlerBase {
       ->execute()
       ->first();
 
-      if(isset($webform_submission_data['existing_flag_id']) && is_numeric($webform_submission_data['existing_flag_id'])) {
+      if(isset($webform_submission_data['fid']) && is_numeric($webform_submission_data['fid'])) {
         $results = \Civi\Api4\Activity::update(TRUE)
-          ->addWhere('id', '=', $webform_submission_data['existing_flag_id'])
+          ->addWhere('id', '=', $webform_submission_data['fid'])
           ->addValue('activity_type_id', $optionValue['value'])
           ->addValue('subject', $webform_submission_data['flag_name'])
           ->addValue('details', $webform_submission_data['description'])
