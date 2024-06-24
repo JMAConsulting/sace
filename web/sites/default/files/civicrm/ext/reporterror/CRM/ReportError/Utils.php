@@ -38,36 +38,6 @@ class CRM_ReportError_Utils {
     else {
       Civi::log()->warning('Report Error Extension could not send since no email address was set.');
     }
-
-    self::sendGelfReport($vars, $options_overrides);
-  }
-
-  /**
-   * Sends a report to a logstash/gelf/greylog server.
-   */
-  public static function sendGelfReport($vars, $options_overrides) {
-    $is_enabled = reporterror_setting_get('reporterror_gelf_enable', $options_overrides);
-
-    if (!$is_enabled) {
-      return;
-    }
-
-    $host = reporterror_setting_get('reporterror_gelf_host', $options_overrides);
-    $port = 12201; // FIXME, make configurable?
-    $message = $vars['message'];
-
-    $transport = new \Gelf\Transport\UdpTransport($host, $port);
-    $handler = new \Monolog\Handler\GelfHandler(new \Gelf\Publisher($transport));
-
-    $fqdn = CRM_Utils_System::url('/', NULL, TRUE);
-    $fqdn = preg_replace('/https?:\/\//', '', $fqdn);
-    $fqdn = preg_replace('/\/\//', '', $fqdn);
-
-    $logger = new \Monolog\Logger('main', [$handler]);
-    $logger->pushHandler($handler);
-    $logger->addInfo($message, [
-      'context' => $fqdn,
-    ]);
   }
 
   /**
