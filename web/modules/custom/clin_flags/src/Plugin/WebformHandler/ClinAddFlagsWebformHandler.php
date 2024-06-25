@@ -72,6 +72,7 @@ class ClinAddFlagsWebformHandler extends WebformHandlerBase {
           ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
           ->addValue('subject', $webform_submission_data['flag_name'])
           ->addValue('details', $webform_submission_data['description'])
+          ->addValue('status_id', 9)
           ->execute();
       }
 
