@@ -57,15 +57,24 @@ function clin_client_profile_form_alter (&$form, \Drupal\Core\Form\FormStateInte
 
           // Check for intersection in teams
           if (!array_intersect($current_user_teams, $assigned_staff_teams)) {
+            $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
+            $form['#attributes']['class'][] = 'webform-locked';
+            $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
             clin_client_profile_make_form_read_only($form);
           }
         }
         else {
+          $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
+          $form['#attributes']['class'][] = 'webform-locked';
+          $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
           clin_client_profile_make_form_read_only($form);
         }
       }
       // Read only if reception or intake
       elseif(in_array('reception', $roles) || in_array('intake', $roles)) {
+        $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
+        $form['#attributes']['class'][] = 'webform-locked';
+        $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
         clin_client_profile_make_form_read_only($form);
       }
       // Hide form otherwise
@@ -77,10 +86,6 @@ function clin_client_profile_form_alter (&$form, \Drupal\Core\Form\FormStateInte
 }
 
 function clin_client_profile_make_form_read_only(&$elements) {
-  $elements['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
-  $elements['#attributes']['class'][] = 'webform-locked';
-  $elements['actions']['submit']['#attributes']['disabled'] = 'disabled';
-
   foreach ($elements as $key => &$element) {
     if (is_array($element)) {
       if (isset($element['#type']) && in_array($element['#type'], ['textfield', 'textarea', 'select', 'checkbox', 'radios', 'checkboxes', 'date', 'email', 'number', 'tel', 'url'])) {
