@@ -13,6 +13,12 @@ function clin_client_profile_preprocess_page(&$variables) {
   if (preg_match($pattern, $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_client_profile';
   }
+  if(preg_match('/\/contact-information\/flags\/(\d+)/', $current_path, $matches)) {
+    $variables['#attached']['library'][] = 'clin_client_profile/clin_flags';
+  }
+  if(preg_match('/\/contact-information\/edit\/(\d+)/', $current_path, $matches)) {
+    $variables['#attached']['library'][] = 'clin_client_profile/clin_edit_contact';
+  }
 }
 
 /**
