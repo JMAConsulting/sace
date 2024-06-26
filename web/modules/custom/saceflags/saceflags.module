@@ -1,5 +1,9 @@
 <?php
 
+use Drupal\Core\Render\Markup;
+use Civi\Api4\Activity;
+use Drupal\webform\Utility\WebformFormHelper;
+
 /**
  * @file
  * Contains saceflags.module.
@@ -17,3 +21,117 @@ function saceflags_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
     ],
   ];
 }
+
+/**
+ * Modify the views field output of the relevant name field
+ * @param array $variables
+ */
+function saceflags_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  $field = $variables['field'];
+  $row = $variables['row'];
+
+  $hasFlagFilter = isset($view->filter['used_for_flagging_contacts']);
+
+  if (!empty($view->result) && $hasFlagFilter) {
+    if ($field->field === 'activity_type_id') {
+      // Get activities based on row ID
+      $flaggedActivities = _getFlaggedActivities();
+      $currentActivityType = $field->getValue($row);
+      foreach ($flaggedActivities as $activity) {
+        if($activity['activity_type_id'] == $currentActivityType) {
+          $variables['output'] = modify_views_field_output($activity, $variables['output']);
+        }
+      }
+    }
+  }
+  // This is the all client list view so we modify the sort name here.
+  elseif ($view->storage->id() === 'clients') {
+    if ($field->field === 'sort_name') {
+      $activities = _get_flags_for_contact($row->id);
+      foreach($activities as $activity) {
+        $variables['output'] = modify_views_field_output($activity, $variables['output']);
+      }
+    }
+  }
+}
+
+/**
+ * Get Flag Activities for a contact
+ * @param int $client_contact_id
+ * @return array
+ */
+function _getFlaggedActivities() {
+  return \Civi\Api4\Saceflags::get(FALSE)
+  ->addSelect('activity_type_id', 'appointment_colours.colour_hex', 'option_value.label')
+  ->addJoin('AppointmentColours AS appointment_colours', 'LEFT', ['activity_type_id', '=', 'appointment_colours.activity_type_id'])
+  ->addJoin('OptionValue AS option_value', 'LEFT', ['activity_type_id', '=', 'option_value.value'])
+  ->addWhere('used_for_flagging_contacts', '=', TRUE)
+  ->addWhere('option_value.option_group_id', '=', 2)
+  ->execute();
+}
+
+/**
+* Get Flag Activities for a contact
+* @param int $client_contact_id
+* @return array
+*/
+function _get_flags_for_contact(int $client_contact_id) {
+ \Drupal::service('civicrm')->initialize();
+
+ return Activity::get(FALSE)
+   ->setSelect(['id', 'activity_type_id', 'appointment_colours.colour_hex', 'activity_type_id:label', 'activity_contact.record_type_id'])
+   ->addJoin('AppointmentColours AS appointment_colours', 'LEFT', ['appointment_colours.activity_type_id', '=', 'activity_type_id'])
+   ->addJoin('Saceflags AS saceflags', 'LEFT', ['saceflags.activity_type_id', '=', 'activity_type_id'])
+   ->addWhere('target_contact_id', '=', $client_contact_id)
+   ->addWhere('saceflags.used_for_flagging_contacts', '=', TRUE)
+   ->addWhere('status_id:name', '!=', 'Deactivated')
+   ->execute();
+}
+
+
+/**
+ * Alter the views content
+ * @param array $activities
+ * @param string $current_output
+ * 
+ * @return Drupal\Core\Render\Markup
+ */
+function modify_views_field_output($activity, $current_output) {
+  $flag_html = '';
+
+  $flag_html .= '<i class="fa fa-flag" alt="' . $activity['option_value.label'] . '" title="' . $activity['option_value.label'] . (!empty($activity['appointment_colours.colour_hex']) ? '" style="color:' . $activity['appointment_colours.colour_hex'] . ';">' : '">') . '&nbsp;</i>';
+
+  if (!empty($flag_html)) {
+    return Markup::create($flag_html . '&nbsp;' . $current_output);
+  }
+  return $current_output;
+}
+
+function saceflags_form_alter(&$form, &$form_state, $form_id) {
+    foreach ($form['elements'] as &$element) {
+      if (isset($element['#target_type']) && ($element['#target_type'] == 'civicrm_activity' || $element['#target_type'] == 'civicrm_option_value' || $element['#target_type'] == 'civicrm_saceflags')) {
+        Drupal::logger('saceflags')->notice('we got one!');  
+        $element['#process'][] = 'saceflags_modify_entity_select_output';
+      }
+    }
+}
+
+// /**
+//  * Process callback to modify the entity select output.
+//  */
+// function saceflags_modify_entity_select_output(&$element, &$form_state, &$complete_form) {
+//   Drupal::logger('saceflags')->notice('this ran');  
+//   if (!empty($element['#options'])) {
+//     $flaggedActivities = _getFlaggedActivities();
+//     foreach ($element['#options'] as &$option) {
+//       foreach ($flaggedActivities as $activity) {
+//         Drupal::logger('saceflags')->notice('loop');  
+//         if ($option['value'] == $activity['activity_type_id']) {
+//           $option['#markup'] = modify_views_field_output($activity, $option['#markup']);
+//         }
+//       }
+//     }
+//   }
+//   return $element;
+// }
