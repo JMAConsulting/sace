@@ -31,17 +31,42 @@ function clin_flags_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $for
         ->execute()
         ->first();
 
-        $flagType = \Civi\Api4\OptionValue::get(FALSE)
-          ->addWhere('option_group_id', '=', 2)
-          ->addWhere('value', '=', $existingFlag['activity_type_id'])
-          ->execute()
-          ->first();
+      $flagType = \Civi\Api4\OptionValue::get(FALSE)
+        ->addWhere('option_group_id', '=', 2)
+        ->addWhere('value', '=', $existingFlag['activity_type_id'])
+        ->execute()
+        ->first();
 
-        $elements['type_of_flag']['#default_value'] = $flagType['id'];
-        $elements['flag_name']['#default_value'] = $existingFlag['subject'];
-        $elements['description']['#default_value'] = $existingFlag['details'];
+      $elements['type_of_flag']['#default_value'] = $flagType['id'];
+      $elements['flag_name']['#default_value'] = $existingFlag['subject'];
+      $elements['description']['#default_value'] = $existingFlag['details'];
     }
-    
+  }
+
+  if ($form_id == "webform_submission_remove_flag_add_form") { 
+    // Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+   
+    \Drupal::service('civicrm')->initialize();
+
+    // Get aid or nid from url
+    $fid = \Drupal::request()->query->get('fid') ?? 0;
+    if (!empty($fid) && is_numeric($fid)) {
+      \Drupal::service('civicrm')->initialize();
+      $existingFlag = \Civi\Api4\Activity::get(FALSE)
+        ->addWhere('id', '=', $fid)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      $flagType = \Civi\Api4\OptionValue::get(FALSE)
+        ->addWhere('option_group_id', '=', 2)
+        ->addWhere('value', '=', $existingFlag['activity_type_id'])
+        ->execute()
+        ->first();
+
+      $elements['civicrm_1_activity_1_activity_subject']['#default_value'] = "Remove ".$flagType['label']." Flag";
+    }
   }
 }
 
@@ -54,8 +79,49 @@ function clin_flags_preprocess_page_title(&$variables, $hook) {
     // Get aid or nid from url
     $fid = \Drupal::request()->query->get('fid') ?? 0;
     if (!empty($fid) && is_numeric($fid)) {
+
+      \Drupal::service('civicrm')->initialize();
+      $existingFlag = \Civi\Api4\Activity::get(FALSE)
+        ->addWhere('id', '=', $fid)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      $flagType = \Civi\Api4\OptionValue::get(FALSE)
+        ->addWhere('option_group_id', '=', 2)
+        ->addWhere('value', '=', $existingFlag['activity_type_id'])
+        ->execute()
+        ->first();
+        
       $variables['title'] = [
-        '#markup' => 'Edit Flag',
+        '#markup' => 'Edit '. $flagType['label'],
+      ];
+      return;
+    }
+  }
+  elseif ($current_path == '/webform/remove_flag') {
+    
+    \Drupal::service('civicrm')->initialize();
+
+    // Get aid or nid from url
+    $fid = \Drupal::request()->query->get('fid') ?? 0;
+    if (!empty($fid) && is_numeric($fid)) {
+
+      \Drupal::service('civicrm')->initialize();
+      $existingFlag = \Civi\Api4\Activity::get(FALSE)
+        ->addWhere('id', '=', $fid)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      $flagType = \Civi\Api4\OptionValue::get(FALSE)
+        ->addWhere('option_group_id', '=', 2)
+        ->addWhere('value', '=', $existingFlag['activity_type_id'])
+        ->execute()
+        ->first();
+        
+      $variables['title'] = [
+        '#markup' => 'Remove '. $flagType['label'],
       ];
       return;
     }
