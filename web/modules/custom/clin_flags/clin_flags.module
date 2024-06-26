@@ -25,13 +25,13 @@ function clin_flags_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $for
     $fid = \Drupal::request()->query->get('fid') ?? 0;
     if (!empty($fid) && is_numeric($fid)) {
       \Drupal::service('civicrm')->initialize();
-      $existingFlag = \Civi\Api4\Activity::get(TRUE)
+      $existingFlag = \Civi\Api4\Activity::get(FALSE)
         ->addWhere('id', '=', $fid)
         ->setLimit(1)
         ->execute()
         ->first();
 
-        $flagType = \Civi\Api4\OptionValue::get(TRUE)
+        $flagType = \Civi\Api4\OptionValue::get(FALSE)
           ->addWhere('option_group_id', '=', 2)
           ->addWhere('value', '=', $existingFlag['activity_type_id'])
           ->execute()

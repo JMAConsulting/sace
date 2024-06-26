@@ -50,14 +50,14 @@ class ClinAddFlagsWebformHandler extends WebformHandlerBase {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
     if ($webform_submission_data) {
-      $optionValue = \Civi\Api4\OptionValue::get(TRUE)
+      $optionValue = \Civi\Api4\OptionValue::get(FALSE)
       ->addWhere('option_group_id', '=', 2)
       ->addWhere('id', '=',  $webform_submission_data['type_of_flag'])
       ->execute()
       ->first();
 
       if(isset($webform_submission_data['fid']) && is_numeric($webform_submission_data['fid'])) {
-        $results = \Civi\Api4\Activity::update(TRUE)
+        $results = \Civi\Api4\Activity::update(FALSE)
           ->addWhere('id', '=', $webform_submission_data['fid'])
           ->addValue('activity_type_id', $optionValue['value'])
           ->addValue('subject', $webform_submission_data['flag_name'])
@@ -66,7 +66,7 @@ class ClinAddFlagsWebformHandler extends WebformHandlerBase {
       }
 
       else {
-        $results = \Civi\Api4\Activity::create(TRUE)
+        $results = \Civi\Api4\Activity::create(FALSE)
           ->addValue('activity_type_id', $optionValue['value'])
           ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
           ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
