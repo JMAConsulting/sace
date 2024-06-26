@@ -2,7 +2,9 @@
 
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
-
+use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
+use Drupal\user\Entity\User;
 
 function clin_client_profile_preprocess_page(&$variables) {
   $current_path = \Drupal::service('path.current')->getPath();
@@ -10,5 +12,95 @@ function clin_client_profile_preprocess_page(&$variables) {
   // Add JS to /client-home pages
   if (preg_match($pattern, $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_client_profile';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function clin_client_profile_form_alter (&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_client_profile_add_form") {
+
+    $current_user = \Drupal::currentUser();
+    $roles = $current_user->getRoles();
+
+    if(!in_array('clin_director', $roles)) {
+      \Drupal::logger('clin_client_profile')->info('not director');
+      // If logged in user is a counsellor
+      if(in_array('clin_counsellor', $roles)) {
+        \Drupal::logger('clin_client_profile')->info('counsellor');
+        $user = User::load($current_user->id());
+        \Drupal::service('civicrm')->initialize();
+        $counsellorID = $user->get('civicrm_contact_id')->value;
+
+        $clientID = \Drupal::request()->query->get('cid') ?? 0;
+
+        $relationships = \Civi\Api4\Relationship::get(FALSE)
+          ->addWhere('contact_id_a', '=', $counsellorID)
+          ->addWhere('contact_id_b', '=', $clientID)
+          ->addWhere('relationship_type_id', '=', 17) // Counsellor for relationship type
+          ->addWhere('is_active', '=', TRUE)
+          ->setLimit(1)
+          ->execute();
+
+        // If client is not assigned to logged in counsellor, hide form
+        if(!count($relationships)) {
+          $form['#access'] = FALSE;
+        }
+      }
+      elseif(in_array('ce_staff', $roles) || in_array('clin_tl', $roles)) {
+        \Drupal::logger('clin_client_profile')->info('ce staff or clin tl');
+        $user = User::load($current_user->id());
+        if ($assigned_staff) {
+          $current_user_teams = _get_user_teams($user);
+          $assigned_staff_teams = _get_user_teams($assigned_staff);
+
+          // Check for intersection in teams
+          if (!array_intersect($current_user_teams, $assigned_staff_teams)) {
+            $form['#attributes']['class'][] = 'webform-locked';
+            $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
+            clin_client_profile_make_form_read_only($form);
+          }
+        }
+        else {
+          $form['#attributes']['class'][] = 'webform-locked';
+          $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
+          clin_client_profile_make_form_read_only($form);
+        }
+      }
+      // Read only if reception or intake
+      elseif(in_array('reception', $roles) || in_array('intake', $roles)) {
+        \Drupal::logger('clin_client_profile')->info('reception or intake');
+        $form['#attributes']['class'][] = 'webform-locked';
+        $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
+          clin_client_profile_make_form_read_only($form);
+      }
+      // Hide form otherwise
+      else {
+        $form['#access'] = FALSE;
+        \Drupal::logger('clin_client_profile')->info('else ran');
+      } 
+    }
+  }
+}
+
+function clin_client_profile_make_form_read_only(&$elements) {
+  foreach ($elements as $key => &$element) {
+    if (is_array($element)) {
+      if (isset($element['#type']) && in_array($element['#type'], ['textfield', 'textarea', 'select', 'checkbox', 'radios', 'checkboxes', 'date', 'email', 'number', 'tel', 'url'])) {
+        $element['#attributes']['readonly'] = 'readonly';
+        if ($element['#type'] == 'select') {
+          $element['#attributes']['disabled'] = 'disabled';
+        }
+        if ($element['#type'] == 'checkbox' || $element['#type'] == 'radios' || $element['#type'] == 'checkboxes') {
+          $element['#disabled'] = TRUE;
+        }
+      } elseif (!empty($element)) {
+        clin_client_profile_make_form_read_only($element);
+      }
+    }
   }
 }

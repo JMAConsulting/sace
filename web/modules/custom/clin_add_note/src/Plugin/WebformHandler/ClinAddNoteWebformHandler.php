@@ -57,7 +57,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
 
     if ($webform_submission_data) {
       if($webform_submission_data['aid'] != '') {
-        $note = \Civi\Api4\Note::create(TRUE)
+        $note = \Civi\Api4\Note::create(FALSE)
         ->addValue('entity_table', 'civicrm_activity')
         ->addValue('contact_id', 'user_contact_id')
         ->addValue('note', $webform_submission_data['details'])
@@ -66,7 +66,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
         ->execute();
       }
       elseif($webform_submission_data['nid'] != '') {
-        $note = \Civi\Api4\Note::create(TRUE)
+        $note = \Civi\Api4\Note::create(FALSE)
         ->addValue('entity_table', 'civicrm_note')
         ->addValue('contact_id', 'user_contact_id')
         ->addValue('note', $webform_submission_data['details'])
@@ -76,7 +76,7 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
       }
 
       elseif($webform_submission_data['cid'] != '') {
-        $note = \Civi\Api4\Note::create(TRUE)
+        $note = \Civi\Api4\Note::create(FALSE)
         ->addValue('entity_table', 'civicrm_contact')
         ->addValue('contact_id', 'user_contact_id')
         ->addValue('note', $webform_submission_data['details'])
@@ -92,13 +92,13 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
             $file_uri = $file->getFileUri();
             $mime_type = $this->mimeTypeGuesser->guessMimeType($file_uri);
             
-            $attachment = \Civi\Api4\File::create(TRUE)
+            $attachment = \Civi\Api4\File::create(FALSE)
               ->addValue('file_type_id', 1)
               ->addValue('uri', $file_uri)
               ->addValue('mime_type', $mime_type)
               ->execute();
 
-            $results = \Civi\Api4\EntityFile::create(TRUE)
+            $results = \Civi\Api4\EntityFile::create(FALSE)
               ->addValue('entity_table', 'civicrm_note')
               ->addValue('entity_id', $note[0]['id'])
               ->addValue('file_id', $attachment[0]['id'])
