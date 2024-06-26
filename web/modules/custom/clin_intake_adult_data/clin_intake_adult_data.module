@@ -30,7 +30,7 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if(!empty($aid) && is_numeric($aid)) {
       \Drupal::service('civicrm')->initialize();
-      $activityRef = \Civi\Api4\Activity::get(TRUE)
+      $activityRef = \Civi\Api4\Activity::get(FALSE)
         ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Completed')
         ->addWhere('id', '=', $aid)
         ->execute()
