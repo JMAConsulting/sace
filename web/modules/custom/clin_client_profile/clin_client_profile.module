@@ -28,10 +28,8 @@ function clin_client_profile_form_alter (&$form, \Drupal\Core\Form\FormStateInte
     $roles = $current_user->getRoles();
 
     if(!in_array('clin_director', $roles)) {
-      \Drupal::logger('clin_client_profile')->info('not director');
       // If logged in user is a counsellor
       if(in_array('clin_counsellor', $roles)) {
-        \Drupal::logger('clin_client_profile')->info('counsellor');
         $user = User::load($current_user->id());
         \Drupal::service('civicrm')->initialize();
         $counsellorID = $user->get('civicrm_contact_id')->value;
@@ -52,7 +50,6 @@ function clin_client_profile_form_alter (&$form, \Drupal\Core\Form\FormStateInte
         }
       }
       elseif(in_array('ce_staff', $roles) || in_array('clin_tl', $roles)) {
-        \Drupal::logger('clin_client_profile')->info('ce staff or clin tl');
         $user = User::load($current_user->id());
         if ($assigned_staff) {
           $current_user_teams = _get_user_teams($user);
@@ -60,34 +57,30 @@ function clin_client_profile_form_alter (&$form, \Drupal\Core\Form\FormStateInte
 
           // Check for intersection in teams
           if (!array_intersect($current_user_teams, $assigned_staff_teams)) {
-            $form['#attributes']['class'][] = 'webform-locked';
-            $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
             clin_client_profile_make_form_read_only($form);
           }
         }
         else {
-          $form['#attributes']['class'][] = 'webform-locked';
-          $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
           clin_client_profile_make_form_read_only($form);
         }
       }
       // Read only if reception or intake
       elseif(in_array('reception', $roles) || in_array('intake', $roles)) {
-        \Drupal::logger('clin_client_profile')->info('reception or intake');
-        $form['#attributes']['class'][] = 'webform-locked';
-        $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
-          clin_client_profile_make_form_read_only($form);
+        clin_client_profile_make_form_read_only($form);
       }
       // Hide form otherwise
       else {
         $form['#access'] = FALSE;
-        \Drupal::logger('clin_client_profile')->info('else ran');
       } 
     }
   }
 }
 
 function clin_client_profile_make_form_read_only(&$elements) {
+  $elements['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
+  $elements['#attributes']['class'][] = 'webform-locked';
+  $elements['actions']['submit']['#attributes']['disabled'] = 'disabled';
+
   foreach ($elements as $key => &$element) {
     if (is_array($element)) {
       if (isset($element['#type']) && in_array($element['#type'], ['textfield', 'textarea', 'select', 'checkbox', 'radios', 'checkboxes', 'date', 'email', 'number', 'tel', 'url'])) {
