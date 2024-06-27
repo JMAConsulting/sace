@@ -116,10 +116,17 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
 
   protected function defineOptions() {
     $options = parent::defineOptions();
-    $options['expose']['user_team'] = '';
+    $options['expose']['contains']['user_team'] = '';
+    return $options;
+  }
+
+  public function defaultExposeOptions(): void {
+    parent::defaultExposeOptions();
+    $this->options['expose']['user_team'] = '';
   }
 
   public function buildExposeForm(&$form, FormStateInterface $form_state) {
+    parent::buildExposeForm($form, $form_state);
     $tids = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery()
     ->condition('vid', 'user_team')
     ->accessCheck(TRUE)
@@ -136,11 +143,50 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
       // Safety.
       '#default_value' => $this->options['expose']['user_team'],
       '#options' => $user_teams,
+      '#multiple' => TRUE,
     ];
   }
 
   public function buildExposedForm(&$form, FormStateInterface $form_state) {
     parent::buildExposedForm($form, $form_state);
+    if (!empty($this->options['expose']['user_team'])) {
+      $team_users = array_keys(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties([
+       'field_user_team' => array_keys($this->options['expose']['user_team']),
+      ]));
+      $contact_ids = [];
+      $team_contact_id_map = [];
+      $team_contact_id_lookup = \Drupal::service('civicrm_entity.api')->get('UFMatch', [
+        'sequential' => 1,
+        'return' => ['uf_id', 'contact_id'],
+        'uf_id' => ['IN' => $team_users],
+        'options' => ['limit' => 0],
+      ]);
+      foreach($team_contact_id_lookup as $tc) {
+        $contact_ids[$tc['contact_id']] = $tc['contact_id'];
+        $team_contact_id_map[$tc['contact_id']] = $tc['uf_id'];
+      }
+      $contact_staff = \Drupal::service('civicrm_entity.api')->get('Contact', [
+        'return' => ['id'],
+        'id' => ['IN' => $contact_ids],
+        'contact_sub_type' => "Staff",
+        'options' => ['limit' => 0],
+      ]);
+
+      foreach ($contact_ids as $k => $value) {
+        if (!array_key_exists($value, $contact_staff)) {
+          unset($contact_ids[$k]);
+        }
+      }
+    }
+    $options = [];
+    foreach ($contact_ids as $contact_id) {
+      if (!array_key_exists($contact_id, $options)) {
+        $account = \Drupal::entityTypeManager()->getStorage('user')->load($team_contact_id_map[$contact_id]);
+        /** @var \Drupal\User\Entity\User $account */
+        $options[$contact_id] = $account->getAccountName();
+      }
+    }
+    $form['#options'] = $options;
   }
 
 }
