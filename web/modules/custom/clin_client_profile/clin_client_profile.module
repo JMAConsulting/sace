@@ -109,13 +109,32 @@ function clin_client_profile_make_form_read_only(&$elements) {
   }
 }
 
-function clin_client_profile_preprocess_menu_link(&$variables) {
-  if ($variables['element']['#original_link']['url']->toString() == '/my-clients') {
-    // Get current user's UID.
+function clin_client_profile_preprocess_menu(&$variables) {
+  if ($variables['menu_name'] == 'main') {
     $current_user = \Drupal::currentUser();
     $uid = $current_user->id();
-    
-    // Append the UID to the menu link
-    $variables['element']['#url']->setOption('query', ['uid' => $uid]);
+
+    // Call a recursive function to update the URL of the nested menu item.
+    clin_client_profile_update_nested_menu_item($variables['items'], $uid);
+  }
+}
+
+// Append uid to my-clients view for filtering
+function clin_client_profile_update_nested_menu_item(&$items, $uid) {
+  foreach ($items as &$item) {
+    if (isset($item['url'])) {
+      $path = $item['url']->toString();
+
+      // Check if the path is 'my-clients'.
+      if ($path == '/my-clients') {
+        // Update the URL to include the current user's UID.
+        $item['url'] = Url::fromUri('internal:/my-clients/' . $uid);
+      }
+    }
+
+    // If this is the Search menu link
+    if ($path == '/my-clients' && !empty($item['below'])) {
+      saceflags_update_nested_menu_item($item['below'], $uid);
+    }
   }
 }
