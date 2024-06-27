@@ -108,30 +108,44 @@ function modify_views_field_output($activity, $current_output) {
   return $current_output;
 }
 
-function saceflags_form_alter(&$form, &$form_state, $form_id) {
-    foreach ($form['elements'] as &$element) {
-      if (isset($element['#target_type']) && ($element['#target_type'] == 'civicrm_activity' || $element['#target_type'] == 'civicrm_option_value' || $element['#target_type'] == 'civicrm_saceflags')) {
-        Drupal::logger('saceflags')->notice('we got one!');  
-        $element['#process'][] = 'saceflags_modify_entity_select_output';
-      }
-    }
-}
+// function saceflags_form_alter(&$form, &$form_state, $form_id) {
+//   if (isset($form['elements']) && is_array($form['elements'])) {
+//     foreach ($form['elements'] as &$element) { 
+//       if (isset($element['#target_type']) && ($element['#target_type'] == 'civicrm_activity' || $element['#target_type'] == 'civicrm_option_value' || $element['#target_type'] == 'civicrm_saceflags')) {
+//         Drupal::logger('saceflags')->notice('we got one!');  
+//         $element['#process'][] = 'saceflags_modify_entity_select_output';
+//       }
+//     }
+//   }
+// }
 
 // /**
 //  * Process callback to modify the entity select output.
 //  */
 // function saceflags_modify_entity_select_output(&$element, &$form_state, &$complete_form) {
-//   Drupal::logger('saceflags')->notice('this ran');  
+//   Drupal::logger('saceflags')->notice('Process callback invoked');
+  
 //   if (!empty($element['#options'])) {
 //     $flaggedActivities = _getFlaggedActivities();
-//     foreach ($element['#options'] as &$option) {
+    
+//     foreach ($element['#options'] as $key => &$option) {
+//       if (is_string($option)) {
+//         $option = ['label' => $option];
+//       }
+      
 //       foreach ($flaggedActivities as $activity) {
-//         Drupal::logger('saceflags')->notice('loop');  
-//         if ($option['value'] == $activity['activity_type_id']) {
-//           $option['#markup'] = modify_views_field_output($activity, $option['#markup']);
+//         if ($key == $activity['activity_type_id']) {
+//           $icon_html = '<i class="fa fa-flag" style="color:' . htmlspecialchars($activity['appointment_colours.colour_hex']) . ';" aria-hidden="true"></i>';
+//           $option['label'] = $icon_html . '&nbsp;' . htmlspecialchars($option['label']);
+//           // Add the icon HTML to a custom data attribute
+//           $element['#options'][$key] = [
+//             'data-icon' => $icon_html,
+//             'label' => $option['label'],
+//           ];
 //         }
 //       }
 //     }
 //   }
+  
 //   return $element;
 // }
