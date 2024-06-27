@@ -135,7 +135,7 @@ function clin_client_profile_update_nested_menu_item(&$items, $uid) {
 
     // If this is the Search menu link
     if ($path == '/my-clients' && !empty($item['below'])) {
-      saceflags_update_nested_menu_item($item['below'], $uid);
+      clin_client_profile_update_nested_menu_item($item['below'], $uid);
     }
   }
 }
