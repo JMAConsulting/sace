@@ -33,7 +33,7 @@ function clin_client_profile_form_alter (&$form, \Drupal\Core\Form\FormStateInte
     $current_user = \Drupal::currentUser();
     $roles = $current_user->getRoles();
 
-    if(!in_array('clin_director', $roles)) {
+    if(!in_array('clin_director', $roles) && !in_array('wheel', $roles)) {
       // If logged in user is a counsellor
       if(in_array('clin_counsellor', $roles)) {
         $user = User::load($current_user->id());
@@ -106,5 +106,16 @@ function clin_client_profile_make_form_read_only(&$elements) {
         clin_client_profile_make_form_read_only($element);
       }
     }
+  }
+}
+
+function clin_client_profile_preprocess_menu_link(&$variables) {
+  if ($variables['element']['#original_link']['url']->toString() == '/my-clients') {
+    // Get current user's UID.
+    $current_user = \Drupal::currentUser();
+    $uid = $current_user->id();
+    
+    // Append the UID to the menu link
+    $variables['element']['#url']->setOption('query', ['uid' => $uid]);
   }
 }
