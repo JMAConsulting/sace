@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\civicrm_entity\CiviCrmApiInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Views filter handler for user contacts.
@@ -81,14 +82,15 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
 
       // Get active user uids.
       $uids = $this->userQuery
-	->accessCheck()   
-	->condition('status', 1)
+        ->accessCheck()
+        ->condition('status', 1)
         ->execute();
 
       // Get user display names.
       $users = $this->userEntityStorage->loadMultiple($uids);
       $user_display_names = [];
       foreach ($users as $uid => $user) {
+        /** @var \Drupal\User\Entity\User $user */
         $user_display_names[$uid] = $user->getDisplayName();
       }
 
@@ -111,4 +113,34 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
 
     return $this->valueOptions;
   }
+
+  protected function defineOptions() {
+    $options = parent::defineOptions();
+    $options['expose']['user_team'] = '';
+  }
+
+  public function buildExposeForm(&$form, FormStateInterface $form_state) {
+    $tids = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery()
+    ->condition('vid', 'user_team')
+    ->accessCheck(TRUE)
+    ->execute();
+    $taxonomies = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
+    $user_teams = [];
+    foreach ($taxonomies as $taxonomy) {
+      $user_teams[$taxonomy->id()] = $taxonomy->name->value;
+    }
+    $form['expose']['user_team'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Limit list to selected user team'),
+      '#description' => $this->t('If selected, the only users in the specified user team will be selected'),
+      // Safety.
+      '#default_value' => $this->options['expose']['user_team'],
+      '#options' => $user_teams,
+    ];
+  }
+
+  public function buildExposedForm(&$form, FormStateInterface $form_state) {
+    parent::buildExposedForm($form, $form_state);
+  }
+
 }

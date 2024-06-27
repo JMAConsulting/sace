@@ -36,6 +36,7 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
     $view = $form_state->get('view');
 
     // Get style options.
+    /** @var \Drupal\views\ViewExecutable $view */
     $style_options = $view->getStyle()->options;
     $tids = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery()
       ->condition('vid', 'calendar_colour')->accessCheck(TRUE)
@@ -107,6 +108,7 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
     foreach ($contact_ids as $contact_id) {
       if (!array_key_exists($contact_id, $form['uf_select']['#options'])) {
         $account = \Drupal::entityTypeManager()->getStorage('user')->load($team_contact_id_map[$contact_id]);
+        /** @var \Drupal\User\Entity\User $account */
         $form['uf_select']['#options'][$contact_id] = $account->getAccountName();
       }
     }
