@@ -143,7 +143,7 @@ function mailchimpsync_civicrm_entityTypes(&$entityTypes) {
  */
 function mailchimpsync_civicrm_permission(&$permissions) {
   $permissions += [
-    'administer_mailchimpsync' => E::ts('Administer Mailchimpsync'),
+    'administer_mailchimpsync' => ['label' => E::ts('Administer Mailchimpsync')],
   ];
 }
 /**
