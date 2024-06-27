@@ -116,7 +116,7 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
 
   protected function defineOptions() {
     $options = parent::defineOptions();
-    $options['expose']['contains']['user_team'] = '';
+    $options['expose']['contains']['user_team'] = ['default' => ''];
     return $options;
   }
 
@@ -177,16 +177,16 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
           unset($contact_ids[$k]);
         }
       }
-    }
-    $options = [];
-    foreach ($contact_ids as $contact_id) {
-      if (!array_key_exists($contact_id, $options)) {
-        $account = \Drupal::entityTypeManager()->getStorage('user')->load($team_contact_id_map[$contact_id]);
-        /** @var \Drupal\User\Entity\User $account */
-        $options[$contact_id] = $account->getAccountName();
+      $options = [];
+      foreach ($contact_ids as $contact_id) {
+        if (!array_key_exists($contact_id, $options)) {
+          $account = \Drupal::entityTypeManager()->getStorage('user')->load($team_contact_id_map[$contact_id]);
+          /** @var \Drupal\User\Entity\User $account */
+          $options[$contact_id] = $account->getAccountName();
+        }
       }
+      $form[$this->options['expose']['identifier']]['#options'] = $options;
     }
-    $form['#options'] = $options;
   }
 
 }
