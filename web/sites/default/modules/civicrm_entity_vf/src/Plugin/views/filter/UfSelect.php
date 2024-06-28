@@ -149,12 +149,33 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
 
   public function buildExposedForm(&$form, FormStateInterface $form_state) {
     parent::buildExposedForm($form, $form_state);
-    if (!empty($this->options['expose']['user_team'])) {
+    $view = $form_state->get('view');
+    // Check for a views contextual filter with term id args in the 'user_team' taxonomy.
+    $user_team_target_ids = [];
+    foreach ($view->display_handler->getHandlers('argument') as $handler) {
+      if ('taxonomy_term.tid' == $handler->getEntityType() . $handler->getField()) {
+        $tids = !empty($_GET['tid']) ? [$_GET['tid']] : explode(' ', $handler->getValue() ?? '');
+        $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
+        if (!empty($terms)) {
+          foreach ($terms as $term) {
+            if ('user_team' == $term->bundle()) {
+              $user_team_target_ids[] = $term->id();
+            }
+          }
+          if (!empty($user_team_target_ids)) {
+            break;
+          }
+        }
+      }
+    }
+    if (empty($user_team_target_ids) && !empty($this->options['expose']['user_team'])) {
+      $user_team_target_ids = array_keys($this->options['expose']['user_team']);
+    }
+    if (!empty($user_team_target_ids)) {
       $team_users = array_keys(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties([
-       'field_user_team' => array_keys($this->options['expose']['user_team']),
+       'field_user_team' => $user_team_target_ids,
       ]));
-      $contact_ids = [];
-      $team_contact_id_map = [];
+      $contact_ids = $team_contact_id_map = [];
       $team_contact_id_lookup = \Drupal::service('civicrm_entity.api')->get('UFMatch', [
         'sequential' => 1,
         'return' => ['uf_id', 'contact_id'],
@@ -164,18 +185,6 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
       foreach($team_contact_id_lookup as $tc) {
         $contact_ids[$tc['contact_id']] = $tc['contact_id'];
         $team_contact_id_map[$tc['contact_id']] = $tc['uf_id'];
-      }
-      $contact_staff = \Drupal::service('civicrm_entity.api')->get('Contact', [
-        'return' => ['id'],
-        'id' => ['IN' => $contact_ids],
-        'contact_sub_type' => "Staff",
-        'options' => ['limit' => 0],
-      ]);
-
-      foreach ($contact_ids as $k => $value) {
-        if (!array_key_exists($value, $contact_staff)) {
-          unset($contact_ids[$k]);
-        }
       }
       $options = [];
       foreach ($contact_ids as $contact_id) {
