@@ -1,15 +1,41 @@
 jQuery(document).ready(function ($) {
+
+  let currRow = 1;
+
+  // Hide extra referral fields
+  $("#edit-civicrm-2-contact-2-cg76-fieldset").hide();
+  $("#edit-civicrm-2-contact-1-cg76-fieldset").hide();
+
+  var addAnotherRef = $("<input>", {
+    class: "webform-button button button--primary",
+    type: "button",
+    id: "add-contact-button",
+    value: "Add Additional Contact",
+    click: function () {
+      elementUnhide = "#edit-civicrm-2-contact-" + currRow + "-cg76-fieldset";
+      $(elementUnhide).show();
+      currRow += 1;
+      if (currRow == 3) {
+        addAnotherRef.hide();
+      }
+    },
+  });
+
   // Hide/show different submit buttons depending on input
   function updateButtonLabel() {
     if (
-      $("#edit-are-you-the-legal-guardian-no").is(":checked") ||
+      $("#edit-proceed-with-booking-an-intake-no").is(":checked") ||
       $("#edit-has-this-been-reported-no").is(":checked")
     ) {
       $("#edit-actions-01-submit").show();
       $("#edit-actions-submit").hide();
+      addAnotherRef.hide();
     } else {
       $("#edit-actions-01-submit").hide();
       $("#edit-actions-submit").show();
+      if (currRow != 3) {
+        addAnotherRef.show();
+      }
     }
   }
 
@@ -82,27 +108,6 @@ jQuery(document).ready(function ($) {
   });
 
   convertDateFormat();
-
-  let currRow = 1;
-
-  // Hide extra referral fields
-  $("#edit-civicrm-2-contact-2-cg76-fieldset").hide();
-  $("#edit-civicrm-2-contact-1-cg76-fieldset").hide();
-
-  var addAnotherRef = $("<input>", {
-    class: "webform-button button button--primary",
-    type: "button",
-    id: "add-contact-button",
-    value: "Add Additional Contact",
-    click: function () {
-      elementUnhide = "#edit-civicrm-2-contact-" + currRow + "-cg76-fieldset";
-      $(elementUnhide).show();
-      currRow += 1;
-      if (currRow == 3) {
-        addAnotherRef.hide();
-      }
-    },
-  });
 
   // Insert the button before case worker section
   $("#edit-civicrm-2-contact-1-cg19-fieldset").before(addAnotherRef);
