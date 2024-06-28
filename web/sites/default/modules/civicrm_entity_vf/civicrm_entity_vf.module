@@ -56,62 +56,18 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
       }
     }
 
-    // Check for a views contextual filter with term id args in the 'user_team' taxonomy.
-    $user_team_target_ids = [];
-    foreach ($view->display_handler->getHandlers('argument') as $handler) {
-      if ('taxonomy_term.tid' == $handler->getEntityType() . $handler->getField()) {
-        $tids = !empty($_GET['tid']) ? [$_GET['tid']] : explode(' ', $handler->getValue() ?? '');
-        $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
-        if (!empty($terms)) {
-          foreach ($terms as $term) {
-            if ('user_team' == $term->bundle()) {
-              $user_team_target_ids[] = $term->id();
-            }
-          }
-          if (!empty($user_team_target_ids)) {
-            break;
-          }
-        }
-      }
-    }
-
-    $team_users = array_keys(\Drupal::entityTypeManager()->getStorage('user')->loadByProperties([
-     'field_user_team' => ['39', '12'],
-    ]));
-    $contact_ids = [];
+    $contact_ids = array_keys($form['uf_select']['#options']);
     $team_contact_id_map = [];
     $team_contact_id_lookup = \Drupal::service('civicrm_entity.api')->get('UFMatch', [
       'sequential' => 1,
       'return' => ['uf_id', 'contact_id'],
-      'uf_id' => ['IN' => $team_users],
+      'contact_id' => ['IN' => $contact_ids],
       'options' => ['limit' => 0],
     ]);
     foreach($team_contact_id_lookup as $tc) {
       $contact_ids[$tc['contact_id']] = $tc['contact_id'];
       $team_contact_id_map[$tc['contact_id']] = $tc['uf_id'];
     }
-
-    $contact_staff = \Drupal::service('civicrm_entity.api')->get('Contact', [
-      'return' => ['id'],
-      'id' => ['IN' => $contact_ids],
-      'contact_sub_type' => "Staff",
-      'options' => ['limit' => 0],
-    ]);
-
-    foreach ($contact_ids as $k => $value) {
-      if (!array_key_exists($value, $contact_staff)) {
-        unset($contact_ids[$k]);
-      }
-    }
-
-    //$form['uf_select']['#options'] = [];
-    //foreach ($contact_ids as $contact_id) {
-    //  if (!array_key_exists($contact_id, $form['uf_select']['#options'])) {
-    //    $account = \Drupal::entityTypeManager()->getStorage('user')->load($team_contact_id_map[$contact_id]);
-    //    /** @var \Drupal\User\Entity\User $account */
-    //    $form['uf_select']['#options'][$contact_id] = $account->getAccountName();
-    //  }
-    //}
 
     $map_uid_cid = [];
 
@@ -135,14 +91,10 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
     foreach ($users as $user) {
 
       if ($is_user_taxonomy_color_legend) {
+        /** @var \Drupal\User\Entity\User $user */
         $contact_tids[$map_uid_cid[$user->id()]] = $user->get($style_options['tax_field'])->first()->target_id;
       }
 
-      foreach ($user_team_target_ids as $user_team_target_id) {
-        if (in_array($user_team_target_id, array_column($user->get('field_user_team')->getValue(), 'target_id'))) {
-          $user_team[$map_uid_cid[$user->id()]] = $user->id();
-        }
-      }
     }
 
     // Remove users who are not on our team.
