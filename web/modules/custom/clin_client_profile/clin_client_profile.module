@@ -20,13 +20,24 @@ function counsellor_deny_access($current_user_id) {
   $result = $query->fetchAssoc();
   
   if ($result) {
-    $counsellorID = $result['contact_id'];
+    $counsellorID = $result['contact_id'];   
   }
   else {
     return TRUE;
   }
 
-  $clientID = \Drupal::request()->query->get('cid') ?? 0;
+  $path = \Drupal::request()->getPathInfo();
+
+  $path = strtok($path, '?');
+
+  $path_segments = explode('/', $path);
+  $last_segment = end($path_segments);
+
+  $clientID = is_numeric($last_segment) ? (int) $last_segment : 0;
+
+  if(!$clientID || !$counsellorID) {
+    return TRUE;
+  }
 
   $relationships = \Civi\Api4\Relationship::get(FALSE)
     ->addWhere('contact_id_a', '=', $counsellorID)
@@ -53,8 +64,8 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
         if(in_array('clin_counsellor', $roles)) {
           if (counsellor_deny_access($current_user_id)) {
             \Drupal::messenger()->addError(t('You do not have access to view this client profile.'));
-	    $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
-   	    throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
+	          $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
+   	        throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
           }
         }
       }
@@ -97,7 +108,7 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         \Drupal::service('civicrm')->initialize();
         
         if (counsellor_deny_access($current_user_id)) {
-	  $form['#access'] = FALSE;
+	        $form['#access'] = FALSE;
         }
       }
       elseif(in_array('ce_staff', $roles) || in_array('clin_tl', $roles)) {
