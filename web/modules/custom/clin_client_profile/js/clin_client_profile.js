@@ -5,6 +5,9 @@
 
     // Define a regular expression to match the specified pattern.
     var urlPattern = /\/contact-information(?:\/[\w-]+)*\/(\d+)/;
+
+    var infoUrl = /\/contact-information\/(\d+)/;
+
     if (urlPattern.test(currentUrl)) {
       // Get page title and split into two titles
       var $pageTitle = $("#block-pagetitle .page-title");
@@ -34,12 +37,14 @@
         }
       });
 
-      var $flags = $(".saceflag");
+      if (infoUrl.test(currentUrl)) {
+        var $flags = $(".saceflag");
 
-      $flags.each(function () {
-        $newHeader.prepend("&nbsp;");
-        $newHeader.prepend($(this));
-      });
+        $flags.each(function () {
+          $newHeader.prepend("&nbsp;");
+          $newHeader.prepend($(this));
+        });
+      }
     }
   });
 })(jQuery);
