@@ -51,7 +51,9 @@ function saceflags_preprocess_views_view_field(&$variables) {
   // This is the all client list view so we modify the sort name here.
   elseif ($view->storage->id() === 'clients') {
     if ($field->field === 'sort_name') {
-      $activities = _get_flags_for_contact($row->id);
+      $contactIdField = ($view->current_display === 'page_2') ? 'id' : 'civicrm_contact_civicrm_activity_contact_id_1';
+      $contactId = isset($row->{$contactIdField}) ? $row->{$contactIdField} : NULL;
+      $activities = _get_flags_for_contact($contactId);
       foreach($activities as $activity) {
         $variables['output'] = modify_views_field_output($activity, $variables['output']);
       }
