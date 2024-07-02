@@ -33,6 +33,13 @@
           $this.attr("href", newHref);
         }
       });
+
+      var $flags = $(".saceflag");
+
+      $flags.each(function () {
+        $newHeader.prepend("&nbsp;");
+        $newHeader.prepend($(this));
+      });
     }
   });
 })(jQuery);

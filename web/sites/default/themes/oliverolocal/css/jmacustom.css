@@ -43,7 +43,7 @@ h6 {
 	color: var(--sace-navy-blue);
 }
 
-h1 *,
+h1:not(.sacecflags),
 h2 *,
 h3 * {
 	font-family: var(--font);
