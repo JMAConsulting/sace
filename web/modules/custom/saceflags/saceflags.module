@@ -80,9 +80,10 @@ function _get_flags_for_contact(int $client_contact_id) {
  \Drupal::service('civicrm')->initialize();
 
  return Activity::get(FALSE)
-   ->setSelect(['id', 'activity_type_id', 'appointment_colours.colour_hex', 'activity_type_id:label', 'activity_contact.record_type_id'])
+   ->setSelect(['id', 'activity_type_id', 'appointment_colours.colour_hex', 'activity_type_id:label', 'activity_contact.record_type_id', 'option_value.label'])
    ->addJoin('AppointmentColours AS appointment_colours', 'LEFT', ['appointment_colours.activity_type_id', '=', 'activity_type_id'])
    ->addJoin('Saceflags AS saceflags', 'LEFT', ['saceflags.activity_type_id', '=', 'activity_type_id'])
+   ->addJoin('OptionValue AS option_value', 'LEFT', ['activity_type_id', '=', 'option_value.value'])
    ->addWhere('target_contact_id', '=', $client_contact_id)
    ->addWhere('saceflags.used_for_flagging_contacts', '=', TRUE)
    ->addWhere('status_id:name', '!=', 'Deactivated')
