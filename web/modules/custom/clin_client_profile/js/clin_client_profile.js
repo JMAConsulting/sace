@@ -41,8 +41,8 @@
         var $flags = $(".saceflag");
 
         $flags.each(function () {
-          $newHeader.prepend("&nbsp;");
-          $newHeader.prepend($(this));
+          $newHeader.append($(this));
+          $newHeader.append("&nbsp;");
         });
       }
     }
