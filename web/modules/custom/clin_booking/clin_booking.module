@@ -14,16 +14,11 @@ function clin_booking_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $f
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
-    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
-
     //Attach library
     $form['#attached']['library'][] = 'clin_booking/clin_booking';
     
     // Load the Webform entity.
     $webform = Webform::load('book_intake');
-
-    // Set the confirmation URL to user's calendar
-    // $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
