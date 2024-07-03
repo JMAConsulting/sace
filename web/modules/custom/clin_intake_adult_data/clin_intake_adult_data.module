@@ -16,16 +16,8 @@ function clin_intake_adult_data_form_alter(&$form, \Drupal\Core\Form\FormStateIn
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
-    //$user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
-
     //Attach library
     $form['#attached']['library'][] = 'clin_intake_adult_data/clin_intake_adult_data';
-    
-    // Load the Webform entity.
-    //$webform = Webform::load('clin_adult_intake_data');
-
-    // Set the confirmation URL to user's calendar
-    // $webform->setSetting('confirmation_url', '/clin-calendar/'.$user->get('uid')->value)->save();
 
     $aid = \Drupal::request()->query->get('aid') ?? 0;
     if(!empty($aid) && is_numeric($aid)) {
