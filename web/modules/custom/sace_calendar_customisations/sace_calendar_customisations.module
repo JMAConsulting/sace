@@ -98,7 +98,8 @@ function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAsse
 
 // Preprocess background colours to pull from CiviCRM Appointment Colours extension versus UI 
 function sace_calendar_customisations_preprocess_views_view_fullcalendar(&$variables) {
-  if ($variables['view']->id() == 'clin_calendar') {
+  $view = $variables['view'];
+  if ($view->id() == 'clin_calendar' || ($view->id() == 'team_calendar' && isset($view->args[0]) && $view->args[0] == 13)) {
     // Fetch appointment colours based on activity type.
     $appointmentColours = \Civi\Api4\AppointmentColours::get(FALSE)
       ->addSelect('colour_hex', 'option_value.label')
