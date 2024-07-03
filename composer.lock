@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76a165a74c52cfbcfe34b9d790c2a4d2",
+    "content-hash": "2ff31a36c035abdde37815ae77f22e99",
     "packages": [
         {
             "name": "adrienrn/php-mimetyper",
@@ -2828,17 +2828,17 @@
         },
         {
             "name": "drupal/blazy",
-            "version": "2.26.0",
+            "version": "2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/blazy.git",
-                "reference": "8.x-2.26"
+                "reference": "8.x-2.27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/blazy-8.x-2.26.zip",
-                "reference": "8.x-2.26",
-                "shasum": "9500502879c766132d60826116ce83ad2e83f0ef"
+                "url": "https://ftp.drupal.org/files/projects/blazy-8.x-2.27.zip",
+                "reference": "8.x-2.27",
+                "shasum": "3cf511ad1ea33c94a5c4b93f49344bef24456067"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9 || ^10"
@@ -2849,8 +2849,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.26",
-                    "datestamp": "1714295528",
+                    "version": "8.x-2.27",
+                    "datestamp": "1715944090",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
