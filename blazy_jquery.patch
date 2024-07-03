@@ -1,0 +1,13 @@
+diff --git a/web/modules/contrib/blazy/blazy.libraries.yml b/web/modules/contrib/blazy/blazy.libraries.yml
+index 20e4eb63a..7f5948e22 100644
+--- a/blazy.libraries.yml
++++ b/blazy.libraries.yml
+@@ -10,6 +10,8 @@ dblazy:
+     js/plugin/blazy.sanitizer.min.js: { minified: true, weight: -5.9 }
+     # Can be ditched for Cash, or core DOM library, if any.
+     js/plugin/blazy.dom.min.js: { minified: true, weight: -5.9 }
++  dependencies:
++    - core/jquery
+
+ dompurify:
+   remote: https://github.com/cure53/DOMPurify
