@@ -3,4 +3,3 @@ clin_client_profile:
   js:
     js/clin_client_profile.js: {}
     js/clin_edit_contact.js: {}
-    js/clin_flags.js: {}
