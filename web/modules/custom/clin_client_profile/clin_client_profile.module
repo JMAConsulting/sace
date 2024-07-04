@@ -132,14 +132,11 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
 
     $current_user = \Drupal::currentUser();
     $roles = $current_user->getRoles();
+    $current_user_id = \Drupal::currentUser()->id();
 
     if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
       // If logged in user is a counsellor
       if(in_array('clin_counsellor', $roles)) {
-
-        $current_user_id = \Drupal::currentUser()->id();
-        \Drupal::service('civicrm')->initialize();
-        
         if (counsellor_deny_access($current_user_id)) {
 	        $form['#access'] = FALSE;
         }
