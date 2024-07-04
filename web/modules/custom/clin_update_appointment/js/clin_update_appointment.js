@@ -50,4 +50,39 @@ jQuery(document).ready(function ($) {
       }
     }
   });
+
+  $("#edit-civicrm-1-activity-1-activity-activity-type-id").on(
+    "change",
+    function () {
+      var selectedValue = $(
+        "#edit-civicrm-1-activity-1-activity-activity-type-id"
+      ).val();
+      if (selectedValue == 77 || selectedValue == 78) {
+        $("#edit-civicrm-1-activity-1-activity-duration").val(30);
+      } else {
+        $("#edit-civicrm-1-activity-1-activity-duration").val(60);
+      }
+    }
+  );
+
+  function prepopulateAutocomplete() {
+    var contactField = $("#edit-civicrm-3-contact-1-contact-existing");
+    var contactName = contactField.data("civicrm-name");
+    var contactId = contactField.data("civicrm-id");
+
+    if (contactName && contactId) {
+      var prepopulateValue = contactName + " (" + contactId + ")";
+    }
+
+    var selectedValue = $(
+      "#edit-civicrm-1-activity-1-activity-activity-type-id"
+    ).val();
+    var autocompleteField = $("#edit-select-counsellor");
+    if (selectedValue == 77 || selectedValue == 78) {
+      autocompleteField = $("#edit-select-intake-staff");
+    }
+    autocompleteField.val(prepopulateValue);
+    autocompleteField.trigger("change"); // or any other relevant event
+  }
+  prepopulateAutocomplete();
 });
