@@ -8,6 +8,7 @@ use Drupal\user\Entity\User;
 use Drupal\Core\Url;
 use Drupal\Core\Database\Database;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Render\BubbleableMetadata;
 
 function clin_client_profile_views_pre_view($view, $display_id, &$args) {
   if ($view->id() == 'client_home' || $view->id() == 'security' || $view->id() == 'clin_flags' || $view->id() == 'appointments'|| $view->id() == 'contact_notes' || $view->id() == 'contact_information') {
@@ -24,6 +25,13 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
    	        throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
           }
         }
+        elseif(in_array('ce_staff', $roles)) {
+          if (_ce_staff_deny_access($current_user_id)) {
+            $bubbleable_metadata = new BubbleableMetadata();
+            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access-denied']);
+            $bubbleable_metadata->applyTo($view->element);
+          }
+        }
       }
     }
   }
@@ -35,9 +43,6 @@ function clin_client_profile_preprocess_page(&$variables) {
   // Add JS to /client-home pages
   if (preg_match($pattern, $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_client_profile';
-  }
-  if (preg_match('/\/contact-information\/edit\/(\d+)/', $current_path, $matches)) {
-    $variables['#attached']['library'][] = 'clin_client_profile/clin_edit_contact';
   }
   if (preg_match('/\/contact-information\/notes\/(\d+)/', $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_contact_notes';
