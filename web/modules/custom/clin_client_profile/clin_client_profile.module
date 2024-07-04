@@ -27,12 +27,9 @@ function counsellor_deny_access($current_user_id) {
   }
 
   $path = \Drupal::request()->getPathInfo();
-
   $path = strtok($path, '?');
-
   $path_segments = explode('/', $path);
   $last_segment = end($path_segments);
-
   $clientID = is_numeric($last_segment) ? (int) $last_segment : 0;
 
   if(!$clientID || !$counsellorID) {
@@ -53,13 +50,48 @@ function counsellor_deny_access($current_user_id) {
   }
 }
 
+function ce_staff_deny_access($current_user_id) {
+  \Drupal::service('civicrm')->initialize();     
+  $civicrm_database = Database::getConnection('default', 'civicrm');
+  $path = \Drupal::request()->getPathInfo();
+  $path = strtok($path, '?');
+  $path_segments = explode('/', $path);
+  $last_segment = end($path_segments);
+
+  $clientID = is_numeric($last_segment) ? (int) $last_segment : 0;
+
+  if(!$clientID) {
+    return TRUE;
+  }
+
+  // Get all users with a Counsellor relationship with the client
+  $relationships = \Civi\Api4\Relationship::get(FALSE)
+    ->addSelect('uf_match.uf_id')
+    ->addJoin('UFMatch AS uf_match', 'LEFT', ['contact_id_a', '=', 'uf_match.contact_id'])
+    ->addWhere('contact_id_b', '=', $clientID)
+    ->addWhere('relationship_type_id', '=', 17)
+    ->addWhere('is_active', '=', TRUE)
+    ->execute();
+
+  // Get user teams for each counsellor and current user
+  foreach($relationships as $relationship) {
+    $current_user_teams = _get_user_teams($current_user_id);
+    $assigned_staff_teams = _get_user_teams($relationship['uf_match.uf_id']);
+
+    if (array_intersect($current_user_teams, $assigned_staff_teams)) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
 function clin_client_profile_views_pre_view($view, $display_id, &$args) {
   if ($view->id() == 'client_home' || $view->id() == 'security' || $view->id() == 'clin_flags' || $view->id() == 'appointments'|| $view->id() == 'contact_notes' || $view->id() == 'contact_information') {
     if ($display_id == 'page_1') {
       $current_user = \Drupal::currentUser();
       $current_user_id = \Drupal::currentUser()->id();
       $roles = $current_user->getRoles();
-      if(!in_array('clin_director', $roles) && !in_array('wheel', $roles)) {
+      if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
         // If logged in user is a counsellor
         if(in_array('clin_counsellor', $roles)) {
           if (counsellor_deny_access($current_user_id)) {
@@ -80,11 +112,11 @@ function clin_client_profile_preprocess_page(&$variables) {
   if (preg_match($pattern, $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_client_profile';
   }
-  if (preg_match('/\/contact-information\/flags\/(\d+)/', $current_path, $matches)) {
-    $variables['#attached']['library'][] = 'clin_client_profile/clin_flags';
-  }
   if (preg_match('/\/contact-information\/edit\/(\d+)/', $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_edit_contact';
+  }
+  if (preg_match('/\/contact-information\/notes\/(\d+)/', $current_path, $matches)) {
+    $variables['#attached']['library'][] = 'clin_client_profile/clin_contact_notes';
   }
 }
 
@@ -95,12 +127,13 @@ function clin_client_profile_preprocess_page(&$variables) {
  * @param $form_id
  */
 function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_client_profile_add_form") {
+  if ($form_id == "webform_submission_client_profile_add_form" || $form_id == "webform_submission_add_note_to_appointment" || 
+  $form_id == "webform_submission_add_flag" ||  $form_id == "webform_submission_remove_flag") {
 
     $current_user = \Drupal::currentUser();
     $roles = $current_user->getRoles();
 
-    if(!in_array('clin_director', $roles) && !in_array('wheel', $roles)) {
+    if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
       // If logged in user is a counsellor
       if(in_array('clin_counsellor', $roles)) {
 
@@ -111,33 +144,30 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
 	        $form['#access'] = FALSE;
         }
       }
-      elseif(in_array('ce_staff', $roles) || in_array('clin_tl', $roles)) {
-        $user = User::load($current_user->id());
-        if ($assigned_staff) {
-          $current_user_teams = _get_user_teams($user);
-          $assigned_staff_teams = _get_user_teams($assigned_staff);
-
-          // Check for intersection in teams
-          if (!array_intersect($current_user_teams, $assigned_staff_teams)) {
+      elseif(in_array('ce_staff', $roles)) {
+        if (ce_staff_deny_access($current_user_id)) {
+          if ($form_id == "webform_submission_client_profile_add_form") {
             $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
             $form['#attributes']['class'][] = 'webform-locked';
             $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
             clin_client_profile_make_form_read_only($form);
           }
+          else {
+            $form['#access'] = FALSE;
+          }
         }
-        else {
+      }
+      // Read only if reception or intake
+      elseif(in_array('reception', $roles) || in_array('intake', $roles)) {
+        if ($form_id == "webform_submission_client_profile_add_form") {
           $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
           $form['#attributes']['class'][] = 'webform-locked';
           $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
           clin_client_profile_make_form_read_only($form);
         }
-      }
-      // Read only if reception or intake
-      elseif(in_array('reception', $roles) || in_array('intake', $roles)) {
-        $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
-        $form['#attributes']['class'][] = 'webform-locked';
-        $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
-        clin_client_profile_make_form_read_only($form);
+        else {
+          $form['#access'] = FALSE;
+        }
       }
       // Hide form otherwise
       else {
@@ -194,5 +224,15 @@ function clin_client_profile_update_nested_menu_item(&$items, $uid) {
       clin_client_profile_update_nested_menu_item($item['below'], $uid);
     }
   }
+}
+
+function _get_user_teams($uid) {
+  $user = User::load($uid);
+  if ($user && $user->hasField('user_team')) {
+    $team_ids = $user->get('user_team')->getValue();
+    $team_ids = array_column($team_ids, 'target_id');
+    return $team_ids;
+  }
+  return [];
 }
 
