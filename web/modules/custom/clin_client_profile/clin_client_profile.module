@@ -7,83 +7,7 @@ use Drupal\webform\Entity\Webform;
 use Drupal\user\Entity\User;
 use Drupal\Core\Url;
 use Drupal\Core\Database\Database;
-
-function counsellor_deny_access($current_user_id) {
-  \Drupal::service('civicrm')->initialize();     
-  $civicrm_database = Database::getConnection('default', 'civicrm');
-  
-  $query = $civicrm_database->select('civicrm_uf_match', 'c')
-    ->fields('c', ['contact_id'])
-    ->condition('c.uf_id', $current_user_id)
-    ->execute();
-  
-  $result = $query->fetchAssoc();
-  
-  if ($result) {
-    $counsellorID = $result['contact_id'];   
-  }
-  else {
-    return TRUE;
-  }
-
-  $path = \Drupal::request()->getPathInfo();
-  $path = strtok($path, '?');
-  $path_segments = explode('/', $path);
-  $last_segment = end($path_segments);
-  $clientID = is_numeric($last_segment) ? (int) $last_segment : 0;
-
-  if(!$clientID || !$counsellorID) {
-    return TRUE;
-  }
-
-  $relationships = \Civi\Api4\Relationship::get(FALSE)
-    ->addWhere('contact_id_a', '=', $counsellorID)
-    ->addWhere('contact_id_b', '=', $clientID)
-    ->addWhere('relationship_type_id', '=', 17) // Counsellor for relationship type
-    ->addWhere('is_active', '=', TRUE)
-    ->setLimit(1)
-    ->execute();
-
-  // If client is not assigned to logged in counsellor, hide page
-  if(!count($relationships)) {
-    return TRUE;
-  }
-}
-
-function ce_staff_deny_access($current_user_id) {
-  \Drupal::service('civicrm')->initialize();     
-  $civicrm_database = Database::getConnection('default', 'civicrm');
-  $path = \Drupal::request()->getPathInfo();
-  $path = strtok($path, '?');
-  $path_segments = explode('/', $path);
-  $last_segment = end($path_segments);
-
-  $clientID = is_numeric($last_segment) ? (int) $last_segment : 0;
-
-  if(!$clientID) {
-    return TRUE;
-  }
-
-  // Get all users with a Counsellor relationship with the client
-  $relationships = \Civi\Api4\Relationship::get(FALSE)
-    ->addSelect('uf_match.uf_id')
-    ->addJoin('UFMatch AS uf_match', 'LEFT', ['contact_id_a', '=', 'uf_match.contact_id'])
-    ->addWhere('contact_id_b', '=', $clientID)
-    ->addWhere('relationship_type_id', '=', 17)
-    ->addWhere('is_active', '=', TRUE)
-    ->execute();
-
-  // Get user teams for each counsellor and current user
-  foreach($relationships as $relationship) {
-    $current_user_teams = _get_user_teams($current_user_id);
-    $assigned_staff_teams = _get_user_teams($relationship['uf_match.uf_id']);
-
-    if (array_intersect($current_user_teams, $assigned_staff_teams)) {
-      return FALSE;
-    }
-  }
-  return TRUE;
-}
+use Symfony\Component\HttpFoundation\Request;
 
 function clin_client_profile_views_pre_view($view, $display_id, &$args) {
   if ($view->id() == 'client_home' || $view->id() == 'security' || $view->id() == 'clin_flags' || $view->id() == 'appointments'|| $view->id() == 'contact_notes' || $view->id() == 'contact_information') {
@@ -94,7 +18,7 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
       if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
         // If logged in user is a counsellor
         if(in_array('clin_counsellor', $roles)) {
-          if (counsellor_deny_access($current_user_id)) {
+          if (_counsellor_deny_access($current_user_id)) {
             \Drupal::messenger()->addError(t('You do not have access to view this client profile.'));
 	          $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
    	        throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
@@ -127,9 +51,8 @@ function clin_client_profile_preprocess_page(&$variables) {
  * @param $form_id
  */
 function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_client_profile_add_form" || $form_id == "webform_submission_add_note_to_appointment" || 
-  $form_id == "webform_submission_add_flag" ||  $form_id == "webform_submission_remove_flag") {
-
+  if ($form_id == "webform_submission_client_profile_add_form" || $form_id == "webform_submission_add_note_to_appointment_add_form" || 
+  $form_id == "webform_submission_add_flag_add_form" ||  $form_id == "webform_submission_remove_flag_add_form") {
     $current_user = \Drupal::currentUser();
     $roles = $current_user->getRoles();
     $current_user_id = \Drupal::currentUser()->id();
@@ -137,12 +60,27 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
       // If logged in user is a counsellor
       if(in_array('clin_counsellor', $roles)) {
-        if (counsellor_deny_access($current_user_id)) {
+        if (_counsellor_deny_access($current_user_id)) {
 	        $form['#access'] = FALSE;
+          if ($form_id == "webform_submission_client_profile_add_form") {
+            \Drupal::messenger()->addError(t('You do not have access to view this client.'));
+            return;
+          }
+          elseif ($form_id == "webform_submission_add_flag_add_form") {
+            \Drupal::messenger()->addError(t('You do not have access to add or edit flags for this client.'));
+          }
+          elseif ($form_id == "webform_submission_remove_flag_add_form") {
+            \Drupal::messenger()->addError(t('You do not have access to delete flags for this client.'));
+          }
+          elseif ($form_id == "webform_submission_add_note_to_appointment_add_form") {
+            \Drupal::messenger()->addError(t('You do not have access to add notes for this client.'));
+          }
+          $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
+          throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
         }
       }
       elseif(in_array('ce_staff', $roles)) {
-        if (ce_staff_deny_access($current_user_id)) {
+        if (_ce_staff_deny_access($current_user_id)) {
           if ($form_id == "webform_submission_client_profile_add_form") {
             $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
             $form['#attributes']['class'][] = 'webform-locked';
@@ -151,6 +89,17 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
           }
           else {
             $form['#access'] = FALSE;
+            if ($form_id == "webform_submission_add_flag_add_form") {
+              \Drupal::messenger()->addError(t('You do not have access to add or edit flags for this client.'));
+            }
+            elseif ($form_id == "webform_submission_remove_flag_add_form") {
+              \Drupal::messenger()->addError(t('You do not have access to delete flags for this client.'));
+            }
+            elseif ($form_id == "webform_submission_add_note_to_appointment_add_form") {
+              \Drupal::messenger()->addError(t('You do not have access to add notes for this client.'));
+            }
+            $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
+            throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
           }
         }
       }
@@ -221,6 +170,140 @@ function clin_client_profile_update_nested_menu_item(&$items, $uid) {
       clin_client_profile_update_nested_menu_item($item['below'], $uid);
     }
   }
+}
+
+function _counsellor_deny_access($current_user_id) {
+  \Drupal::service('civicrm')->initialize();     
+  $civicrm_database = Database::getConnection('default', 'civicrm');
+  
+  $query = $civicrm_database->select('civicrm_uf_match', 'c')
+    ->fields('c', ['contact_id'])
+    ->condition('c.uf_id', $current_user_id)
+    ->execute();
+  
+  $result = $query->fetchAssoc();
+  
+  if ($result) {
+    $counsellorID = $result['contact_id'];   
+  }
+  else {
+    return TRUE;
+  }
+
+  $path = \Drupal::request()->getRequestUri();
+
+  // Parse the path to extract the CID
+  $clientID = 0;
+
+  // Check if CID is in query parameters
+  if (preg_match('/[?&]cid(?:2)?=([^&]+)/', $path, $matches)) {
+      $clientID = (int) $matches[1];
+  } else {
+      // If CID is in the path
+      $path = strtok($path, '?');
+      $path_segments = explode('/', rtrim($path, '/'));
+      $last_segment = end($path_segments);
+      if (is_numeric($last_segment)) {
+          $clientID = (int) $last_segment;
+      }
+  }
+
+  if ($clientID === 0 && preg_match('/[?&]aid=([^&]+)/', $path, $matches)) {
+    $appointmentID = (int) $matches[1];
+    $relationships = \Civi\Api4\Relationship::get(FALSE)
+      ->addJoin('Activity AS activity', 'LEFT', ['contact_id_b', '=', 'activity.target_contact_id'])
+      ->addWhere('activity.id', '=', $appointmentID)
+      ->addWhere('contact_id_a', '=', $counsellorID)
+      ->addWhere('relationship_type_id', '=', 17)
+      ->addWhere('is_active', '=', TRUE)
+      ->setLimit(1)
+      ->execute();
+    if(!count($relationships)) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  elseif(!$clientID || !$counsellorID) {
+    return TRUE;
+  }
+
+  $relationships = \Civi\Api4\Relationship::get(FALSE)
+    ->addWhere('contact_id_a', '=', $counsellorID)
+    ->addWhere('contact_id_b', '=', $clientID)
+    ->addWhere('relationship_type_id', '=', 17) // Counsellor for relationship type
+    ->addWhere('is_active', '=', TRUE)
+    ->setLimit(1)
+    ->execute();
+
+  // If client is not assigned to logged in counsellor, hide page
+  if(!count($relationships)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+function _ce_staff_deny_access($current_user_id) {
+  \Drupal::service('civicrm')->initialize();     
+  $civicrm_database = Database::getConnection('default', 'civicrm');
+
+  $path = \Drupal::request()->getRequestUri();
+
+  // Parse the path to extract the CID
+  $clientID = 0;
+
+  // Check if CID is in query parameters
+  if (preg_match('/[?&]cid(?:2)?=([^&]+)/', $path, $matches)) {
+      $clientID = (int) $matches[1];
+  } else {
+      // If CID is in the path
+      $path = strtok($path, '?');
+      $path_segments = explode('/', rtrim($path, '/'));
+      $last_segment = end($path_segments);
+      if (is_numeric($last_segment)) {
+          $clientID = (int) $last_segment;
+      }
+  }
+
+  if ($clientID === 0 && preg_match('/[?&]aid=([^&]+)/', $path, $matches)) {
+    $appointmentID = (int) $matches[1];
+    $relationships = \Civi\Api4\Relationship::get(FALSE)
+      ->addJoin('Activity AS activity', 'LEFT', ['contact_id_b', '=', 'activity.target_contact_id'])
+      ->addWhere('activity.id', '=', $appointmentID)
+      ->addWhere('contact_id_a', '=', $counsellorID)
+      ->addWhere('relationship_type_id', '=', 17)
+      ->addWhere('is_active', '=', TRUE)
+      ->setLimit(1)
+      ->execute();
+    if(!count($relationships)) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  if (!$clientID) {
+    return TRUE;
+  }
+
+  // Get all users with a Counsellor relationship with the client
+  $relationships = \Civi\Api4\Relationship::get(FALSE)
+    ->addSelect('uf_match.uf_id')
+    ->addJoin('UFMatch AS uf_match', 'LEFT', ['contact_id_a', '=', 'uf_match.contact_id'])
+    ->addWhere('contact_id_b', '=', $clientID)
+    ->addWhere('relationship_type_id', '=', 17)
+    ->addWhere('is_active', '=', TRUE)
+    ->execute();
+
+  // Get user teams for each counsellor and current user
+  foreach($relationships as $relationship) {
+    $current_user_teams = _get_user_teams($current_user_id);
+    $assigned_staff_teams = _get_user_teams($relationship['uf_match.uf_id']);
+
+    if (array_intersect($current_user_teams, $assigned_staff_teams)) {
+      return FALSE;
+    }
+  }
+  return TRUE;
 }
 
 function _get_user_teams($uid) {
