@@ -128,9 +128,9 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
   public function buildExposeForm(&$form, FormStateInterface $form_state) {
     parent::buildExposeForm($form, $form_state);
     $tids = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery()
-    ->condition('vid', 'user_team')
-    ->accessCheck(TRUE)
-    ->execute();
+      ->condition('vid', 'user_team')
+      ->accessCheck(TRUE)
+      ->execute();
     $taxonomies = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
     $user_teams = [];
     foreach ($taxonomies as $taxonomy) {
@@ -161,6 +161,19 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
             if ('user_team' == $term->bundle()) {
               $user_team_target_ids[] = $term->id();
             }
+          }
+          if (!empty($user_team_target_ids)) {
+            break;
+          }
+        }
+        elseif ($tids[0] === 'All') {
+          $tids = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery()
+            ->condition('vid', 'user_team')
+            ->accessCheck(TRUE)
+            ->execute();
+          $taxonomies = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
+          foreach ($taxonomies as $term) {
+            $user_team_target_ids[] = $term->id();
           }
           if (!empty($user_team_target_ids)) {
             break;
