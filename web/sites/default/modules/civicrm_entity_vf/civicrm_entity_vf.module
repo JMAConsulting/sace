@@ -57,6 +57,9 @@ function civicrm_entity_vf_form_views_exposed_form_alter(&$form, FormStateInterf
     }
 
     $contact_ids = array_keys($form['uf_select']['#options']);
+    if (empty($contact_ids)) {
+      return;
+    }
     $team_contact_id_map = [];
     $team_contact_id_lookup = \Drupal::service('civicrm_entity.api')->get('UFMatch', [
       'sequential' => 1,
