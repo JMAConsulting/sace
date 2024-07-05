@@ -28,7 +28,7 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
         elseif(in_array('ce_staff', $roles)) {
           if (_ce_staff_deny_access($current_user_id)) {
             $bubbleable_metadata = new BubbleableMetadata();
-            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access-denied']);
+            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
             $bubbleable_metadata->applyTo($view->element);
           }
         }
@@ -215,15 +215,13 @@ function _counsellor_deny_access($current_user_id) {
 
   if ($clientID === 0 && preg_match('/[?&]aid=([^&]+)/', $path, $matches)) {
     $appointmentID = (int) $matches[1];
-    $relationships = \Civi\Api4\Relationship::get(FALSE)
-      ->addJoin('Activity AS activity', 'LEFT', ['contact_id_b', '=', 'activity.target_contact_id'])
-      ->addWhere('activity.id', '=', $appointmentID)
-      ->addWhere('contact_id_a', '=', $counsellorID)
-      ->addWhere('relationship_type_id', '=', 17)
-      ->addWhere('is_active', '=', TRUE)
+    $activities = \Civi\Api4\Activity::get(FALSE)
+      ->addWhere('id', '=', $appointmentID)
+      ->addWhere('assignee_contact_id', '=', $counsellorID)
       ->setLimit(1)
       ->execute();
-    if(!count($relationships)) {
+
+    if(!count($activities)) {
       return TRUE;
     }
     return FALSE;
@@ -233,16 +231,14 @@ function _counsellor_deny_access($current_user_id) {
     return TRUE;
   }
 
-  $relationships = \Civi\Api4\Relationship::get(FALSE)
-    ->addWhere('contact_id_a', '=', $counsellorID)
-    ->addWhere('contact_id_b', '=', $clientID)
-    ->addWhere('relationship_type_id', '=', 17) // Counsellor for relationship type
-    ->addWhere('is_active', '=', TRUE)
+  $activities = \Civi\Api4\Activity::get(FALSE)
+    ->addWhere('assignee_contact_id', '=', $counsellorID)
+    ->addWhere('target_contact_id', '=', $clientID)
     ->setLimit(1)
     ->execute();
 
   // If client is not assigned to logged in counsellor, hide page
-  if(!count($relationships)) {
+  if(!count($activities)) {
     return TRUE;
   }
   return FALSE;
@@ -261,63 +257,66 @@ function _ce_staff_deny_access($current_user_id) {
   if (preg_match('/[?&]cid(?:2)?=([^&]+)/', $path, $matches)) {
       $clientID = (int) $matches[1];
   } else {
-      // If CID is in the path
-      $path = strtok($path, '?');
-      $path_segments = explode('/', rtrim($path, '/'));
-      $last_segment = end($path_segments);
-      if (is_numeric($last_segment)) {
-          $clientID = (int) $last_segment;
-      }
+    // If CID is in the path
+    $path = strtok($path, '?');
+    $path_segments = explode('/', rtrim($path, '/'));
+    $last_segment = end($path_segments);
+    if (is_numeric($last_segment)) {
+        $clientID = (int) $last_segment;
+    }
   }
 
-  if ($clientID === 0 && preg_match('/[?&]aid=([^&]+)/', $path, $matches)) {
+  if($clientID) {
+    // Get all users assigned to the client
+    $activities = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('uf_match.uf_id')
+      ->addJoin('UFMatch AS uf_match', 'LEFT', ['assignee_contact_id', '=', 'uf_match.contact_id'])
+      ->addWhere('assignee_contact_id', 'IS NOT EMPTY')
+      ->addWhere('target_contact_id', '=', $clientID)
+      ->addGroupBy('uf_match.uf_id')
+      ->execute();
+  }
+
+  elseif ($clientID === 0 && preg_match('/[?&]aid=([^&]+)/', $path, $matches)) {
     $appointmentID = (int) $matches[1];
-    $relationships = \Civi\Api4\Relationship::get(FALSE)
-      ->addJoin('Activity AS activity', 'LEFT', ['contact_id_b', '=', 'activity.target_contact_id'])
-      ->addWhere('activity.id', '=', $appointmentID)
-      ->addWhere('contact_id_a', '=', $counsellorID)
-      ->addWhere('relationship_type_id', '=', 17)
-      ->addWhere('is_active', '=', TRUE)
+    $activities = \Civi\Api4\Activity::get(FALSE)
+      ->addWhere('id', '=', $appointmentID)
       ->setLimit(1)
       ->execute();
-    if(!count($relationships)) {
+
+    if(!count($activities)) {
       return TRUE;
     }
-    return FALSE;
   }
 
-  if (!$clientID) {
+  else {
     return TRUE;
   }
-
-  // Get all users with a Counsellor relationship with the client
-  $relationships = \Civi\Api4\Relationship::get(FALSE)
-    ->addSelect('uf_match.uf_id')
-    ->addJoin('UFMatch AS uf_match', 'LEFT', ['contact_id_a', '=', 'uf_match.contact_id'])
-    ->addWhere('contact_id_b', '=', $clientID)
-    ->addWhere('relationship_type_id', '=', 17)
-    ->addWhere('is_active', '=', TRUE)
-    ->execute();
+  $current_user_teams = _get_user_teams($current_user_id);
+  \Drupal::logger('clin_client_profile')->info("Curr User: ".print_r($current_user_teams, TRUE));
 
   // Get user teams for each counsellor and current user
-  foreach($relationships as $relationship) {
-    $current_user_teams = _get_user_teams($current_user_id);
-    $assigned_staff_teams = _get_user_teams($relationship['uf_match.uf_id']);
+  foreach($activities as $activity) {  
+    $assigned_staff_teams = _get_user_teams($activity['uf_match.uf_id']);
+
+    \Drupal::logger('clin_client_profile')->info(print_r($assigned_staff_teams, TRUE));
 
     if (array_intersect($current_user_teams, $assigned_staff_teams)) {
+      \Drupal::logger('clin_client_profile')->info("Access granted");
       return FALSE;
     }
   }
+  \Drupal::logger('clin_client_profile')->info("Access denied");
   return TRUE;
 }
 
 function _get_user_teams($uid) {
-  $user = User::load($uid);
-  if ($user && $user->hasField('user_team')) {
-    $team_ids = $user->get('user_team')->getValue();
-    $team_ids = array_column($team_ids, 'target_id');
-    return $team_ids;
-  }
-  return [];
-}
+  $teams = [];
 
+  $userTeams = \Drupal::entityTypeManager()->getStorage('user')->load($uid)->get('field_user_team')->referencedEntities();
+  foreach ($userTeams as $team) {
+    $tid = $team->id();
+    $teams[] = $tid;
+ }
+  return $teams;
+}

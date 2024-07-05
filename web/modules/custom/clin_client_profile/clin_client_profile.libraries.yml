@@ -2,5 +2,11 @@ clin_client_profile:
   version: 1.0
   js:
     js/clin_client_profile.js: {}
+
+clin_contact_notes:
+  js:
     js/clin_contact_notes.js: {}
+
+access_denied:
+  js:
     js/access_denied.js: {}
