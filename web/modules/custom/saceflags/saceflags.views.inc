@@ -1,4 +1,3 @@
-
 <?php
 
 use Drupal\civicrm_entity\CiviEntityStorage;
