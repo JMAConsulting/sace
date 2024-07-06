@@ -62,7 +62,7 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
             ->addValue('parent_id', $webform_submission_data['aid']) // Original appointment ID
             ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
             ->addValue('activity_type_id', 346) // CLIN - Reminder activity type
-            ->addValue('activity_date_time', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
+            ->addValue('activity_date_time', date('Y-m-d H:i:s', strtotime('+1 week', time())))
             ->addValue('duration', $webform_submission_data['civicrm_1_activity_1_activity_duration'])
             ->addValue('status_id', 1) // Set reminder status to scheduled
             ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
@@ -75,7 +75,7 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
           $results = \Civi\Api4\Activity::create(FALSE)
             ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
             ->addValue('activity_type_id', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
-            ->addValue('activity_date_time', date('Y-m-d H:i:s', strtotime('+1 week', time())))
+            ->addValue('activity_date_time', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
             ->addValue('duration', $webform_submission_data['civicrm_1_activity_1_activity_duration'])
             ->addValue('status_id', $webform_submission_data['civicrm_1_activity_1_activity_status_id'])
             ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
