@@ -103,7 +103,25 @@ jQuery(document).ready(function ($) {
           $(this).remove();
         }
       });
+      $("#edit-book-an-appointment--wrapper").show();
+      $("#edit-reschedule-a-new-appointment").hide();
     }
   }
   prepopulateAutocomplete();
+
+  $('input[name="book_an_appointment"]').change(function () {
+    if ($(this).val() === "1") {
+      $("#edit-reschedule-a-new-appointment").show();
+      $(
+        '#edit-civicrm-1-activity-1-activity-activity-type-id option[value="346"]'
+      ).remove();
+      $("#edit-civicrm-1-activity-1-activity-type-id").val("65");
+    } else {
+      $("#edit-reschedule-a-new-appointment").hide();
+      $("#edit-civicrm-1-activity-1-activity-activity-type-id").append(
+        '<option value="346">CLIN - Reminder</option>'
+      );
+      $("#edit-civicrm-1-activity-1-activity-activity-type-id").val("346");
+    }
+  });
 });
