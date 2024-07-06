@@ -83,6 +83,27 @@ jQuery(document).ready(function ($) {
     }
     autocompleteField.val(prepopulateValue);
     autocompleteField.trigger("change"); // or any other relevant event
+
+    // If not a CLIN Reminder
+    if (
+      $("#edit-civicrm-1-activity-1-activity-activity-type-id").val() != 346
+    ) {
+      // Remove "completed" status from form
+      $(
+        '#edit-civicrm-1-activity-1-activity-status-id option[value="2"]'
+      ).remove();
+      $(
+        '#edit-civicrm-1-activity-1-activity-activity-type-id option[value="346"]'
+      ).remove();
+    } else {
+      var selectElement = $("#edit-civicrm-1-activity-1-activity-status-id");
+      selectElement.find("option").each(function () {
+        var optionValue = $(this).val();
+        if (optionValue !== "1" && optionValue !== "2") {
+          $(this).remove();
+        }
+      });
+    }
   }
   prepopulateAutocomplete();
 });
