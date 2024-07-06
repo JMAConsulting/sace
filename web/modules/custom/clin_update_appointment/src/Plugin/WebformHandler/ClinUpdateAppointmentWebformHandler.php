@@ -51,12 +51,16 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
 
-    // Schedule updated appointment
+    
     if ($webform_submission_data) {
-      // Do not create a new activty if appointment status is attended
-      if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 10) {
+      // Do not create a new activty if appointment status is attended, scheduled, or completed
+      if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 10 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 2
+      && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 1) {
+
+        // Schedule reminder one week later
         if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 14 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 15) {
           $results = \Civi\Api4\Activity::create(FALSE)
+            ->addValue('parent_id', $webform_submission_data['aid']) // Original appointment ID
             ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
             ->addValue('activity_type_id', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
             ->addValue('activity_date_time', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
@@ -67,10 +71,9 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
             ->addValue('activity_details', 	$webform_submission_data['civicrm_1_activity_1_activity_details'])
             ->execute();
         }
-        // Schedule reminder one week later
+        // Schedule updated appointment
         else {
           $results = \Civi\Api4\Activity::create(FALSE)
-            ->addValue('parent_id', $webform_submission_data['aid']) // Original appointment ID
             ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
             ->addValue('activity_type_id', 346) // CLIN - Reminder activity type
             ->addValue('activity_date_time', date('Y-m-d H:i:s', strtotime('+1 week', time())))
