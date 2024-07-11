@@ -17,5 +17,27 @@ function clin_update_appointment_form_alter(&$form, \Drupal\Core\Form\FormStateI
 
     // Get webform form elements
     $elements = WebformFormHelper::flattenElements($form);
+
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if(!empty($aid) && is_numeric($aid)) {
+      \Drupal::service('civicrm')->initialize();
+      $activities = \Civi\Api4\Activity::get(FALSE)
+      ->addWhere('id', '=', $aid)
+      ->setLimit(1)
+      ->addChain('parent_activity', \Civi\Api4\Activity::get(FALSE)
+        ->addWhere('id', '=', '$parent_id')
+        ->addSelect('assignee_contact_id', 'activity_type_id', 'details', 'duration')
+      )
+      ->execute();
+
+      if(!empty($activities['parent_activity'])) {
+        $parentActivity = $activities['parent_activity']->first();
+
+        $elements[CLIN_UPDATE_APP_ACTIVITY_TYPE]['#default_value'] = $parentActivity['activity_type_id'];
+        $elements[CLIN_UPDATE_APP_DETAILS]['#default_value'] = $parentActivity['details'];
+        $elements[CLIN_UPDATE_APP_DURATION]['#default_value'] = $parentActivity['duration'];
+        $elements[CLIN_UPDATE_APP_ASSIGNEE_ID]['#default_value'] = $parentActivity['assignee_contact_id'];
+      }
     }
+  }
 }
