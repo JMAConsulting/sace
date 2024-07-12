@@ -295,7 +295,7 @@ elements: |-
     civicrm_1_activity_1_activity_activity_type_id:
       '#type': select
       '#title': 'Activity Type'
-      '#description': 'Select the activity that best aligns with the primary focus of your work/meeting for this session. Additional details may be listed in the outputs/deliverables completed and the Activity Notes fields. Depending on submissions/how it&#39;s being used we may build out more features such as custom fields for recurring content in the Notes field and other improvements to keep improving this form.'
+      '#description': "<p>Select the activity that best aligns with the primary focus of your work/meeting for this session. Additional details may be listed in the outputs/deliverables completed and the Activity Notes fields. Depending on submissions/how it's being used we may build out more features such as custom fields for recurring content in the Notes field and other improvements to keep improving this form.</p>"
       '#options':
         334: '_Cancelled Activity'
         207: 'AD - Best/ Promising Practices Research'
@@ -330,6 +330,7 @@ elements: |-
         237: 'Consultation Received - Systems Navigation'
         89: 'Content Development - Audio & Video'
         238: 'Content Development - Education, Psychoeducation, & Processing Groups/Sessions'
+        339: 'Content Development - General SACE Brand Materials'
         239: 'Content Development - Online Interactive Learning'
         96: 'Content Development - Print & Digital Handouts & Resources'
         93: 'Content Development - Web & Social Content (Page, Post, or Article)'
@@ -367,7 +368,6 @@ elements: |-
         268: 'HR - Policy & Procedures Development'
         269: 'HR - Policy Review & Research'
         270: 'HR - Records Information Management'
-        336: 'HR - Staff Administration Forms and Submissions'
         271: 'HR - Staff Onboarding & Training'
         272: 'HR - Time Management'
         335: 'Inter-Agency Collaboration or Partnership - Event'
@@ -412,10 +412,12 @@ elements: |-
         305: 'Program Development - Operations Policies & Practices'
         306: 'Program Development - Research & Development'
         307: 'Reception Coverage'
+        308: 'SIL - Administration'
         102: 'SIL - Primary'
         103: 'SIL - Secondary'
         309: 'SIL - System Maintenance'
         101: 'SIL - Training'
+        336: 'Staff - Administration Forms and Submissions'
         311: 'Staff - Check-In'
         330: 'Staff: Day of Note'
         312: 'Staff - Lunch'
@@ -432,7 +434,6 @@ elements: |-
         320: 'Staff - Vacation'
         322: 'Tech - General Ops Support'
         321: 'Tech - Set-Up, Development, Maintenance. or Support'
-        308: 'VS - Administration'
         323: 'VS - Volunteer Debrief'
         324: 'VS - Volunteer Interview'
         325: 'VS - Meeting'

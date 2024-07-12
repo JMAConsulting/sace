@@ -1,4 +1,12 @@
 
+Blazy 8.x-2.0-dev, 2024-05-15
+------------------------------
+- Fixed for D10.3 deprecated Renderer::renderPlain.
+
+Blazy 8.x-2.0-dev, 2024-05-12
+------------------------------
+- Supports triggering events with extra arguments ala jQuery.
+
 Blazy 8.x-2.0-dev, 2024-04-13
 ------------------------------
 - Fixed for native grid masonry.

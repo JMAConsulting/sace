@@ -389,6 +389,10 @@ class DB_DataObject_Cast {
 
             case 'mysqli':
                 // this is funny - the parameter order is reversed ;)
+                if (is_array($this->value)) {
+		  \CRM_Core_Error::backtrace('dbdataobject backtrace', TRUE);
+		  \Civi::log()->debug('array passed as string %value', ['%value' => $this->value]);
+		}
                 return "'".mysqli_real_escape_string($db->connection, $this->value)."'";
 
             case 'sqlite':
