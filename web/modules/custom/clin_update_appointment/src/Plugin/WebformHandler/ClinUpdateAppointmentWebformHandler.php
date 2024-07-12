@@ -57,7 +57,7 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
       && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 1) {
 
         // Schedule reminder one week later
-        if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 14 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 15) {
+        if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 14 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 15 && $webform_submission_data['book_an_appointment'] != 1) {
           $results = \Civi\Api4\Activity::create(FALSE)
             ->addValue('parent_id', $webform_submission_data['aid']) // Original appointment ID
             ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
@@ -75,7 +75,7 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
           $results = \Civi\Api4\Activity::create(FALSE)
             ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
             ->addValue('activity_type_id', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
-            ->addValue('activity_date_time', $webform_submission_data['civicrm_1_activity_1_activity_activity_date_time'])
+            ->addValue('activity_date_time', $webform_submission_data['activity_date_time'])
             ->addValue('duration', $webform_submission_data['civicrm_1_activity_1_activity_duration'])
             ->addValue('status_id', $webform_submission_data['civicrm_1_activity_1_activity_status_id'])
             ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
