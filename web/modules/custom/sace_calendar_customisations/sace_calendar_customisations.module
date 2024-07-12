@@ -106,7 +106,7 @@ function sace_calendar_customisations_preprocess_views_view_fullcalendar(&$varia
       ->addJoin('OptionValue AS option_value', 'LEFT', ['activity_type_id', '=', 'option_value.value'])
       ->addWhere('option_value.option_group_id', '=', 2)
       ->addWhere('colour_hex', 'IS NOT NULL')
-      ->addWhere('colour_hex', '!=', 0)
+      ->addWhere('colour_hex', '!=', '000000')
       ->execute();
 
     $mapping = [];
