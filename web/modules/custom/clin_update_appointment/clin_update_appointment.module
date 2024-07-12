@@ -36,7 +36,6 @@ function clin_update_appointment_form_alter(&$form, \Drupal\Core\Form\FormStateI
         $parentActivity = $activities[0]['parent_activity'][0]; 
         $elements['activity_type_id']['#default_value'] = $parentActivity['activity_type_id'];
         $elements[CLIN_UPDATE_APP_DURATION]['#default_value'] = $parentActivity['duration'];
-        $elements[CLIN_UPDATE_APP_ASSIGNEE_ID]['#default_value'] = $parentActivity['assignee_contact_id'];
       }
     }
   }
