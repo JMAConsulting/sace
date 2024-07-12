@@ -775,12 +775,8 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          type: number_decimal
-          settings:
-            thousand_separator: ''
-            prefix_suffix: 1
-            decimal_separator: .
-            scale: '2'
+          type: number_unformatted
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1711,12 +1707,8 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          type: number_decimal
-          settings:
-            thousand_separator: ''
-            prefix_suffix: 1
-            decimal_separator: .
-            scale: '0'
+          type: number_unformatted
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2848,12 +2840,8 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          type: number_decimal
-          settings:
-            thousand_separator: ''
-            prefix_suffix: 1
-            decimal_separator: .
-            scale: '0'
+          type: number_unformatted
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
