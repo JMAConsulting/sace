@@ -87,6 +87,7 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
       if($webform_submission_data['book_an_appointment'] != '') {
         $results = \Civi\Api4\Activity::update(TRUE)
           ->addValue('status_id', 2)
+          ->addValue('activity_type_id', 346) // CLIN - Reminder activity type
           ->addWhere('id', '=', $webform_submission_data['aid'])
           ->execute();
       } 
