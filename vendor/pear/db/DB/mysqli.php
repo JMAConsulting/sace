@@ -899,6 +899,10 @@ class DB_mysqli extends DB_common
      */
     function escapeSimple($str)
     {
+	if (is_array($str)) {
+          \CRM_Core_Error::backtrace('mysqli backtrace', TRUE);
+  	  \Civi::log()->debug('array passed in as string %str', ['%str' => $str]);
+        }
         return @mysqli_real_escape_string($this->connection, $str);
     }
 
