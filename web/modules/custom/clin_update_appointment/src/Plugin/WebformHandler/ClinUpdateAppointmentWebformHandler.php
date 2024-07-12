@@ -53,8 +53,8 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
 
     if ($webform_submission_data) {
       // Do not create a new activty if appointment status is attended, scheduled, or completed
-      if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 10 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 2
-      && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 1) {
+      if(($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 10 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 2
+      && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 1) || $webform_submission_data['book_an_appointment'] == 1) {
 
         // Schedule reminder one week later
         if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 14 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 15 && $webform_submission_data['book_an_appointment'] != 1) {
@@ -84,8 +84,13 @@ class ClinUpdateAppointmentWebformHandler extends WebformHandlerBase {
             ->execute();
         }
       }
+      if($webform_submission_data['book_an_appointment'] != '') {
+        $results = \Civi\Api4\Activity::update(TRUE)
+          ->addValue('status_id', 2)
+          ->addWhere('id', '=', $webform_submission_data['aid'])
+          ->execute();
+      } 
     }
-
   }
 }
 
