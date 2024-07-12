@@ -185,6 +185,9 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
       ->addWhere('custom_group_id', '=', $cg['id'])
       ->execute();
     foreach ($customFields as $customField) {
+      if ($customField['label'] == 'Number of participants') {
+         $this->_columns[$cg['table_name']]['fields'][$customField['column_name']] = ['title' => $customField['label'], 'required' => 1, 'no_display' => 1];
+      }
       if (strstr($customField['label'], 'SUM_') && !strstr($customField['label'], 'EVAL_SUM_') && !strstr($customField['label'], 'STAFF_EVAL_SUM_')) {
         $q = preg_replace("/[^0-9]/", '', $customField['label']);
         $option = str_replace('SUM_' . $q, '', $customField['label']);
@@ -522,17 +525,17 @@ WHERE cg.is_active = 1 AND
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_21sa_796') {
        $CH2['Q211'] = ['title' => $this->_mapper[211]['label'], 'colspan' => 7];
       }
+      elseif ($key == 'civicrm_value_ped_presentat_54_sum_25sa_1268') {
+       $CH2['Q212'] = ['title' => $this->_mapper[212]['label'], 'colspan' => 7];
+      }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_22_1279') {
        $CH2['Q22'] = ['title' => $this->_mapper[22]['label'], 'colspan' => 4];
       }
       elseif ($key == 'civicrm_value_ped_presentat_54_staff_eval_sum_23_1280') {
        $CH2['Q23'] = ['title' => $this->_mapper[23]['label'], 'colspan' => 4];
       }
-      elseif ($key == 'civicrm_value_ped_presentat_54_sum_25sa_1268') {
-       $CH2['Q212'] = ['title' => $this->_mapper[212]['label'], 'colspan' => 4];
-      }
       elseif ($key == 'civicrm_value_ped_presentat_54_sum_24sa_805') {
-       $CH2['Q24'] = ['title' => $this->_mapper[24]['label'], 'colspan' => 4];
+       $CH2['Q24'] = ['title' => $this->_mapper[24]['label'], 'colspan' => 7];
       }
     }
 
@@ -555,7 +558,7 @@ WHERE cg.is_active = 1 AND
           $row['civicrm_contact_sc_presenter_' . $count] = '';
           $count++;
         }
-        $row['civicrm_activity_participant_count'] = count($contacts);
+        $row['civicrm_activity_participant_count'] = $row['civicrm_value_ped_presentat_54_number_of_students_per_session_24'];
       }
       else {
         $row['civicrm_contact_sc_presenter_2'] = $row['civicrm_contact_sc_presenter_3'] = $row['civicrm_contact_sc_presenter_4'] = '';
