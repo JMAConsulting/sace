@@ -377,17 +377,14 @@ foreach ($mapper as $Q => $cfID) {
           $flag = ($result["Booking_Information.Resources_Content"] == 1);
         break;
 
-        case 14:
-          $flag = (bool) ($result["Booking_Information.Facilitating_Program"] == 'InstitutionalSupport');
-          break;
-
-        case 15:
+	case 15:
         case 18:
         case 13:
           $flag = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
           break;
 
         case 16: 
+        case 14:
           $flag = (bool) $result['Booking_Information.Safer_Spaces_Content'];
           break;
 
