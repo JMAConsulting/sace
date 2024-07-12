@@ -154,7 +154,7 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
     $user_team_target_ids = [];
     foreach ($view->display_handler->getHandlers('argument') as $handler) {
       if ('taxonomy_term.tid' == $handler->getEntityType() . $handler->getField()) {
-        $tids = !empty($_GET['tid']) ? [$_GET['tid']] : explode(' ', $handler->getValue() ?? '');
+        $tids = (!empty($_GET['tid']) ? explode(',', $_GET['tid']) : (!empty($handler->getValue()) ? explode(' ', $handler->getValue()) : []));
         $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple($tids);
         if (!empty($terms)) {
           foreach ($terms as $term) {
