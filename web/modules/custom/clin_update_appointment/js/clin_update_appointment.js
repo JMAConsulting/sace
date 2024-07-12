@@ -105,6 +105,10 @@ jQuery(document).ready(function ($) {
       });
       $("#edit-book-an-appointment--wrapper").show();
       $("#edit-reschedule-a-new-appointment").hide();
+
+      $('label[for="edit-civicrm-1-activity-1-activity-status-id"]').text(
+        "Reminder Status"
+      );
     }
   }
   prepopulateAutocomplete();
@@ -116,12 +120,55 @@ jQuery(document).ready(function ($) {
         '#edit-civicrm-1-activity-1-activity-activity-type-id option[value="346"]'
       ).remove();
       $("#edit-civicrm-1-activity-1-activity-type-id").val("65");
+
+      // Show Reschedule Appointment header
+      $(".fieldset__legend")
+        .removeClass("fieldset__legend--invisible")
+        .addClass("fieldset__legend--visible")
+        .find(".visually-hidden")
+        .removeClass("visually-hidden");
     } else {
       $("#edit-reschedule-a-new-appointment").hide();
       $("#edit-civicrm-1-activity-1-activity-activity-type-id").append(
         '<option value="346">CLIN - Reminder</option>'
       );
       $("#edit-civicrm-1-activity-1-activity-activity-type-id").val("346");
+
+      $(".fieldset__legend")
+        .removeClass("fieldset__legend--visible")
+        .addClass("fieldset__legend--invisible")
+        .find(".fieldset__label") // Find visually hidden element
+        .addClass("visually-hidden");
     }
   });
+
+  // Function to update the first date and time to match the second date and time
+  function updateDateTime() {
+    var secondDate = $(
+      "#edit-civicrm-1-activity-1-activity-activity-date-time-date"
+    ).val();
+    var secondTime = $(
+      "#edit-civicrm-1-activity-1-activity-activity-date-time-time"
+    ).val();
+
+    secondTime = convertTimeFormat(secondTime);
+
+    $("#edit-activity-date-time-date").val(secondDate);
+    $("#edit-activity-date-time-time").val(secondTime);
+  }
+
+  // Match original datetime to new datetime
+  updateDateTime();
+
+  // Function to convert 24-hour format to 12-hour format
+  function convertTimeFormat(time24) {
+    var timeParts = time24.split(":");
+    var hours = parseInt(timeParts[0], 10);
+    var minutes = timeParts[1];
+    var period = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return hours + ":" + minutes + " " + period;
+  }
 });
