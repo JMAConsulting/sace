@@ -127,6 +127,10 @@ jQuery(document).ready(function ($) {
         .addClass("fieldset__legend--visible")
         .find(".visually-hidden")
         .removeClass("visually-hidden");
+
+        $("#edit-civicrm-1-activity-1-activity-type-id").val(
+          $("#edit-activity-type-id").val()
+        );
     } else {
       $("#edit-reschedule-a-new-appointment").hide();
       $("#edit-civicrm-1-activity-1-activity-activity-type-id").append(
