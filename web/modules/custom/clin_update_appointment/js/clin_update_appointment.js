@@ -119,7 +119,6 @@ jQuery(document).ready(function ($) {
       $(
         '#edit-civicrm-1-activity-1-activity-activity-type-id option[value="346"]'
       ).remove();
-      $("#edit-civicrm-1-activity-1-activity-type-id").val("65");
 
       // Show Reschedule Appointment header
       $(".fieldset__legend")
@@ -128,9 +127,9 @@ jQuery(document).ready(function ($) {
         .find(".visually-hidden")
         .removeClass("visually-hidden");
 
-        $("#edit-civicrm-1-activity-1-activity-type-id").val(
-          $("#edit-activity-type-id").val()
-        );
+      $("edit-civicrm-1-activity-1-activity-activity-type-id").val(
+        $("#edit-activity-type-id").val()
+      );
     } else {
       $("#edit-reschedule-a-new-appointment").hide();
       $("#edit-civicrm-1-activity-1-activity-activity-type-id").append(
