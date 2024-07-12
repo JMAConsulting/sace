@@ -174,4 +174,30 @@ jQuery(document).ready(function ($) {
     hours = hours ? hours : 12;
     return hours + ":" + minutes + " " + period;
   }
+
+  function freezeAppointmentType() {
+    var selectedStatus = $(
+      "#edit-civicrm-1-activity-1-activity-status-id"
+    ).val();
+
+    // Disable appointment type changes if status is "Attended" or "Scheduled"
+    if (selectedStatus === "10" || selectedStatus === "1") {
+      $("#edit-civicrm-1-activity-1-activity-activity-type-id").prop(
+        "disabled",
+        true
+      );
+    } else {
+      $("#edit-civicrm-1-activity-1-activity-activity-type-id").prop(
+        "disabled",
+        false
+      );
+    }
+  }
+
+  freezeAppointmentType();
+
+  // Check when the status changes
+  $("#edit-civicrm-1-activity-1-activity-status-id").change(function () {
+    freezeAppointmentType();
+  });
 });
