@@ -127,7 +127,7 @@ jQuery(document).ready(function ($) {
         .find(".visually-hidden")
         .removeClass("visually-hidden");
 
-      $("edit-civicrm-1-activity-1-activity-activity-type-id").val(
+      $("#edit-civicrm-1-activity-1-activity-activity-type-id").val(
         $("#edit-activity-type-id").val()
       );
     } else {
