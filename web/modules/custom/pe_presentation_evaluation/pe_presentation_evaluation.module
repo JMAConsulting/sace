@@ -92,6 +92,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $mapping = \Civi\Api4\OptionValue::get(FALSE)
       ->addSelect('value', 'label')
       ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
+      ->addWhere('is_active', '=', TRUE)
       ->execute();
     $mapper = [];
     foreach ($mapping as $value) {
@@ -145,7 +146,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
           $elements[$key]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
           break;
 
-	case 17:
+        case 17:
           //Hide Q17 if Facilitating Program is not Institutional Support
           $elements[$key]['#access'] = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
           break;
