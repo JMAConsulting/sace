@@ -69,6 +69,12 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
           $newActivity['activity_date_time'] = $webform_submission_data['additional_appointment_' . $key];
           // Update End date custom field based on new start date and duration.
           $newActivity['Booking_Information.End_Date'] = date('Y-m-d H:i:s', strtotime('+' . $activity['duration'] . 'minutes', strtotime($newActivity['activity_date_time'])));
+          // If have an empty array value then remove it from the newActivity array to prevent errors on saving when passing array to string.
+          foreach ($newActivity as $field => $value) {
+            if (is_array($value) && empty($value)) {
+              unset($newActivity[$field]);
+            }
+          }
           $newActivityRecord = Activity::create(FALSE)
             ->setValues($newActivity)
             ->execute()
@@ -91,7 +97,7 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
                   'assignee_contact_id' => $contact['contact_id'],
                   'role_id' => $activityRole['role_id'],
                 ])
-              ->execute();
+                ->execute();
             }
           }
         }

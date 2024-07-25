@@ -135,8 +135,9 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
 
           case 13:
           case 18:
+          case 15:
             //Hide Q13, Q18 if Audience not in list
-            $elements[$key]['#access'] = !empty(array_intersect($result["Booking_Information.Audience"], ["Professionals", "Service Providers", "Educators"]));
+            $elements[$key]['#access'] = strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
             break;
 
           case 14:
@@ -145,11 +146,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
             $elements[$key]['#access'] = (bool) $result['Booking_Information.Safer_Spaces_Content'];
             break;
 
-          case 15:
-            $elements[$key]['#access'] = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
-            break;
-
-          case 17:
+	        case 17:
             //Hide Q17 if Facilitating Program is not Institutional Support
             $elements[$key]['#access'] = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
             break;

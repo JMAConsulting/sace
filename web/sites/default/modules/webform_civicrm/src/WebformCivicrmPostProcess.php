@@ -167,6 +167,9 @@ class WebformCivicrmPostProcess extends WebformCivicrmBase implements WebformCiv
       if ($element && $element['#type'] == 'civicrm_options' && is_array($val) && count(array_filter(array_keys($val), 'is_string')) > 0) {
         $data[$field_key] = array_values($val);
       }
+      if (empty($data[$field_key]) && !empty($_POST[$field_key])) {
+         $data[$field_key] = $_POST[$field_key];
+      }
     }
     $webform_submission->setData($data);
   }
