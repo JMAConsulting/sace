@@ -19,6 +19,8 @@ if (firstFormRow) {
 	Booking Reference ID: ${bookingID}
 	</span>
 	`;
-	pageTitleBlock.classList.add("flex-title");
-	pageTitleBlock.appendChild(bookingIDField);
+  if (pageTitleBlock) {
+    pageTitleBlock.classList.add("flex-title");
+    pageTitleBlock.appendChild(bookingIDField);
+  }
 }
