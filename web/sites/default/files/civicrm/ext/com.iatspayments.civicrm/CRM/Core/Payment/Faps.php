@@ -23,6 +23,7 @@
  */
 
 use Civi\Payment\Exception\PaymentProcessorException;
+use CRM_Iats_ExtensionUtil as E;
 
 class CRM_Core_Payment_Faps extends CRM_Core_Payment {
 
