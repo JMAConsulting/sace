@@ -37,7 +37,7 @@ SET FOREIGN_KEY_CHECKS=1;
 CREATE TABLE `civicrm_locked_note` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique LockedNote ID',
   `note_id` int unsigned COMMENT 'FK to Note',
-  `is_locked` boolean COMMENT 'Is the note locked for editing?',
+  `is_locked` TINYINT(1) NOT NULL COMMENT 'Is the note locked for editing?',
   PRIMARY KEY (`id`),
   CONSTRAINT FK_civicrm_locked_note_note_id FOREIGN KEY (`note_id`) REFERENCES `civicrm_note`(`id`) ON DELETE CASCADE)
 ENGINE=InnoDB;

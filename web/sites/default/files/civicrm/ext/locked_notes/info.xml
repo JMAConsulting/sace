@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <extension key="locked_notes" type="module">
   <file>locked_notes</file>
-  <name>locked_notes</name>
+  <name>Locked Notes</name>
   <description>Add locking functionality to notes</description>
   <license>AGPL-3.0</license>
   <maintainer>
