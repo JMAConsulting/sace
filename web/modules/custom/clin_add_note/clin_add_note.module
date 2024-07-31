@@ -30,15 +30,25 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
        return; 
       }
       $note = \Civi\Api4\Note::get(FALSE)
-      ->addSelect('subject')
-      ->addWhere('id', '=', $nid)
-      ->setLimit(1)
-      ->execute()
-      ->first();
+        ->addSelect('subject')
+        ->addWhere('id', '=', $nid)
+        ->setLimit(1)
+        ->execute()
+        ->first();
 
-      $variables['title'] = [
-        '#markup' => 'Add Note to '.$note['subject'],
-      ];
+      $edit = \Drupal::request()->query->get('action') ?? 0;
+
+      if(!empty($edit) && $edit == 'edit') {
+        $variables['title'] = [
+          '#markup' => 'Edit '.$note['subject'],
+        ];
+      }
+      
+      else {
+        $variables['title'] = [
+          '#markup' => 'Add Note to '.$note['subject'],
+        ];
+      }
       return;
     }
 
@@ -56,6 +66,41 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
   }
 }
 
+function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_clin_adult_intake_data_add_form") {
+    $nid = \Drupal::request()->query->get('nid') ?? 0;
+    $edit = \Drupal::request()->query->get('action') ?? 0;
+    if (!empty($edit) && $edit == 'edit') {
+      if (!empty($nid) && is_numeric($nid)) {
+        \Drupal::service('civicrm')->initialize();
+        $note = \Civi\Api4\Note::get(FALSE)
+          ->addSelect('*', 'locked_note.is_locked')
+          ->addJoin('LockedNote AS locked_note', 'LEFT', ['id', '=', 'locked_note.note_id'])
+          ->addWhere('id', '=', $nid)
+          ->execute()
+          ->first();
+        
+        // If note is not locked
+        if($note['locked_note.is_locked'] === false) {
+          // Get webform form elements
+          $elements = WebformFormHelper::flattenElements($form);
+          if (!empty($elements)) {
+            $elements['subject']['#default_value'] = $note['subject'];
+            $elements['details']['#default_value'] = $note['note'];
+            //$elements['upload_attachment']['#default_value'] = $note;
+          }
+        }
+
+        else {
+          \Drupal::messenger()->addError(t('This note is locked for editing.'));
+          $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
+          throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
+          return;
+        }
+      }
+    }
+  }
+}
 
 function clin_add_note_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
   $civicrm_entity_info['civicrm_entity_file'] = [
