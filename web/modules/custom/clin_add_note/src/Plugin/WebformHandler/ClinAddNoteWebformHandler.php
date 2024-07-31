@@ -58,31 +58,47 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
     if ($webform_submission_data) {
       if($webform_submission_data['aid'] != '') {
         $note = \Civi\Api4\Note::create(FALSE)
-        ->addValue('entity_table', 'civicrm_activity')
-        ->addValue('contact_id', 'user_contact_id')
-        ->addValue('note', $webform_submission_data['details'])
-        ->addValue('entity_id', $webform_submission_data['aid'])
-        ->addValue('subject', $webform_submission_data['subject'])
-        ->execute();
+          ->addValue('entity_table', 'civicrm_activity')
+          ->addValue('contact_id', 'user_contact_id')
+          ->addValue('note', $webform_submission_data['details'])
+          ->addValue('entity_id', $webform_submission_data['aid'])
+          ->addValue('subject', $webform_submission_data['subject'])
+          ->execute()
+          ->first();
+
+        if(isset($webform_submission_data['is_locked']) && $webform_submission_data['is_locked']) {
+          \Civi\Api4\LockedNote::create(FALSE)
+            ->addValue('note_id', $note['id'])
+            ->addValue('is_locked', TRUE)
+            ->execute();
+        }
+        else {
+          \Civi\Api4\LockedNote::create(FALSE)
+            ->addValue('note_id', $note['id'])
+            ->addValue('is_locked', FALSE)
+            ->execute();
+        }
       }
       elseif($webform_submission_data['nid'] != '') {
         $note = \Civi\Api4\Note::create(FALSE)
-        ->addValue('entity_table', 'civicrm_note')
-        ->addValue('contact_id', 'user_contact_id')
-        ->addValue('note', $webform_submission_data['details'])
-        ->addValue('entity_id', $webform_submission_data['nid'])
-        ->addValue('subject', $webform_submission_data['subject'])
-        ->execute();
+          ->addValue('entity_table', 'civicrm_note')
+          ->addValue('contact_id', 'user_contact_id')
+          ->addValue('note', $webform_submission_data['details'])
+          ->addValue('entity_id', $webform_submission_data['nid'])
+          ->addValue('subject', $webform_submission_data['subject'])
+          ->execute()
+          ->first();
       }
 
       elseif($webform_submission_data['cid'] != '') {
         $note = \Civi\Api4\Note::create(FALSE)
-        ->addValue('entity_table', 'civicrm_contact')
-        ->addValue('contact_id', 'user_contact_id')
-        ->addValue('note', $webform_submission_data['details'])
-        ->addValue('entity_id', $webform_submission_data['cid'])
-        ->addValue('subject', $webform_submission_data['subject'])
-        ->execute();
+          ->addValue('entity_table', 'civicrm_contact')
+          ->addValue('contact_id', 'user_contact_id')
+          ->addValue('note', $webform_submission_data['details'])
+          ->addValue('entity_id', $webform_submission_data['cid'])
+          ->addValue('subject', $webform_submission_data['subject'])
+          ->execute()
+          ->first();
       }
 
       if(isset($webform_submission_data['upload_attachment'])) {
@@ -96,12 +112,13 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
               ->addValue('file_type_id', 1)
               ->addValue('uri', $file_uri)
               ->addValue('mime_type', $mime_type)
-              ->execute();
+              ->execute()
+              ->first();
 
             $results = \Civi\Api4\EntityFile::create(FALSE)
               ->addValue('entity_table', 'civicrm_note')
-              ->addValue('entity_id', $note[0]['id'])
-              ->addValue('file_id', $attachment[0]['id'])
+              ->addValue('entity_id', $note['id'])
+              ->addValue('file_id', $attachment['id'])
               ->execute();
           }
         }

@@ -69,4 +69,15 @@ function clin_add_note_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
       'delete' => [],
     ],
   ];
+  $civicrm_entity_info['civicrm_locked_note'] = [
+    'civicrm entity label' => ts('Locked Note'),
+    'civicrm entity name' => 'locked_note',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
 }

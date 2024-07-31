@@ -160,4 +160,22 @@ function clin_add_note_views_data_alter(&$data) {
       ['field' => 'entity_table', 'value' => 'civicrm_note', 'numeric' => FALSE],
     ],
   ];
+
+  $data['civicrm_locked_note']['table']['group'] = t('CiviCRM Locked Note');
+
+  // Define a field in the civicrm_locked_note table
+  $data['civicrm_locked_note']['is_locked'] = [
+    'title' => t('Is Locked'),
+    'help' => t('Is this note locked for editing?'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+  ];
+
+  // Define a join to the civicrm_note table
+  $data['civicrm_locked_note']['table']['join']['civicrm_note'] = [
+    'left_field' => 'id',
+    'field' => 'note_id',
+  ];
 }
