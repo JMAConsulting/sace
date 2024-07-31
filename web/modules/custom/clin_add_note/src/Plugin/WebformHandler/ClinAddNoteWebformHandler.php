@@ -92,11 +92,11 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
             ->addWhere('id', '=', $webform_submission_data['nid'])
             ->execute()
             ->first();
-
-          if(isset($webform_submission_data['is_locked']) && $webform_submission_data['is_locked']) {
-            \Civi\Api4\LockedNote::create(FALSE)
-              ->addValue('note_id', $note['id'])
+          
+          if($webform_submission_data['is_locked'] == 1) {
+            \Civi\Api4\LockedNote::update(FALSE)
               ->addValue('is_locked', TRUE)
+              ->addWhere('note_id', '=', $note['id'])
               ->execute();
           }
         }
