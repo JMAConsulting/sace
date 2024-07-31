@@ -2,6 +2,9 @@
 
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Entity\Webform;
+use Drupal\file\Entity\File;
+use Drupal\file\FileUsage\FileUsageInterface;
+use Drupal\Core\File\FileSystemInterface;
 
 function clin_add_note_preprocess_page_title(&$variables, $hook) {
   $current_path = \Drupal::service('path.current')->getPath();
@@ -16,7 +19,7 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
       if (empty($nid) || !is_numeric($nid)) {
         $cid = \Drupal::request()->query->get('cid') ?? 0;
         if (empty($cid) || !is_numeric($cid)) {
-		return;
+		      return;
         }
         $client = \Civi\Api4\Contact::get(FALSE)
           ->addSelect('display_name')
@@ -67,7 +70,7 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
 }
 
 function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_clin_adult_intake_data_add_form") {
+  if ($form_id == "webform_submission_add_note_to_appointment_add_form") {
     $nid = \Drupal::request()->query->get('nid') ?? 0;
     $edit = \Drupal::request()->query->get('action') ?? 0;
     if (!empty($edit) && $edit == 'edit') {
@@ -82,12 +85,33 @@ function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
         
         // If note is not locked
         if($note['locked_note.is_locked'] === false) {
-          // Get webform form elements
+
           $elements = WebformFormHelper::flattenElements($form);
+
+          $attachments = \Civi\Api4\EntityFile::get(FALSE)
+            ->addSelect('file.*')
+            ->addJoin('File AS file', 'LEFT', ['file_id', '=', 'file.id'])
+            ->addWhere('entity_table', '=', 'civicrm_note')
+            ->addWhere('entity_id', '=', $note['id'])
+            ->execute();
+
+            $default_files = [];
+
+          foreach ($attachments as $attachment) {
+            if (isset($attachment['file.uri'])) {
+              // Get file ID from URI
+              $file_id = get_file_id_from_uri($attachment['file.uri']);
+
+              if ($file_id) {
+                $default_files[] = (string) $file_id; // Add file ID as string to the array
+              }
+            }
+          }
+
           if (!empty($elements)) {
             $elements['subject']['#default_value'] = $note['subject'];
             $elements['details']['#default_value'] = $note['note'];
-            //$elements['upload_attachment']['#default_value'] = $note;
+            $elements['upload_attachment']['#default_value'] = $default_files;
           }
         }
 
@@ -125,4 +149,9 @@ function clin_add_note_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
       'delete' => [],
     ],
   ];
+}
+
+function get_file_id_from_uri($uri) {
+  $file = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['uri' => $uri]);
+  return $file ? reset($file)->id() : null;
 }
