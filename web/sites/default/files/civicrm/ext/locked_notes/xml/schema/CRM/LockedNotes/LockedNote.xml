@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/LockedNotes</base>
+  <class>LockedNote</class>
+  <name>civicrm_locked_note</name>
+  <comment>FIXME</comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique LockedNote ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>note_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Note</comment>
+  </field>
+  <foreignKey>
+    <name>note_id</name>
+    <table>civicrm_note</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>is_locked</name>
+    <type>boolean</type>
+    <comment>Is the note locked for editing?</comment>
+  </field>
+
+</table>
