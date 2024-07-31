@@ -85,14 +85,20 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
       }
       // Appending or editing a note
       elseif($webform_submission_data['nid'] != '') {
-        if($webform_submission_data['action'] == 'edit')
-        {
+        if($webform_submission_data['action'] == 'edit') {
           $note = \Civi\Api4\Note::update(TRUE)
             ->addValue('note', $webform_submission_data['details'])
             ->addValue('subject', $webform_submission_data['subject'])
             ->addWhere('id', '=', $webform_submission_data['nid'])
             ->execute()
             ->first();
+
+          if(isset($webform_submission_data['is_locked']) && $webform_submission_data['is_locked']) {
+            \Civi\Api4\LockedNote::create(FALSE)
+              ->addValue('note_id', $note['id'])
+              ->addValue('is_locked', TRUE)
+              ->execute();
+          }
         }
         else {
           $note = \Civi\Api4\Note::create(FALSE)
