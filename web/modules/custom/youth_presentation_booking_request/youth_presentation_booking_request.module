@@ -1,0 +1,33 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function youth_presentation_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  //attach js
+  if ($form_id == "webform_submission_public_education_booking_request_add_form") {
+    $form['#attached']['library'][] = 'youth_presentation_booking_request/youth_presentation_booking_request';
+    $elements = WebformFormHelper::flattenElements($form);
+      $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent', 'CustomUnsure'];
+      $selectedOptions = $bt == 55 ? $selectedOptions : array_merge($selectedOptions, ['HealthCareSystemsandSexualViolence', 'BystanderIntervention', 'ChildSexualAbuse', 'CreatingSaferSpacesandRespondingtoSexualViolence', 'SACEandtheSPEAKProgram', 'SupportiveResponsestoSexualViolence', 'TechnologyFacilitatedSexualViolence']);
+      foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
+        if (!in_array($key, $selectedOptions)) {
+          unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
+        }
+      }
+    $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = 'Youth';
+
+      $elements['civicrm_3_contact_1_contact_existing']['#title'] = 'Your School';
+      $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup'] = str_replace('organization', 'school', $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup']);
+      $elements['civicrm_3_contact_1_contact_organization_name']['#title'] = 'School Name';
+      $elements['civicrm_3_contact_1_email_email']['#description']['#markup'] = str_replace('organization', 'school', $elements['civicrm_3_contact_1_email_email']['#description']['#markup']);
+      $elements['civicrm_3_contact_1_fieldset_fieldset']['#title'] = 'New School';
+      $elements['civicrm_3_contact_1_contact_contact_sub_type']['#default_value'] = $elements['civicrm_3_contact_1_contact_contact_sub_type']['#options'];
+      unset($elements['civicrm_1_activity_1_cg2_custom_88']['#options']['Online Course']);
+  }
+}
