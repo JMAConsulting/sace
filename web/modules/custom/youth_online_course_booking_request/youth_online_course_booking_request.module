@@ -1,0 +1,30 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+require_once 'youth_online_course_booking_request.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function youth_online_course_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_youthonlinecourse_bookingrequest_add_form") {
+    //attach js
+    $form['#attached']['library'][] = 'youth_online_course_booking_request/youth_online_course_booking_request';
+    //pass constants to js
+    $form['#attached']['drupalSettings']['youth_online_course_booking_request']['optional_addons'] = YOUTH_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS;
+    $form['#attached']['drupalSettings']['youth_online_course_booking_request']['high_school_checkbox'] = YOUTH_ONLINE_COURSE_BOOKING_HIGH_SCHOOL_CHECKBOX;
+    $form['#attached']['drupalSettings']['youth_online_course_booking_request']['optional_addons_select'] = YOUTH_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS_SELECT;
+
+    //Get webform elements
+    $elements = WebformFormHelper::flattenElements($form);
+    //Youth or Adult
+    $elements[YOUTH_ONLINE_COURSE_BOOKING_YOUTH_OR_ADULT]['#default_value'] = "Youth";
+    //Grades and Ages remove Adults option
+    unset($elements[YOUTH_ONLINE_COURSE_BOOKING_GRADES_AND_AGES]['#options']['Adults (ages 18+)']);
+
+  }
+}
