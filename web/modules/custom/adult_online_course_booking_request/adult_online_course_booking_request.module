@@ -1,0 +1,32 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+require_once 'adult_online_course_booking_request.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function adult_online_course_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_adultonlinecourse_bookingrequest_add_form") {
+    //attach js
+    $form['#attached']['library'][] = 'adult_online_course_booking_request/adult_online_course_booking_request';
+    $form['#attached']['drupalSettings']['adult_online_course_booking_request']['youth_or_adult'] = ADULT_ONLINE_COURSE_BOOKING_YOUTH_OR_ADULT;
+
+    //Get webform elements
+    $elements = WebformFormHelper::flattenElements($form);
+
+    $elements[ADULT_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'] = array_intersect($elements[ADULT_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'], [
+      'Information for Partners & Supporters' => 'Information for Partners & Supporters',
+      'Recognizing & Responding to Sexual Violence' => 'Recognizing & Responding to Sexual Violence',
+      'Racism & Sexual Violence' => 'Racism & Sexual Violence',
+      'Sexual Violence & the 2SLGBTQ+ Community' => 'Sexual Violence & the 2SLGBTQ+ Community',
+    ]);
+
+    //Youth or Adult
+    $elements[ADULT_ONLINE_COURSE_BOOKING_YOUTH_OR_ADULT]['#default_value'] = "Adult";
+  }
+}
