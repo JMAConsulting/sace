@@ -41,13 +41,13 @@ elements: |-
       '#type': processed_text
       '#admin_title': 'Youth Presentation Request Button'
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=55&amp;pop=Youth">Youth Presentation</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/youth-presentation-booking-request">Youth Presentation</a></div>
       '#format': html
     adult_presentation_button:
       '#type': processed_text
       '#admin_title': 'Adult Presentation Request Button'
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=59&amp;pop=Adult">Adult Presentation</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/adult-presentation-booking-request">Adult Presentation</a></div>
       '#format': html
     wiseguyz_presentation_button:
       '#type': processed_text
@@ -57,7 +57,7 @@ elements: |-
       '#access_view_roles':
         - authenticated
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=201">WiseGuyz</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/wiseguyz-booking-request">WiseGuyz</a></div>
       '#format': html
   online_course_booking_header:
     '#type': processed_text
@@ -78,7 +78,7 @@ elements: |-
       '#flex': 2
       '#admin_title': 'Youth Online Course Booking Request Button'
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped_online_course_request?booking_type=196">Youth Online Course</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/youth-online-course-booking-request">Youth Online Course</a></div>
       '#format': html
     adult_online_course_button:
       '#type': processed_text
@@ -89,7 +89,7 @@ elements: |-
       '#access_view_roles':
         - authenticated
       '#text': |
-        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped_online_course_request?booking_type=199">Adult Online Course</a></div>
+        <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/adult-online-course-booking-request">Adult Online Course</a></div>
       '#format': html
   processed_text:
     '#type': processed_text
@@ -105,7 +105,7 @@ elements: |-
 
       <p>SACE offers consultation provision on a range of topics to support organizations undertaking their own efforts to address sexual violence in our community.</p>
 
-      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=204">Institutional Support</a></div>
+      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/institutional-support-services-request">Institutional Support</a></div>
 
       <p>&nbsp;</p>
     '#format': html
@@ -121,7 +121,7 @@ elements: |-
 
       <p>We offer a range of services to support community events and other types of public engagements, including community tabling/booths, speaking engagements, discussion panels, and media interviews.</p>
 
-      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/form/ped-booking-request?booking_type=203">Community Engagement</a></div>
+      <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/community-engagement-services-request">Community Engagement</a></div>
     '#format': html
   actions:
     '#type': webform_actions
