@@ -21,6 +21,14 @@ function youth_online_course_booking_request_form_alter(&$form, \Drupal\Core\For
 
     //Get webform elements
     $elements = WebformFormHelper::flattenElements($form);
+
+    $elements[YOUTH_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'] = array_intersect($elements[YOUTH_ONLINE_COURSE_BOOKING_ONLINE_COURSES]['#options'], [
+      'Ask First: Sexual Harassment ' => 'Ask First: Sexual Harassment',
+      'Ask First: Sexual Assault & Consent ' => 'Ask First: Sexual Assault & Consent',
+      'Ask First: Non-Consensual Photo Sharing ' => 'Ask First: Non-Consensual Photo Sharing',
+      'Consent: Ask Me About It!' => 'Consent: Ask Me About It!',
+    ]);
+
     //Youth or Adult
     $elements[YOUTH_ONLINE_COURSE_BOOKING_YOUTH_OR_ADULT]['#default_value'] = "Youth";
     //Grades and Ages remove Adults option
