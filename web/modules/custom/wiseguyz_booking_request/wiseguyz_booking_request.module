@@ -1,0 +1,16 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function wiseguyz_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  //attach js
+  if ($form_id == "webform_submission_wiseguyz_booking_request_add_form") {
+    $form['#attached']['library'][] = 'wiseguyz_booking_request/wiseguyz_booking_request';
+  }
+}
