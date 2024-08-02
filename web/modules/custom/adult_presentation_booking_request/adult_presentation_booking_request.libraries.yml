@@ -1,0 +1,4 @@
+adult_presentation_booking_request:
+  version: 1.0
+  js:
+    js/custom.js: {}
