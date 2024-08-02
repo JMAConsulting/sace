@@ -340,10 +340,6 @@ elements: |-
       '#type': textfield
       '#title': 'Preferred start and end time(s)'
       '#description': 'If you&#39;re not sure, that&#39;s okay. You can enter morning or afternoon, or simply leave this blank and we&#39;ll confirm with you later.'
-      '#states':
-        invisible:
-          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '204'
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_129
       '#extra':
@@ -358,6 +354,18 @@ elements: |-
       cols: '60'
       rows: '4'
     '#form_key': civicrm_1_activity_1_cg2_custom_126
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_1_activity_1_activity_subject:
+    '#type': webform_computed_twig
+    '#title': 'Booking Reference'
+    '#display_on': view
+    '#template': "{{ (data.\tcivicrm_2_contact_1_contact_organization_name)|upper }}{{ (data.civicrm_3_contact_1_contact_organization_name)|upper }}"
+    '#store': true
+    '#ajax': true
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_activity_subject
+    '#extra':
+      width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
   civicrm_4_contact_1_fieldset_fieldset:
     '#type': fieldset

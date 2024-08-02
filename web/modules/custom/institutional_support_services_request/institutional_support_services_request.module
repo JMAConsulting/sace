@@ -12,16 +12,5 @@ function institutional_support_services_request_form_alter(&$form, \Drupal\Core\
   //attach js
   if ($form_id == "webform_submission_institutional_support_request_add_form") {
     $form['#attached']['library'][] = 'institutional_support_services_request/institutional_support_services_request';
-    $elements = WebformFormHelper::flattenElements($form);
-
-    $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent', 'CustomUnsure'];
-    $selectedOptions = $bt == 55 ? $selectedOptions : array_merge($selectedOptions, ['HealthCareSystemsandSexualViolence', 'BystanderIntervention', 'ChildSexualAbuse', 'CreatingSaferSpacesandRespondingtoSexualViolence', 'SACEandtheSPEAKProgram', 'SupportiveResponsestoSexualViolence', 'TechnologyFacilitatedSexualViolence']);
-    foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
-      if (!in_array($key, $selectedOptions)) {
-        unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
-      }
-    }
-
-    $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = 'Adult';
   }
 }
