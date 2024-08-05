@@ -39,7 +39,7 @@ elements: |-
       invisible:
         '':
           '': ''
-    '#default_value': '[current-page:query:booking_type]'
+    '#default_value': 55
     '#extra':
       aslist: 1
       multiple: 0
