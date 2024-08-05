@@ -39,7 +39,7 @@ elements: |-
     '#civicrm_live_options': 0
     '#options':
       204: Consultation
-    '#default_value': '[current-page:query:booking_type]'
+    '#default_value': 204
     '#extra':
       aslist: 1
       multiple: 0
