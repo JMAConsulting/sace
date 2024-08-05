@@ -39,7 +39,7 @@ elements: |-
     '#civicrm_live_options': 0
     '#options':
       203: 'Community Engagement'
-    '#default_value': '[current-page:query:booking_type]'
+    '#default_value': 203
     '#extra':
       aslist: 1
       multiple: 0
