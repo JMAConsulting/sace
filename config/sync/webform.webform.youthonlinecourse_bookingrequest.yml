@@ -474,7 +474,7 @@ elements: |-
     '#civicrm_live_options': 0
     '#options':
       196: 'PED - Youth Online Course Booking'
-    '#default_value': '[current-page:query:booking_type]'
+    '#default_value': 196
     '#wrapper_attributes':
       style: 'display:none;'
     '#extra':
