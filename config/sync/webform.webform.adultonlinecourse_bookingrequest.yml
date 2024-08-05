@@ -394,7 +394,7 @@ elements: |-
     '#civicrm_live_options': 0
     '#options':
       199: 'Adult Online Course Booking Request'
-    '#default_value': '[current-page:query:booking_type]'
+    '#default_value': 199
     '#wrapper_attributes':
       style: 'display:none;'
     '#extra':
