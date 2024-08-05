@@ -33,7 +33,7 @@ elements: |-
     '#civicrm_live_options': 0
     '#options':
       201: WiseGuyz
-    '#default_value': '[current-page:query:booking_type]'
+    '#default_value': 201
     '#extra':
       aslist: 1
       multiple: 0
