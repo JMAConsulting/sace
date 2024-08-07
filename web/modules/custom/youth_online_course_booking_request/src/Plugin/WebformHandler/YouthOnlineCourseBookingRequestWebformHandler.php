@@ -55,7 +55,7 @@ class YouthOnlineCourseBookingRequestWebformHandler extends WebformHandlerBase {
   public function preSave(WebformSubmissionInterface $webform_submission) {
     $webform_submission_data = $webform_submission->getData();
     // If we are dealing with an Adult Online Course then set the field to be None
-    if ($webform_submission_data && $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'] ==YOUTH_ONLINE_COURSE_BOOKING_ADULT_ACTIVITY) {
+    if ($webform_submission_data) {
       $webform_submission_data[YOUTH_ONLINE_COURSE_BOOKING_OPTIONAL_ADDONS] = ['None'];
       $webform_submission->setData($webform_submission_data);
     }
