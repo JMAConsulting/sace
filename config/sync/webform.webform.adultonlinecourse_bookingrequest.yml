@@ -649,6 +649,7 @@ handlers:
       civicrm_1_contact_1_contact_preferred_communication_method: create_civicrm_webform_element
       civicrm_1_contact_1_contact_privacy: 0
       civicrm_1_contact_1_contact_preferred_language: 0
+      civicrm_1_contact_1_contact_communication_style_id: 0
       civicrm_1_contact_1_contact_image_url: 0
       civicrm_1_contact_1_contact_contact_id: 0
       civicrm_1_contact_1_contact_user_id: 0
@@ -665,6 +666,7 @@ handlers:
       civicrm_1_contact_1_cg5_custom_93: 0
       civicrm_1_contact_1_cg5_custom_410: 0
       civicrm_1_contact_1_cg5_custom_411: 0
+      civicrm_1_contact_1_cg5_custom_1288: 0
       contact_1_number_of_cg12: '0'
       contact_1_number_of_other: '0'
       contact_1_number_of_address: '0'
@@ -681,6 +683,7 @@ handlers:
       contact_1_number_of_website: '0'
       contact_1_number_of_im: '0'
       contact_1_number_of_cg30: '0'
+      contact_1_number_of_cg71: '0'
       2_contact_type: organization
       2_webform_label: 'Your School or Organization'
       civicrm_2_contact_1_contact_contact_sub_type:
@@ -693,6 +696,7 @@ handlers:
       civicrm_2_contact_1_contact_preferred_communication_method: 0
       civicrm_2_contact_1_contact_privacy: 0
       civicrm_2_contact_1_contact_preferred_language: 0
+      civicrm_2_contact_1_contact_communication_style_id: 0
       civicrm_2_contact_1_contact_image_url: 0
       civicrm_2_contact_1_contact_contact_id: 0
       civicrm_2_contact_1_contact_user_id: 0
@@ -728,15 +732,16 @@ handlers:
       civicrm_2_contact_1_address_master_id: 0
       civicrm_2_contact_1_address_location_type_id: '3'
       civicrm_2_contact_1_address_is_primary: '1'
+      civicrm_2_contact_1_address_custom_1315: 0
       contact_2_number_of_phone: '1'
       civicrm_2_contact_1_phone_phone: create_civicrm_webform_element
       civicrm_2_contact_1_phone_phone_ext: 0
       civicrm_2_contact_1_phone_phone_type_id: '1'
-      civicrm_2_contact_1_phone_location_type_id: '1'
+      civicrm_2_contact_1_phone_location_type_id: '3'
       civicrm_2_contact_1_phone_is_primary: '1'
       contact_2_number_of_email: '1'
       civicrm_2_contact_1_email_email: create_civicrm_webform_element
-      civicrm_2_contact_1_email_location_type_id: '1'
+      civicrm_2_contact_1_email_location_type_id: '3'
       civicrm_2_contact_1_email_is_primary: '1'
       contact_2_number_of_website: '0'
       contact_2_number_of_im: '0'
@@ -752,6 +757,7 @@ handlers:
       civicrm_2_contact_1_relationship_custom_318: 0
       civicrm_2_contact_1_relationship_custom_319: 0
       contact_2_number_of_cg30: '0'
+      contact_2_number_of_cg71: '0'
       3_contact_type: individual
       3_webform_label: Unassigned
       civicrm_3_contact_1_contact_contact_sub_type:
@@ -769,6 +775,7 @@ handlers:
       civicrm_3_contact_1_contact_preferred_communication_method: 0
       civicrm_3_contact_1_contact_privacy: 0
       civicrm_3_contact_1_contact_preferred_language: 0
+      civicrm_3_contact_1_contact_communication_style_id: 0
       civicrm_3_contact_1_contact_image_url: 0
       civicrm_3_contact_1_contact_contact_id: 0
       civicrm_3_contact_1_contact_user_id: 0
@@ -789,6 +796,7 @@ handlers:
       contact_3_number_of_im: '0'
       contact_3_number_of_relationship: '0'
       contact_3_number_of_cg30: '0'
+      contact_3_number_of_cg71: '0'
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 1
@@ -800,6 +808,7 @@ handlers:
         entire_result: 0
         view_link: 0
         edit_link: 0
+        view_link_secure: 0
         update_existing: 0
       civicrm_1_activity_1_activity_activity_type_id: create_civicrm_webform_element
       civicrm_1_activity_1_activity_target_contact_id:
@@ -822,13 +831,13 @@ handlers:
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
       activity_1_settings_dynamic_custom_cg2: 0
-      civicrm_1_activity_1_cg2_custom_332: 0
       civicrm_1_activity_1_cg2_custom_333: 0
+      civicrm_1_activity_1_cg2_custom_332: 0
       civicrm_1_activity_1_cg2_custom_334: 0
       civicrm_1_activity_1_cg2_custom_331: 0
       civicrm_1_activity_1_cg2_custom_330: 0
       civicrm_1_activity_1_cg2_custom_40: 0
-      civicrm_1_activity_1_cg2_custom_88: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_88: 0
       civicrm_1_activity_1_cg2_custom_126: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_125: 0
       civicrm_1_activity_1_cg2_custom_124: 0
@@ -839,7 +848,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_119: 0
       civicrm_1_activity_1_cg2_custom_90: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_43: 0
-      civicrm_1_activity_1_cg2_custom_25: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_25: 0
       civicrm_1_activity_1_cg2_custom_34: 0
       civicrm_1_activity_1_cg2_custom_35: 0
       civicrm_1_activity_1_cg2_custom_37: 0
@@ -849,13 +858,13 @@ handlers:
       civicrm_1_activity_1_cg2_custom_129: 0
       civicrm_1_activity_1_cg2_custom_341: 0
       civicrm_1_activity_1_cg2_custom_655: 0
-      civicrm_1_activity_1_cg2_custom_656: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_656: 0
       civicrm_1_activity_1_cg2_custom_657: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_658: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_659: 0
       civicrm_1_activity_1_cg2_custom_660: 0
       civicrm_1_activity_1_cg2_custom_661: 0
-      civicrm_1_activity_1_cg2_custom_662: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_662: 0
       civicrm_1_activity_1_cg2_custom_697: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_698: 0
       civicrm_1_activity_1_cg2_custom_815: create_civicrm_webform_element
@@ -864,8 +873,6 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
       civicrm_1_activity_1_cg2_custom_1261: 0
-      civicrm_1_activity_1_cg2_custom_1288: 0
-      civicrm_1_activity_1_cg2_custom_1289: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1148,6 +1155,10 @@ handlers:
       civicrm_1_activity_1_cg58_custom_1266: 0
       civicrm_1_activity_1_cg58_custom_1267: 0
       civicrm_1_activity_1_cg58_custom_1287: 0
+      activity_1_settings_dynamic_custom_cg67: 0
+      civicrm_1_activity_1_cg67_custom_1413: 0
+      civicrm_1_activity_1_cg67_custom_1414: 0
+      civicrm_1_activity_1_cg67_custom_1423: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -1163,6 +1174,7 @@ handlers:
         block_form: 0
         disable_unregister: 0
         allow_url_load: 0
+        disable_primary_participant: 0
       membership_1_number_of_membership: '0'
       membership_2_number_of_membership: '0'
       membership_3_number_of_membership: '0'
@@ -1194,6 +1206,7 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_cg30: '0'
+            number_of_cg71: '0'
             phone:
               1:
                 phone_type_id: '1'
@@ -1221,6 +1234,7 @@ handlers:
             number_of_im: '0'
             number_of_relationship: '1'
             number_of_cg30: '0'
+            number_of_cg71: '0'
             other:
               1:
                 tag:
@@ -1232,11 +1246,11 @@ handlers:
             phone:
               1:
                 phone_type_id: '1'
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
             email:
               1:
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
             relationship:
               1:
@@ -1258,6 +1272,7 @@ handlers:
             number_of_im: '0'
             number_of_relationship: '0'
             number_of_cg30: '0'
+            number_of_cg71: '0'
         activity:
           number_of_activity: '1'
           1:
@@ -1273,6 +1288,7 @@ handlers:
             dynamic_custom_cg53: 0
             dynamic_custom_cg54: 0
             dynamic_custom_cg58: 0
+            dynamic_custom_cg67: 0
             activity:
               1:
                 target_contact_id:
@@ -1305,6 +1321,7 @@ handlers:
           block_form: 0
           disable_unregister: 0
           allow_url_load: 0
+          disable_primary_participant: 0
   email:
     id: email
     handler_id: email
