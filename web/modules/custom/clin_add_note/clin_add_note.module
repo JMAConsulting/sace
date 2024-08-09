@@ -120,7 +120,7 @@ function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
         }
       } else {
         $note = \Civi\Api4\Note::get(FALSE)
-          ->addSelect('subject')
+          ->addSelect('subject', 'note')
           ->addWhere('id', '=', $nid)
           ->execute()
           ->first();
