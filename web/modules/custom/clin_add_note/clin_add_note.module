@@ -49,7 +49,7 @@ function clin_add_note_preprocess_page_title(&$variables, $hook) {
       
       else {
         $variables['title'] = [
-          '#markup' => 'Add Note to '.$note['subject'],
+          '#markup' => 'Append Note to '.$note['subject'],
         ];
       }
       return;
@@ -73,9 +73,11 @@ function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
   if ($form_id == "webform_submission_add_note_to_appointment_add_form") {
     $nid = \Drupal::request()->query->get('nid') ?? 0;
     $edit = \Drupal::request()->query->get('action') ?? 0;
-    if (!empty($edit) && $edit == 'edit') {
-      if (!empty($nid) && is_numeric($nid)) {
-        \Drupal::service('civicrm')->initialize();
+    if (!empty($nid) && is_numeric($nid)) {
+      \Drupal::service('civicrm')->initialize();
+      $elements = WebformFormHelper::flattenElements($form);
+
+      if (!empty($edit) && $edit == 'edit') {
         $note = \Civi\Api4\Note::get(FALSE)
           ->addSelect('*', 'locked_note.is_locked')
           ->addJoin('LockedNote AS locked_note', 'LEFT', ['id', '=', 'locked_note.note_id'])
@@ -85,9 +87,6 @@ function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
         
         // If note is not locked
         if($note['locked_note.is_locked'] === false) {
-
-          $elements = WebformFormHelper::flattenElements($form);
-
           $attachments = \Civi\Api4\EntityFile::get(FALSE)
             ->addSelect('file.*')
             ->addJoin('File AS file', 'LEFT', ['file_id', '=', 'file.id'])
@@ -113,14 +112,20 @@ function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
             $elements['details']['#default_value'] = $note['note'];
             $elements['upload_attachment']['#default_value'] = $default_files;
           }
-        }
-
-        else {
+        } else {
           \Drupal::messenger()->addError(t('This note is locked for editing.'));
           $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
           throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
           return;
         }
+      } else {
+        $note = \Civi\Api4\Note::get(FALSE)
+          ->addSelect('subject')
+          ->addWhere('id', '=', $nid)
+          ->execute()
+          ->first();
+        
+        $elements['subject']['#default_value'] = $note['subject'];
       }
     }
   }
