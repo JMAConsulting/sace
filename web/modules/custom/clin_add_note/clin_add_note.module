@@ -126,6 +126,7 @@ function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
           ->first();
         
         $elements['subject']['#default_value'] = $note['subject'];
+        $elements['original_note']['#default_value'] = $note['note'];
       }
     }
   }
