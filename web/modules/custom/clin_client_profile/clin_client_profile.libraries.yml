@@ -10,3 +10,7 @@ clin_contact_notes:
 access_denied:
   js:
     js/access_denied.js: {}
+
+program_sort:
+  js:
+    js/program_sort.js: {}

@@ -47,6 +47,9 @@ function clin_client_profile_preprocess_page(&$variables) {
   if (preg_match('/\/contact-information\/notes\/(\d+)/', $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_contact_notes';
   }
+  if (preg_match('/\/contact-information\/programs\/(\d+)/', $current_path, $matches)) {
+    $variables['#attached']['library'][] = 'clin_client_profile/program_sort';
+  }
 }
 
 /**
