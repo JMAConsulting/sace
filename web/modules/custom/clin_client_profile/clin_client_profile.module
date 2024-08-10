@@ -13,6 +13,12 @@ use Drupal\Core\Render\BubbleableMetadata;
 function clin_client_profile_views_pre_view($view, $display_id, &$args) {
   if ($view->id() == 'client_home' || $view->id() == 'security' || $view->id() == 'clin_flags' || $view->id() == 'appointments'|| $view->id() == 'contact_notes' || $view->id() == 'contact_information') {
     if ($display_id == 'page_1') {
+
+      // Freeze editing of all fields
+      $bubbleable_metadata = new BubbleableMetadata();
+      $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
+      $bubbleable_metadata->applyTo($view->element);
+
       $current_user = \Drupal::currentUser();
       $current_user_id = \Drupal::currentUser()->id();
       $roles = $current_user->getRoles();
@@ -23,15 +29,23 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
             \Drupal::messenger()->addError(t('You do not have access to view this client profile.'));
 	          $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
    	        throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
-          }
-        }
-        elseif(in_array('ce_staff', $roles)) {
-          if (_ce_staff_deny_access($current_user_id)) {
+          } else {
             $bubbleable_metadata = new BubbleableMetadata();
-            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
+            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/allow_edits']);
             $bubbleable_metadata->applyTo($view->element);
           }
         }
+        elseif(in_array('ce_staff', $roles)) {
+          if (!_ce_staff_deny_access($current_user_id)) {
+            $bubbleable_metadata = new BubbleableMetadata();
+            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/allow_edits']);
+            $bubbleable_metadata->applyTo($view->element);
+          }
+        }
+      } else {
+        $bubbleable_metadata = new BubbleableMetadata();
+        $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/allow_edits']);
+        $bubbleable_metadata->applyTo($view->element);
       }
     }
   }
@@ -40,7 +54,7 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
 function clin_client_profile_preprocess_page(&$variables) {
   $current_path = \Drupal::service('path.current')->getPath();
   $pattern = '/\/contact-information(?:\/[\w-]+)*\/(\d+)/';
-  // Add JS to /client-home pages
+  // Add JS to /contact-information pages
   if (preg_match($pattern, $current_path, $matches)) {
     $variables['#attached']['library'][] = 'clin_client_profile/clin_client_profile';
   }

@@ -14,3 +14,7 @@ access_denied:
 program_sort:
   js:
     js/program_sort.js: {}
+
+allow_edits:
+js:
+  js/allow_edits.js: {}
