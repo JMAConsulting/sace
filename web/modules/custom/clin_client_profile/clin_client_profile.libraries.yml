@@ -16,5 +16,5 @@ program_sort:
     js/program_sort.js: {}
 
 allow_edits:
-js:
-  js/allow_edits.js: {}
+  js:
+    js/allow_edits.js: {}

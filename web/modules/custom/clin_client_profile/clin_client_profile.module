@@ -12,13 +12,12 @@ use Drupal\Core\Render\BubbleableMetadata;
 
 function clin_client_profile_views_pre_view($view, $display_id, &$args) {
   if ($view->id() == 'client_home' || $view->id() == 'security' || $view->id() == 'clin_flags' || $view->id() == 'appointments'|| $view->id() == 'contact_notes' || $view->id() == 'contact_information') {
-    if ($display_id == 'page_1') {
-
-      // Freeze editing of all fields
+    if($view->id() == 'contact_information') {
       $bubbleable_metadata = new BubbleableMetadata();
       $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
       $bubbleable_metadata->applyTo($view->element);
-
+    }
+    if ($display_id == 'page_1') {
       $current_user = \Drupal::currentUser();
       $current_user_id = \Drupal::currentUser()->id();
       $roles = $current_user->getRoles();
@@ -29,14 +28,14 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
             \Drupal::messenger()->addError(t('You do not have access to view this client profile.'));
 	          $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
    	        throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
-          } else {
-            $bubbleable_metadata = new BubbleableMetadata();
-            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/allow_edits']);
-            $bubbleable_metadata->applyTo($view->element);
           }
         }
         elseif(in_array('ce_staff', $roles)) {
-          if (!_ce_staff_deny_access($current_user_id)) {
+          if (_ce_staff_deny_access($current_user_id)) {
+            $bubbleable_metadata = new BubbleableMetadata();
+            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
+            $bubbleable_metadata->applyTo($view->element);
+          } else {
             $bubbleable_metadata = new BubbleableMetadata();
             $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/allow_edits']);
             $bubbleable_metadata->applyTo($view->element);
@@ -79,6 +78,12 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     $roles = $current_user->getRoles();
     $current_user_id = \Drupal::currentUser()->id();
 
+    // Make form default to read-only
+    if ($form_id == "webform_submission_client_profile_add_form") {
+      $form['#attributes']['class'][] = 'webform-locked';
+      clin_client_profile_make_form_read_only($form);
+    }
+
     if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
       // If logged in user is a counsellor
       if(in_array('clin_counsellor', $roles)) {
@@ -105,9 +110,7 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         if (_ce_staff_deny_access($current_user_id)) {
           if ($form_id == "webform_submission_client_profile_add_form") {
             $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
-            $form['#attributes']['class'][] = 'webform-locked';
             $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
-            clin_client_profile_make_form_read_only($form);
           }
           else {
             $form['#access'] = FALSE;
@@ -129,9 +132,7 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       elseif(in_array('reception', $roles) || in_array('intake', $roles)) {
         if ($form_id == "webform_submission_client_profile_add_form") {
           $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
-          $form['#attributes']['class'][] = 'webform-locked';
           $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
-          clin_client_profile_make_form_read_only($form);
         }
         else {
           $form['#access'] = FALSE;

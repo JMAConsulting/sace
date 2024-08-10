@@ -10,13 +10,9 @@ jQuery(document).ready(function ($) {
   // Insert the button above the block
   $block.after($button);
 
-  // Handle the button click event
   $button.on("click", function () {
-    // Toggle the 'disabled' attribute of all input fields and textareas within the block
-    $block
-      .find("input, textarea, select")
-      .prop("disabled", function (_, disabled) {
-        return !disabled; // Toggle the disabled property
-      });
+    $("#webform-submission-client-profile-add-form div").removeClass(
+      "webform-readonly"
+    );
   });
 });
