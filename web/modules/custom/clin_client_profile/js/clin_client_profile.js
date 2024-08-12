@@ -43,7 +43,7 @@
         $newHeader.append("&nbsp;");
       });
 
-      $(".view-footer div").remove();
+      $(".view-footer").remove();
     }
   });
 })(jQuery);
