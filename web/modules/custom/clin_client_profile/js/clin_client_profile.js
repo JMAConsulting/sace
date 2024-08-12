@@ -35,12 +35,15 @@
         }
       });
 
-      var $flags = $(".saceflag");
+      // Select .saceflag elements only from the footer
+      var $footerFlags = $(".view-footer .saceflag");
 
-      $flags.each(function () {
+      $footerFlags.each(function () {
         $newHeader.append($(this));
         $newHeader.append("&nbsp;");
       });
+
+      $(".view-footer div").remove();
     }
   });
 })(jQuery);
