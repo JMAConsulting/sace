@@ -54,7 +54,7 @@ class UpdateWaitlistHandler extends WebformHandlerBase {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
-    $civicrm_submission_data = $this->database->query("SELECT contacts FROM {webform_civicrm_submissions} WHERE sid = :sid", [
+    $civicrm_submission_data = $this->database->query("SELECT contact_id FROM {webform_civicrm_submissions} WHERE sid = :sid", [
       ':sid' => $webform_submission->id(),
     ]);
     if ($webform_submission_data && $civicrm_submission_data) {
