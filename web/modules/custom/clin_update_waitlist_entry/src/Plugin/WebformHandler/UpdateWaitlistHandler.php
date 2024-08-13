@@ -60,24 +60,24 @@ class UpdateWaitlistHandler extends WebformHandlerBase {
     if ($webform_submission_data && $civicrm_submission_data) {
       while ($row = $civicrm_submission_data->fetchAssoc()) {
         $contactIds = explode('-',$row);
-        if (!empty($webform_submission_data['existing_waitlist']) && !empty($contactIds[1])) {
+        if (!empty($webform_submission_data['existing_waitlist']) && !empty($contactIds[2])) {
           if ($webform_submission_data['existing_waitlist'] == 'Remove from Waitlist') {
             $group_contacts = \Civi\Api4\GroupContact::update(FALSE)
-              ->addWhere('contact_id', '=', $contactIds[1])
+              ->addWhere('contact_id', '=', $contactIds[2])
               ->addWhere('group_id.Waitlist_Group.Waitlist_Group_', '=', 1)
               ->addValue('status', 'Removed')
               ->execute();
           }
         }
-        if (!empty($webform_submission_data['add_to_waitlist']) && !empty($contactIds[1])) {
+        if (!empty($webform_submission_data['add_to_waitlist']) && !empty($contactIds[2])) {
           $update = \Civi\Api4\GroupContact::update(FALSE)
-            ->addWhere('contact_id', '=', $contactIds[1])
+            ->addWhere('contact_id', '=', $contactIds[2])
             ->addWhere('group_id', '=', $webform_submission_data['add_to_waitlist'])
             ->addValue('status', 'Added')
             ->execute();
           if (!$update->first()) { // Could not update so we create a new GroupContact
             \Civi\Api4\GroupContact::create(FALSE)
-              ->addValue('contact_id', $contactIds[1])
+              ->addValue('contact_id', $contactIds[2])
               ->addValue('group_id', $webform_submission_data['add_to_waitlist'])
               ->execute();
             }
