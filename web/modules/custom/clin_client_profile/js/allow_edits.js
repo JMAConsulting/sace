@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
   );
 
   // Insert the button above the block
-  $block.after($button);
+  $block.before($button);
 
   $button.on("click", function () {
     $("#webform-submission-client-profile-add-form")
