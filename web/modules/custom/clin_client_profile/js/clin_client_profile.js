@@ -6,6 +6,8 @@
     // Define a regular expression to match the specified pattern.
     var urlPattern = /\/contact-information(?:\/[\w-]+)*\/(\d+)/;
 
+    var homePage = /\/contact-information\/(\d+)/;
+
     if (urlPattern.test(currentUrl)) {
       // Get page title and split into two titles
       var $pageTitle = $("#block-pagetitle .page-title");
@@ -29,8 +31,8 @@
         var $this = $(this);
         var href = $this.attr("href");
         // Filter contact info form by cid
-        if (href.indexOf("/contact-information/edit/" + cid) !== -1) {
-          var newHref = "/contact-information/edit/" + cid + "?cid=" + cid;
+        if (href.indexOf("/contact-information/" + cid) !== -1) {
+          var newHref = "/contact-information/" + cid + "?cid=" + cid;
           $this.attr("href", newHref);
         }
       });
@@ -44,6 +46,11 @@
       });
 
       $(".view-footer").remove();
+
+      if (!homePage.test(currentUrl)) {
+        $("#block-oliverolocal-webform").remove();
+      }
     }
+
   });
 })(jQuery);
