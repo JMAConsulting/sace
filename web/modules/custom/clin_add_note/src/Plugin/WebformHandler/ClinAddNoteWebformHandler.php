@@ -10,6 +10,7 @@ use Drupal\Core\File\MimeType\MimeTypeGuesserInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Url;
 
 /**
  * Sace CiviCRM Activity Update Handler.
@@ -193,5 +194,27 @@ class ClinAddNoteWebformHandler extends WebformHandlerBase {
   private function get_file_id_from_uri($uri) {
     $file = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['uri' => $uri]);
     return $file ? reset($file)->id() : null;
+  }
+
+  public function confirmForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+    $request = \Drupal::request();
+    $aid = $request->query->get('aid');
+    $cid = $request->query->get('cid');
+    $nid = $request->query->get('nid');
+
+    if($aid) {
+      $path = '/contact-information/appointments/' . $cid;
+    } elseif ($nid && $cid) {
+      $path = '/contact-information/' . $cid;
+    } elseif ($cid) {
+      $path = '/contact-information/notes/' . $cid;
+    } else {
+      $path = '/staff-dashboard/task-list';
+    }
+
+    $url = Url::fromUserInput($path);
+
+    // Set the redirect URL
+    $form_state->setRedirectUrl($url);
   }
 }

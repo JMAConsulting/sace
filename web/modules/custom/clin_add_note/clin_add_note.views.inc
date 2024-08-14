@@ -171,6 +171,10 @@ function clin_add_note_views_data_alter(&$data) {
       'id' => 'standard',
       'click sortable' => TRUE,
     ],
+    'filter' => [
+      'id' => 'boolean',
+      'operator' => 'value',
+    ],
   ];
 
   // Define a join to the civicrm_note table
