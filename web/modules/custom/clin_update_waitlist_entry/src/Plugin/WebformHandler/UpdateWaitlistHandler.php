@@ -55,10 +55,10 @@ class UpdateWaitlistHandler extends WebformHandlerBase {
     $this->civicrm->initialize();
     $webform_submission_data = $webform_submission->getData();
     if ($webform_submission_data) {
-      if (empty($webform_submission_data['civicrm_2_contact_1_existing'])){
+      if (empty($webform_submission_data['civicrm_2_contact_1_contact_existing'])){
         return;
       }
-      $contactId = $webform_submission_data['civicrm_2_contact_1_existing'];
+      $contactId = $webform_submission_data['civicrm_2_contact_1_contact_existing'];
       // Remove from waitlist
       if (!empty($webform_submission_data['existing_waitlist']) && !empty($contactId)) {
         if ($webform_submission_data['existing_waitlist'] == 'Remove from Waitlist') {
