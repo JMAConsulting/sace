@@ -338,11 +338,13 @@ function _ce_staff_deny_access($current_user_id) {
     return TRUE;
   }
   $current_user_teams = _get_user_teams($current_user_id);
+  $assigned_staff_teams = [];
 
   // Get user teams for each counsellor and current user
-  foreach($activities as $activity) {  
-    $assigned_staff_teams = _get_user_teams($activity['uf_match.uf_id']);
-
+  foreach($activities as $activity) {
+    if (isset($activity['uf_match.uf_id'])) {
+      $assigned_staff_teams = _get_user_teams($activity['uf_match.uf_id']);
+    }
     if (array_intersect($current_user_teams, $assigned_staff_teams)) {
       return FALSE;
     }
