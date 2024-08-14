@@ -11,16 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Render\BubbleableMetadata;
 
 function clin_client_profile_views_pre_view($view, $display_id, &$args) {
-  if ($view->id() == 'client_home' || $view->id() == 'security' || $view->id() == 'clin_flags' || $view->id() == 'appointments'|| $view->id() == 'contact_notes' || $view->id() == 'contact_information') {
-    if($view->id() == 'contact_information') {
+  if ($view->id() == 'client_home' || $view->id() == 'security' || $view->id() == 'clin_flags' || $view->id() == 'appointments'|| $view->id() == 'contact_notes') {
+    if($view->id() == 'client_home') {
       $bubbleable_metadata = new BubbleableMetadata();
-      $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
-      $bubbleable_metadata->applyTo($view->element);
-    }
-    if ($display_id == 'page_1') {
+
       $current_user = \Drupal::currentUser();
       $current_user_id = \Drupal::currentUser()->id();
       $roles = $current_user->getRoles();
+
+      if($view->id() == 'client_home') {
+        $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
+      }
+
       if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
         // If logged in user is a counsellor
         if(in_array('clin_counsellor', $roles)) {
@@ -31,23 +33,19 @@ function clin_client_profile_views_pre_view($view, $display_id, &$args) {
           }
         }
         elseif(in_array('ce_staff', $roles)) {
-          if (_ce_staff_deny_access($current_user_id)) {
-            $bubbleable_metadata = new BubbleableMetadata();
-            $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/access_denied']);
-            $bubbleable_metadata->applyTo($view->element);
-          } else {
-            $bubbleable_metadata = new BubbleableMetadata();
+          if (!_ce_staff_deny_access($current_user_id)) {
             $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/allow_edits']);
-            $bubbleable_metadata->applyTo($view->element);
           }
         }
       } else {
-        $bubbleable_metadata = new BubbleableMetadata();
         $bubbleable_metadata->addAttachments(['library' => 'clin_client_profile/allow_edits']);
-        $bubbleable_metadata->applyTo($view->element);
       }
+        $bubbleable_metadata->applyTo($view->element);
+        $bubbleable_metadata->applyTo($view->element);
+      $bubbleable_metadata->applyTo($view->element);
     }
   }
+
 }
 
 function clin_client_profile_preprocess_page(&$variables) {
@@ -311,20 +309,15 @@ function _ce_staff_deny_access($current_user_id) {
     return TRUE;
   }
   $current_user_teams = _get_user_teams($current_user_id);
-  \Drupal::logger('clin_client_profile')->info("Curr User: ".print_r($current_user_teams, TRUE));
 
   // Get user teams for each counsellor and current user
   foreach($activities as $activity) {  
     $assigned_staff_teams = _get_user_teams($activity['uf_match.uf_id']);
 
-    \Drupal::logger('clin_client_profile')->info(print_r($assigned_staff_teams, TRUE));
-
     if (array_intersect($current_user_teams, $assigned_staff_teams)) {
-      \Drupal::logger('clin_client_profile')->info("Access granted");
       return FALSE;
     }
   }
-  \Drupal::logger('clin_client_profile')->info("Access denied");
   return TRUE;
 }
 
