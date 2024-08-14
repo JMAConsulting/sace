@@ -80,6 +80,29 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
     if ($form_id == "webform_submission_client_profile_add_form") {
       $form['#attributes']['class'][] = 'webform-locked';
       clin_client_profile_make_form_read_only($form);
+
+      $elements = WebformFormHelper::flattenElements($form);
+      if (!empty($elements)) {
+        $cid = \Drupal::request()->query->get('cid') ?? 0;
+        if (!empty($cid) && is_numeric($cid)) {
+          \Drupal::service('civicrm')->initialize();
+
+          $emergencyContact = \Civi\Api4\Relationship::get(FALSE)
+            ->addSelect('contact_id_a.id','contact_id_a.first_name', 'contact_id_a.last_name', 'email.email', 'phone.phone')
+            ->addJoin('Email AS email', 'LEFT', ['email.id', '=', 'contact_id_a.email_primary'])
+            ->addJoin('Phone AS phone', 'LEFT', ['phone.id', '=', 'contact_id_a.phone_primary'])
+            ->addWhere('contact_id_b', '=', $cid)
+            ->addOrderBy('id', 'DESC')
+            ->execute()
+            ->first();
+
+          $elements['civicrm_2_contact_1_contact_existing']['#default_value'] = $emergencyContact['contact_id_a.id'];
+          $elements['civicrm_2_contact_1_contact_first_name']['#default_value'] = $emergencyContact['contact_id_a.first_name'];
+          $elements['civicrm_2_contact_1_contact_last_name']['#default_value'] = $emergencyContact['contact_id_a.last_name'];
+          $elements['civicrm_2_contact_1_phone_phone']['#default_value'] = $emergencyContact['phone.phone'];
+          $elements['civicrm_2_contact_1_email_email']['#default_value'] = $emergencyContact['email.email'];
+        }
+      }
     }
 
     if(!in_array('clin_director', $roles) && !in_array('wheel', $roles) && !in_array('clin_tl', $roles)) {
@@ -131,8 +154,7 @@ function clin_client_profile_form_alter(&$form, \Drupal\Core\Form\FormStateInter
         if ($form_id == "webform_submission_client_profile_add_form") {
           $form['#prefix'] = '<div class="webform-locked-message">' . t('You do not have access to edit this client.') . '</div>';
           $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
-        }
-        else {
+        } else {
           $form['#access'] = FALSE;
         }
       }
