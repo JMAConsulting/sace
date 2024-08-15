@@ -1,7 +1,7 @@
 <?php
 
-use Drupal\views;
-use Drupal\views\Plugin\views\query;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
 
 /**
  * Implements hook_civicrm_alter_drupal_entities
