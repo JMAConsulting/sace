@@ -30,8 +30,8 @@ function clin_waitlist_views_query_alter(ViewExecutable $view, QueryPluginBase $
     //$query->
 
     //tests
-    var_dump($query->$tables);
-    var_dump($query->$fields);
-    var_dump($query->$fieldAliases);
+    var_dump($query->tables);
+    var_dump($query->fields);
+    var_dump($query->fieldAliases);
   }
 }
