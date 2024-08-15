@@ -1,0 +1,151 @@
+<?php
+
+use Drupal\civicrm_entity\CiviEntityStorage;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\FieldStorageConfigInterface;
+
+/**
+ * Implements hook_views_data_alter().
+ *
+ * @note
+ * @note Copy and paste of views_views_data_alter to support our storage check.
+ *
+ * @see views_views_data()
+ * @see views_views_data_alter()
+ */
+function clin_waitlist_views_data_alter(&$data) {
+
+  $data['civicrm_subscription_history']['table']['group']  = t('CiviCRM Subscription History');
+
+  $data['civicrm_subscription_history']['table']['base'] = [
+    'field' => 'id',
+    'title' => t('CiviCRM Subscription History'),
+    'help' => t('View displays the History of changes to a CiviCRM group'),
+  ];
+  
+  // Numeric ID
+  $data['civicrm_subscription_history']['id'] = [
+    'title' => t('Subscription History ID'),
+    'help' => t('Internal ID of the Subscription History record'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+    'argument' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'sort',
+    ],
+  ];
+
+  // Contact ID
+  $data['staging_sace_civicrm.civicrm_subscription_history']['contact_id'] = [
+    'title' => t('Contact ID'),
+    'help' => t('FK to civicrm_contact'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+  ];
+
+  // Group ID
+  $data['civicrm_subscription_history']['group_id'] = [
+    'title' => t('Group ID'),
+    'help' => t('FK to civicrm_group'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+  ];
+
+  // Date
+  $data['civicrm_subscription_history']['date'] = [
+    'title' => t('Subscription Modified Date'),
+    'help' => t('Date of the (un)subscription'),
+    'field' => [
+      'id' => 'date',
+      'click sortable' => TRUE,
+    ],
+    'filter' => [
+      'id' => 'date',
+    ],
+    'sort' => [
+      'id' => 'date',
+    ],
+  ];
+
+  // Method
+  $data['civicrm_subscription_history']['method'] = [
+    'title' => t('Method'),
+    'help' => t('How the (un)subscription was triggered'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+    'argument' => [
+      'id' => 'string_argument',
+    ],
+    'filter' => [
+      'id' => 'string_filter',
+    ],
+    'sort' => [
+      'id' => 'sort',
+    ],
+  ];
+
+  // Status
+  $data['civicrm_subscription_history']['status'] = [
+    'title' => t('Status'),
+    'help' => t('Current status of the subscription'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+    'argument' => [
+      'id' => 'string_argument',
+    ],
+    'filter' => [
+      'id' => 'string_filter',
+    ],
+    'sort' => [
+      'id' => 'sort',
+    ],
+  ];
+
+  // Tracking
+  $data['civicrm_subscription_history']['method'] = [
+    'title' => t('Tracking'),
+    'help' => t('IP address or other tracking info'),
+    'field' => [
+      'id' => 'standard',
+      'click sortable' => TRUE,
+    ],
+    'argument' => [
+      'id' => 'string_argument',
+    ],
+    'filter' => [
+      'id' => 'string_filter',
+    ],
+    'sort' => [
+      'id' => 'sort',
+    ],
+  ];
+
+  // Joins
+  $data['civicrm_subscription_history']['table']['join']['civicrm_contact'] = [
+    'left_field' => 'id',
+    'field' => 'contact_id',
+  ];
+
+  $data['civicrm_subscription_history']['table']['join']['civicrm_group'] = [
+    'left_field' => 'id',
+    'field' => 'group_id',
+  ];
+}
