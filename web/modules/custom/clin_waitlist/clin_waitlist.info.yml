@@ -1,0 +1,8 @@
+name: CLIN Waitlist
+type: module
+description: 'Supports waitlists'
+package: Custom
+version: '1.0'
+core_version_requirement: ^8 || ^9 || ^10
+dependencies:
+  - webform:webform

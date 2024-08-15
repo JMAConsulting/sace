@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Implements hook_civicrm_alter_drupal_entities
+ */
+function clin_waitlist_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
+  $civicrm_entity_info['civicrm_subscription_history'] = [
+    'civicrm entity label' => ts('SubscriptionHistory'),
+    'civicrm entity name' => 'subscription_history',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_views_query_alter
+ */
+function clin_waitlist_views_query_alter(ViewExecutable $view, QueryPluginBase $query){
+  // Use group_concat to group counsellors and waitlists into a list for each contact
+  // Exit if not the right view
+  if ($view->id()!=='waitlist_test') {
+    return;
+  }
+  // Replace the select clause for the counsellors and waitlists with a group_concat
+  //$query->
+
+  //tests
+  var_dump($query->$tables);
+  var_dump($query->$fields);
+  var_dump($query->$fieldAliases);
+}
