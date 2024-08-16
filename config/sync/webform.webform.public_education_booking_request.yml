@@ -348,39 +348,12 @@ elements: |-
     '#type': civicrm_options
     '#title': 'Presentation Topic(s)'
     '#title_display': inline
+    '#civicrm_live_options': 0
     '#options':
-      2SLGBTQ+: '2SLGBTQ+ Communities & Sexual Violence'
-      BystanderIntervention: 'Bystander Intervention'
-      ChildSexualAbuse: 'Child Sexual Abuse'
-      CommunityResources: 'Community Resources'
-      CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
-      DomesticViolence: 'Domestic Violence'
-      Drug-Facilitated: 'Drug-Facilitated Sexual Assault'
-      FRT: 'First Responders Training (FRT)'
-      GenderSexualityMedia: 'Gender, Sexuality, and Media'
-      GenderStereotypes: 'Gender Stereotypes'
-      HealthCareSystemsandSexualViolence: 'Health Care Systems & Sexual Violence'
-      HealthyRelationships: 'Healthy Relationships'
-      'Information for Partners & Supporters': 'Information for Partners & Supporters'
-      IntimatePartnerViolence: 'Intimate Partner Violence'
-      'Legal Systems & Sexual Violence': 'Legal Systems & Sexual Violence'
-      Masculinities: Masculinities
       NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
-      PrivilegeandOppression: 'Privilege & Oppression'
-      RacismandSexualViolence: 'Racism & Sexual Violence'
-      'Recognizing & Responding to Sexual Violence': 'Recognizing & Responding to Sexual Violence'
-      SACEandtheSPEAKProgram: 'SACE & the SPEAK Program'
       SACEServices: 'SACE Services'
-      'SACE Services Tour': 'SACE Services Tour'
       SexualAssaultConsent: 'Sexual Assault & Consent'
-      'Sexual Assault & Self-Care': 'Sexual Assault & Self-Care'
       SexualHarassment: 'Sexual Harassment'
-      SexualHealth: 'Sexual Health'
-      SexualViolence: 'Sexual Violence'
-      SexualViolenceTrauma: 'Sexual Violence Trauma'
-      SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
-      TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
-      ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
       CustomUnsure: 'Custom / Unsure'
     '#required': true
     '#states':
@@ -406,7 +379,6 @@ elements: |-
     '#form_key': civicrm_1_activity_1_cg2_custom_40
     '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#default_option': ''
-    '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_41:
     '#type': textfield
     '#title': 'Topic Details'

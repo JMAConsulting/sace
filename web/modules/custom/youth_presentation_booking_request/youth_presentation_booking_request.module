@@ -14,13 +14,6 @@ function youth_presentation_booking_request_form_alter(&$form, \Drupal\Core\Form
     $form['#attached']['library'][] = 'youth_presentation_booking_request/youth_presentation_booking_request';
     $elements = WebformFormHelper::flattenElements($form);
 
-    $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent', 'CustomUnsure'];
-    foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
-      if (!in_array($key, $selectedOptions)) {
-        unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
-      }
-    }
-
     $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = 'Youth';
     $elements['civicrm_3_contact_1_contact_existing']['#title'] = 'Your School';
     $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup'] = str_replace('organization', 'school', $elements['civicrm_3_contact_1_contact_existing']['#description']['#markup']);
