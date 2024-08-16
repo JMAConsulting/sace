@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Implements hook_form_alter
+ */
+function clin_update_waitlist_entry_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id){
+  if ($form_id != 'webform_submission_clin_assign') {
+    return;
+  }
+  $form['#attached']['library'][] = 'clin_update_waitlist_entry/ajax_modals';
+}

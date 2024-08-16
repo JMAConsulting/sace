@@ -1,0 +1,4 @@
+ajax_modals:
+  dependencies:
+    - core/jquery
+    - core/drupal.dialog.ajax
