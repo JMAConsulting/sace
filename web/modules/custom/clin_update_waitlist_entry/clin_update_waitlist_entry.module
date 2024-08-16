@@ -7,5 +7,6 @@ function clin_update_waitlist_entry_form_alter(&$form, \Drupal\Core\Form\FormSta
   if ($form_id != 'webform_submission_clin_assign') {
     return;
   }
-  $form['#attached']['library'][] = 'clin_update_waitlist_entry/ajax_modals';
+  $form['#attached']['library'][] = 'core/jquery';
+  $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 }
