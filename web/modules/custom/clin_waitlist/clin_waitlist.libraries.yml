@@ -1,0 +1,5 @@
+table_class:
+  js:
+    js/table_class.js: {}
+  dependencies:
+    - core/jquery

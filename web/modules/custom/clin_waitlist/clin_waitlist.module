@@ -21,13 +21,10 @@ function clin_waitlist_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
 }
 
 /**
- * Implements hook_views_query_alter
- */
-function clin_waitlist_views_query_alter(ViewExecutable $view, QueryPluginBase $query){
-  // Use group_concat to group counsellors and waitlists into a list for each contact
-  if ($view->id()=='waitlist_test') {
-    // Replace the select clause for the counsellors and waitlists with a group_concat
-    $query->addField('contact_id_b_civicrm_contact', 'display_name','test',['function' => 'group_concat', 'aggregate' => true]);
-    $query->addGroupBy('civicrm_contact.id');
+* Implements hook_views_pre_render().
+*/
+function clin_waitlist_views_pre_render(ViewExecutable $view) {
+  if (isset($view) && ($view->storage->id() == 'waitlist_test')) {
+    $view->element['#attached']['library'][] = 'clin_waitlist/table_class';
   }
 }
