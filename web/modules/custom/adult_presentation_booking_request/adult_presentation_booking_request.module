@@ -13,14 +13,6 @@ function adult_presentation_booking_request_form_alter(&$form, \Drupal\Core\Form
   if ($form_id == "webform_submission_adultpresentation_bookingrequest_add_form") {
     $form['#attached']['library'][] = 'adult_presentation_booking_request/adult_presentation_booking_request';
     $elements = WebformFormHelper::flattenElements($form);
-
-    $selectedOptions = ['SexualHarassment', 'SexualAssaultConsent', 'NonConsensualPhotoSharing', 'SACEServices', 'CustomSomethingDifferent', 'CustomUnsure', 'HealthCareSystemsandSexualViolence', 'BystanderIntervention', 'ChildSexualAbuse', 'CreatingSaferSpacesandRespondingtoSexualViolence', 'SACEandtheSPEAKProgram', 'SupportiveResponsestoSexualViolence', 'TechnologyFacilitatedSexualViolence'];
-    foreach ($elements['civicrm_1_activity_1_cg2_custom_40']['#options'] as $key => $dontCare) {
-      if (!in_array($key, $selectedOptions)) {
-        unset($elements['civicrm_1_activity_1_cg2_custom_40']['#options'][$key]);
-      }
-    }
-
     $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = 'Adult';
   }
 }
