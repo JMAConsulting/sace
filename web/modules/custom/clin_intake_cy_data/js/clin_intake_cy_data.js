@@ -35,21 +35,30 @@ jQuery(document).ready(function ($) {
 
   // Populating parent and guardian field
   var guardian1 = $("#edit-civicrm-1-contact-1-cg21-custom-234").val();
+  var guardian2 = "";
+  var guardian3 = "";
+  var guardian4 = "";
   if ($("#edit-civicrm-1-contact-1-cg23-custom-1424-1").prop("checked")) {
     var guardian2 = $("#edit-civicrm-1-contact-1-cg23-custom-242").val();
-  } else {
-    guardian2 == "";
   }
-  var concatenatedValue;
+  if ($("#edit-civicrm-1-contact-1-cg76-custom-1436-1").prop("checked")) {
+    var guardian3 = $("#edit-civicrm-1-contact-1-cg76-custom-1433").val();
+  }
+  if ($("#edit-civicrm-1-contact-2-cg76-custom-1436-1").prop("checked")) {
+    var guardian4 = $("#edit-civicrm-1-contact-2-cg76-custom-1433").val();
+  }
+  var guardians = [guardian1, guardian2, guardian3, guardian4];
 
-  if (guardian1 != "" && guardian2 != "") {
-    concatenatedValue = guardian1 + " & " + guardian2;
-  } else {
-    concatenatedValue = guardian1 + guardian2;
-  }
+  // Filter out empty values and concatenate
+  var concatenatedValue = guardians
+    .filter(function (value) {
+      return value !== "";
+    })
+    .join(" & ");
 
   $("#edit-civicrm-1-contact-1-cg65-custom-1391").val(concatenatedValue);
 
+  // Main Legal Guardian field
   if ($("#edit-civicrm-1-contact-1-cg21-custom-298-1").prop("checked")) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
       $("#edit-civicrm-1-contact-1-cg21-custom-234").val()
@@ -57,6 +66,7 @@ jQuery(document).ready(function ($) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
       $("#edit-civicrm-1-contact-1-cg21-custom-238").val()
     );
+    // Additional Contact 1
   } else if ($("#edit-civicrm-1-contact-1-cg23-custom-300-1").prop("checked")) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
       $("#edit-civicrm-1-contact-1-cg23-custom-242").val()
@@ -64,11 +74,13 @@ jQuery(document).ready(function ($) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
       $("#edit-civicrm-1-contact-1-cg23-custom-244").val()
     );
+    // Case Worker
   } else if ($("#edit-civicrm-1-contact-1-cg19-custom-301-1").prop("checked")) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
       $("#edit-civicrm-1-contact-1-cg19-custom-175").val()
     );
     $("#edit-civicrm-1-contact-1-cg65-custom-1390").val("Case Worker");
+    // Family Support Worker
   } else if ($("#edit-civicrm-1-contact-1-cg22-custom-299-1").prop("checked")) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
       $("#edit-civicrm-1-contact-1-cg22-custom-236").val()
@@ -80,6 +92,7 @@ jQuery(document).ready(function ($) {
     $("#edit-civicrm-1-contact-1-cg65-custom-1390").val("Self Intake");
   }
 
+  // Main Legal Guardian field
   if ($("#edit-civicrm-1-contact-1-cg21-custom-234").val() != "") {
     $("#edit-civicrm-1-contact-1-cg21-fieldset").addClass(
       "form-readonly webform-readonly"
@@ -90,18 +103,54 @@ jQuery(document).ready(function ($) {
         $(this).prop("readonly", true);
       });
   }
-
+  // Additional Contact 1
   if ($("#edit-civicrm-1-contact-1-cg23-custom-242").val() != "") {
-    $("#edit-civicrm-1-contact-1-cg23-fieldset").addClass(
+    $("#edit-flexbox-02").addClass(
       "form-readonly webform-readonly"
     );
-    $("edit-civicrm-1-contact-1-cg23-fieldset")
+
+    $("#edit-flexbox-02")
       .find("input")
       .each(function () {
         $(this).prop("readonly", true);
       });
+    $("#edit-civicrm-1-contact-1-cg23-custom-1424")
+      .find('input[type="radio"]')
+      .prop("disabled", true);
   }
 
+  // Additional Contact 2
+  if ($("#edit-civicrm-1-contact-1-cg76-custom-1433").val() != "") {
+    console.log("Waht");
+    $("#edit-civicrm-1-contact-1-cg76-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("edit-civicrm-1-contact-1-cg76-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+    $("#edit-civicrm-1-contact-1-cg76-custom-1436")
+      .find('input[type="radio"]')
+      .prop("disabled", true);
+  }
+
+  // Additional Contact 3
+  if ($("#edit-civicrm-1-contact-2-cg76-custom-1433").val() != "") {
+    $("#edit-civicrm-1-contact-2-cg76-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("edit-civicrm-1-contact-2-cg76-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+    $("#edit-civicrm-1-contact-2-cg76-custom-1436")
+      .find('input[type="radio"]')
+      .prop("disabled", true);
+  }
+
+  // Case Worker
   if ($("#edit-civicrm-1-contact-1-cg19-custom-175").val() != "") {
     $("#edit-civicrm-1-contact-1-cg19-fieldset").addClass(
       "form-readonly webform-readonly"
@@ -113,6 +162,7 @@ jQuery(document).ready(function ($) {
       });
   }
 
+  // Family Support Worker
   if ($("#edit-civicrm-1-contact-1-cg22-custom-236").val() != "") {
     $("#edit-civicrm-1-contact-1-cg22-fieldset").addClass(
       "form-readonly webform-readonly"
