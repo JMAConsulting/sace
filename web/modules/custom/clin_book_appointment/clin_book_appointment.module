@@ -1,0 +1,24 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function clin_book_appointment_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_create_activity_add_form") {
+    
+    // Attach libraries
+    $form['#attached']['library'][] = 'clin_book_appointment/clin_book_appointment';
+
+    CRM_Core_Resources::singleton()->addCoreResources();
+
+    // Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+
+  }
+}

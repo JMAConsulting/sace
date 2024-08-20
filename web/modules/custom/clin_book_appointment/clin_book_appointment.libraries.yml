@@ -1,0 +1,7 @@
+clin_book_appointment:
+  version: 1
+  js:
+    js/clin_book_appointment.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
