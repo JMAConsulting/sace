@@ -52,47 +52,19 @@ class ClinBookAppointmentWebformHandler extends WebformHandlerBase {
     $webform_submission_data = $webform_submission->getData();
 
     if ($webform_submission_data) {
-      // Do not create a new activty if appointment status is attended, scheduled, or completed
-      if(($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 10 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 2
-      && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 1) || $webform_submission_data['book_an_appointment'] == 1) {
-
-        // Schedule reminder one week later
-        if($webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 14 && $webform_submission_data['civicrm_1_activity_1_activity_status_id'] != 15 && $webform_submission_data['book_an_appointment'] != 1) {
-          $results = \Civi\Api4\Activity::create(FALSE)
-            ->addValue('parent_id', $webform_submission_data['aid']) // Original appointment ID
-            ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
-            ->addValue('activity_type_id', 346) // CLIN - Reminder activity type
-            ->addValue('activity_date_time', date('Y-m-d H:i:s', strtotime('+1 week', time())))
-            ->addValue('duration', $webform_submission_data['civicrm_1_activity_1_activity_duration'])
-            ->addValue('status_id', 1) // Set reminder status to scheduled
-            ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
-            ->addValue('assignee_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing']) // Assign to receptionist
-            ->addValue('activity_details', 	$webform_submission_data['civicrm_1_activity_1_activity_details'])
-            ->execute();
-        }
-        // Schedule updated appointment
-        else {
-          $results = \Civi\Api4\Activity::create(FALSE)
-            ->addValue('source_contact_id', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
-            ->addValue('activity_type_id', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
-            ->addValue('activity_date_time', $webform_submission_data['activity_date_time'])
-            ->addValue('duration', $webform_submission_data['civicrm_1_activity_1_activity_duration'])
-            ->addValue('status_id', $webform_submission_data['civicrm_1_activity_1_activity_status_id'])
-            ->addValue('target_contact_id', $webform_submission_data['civicrm_2_contact_1_contact_existing'])
-            ->addValue('assignee_contact_id', $webform_submission_data['civicrm_3_contact_1_contact_existing'])
-            ->addValue('activity_details', 	$webform_submission_data['civicrm_1_activity_1_activity_details'])
-            ->execute();
-        }
-      }
-      if($webform_submission_data['book_an_appointment'] != '') {
-        $results = \Civi\Api4\Activity::update(TRUE)
-          ->addValue('status_id', 2)
-          ->addValue('activity_type_id', 346) // CLIN - Reminder activity type
-          ->addWhere('id', '=', $webform_submission_data['aid'])
-          ->execute();
-      } 
+      $appointment = \Civi\Api4\Activity::get(FALSE)
+        ->addSelect('id')
+        ->addWhere('source_contact_id', '=', $webform_submission_data['civicrm_1_contact_1_contact_existing'])
+        ->addWhere('activity_type_id', '=', $webform_submission_data['civicrm_1_activity_1_activity_activity_type_id'])
+        ->addOrderBy('id', 'DESC')
+        ->execute()
+        ->first();
+        
+      // Update appointment with any counsellors assigned
+      $results = \Civi\Api4\Activity::update(FALSE)
+        ->addValue('assignee_contact_id', $webform_submission_data['select_counsellor'])
+        ->addWhere('id', '=', $appointment['id'])
+        ->execute();
     }
   }
 }
-
-
