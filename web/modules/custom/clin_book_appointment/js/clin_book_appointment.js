@@ -71,4 +71,11 @@ jQuery(document).ready(function ($) {
       $("#edit-flexbox-01").hide();
     }
   }
+
+  $("#edit-civicrm-1-activity-1-activity-activity-type-id").change(function () {
+    appointmentType = $(
+      "#edit-civicrm-1-activity-1-activity-activity-type-id option:selected"
+    ).text();
+    $("#edit-civicrm-1-activity-1-activity-subject").val(appointmentType);
+  });
 });
