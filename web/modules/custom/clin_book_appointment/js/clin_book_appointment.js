@@ -1,4 +1,6 @@
 jQuery(document).ready(function ($) {
+  toggleFieldVisibility();
+  
   $("#edit-civicrm-2-contact-1-contact-existing").change(function () {
     toggleFieldVisibility();
 
