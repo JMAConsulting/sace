@@ -66,9 +66,9 @@ jQuery(document).ready(function ($) {
   function toggleFieldVisibility() {
     var selectValue = $(".token-input-token p").text();
     if (selectValue === "+ Create new +") {
-      $("#edit-flexbox-01").show();
+      $("#edit-contact-information").show();
     } else {
-      $("#edit-flexbox-01").hide();
+      $("#edit-contact-information").hide();
     }
   }
 
