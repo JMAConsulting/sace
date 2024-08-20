@@ -60,4 +60,13 @@ jQuery(document).ready(function ($) {
       );
     }
   });
+  // Hide new client option unless selected in autocomplete
+  function toggleFieldVisibility() {
+    var selectValue = $(".token-input-token p").text();
+    if (selectValue === "+ Create new +") {
+      $("#edit-flexbox-01").show();
+    } else {
+      $("#edit-flexbox-01").hide();
+    }
+  }
 });
