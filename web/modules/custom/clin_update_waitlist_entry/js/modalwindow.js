@@ -2,6 +2,7 @@
     var viewHtml = '';
     var counsellorName = '';
     $( '#edit-civicrm-3-contact-1-contact-existing').on( "change", function() {
+        viewHtml = '';
         counsellorName = $("option:selected", this).text();
         var counsellorId = this.value;
         $.ajax({
@@ -14,9 +15,15 @@
             },
             dataType: 'json',
             success: function (response) {
-                console.log(response[3].data);
+                // Add any scripts
+                if (response[2].data !== undefined) {
+                    response[2].data.forEach(script => {
+                        viewHtml.concat(`<script src="${script.src}"></script>`);
+                    });
+                }
+                // Add the HTML
                 if (response[3].data !== undefined) {
-                    viewHtml = response[3].data;
+                    viewHtml.concat(response[3].data);
                 }
             }
         });
