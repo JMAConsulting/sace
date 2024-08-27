@@ -84,11 +84,12 @@ function civicrm_api3_job_appointment_import($params) {
           // If there is a casenote attached... how to deal with multiple notes
           // attached to one appointment?
           if($row['cn.Id']) {
-            // where is note content stored?
+            // where is note content stored? How to handle appendums??? (My best guess)
             $note = \Civi\Api4\Note::create(TRUE)
               ->addValue('note', $row['cn.NarrativeText'])
               ->addValue('entity_table', 'civicrm_activity')
               ->addValue('entity_id', $appointment[0]['id'])
+              ->addValue('subject', $row['acode.Description']) // Set subject to name of appointment type
               ->addValue('created_date', date('Y-m-d', strtotime($row['cn.AddDate'])))
               ->addValue('note_date', date('Y-m-d', strtotime($row['cn.Date'])))
               ->execute();
@@ -97,6 +98,16 @@ function civicrm_api3_job_appointment_import($params) {
               ->addValue('note_id', $note[0]['id'])
               ->addValue('is_locked', (bool)$row['cn.LockStatusModifier'])
               ->execute();
+
+            if($row['cn.PendingAddendumText']) {
+              $note = \Civi\Api4\Note::create(TRUE)
+              ->addValue('note', $row['cn.PendingAddendumText'])
+              ->addValue('entity_table', 'civicrm_note')
+              ->addValue('entity_id', $note[0]['id'])
+              ->addValue('subject', $note[0]['subject']) // Set subject to subject of prev note
+              ->addValue('note_date', date('Y-m-d', strtotime($row['cn.Date'])))
+              ->execute();
+            }
           }
       }
       $returnValues = "Successfully imported appointments into CiviCRM.";
