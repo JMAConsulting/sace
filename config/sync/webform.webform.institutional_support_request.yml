@@ -288,7 +288,7 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_1232:
     '#type': civicrm_options
     '#title': 'Consultation Topic'
-    '#description': 'Please note that organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review.&nbsp;'
+    '#description': '<p><strong>Please note, you are booking a consultation, not a presentation</strong>. Organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review. To book a presentation, fill out our&nbsp;<a href="https://secure.sace.ca/form/ped-booking-request?booking_type=55&amp;pop=Youth">Youth Presentation</a>&nbsp;or&nbsp;<a href="https://secure.sace.ca/form/ped-booking-request?booking_type=59&amp;pop=Adult">Adult Presentation</a>&nbsp;booking forms, or include a note in the "Additional needs or considerations" field below.</p>'
     '#empty_option': '- select - '
     '#civicrm_live_options': 0
     '#options':
@@ -326,6 +326,16 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_88
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': 'In-Person Presentation'
+  flexbox_04:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_815:
+      '#type': number
+      '#title': 'Approximate number of participants per session'
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_815
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
   flexbox_05:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_127:

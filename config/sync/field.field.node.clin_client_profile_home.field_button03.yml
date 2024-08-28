@@ -1,0 +1,23 @@
+uuid: 803320c1-1de8-4755-9fc6-92bb481c3f2c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_button03
+    - node.type.clin_client_profile_home
+  module:
+    - link
+id: node.clin_client_profile_home.field_button03
+field_name: field_button03
+entity_type: node
+bundle: clin_client_profile_home
+label: Button03
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 1
+field_type: link

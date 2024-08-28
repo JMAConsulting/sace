@@ -10,7 +10,7 @@ dependencies:
 id: oliverolocal_fullcalendarteam
 theme: oliverolocal
 region: content
-weight: -5
+weight: -6
 provider: null
 plugin: fullcalendar_block
 settings:
@@ -18,10 +18,10 @@ settings:
   label: 'FullCalendar Team block'
   label_display: '0'
   provider: fullcalendar_block
-  event_source: '/team-calendar-block?_format=json'
+  event_source: 'https://staging.sace.jmaconsulting.biz/team-calendar-block?_format=json'
   use_token: false
   initial_view: timeGridWeek
-  header_start: 'prev,next today goToButton'
+  header_start: 'prev,next today'
   header_center: 'title - eventType'
   header_end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
   open_dialog: 1

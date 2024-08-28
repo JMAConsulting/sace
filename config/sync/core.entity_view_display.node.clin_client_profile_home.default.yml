@@ -1,0 +1,68 @@
+uuid: 28adce96-a07e-4bd5-9b6c-da369b09dfe8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.clin_client_profile_home.body
+    - field.field.node.clin_client_profile_home.field_button
+    - field.field.node.clin_client_profile_home.field_button02
+    - field.field.node.clin_client_profile_home.field_button03
+    - node.type.clin_client_profile_home
+  module:
+    - link
+    - text
+    - user
+id: node.clin_client_profile_home.default
+targetEntityType: node
+bundle: clin_client_profile_home
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_button:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_button02:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_button03:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

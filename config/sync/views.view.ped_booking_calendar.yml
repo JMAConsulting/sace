@@ -4,7 +4,6 @@ status: false
 dependencies:
   config:
     - field.storage.user.field_calendar_colour
-    - taxonomy.vocabulary.user_team
     - user.role.ped_team_lead
     - user.role.wheel
   module:
@@ -14,7 +13,6 @@ dependencies:
     - datetime
     - fullcalendar_view
     - options
-    - taxonomy
     - user
 id: ped_booking_calendar
 label: 'PED Booking Calendar'
@@ -1334,7 +1332,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - user
         - user.roles
       tags:
         - 'config:field.storage.user.field_calendar_colour'
@@ -1369,7 +1366,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - user
         - user.roles
       tags:
         - 'config:field.storage.user.field_calendar_colour'

@@ -12,7 +12,7 @@ dependencies:
 id: calendarload
 theme: oliverolocal
 region: content
-weight: 0
+weight: -4
 provider: null
 plugin: 'block_content:9209a82f-bc18-4c44-af82-75ec436dc549'
 settings:

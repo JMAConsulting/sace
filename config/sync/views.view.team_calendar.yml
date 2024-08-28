@@ -1444,7 +1444,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Organization/Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Start Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n</div>\r\n\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">End Date:</span>\r\n  <span class=\"myactivity-value\">{{ end_date_661 }}</span>\r\n</div>\r\n\r\n{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{# Update booking links #}\r\n{% if activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/ped-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id }}&cid2={{ id_1}}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n  <a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id starts with 'CLIN' %} \r\n  <a href=\"/clin-update-appointment?cid2={{ id_1}}&cid3={{ id_2 }}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n  <a href=\"/clin-intake?cid2={{ id_1}}&aid={{ id }}\" class=\"button button--secondary\">Intake</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n{#\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n#}\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a>  <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n  {% endif %}\r\n{% endif %}"
+            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Organization/Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Start Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n</div>\r\n\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">End Date:</span>\r\n  <span class=\"myactivity-value\">{{ end_date_661 }}</span>\r\n</div>\r\n\r\n{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'CLIN - Intake Booking Adult' %} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-adult-intake-data?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Update Intake Booking</a>\r\n</div>\r\n{% elseif activity_type_id == 'CLIN - Intake Booking C and Y' %} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-c-y-intake-data?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Update Intake Booking</a>\r\n</div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{# Update booking links #}\r\n{% if activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/ped-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id }}&cid2={{ id_1}}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n  <a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n{#\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n#}\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a>  <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n  {% endif %}\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -1481,6 +1481,55 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
+        colour_hex:
+          id: colour_hex
+          table: civicrm_appointment_colours
+          field: colour_hex
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
       pager:
         type: none
         options:
@@ -1505,7 +1554,7 @@ display:
           role:
             authenticated: authenticated
       cache:
-        type: tag
+        type: none
         options: {  }
       empty: {  }
       sorts: {  }
@@ -1544,7 +1593,7 @@ display:
             type: none
             fail: 'not found'
           validate_options: {  }
-          break_phrase: false
+          break_phrase: true
           not: false
       filters:
         activity_date_time:
@@ -1658,7 +1707,7 @@ display:
           operator: word
           value: ''
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: subject_op
             label: Search
@@ -1761,49 +1810,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        contact_sub_type:
-          id: contact_sub_type
-          table: civicrm_contact
-          field: contact_sub_type
-          relationship: contact
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: contact_sub_type
-          plugin_id: list_field
-          operator: in
-          value:
-            Staff: Staff
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:
@@ -2373,7 +2379,7 @@ display:
           type: datetime_custom
           settings:
             timezone_override: ''
-            date_format: 'Y-m-d H:i:s'
+            date_format: 'd M Y, g:i A'
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -3023,69 +3029,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_calendar_colour:
-          id: field_calendar_colour
-          table: user__field_calendar_colour
-          field: field_calendar_colour
-          relationship: user
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: true
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
         activity_assignees_string:
           id: activity_assignees_string
           table: civicrm_activity
@@ -3641,7 +3584,7 @@ display:
           type: datetime_custom
           settings:
             timezone_override: ''
-            date_format: 'Y-m-d H:i:s'
+            date_format: 'd M Y, g:i A'
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -3652,6 +3595,183 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: 0
+        intake_completed_1414:
+          id: intake_completed_1414
+          table: civicrm_value_clin_adult_in_67
+          field: intake_completed_1414
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: custom_1414
+          plugin_id: civicrm_entity_custom_field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          type: datetime_custom
+          settings:
+            timezone_override: ''
+            date_format: 'd M Y, g:i A'
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: 0
+        colour_hex:
+          id: colour_hex
+          table: civicrm_appointment_colours
+          field: colour_hex
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '#{{ colour_hex }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        field_calendar_colour:
+          id: field_calendar_colour
+          table: user__field_calendar_colour
+          field: field_calendar_colour
+          relationship: user
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         nothing_1:
           id: nothing_1
           table: views
@@ -3664,7 +3784,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Assignee:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Organization/Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Start Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n</div>\r\n\r\n\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">End Date:</span>\r\n  <span class=\"myactivity-value\">{{ end_date_661 }}</span>\r\n</div>\r\n\r\n{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{# Update booking links #}\r\n{% if activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/ped-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id }}&cid2={{ id_1}}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n  <a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id starts with 'CLIN' %} \r\n  <a href=\"/clin-update-appointment?cid2={{ id_1}}&cid3={{ id_2 }}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n  <a href=\"/clin-intake?cid2={{ id_1}}&aid={{ id }}\" class=\"button button--secondary\">Intake</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n{#\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n#}\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a>  <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n  {% endif %}\r\n{% endif %}"
+            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n<div class=\"myactivity-field\">\r\n{% if activity_type_id == 'CLIN - Intake Booking Adult' or  activity_type_id == 'CLIN - Intake Booking C and Y' %}\r\n  <span class=\"myactivity-label\"><b>Client Care Staff Assigned:</b></span>\r\n{% else %}\r\n  <span class=\"myactivity-label\"><b>Assignee:</b></span>\r\n{% endif %}\r\n  <span class=\"myactivity-value\">{{ sort_name_1 }}</span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n{% if activity_type_id == 'CLIN - Intake Booking Adult' or  activity_type_id == 'CLIN - Intake Booking C and Y' %}\r\n  <span class=\"myactivity-label\"><b>Target:</b></span>\r\n{% else %}\r\n  <span class=\"myactivity-label\"><b>Organization/Target:</b></span>\r\n{% endif %}\r\n  <span class=\"myactivity-value\"><a href=\"/contact-information/{{ id_1 }}\">{{ sort_name }}</a></span>\r\n</div>\r\n\r\n<div class=\"myactivity-field\">\r\n{% if activity_type_id == 'CLIN - Intake Booking Adult' or  activity_type_id == 'CLIN - Intake Booking C and Y' %}\r\n<span class=\"myactivity-label\"><b>Initial Call Date:</b></span>\r\n{% else %}\r\n<span class=\"myactivity-label\"><b>Start Date:</b></span>\r\n{% endif %}\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n</div>\r\n\r\n{% if activity_type_id == 'CLIN - Intake Booking Adult' or  activity_type_id == 'CLIN - Intake Booking C and Y' %}\r\n    {% if intake_completed_1414 != '' %}\r\n    <div class=\"myactivity-field\">\r\n     <span class=\"myactivity-label\"><b>Intake Completed Date:</b></span>\r\n     <span class=\"myactivity-value\">{{ intake_completed_1414 }}</span>\r\n    </div>\r\n   {% endif %}\r\n{% elseif  activity_type_id != 'CLIN - Reminder' %}\r\n<div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\"><b>End Date:</b></span>\r\n  <span class=\"myactivity-value\">{{ end_date_661 }}</span>\r\n</div>\r\n{% endif %}\r\n\r\n{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{# Update booking links #}\r\n{% if activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/ped-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id }}&cid2={{ id_1}}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n  <a href=\"/ped-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id == 'CLIN - Intake Booking Adult' or  activity_type_id == 'CLIN - Intake Booking C and Y' %} \r\n{% if activity_type_id == 'CLIN - Intake Booking Adult' %} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-adult-intake-data?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Complete Intake Booking</a>\r\n</div>\r\n{% elseif activity_type_id == 'CLIN - Intake Booking C and Y' %} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-c-y-intake-data?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Complete Intake Booking</a>\r\n</div>\r\n{% endif %}\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-update-appointment?aid={{ id }}&cid2={{ id_1}}&cid3={{ id_2 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n{% elseif activity_type_id == 'CLIN - Reminder' %} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-update-appointment?aid={{ id }}&cid2={{ id_1}}\" class=\"button button--secondary\">Update Reminder</a>\r\n</div>\r\n{% elseif activity_type_id matches '/CLIN/' %}\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-update-appointment?aid={{ id }}&cid2={{ id_1}}&cid3={{ id_2 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n&nbsp;&nbsp;\r\n{% if is_multiple_booking and activity_type_id != 'CLIN - Intake Booking C and Y' and activity_type_id != 'CLIN - Intake Booking Adult' %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n{#\r\n<a href=\"/ped-sace-teacher-feedback?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Teacher Evaluation Form</a>\r\n#}\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a>  <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1}}&bid={{ id }}&cid1={{ id_3 }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id }}&cid2={{ id_1}}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n  {% endif %}\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -3723,14 +3843,7 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
-              reset_button_always_show: false
             filter:
-              activity_date_time:
-                plugin_id: bef_datepicker
-                advanced:
-                  placeholder_text: ''
-                  collapsible: false
-                  is_secondary: false
               uf_select:
                 plugin_id: bef
                 advanced:
@@ -3748,14 +3861,6 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
-              field_user_team_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
       filters:
         activity_date_time:
           id: activity_date_time
@@ -3771,54 +3876,24 @@ display:
           value:
             min: ''
             max: ''
-            value: ''
+            value: '-1 year'
             type: offset
           group: 1
-          exposed: true
+          exposed: false
           expose:
-            operator_id: activity_date_time_op
-            label: 'Go to'
+            operator_id: ''
+            label: ''
             description: ''
             use_operator: false
-            operator: activity_date_time_op
+            operator: ''
             operator_limit_selection: false
             operator_list: {  }
-            identifier: activity_date_time
+            identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-              cad_staff: '0'
-              cad_tl: '0'
-              ce_staff: '0'
-              ce_director: '0'
-              eval: '0'
-              finance: '0'
-              taxreceipts: '0'
-              fund_development_officer: '0'
-              wheel: '0'
-              pe: '0'
-              pe_tl: '0'
-              vsil: '0'
-              vsil_tl: '0'
-              is_staff: '0'
-              anonymous: '0'
-              clin_team_lead: '0'
-              clin_intake_worker: '0'
-              clin_counsellor: '0'
-              ped_team_lead: '0'
-              supervisors: '0'
-              clin_director: '0'
-              intake: '0'
-              pacs_tl: '0'
-              clin_tl: '0'
-              pacsa: '0'
-              reception: '0'
-              indigenous_cl: '0'
-              couns_tl: '0'
-              wiseguyz_staff: '0'
-              volunteer_supervisor: '0'
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
@@ -3834,57 +3909,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        uf_select:
-          id: uf_select
-          table: civicrm_contact
-          field: uf_select
-          relationship: contact
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          plugin_id: civicrm_entity_vf_uf_select
-          operator: in
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: uf_select_op
-            label: 'Select SACE User'
-            description: ''
-            use_operator: false
-            operator: uf_select_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: uf_select
-            required: false
-            remember: false
-            multiple: true
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              clin_team_lead: '0'
-              clin_intake_worker: '0'
-              clin_counsellor: '0'
-              ped_team_lead: '0'
-              wheel: '0'
-              finance: '0'
-              taxreceipts: '0'
-            reduce: 0
-          is_grouped: false
-          group_info:
-            label: 'User Contact'
-            description: null
-            identifier: uf_select
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1: {  }
-              2: {  }
-              3: {  }
         subject:
           id: subject
           table: civicrm_activity
@@ -3901,7 +3925,7 @@ display:
           exposed: true
           expose:
             operator_id: subject_op
-            label: Search
+            label: 'Search by Subject'
             description: ''
             use_operator: false
             operator: subject_op
@@ -3956,94 +3980,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        uid_raw:
-          id: uid_raw
-          table: users_field_data
-          field: uid_raw
-          relationship: user
-          group_type: group
-          admin_label: ''
-          entity_type: user
-          plugin_id: numeric
-          operator: 'not empty'
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        contact_sub_type:
-          id: contact_sub_type
-          table: civicrm_contact
-          field: contact_sub_type
-          relationship: contact
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: contact_sub_type
-          plugin_id: list_field
-          operator: in
-          value:
-            Staff: Staff
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
         field_user_team_target_id:
           id: field_user_team_target_id
           table: user__field_user_team
@@ -4067,7 +4003,7 @@ display:
             identifier: tid
             required: false
             remember: false
-            multiple: false
+            multiple: true
             remember_roles:
               authenticated: authenticated
               cad_staff: '0'
@@ -4119,6 +4055,118 @@ display:
           hierarchy: false
           limit: true
           error_message: true
+        uf_select:
+          id: uf_select
+          table: civicrm_contact
+          field: uf_select
+          relationship: contact
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_contact
+          plugin_id: civicrm_entity_vf_uf_select
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: uf_select_op
+            label: 'User Contact'
+            description: ''
+            use_operator: false
+            operator: uf_select_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: uf_select
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              reception: '0'
+              indigenous_cl: '0'
+              couns_tl: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+            reduce: 1
+            user_team: {  }
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        uuid:
+          id: uuid
+          table: users
+          field: uuid
+          relationship: user
+          group_type: group
+          admin_label: ''
+          entity_type: user
+          entity_field: uuid
+          plugin_id: string
+          operator: 'not empty'
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -5673,7 +5721,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set difference = end_date_661.diff(activity_date_time) %}\r\n{% set endYear = end_date_661 | date(\"Y\") %}\r\n{% set endDay = end_date_661 | date(\"d\") %}\r\n{% set endMonth = end_date_661 | date(\"m\") %}\r\n{% set startYear = activity_date_time | date(\"Y\") %}\r\n{% set startDay = activity_date_time | date(\"d\") %}\r\n{% set startMonth = activity_date_time | date(\"m\") %}\r\n{% if ((endMonth == startMonth) and ((endDay - startDay) > 0) or ((endMonth - startMonth) > 0) or (startYear < endYear)) %}\r\n  true\r\n{% endif %}"
+            text: "{% set difference = end_date_661.diff(activity_date_time) %}\r\n{% set endDay = end_date_661 | date(\"d\") %}\r\n{% set endMonth = end_date_661 | date(\"m\") %}\r\n{% set startDay = activity_date_time | date(\"d\") %}\r\n{% set startMonth = activity_date_time | date(\"m\") %}\r\n{% if ((endMonth == startMonth) and ((endDay - startDay) > 0) or ((endMonth - startMonth) > 0)) %}\r\n  true\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -5711,9 +5759,10 @@ display:
           empty_zero: false
           hide_alter_empty: false
       pager:
-        type: none
+        type: some
         options:
           offset: 0
+          items_per_page: 0
       arguments:
         tid:
           id: tid
@@ -5874,49 +5923,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        contact_sub_type:
-          id: contact_sub_type
-          table: civicrm_contact
-          field: contact_sub_type
-          relationship: contact
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: contact_sub_type
-          plugin_id: list_field
-          operator: in
-          value:
-            Staff: Staff
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:

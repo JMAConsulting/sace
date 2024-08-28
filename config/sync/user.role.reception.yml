@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - civicrm
     - file
 id: reception
 label: Reception
@@ -10,3 +11,5 @@ weight: 10
 is_admin: null
 permissions:
   - 'delete own files'
+  - 'view all activities'
+  - 'view all contacts'

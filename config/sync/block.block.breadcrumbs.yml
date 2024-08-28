@@ -9,7 +9,7 @@ dependencies:
 id: breadcrumbs
 theme: oliverolocal
 region: breadcrumb
-weight: 0
+weight: -10
 provider: null
 plugin: system_breadcrumb_block
 settings:
@@ -22,4 +22,4 @@ visibility:
     id: request_path
     negate: true
     context_mapping: {  }
-    pages: '/calendar-team/*'
+    pages: "/calendar-team/*\r\n/contact-information/*"

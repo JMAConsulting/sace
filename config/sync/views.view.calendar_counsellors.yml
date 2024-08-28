@@ -6,7 +6,6 @@ dependencies:
     - field.storage.user.field_calendar_colour
     - user.role.authenticated
   module:
-    - better_exposed_filters
     - civicrm_entity
     - civicrm_entity_vf
     - datetime
@@ -1416,7 +1415,7 @@ display:
           offset: 0
           items_per_page: 0
       exposed_form:
-        type: bef
+        type: basic
         options:
           submit_button: Apply
           reset_button: false
@@ -1425,24 +1424,6 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
-          text_input_required: 'Select any filter and click on Apply to see results'
-          text_input_required_format: null
-          bef:
-            general:
-              autosubmit: false
-              autosubmit_exclude_textfield: false
-              autosubmit_textfield_delay: 500
-              autosubmit_hide: false
-              input_required: false
-              allow_secondary: false
-              secondary_label: 'Advanced options'
-              secondary_open: false
-              reset_button_always_show: false
-            sort:
-              plugin_id: default
-            filter:
-              activity_date_time:
-                plugin_id: default
       access:
         type: role
         options:
@@ -1714,124 +1695,8 @@ display:
     display_plugin: page
     position: 1
     display_options:
-      exposed_form:
-        type: bef
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-          text_input_required: 'Select any filter and click on Apply to see results'
-          text_input_required_format: html
-          bef:
-            general:
-              autosubmit: false
-              autosubmit_exclude_textfield: false
-              autosubmit_textfield_delay: 500
-              autosubmit_hide: false
-              input_required: false
-              allow_secondary: false
-              secondary_label: 'Advanced options'
-              secondary_open: false
-              reset_button_always_show: false
-            filter:
-              activity_date_time:
-                plugin_id: bef_datepicker
-                advanced:
-                  placeholder_text: ''
-                  collapsible: false
-                  is_secondary: false
-      filters:
-        activity_date_time:
-          id: activity_date_time
-          table: civicrm_activity
-          field: activity_date_time
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: activity_date_time
-          plugin_id: datetime
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-          group: 1
-          exposed: true
-          expose:
-            operator_id: activity_date_time_op
-            label: 'Go to'
-            description: ''
-            use_operator: false
-            operator: activity_date_time_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: activity_date_time
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              cad_staff: '0'
-              cad_tl: '0'
-              ce_staff: '0'
-              ce_director: '0'
-              eval: '0'
-              finance: '0'
-              taxreceipts: '0'
-              fund_development_officer: '0'
-              wheel: '0'
-              pe: '0'
-              pe_tl: '0'
-              vsil: '0'
-              vsil_tl: '0'
-              is_staff: '0'
-              anonymous: '0'
-              clin_team_lead: '0'
-              clin_intake_worker: '0'
-              clin_counsellor: '0'
-              ped_team_lead: '0'
-              supervisors: '0'
-              clin_director: '0'
-              intake: '0'
-              pacs_tl: '0'
-              clin_tl: '0'
-              pacsa: '0'
-              reception: '0'
-              indigenous_cl: '0'
-              couns_tl: '0'
-              wiseguyz_staff: '0'
-              volunteer_supervisor: '0'
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      defaults:
-        exposed_form: false
-        filters: false
-        filter_groups: false
       display_extenders: {  }
-      path: my-calendar
+      path: my-calendar-test
     cache_metadata:
       max-age: -1
       contexts:
@@ -3240,7 +3105,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set difference = end_date_661.diff(activity_date_time) %}\r\n{% set endYear = end_date_661 | date(\"Y\") %}\r\n{% set endDay = end_date_661 | date(\"d\") %}\r\n{% set endMonth = end_date_661 | date(\"m\") %}\r\n{% set startYear = activity_date_time | date(\"Y\") %}\r\n{% set startDay = activity_date_time | date(\"d\") %}\r\n{% set startMonth = activity_date_time | date(\"m\") %}\r\n{% if ((endMonth == startMonth) and ((endDay - startDay) > 0) or ((endMonth - startMonth) > 0) or (startYear < endYear)) %}\r\n true\r\n{% endif %}"
+            text: "{% set difference = end_date_661.diff(activity_date_time) %}\r\n{% set endDay = end_date_661 | date(\"d\") %}\r\n{% set endMonth = end_date_661 | date(\"m\") %}\r\n{% set startDay = activity_date_time | date(\"d\") %}\r\n{% set startMonth = activity_date_time | date(\"m\") %}\r\n{% if ((endMonth == startMonth) and ((endDay - startDay) > 0) or ((endMonth - startMonth) > 0)) %}true{% endif %}"
             make_link: false
             path: ''
             absolute: false

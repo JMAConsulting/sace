@@ -1204,6 +1204,8 @@ display:
           right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
           default_view: dayGridMonth
           firstDay: '1'
+          minTime: '00:00:00'
+          maxTime: '23:59:00'
           nav_links: 1
           timeFormat: 'hh:mm a'
           allowEventOverlap: 1
@@ -1213,8 +1215,10 @@ display:
           languageSelector: 0
           dialogWindow: 1
           openEntityInNewTab: 1
+          dialogModal: 0
           createEventLink: 0
           eventLimit: '3'
+          slotDuration: '00:30:00'
           tax_field: field_calendar_colour
           vocabularies: calendar_colour
           color_bundle:
@@ -1326,11 +1330,7 @@ display:
             ad_policy_practice_review_development: '#3a87ad'
             ad_regulation_legislation_or_compliance_research_review: '#3a87ad'
           rrule: ''
-          dialogModal: false
           duration: ''
-          slotDuration: '00:30:00'
-          minTime: '00:00:00'
-          maxTime: '23:59:00'
           bundle_type: ''
           classes: ''
           color_taxonomies:

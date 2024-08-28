@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - civicrm
     - file
 id: intake
 label: INTAKE
@@ -10,3 +11,5 @@ weight: 6
 is_admin: null
 permissions:
   - 'delete own files'
+  - 'view all activities'
+  - 'view all contacts'

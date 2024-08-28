@@ -1,0 +1,47 @@
+uuid: 5bde6797-e15a-4a16-902b-d15bba3b2966
+langcode: en
+status: true
+dependencies:
+  config:
+    - webform.webform.client_profile
+  module:
+    - system
+    - user
+    - webform
+  theme:
+    - oliverolocal
+id: oliverolocal_webform
+theme: oliverolocal
+region: content
+weight: -2
+provider: null
+plugin: webform_block
+settings:
+  id: webform_block
+  label: 'Contact Information'
+  label_display: '0'
+  provider: webform
+  webform_id: client_profile
+  default_data: ''
+  redirect: false
+  lazy: false
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/contact-information/*'
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      ce_staff: ce_staff
+      wheel: wheel
+      clin_team_lead: clin_team_lead
+      clin_intake_worker: clin_intake_worker
+      clin_counsellor: clin_counsellor
+      clin_director: clin_director
+      intake: intake
+      clin_tl: clin_tl
+      reception: reception

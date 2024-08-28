@@ -193,53 +193,6 @@ elements: |-
       '#data_type': state_province_abbr
       '#form_key': civicrm_2_contact_1_address_state_province_id
       '#parent': civicrm_2_contact_1_fieldset_fieldset
-      '#webform': ped_online_course_booking_update
-      '#webform_id': ped_online_course_booking_update--civicrm_2_contact_1_address_state_province_id
-      '#webform_key': civicrm_2_contact_1_address_state_province_id
-      '#webform_parent_key': civicrm_2_contact_1_fieldset_fieldset
-      '#webform_parent_flexbox': false
-      '#webform_depth': 1
-      '#webform_children': {  }
-      '#webform_multiple': false
-      '#webform_composite': false
-      '#webform_parents':
-        - civicrm_2_contact_1_fieldset_fieldset
-        - civicrm_2_contact_1_address_state_province_id
-      '#admin_title': State/Province
-      '#webform_plugin_id': civicrm_options
-      '#civicrm_live_options': 0
-      '#empty_option': '- None -'
-      '#options': {  }
-    civicrm_2_contact_1_cg52_custom_663:
-      '#type': textfield
-      '#title': 'Group Name'
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#states':
-        invisible:
-          ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
-            value: 'No'
-      '#data_type': String
-      '#form_key': civicrm_2_contact_1_cg52_custom_663
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_2_contact_1_cg52_custom_664:
-      '#type': textfield
-      '#data_type': String
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#states':
-        visible:
-          ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
-            value: 'Yes'
-      '#form_key': civicrm_2_contact_1_cg52_custom_664
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Group Details'
   civicrm_2_contact_1_other_tag:
     '#type': civicrm_options
     '#title': Tag(s)
@@ -433,6 +386,7 @@ elements: |-
       civicrm_1_activity_1_cg2_custom_331:
         '#type': civicrm_options
         '#title': 'Resources Content'
+        '#civicrm_live_options': 0
         '#options':
           1: 'Yes'
           0: 'No'
@@ -442,7 +396,8 @@ elements: |-
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_331
         '#parent': civicrm_1_activity_1_fieldset_fieldset
-        '#civicrm_live_options': '1'
+        '#default_option': '1'
+        '#default_value': '1'
       civicrm_1_activity_1_cg2_custom_330:
         '#type': civicrm_options
         '#title': 'Support Content'
@@ -456,6 +411,8 @@ elements: |-
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_330
         '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': '1'
+        '#default_value': '1'
     flexbox_17:
       '#type': webform_flexbox
       civicrm_1_activity_1_cg2_custom_334:
@@ -464,12 +421,14 @@ elements: |-
         '#options':
           1: 'Yes'
           0: 'No'
+        '#default_value': '0'
         '#extra':
           aslist: 1
           multiple: 0
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_334
         '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': '0'
         '#civicrm_live_options': '1'
       civicrm_1_activity_1_cg2_custom_1261:
         '#type': civicrm_options
@@ -484,6 +443,8 @@ elements: |-
         '#data_type': Boolean
         '#form_key': civicrm_1_activity_1_cg2_custom_1261
         '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': 0
+        '#default_value': 0
   processed_text_04:
     '#type': processed_text
     '#text': '<h3><span style="color:#2e416c;">Online Course Details</span></h3>'
@@ -637,19 +598,6 @@ elements: |-
         '#form_key': civicrm_1_activity_1_activity_duration
         '#parent': civicrm_1_activity_1_fieldset_fieldset
         '#extra': {  }
-    civicrm_1_activity_1_cg2_custom_698:
-      '#type': textarea
-      '#title': 'Is there anything else you would like us to know'
-      '#states':
-        invisible:
-          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '199'
-      '#data_type': Memo
-      '#extra':
-        cols: '60'
-        rows: '4'
-      '#form_key': civicrm_1_activity_1_cg2_custom_698
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
   flexbox_14:
     '#type': webform_flexbox
     civicrm_3_contact_1_contact_existing:
@@ -1093,7 +1041,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -49
+    weight: -48
     settings:
       disable: 'Leave Fields and Save Settings'
       nid: 1
@@ -1750,7 +1698,6 @@ handlers:
       create_new_relationship: 0
       disable_contact_paging: 0
       new_contact_source: ' PED Youth Online Course Booking Update'
-      antibot_key: ''
       data:
         contact:
           1:
@@ -1935,7 +1882,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -48
+    weight: -49
     settings: {  }
   ped_online_course_booking_update_handler:
     id: ped_online_course_booking_update_handler

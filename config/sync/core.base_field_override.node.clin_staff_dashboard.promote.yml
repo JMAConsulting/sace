@@ -1,0 +1,22 @@
+uuid: 018a301b-2693-467a-b140-f67ebc3c4c92
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.clin_staff_dashboard
+id: node.clin_staff_dashboard.promote
+field_name: promote
+entity_type: node
+bundle: clin_staff_dashboard
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -19,13 +19,11 @@ label: 'Authenticated user'
 weight: -1
 is_admin: false
 permissions:
-  - 'access AJAX API'
   - 'access CiviMail subscribe/unsubscribe pages'
   - 'access all custom data'
   - 'access content'
   - 'access fontawesome additional settings'
   - 'access uploaded files'
-  - 'administer filters'
   - 'delete own files'
   - 'make online contributions'
   - 'profile create'

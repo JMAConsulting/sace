@@ -1,0 +1,18 @@
+uuid: 8fadbf34-cc83-4575-a688-39516d97c2e8
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.clin_client_profile_home
+id: node.clin_client_profile_home.title
+field_name: title
+entity_type: node
+bundle: clin_client_profile_home
+label: 'Client Profile'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
