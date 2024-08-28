@@ -30,4 +30,17 @@ return [
       'parameters' => '',
     ],
   ],
+  [
+    'name' => 'Cron:Job.FlagImport',
+    'entity' => 'Job',
+    'params' => [
+      'version' => 3,
+      'name' => 'Call Job.FlagImport API',
+      'description' => 'Imports Titanium flag data into CiviCRM.',
+      'run_frequency' => 'Daily',
+      'api_entity' => 'Job',
+      'api_action' => 'flag_import',
+      'parameters' => '',
+    ],
+  ],
 ];

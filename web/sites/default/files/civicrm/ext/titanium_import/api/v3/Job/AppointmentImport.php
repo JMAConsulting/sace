@@ -51,7 +51,6 @@ function civicrm_api3_job_appointment_import($params) {
     ";
     $result = $conn->query($sql);
 
-    $appointments = [];
     if ($result->num_rows > 0) { // how to link in appointcode?
       while($row = $result->fetch_assoc()) {
         // get contact ID and Resource ID
