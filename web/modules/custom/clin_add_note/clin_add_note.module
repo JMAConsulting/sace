@@ -1,0 +1,163 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
+use Drupal\file\Entity\File;
+use Drupal\file\FileUsage\FileUsageInterface;
+use Drupal\Core\File\FileSystemInterface;
+
+function clin_add_note_preprocess_page_title(&$variables, $hook) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($current_path == '/webform/add_note_to_appointment') {
+    
+    \Drupal::service('civicrm')->initialize();
+
+    // Get aid or nid from url
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      $nid = \Drupal::request()->query->get('nid') ?? 0;
+      if (empty($nid) || !is_numeric($nid)) {
+        $cid = \Drupal::request()->query->get('cid') ?? 0;
+        if (empty($cid) || !is_numeric($cid)) {
+		      return;
+        }
+        $client = \Civi\Api4\Contact::get(FALSE)
+          ->addSelect('display_name')
+          ->addWhere('id', '=', $cid)
+          ->setLimit(1)
+          ->execute()
+          ->first();
+        $variables['title'] = [
+          '#markup' => 'Add Note to '.$client['display_name'],
+        ];
+       return; 
+      }
+      $note = \Civi\Api4\Note::get(FALSE)
+        ->addSelect('subject')
+        ->addWhere('id', '=', $nid)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      $edit = \Drupal::request()->query->get('action') ?? 0;
+
+      if(!empty($edit) && $edit == 'edit') {
+        $variables['title'] = [
+          '#markup' => 'Edit '.$note['subject'],
+        ];
+      }
+      
+      else {
+        $variables['title'] = [
+          '#markup' => 'Append Note to '.$note['subject'],
+        ];
+      }
+      return;
+    }
+
+    //Get activity type from activity
+    $activity = \Civi\Api4\Activity::get(FALSE)
+      ->addSelect('activity_type_id:name')
+      ->addWhere('id', '=', $aid)
+      ->setLimit(1)
+      ->execute()
+      ->first();
+
+      $variables['title'] = [
+        '#markup' => 'Add Note to '.$activity['activity_type_id:name'],
+      ];
+  }
+}
+
+function clin_add_note_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_add_note_to_appointment_add_form") {
+    $nid = \Drupal::request()->query->get('nid') ?? 0;
+    $edit = \Drupal::request()->query->get('action') ?? 0;
+    if (!empty($nid) && is_numeric($nid)) {
+      \Drupal::service('civicrm')->initialize();
+      $elements = WebformFormHelper::flattenElements($form);
+
+      if (!empty($edit) && $edit == 'edit') {
+        $note = \Civi\Api4\Note::get(FALSE)
+          ->addSelect('*', 'locked_note.is_locked')
+          ->addJoin('LockedNote AS locked_note', 'LEFT', ['id', '=', 'locked_note.note_id'])
+          ->addWhere('id', '=', $nid)
+          ->execute()
+          ->first();
+        
+        // If note is not locked
+        if($note['locked_note.is_locked'] === false) {
+          $attachments = \Civi\Api4\EntityFile::get(FALSE)
+            ->addSelect('file.*')
+            ->addJoin('File AS file', 'LEFT', ['file_id', '=', 'file.id'])
+            ->addWhere('entity_table', '=', 'civicrm_note')
+            ->addWhere('entity_id', '=', $note['id'])
+            ->execute();
+
+            $default_files = [];
+
+          foreach ($attachments as $attachment) {
+            if (isset($attachment['file.uri'])) {
+              // Get file ID from URI
+              $file_id = get_file_id_from_uri($attachment['file.uri']);
+
+              if ($file_id) {
+                $default_files[] = (string) $file_id; // Add file ID as string to the array
+              }
+            }
+          }
+
+          if (!empty($elements)) {
+            $elements['subject']['#default_value'] = $note['subject'];
+            $elements['details']['#default_value'] = $note['note'];
+            $elements['upload_attachment']['#default_value'] = $default_files;
+          }
+        } else {
+          \Drupal::messenger()->addError(t('This note is locked for editing.'));
+          $access_result = Drupal\Core\Access\AccessResult::forbidden('You do not have access to this page.');
+          throw new Drupal\Core\Http\Exception\CacheableAccessDeniedHttpException($access_result, $access_result->getReason());
+          return;
+        }
+      } else {
+        $note = \Civi\Api4\Note::get(FALSE)
+          ->addSelect('subject', 'note')
+          ->addWhere('id', '=', $nid)
+          ->execute()
+          ->first();
+        
+        $elements['subject']['#default_value'] = $note['subject'];
+        $elements['original_note']['#default_value'] = $note['note'];
+      }
+    }
+  }
+}
+
+function clin_add_note_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
+  $civicrm_entity_info['civicrm_entity_file'] = [
+    'civicrm entity label' => ts('EntityFile'),
+    'civicrm entity name' => 'entity_file',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+  $civicrm_entity_info['civicrm_locked_note'] = [
+    'civicrm entity label' => ts('Locked Note'),
+    'civicrm entity name' => 'locked_note',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+}
+
+function get_file_id_from_uri($uri) {
+  $file = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['uri' => $uri]);
+  return $file ? reset($file)->id() : null;
+}

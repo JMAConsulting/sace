@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains appointment_colours.module.
+ */
+function appointment_colours_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
+  $civicrm_entity_info['civicrm_appointment_colours'] = [
+    'civicrm entity label' => ts('Appointment Colours'),
+    'civicrm entity name' => 'appointment_colours',
+    'label property' => 'id',
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+}
