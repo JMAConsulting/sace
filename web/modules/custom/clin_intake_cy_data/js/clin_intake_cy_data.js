@@ -1,0 +1,247 @@
+jQuery(document).ready(function ($) {
+  // Attach change event handlers to mental health checkboxes
+  $("#edit-civicrm-1-contact-1-cg65-custom-1393-8").change(function () {
+    updateReferralSource();
+  });
+
+  function updateReferralSource() {
+    if ($("#edit-civicrm-1-contact-1-cg65-custom-1393-8").prop("checked")) {
+      $(".form-item-civicrm-1-contact-1-cg65-custom-1394").show();
+    } else {
+      $(".form-item-civicrm-1-contact-1-cg65-custom-1394").hide();
+    }
+  }
+  updateReferralSource();
+
+  // Uncheck elements
+  $("#edit-civicrm-1-contact-1-cg65-custom-1383-0").removeAttr("checked");
+  $("#edit-civicrm-1-contact-1-cg65-custom-1410-0").removeAttr("checked");
+
+  function toggleCustom1384() {
+    if ($("#edit-civicrm-1-contact-1-cg65-custom-1383-0").is(":checked")) {
+      // If "No" is checked, show element
+      $(".form-item-civicrm-1-contact-1-cg65-custom-1384").show();
+    } else {
+      // If "Yes" is checked, hide element
+      $(".form-item-civicrm-1-contact-1-cg65-custom-1384").hide();
+    }
+  }
+
+  $(
+    "#edit-civicrm-1-contact-1-cg65-custom-1383-0, #edit-civicrm-1-contact-1-cg65-custom-1383-1"
+  ).on("change", toggleCustom1384);
+
+  toggleCustom1384();
+
+  // Populating parent and guardian field
+  var guardian1 = $("#edit-civicrm-1-contact-1-cg21-custom-234").val();
+  var guardian2 = "";
+  var guardian3 = "";
+  var guardian4 = "";
+  if ($("#edit-civicrm-1-contact-1-cg23-custom-1424-1").prop("checked")) {
+    var guardian2 = $("#edit-civicrm-1-contact-1-cg23-custom-242").val();
+  }
+  if ($("#edit-civicrm-1-contact-1-cg76-custom-1436-1").prop("checked")) {
+    var guardian3 = $("#edit-civicrm-1-contact-1-cg76-custom-1433").val();
+  }
+  if ($("#edit-civicrm-1-contact-2-cg76-custom-1436-1").prop("checked")) {
+    var guardian4 = $("#edit-civicrm-1-contact-2-cg76-custom-1433").val();
+  }
+  var guardians = [guardian1, guardian2, guardian3, guardian4];
+
+  // Filter out empty values and concatenate
+  var concatenatedValue = guardians
+    .filter(function (value) {
+      return value !== "";
+    })
+    .join(" & ");
+
+  $("#edit-civicrm-1-contact-1-cg65-custom-1391").val(concatenatedValue);
+
+  // Main Legal Guardian field
+  if ($("#edit-civicrm-1-contact-1-cg21-custom-298-1").prop("checked")) {
+    $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
+      $("#edit-civicrm-1-contact-1-cg21-custom-234").val()
+    );
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
+      $("#edit-civicrm-1-contact-1-cg21-custom-238").val()
+    );
+    // Additional Contact 1
+  } else if ($("#edit-civicrm-1-contact-1-cg23-custom-300-1").prop("checked")) {
+    $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
+      $("#edit-civicrm-1-contact-1-cg23-custom-242").val()
+    );
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
+      $("#edit-civicrm-1-contact-1-cg23-custom-244").val()
+    );
+    // Case Worker
+  } else if ($("#edit-civicrm-1-contact-1-cg19-custom-301-1").prop("checked")) {
+    $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
+      $("#edit-civicrm-1-contact-1-cg19-custom-175").val()
+    );
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val("Case Worker");
+    // Family Support Worker
+  } else if ($("#edit-civicrm-1-contact-1-cg22-custom-299-1").prop("checked")) {
+    $("#edit-civicrm-1-contact-1-cg65-custom-1389").val(
+      $("#edit-civicrm-1-contact-1-cg22-custom-236").val()
+    );
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val(
+      "Family Support Worker"
+    );
+  } else {
+    $("#edit-civicrm-1-contact-1-cg65-custom-1390").val("Self Intake");
+  }
+
+  // Main Legal Guardian field
+  if ($("#edit-civicrm-1-contact-1-cg21-custom-234").val() != "") {
+    $("#edit-civicrm-1-contact-1-cg21-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("#edit-civicrm-1-contact-1-cg21-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+  }
+  // Additional Contact 1
+  if ($("#edit-civicrm-1-contact-1-cg23-custom-242").val() != "") {
+    $("#edit-flexbox-02").addClass(
+      "form-readonly webform-readonly"
+    );
+
+    $("#edit-flexbox-02")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+    $("#edit-civicrm-1-contact-1-cg23-custom-1424")
+      .find('input[type="radio"]')
+      .prop("disabled", true);
+  }
+
+  // Additional Contact 2
+  if ($("#edit-civicrm-1-contact-1-cg76-custom-1433").val() != "") {
+    console.log("Waht");
+    $("#edit-civicrm-1-contact-1-cg76-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("edit-civicrm-1-contact-1-cg76-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+    $("#edit-civicrm-1-contact-1-cg76-custom-1436")
+      .find('input[type="radio"]')
+      .prop("disabled", true);
+  }
+
+  // Additional Contact 3
+  if ($("#edit-civicrm-1-contact-2-cg76-custom-1433").val() != "") {
+    $("#edit-civicrm-1-contact-2-cg76-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("edit-civicrm-1-contact-2-cg76-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+    $("#edit-civicrm-1-contact-2-cg76-custom-1436")
+      .find('input[type="radio"]')
+      .prop("disabled", true);
+  }
+
+  // Case Worker
+  if ($("#edit-civicrm-1-contact-1-cg19-custom-175").val() != "") {
+    $("#edit-civicrm-1-contact-1-cg19-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("#edit-civicrm-1-contact-1-cg19-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+  }
+
+  // Family Support Worker
+  if ($("#edit-civicrm-1-contact-1-cg22-custom-236").val() != "") {
+    $("#edit-civicrm-1-contact-1-cg22-fieldset").addClass(
+      "form-readonly webform-readonly"
+    );
+    $("#edit-civicrm-1-contact-1-cg22-fieldset")
+      .find("input")
+      .each(function () {
+        $(this).prop("readonly", true);
+      });
+  }
+
+  function convertDateFormat(fieldName) {
+    var originalDate = $(fieldName).val();
+    if (originalDate.trim() !== "") {
+      // Convert the date format using JavaScript Date object
+      var convertedDate = new Date(originalDate).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+      $(fieldName).val(convertedDate);
+    }
+  }
+
+  convertDateFormat("#edit-civicrm-1-activity-1-cg67-custom-1414");
+
+  function freezeDates(fieldName) {
+    $(fieldName + "-date").prop("disabled", true);
+    $(fieldName + "-time").prop("disabled", true);
+    $(fieldName).addClass("webform-readonly");
+  }
+
+  let currRow2 = 2;
+  $("#edit-civicrm-2-contact-1-fieldset-fieldset").hide();
+  $("#edit-civicrm-3-contact-1-fieldset-fieldset").hide();
+  $("#edit-civicrm-4-contact-1-fieldset-fieldset").hide();
+
+  var addAnotherRef = $("<input>", {
+    class: "webform-button button button--primary",
+    type: "button",
+    id: "add-referral-button",
+    value: "Add Another Referral",
+    click: function () {
+      elementUnhide =
+        "#edit-civicrm-" + currRow2 + "-contact-1-fieldset-fieldset";
+      $(elementUnhide).show();
+      currRow2 += 1;
+      if (currRow2 == 5) {
+        addAnotherRef.hide();
+      }
+    },
+  });
+  $(".form-item-civicrm-1-contact-1-cg65-custom-1407").before(addAnotherRef);
+
+  // Add styling and show submitted date if form is locked
+  if ($(".webform-locked-message").length) {
+    $("#webform-submission-clin-c-y-intake-data-add-form div").addClass(
+      "webform-readonly"
+    );
+    $(".form-item-civicrm-1-activity-1-cg67-custom-1414").show();
+    freezeDates("#edit-civicrm-1-activity-1-cg67-custom-1414");
+    $("#edit-submit").hide();
+
+    for (let currContact = 2; currContact < 5; currContact++) {
+      var orgNameText = $(
+        "#civicrm_" + currContact + "_contact_1_contact_organization_name"
+      )
+        .text()
+        .trim();
+
+      if (orgNameText.length > 0) {
+        $(
+          "#edit-civicrm-" + currContact + "-contact-1-fieldset-fieldset"
+        ).show();
+      }
+    }
+
+    addAnotherRef.hide();
+  } else {
+    $(".form-item-civicrm-1-activity-1-cg67-custom-1414").hide();
+  }
+});

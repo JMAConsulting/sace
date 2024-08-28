@@ -1,0 +1,109 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
+
+@require_once 'clin_intake_cy_data.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function clin_intake_cy_data_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_clin_c_y_intake_data_add_form") {
+    // Get custom field constants
+    $constants = get_defined_constants(FALSE);
+
+    //Attach library
+    $form['#attached']['library'][] = 'clin_intake_cy_data/clin_intake_cy_data';
+
+    // Load the Webform entity.
+    $webform = Webform::load('clin_c_y_intake_data');
+
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if(!empty($aid) && is_numeric($aid)) {
+      \Drupal::service('civicrm')->initialize();
+      $activityRef = \Civi\Api4\Activity::get(FALSE)
+        ->addSelect('CLIN_Adult_Intake_Activity_Data.Intake_Completed')
+        ->addWhere('id', '=', $aid)
+        ->execute()
+        ->first();
+
+      if (isset($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed']) && !is_null($activityRef['CLIN_Adult_Intake_Activity_Data.Intake_Completed'])) {
+        $form['#attributes']['class'][] = 'webform-locked';
+        $form['#prefix'] = '<div class="webform-locked-message">' . t('A submission for this CID and AID already exists. You cannot submit another one.') . '</div>';
+	      $form['actions']['submit']['#attributes']['disabled'] = 'disabled';
+	     cy_make_form_read_only($form);
+      } 
+    }
+
+    $cid1 = \Drupal::request()->query->get('cid1') ?? 0;
+    if (!empty($cid1) && is_numeric($cid1)) {
+      \Drupal::service('civicrm')->initialize();
+      // Get contact information
+      $contact = \Civi\Api4\Contact::get(FALSE)
+        ->addSelect('birth_date', 'Case_Worker.Caller', 'Legal_Guardian.Caller', 'Family_Support_Worker.Caller', 'Legal_Guardian_Additional.Caller', 'first_name', 'last_name', 'Case_Worker.Caller:name', 'Legal_Guardian_Additional.Caller:name', 'Family_Support_Worker.Caller:name', 'Legal_Guardian.Caller:name')
+        ->addWhere('id', '=', $cid1)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+      
+      $callerFields = [
+        'Case_Worker.Caller',
+        'Legal_Guardian.Caller',
+        'Family_Support_Worker.Caller',
+        'Legal_Guardian_Additional.Caller'
+      ];
+
+      // Check to see caller
+      $containsOne = false;
+      $callerContainingOne = null;
+      $callerNameField = null;
+      
+      foreach ($callerFields as $field) {
+        if (isset($contacts[$field]) && is_array($contacts[$field]) && in_array("1", $contacts[$field])) {
+            $containsOne = true;
+            $callerContainingOne = $field;
+            $callerNameField = $field . ':name';
+            break;
+        }
+      }
+
+      // Get webform form elements
+      $elements = WebformFormHelper::flattenElements($form);
+      if (!empty($elements)) {
+        
+	      $dateTime = new DateTime($contact['birth_date']);
+        $formattedBirthDate = $dateTime->format('d M Y');
+	      $elements[CLIN_INTAKE_CY_DATA_BDAY]['#default_value'] = $formattedBirthDate;
+        
+        if($containsOne == false) {
+          $elements[CLIN_INTAKE_CY_DATA_CALLER_NAME]['#default_value'] = $contact['first_name'] . ' ' . $contact['last_name'];
+        }
+        else {
+          $elements[CLIN_INTAKE_CY_DATA_CALLER_NAME]['#default_value'] = $contact[$callerNameField];
+        }
+      }
+    }
+  }
+}
+
+function cy_make_form_read_only(&$elements) {
+  foreach ($elements as $key => &$element) {
+    if (is_array($element)) {
+      if (isset($element['#type']) && in_array($element['#type'], ['textfield', 'textarea', 'select', 'checkbox', 'radios', 'checkboxes', 'date', 'email', 'number', 'tel', 'url'])) {
+        $element['#attributes']['readonly'] = 'readonly';
+        if ($element['#type'] == 'select') {
+          $element['#attributes']['disabled'] = 'disabled';
+        }
+        if ($element['#type'] == 'checkbox' || $element['#type'] == 'radios' || $element['#type'] == 'checkboxes') {
+          $element['#disabled'] = TRUE;
+        }
+      } elseif (!empty($element)) {
+        cy_make_form_read_only($element);
+      }
+    }
+  }
+}
