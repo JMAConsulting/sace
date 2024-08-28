@@ -17,53 +17,124 @@ categories: {  }
 elements: |-
   civicrm_1_contact_1_contact_existing:
     '#type': civicrm_contact
-    '#search_prompt': '- Choose existing -'
+    '#title': 'Existing Contact'
+    '#prepopulate': true
     '#widget': hidden
-    '#form_key': civicrm_1_contact_1_contact_existing
     '#none_prompt': '- None Found -'
-    '#default': user
+    '#results_display':
+      display_name: display_name
+    '#no_autofill':
+      cg65: cg65
     '#contact_type': individual
+    '#form_key': civicrm_1_contact_1_contact_existing
     '#parent': civicrm_1_contact_1_fieldset_fieldset
     '#extra': {  }
-    '#title': 'Existing Contact'
   flexbox:
     '#type': webform_flexbox
-    civicrm_1_activity_1_cg67_custom_1413:
-      '#type': date
-      '#data_type': Date
-      '#date_date_min': '-50 years'
-      '#date_date_max': '+50 years'
-      '#form_key': civicrm_1_activity_1_cg67_custom_1413
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#extra':
-        description: ''
-        description_above: null
-      '#title': 'Initial Call'
-      '#default_value': ''
-    civicrm_1_activity_1_cg67_custom_1414:
-      '#type': date
-      '#title': 'Intake Completed'
-      '#default_value': '[current-date:html_date]'
-      '#date_date_min': '-50 years'
-      '#date_date_max': '+50 years'
-      '#data_type': Date
-      '#form_key': civicrm_1_activity_1_cg67_custom_1414
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#extra':
-        description: ''
-        description_above: null
-    civicrm_1_activity_1_cg67_custom_1415:
+    '#align_items': center
+    civicrm_1_activity_1_cg67_custom_1423:
       '#type': textfield
       '#title': 'Intake Number'
       '#readonly': true
       '#counter_type': character
       '#counter_maximum': 255
       '#counter_maximum_message': ' '
-      '#data_type': Int
-      '#form_key': civicrm_1_activity_1_cg67_custom_1415
+      '#data_type': String
+      '#nid': clin_c_y_intake_data
+      '#form_key': civicrm_1_activity_1_cg67_custom_1423
       '#extra':
         width: 20
+        description: ''
+        description_above: null
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg67_custom_1414:
+      '#type': datetime
+      '#title': 'Intake Completed'
+      '#default_value': '[current-date:custom:d M Y g:i A]'
+      '#date_date_min': '-50 years'
+      '#date_date_max': '+50 years'
+      '#date_date_element': datepicker
+      '#date_date_format': 'd M Y'
+      '#date_time_element': timepicker
+      '#date_time_format': 'g:i A'
+      '#datepicker': true
+      '#data_type': Date
+      '#form_key': civicrm_1_activity_1_cg67_custom_1414
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#extra':
+        description: ''
+        description_above: null
+  civicrm_1_contact_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': Client
+    '#form_key': civicrm_1_contact_1_fieldset_fieldset
+    flexbox_05:
+      '#type': webform_flexbox
+      civicrm_1_contact_1_contact_first_name:
+        '#type': textfield
+        '#title': 'First Name'
+        '#counter_type': character
+        '#counter_maximum': 64
+        '#counter_maximum_message': ' '
+        '#states':
+          readonly:
+            ':input[name="civicrm_1_contact_1_contact_existing"]':
+              filled: true
+        '#contact_type': individual
+        '#form_key': civicrm_1_contact_1_contact_first_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+      civicrm_1_contact_1_contact_last_name:
+        '#type': textfield
+        '#title': 'Last Name'
+        '#counter_type': character
+        '#counter_maximum': 64
+        '#counter_maximum_message': ' '
+        '#states':
+          readonly:
+            ':input[name="civicrm_1_contact_1_contact_existing"]':
+              filled: true
+        '#contact_type': individual
+        '#form_key': civicrm_1_contact_1_contact_last_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
+      birth_date:
+        '#type': textfield
+        '#title': 'Date of Birth'
+        '#states':
+          readonly:
+            ':input[name="civicrm_1_contact_1_contact_existing"]':
+              filled: true
+    flexbox_06:
+      '#type': webform_flexbox
+      civicrm_1_contact_1_cg5_custom_89:
+        '#type': textfield
+        '#title': Pronouns
+        '#counter_type': character
+        '#counter_maximum': 255
+        '#counter_maximum_message': ' '
+        '#states':
+          readonly:
+            ':input[name="civicrm_1_contact_1_contact_existing"]':
+              filled: true
+        '#data_type': String
+        '#form_key': civicrm_1_contact_1_cg5_custom_89
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_cg5_fieldset
+      civicrm_1_contact_1_email_email:
+        '#type': email
+        '#title': Email
+        '#states':
+          readonly:
+            ':input[name="civicrm_1_contact_1_contact_existing"]':
+              filled: true
+        '#form_key': civicrm_1_contact_1_email_email
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_contact_1_fieldset_fieldset
   civicrm_1_contact_1_cg65_fieldset:
     '#type': fieldset
     '#title': 'Consent & Confidentiality'
@@ -103,6 +174,7 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
+      '#required': true
     civicrm_1_contact_1_cg65_custom_1380:
       '#type': civicrm_options
       '#extra':
@@ -125,6 +197,16 @@ elements: |-
       '#parent': civicrm_1_contact_1_cg65_fieldset
       '#title': 'Has the child disclosed an experience of sexual violence?'
       '#civicrm_live_options': 0
+      '#required': true
+    processed_text_03:
+      '#type': processed_text
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+            '!value': '0'
+      '#text': |
+        <p><strong>We are unable to move forward without a disclosure. Once an experience of sexual violence has been disclosed and reported, please reach out to complete the intake at that time.</strong></p>
+      '#format': html
     civicrm_1_contact_1_cg65_custom_1381:
       '#type': textfield
       '#title': 'To whom was the disclosure made?'
@@ -174,6 +256,10 @@ elements: |-
       '#options':
         1: 'Yes'
         0: 'No'
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+            value: '0'
       '#data_type': Boolean
       '#civicrm_condition':
         andor: or
@@ -186,9 +272,17 @@ elements: |-
       '#parent': civicrm_1_contact_1_cg65_fieldset
       '#default_option': ''
       '#default_value': ''
+      '#required': true
     civicrm_1_contact_1_cg65_custom_1384:
       '#type': textarea
       '#title': 'If NOT reported, document the reporting information we provided the caller:'
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              '!value': '0'
       '#data_type': Memo
       '#civicrm_condition':
         andor: or
@@ -202,13 +296,30 @@ elements: |-
         rows: '4'
       '#form_key': civicrm_1_contact_1_cg65_custom_1384
       '#parent': civicrm_1_contact_1_cg65_fieldset
+    processed_text_04:
+      '#type': processed_text
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+            '!value': '0'
+      '#text': |
+        <p><strong>We are unable to move forward without a report. Once a report has been made, please reach out to complete the intake at that time.</strong></p>
+      '#format': html
     civicrm_1_contact_1_cg65_custom_1385:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          1|Yes
-          0|No
+      '#title': 'Child/youth interviewed?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#required': true
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
       '#data_type': Boolean
       '#civicrm_condition':
         andor: or
@@ -218,19 +329,19 @@ elements: |-
             values:
               - Client
       '#form_key': civicrm_1_contact_1_cg65_custom_1385
-      '#options':
-        1: 'Yes'
-        0: 'No'
       '#parent': civicrm_1_contact_1_cg65_fieldset
-      '#title': 'Child/youth interviewed'
-      '#civicrm_live_options': 0
+      '#default_option': ''
+      '#default_value': ''
     civicrm_1_contact_1_cg65_custom_1386:
       '#type': textarea
       '#title': 'If child/youth NOT interviewed, why:'
       '#states':
         invisible:
-          ':input[name="civicrm_1_contact_1_cg65_custom_1385"]':
-            '!value': '0'
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1385"]':
+              '!value': '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
       '#data_type': Memo
       '#civicrm_condition':
         andor: or
@@ -246,18 +357,32 @@ elements: |-
       '#parent': civicrm_1_contact_1_cg65_fieldset
     processed_text_01:
       '#type': processed_text
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1385"]':
+              '!value': '0'
       '#text': |
-        <p><strong>If the person completing intake answers "no" to any of the above questions, complete intake, but inform guardian that further assessment and approval will be required from the Director of Clinical Services before services could be accessed. (Follow up with Director and guardian with the Director's decision.)<br />
-        <br />
-        Provide information on what actions guardians will need to complete before services can be accessed.</strong></p>
+        <p><strong>Complete intake, but inform guardian that further assessment and approval will be required from the Director of Clinical Services before services could be accessed. (Follow up with Director and guardian with the Director's decision.) </strong></p>
       '#format': html
-    civicrm_1_contact_1_cg65_custom_1387:
+    civicrm_1_contact_1_cg65_custom_1429:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: '1|Are there any current unresolved custody or access matters involving the child?'
-      '#data_type': String
+      '#title': 'Are there any current unresolved custody or access matters involving the child?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#required': true
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
+      '#data_type': Boolean
       '#civicrm_condition':
         andor: or
         action: visible
@@ -265,24 +390,52 @@ elements: |-
           contact_contact_sub_type:
             values:
               - Client
-      '#form_key': civicrm_1_contact_1_cg65_custom_1387
-      '#options':
-        1: 'Are there any current unresolved custody or access matters involving the child?'
+      '#nid': clin_c_y_intake_data
+      '#form_key': civicrm_1_contact_1_cg65_custom_1429
       '#parent': civicrm_1_contact_1_cg65_fieldset
-      '#title': 'Check this box if the below question has been asked:'
-      '#civicrm_live_options': 1
-    processed_text_02:
-      '#type': processed_text
-      '#text': |
-        <p>If the answer is "yes", intake MUST BE STOPPED RIGHT AWAY. The staff will arrange for one of the Directors of Clinical Services to call the parent or guardian for more information if they are not immediately available.</p>
-      '#format': html
+      '#default_option': ''
+      '#default_value': ''
+    civicrm_1_contact_1_cg65_custom_1430:
+      '#type': textarea
+      '#title': 'Information on custody or access matters:'
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1429"]':
+              '!value': '1'
+      '#data_type': Memo
+      '#civicrm_condition':
+        andor: or
+        action: visible
+        rules:
+          contact_contact_sub_type:
+            values:
+              - Client
+      '#extra':
+        cols: '60'
+        rows: '4'
+        description: ''
+        description_above: null
+      '#nid': clin_c_y_intake_data
+      '#form_key': civicrm_1_contact_1_cg65_custom_1430
+      '#parent': civicrm_1_contact_1_cg65_fieldset
     civicrm_1_contact_1_cg65_custom_1388:
       '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          1|Yes
-          0|No
+      '#title': 'Is your child aware you are arranging counselling services for them?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#required': true
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
       '#data_type': Boolean
       '#civicrm_condition':
         andor: or
@@ -292,19 +445,19 @@ elements: |-
             values:
               - Client
       '#form_key': civicrm_1_contact_1_cg65_custom_1388
-      '#options':
-        1: 'Yes'
-        0: 'No'
       '#parent': civicrm_1_contact_1_cg65_fieldset
-      '#title': 'Is your child aware you are arranging counselling services for them?'
-      '#civicrm_live_options': 0
+      '#default_option': ''
+      '#default_value': ''
     civicrm_1_contact_1_cg21_fieldset:
       '#type': fieldset
       '#title': 'Legal Guardian'
       '#states':
-        readonly:
-          ':input[name="civicrm_1_contact_1_cg21_custom_234"]':
-            filled: true
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
       '#form_key': civicrm_1_contact_1_cg21_fieldset
       flexbox_01:
         '#type': webform_flexbox
@@ -386,12 +539,37 @@ elements: |-
           '#civicrm_live_options': '1'
     civicrm_1_contact_1_cg23_fieldset:
       '#type': fieldset
-      '#title': 'Legal Guardian - Additional'
+      '#title': 'Additional Contact 1'
       '#states':
-        readonly:
-          ':input[name="civicrm_1_contact_1_cg23_custom_242"]':
-            filled: true
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
       '#form_key': civicrm_1_contact_1_cg23_fieldset
+      civicrm_1_contact_1_cg23_custom_1424:
+        '#type': civicrm_options
+        '#extra':
+          aslist: 0
+          items: |-
+            1|Yes
+            0|No
+        '#data_type': Boolean
+        '#civicrm_condition':
+          andor: or
+          action: visible
+          rules:
+            contact_contact_sub_type:
+              values:
+                - Client
+        '#form_key': civicrm_1_contact_1_cg23_custom_1424
+        '#options':
+          1: 'Yes'
+          0: 'No'
+        '#parent': civicrm_1_contact_1_cg23_fieldset
+        '#title': 'Legal Guardian?'
+        '#civicrm_live_options': 0
       flexbox_02:
         '#type': webform_flexbox
         civicrm_1_contact_1_cg23_custom_242:
@@ -470,13 +648,180 @@ elements: |-
           '#default_option': ''
           '#default_value': ''
           '#civicrm_live_options': '1'
+      additional_contacts:
+        '#type': details
+        '#title': 'Additional Contacts'
+        civicrm_1_contact_1_cg76_fieldset:
+          '#type': fieldset
+          '#title': 'Additional Contact 2'
+          '#form_key': civicrm_1_contact_1_cg76_fieldset
+          civicrm_1_contact_1_cg76_custom_1436:
+            '#type': civicrm_options
+            '#extra':
+              aslist: 0
+              items: |-
+                1|Yes
+                0|No
+            '#data_type': Boolean
+            '#civicrm_condition':
+              andor: or
+              action: visible
+              rules:
+                contact_contact_sub_type:
+                  values:
+                    - Client
+            '#form_key': civicrm_1_contact_1_cg76_custom_1436
+            '#options':
+              1: 'Yes'
+              0: 'No'
+            '#parent': civicrm_1_contact_1_cg76_fieldset
+            '#title': 'Legal Guardian?'
+            '#civicrm_live_options': 0
+          flexbox_08:
+            '#type': webform_flexbox
+            civicrm_1_contact_1_cg76_custom_1433:
+              '#type': textfield
+              '#data_type': String
+              '#civicrm_condition':
+                andor: or
+                action: visible
+                rules:
+                  contact_contact_sub_type:
+                    values:
+                      - Client
+              '#counter_type': character
+              '#counter_maximum': 255
+              '#counter_maximum_message': ' '
+              '#form_key': civicrm_1_contact_1_cg76_custom_1433
+              '#extra':
+                width: 20
+              '#parent': civicrm_1_contact_1_cg76_fieldset
+              '#title': Name
+            civicrm_1_contact_1_cg76_custom_1434:
+              '#type': textfield
+              '#data_type': String
+              '#civicrm_condition':
+                andor: or
+                action: visible
+                rules:
+                  contact_contact_sub_type:
+                    values:
+                      - Client
+              '#counter_type': character
+              '#counter_maximum': 255
+              '#counter_maximum_message': ' '
+              '#form_key': civicrm_1_contact_1_cg76_custom_1434
+              '#extra':
+                width: 20
+              '#parent': civicrm_1_contact_1_cg76_fieldset
+              '#title': 'Phone Number'
+            civicrm_1_contact_1_cg76_custom_1435:
+              '#type': textfield
+              '#data_type': String
+              '#civicrm_condition':
+                andor: or
+                action: visible
+                rules:
+                  contact_contact_sub_type:
+                    values:
+                      - Client
+              '#counter_type': character
+              '#counter_maximum': 255
+              '#counter_maximum_message': ' '
+              '#form_key': civicrm_1_contact_1_cg76_custom_1435
+              '#extra':
+                width: 20
+              '#parent': civicrm_1_contact_1_cg76_fieldset
+              '#title': Relationship
+        civicrm_1_contact_2_cg76_fieldset:
+          '#type': fieldset
+          '#title': 'Additional Contact 3'
+          '#form_key': civicrm_1_contact_2_cg76_fieldset
+          civicrm_1_contact_2_cg76_custom_1436:
+            '#type': civicrm_options
+            '#title': 'Legal Guardian?'
+            '#civicrm_live_options': 0
+            '#options':
+              1: 'Yes'
+              0: 'No'
+            '#data_type': Boolean
+            '#civicrm_condition':
+              andor: or
+              action: visible
+              rules:
+                contact_contact_sub_type:
+                  values:
+                    - Client
+            '#form_key': civicrm_1_contact_2_cg76_custom_1436
+            '#parent': civicrm_1_contact_2_cg76_fieldset
+            '#default_option': ''
+            '#default_value': ''
+          flexbox_07:
+            '#type': webform_flexbox
+            civicrm_1_contact_2_cg76_custom_1433:
+              '#type': textfield
+              '#title': Name
+              '#counter_type': character
+              '#counter_maximum': 255
+              '#counter_maximum_message': ' '
+              '#data_type': String
+              '#civicrm_condition':
+                andor: or
+                action: visible
+                rules:
+                  contact_contact_sub_type:
+                    values:
+                      - Client
+              '#form_key': civicrm_1_contact_2_cg76_custom_1433
+              '#extra':
+                width: 20
+              '#parent': civicrm_1_contact_2_cg76_fieldset
+            civicrm_1_contact_2_cg76_custom_1434:
+              '#type': textfield
+              '#title': 'Phone Number'
+              '#counter_type': character
+              '#counter_maximum': 255
+              '#counter_maximum_message': ' '
+              '#data_type': String
+              '#civicrm_condition':
+                andor: or
+                action: visible
+                rules:
+                  contact_contact_sub_type:
+                    values:
+                      - Client
+              '#form_key': civicrm_1_contact_2_cg76_custom_1434
+              '#extra':
+                width: 20
+              '#parent': civicrm_1_contact_2_cg76_fieldset
+            civicrm_1_contact_2_cg76_custom_1435:
+              '#type': textfield
+              '#title': Relationship
+              '#counter_type': character
+              '#counter_maximum': 255
+              '#counter_maximum_message': ' '
+              '#data_type': String
+              '#civicrm_condition':
+                andor: or
+                action: visible
+                rules:
+                  contact_contact_sub_type:
+                    values:
+                      - Client
+              '#form_key': civicrm_1_contact_2_cg76_custom_1435
+              '#extra':
+                width: 20
+              '#parent': civicrm_1_contact_2_cg76_fieldset
     civicrm_1_contact_1_cg19_fieldset:
       '#type': fieldset
       '#title': 'Case Worker'
       '#states':
-        readonly:
-          ':input[name="civicrm_1_contact_1_cg19_custom_175"]':
-            filled: true
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
       '#form_key': civicrm_1_contact_1_cg19_fieldset
       flexbox_03:
         '#type': webform_flexbox
@@ -542,9 +887,12 @@ elements: |-
       '#type': fieldset
       '#title': 'Family Support Worker'
       '#states':
-        readonly:
-          ':input[name="civicrm_1_contact_1_cg22_custom_236"]':
-            filled: true
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
       '#form_key': civicrm_1_contact_1_cg22_fieldset
       flexbox_04:
         '#type': webform_flexbox
@@ -609,6 +957,13 @@ elements: |-
     client_information:
       '#type': fieldset
       '#title': 'Client Information'
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
       civicrm_1_contact_1_cg65_custom_1389:
         '#type': textfield
         '#title': 'Name of caller'
@@ -653,13 +1008,6 @@ elements: |-
         '#counter_type': character
         '#counter_maximum': 255
         '#counter_maximum_message': ' '
-        '#states':
-          readonly:
-            - ':input[name="civicrm_1_contact_1_cg21_custom_234"]':
-                filled: true
-            - or
-            - ':input[name="civicrm_1_contact_1_cg23_custom_242"]':
-                filled: true
         '#data_type': String
         '#civicrm_condition':
           andor: or
@@ -717,26 +1065,6 @@ elements: |-
         '#parent': civicrm_1_contact_1_cg65_fieldset
         '#title': 'Gender of Child/Youth'
         '#civicrm_live_options': 1
-        '#default_value': ''
-      civicrm_1_contact_1_cg65_custom_1421:
-        '#type': date
-        '#data_type': Date
-        '#civicrm_condition':
-          andor: or
-          action: visible
-          rules:
-            contact_contact_sub_type:
-              values:
-                - Client
-        '#date_date_min': '-50 years'
-        '#date_date_max': '+50 years'
-        '#nid': clin_c_y_intake_data
-        '#form_key': civicrm_1_contact_1_cg65_custom_1421
-        '#parent': civicrm_1_contact_1_cg65_fieldset
-        '#extra':
-          description: ''
-          description_above: null
-        '#title': 'Date of Birth'
         '#default_value': ''
       civicrm_1_contact_1_cg65_custom_1422:
         '#type': textfield
@@ -858,6 +1186,13 @@ elements: |-
     additional_information:
       '#type': fieldset
       '#title': 'Additional Information'
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
       civicrm_1_contact_1_cg65_custom_1397:
         '#type': civicrm_options
         '#extra':
@@ -1049,6 +1384,13 @@ elements: |-
     administration:
       '#type': fieldset
       '#title': Administration
+      '#states':
+        invisible:
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1383"]':
+              value: '0'
+          - or
+          - ':input[name="civicrm_1_contact_1_cg65_custom_1380"]':
+              value: '0'
       civicrm_1_contact_1_cg65_custom_1406:
         '#type': civicrm_options
         '#title': 'Resource or Referral Services'
@@ -1330,8 +1672,8 @@ settings:
   page_submit_path: /clin-c-y-intake-data
   page_confirm_path: ''
   page_theme_name: ''
-  form_title: both
-  form_submit_once: false
+  form_title: source_entity_webform
+  form_submit_once: true
   form_open_message: ''
   form_close_message: ''
   form_exception_message: ''
@@ -1423,7 +1765,7 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: /clin-calendar/88
+  confirmation_url: '/calendar-team/13+42?tid=13,42'
   confirmation_title: ''
   confirmation_message: ''
   confirmation_attributes: {  }
@@ -1441,7 +1783,7 @@ settings:
   limit_user_interval: null
   limit_user_message: ''
   limit_user_unique: false
-  entity_limit_total: null
+  entity_limit_total: 1
   entity_limit_total_interval: null
   entity_limit_user: null
   entity_limit_user_interval: null
@@ -1540,6 +1882,7 @@ handlers:
       civicrm_1_contact_1_cg23_custom_243: create_civicrm_webform_element
       civicrm_1_contact_1_cg23_custom_244: create_civicrm_webform_element
       civicrm_1_contact_1_cg23_custom_300: create_civicrm_webform_element
+      civicrm_1_contact_1_cg23_custom_1424: create_civicrm_webform_element
       contact_1_number_of_cg24: '0'
       contact_1_number_of_cg25: '0'
       contact_1_number_of_cg29: '0'
@@ -1547,7 +1890,7 @@ handlers:
       contact_1_number_of_cg60: '0'
       contact_1_number_of_cg62: '0'
       contact_1_number_of_cg65: '1'
-      contact_1_settings_dynamic_custom_cg65: 1
+      contact_1_settings_dynamic_custom_cg65: 0
       civicrm_1_contact_1_cg65_custom_1379: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1380: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1381: create_civicrm_webform_element
@@ -1556,7 +1899,6 @@ handlers:
       civicrm_1_contact_1_cg65_custom_1384: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1385: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1386: create_civicrm_webform_element
-      civicrm_1_contact_1_cg65_custom_1387: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1388: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1389: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1390: create_civicrm_webform_element
@@ -1583,15 +1925,28 @@ handlers:
       civicrm_1_contact_1_cg65_custom_1411: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1412: create_civicrm_webform_element
       civicrm_1_contact_1_cg65_custom_1420: create_civicrm_webform_element
-      civicrm_1_contact_1_cg65_custom_1421: create_civicrm_webform_element
+      civicrm_1_contact_1_cg65_custom_1421: 0
       civicrm_1_contact_1_cg65_custom_1422: create_civicrm_webform_element
+      civicrm_1_contact_1_cg65_custom_1429: create_civicrm_webform_element
+      civicrm_1_contact_1_cg65_custom_1430: create_civicrm_webform_element
       contact_1_number_of_cg68: '0'
       contact_1_number_of_cg70: '0'
+      contact_1_number_of_cg76: '2'
+      civicrm_1_contact_1_cg76_custom_1433: create_civicrm_webform_element
+      civicrm_1_contact_1_cg76_custom_1434: create_civicrm_webform_element
+      civicrm_1_contact_1_cg76_custom_1435: create_civicrm_webform_element
+      civicrm_1_contact_1_cg76_custom_1436: create_civicrm_webform_element
+      civicrm_1_contact_1_cg76_createmode: '0'
+      civicrm_1_contact_2_cg76_custom_1433: create_civicrm_webform_element
+      civicrm_1_contact_2_cg76_custom_1434: create_civicrm_webform_element
+      civicrm_1_contact_2_cg76_custom_1435: create_civicrm_webform_element
+      civicrm_1_contact_2_cg76_custom_1436: create_civicrm_webform_element
+      civicrm_1_contact_2_cg76_createmode: '0'
       civicrm_1_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_1_contact_1_contact_prefix_id: 0
-      civicrm_1_contact_1_contact_first_name: 0
+      civicrm_1_contact_1_contact_first_name: create_civicrm_webform_element
       civicrm_1_contact_1_contact_middle_name: 0
-      civicrm_1_contact_1_contact_last_name: 0
+      civicrm_1_contact_1_contact_last_name: create_civicrm_webform_element
       civicrm_1_contact_1_contact_suffix_id: 0
       civicrm_1_contact_1_contact_nick_name: 0
       civicrm_1_contact_1_contact_gender_id: 0
@@ -1611,12 +1966,25 @@ handlers:
       civicrm_1_contact_1_contact_is_deceased: 0
       civicrm_1_contact_1_contact_deceased_date: 0
       contact_1_settings_matching_rule: Unsupervised
-      contact_1_number_of_cg5: '0'
+      contact_1_number_of_cg5: '1'
+      contact_1_settings_dynamic_custom_cg5: 0
+      civicrm_1_contact_1_cg5_custom_89: create_civicrm_webform_element
+      civicrm_1_contact_1_cg5_custom_93: 0
+      civicrm_1_contact_1_cg5_custom_410: 0
+      civicrm_1_contact_1_cg5_custom_411: 0
+      civicrm_1_contact_1_cg5_custom_1288: 0
       contact_1_number_of_cg12: '0'
-      contact_1_number_of_other: '0'
+      contact_1_number_of_other: '1'
+      civicrm_1_contact_1_other_group:
+        29: '29'
+      civicrm_1_contact_1_other_tag:
+        '': ''
       contact_1_number_of_address: '0'
       contact_1_number_of_phone: '0'
-      contact_1_number_of_email: '0'
+      contact_1_number_of_email: '1'
+      civicrm_1_contact_1_email_email: create_civicrm_webform_element
+      civicrm_1_contact_1_email_location_type_id: '6'
+      civicrm_1_contact_1_email_is_primary: '1'
       contact_1_number_of_website: '0'
       contact_1_number_of_im: '0'
       contact_1_number_of_cg30: '0'
@@ -1724,7 +2092,7 @@ handlers:
       prefix_unknown: ''
       toggle_message: 0
       message: ''
-      activity_number_of_activity: '1'
+      activity_number_of_activity: '2'
       activity_1_settings_existing_activity_status:
         '': ''
       activity_1_settings_details:
@@ -1758,10 +2126,47 @@ handlers:
       civicrm_1_activity_1_cg58_custom_1266: 0
       civicrm_1_activity_1_cg58_custom_1267: 0
       civicrm_1_activity_1_cg58_custom_1287: 0
-      activity_1_settings_dynamic_custom_cg67: 1
-      civicrm_1_activity_1_cg67_custom_1413: create_civicrm_webform_element
+      activity_1_settings_dynamic_custom_cg67: 0
+      civicrm_1_activity_1_cg67_custom_1413: 0
       civicrm_1_activity_1_cg67_custom_1414: create_civicrm_webform_element
-      civicrm_1_activity_1_cg67_custom_1415: create_civicrm_webform_element
+      civicrm_1_activity_1_cg67_custom_1423: create_civicrm_webform_element
+      activity_2_settings_existing_activity_status:
+        '': ''
+      activity_2_settings_details:
+        view_link: view_link
+        entire_result: 0
+        edit_link: 0
+        view_link_secure: 0
+        update_existing: 0
+      civicrm_2_activity_1_activity_activity_type_id: '337'
+      civicrm_2_activity_1_activity_target_contact_id:
+        1: '1'
+      civicrm_2_activity_1_activity_source_contact_id: '0'
+      civicrm_2_activity_1_activity_subject: 0
+      civicrm_2_activity_1_activity_details: 0
+      civicrm_2_activity_1_activity_status_id: '2'
+      civicrm_2_activity_1_activity_priority_id: '0'
+      civicrm_2_activity_1_activity_assignee_contact_id:
+        '': ''
+      civicrm_2_activity_1_activity_location: 0
+      civicrm_2_activity_1_activity_activity_date_time: 0
+      civicrm_2_activity_1_activity_duration: 0
+      civicrm_2_activity_1_activity_tag:
+        '': ''
+      civicrm_2_activity_1_activity_engagement_level: 0
+      civicrm_2_activity_1_activity_campaign_id: 0
+      civicrm_2_activity_1_activityupload_file_1: 0
+      civicrm_2_activity_1_activityupload_file_2: 0
+      civicrm_2_activity_1_activityupload_file_3: 0
+      activity_2_settings_dynamic_custom_cg58: 0
+      civicrm_2_activity_1_cg58_custom_1265: 0
+      civicrm_2_activity_1_cg58_custom_1266: 0
+      civicrm_2_activity_1_cg58_custom_1267: 0
+      civicrm_2_activity_1_cg58_custom_1287: 0
+      activity_2_settings_dynamic_custom_cg67: 0
+      civicrm_2_activity_1_cg67_custom_1413: 0
+      civicrm_2_activity_1_cg67_custom_1414: 0
+      civicrm_2_activity_1_cg67_custom_1423: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -1817,20 +2222,30 @@ handlers:
             number_of_cg60: '0'
             number_of_cg62: '0'
             number_of_cg65: '1'
-            dynamic_custom_cg65: 1
+            dynamic_custom_cg65: 0
             number_of_cg68: '0'
             number_of_cg70: '0'
+            number_of_cg76: '2'
             matching_rule: Unsupervised
-            number_of_cg5: '0'
+            number_of_cg5: '1'
+            dynamic_custom_cg5: 0
             number_of_cg12: '0'
-            number_of_other: '0'
+            number_of_other: '1'
             number_of_address: '0'
             number_of_phone: '0'
-            number_of_email: '0'
+            number_of_email: '1'
             number_of_website: '0'
             number_of_im: '0'
             number_of_cg30: '0'
             number_of_cg71: '0'
+            other:
+              1:
+                group:
+                  29: '29'
+            email:
+              1:
+                location_type_id: '6'
+                is_primary: '1'
           2:
             contact:
               1:
@@ -1892,19 +2307,31 @@ handlers:
             number_of_cg30: '0'
             number_of_cg71: '0'
         activity:
-          number_of_activity: '1'
+          number_of_activity: '2'
           1:
             existing_activity_status: {  }
             details:
               entire_result: entire_result
               view_link: view_link
             dynamic_custom_cg58: 0
-            dynamic_custom_cg67: 1
+            dynamic_custom_cg67: 0
             activity:
               1:
                 activity_type_id: '78'
                 target_contact_id:
                   1: '1'
+          2:
+            existing_activity_status: {  }
+            details:
+              view_link: view_link
+            dynamic_custom_cg58: 0
+            dynamic_custom_cg67: 0
+            activity:
+              1:
+                activity_type_id: '337'
+                target_contact_id:
+                  1: '1'
+                status_id: '2'
         membership:
           1:
             number_of_membership: '0'
@@ -1932,4 +2359,8 @@ handlers:
           disable_unregister: 0
           allow_url_load: 0
           disable_primary_participant: 0
+        config:
+          create_mode:
+            civicrm_1_contact_1_cg76_createmode: '0'
+            civicrm_1_contact_2_cg76_createmode: '0'
 variants: {  }
