@@ -1,0 +1,7 @@
+youth_online_course_booking_update:
+  version: 1.0
+  js:
+    js/custom.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
