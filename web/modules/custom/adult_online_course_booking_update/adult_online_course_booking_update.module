@@ -1,0 +1,66 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+use \Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Datetime\Element\Datetime;
+
+require_once 'adult_online_course_booking_update.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function adult_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_ped_online_course_booking_updat_add_form") {
+    //attach js
+    $form['#attached']['library'][] = 'adult_online_course_booking_update/adult_online_course_booking_update';
+    $form['#attached']['drupalSettings']['adult_online_course_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', ADULT_ONLINE_COURSE_BOOKING_UPDATE_START_DATE);
+    $form['#attached']['drupalSettings']['adult_online_course_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', ADULT_ONLINE_COURSE_BOOKING_UPDATE_END_DATE);
+
+    //Get webform elements
+    $elements = WebformFormHelper::flattenElements($form);
+    if (empty($elements)) {
+      return;
+    }
+    \Drupal::service('civicrm')->initialize();
+    //Activity ID
+    $aid = \Drupal::request()->query->get('aid') ?? 0;
+    if (empty($aid) || !is_numeric($aid)) {
+      return;
+    }
+
+    // hackish fix to bypass false validation error on assigned Staff fields
+    //  triggerred at line 151 of web/core/lib/Drupal/Core/Form/FormErrorHandler.php
+    unset($elements['civicrm_3_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_4_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_5_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_6_contact_1_contact_existing']['#group']);
+
+    //End Date
+    $activity = \Civi\Api4\Activity::get(FALSE)
+    ->addSelect('Booking_Information.End_Date', 'Booking_Information.Support_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Privilege_and_Oppression_Content')
+    ->addWhere('id', '=', $aid)
+    ->setLimit(1)
+    ->execute();
+
+    $mapperBooleanFields = [
+      'civicrm_1_activity_1_cg2_custom_331' => 'Booking_Information.Resources_Content',
+      'civicrm_1_activity_1_cg2_custom_330' => 'Booking_Information.Support_Content',
+      'civicrm_1_activity_1_cg2_custom_334' => 'Booking_Information.Safer_Spaces_Content',
+      'civicrm_1_activity_1_cg2_custom_1261' => 'Booking_Information.Privilege_and_Oppression_Content',
+    ];
+    $values = $activity->first();
+    foreach ($mapperBooleanFields as $key => $civiField) {
+      $defaultValue = (strstr($key, '_331') || strstr($key, '_330')) ? 1 : 0;
+      if ($values[$civiField] == NULL) {
+        $element[$key]['#default_value'] = $element[$key]['#default_option'] = $defaultValue;
+      }
+    }
+
+    if (empty($elements[ADULT_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'])) {
+      $elements[ADULT_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'] = 'PublicEducation';
+    }
+  }
+}
