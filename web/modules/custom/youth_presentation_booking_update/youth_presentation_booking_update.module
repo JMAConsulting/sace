@@ -12,7 +12,7 @@ use Drupal\webform\Utility\WebformFormHelper;
  * @param $form_id
  */
 function youth_presentation_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_update_ped_booking_add_form") {
+  if ($form_id == "webform_submission_youthpresentationbookingupdate_add_form") {
 
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
