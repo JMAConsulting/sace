@@ -1,0 +1,7 @@
+youth_presentation_booking_update:
+  version: 1
+  js:
+    js/youth_update_booking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
