@@ -13,7 +13,7 @@ require_once 'adult_online_course_booking_update.variables.php';
  * @param $form_id
  */
 function adult_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_ped_online_course_booking_updat_add_form") {
+  if ($form_id == "webform_submission_adultonlinecoursebookingupdate_add_form") {
     //attach js
     $form['#attached']['library'][] = 'adult_online_course_booking_update/adult_online_course_booking_update';
     $form['#attached']['drupalSettings']['adult_online_course_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', ADULT_ONLINE_COURSE_BOOKING_UPDATE_START_DATE);
@@ -59,8 +59,5 @@ function adult_online_course_booking_update_form_alter(&$form, \Drupal\Core\Form
       }
     }
 
-    if (empty($elements[ADULT_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'])) {
-      $elements[ADULT_ONLINE_COURSE_BOOKING_UPDATE_FACILITATING_PROGRAM]['#default_value'] = 'PublicEducation';
-    }
   }
 }
