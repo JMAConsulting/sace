@@ -11,7 +11,7 @@ use Drupal\webform\Utility\WebformFormHelper;
  * @param $form_id
  */
 function community_engagement_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if ($form_id == "webform_submission_institutionalsupportbookingupdat_add_form") {
+  if ($form_id == "webform_submission_communityengagementbookingupdate_add_form") {
     // Get custom field constants
     $constants = get_defined_constants(FALSE);
 
