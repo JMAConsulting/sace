@@ -4,8 +4,8 @@ status: open
 dependencies:
   module:
     - pe_booking_activity_role
-    - pe_update_booking
     - webform_civicrm
+    - wiseguyz_booking_update
 weight: 0
 open: null
 close: null
@@ -2080,10 +2080,10 @@ handlers:
     conditions: {  }
     weight: -49
     settings: {  }
-  ped_booking_update_handler:
-    id: ped_booking_update_handler
-    handler_id: ped_booking_update_handler
-    label: 'PED Booking Update Handler'
+  wiseguyz_booking_update_handler:
+    id: wiseguyz_booking_update_handler
+    handler_id: wiseguyz_booking_update_handler
+    label: 'WiseGuyz Booking Update Handler'
     notes: ''
     status: true
     conditions: {  }
