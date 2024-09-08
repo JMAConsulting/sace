@@ -21,7 +21,7 @@ use Civi\Api4\EntityTag;
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
  * )
  */
-class WiseGuyzPresentationBookingUpdateWebformHandler extends WebformHandlerBase {
+class WiseGuyzBookingUpdateWebformHandler extends WebformHandlerBase {
 
   /**
    * The CiviCRM service.
