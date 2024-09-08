@@ -1,0 +1,7 @@
+community_engagement_booking_update:
+  version: 1
+  js:
+    js/community_engagement_update_booking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
