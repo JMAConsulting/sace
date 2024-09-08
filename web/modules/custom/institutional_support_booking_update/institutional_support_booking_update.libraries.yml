@@ -1,0 +1,7 @@
+institutional_support_booking_update:
+  version: 1
+  js:
+    js/institutional_support_update_booking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
