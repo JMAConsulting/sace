@@ -1,0 +1,7 @@
+adult_presentation_booking_update:
+  version: 1
+  js:
+    js/adult_update_booking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
