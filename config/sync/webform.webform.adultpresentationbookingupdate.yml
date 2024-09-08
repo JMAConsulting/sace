@@ -3,9 +3,9 @@ langcode: en
 status: open
 dependencies:
   module:
+    - adult_presentation_booking_update
     - pe_booking_activity_role
     - webform_civicrm
-    - youth_presentation_booking_update
 weight: 0
 open: null
 close: null
@@ -2134,10 +2134,10 @@ handlers:
     conditions: {  }
     weight: -49
     settings: {  }
-  youth_booking_update_handler:
-    id: youth_booking_update_handler
-    handler_id: youth_booking_update_handler
-    label: 'Youth Booking Update Handler'
+  adult_booking_update_handler:
+    id: adult_booking_update_handler
+    handler_id: adult_booking_update_handler
+    label: 'Adult Booking Update Handler'
     notes: ''
     status: true
     conditions: {  }
