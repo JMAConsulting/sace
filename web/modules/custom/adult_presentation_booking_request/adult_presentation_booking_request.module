@@ -1,0 +1,18 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function adult_presentation_booking_request_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  //attach js
+  if ($form_id == "webform_submission_adultpresentation_bookingrequest_add_form") {
+    $form['#attached']['library'][] = 'adult_presentation_booking_request/adult_presentation_booking_request';
+    $elements = WebformFormHelper::flattenElements($form);
+    $elements['civicrm_1_activity_1_cg2_custom_90']['#default_value'] = 'Adult';
+  }
+}
