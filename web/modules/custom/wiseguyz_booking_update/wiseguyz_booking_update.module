@@ -1,0 +1,36 @@
+<?php
+
+use Drupal\webform\Utility\WebformFormHelper;
+
+@require_once 'wiseguyz_booking_update.variables.php';
+
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function wiseguyz_booking_update_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == "webform_submission_wiseguyz_booking_update_add_form") {
+    // Get custom field constants
+    $constants = get_defined_constants(FALSE);
+
+    //Attach library
+    $form['#attached']['library'][] = 'wiseguyz_booking_update/wiseguyz_booking_update';
+    $form['#attached']['drupalSettings']['wiseguyz_booking_update']['start_date'] = '#edit-' . str_replace('_', '-', WISEGUYZ_BOOKING_UPDATE_START_DATE);
+    $form['#attached']['drupalSettings']['wiseguyz_booking_update']['end_date'] = '#edit-' . str_replace('_', '-', WISEGUYZ_BOOKING_UPDATE_END_DATE);
+
+    //Get webform form elements
+    $elements = WebformFormHelper::flattenElements($form);
+    if (empty($elements)) {
+      return;
+    }
+
+    // hackish fix to bypass false validation error on assigned Staff fields
+    //  triggerred at line 151 of web/core/lib/Drupal/Core/Form/FormErrorHandler.php
+    unset($elements['civicrm_3_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_4_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_5_contact_1_contact_existing']['#group']);
+    unset($elements['civicrm_6_contact_1_contact_existing']['#group']);
+  }
+}

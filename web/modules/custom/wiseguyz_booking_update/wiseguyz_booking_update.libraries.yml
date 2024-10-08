@@ -1,0 +1,7 @@
+wiseguyz_booking_update:
+  version: 1
+  js:
+    js/wiseguyz_update_booking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
