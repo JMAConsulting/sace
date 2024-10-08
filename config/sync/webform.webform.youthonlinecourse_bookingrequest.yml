@@ -709,6 +709,7 @@ handlers:
     conditions: {  }
     weight: null
     settings:
+      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '3'
       1_contact_type: individual
@@ -753,7 +754,7 @@ handlers:
       civicrm_1_contact_1_phone_phone: create_civicrm_webform_element
       civicrm_1_contact_1_phone_phone_ext: 0
       civicrm_1_contact_1_phone_phone_type_id: '1'
-      civicrm_1_contact_1_phone_location_type_id: '3'
+      civicrm_1_contact_1_phone_location_type_id: '1'
       civicrm_1_contact_1_phone_is_primary: '1'
       contact_1_number_of_email: '1'
       civicrm_1_contact_1_email_email: create_civicrm_webform_element
@@ -820,7 +821,7 @@ handlers:
       civicrm_2_contact_1_phone_is_primary: '1'
       contact_2_number_of_email: '1'
       civicrm_2_contact_1_email_email: create_civicrm_webform_element
-      civicrm_2_contact_1_email_location_type_id: '3'
+      civicrm_2_contact_1_email_location_type_id: '1'
       civicrm_2_contact_1_email_is_primary: '1'
       contact_2_number_of_website: '0'
       contact_2_number_of_im: '0'
@@ -952,6 +953,8 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
       civicrm_1_activity_1_cg2_custom_1261: 0
+      civicrm_1_activity_1_cg2_custom_1288: 0
+      civicrm_1_activity_1_cg2_custom_1289: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1289,7 +1292,7 @@ handlers:
             phone:
               1:
                 phone_type_id: '1'
-                location_type_id: '3'
+                location_type_id: '1'
                 is_primary: '1'
             email:
               1:
@@ -1329,7 +1332,7 @@ handlers:
                 is_primary: '1'
             email:
               1:
-                location_type_id: '3'
+                location_type_id: '1'
                 is_primary: '1'
             relationship:
               1:

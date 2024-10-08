@@ -288,7 +288,7 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_1232:
     '#type': civicrm_options
     '#title': 'Consultation Topic'
-    '#description': '<p><strong>Please note, you are booking a consultation, not a presentation</strong>. Organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review. To book a presentation, fill out our&nbsp;<a href="https://secure.sace.ca/form/ped-booking-request?booking_type=55&amp;pop=Youth">Youth Presentation</a>&nbsp;or&nbsp;<a href="https://secure.sace.ca/form/ped-booking-request?booking_type=59&amp;pop=Adult">Adult Presentation</a>&nbsp;booking forms, or include a note in the "Additional needs or considerations" field below.</p>'
+    '#description': 'Please note that organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review.&nbsp;'
     '#empty_option': '- select - '
     '#civicrm_live_options': 0
     '#options':
