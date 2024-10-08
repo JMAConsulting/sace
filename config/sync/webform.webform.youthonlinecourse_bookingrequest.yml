@@ -1,0 +1,1441 @@
+uuid: 81aec888-d78f-4c54-a919-5357f1b0914d
+langcode: en
+status: open
+dependencies:
+  module:
+    - webform_civicrm
+    - youth_online_course_booking_request
+weight: 0
+open: null
+close: null
+uid: 1
+template: false
+archive: false
+id: youthonlinecourse_bookingrequest
+title: 'Youth Online Course Booking Request'
+description: ''
+categories: {  }
+elements: |-
+  intro_markup:
+    '#type': processed_text
+    '#admin_title': 'Online Course Youth Banner and Blurb'
+    '#text': |
+      <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
+
+      <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
+
+      <p>&nbsp;</p>
+
+      <p><img alt="​A youth online courses banner graphic features four tablets, each displaying a colourful course title page with an illustration featuring diverse people in a range of scenarios useful to illustrating sexual violence education concepts" class="" data-entity-type="" data-entity-uuid="" id="" src="https://secure.sace.ca/sites/default/files/2023-07/YouthOnlineCoursesBanner_0.png" title="Youth Online Course Group Booking Requests" width="100%" /></p>
+    '#format': html
+  processed_text:
+    '#type': processed_text
+    '#admin_title': 'General Information Header'
+    '#text': |
+      <h2><span style="color:#2e416c;"><strong>General Information</strong></span></h2>
+    '#format': html
+  flexbox:
+    '#type': webform_flexbox
+    civicrm_1_contact_1_contact_first_name:
+      '#type': textfield
+      '#contact_type': individual
+      '#form_key': civicrm_1_contact_1_contact_first_name
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': 'First Name'
+      '#required': true
+    civicrm_1_contact_1_contact_last_name:
+      '#type': textfield
+      '#contact_type': individual
+      '#form_key': civicrm_1_contact_1_contact_last_name
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': 'Last Name'
+      '#required': true
+    civicrm_1_contact_1_email_email:
+      '#type': email
+      '#form_key': civicrm_1_contact_1_email_email
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#title': Email
+      '#required': true
+  flexbox_01:
+    '#type': webform_flexbox
+    civicrm_1_contact_1_phone_phone:
+      '#type': textfield
+      '#title': 'Phone Number'
+      '#input_mask': '(999) 999-9999'
+      '#form_key': civicrm_1_contact_1_phone_phone
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+    civicrm_1_contact_1_cg5_custom_89:
+      '#type': textfield
+      '#data_type': String
+      '#form_key': civicrm_1_contact_1_cg5_custom_89
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_contact_1_cg5_fieldset
+      '#title': Pronouns
+    civicrm_1_contact_1_contact_preferred_communication_method:
+      '#type': civicrm_options
+      '#title': 'Preferred Communication Method'
+      '#civicrm_live_options': 0
+      '#options':
+        1: Phone
+        2: Email
+      '#required': true
+      '#default_value': '2'
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_contact_1_contact_preferred_communication_method
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#default_option': '2'
+  civicrm_3_contact_1_cg52_fieldset:
+    '#type': fieldset
+    '#title': 'Your Organization'
+    '#form_key': civicrm_3_contact_1_cg52_fieldset
+    civicrm_2_contact_1_contact_existing:
+      '#type': civicrm_contact
+      '#title': 'Select Your Organization'
+      '#description': 'If you cannot find your organization, please click <a id="new-org" href=#> here</a> to add one.'
+      '#widget': autocomplete
+      '#none_prompt': '+ Create new +'
+      '#results_display':
+        display_name: display_name
+      '#default_relationship_to': '1'
+      '#default_relationship':
+        '': ''
+      '#tag':
+        44: '44'
+        27: '27'
+        2: '2'
+        56: '56'
+        45: '45'
+        48: '48'
+        1: '1'
+        49: '49'
+        7: '7'
+        13: '13'
+        8: '8'
+        10: '10'
+        6: '6'
+        11: '11'
+        14: '14'
+        9: '9'
+        12: '12'
+        15: '15'
+        66: '66'
+      '#filter_relationship_contact': ''
+      '#allow_create': 1
+      '#contact_type': organization
+      '#form_key': civicrm_2_contact_1_contact_existing
+      '#parent': civicrm_2_contact_1_fieldset_fieldset
+      '#extra': {  }
+    civicrm_2_contact_1_fieldset_fieldset:
+      '#type': fieldset
+      '#title': 'New Organization'
+      '#form_key': civicrm_2_contact_1_fieldset_fieldset
+      civicrm_2_contact_1_contact_organization_name:
+        '#type': textfield
+        '#title': 'Organization Name'
+        '#counter_type': character
+        '#counter_maximum': 128
+        '#counter_maximum_message': ' '
+        '#attributes':
+          style: 'display:inline'
+        '#contact_type': organization
+        '#form_key': civicrm_2_contact_1_contact_organization_name
+        '#extra':
+          width: 20
+        '#parent': civicrm_2_contact_1_fieldset_fieldset
+      civicrm_2_contact_1_address_street_address:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 96
+        '#counter_maximum_message': ' '
+        '#extra':
+          width: 60
+        '#form_key': civicrm_2_contact_1_address_street_address
+        '#parent': civicrm_2_contact_1_fieldset_fieldset
+        '#title': 'Street Address'
+      civicrm_2_contact_1_address_city:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 64
+        '#counter_maximum_message': ' '
+        '#extra':
+          width: 20
+        '#form_key': civicrm_2_contact_1_address_city
+        '#parent': civicrm_2_contact_1_fieldset_fieldset
+        '#title': City
+      civicrm_2_contact_1_address_postal_code:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 64
+        '#counter_maximum_message': ' '
+        '#extra':
+          width: 7
+        '#form_key': civicrm_2_contact_1_address_postal_code
+        '#parent': civicrm_2_contact_1_fieldset_fieldset
+        '#title': 'Postal Code'
+      civicrm_2_contact_1_address_state_province_id:
+        '#type': civicrm_options
+        '#extra':
+          aslist: 1
+        '#data_type': state_province_abbr
+        '#form_key': civicrm_2_contact_1_address_state_province_id
+        '#parent': civicrm_2_contact_1_fieldset_fieldset
+        '#title': State/Province
+        '#webform': ped_online_course_booking_reques
+        '#webform_id': ped_online_course_booking_reques--civicrm_2_contact_1_address_state_province_id
+        '#webform_key': civicrm_2_contact_1_address_state_province_id
+        '#webform_parent_key': civicrm_2_contact_1_fieldset_fieldset
+        '#webform_parent_flexbox': false
+        '#webform_depth': 2
+        '#webform_children': {  }
+        '#webform_multiple': false
+        '#webform_composite': false
+        '#webform_parents':
+          - civicrm_3_contact_1_cg52_fieldset
+          - civicrm_2_contact_1_fieldset_fieldset
+          - civicrm_2_contact_1_address_state_province_id
+        '#admin_title': State/Province
+        '#webform_plugin_id': civicrm_options
+        '#civicrm_live_options': 0
+        '#empty_option': '- None -'
+        '#options': {  }
+      civicrm_2_contact_1_phone_phone:
+        '#type': textfield
+        '#counter_type': character
+        '#counter_maximum': 32
+        '#counter_maximum_message': ' '
+        '#form_key': civicrm_2_contact_1_phone_phone
+        '#extra':
+          width: 20
+        '#parent': civicrm_2_contact_1_fieldset_fieldset
+        '#title': 'Phone Number'
+      civicrm_2_contact_1_email_email:
+        '#type': email
+        '#title': Email
+        '#description': 'To choose existing organization please click <a href="#new-org" id="existing-org">here</a> to select one.'
+        '#form_key': civicrm_2_contact_1_email_email
+        '#extra':
+          width: 20
+        '#parent': civicrm_2_contact_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_657:
+      '#type': civicrm_options
+      '#title': 'This booking is for a smaller group, program, department or committee within my organization'
+      '#options':
+        'Yes': 'Yes'
+        'No': 'No'
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_657
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': 'No'
+      '#default_value': 'No'
+      '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg2_custom_658:
+      '#type': textfield
+      '#title': 'Name of a smaller group, program, department or committee within my organization'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_657"]':
+            value: 'No'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_658
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  processed_text_01:
+    '#type': processed_text
+    '#admin_title': 'Booking Details Header'
+    '#text': |
+      <h2><span style="color:#2e416c;">Booking Details</span></h2>
+    '#format': html
+  online_course_s_:
+    '#type': container
+    '#title': 'Online Course Topic(s)'
+    youth_online_course_blurb:
+      '#type': processed_text
+      '#admin_title': 'Online Course Youth Grades and Topics Blurb'
+      '#text': |
+        <h3><span style="color:#2e416c;">Online Course Topic(s)</span></h3>
+
+        <p>The typical courses offered by approximate age range are listed below. For more information about each course topic, please visit <a class="ql-link" href="http://www.sace.ca/services/public-education" rel="noopener noreferrer" target="_blank">http://www.sace.ca/services/public-education</a>.</p>
+
+        <p><br />
+        <b>*Please note,</b><strong> that each module builds on the learning of previous ones for each age group.</strong>&nbsp;</p>
+
+        <ul>
+        	<li>Grade 7 (12-13 years) - Ask First: Sexual Harassment&nbsp;</li>
+        	<li>Grade 8 (13-14 years) - Ask First: Sexual Assault &amp; Consent&nbsp;</li>
+        	<li>Grade 9 (14-15 years) - Ask First: Non-Consensual Photo Sharing&nbsp;</li>
+        	<li>High School (15-18 years) – Consent: Ask Me About It!</li>
+        </ul>
+      '#format': html
+    civicrm_1_activity_1_cg2_custom_697:
+      '#type': civicrm_options
+      '#title': 'Online Courses'
+      '#empty_option': '- Select Online Courses -'
+      '#options':
+        "Ask First: Sexual Harassment\_": 'Ask First: Sexual Harassment'
+        "Ask First: Sexual Assault & Consent\_": 'Ask First: Sexual Assault & Consent'
+        "Ask First: Non-Consensual Photo Sharing\_": 'Ask First: Non-Consensual Photo Sharing'
+        'Consent: Ask Me About It!': 'Consent: Ask Me About It!'
+      '#required': true
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_697
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg2_custom_662:
+      '#type': checkboxes
+      '#title': 'Youth Online Course Optional Add-Ons'
+      '#options':
+        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator -- This option can be offered in-person or online.'
+        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module -- Only available for Consent: Ask Me About It! online course.'
+        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": "Non-Consensual Photo Sharing Add-On Module\_ -- Only available for Consent: Ask Me About It! online course."
+        'Racism & Sexual Violence': "Racism & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more about the deep connection between racism and sexual violence to empower\_ individuals and communities to enact meaningful change."
+        '2SLGBTQ+ Community & Sexual Violence': "2SLGBTQ+ Community & Sexual Violence -- This\_self-paced online course is available for adults who want to learn more\_ about the connection between queer history, queer trauma, and sexual\_violence."
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-3
+      '#civicrm_live_options': 0
+      '#extra':
+        aslist: 1
+        items: |-
+          Live Q&A with a SACE Educator|Live Q&A with a SACE Educator
+          Sexual Harassment Add-On Module (High School Only)\_|Sexual Harassment Add-On Module (High School Only)\_
+          Non-Consensual Photo Sharing Add-On Module (High School Only)\_|Non-Consensual Photo Sharing Add-On Module (High School Only)\_
+        multiple: 1
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_662
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_1_activity_1_cg2_custom_90:
+    '#type': civicrm_options
+    '#title': 'Youth or Adult'
+    '#civicrm_live_options': 0
+    '#options':
+      Adult: Adult
+      Youth: Youth
+    '#extra':
+      aslist: 1
+      multiple: 0
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_90
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': ''
+    '#default_value': ''
+  civicrm_1_activity_1_cg2_custom_88:
+    '#type': civicrm_options
+    '#title': 'Presentation Method'
+    '#options':
+      'In-Person Presentation': 'In-Person Presentation'
+      'Online Presentation': 'Online Presentation'
+      'Online Course': 'Online Course'
+    '#wrapper_attributes':
+      style: 'display:none'
+    '#extra':
+      aslist: 1
+      multiple: 0
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_88
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': 'Online Course'
+    '#default_value': 'Online Course'
+    '#civicrm_live_options': '1'
+  civicrm_1_activity_1_fieldset_fieldset:
+    '#type': container
+    '#title': 'Your Course(s)'
+    '#form_key': civicrm_1_activity_1_fieldset_fieldset
+    processed_text_02:
+      '#type': processed_text
+      '#admin_title': 'Online Course Details Header'
+      '#text': |
+        <h3><span style="color:#2e416c;">Online Course Details</span></h3>
+      '#format': html
+    your_course_markup:
+      '#type': processed_text
+      '#admin_title': 'Online Course Details Blurb'
+      '#text': |
+        <p>In this section, tell us a bit about the online courses you'd like. It's okay if you're not sure; put your best answers and we can help you from there. Please note, our minimum participant requirement is 8 participants.</p>
+      '#format': html
+    your_online_course_youth:
+      '#type': processed_text
+      '#admin_title': 'Your Online Course Youth Blurb'
+      '#text': |
+        <p><b>*Please note,</b><strong> our online courses are designed to be used by your school for 1 semester at a time. If you would like to use it for multiple semesters, please fill out a separate booking request form for each semester.</strong></p>
+      '#format': html
+    civicrm_1_activity_1_cg2_custom_25:
+      '#type': checkboxes
+      '#title': 'Grades and Ages'
+      '#options':
+        'Grade 7 (ages 12-13)': 'Grade 7 (ages 12-13)'
+        'Grade 8 (ages 13-14)': 'Grade 8 (ages 13-14)'
+        'Grade 9 (ages 14-15)': 'Grade 9 (ages 14-15)'
+        'High School (ages 15-18)': 'High School (ages 15-18)'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#extra':
+        multiple: 1
+        aslist: 1
+        items: |-
+          Grade 7 (ages 12-13)|Grade 7 (ages 12-13)
+          Grade 8 (ages 13-14)|Grade 8 (ages 13-14)
+          Grade 9 (ages 14-15)|Grade 9 (ages 14-15)
+          High School (ages 15-18)|High School (ages 15-18)
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_25
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#civicrm_live_options': 1
+    flexbox_05:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_815:
+        '#type': textfield
+        '#title': ' Approximate number of participants per course '
+        '#counter_type': character
+        '#counter_maximum': 255
+        '#counter_maximum_message': ' '
+        '#data_type': Float
+        '#form_key': civicrm_1_activity_1_cg2_custom_815
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+      civicrm_1_activity_1_cg2_custom_656:
+        '#type': number
+        '#title': 'Number of classes accessing the course '
+        '#counter_type': character
+        '#counter_maximum': 255
+        '#counter_maximum_message': ' '
+        '#data_type': Int
+        '#form_key': civicrm_1_activity_1_cg2_custom_656
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+    flexbox_06:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_127:
+        '#type': textfield
+        '#title': 'Preferred Start and End Dates'
+        '#description': |-
+          <div class="description form-item__description">
+          <div class="webform-element-description" id="edit-civicrm-1-activity-1-cg2-custom-129--description">Please provide any details about start date, end date, and/or course duration.</div>
+          </div>
+        '#counter_type': character
+        '#counter_maximum': 255
+        '#counter_maximum_message': ' '
+        '#data_type': String
+        '#form_key': civicrm_1_activity_1_cg2_custom_127
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_126:
+      '#type': textarea
+      '#title': 'Additional needs or considerations (please specify)'
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg2_custom_126
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_activity_subject:
+      '#type': webform_computed_twig
+      '#title': 'Activity Subject'
+      '#display_on': view
+      '#template': "{{ (data.\tcivicrm_2_contact_1_contact_organization_name)|upper }}"
+      '#store': true
+      '#ajax': true
+      '#form_key': civicrm_1_activity_1_activity_subject
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_1_activity_1_activity_activity_type_id:
+    '#type': civicrm_options
+    '#title': 'Booking Type'
+    '#title_display': none
+    '#disabled': true
+    '#civicrm_live_options': 0
+    '#options':
+      196: 'PED - Youth Online Course Booking'
+    '#default_value': 196
+    '#wrapper_attributes':
+      style: 'display:none;'
+    '#extra':
+      aslist: 1
+      multiple: 0
+    '#form_key': civicrm_1_activity_1_activity_activity_type_id
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': ''
+  civicrm_3_contact_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': Unassigned
+    '#states':
+      invisible:
+        ':input[name="civicrm_3_contact_1_contact_existing"]':
+          filled: true
+    '#states_clear': false
+    '#form_key': civicrm_3_contact_1_fieldset_fieldset
+    civicrm_3_contact_1_contact_existing:
+      '#type': civicrm_contact
+      '#title': 'Existing Contact'
+      '#widget': hidden
+      '#none_prompt': '- None Found -'
+      '#results_display':
+        display_name: display_name
+      '#states_clear': false
+      '#default_value': '860'
+      '#default_relationship_to': '1'
+      '#default_relationship':
+        '': ''
+      '#filter_relationship_contact': ''
+      '#contact_type': individual
+      '#form_key': civicrm_3_contact_1_contact_existing
+      '#parent': civicrm_3_contact_1_fieldset_fieldset
+      '#extra': {  }
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#submit__label': 'Submit Request'
+    '#submit__attributes':
+      class:
+        - 'button button--secondary'
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: /youth-online-course-booking-request
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: both
+  form_submit_once: false
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: false
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: url
+  confirmation_url: /ce/thank-you-your-request
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - anonymous
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  webform_civicrm:
+    id: webform_civicrm
+    handler_id: webform_civicrm
+    label: CiviCRM
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: null
+    settings:
+      disable: 'Leave Fields and Save Settings'
+      nid: 1
+      number_of_contacts: '3'
+      1_contact_type: individual
+      1_webform_label: Client
+      civicrm_1_contact_1_contact_contact_sub_type:
+        '': ''
+      civicrm_1_contact_1_contact_existing: 0
+      civicrm_1_contact_1_contact_prefix_id: 0
+      civicrm_1_contact_1_contact_first_name: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_middle_name: 0
+      civicrm_1_contact_1_contact_last_name: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_suffix_id: 0
+      civicrm_1_contact_1_contact_nick_name: 0
+      civicrm_1_contact_1_contact_gender_id: 0
+      civicrm_1_contact_1_contact_job_title: 0
+      civicrm_1_contact_1_contact_birth_date: 0
+      civicrm_1_contact_1_contact_preferred_communication_method: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_privacy: 0
+      civicrm_1_contact_1_contact_preferred_language: 0
+      civicrm_1_contact_1_contact_image_url: 0
+      civicrm_1_contact_1_contact_contact_id: 0
+      civicrm_1_contact_1_contact_user_id: 0
+      civicrm_1_contact_1_contact_external_identifier: 0
+      civicrm_1_contact_1_contact_source: 0
+      civicrm_1_contact_1_contact_cs: 0
+      civicrm_1_contact_1_contact_employer_id: 0
+      civicrm_1_contact_1_contact_is_deceased: 0
+      civicrm_1_contact_1_contact_deceased_date: 0
+      contact_1_settings_matching_rule: Unsupervised
+      contact_1_number_of_cg5: '1'
+      contact_1_settings_dynamic_custom_cg5: 0
+      civicrm_1_contact_1_cg5_custom_89: create_civicrm_webform_element
+      civicrm_1_contact_1_cg5_custom_93: 0
+      civicrm_1_contact_1_cg5_custom_410: 0
+      civicrm_1_contact_1_cg5_custom_411: 0
+      contact_1_number_of_cg12: '0'
+      contact_1_number_of_other: '0'
+      contact_1_number_of_address: '0'
+      contact_1_number_of_phone: '1'
+      civicrm_1_contact_1_phone_phone: create_civicrm_webform_element
+      civicrm_1_contact_1_phone_phone_ext: 0
+      civicrm_1_contact_1_phone_phone_type_id: '1'
+      civicrm_1_contact_1_phone_location_type_id: '1'
+      civicrm_1_contact_1_phone_is_primary: '1'
+      contact_1_number_of_email: '1'
+      civicrm_1_contact_1_email_email: create_civicrm_webform_element
+      civicrm_1_contact_1_email_location_type_id: '1'
+      civicrm_1_contact_1_email_is_primary: '1'
+      contact_1_number_of_website: '0'
+      contact_1_number_of_im: '0'
+      contact_1_number_of_cg30: '0'
+      2_contact_type: organization
+      2_webform_label: 'Your School or Organization'
+      civicrm_2_contact_1_contact_contact_sub_type:
+        '': ''
+      civicrm_2_contact_1_contact_existing: create_civicrm_webform_element
+      civicrm_2_contact_1_contact_organization_name: create_civicrm_webform_element
+      civicrm_2_contact_1_contact_legal_name: 0
+      civicrm_2_contact_1_contact_sic_code: 0
+      civicrm_2_contact_1_contact_nick_name: 0
+      civicrm_2_contact_1_contact_preferred_communication_method: 0
+      civicrm_2_contact_1_contact_privacy: 0
+      civicrm_2_contact_1_contact_preferred_language: 0
+      civicrm_2_contact_1_contact_image_url: 0
+      civicrm_2_contact_1_contact_contact_id: 0
+      civicrm_2_contact_1_contact_user_id: 0
+      civicrm_2_contact_1_contact_external_identifier: 0
+      civicrm_2_contact_1_contact_source: 0
+      civicrm_2_contact_1_contact_cs: 0
+      contact_2_settings_matching_rule: Unsupervised
+      contact_2_number_of_cg27: '0'
+      contact_2_number_of_cg52: '1'
+      contact_2_settings_dynamic_custom_cg52: 0
+      civicrm_2_contact_1_cg52_custom_663: 0
+      civicrm_2_contact_1_cg52_custom_664: 0
+      contact_2_number_of_other: '1'
+      civicrm_2_contact_1_other_group:
+        '': ''
+      civicrm_2_contact_1_other_tag:
+        66: '66'
+      contact_2_number_of_address: '1'
+      civicrm_2_contact_1_address_street_address: create_civicrm_webform_element
+      civicrm_2_contact_1_address_street_name: 0
+      civicrm_2_contact_1_address_street_number: 0
+      civicrm_2_contact_1_address_street_unit: 0
+      civicrm_2_contact_1_address_name: 0
+      civicrm_2_contact_1_address_supplemental_address_1: 0
+      civicrm_2_contact_1_address_supplemental_address_2: 0
+      civicrm_2_contact_1_address_supplemental_address_3: 0
+      civicrm_2_contact_1_address_city: create_civicrm_webform_element
+      civicrm_2_contact_1_address_postal_code: create_civicrm_webform_element
+      civicrm_2_contact_1_address_postal_code_suffix: 0
+      civicrm_2_contact_1_address_country_id: 0
+      civicrm_2_contact_1_address_state_province_id: create_civicrm_webform_element
+      civicrm_2_contact_1_address_county_id: 0
+      civicrm_2_contact_1_address_master_id: 0
+      civicrm_2_contact_1_address_location_type_id: '3'
+      civicrm_2_contact_1_address_is_primary: '1'
+      contact_2_number_of_phone: '1'
+      civicrm_2_contact_1_phone_phone: create_civicrm_webform_element
+      civicrm_2_contact_1_phone_phone_ext: 0
+      civicrm_2_contact_1_phone_phone_type_id: '1'
+      civicrm_2_contact_1_phone_location_type_id: '1'
+      civicrm_2_contact_1_phone_is_primary: '1'
+      contact_2_number_of_email: '1'
+      civicrm_2_contact_1_email_email: create_civicrm_webform_element
+      civicrm_2_contact_1_email_location_type_id: '1'
+      civicrm_2_contact_1_email_is_primary: '1'
+      contact_2_number_of_website: '0'
+      contact_2_number_of_im: '0'
+      contact_2_number_of_relationship: '1'
+      civicrm_2_contact_1_relationship_relationship_type_id:
+        '': ''
+      civicrm_2_contact_1_relationship_is_active: '1'
+      civicrm_2_contact_1_relationship_relationship_permission: 0
+      civicrm_2_contact_1_relationship_start_date: 0
+      civicrm_2_contact_1_relationship_end_date: 0
+      civicrm_2_contact_1_relationship_description: 0
+      civicrm_2_contact_1_relationship_custom_138: 0
+      civicrm_2_contact_1_relationship_custom_318: 0
+      civicrm_2_contact_1_relationship_custom_319: 0
+      contact_2_number_of_cg30: '0'
+      3_contact_type: individual
+      3_webform_label: Unassigned
+      civicrm_3_contact_1_contact_contact_sub_type:
+        '': ''
+      civicrm_3_contact_1_contact_existing: create_civicrm_webform_element
+      civicrm_3_contact_1_contact_prefix_id: 0
+      civicrm_3_contact_1_contact_first_name: 0
+      civicrm_3_contact_1_contact_middle_name: 0
+      civicrm_3_contact_1_contact_last_name: 0
+      civicrm_3_contact_1_contact_suffix_id: 0
+      civicrm_3_contact_1_contact_nick_name: 0
+      civicrm_3_contact_1_contact_gender_id: 0
+      civicrm_3_contact_1_contact_job_title: 0
+      civicrm_3_contact_1_contact_birth_date: 0
+      civicrm_3_contact_1_contact_preferred_communication_method: 0
+      civicrm_3_contact_1_contact_privacy: 0
+      civicrm_3_contact_1_contact_preferred_language: 0
+      civicrm_3_contact_1_contact_image_url: 0
+      civicrm_3_contact_1_contact_contact_id: 0
+      civicrm_3_contact_1_contact_user_id: 0
+      civicrm_3_contact_1_contact_external_identifier: 0
+      civicrm_3_contact_1_contact_source: 0
+      civicrm_3_contact_1_contact_cs: 0
+      civicrm_3_contact_1_contact_employer_id: 0
+      civicrm_3_contact_1_contact_is_deceased: 0
+      civicrm_3_contact_1_contact_deceased_date: 0
+      contact_3_settings_matching_rule: Unsupervised
+      contact_3_number_of_cg5: '0'
+      contact_3_number_of_cg12: '0'
+      contact_3_number_of_other: '0'
+      contact_3_number_of_address: '0'
+      contact_3_number_of_phone: '0'
+      contact_3_number_of_email: '0'
+      contact_3_number_of_website: '0'
+      contact_3_number_of_im: '0'
+      contact_3_number_of_relationship: '0'
+      contact_3_number_of_cg30: '0'
+      prefix_known: ''
+      prefix_unknown: ''
+      toggle_message: 1
+      message: "You are viewing this form as [display name]. Please {click here if that's not you}."
+      activity_number_of_activity: '1'
+      activity_1_settings_existing_activity_status:
+        '': ''
+      activity_1_settings_details:
+        entire_result: 0
+        view_link: 0
+        edit_link: 0
+        update_existing: 0
+      civicrm_1_activity_1_activity_activity_type_id: create_civicrm_webform_element
+      civicrm_1_activity_1_activity_target_contact_id:
+        2: '2'
+      civicrm_1_activity_1_activity_source_contact_id: '1'
+      civicrm_1_activity_1_activity_subject: create_civicrm_webform_element
+      civicrm_1_activity_1_activity_details: 0
+      civicrm_1_activity_1_activity_status_id: '9'
+      civicrm_1_activity_1_activity_priority_id: '0'
+      civicrm_1_activity_1_activity_assignee_contact_id:
+        3: '3'
+      civicrm_1_activity_1_activity_location: 0
+      civicrm_1_activity_1_activity_activity_date_time: 0
+      civicrm_1_activity_1_activity_duration: 0
+      civicrm_1_activity_1_activity_tag:
+        '': ''
+      civicrm_1_activity_1_activity_engagement_level: 0
+      civicrm_1_activity_1_activity_campaign_id: 0
+      civicrm_1_activity_1_activityupload_file_1: 0
+      civicrm_1_activity_1_activityupload_file_2: 0
+      civicrm_1_activity_1_activityupload_file_3: 0
+      activity_1_settings_dynamic_custom_cg2: 0
+      civicrm_1_activity_1_cg2_custom_332: 0
+      civicrm_1_activity_1_cg2_custom_333: 0
+      civicrm_1_activity_1_cg2_custom_334: 0
+      civicrm_1_activity_1_cg2_custom_331: 0
+      civicrm_1_activity_1_cg2_custom_330: 0
+      civicrm_1_activity_1_cg2_custom_40: 0
+      civicrm_1_activity_1_cg2_custom_88: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_126: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_125: 0
+      civicrm_1_activity_1_cg2_custom_124: 0
+      civicrm_1_activity_1_cg2_custom_123: 0
+      civicrm_1_activity_1_cg2_custom_122: 0
+      civicrm_1_activity_1_cg2_custom_121: 0
+      civicrm_1_activity_1_cg2_custom_120: 0
+      civicrm_1_activity_1_cg2_custom_119: 0
+      civicrm_1_activity_1_cg2_custom_90: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_43: 0
+      civicrm_1_activity_1_cg2_custom_25: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_34: 0
+      civicrm_1_activity_1_cg2_custom_35: 0
+      civicrm_1_activity_1_cg2_custom_37: 0
+      civicrm_1_activity_1_cg2_custom_41: 0
+      civicrm_1_activity_1_cg2_custom_127: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_128: 0
+      civicrm_1_activity_1_cg2_custom_129: 0
+      civicrm_1_activity_1_cg2_custom_341: 0
+      civicrm_1_activity_1_cg2_custom_655: 0
+      civicrm_1_activity_1_cg2_custom_656: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_657: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_658: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_659: 0
+      civicrm_1_activity_1_cg2_custom_660: 0
+      civicrm_1_activity_1_cg2_custom_661: 0
+      civicrm_1_activity_1_cg2_custom_662: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_697: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_698: 0
+      civicrm_1_activity_1_cg2_custom_815: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_816: 0
+      civicrm_1_activity_1_cg2_custom_1232: 0
+      civicrm_1_activity_1_cg2_custom_1233: 0
+      civicrm_1_activity_1_cg2_custom_1234: 0
+      civicrm_1_activity_1_cg2_custom_1261: 0
+      civicrm_1_activity_1_cg2_custom_1288: 0
+      civicrm_1_activity_1_cg2_custom_1289: 0
+      activity_1_settings_dynamic_custom_cg9: 0
+      civicrm_1_activity_1_cg9_custom_115: 0
+      civicrm_1_activity_1_cg9_custom_265: 0
+      activity_1_settings_dynamic_custom_cg17: 0
+      civicrm_1_activity_1_cg17_custom_144: 0
+      civicrm_1_activity_1_cg17_custom_147: 0
+      civicrm_1_activity_1_cg17_custom_146: 0
+      civicrm_1_activity_1_cg17_custom_152: 0
+      civicrm_1_activity_1_cg17_custom_153: 0
+      civicrm_1_activity_1_cg17_custom_154: 0
+      civicrm_1_activity_1_cg17_custom_155: 0
+      civicrm_1_activity_1_cg17_custom_156: 0
+      civicrm_1_activity_1_cg17_custom_157: 0
+      civicrm_1_activity_1_cg17_custom_158: 0
+      civicrm_1_activity_1_cg17_custom_159: 0
+      civicrm_1_activity_1_cg17_custom_160: 0
+      civicrm_1_activity_1_cg17_custom_161: 0
+      civicrm_1_activity_1_cg17_custom_162: 0
+      civicrm_1_activity_1_cg17_custom_163: 0
+      civicrm_1_activity_1_cg17_custom_164: 0
+      civicrm_1_activity_1_cg17_custom_165: 0
+      civicrm_1_activity_1_cg17_custom_166: 0
+      civicrm_1_activity_1_cg17_custom_167: 0
+      civicrm_1_activity_1_cg17_custom_168: 0
+      civicrm_1_activity_1_cg17_custom_169: 0
+      civicrm_1_activity_1_cg17_custom_170: 0
+      civicrm_1_activity_1_cg17_custom_171: 0
+      civicrm_1_activity_1_cg17_custom_172: 0
+      civicrm_1_activity_1_cg17_custom_173: 0
+      civicrm_1_activity_1_cg17_custom_174: 0
+      activity_1_settings_dynamic_custom_cg18: 0
+      civicrm_1_activity_1_cg18_custom_148: 0
+      civicrm_1_activity_1_cg18_custom_149: 0
+      civicrm_1_activity_1_cg18_custom_150: 0
+      civicrm_1_activity_1_cg18_custom_151: 0
+      civicrm_1_activity_1_cg18_custom_177: 0
+      civicrm_1_activity_1_cg18_custom_181: 0
+      civicrm_1_activity_1_cg18_custom_182: 0
+      civicrm_1_activity_1_cg18_custom_180: 0
+      civicrm_1_activity_1_cg18_custom_183: 0
+      civicrm_1_activity_1_cg18_custom_184: 0
+      civicrm_1_activity_1_cg18_custom_185: 0
+      civicrm_1_activity_1_cg18_custom_186: 0
+      civicrm_1_activity_1_cg18_custom_187: 0
+      civicrm_1_activity_1_cg18_custom_188: 0
+      civicrm_1_activity_1_cg18_custom_193: 0
+      civicrm_1_activity_1_cg18_custom_194: 0
+      civicrm_1_activity_1_cg18_custom_195: 0
+      civicrm_1_activity_1_cg18_custom_196: 0
+      civicrm_1_activity_1_cg18_custom_198: 0
+      civicrm_1_activity_1_cg18_custom_199: 0
+      civicrm_1_activity_1_cg18_custom_189: 0
+      civicrm_1_activity_1_cg18_custom_200: 0
+      civicrm_1_activity_1_cg18_custom_201: 0
+      civicrm_1_activity_1_cg18_custom_202: 0
+      civicrm_1_activity_1_cg18_custom_190: 0
+      civicrm_1_activity_1_cg18_custom_191: 0
+      civicrm_1_activity_1_cg18_custom_192: 0
+      civicrm_1_activity_1_cg18_custom_203: 0
+      civicrm_1_activity_1_cg18_custom_204: 0
+      civicrm_1_activity_1_cg18_custom_205: 0
+      civicrm_1_activity_1_cg18_custom_206: 0
+      civicrm_1_activity_1_cg18_custom_207: 0
+      activity_1_settings_dynamic_custom_cg20: 0
+      civicrm_1_activity_1_cg20_custom_216: 0
+      civicrm_1_activity_1_cg20_custom_217: 0
+      civicrm_1_activity_1_cg20_custom_218: 0
+      civicrm_1_activity_1_cg20_custom_219: 0
+      civicrm_1_activity_1_cg20_custom_220: 0
+      civicrm_1_activity_1_cg20_custom_221: 0
+      civicrm_1_activity_1_cg20_custom_222: 0
+      civicrm_1_activity_1_cg20_custom_223: 0
+      civicrm_1_activity_1_cg20_custom_224: 0
+      civicrm_1_activity_1_cg20_custom_225: 0
+      civicrm_1_activity_1_cg20_custom_226: 0
+      civicrm_1_activity_1_cg20_custom_227: 0
+      civicrm_1_activity_1_cg20_custom_228: 0
+      civicrm_1_activity_1_cg20_custom_229: 0
+      civicrm_1_activity_1_cg20_custom_230: 0
+      civicrm_1_activity_1_cg20_custom_231: 0
+      civicrm_1_activity_1_cg20_custom_232: 0
+      civicrm_1_activity_1_cg20_custom_233: 0
+      activity_1_settings_dynamic_custom_cg31: 0
+      civicrm_1_activity_1_cg31_custom_349: 0
+      civicrm_1_activity_1_cg31_custom_350: 0
+      civicrm_1_activity_1_cg31_custom_351: 0
+      civicrm_1_activity_1_cg31_custom_352: 0
+      civicrm_1_activity_1_cg31_custom_353: 0
+      civicrm_1_activity_1_cg31_custom_354: 0
+      activity_1_settings_dynamic_custom_cg49: 0
+      civicrm_1_activity_1_cg49_custom_665: 0
+      civicrm_1_activity_1_cg49_custom_666: 0
+      civicrm_1_activity_1_cg49_custom_667: 0
+      civicrm_1_activity_1_cg49_custom_668: 0
+      civicrm_1_activity_1_cg49_custom_669: 0
+      civicrm_1_activity_1_cg49_custom_670: 0
+      civicrm_1_activity_1_cg49_custom_672: 0
+      civicrm_1_activity_1_cg49_custom_671: 0
+      civicrm_1_activity_1_cg49_custom_673: 0
+      civicrm_1_activity_1_cg49_custom_674: 0
+      civicrm_1_activity_1_cg49_custom_675: 0
+      civicrm_1_activity_1_cg49_custom_676: 0
+      civicrm_1_activity_1_cg49_custom_677: 0
+      civicrm_1_activity_1_cg49_custom_678: 0
+      civicrm_1_activity_1_cg49_custom_679: 0
+      civicrm_1_activity_1_cg49_custom_680: 0
+      civicrm_1_activity_1_cg49_custom_681: 0
+      civicrm_1_activity_1_cg49_custom_682: 0
+      civicrm_1_activity_1_cg49_custom_699: 0
+      civicrm_1_activity_1_cg49_custom_700: 0
+      civicrm_1_activity_1_cg49_custom_701: 0
+      civicrm_1_activity_1_cg49_custom_703: 0
+      civicrm_1_activity_1_cg49_custom_705: 0
+      civicrm_1_activity_1_cg49_custom_812: 0
+      civicrm_1_activity_1_cg49_custom_813: 0
+      civicrm_1_activity_1_cg49_custom_1262: 0
+      civicrm_1_activity_1_cg49_custom_1263: 0
+      civicrm_1_activity_1_cg49_custom_1264: 0
+      activity_1_settings_dynamic_custom_cg53: 0
+      civicrm_1_activity_1_cg53_custom_706: 0
+      activity_1_settings_dynamic_custom_cg54: 0
+      civicrm_1_activity_1_cg54_custom_739: 0
+      civicrm_1_activity_1_cg54_custom_740: 0
+      civicrm_1_activity_1_cg54_custom_741: 0
+      civicrm_1_activity_1_cg54_custom_742: 0
+      civicrm_1_activity_1_cg54_custom_743: 0
+      civicrm_1_activity_1_cg54_custom_744: 0
+      civicrm_1_activity_1_cg54_custom_745: 0
+      civicrm_1_activity_1_cg54_custom_746: 0
+      civicrm_1_activity_1_cg54_custom_747: 0
+      civicrm_1_activity_1_cg54_custom_748: 0
+      civicrm_1_activity_1_cg54_custom_749: 0
+      civicrm_1_activity_1_cg54_custom_750: 0
+      civicrm_1_activity_1_cg54_custom_751: 0
+      civicrm_1_activity_1_cg54_custom_752: 0
+      civicrm_1_activity_1_cg54_custom_753: 0
+      civicrm_1_activity_1_cg54_custom_754: 0
+      civicrm_1_activity_1_cg54_custom_755: 0
+      civicrm_1_activity_1_cg54_custom_756: 0
+      civicrm_1_activity_1_cg54_custom_757: 0
+      civicrm_1_activity_1_cg54_custom_758: 0
+      civicrm_1_activity_1_cg54_custom_759: 0
+      civicrm_1_activity_1_cg54_custom_760: 0
+      civicrm_1_activity_1_cg54_custom_761: 0
+      civicrm_1_activity_1_cg54_custom_762: 0
+      civicrm_1_activity_1_cg54_custom_763: 0
+      civicrm_1_activity_1_cg54_custom_764: 0
+      civicrm_1_activity_1_cg54_custom_765: 0
+      civicrm_1_activity_1_cg54_custom_766: 0
+      civicrm_1_activity_1_cg54_custom_767: 0
+      civicrm_1_activity_1_cg54_custom_768: 0
+      civicrm_1_activity_1_cg54_custom_769: 0
+      civicrm_1_activity_1_cg54_custom_770: 0
+      civicrm_1_activity_1_cg54_custom_771: 0
+      civicrm_1_activity_1_cg54_custom_772: 0
+      civicrm_1_activity_1_cg54_custom_773: 0
+      civicrm_1_activity_1_cg54_custom_774: 0
+      civicrm_1_activity_1_cg54_custom_775: 0
+      civicrm_1_activity_1_cg54_custom_776: 0
+      civicrm_1_activity_1_cg54_custom_777: 0
+      civicrm_1_activity_1_cg54_custom_778: 0
+      civicrm_1_activity_1_cg54_custom_779: 0
+      civicrm_1_activity_1_cg54_custom_780: 0
+      civicrm_1_activity_1_cg54_custom_781: 0
+      civicrm_1_activity_1_cg54_custom_782: 0
+      civicrm_1_activity_1_cg54_custom_783: 0
+      civicrm_1_activity_1_cg54_custom_784: 0
+      civicrm_1_activity_1_cg54_custom_785: 0
+      civicrm_1_activity_1_cg54_custom_786: 0
+      civicrm_1_activity_1_cg54_custom_787: 0
+      civicrm_1_activity_1_cg54_custom_789: 0
+      civicrm_1_activity_1_cg54_custom_790: 0
+      civicrm_1_activity_1_cg54_custom_791: 0
+      civicrm_1_activity_1_cg54_custom_792: 0
+      civicrm_1_activity_1_cg54_custom_793: 0
+      civicrm_1_activity_1_cg54_custom_794: 0
+      civicrm_1_activity_1_cg54_custom_795: 0
+      civicrm_1_activity_1_cg54_custom_796: 0
+      civicrm_1_activity_1_cg54_custom_797: 0
+      civicrm_1_activity_1_cg54_custom_798: 0
+      civicrm_1_activity_1_cg54_custom_799: 0
+      civicrm_1_activity_1_cg54_custom_800: 0
+      civicrm_1_activity_1_cg54_custom_801: 0
+      civicrm_1_activity_1_cg54_custom_802: 0
+      civicrm_1_activity_1_cg54_custom_803: 0
+      civicrm_1_activity_1_cg54_custom_804: 0
+      civicrm_1_activity_1_cg54_custom_805: 0
+      civicrm_1_activity_1_cg54_custom_806: 0
+      civicrm_1_activity_1_cg54_custom_807: 0
+      civicrm_1_activity_1_cg54_custom_808: 0
+      civicrm_1_activity_1_cg54_custom_809: 0
+      civicrm_1_activity_1_cg54_custom_810: 0
+      civicrm_1_activity_1_cg54_custom_811: 0
+      civicrm_1_activity_1_cg54_custom_24: 0
+      civicrm_1_activity_1_cg54_custom_47: 0
+      civicrm_1_activity_1_cg54_custom_48: 0
+      civicrm_1_activity_1_cg54_custom_54: 0
+      civicrm_1_activity_1_cg54_custom_55: 0
+      civicrm_1_activity_1_cg54_custom_56: 0
+      civicrm_1_activity_1_cg54_custom_57: 0
+      civicrm_1_activity_1_cg54_custom_58: 0
+      civicrm_1_activity_1_cg54_custom_59: 0
+      civicrm_1_activity_1_cg54_custom_60: 0
+      civicrm_1_activity_1_cg54_custom_61: 0
+      civicrm_1_activity_1_cg54_custom_62: 0
+      civicrm_1_activity_1_cg54_custom_63: 0
+      civicrm_1_activity_1_cg54_custom_64: 0
+      civicrm_1_activity_1_cg54_custom_67: 0
+      civicrm_1_activity_1_cg54_custom_68: 0
+      civicrm_1_activity_1_cg54_custom_69: 0
+      civicrm_1_activity_1_cg54_custom_70: 0
+      civicrm_1_activity_1_cg54_custom_71: 0
+      civicrm_1_activity_1_cg54_custom_72: 0
+      civicrm_1_activity_1_cg54_custom_65: 0
+      civicrm_1_activity_1_cg54_custom_73: 0
+      civicrm_1_activity_1_cg54_custom_75: 0
+      civicrm_1_activity_1_cg54_custom_76: 0
+      civicrm_1_activity_1_cg54_custom_77: 0
+      civicrm_1_activity_1_cg54_custom_78: 0
+      civicrm_1_activity_1_cg54_custom_79: 0
+      civicrm_1_activity_1_cg54_custom_74: 0
+      civicrm_1_activity_1_cg54_custom_81: 0
+      civicrm_1_activity_1_cg54_custom_82: 0
+      civicrm_1_activity_1_cg54_custom_83: 0
+      civicrm_1_activity_1_cg54_custom_84: 0
+      civicrm_1_activity_1_cg54_custom_85: 0
+      civicrm_1_activity_1_cg54_custom_458: 0
+      civicrm_1_activity_1_cg54_custom_459: 0
+      civicrm_1_activity_1_cg54_custom_707: 0
+      civicrm_1_activity_1_cg54_custom_709: 0
+      civicrm_1_activity_1_cg54_custom_711: 0
+      civicrm_1_activity_1_cg54_custom_712: 0
+      civicrm_1_activity_1_cg54_custom_713: 0
+      civicrm_1_activity_1_cg54_custom_714: 0
+      civicrm_1_activity_1_cg54_custom_716: 0
+      civicrm_1_activity_1_cg54_custom_717: 0
+      civicrm_1_activity_1_cg54_custom_718: 0
+      civicrm_1_activity_1_cg54_custom_719: 0
+      civicrm_1_activity_1_cg54_custom_720: 0
+      civicrm_1_activity_1_cg54_custom_721: 0
+      civicrm_1_activity_1_cg54_custom_722: 0
+      civicrm_1_activity_1_cg54_custom_723: 0
+      civicrm_1_activity_1_cg54_custom_724: 0
+      civicrm_1_activity_1_cg54_custom_725: 0
+      civicrm_1_activity_1_cg54_custom_726: 0
+      civicrm_1_activity_1_cg54_custom_727: 0
+      civicrm_1_activity_1_cg54_custom_728: 0
+      civicrm_1_activity_1_cg54_custom_729: 0
+      civicrm_1_activity_1_cg54_custom_730: 0
+      civicrm_1_activity_1_cg54_custom_731: 0
+      civicrm_1_activity_1_cg54_custom_732: 0
+      civicrm_1_activity_1_cg54_custom_733: 0
+      civicrm_1_activity_1_cg54_custom_734: 0
+      civicrm_1_activity_1_cg54_custom_735: 0
+      civicrm_1_activity_1_cg54_custom_736: 0
+      civicrm_1_activity_1_cg54_custom_737: 0
+      civicrm_1_activity_1_cg54_custom_738: 0
+      civicrm_1_activity_1_cg54_custom_788: 0
+      civicrm_1_activity_1_cg54_custom_1268: 0
+      civicrm_1_activity_1_cg54_custom_1269: 0
+      civicrm_1_activity_1_cg54_custom_1270: 0
+      civicrm_1_activity_1_cg54_custom_1271: 0
+      civicrm_1_activity_1_cg54_custom_1272: 0
+      civicrm_1_activity_1_cg54_custom_1273: 0
+      civicrm_1_activity_1_cg54_custom_1274: 0
+      civicrm_1_activity_1_cg54_custom_1275: 0
+      civicrm_1_activity_1_cg54_custom_1276: 0
+      civicrm_1_activity_1_cg54_custom_1277: 0
+      civicrm_1_activity_1_cg54_custom_1278: 0
+      civicrm_1_activity_1_cg54_custom_1279: 0
+      civicrm_1_activity_1_cg54_custom_1280: 0
+      civicrm_1_activity_1_cg54_custom_715: 0
+      civicrm_1_activity_1_cg54_custom_1281: 0
+      civicrm_1_activity_1_cg54_custom_1283: 0
+      civicrm_1_activity_1_cg54_custom_1284: 0
+      civicrm_1_activity_1_cg54_custom_1285: 0
+      civicrm_1_activity_1_cg54_custom_1286: 0
+      activity_1_settings_dynamic_custom_cg58: 0
+      civicrm_1_activity_1_cg58_custom_1265: 0
+      civicrm_1_activity_1_cg58_custom_1266: 0
+      civicrm_1_activity_1_cg58_custom_1267: 0
+      civicrm_1_activity_1_cg58_custom_1287: 0
+      participant_reg_type: '0'
+      reg_options:
+        event_type:
+          any: any
+        show_past_events: now
+        show_future_events: '1'
+        show_public_events: all
+        title_display: title
+        show_full_events: 1
+        event_sort_field: start_date
+        show_remaining: '0'
+        validate: 1
+        block_form: 0
+        disable_unregister: 0
+        allow_url_load: 0
+      membership_1_number_of_membership: '0'
+      membership_2_number_of_membership: '0'
+      membership_3_number_of_membership: '0'
+      civicrm_1_contribution_1_contribution_enable_contribution: '0'
+      grant_number_of_grant: '0'
+      checksum_text: ''
+      create_fieldsets: 1
+      confirm_subscription: 1
+      block_unknown_users: 0
+      create_new_relationship: 0
+      disable_contact_paging: 0
+      new_contact_source: 'PED Youth Online Booking Request'
+      data:
+        contact:
+          1:
+            contact:
+              1:
+                contact_type: individual
+                contact_sub_type: {  }
+                webform_label: Client
+            matching_rule: Unsupervised
+            number_of_cg5: '1'
+            dynamic_custom_cg5: 0
+            number_of_cg12: '0'
+            number_of_other: '0'
+            number_of_address: '0'
+            number_of_phone: '1'
+            number_of_email: '1'
+            number_of_website: '0'
+            number_of_im: '0'
+            number_of_cg30: '0'
+            phone:
+              1:
+                phone_type_id: '1'
+                location_type_id: '1'
+                is_primary: '1'
+            email:
+              1:
+                location_type_id: '1'
+                is_primary: '1'
+          2:
+            contact:
+              1:
+                contact_type: organization
+                contact_sub_type: {  }
+                webform_label: 'Your School or Organization'
+            matching_rule: Unsupervised
+            number_of_cg27: '0'
+            number_of_cg52: '1'
+            dynamic_custom_cg52: 0
+            number_of_other: '1'
+            number_of_address: '1'
+            number_of_phone: '1'
+            number_of_email: '1'
+            number_of_website: '0'
+            number_of_im: '0'
+            number_of_relationship: '1'
+            number_of_cg30: '0'
+            other:
+              1:
+                tag:
+                  66: '66'
+            address:
+              1:
+                location_type_id: '3'
+                is_primary: '1'
+            phone:
+              1:
+                phone_type_id: '1'
+                location_type_id: '1'
+                is_primary: '1'
+            email:
+              1:
+                location_type_id: '1'
+                is_primary: '1'
+            relationship:
+              1:
+                is_active: '1'
+          3:
+            contact:
+              1:
+                contact_type: individual
+                contact_sub_type: {  }
+                webform_label: Unassigned
+            matching_rule: Unsupervised
+            number_of_cg5: '0'
+            number_of_cg12: '0'
+            number_of_other: '0'
+            number_of_address: '0'
+            number_of_phone: '0'
+            number_of_email: '0'
+            number_of_website: '0'
+            number_of_im: '0'
+            number_of_relationship: '0'
+            number_of_cg30: '0'
+        activity:
+          number_of_activity: '1'
+          1:
+            existing_activity_status: {  }
+            details: {  }
+            dynamic_custom_cg2: 0
+            dynamic_custom_cg9: 0
+            dynamic_custom_cg17: 0
+            dynamic_custom_cg18: 0
+            dynamic_custom_cg20: 0
+            dynamic_custom_cg31: 0
+            dynamic_custom_cg49: 0
+            dynamic_custom_cg53: 0
+            dynamic_custom_cg54: 0
+            dynamic_custom_cg58: 0
+            activity:
+              1:
+                target_contact_id:
+                  2: '2'
+                source_contact_id: '1'
+                status_id: '9'
+                assignee_contact_id:
+                  3: '3'
+        membership:
+          1:
+            number_of_membership: '0'
+          2:
+            number_of_membership: '0'
+          3:
+            number_of_membership: '0'
+        grant:
+          number_of_grant: '0'
+        participant_reg_type: '0'
+        reg_options:
+          event_type:
+            any: any
+          show_past_events: now
+          show_future_events: '1'
+          show_public_events: all
+          title_display: title
+          show_full_events: 1
+          event_sort_field: start_date
+          show_remaining: '0'
+          validate: 1
+          block_form: 0
+          disable_unregister: 0
+          allow_url_load: 0
+  email:
+    id: email
+    handler_id: email
+    label: Email
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:values:civicrm_1_contact_1_email_email:raw]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: education@sace.ca
+      cc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: 'Thank you for your Booking Request'
+      body: _default
+      excluded_elements:
+        intro_markup: intro_markup
+        youth_school_presentation_booking_html: youth_school_presentation_booking_html
+        youth_presentation_booking_html: youth_presentation_booking_html
+        post_secondary_school_booking_html: post_secondary_school_booking_html
+        adult_professional_booking_html: adult_professional_booking_html
+        topics_markup: topics_markup
+        sessions_markup: sessions_markup
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      parameters: {  }
+      debug: false
+  youth_online_course_booking_reqest_handler:
+    id: youth_online_course_booking_reqest_handler
+    handler_id: youth_online_course_booking_reqest_handler
+    label: 'Youth Online Course Booking Request Handler'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
+variants: {  }
