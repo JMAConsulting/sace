@@ -120,12 +120,6 @@ function activity_type_program_civicrm_postProcess($formName, &$form) {
   if ($formName == "CRM_Admin_Form_Options") {
     //Get form values
     $submitted = $form->getVar('_submitValues');
-    $default_values = $form->getVar('_defaultValues');
-    
-    if(!$submitted['user_teams']){
-      return;
-    }
-
     $activityTypeID = $form->ajaxResponse['optionValue']['value'] ?: \Civi\Api4\OptionValue::get()->addSelect('value')->addWhere('id', '=',  $form->ajaxResponse['optionValue']['id'])->execute()->first()['value'];
     
     // Get submitted user team IDs
@@ -142,8 +136,12 @@ function activity_type_program_civicrm_postProcess($formName, &$form) {
 	    $existingUserTeamIds[] = $program['user_team_id'];
     } 
 
-    $newUserTeamIds = array_diff($selectedUserTeamIds, $existingUserTeamIds);
-    $missingUserTeamIds = array_diff($existingUserTeamIds, $selectedUserTeamIds);
+    $newUserTeamIds = [];
+    $missingUserTeamIds = $existingUserTeamIds;
+    if (!empty($selectedUserTeamIds)) {
+      $newUserTeamIds = array_diff($selectedUserTeamIds, $existingUserTeamIds);
+      $missingUserTeamIds = array_diff($existingUserTeamIds, $selectedUserTeamIds);
+    }
    
     // Add newly selected ActivityTypePrograms
     foreach ($newUserTeamIds as $newUserTeamId) {
