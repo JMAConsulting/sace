@@ -445,26 +445,18 @@ elements: |-
         - ':input[name="has_this_been_reported_"]':
             value: 'No'
     '#form_key': civicrm_3_contact_1_fieldset_fieldset
-    civicrm_3_contact_1_contact_existing:
-      '#type': civicrm_contact
-      '#title': Select
-      '#widget': select
-      '#search_prompt': '- Select -'
-      '#results_display':
-        display_name: display_name
-      '#default_relationship_to': '1'
-      '#default_relationship':
-        '': ''
-      '#allow_url_autofill': false
-      '#contact_sub_type': Client_Care_Staff
-      '#group':
-        '': ''
-      '#filter_relationship_contact': ''
-      '#allow_create': 1
-      '#contact_type': individual
-      '#form_key': civicrm_3_contact_1_contact_existing
-      '#parent': civicrm_3_contact_1_fieldset_fieldset
-      '#extra': {  }
+    staff:
+      '#type': webform_entity_select
+      '#title': 'Select Staff'
+      '#multiple': true
+      '#select2': true
+      '#target_type': civicrm_contact
+      '#selection_handler': views
+      '#selection_settings':
+        view:
+          view_name: client_care_staff
+          display_name: entity_reference_1
+          arguments: {  }
     flexbox_03:
       '#type': webform_flexbox
       civicrm_3_contact_1_contact_first_name:
@@ -1119,8 +1111,6 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
-  wizard_page_type: container
-  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -1274,7 +1264,7 @@ handlers:
       2_contact_type: individual
       2_webform_label: '(New) Client'
       civicrm_2_contact_1_contact_contact_sub_type:
-        Client: Client
+        client: client
       contact_2_number_of_cg6: '0'
       contact_2_number_of_cg10: '0'
       contact_2_number_of_cg19: '1'
@@ -1853,7 +1843,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type:
-                  Client: Client
+                  client: client
                 webform_label: '(New) Client'
             number_of_cg6: '0'
             number_of_cg10: '0'
