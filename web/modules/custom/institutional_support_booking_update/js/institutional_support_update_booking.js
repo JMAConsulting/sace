@@ -57,6 +57,6 @@ jQuery(document).ready(function ($, settings) {
     $('#existing-org').parent().hide();
   });
 
-  $('#block-oliverolocal-fullcalendarblock').insertAfter($('#edit-civicrm-1-activity-1-activity-details-value').parent().parent());
+  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-processed-text-05'));
 
 });
