@@ -245,7 +245,10 @@ function _reporterror_civicrm_parse_array($array) {
 
   foreach ($array as $key => $value) {
     if (is_array($value) || is_object($value)) {
-      $value = print_r($value, TRUE);
+      $value = (new \Symfony\Component\VarDumper\Dumper\CliDumper('php://output'))
+          ->dump(
+            (new \Symfony\Component\VarDumper\Cloner\VarCloner())->cloneVar($value),
+            TRUE);
     }
 
     $key = str_pad($key . ':', 20, ' ');
@@ -326,7 +329,7 @@ function _reporterror_civicrm_get_session_info($show_session_data = FALSE) {
     $output .= "HTTP_X_FORWARDED_FOR: " . $_SERVER['HTTP_X_FORWARDED_FOR'] . "\n";
   }
   $output .= "HTTP_USER_AGENT: " . $_SERVER['HTTP_USER_AGENT'] . "\n";
-  $output .= "HTTP_REFERER: " . $_SERVER['HTTP_REFERER'] . "\n";
+  $output .= "HTTP_REFERER: " . $_SERVER['HTTP_REFERER'] ?? '' . "\n";
   $output .= "HTTP_HOST: " . $_SERVER['HTTP_HOST'] . "\n";
   $output .= "REQUEST_URI: " . $_SERVER['REQUEST_URI'] . "\n";
   $output .= "QUERY_STRING: " . $_SERVER['QUERY_STRING'] . "\n";
