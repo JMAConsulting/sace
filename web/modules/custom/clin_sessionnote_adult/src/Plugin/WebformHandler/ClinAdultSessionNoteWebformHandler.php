@@ -49,43 +49,34 @@ class ClinAdultSessionNoteWebformHandler extends WebformHandlerBase {
     \CRM_Core_Error::debug_var('Civicrm Data', $this->civicrm);
     \CRM_Core_Error::debug_var('Webform Submission', $webform_submission_data);
 
-    $therapy_mapping = [
-      "Client-Centered" => 1,
-      "Feminist Therapy" => 2,
-      "ACT" => 3,
-      "Attachment-Based" => 4,
-      "CBT" => 5,
-      "DBT" => 6,
-      "EFT" => 7,
-      "EMDR" => 8,
-      "IFS/Part work" => 9,
-      "Mindfulness" => 10,
-      "Movement" => 18,
-      "Narrative" => 11,
-      "Play Therapy" => 12,
-      "Psychodynamic" => 13,
-      "Sandtray" => 14,
-      "Solution Focused" => 15,
-      "Somatic" => 16,
-      "Other" => 17
-    ];
-
     $modalities_array = $webform_submission_data['modalities_used_custom_drupal'];
+    
+    $modalities_used_checkbox = [];
+    $results = \Civi\Api4\Activity::create(TRUE)
+    ->addValue('activity_type_id', 194)
+    ->addValue('source_contact_id', 'user_contact_id')
+    ->execute();
     foreach ($modalities_array as $row) {
       // Get each value
-      $modality = $row['modalities'];
-      $intervention = $row['intervention'];
-      $client_response = $row['client_response'];
+      $modality_suffix = $row['modalities'];
+      $intervention_data = $row['intervention'];
+      $client_response_data = $row['client_response'];
       
-      // POST request to civicrm Database
-      $results = \Civi\Api4\Activity::create(FALSE)
-      ->addValue('CLIN_Session_Note_Adult_Custom_Fields.Modalities_Used', [
-        $modality,
-      ])
-      ->addValue('CLIN_Session_Note_Adult_Custom_Fields.Intervention', $intervention)
-      ->addValue('CLIN_Session_Note_Adult_Custom_Fields.Client_Response_Modalities', $client_response)
+      // Append to checkbox
+      $modalities_used_checkbox[] = $modality_suffix;
+
+      // POST text fields to civicrm database
+      $results = \Civi\Api4\Activity::update(FALSE)
+      ->addValue('CLIN_Session_Note_Adult_Custom_Fields.intervention' . $modality_suffix, $intervention_data)
+      ->addValue('CLIN_Session_Note_Adult_Custom_Fields.client_response' . $modality_suffix, $client_response_data)
+      ->addWhere('activity_type_id', '=', 194)
+      ->addWhere('source_contact_id', '=', 'user_contact_id')
       ->execute();
     }
-
+    $results = \Civi\Api4\Activity::update(FALSE)
+    ->addValue('CLIN_Session_Note_Adult_Custom_Fields.Modalities_Used', $modalities_used_checkbox)
+    ->addWhere('activity_type_id', '=', 194)
+    ->addWhere('activity_type_id', '=', 'user_contact_id')
+    ->execute();
   }
 }
