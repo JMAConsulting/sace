@@ -34,6 +34,7 @@ permissions:
   - 'register for events'
   - 'use text format html'
   - 'use text format webform_default'
+  - 'view all contacts'
   - 'view event info'
   - 'view event participants'
   - 'view media'
