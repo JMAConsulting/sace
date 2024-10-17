@@ -92,6 +92,12 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
   private $currencyFields = [];
 
   /**
+   * @var array
+   *   Ex: ['civicrm/foo/bar?id=[id]&widget=gizmo' => 'CRMFooBar1234abcd1234abcd']
+   */
+  private $_qfKeys = [];
+
+  /**
    * Override execute method to change the result object type
    * @return \Civi\Api4\Result\SearchDisplayRunResult
    */
@@ -218,7 +224,9 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
     switch ($column['type']) {
       case 'field':
       case 'html':
-        $rawValue = $data[$column['key']] ?? NULL;
+        // Fix keys for pseudo-fields like "CURDATE()"
+        $key = str_replace('()', ':', $column['key']);
+        $rawValue = $data[$key] ?? NULL;
         if (!$this->hasValue($rawValue) && isset($column['empty_value'])) {
           $out['val'] = $this->replaceTokens($column['empty_value'], $data, 'view');
         }
@@ -226,8 +234,8 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
           $out['val'] = $this->rewrite($column, $data);
         }
         else {
-          $dataType = $this->getSelectExpression($column['key'])['dataType'] ?? NULL;
-          $out['val'] = $this->formatViewValue($column['key'], $rawValue, $data, $dataType);
+          $dataType = $this->getSelectExpression($key)['dataType'] ?? NULL;
+          $out['val'] = $this->formatViewValue($key, $rawValue, $data, $dataType, $column['format'] ?? NULL);
         }
         if ($this->hasValue($column['label']) && (!empty($column['forceLabel']) || $this->hasValue($out['val']))) {
           $out['label'] = $this->replaceTokens($column['label'], $data, 'view');
@@ -353,10 +361,10 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
    *
    * @param array[] $styleRules
    * @param array $data
-   * @param int $index
+   * @param int|null $index
    * @return array
    */
-  protected function getCssStyles(array $styleRules, array $data, int $index = NULL) {
+  protected function getCssStyles(array $styleRules, array $data, ?int $index = NULL) {
     $classes = [];
     foreach ($styleRules as $clause) {
       $cssClass = $clause[0] ?? '';
@@ -556,7 +564,7 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
    * @return array|null
    * @throws \CRM_Core_Exception
    */
-  protected function formatLink(array $link, array $data, bool $allowMultiple = FALSE, string $text = NULL, $index = 0): ?array {
+  protected function formatLink(array $link, array $data, bool $allowMultiple = FALSE, ?string $text = NULL, $index = 0): ?array {
     $useApi = (!empty($link['entity']) && !empty($link['action']));
     if (isset($index)) {
       foreach ($data as $key => $value) {
@@ -591,12 +599,16 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
       $keys = ['task', 'text', 'title', 'icon', 'style'];
     }
     else {
+      $query = [];
+      if (($link['csrf'] ?? NULL) === 'qfKey') {
+        $query['qfKey'] = $this->getQfKey($link['path']);
+      }
       $path = $this->replaceTokens($link['path'], $data, 'url');
       if (!$path) {
         // Return null if `$link[path]` is empty or if any tokens do not resolve
         return NULL;
       }
-      $link['url'] = $this->getUrl($path);
+      $link['url'] = $this->getUrl($path, $query);
       $keys = ['url', 'text', 'title', 'target', 'icon', 'style', 'autoOpen'];
     }
     $link = array_intersect_key($link, array_flip($keys));
@@ -604,6 +616,31 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
       // "0" is a valid title
       return $value || (is_string($value) && strlen($value));
     });
+  }
+
+  /**
+   * @param string $pathExpr
+   *   Path formula. Should specify an explicit path.
+   *   Ex: 'civicrm/foo/bar?id=[id]&widget=gizmo`
+   * @return string|null
+   */
+  private function getQfKey(string $pathExpr): ?string {
+    if (isset($this->_qfKeys[$pathExpr])) {
+      // No point re-computing this for 100x links per page-view - same value works.
+      return $this->_qfKeys[$pathExpr];
+    }
+
+    $result = NULL;
+    if ($routeName = parse_url($pathExpr, PHP_URL_PATH)) {
+      if ($routeItem = \CRM_Core_Menu::get($routeName)) {
+        if (!empty($routeItem['page_callback'])) {
+          $result = \CRM_Core_Key::get($routeItem['page_callback']);
+        }
+      }
+    }
+
+    $this->_qfKeys[$pathExpr] = $result;
+    return $result;
   }
 
   /**
@@ -760,8 +797,14 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
       }
       return \CRM_Core_Permission::check($permissions) == ($op !== '!=');
     }
+    $field = $this->getField($condition[0]);
+    // Handle date/time-based conditionals
+    $dataType = $field['data_type'] ?? NULL;
+    if (in_array($dataType, ['Timestamp', 'Date'], TRUE) && !empty($condition[2])) {
+      $condition[2] = date('Y-m-d H:i:s', strtotime($condition[2]));
+    }
     // Convert the conditional value of 'current_domain' into an actual value that filterCompare can work with
-    if (($condition[2] ?? '') === 'current_domain') {
+    if ((($field['fk_entity'] ?? NULL) === 'Domain') && ($condition[2] ?? '') === 'current_domain') {
       if (str_ends_with($condition[0], ':label') !== FALSE) {
         $condition[2] = \CRM_Core_BAO_Domain::getDomain()->name;
       }
@@ -799,6 +842,7 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
   private function preprocessLink(array &$link): void {
     $link += [
       'path' => '',
+      'csrf' => NULL,
       'target' => '',
       'entity' => '',
       'text' => '',
@@ -1153,9 +1197,10 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
    * @param mixed $rawValue
    * @param array $data
    * @param string $dataType
+   * @param string|null $format
    * @return array|string
    */
-  protected function formatViewValue($key, $rawValue, $data, $dataType) {
+  protected function formatViewValue($key, $rawValue, $data, $dataType, $format = NULL) {
     if (is_array($rawValue)) {
       return array_map(function($val) use ($key, $data, $dataType) {
         return $this->formatViewValue($key, $val, $data, $dataType);
@@ -1179,7 +1224,10 @@ abstract class AbstractRunAction extends \Civi\Api4\Generic\AbstractAction {
 
       case 'Date':
       case 'Timestamp':
-        $formatted = \CRM_Utils_Date::customFormat($rawValue);
+        if ($format) {
+          $dateFormat = \Civi::settings()->get($format);
+        }
+        $formatted = \CRM_Utils_Date::customFormat($rawValue, $dateFormat ?? NULL);
     }
 
     return $formatted;
