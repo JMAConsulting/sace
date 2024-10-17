@@ -16,9 +16,9 @@
     ],
     "require": {
         "civicrm/civicrm-asset-plugin": "~1.1",
-        "civicrm/civicrm-core": "5.74.4",
-        "civicrm/civicrm-drupal-8": "5.74.4",
-        "civicrm/civicrm-packages": "5.74.4",
+        "civicrm/civicrm-core": "5.78.2",
+        "civicrm/civicrm-drupal-8": "5.78.2",
+        "civicrm/civicrm-packages": "5.78.2",
         "composer/installers": "^1.2",
         "drupal/admin_toolbar": "^3.4",
         "drupal/antibot": "^2.0",
@@ -113,8 +113,7 @@
         },
         "patches": {
             "civicrm/civicrm-core": {
-                "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch",
-                "CIVICRM-2268 Fix 404 error when posting to google.com//recaptcha/api/siteverify Beta": "https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-core/pull/31020.patch"
+                "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
             },
             "drupal/fullcalendar_view": {
                 "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch",

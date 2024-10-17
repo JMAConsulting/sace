@@ -363,10 +363,25 @@
           return searchTasks[entityName];
         },
         // Supply default aggregate function appropriate to the data_type
-        getDefaultAggregateFn: function(info) {
-          var arg = info.args[0] || {};
+        getDefaultAggregateFn: function(info, apiParams) {
+          let arg = info.args[0] || {};
           if (arg.suffix) {
             return null;
+          }
+          let groupByFn;
+          if (apiParams.groupBy) {
+            apiParams.groupBy.forEach(function(groupBy) {
+              let expr = parseExpr(groupBy);
+              if (expr && expr.fn && expr.args) {
+                let paths = expr.args.map(ex => ex.path);
+                if (paths.includes(arg.path)) {
+                  groupByFn = expr.fn.name;
+                }
+              }
+            });
+          }
+          if (groupByFn) {
+            return groupByFn;
           }
           switch (info.data_type) {
             case 'Integer':
@@ -388,7 +403,7 @@
               entity = getEntity(joinInfo.entity),
               prefix = joinInfo.alias ? joinInfo.alias + '.' : '';
             _.each(entity.fields, function(field) {
-              if ((entity.name === 'Contact' && field.name === 'id') || (field.fk_entity === 'Contact' && joinInfo.baseEntity !== 'Contact')) {
+              if (['Contact', 'Individual', 'Household', 'Organization'].includes(entity.name) && field.name === 'id' || field.fk_entity === 'Contact') {
                 columns.push({
                   id: prefix + field.name,
                   text: (joinInfo.label ? joinInfo.label + ': ' : '') + field.label,
@@ -481,7 +496,7 @@
 
   // Shoehorn in a non-angular widget for picking icons
   $(function() {
-    $('#crm-container').append('<div style="display:none"><input id="crm-search-admin-icon-picker"></div>');
+    $('#crm-container').append('<div style="display:none"><input id="crm-search-admin-icon-picker" title="' + ts('Icon Picker') + '"></div>');
     CRM.loadScript(CRM.config.resourceBase + 'js/jquery/jquery.crmIconPicker.js').then(function() {
       $('#crm-search-admin-icon-picker').crmIconPicker();
     });

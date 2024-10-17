@@ -278,7 +278,7 @@ class CRM_Activity_BAO_Query {
         }
 
       case 'activity_tags':
-        $activityTags = CRM_Core_PseudoConstant::get('CRM_Core_DAO_EntityTag', 'tag_id', ['onlyActive' => FALSE]);
+        $activityTags = CRM_Core_DAO_EntityTag::buildOptions('tag_id', 'get');
 
         if (!is_array($value)) {
           $value = explode(',', $value);
@@ -498,7 +498,7 @@ class CRM_Activity_BAO_Query {
     // Add engagement level CRM-7775.
     $buildEngagementLevel = FALSE;
     $buildSurveyResult = FALSE;
-    if (CRM_Campaign_BAO_Campaign::isComponentEnabled() &&
+    if (CRM_Core_Component::isEnabled('CiviCampaign') &&
       CRM_Campaign_BAO_Campaign::accessCampaign()
     ) {
       $buildEngagementLevel = TRUE;

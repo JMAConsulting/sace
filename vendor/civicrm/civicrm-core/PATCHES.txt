@@ -5,7 +5,7 @@ Apply patch to swap sharing from linkedIn to Instagram
 Source: ./patches/civicrm-core-share-instagram.patch
 
 
-Apply patch to fix php8.1 issue in logging
-Source: https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-core/pull/27575.patch
+CIVICRM-2268 Fix 404 error when posting to google.com//recaptcha/api/siteverify Beta
+Source: https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-core/pull/31020.patch
 
 

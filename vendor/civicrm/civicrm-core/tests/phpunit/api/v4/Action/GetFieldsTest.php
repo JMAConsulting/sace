@@ -168,6 +168,7 @@ class GetFieldsTest extends Api4TestBase implements TransactionalInterface {
     $this->assertTrue($actFields['phone_id']['deprecated']);
     $this->assertEquals('now', $actFields['created_date']['default_value']);
     $this->assertEquals('now', $actFields['activity_date_time']['default_value']);
+    $this->assertEquals('Date', $actFields['activity_date_time']['input_type']);
 
     $getFields = Activity::getFields(FALSE)
       ->setAction('get')
@@ -246,6 +247,7 @@ class GetFieldsTest extends Api4TestBase implements TransactionalInterface {
   public function testDynamicFks(): void {
     $tagFields = EntityTag::getFields(FALSE)
       ->execute()->indexBy('name');
+    $this->assertEquals('Tag', $tagFields['tag_id']['fk_entity']);
     $this->assertEmpty($tagFields['entity_id']['fk_entity']);
     $this->assertEquals('Activity', $tagFields['entity_id']['dfk_entities']['civicrm_activity']);
     $this->assertEquals('entity_table', $tagFields['entity_id']['input_attrs']['control_field']);
