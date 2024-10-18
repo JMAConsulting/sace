@@ -140,7 +140,9 @@ class CRM_Core_DAO extends DB_DataObject {
    */
   public function __construct() {
     $this->initialize();
-    $this->__table = $this::getLocaleTableName();
+    if (is_subclass_of($this, 'CRM_Core_DAO')) {
+      $this->__table = $this::getLocaleTableName();
+    }
   }
 
   /**
@@ -2890,9 +2892,11 @@ SELECT contact_id
   /**
    * Populate option labels for this object's fields.
    *
+   * @deprecated
    * @throws exception if called directly on the base class
    */
   public function getOptionLabels() {
+    CRM_Core_Error::deprecatedFunctionWarning('Civi::entity()->getOptions');
     $fields = $this->fields();
     if ($fields === NULL) {
       throw new Exception('Cannot call getOptionLabels on CRM_Core_DAO');
@@ -3177,7 +3181,7 @@ SELECT contact_id
    *   Can be used for optimization/deduping of clauses.
    * @return array
    */
-  public function addSelectWhereClause(string $entityName = NULL, int $userId = NULL, array $conditions = []): array {
+  public function addSelectWhereClause(?string $entityName = NULL, ?int $userId = NULL, array $conditions = []): array {
     $clauses = [];
     $fields = $this::getSupportedFields();
     foreach ($fields as $fieldName => $field) {
@@ -3340,7 +3344,7 @@ SELECT contact_id
     }
     switch ($serializationType) {
       case self::SERIALIZE_SEPARATOR_BOOKEND:
-        return $value === [] ? '' : CRM_Utils_Array::implodePadded($value);
+        return ($value === [] || $value === '') ? '' : CRM_Utils_Array::implodePadded($value);
 
       case self::SERIALIZE_SEPARATOR_TRIMMED:
         return is_array($value) ? implode(self::VALUE_SEPARATOR, $value) : $value;
@@ -3465,11 +3469,11 @@ SELECT contact_id
    * @param string $entityName
    *   Short name of the entity. This may seem redundant because the entity name can usually be inferred
    *   from the BAO class being called, but not always. Some virtual entities share a BAO class.
-   * @param int $entityId
+   * @param int|null $entityId
    *   Id of the entity.
    * @throws CRM_Core_Exception
    */
-  public static function getEntityIcon(string $entityName, int $entityId = NULL): ?string {
+  public static function getEntityIcon(string $entityName, ?int $entityId = NULL): ?string {
     // By default, just return the icon representing this entity. If there's more complex lookup to do,
     // the BAO for this entity should override this method.
     return static::$_icon;
@@ -3575,12 +3579,15 @@ SELECT contact_id
 
   /**
    * Check if component is enabled for this DAO class
-   *
+   * @deprecated
    * @return bool
    */
   public static function isComponentEnabled(): bool {
-    $daoName = static::class;
-    return !defined("$daoName::COMPONENT") || CRM_Core_Component::isEnabled($daoName::COMPONENT);
+    $entityName = CRM_Core_DAO_AllCoreTables::getEntityNameForClass(static::class);
+    if (!$entityName) {
+      return FALSE;
+    }
+    return \Civi\Api4\Utils\CoreUtil::entityExists($entityName);
   }
 
   /**

@@ -31,6 +31,10 @@
   name        : Francis Whittle
   organization: Agileware
 
+- github      : agileware-iris
+  name        : Iris
+  organization: Agileware
+
 - github      : agileware-justin
   name        : Justin Freeman
   organization: Agileware
@@ -99,6 +103,9 @@
 - github      : anemirovsky
   name        : Anthony Nemirovsky
   organization: Giant Rabbit
+
+- github      : angelajackson07
+  name        : Angela Jackson
 
 - github      : amsharma9
   name        : Amal Sharma
@@ -362,6 +369,10 @@
   name        : Dave Jenkins
   organization: Circle Interactive
 
+- github      : angelajackson07
+  name        : Angela Jackson
+  organization: Circle Interactive
+
 - github      : davialexandre
   name        : Davi Alexandre
   organization: CompuCorp
@@ -403,6 +414,8 @@
 - github      : devarun
   name        : Arun Singh
 
+- github      : devdavc
+
 - github      : adam-devapp
   name        : Adam Kwiatkowski
   organization: DevApp
@@ -429,6 +442,9 @@
 - github      : dwoods-encircle
   organization: enCircle Solutions Ltd.
   name        : Darren Woods
+
+- github      : eightiesguy
+  name        : Jonny Toomey
 
 - github      : Erioldoesdesign
   organization: Third Sector Design
@@ -724,6 +740,9 @@
   name        : Mark Hanna
   organization: Skvare
 
+- github      : JadeGaunt
+  name        : Jade Gaunt
+
 - github      : jamienovick
   name        : Jamie Novick
   organization: CompuCorp
@@ -840,6 +859,10 @@
 
 - github      : jptillman
 
+- github      : JSProffitt
+  name        : Jeremy Proffitt
+  organization: Ezodesign
+
 - name        : Julian Libor
 
 - name        : Julie Hall
@@ -920,6 +943,10 @@
 - github      : kurund
   name        : Kurund Jalmi
   organization: Third Sector Design
+
+- github      : kzalewski
+  name        : Ken Zalewski
+  organization: New York State Senate
 
 - github      : lalgwebdev
   name        : Tony Maynard-Smith
@@ -1008,6 +1035,10 @@
   organization: Formatux
 
 - name        : Manish Zope
+
+- github      : MarcMichalsky
+  name        : Marc Michalsky
+  organization: forumZFD
 
 - github      : mariav0
   name        : Maria Vogel
@@ -1174,6 +1205,9 @@
 - github      : muniodiego
   name        : Diego Muñio
 
+- github      : munkeywolf00
+  name        : David Cativo
+
 - github      : mwestergaard
   name        : Mark Westergaard
   organization: iXiam
@@ -1250,6 +1284,10 @@
 
 - github      : pnbpss
   name        : Panu Boonpromsook
+
+- github      : pokhiii
+  name        : Abhishek Pokhriyal
+  organization: ColoredCow
 
 - name        : Pratiksha Dubey
   organization: Web Access
@@ -1785,3 +1823,29 @@
 - github      : ziljah
 
 - github      : 19ATF72
+
+- github      : yogesh-compuco
+  name        : Yogesh Pawar
+  organization: Compuco
+
+- github      : devdavc
+  name        : David Cativo
+  organization: DevApp
+
+- github      : eightiesguy
+  name        : Jonny Toomey
+
+- github      : IProSoft
+  name        : Artur Śmigielski
+
+- github      : vurt2
+  name        : Martin Correll
+  organization: civiservice.de
+
+- github      : gngn23
+  name        : Gerhard Weber
+  organization: civiservice.de
+
+- github      : jsuchogorska
+  name        : Joanna Suchogórska
+  organization: Future Processing

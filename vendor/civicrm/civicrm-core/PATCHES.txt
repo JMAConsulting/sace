@@ -5,7 +5,3 @@ Apply patch to swap sharing from linkedIn to Instagram
 Source: ./patches/civicrm-core-share-instagram.patch
 
 
-Apply patch to fix php8.1 issue in logging
-Source: https://patch-diff.githubusercontent.com/raw/civicrm/civicrm-core/pull/27575.patch
-
-
