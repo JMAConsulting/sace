@@ -143,6 +143,14 @@ function sace_civireports_civicrm_themes(&$themes) {
   _sace_civireports_civix_civicrm_themes($themes);
 }
 
+function sace_civireports_civicrm_alterReportVar($type, &$columns, &$form) {
+  if (get_class($form) == 'CRM_Report_Form_Contribute_Detail' && $type == 'columns') {
+     $columns['civicrm_contact']['fields']['group'] = [
+       'title' => ts('Group'),
+       'dbAlias' => '(SELECT GROUP_CONCAT(g.title) FROM civicrm_group g INNER JOIN civicrm_group_contact_cache gc ON gc.group_id = g.id WHERE gc.contact_id = contact_civireport.id GROUP BY gc.contact_id)',
+     ];
+  }
+}
 // --- Functions below this ship commented out. Uncomment as required. ---
 
 /**

@@ -357,9 +357,9 @@ elements: |-
       '#empty_option': '-Select-'
       '#civicrm_live_options': 0
       '#options':
-        'In-Person Presentation': 'In-Person Presentation'
         'In-Person Activity': 'In-Person Activity'
         'Phone Activity': 'Phone Activity'
+        'Online Activity': 'Online Activity'
       '#required': true
       '#format_items': ul
       '#extra':
