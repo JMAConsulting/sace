@@ -1,7 +1,7 @@
-diff --git a/modules/contrib/js/fullcalendar_view.js b/js/fullcalendar_view.js
+diff --git a/web/modules/contrib/js/fullcalendar_view.js b/js/fullcalendar_view.js
 index 80cd14438..071d30cef 100644
---- a/modules/contrib/fullcalendar_view/js/fullcalendar_view.js
-+++ b/modules/contrib/fullcalendar_view/js/fullcalendar_view.js
+--- a/web/modules/contrib/fullcalendar_view/js/fullcalendar_view.js
++++ b/web/modules/contrib/fullcalendar_view/js/fullcalendar_view.js
 @@ -164,6 +164,9 @@
        //Create window
        dialogs[dialogIndex] = jsFrame.create(dialogOptions);
