@@ -1,0 +1,8 @@
+patch:
+    stage: build
+    script:
+        - /bin/bash patches.sh
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+        - if: '$CI_COMMIT_BRANCH == "staging"'
+        - if: '$CI_COMMIT_BRANCH == "patches"'
