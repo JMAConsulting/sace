@@ -11,3 +11,4 @@ index b6991b9fdf..aed5c79ac2 100644
  
      // is this page active ?
      $this->addElement('checkbox', 'is_active', ts('Is this Online Contribution Page Active?'));
+
