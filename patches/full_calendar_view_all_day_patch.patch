@@ -1,7 +1,7 @@
 diff --git a/src/FullcalendarViewPreprocess.php b/src/FullcalendarViewPreprocess.php
 index 039af1d58..3bbfc063f 100644
---- a/src/FullcalendarViewPreprocess.php
-+++ b/src/FullcalendarViewPreprocess.php
+--- a/web/modules/contrib/fullcalendar_view/src/FullcalendarViewPreprocess.php
++++ b/web/modules/contrib/fullcalendar_view/src/FullcalendarViewPreprocess.php
 @@ -10,6 +10,7 @@
  use Drupal\Core\Access\CsrfTokenGenerator;
  use Drupal\Core\Entity\EntityTypeManagerInterface;

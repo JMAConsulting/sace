@@ -1,7 +1,7 @@
 diff --git a/CRM/Contribute/Form/ContributionPage/Settings.php b/CRM/Contribute/Form/ContributionPage/Settings.php
 index b6991b9fdf..aed5c79ac2 100644
---- a/CRM/Contribute/Form/ContributionPage/Settings.php
-+++ b/CRM/Contribute/Form/ContributionPage/Settings.php
+--- a/vendor/civicrm/civicrm-core/CRM/Contribute/Form/ContributionPage/Settings.php
++++ b/vendor/civicrm/civicrm-core/CRM/Contribute/Form/ContributionPage/Settings.php
 @@ -168,7 +168,7 @@ class CRM_Contribute_Form_ContributionPage_Settings extends CRM_Contribute_Form_
      $this->addElement('checkbox', 'is_confirm_enabled', ts('Use a confirmation page?'));
  
@@ -13,8 +13,8 @@ index b6991b9fdf..aed5c79ac2 100644
      $this->addElement('checkbox', 'is_active', ts('Is this Online Contribution Page Active?'));
 diff --git a/CRM/Event/Form/ManageEvent/EventInfo.php b/CRM/Event/Form/ManageEvent/EventInfo.php
 index b258089530..9415a2106b 100644
---- a/CRM/Event/Form/ManageEvent/EventInfo.php
-+++ b/CRM/Event/Form/ManageEvent/EventInfo.php
+--- a/vendor/civicrm/civicrm-core/CRM/Event/Form/ManageEvent/EventInfo.php
++++ b/vendor/civicrm/civicrm-core/CRM/Event/Form/ManageEvent/EventInfo.php
 @@ -162,7 +162,7 @@ class CRM_Event_Form_ManageEvent_EventInfo extends CRM_Event_Form_ManageEvent {
      $this->add('textarea', 'summary', ts('Event Summary'), $attributes['summary']);
      $this->add('wysiwyg', 'description', ts('Complete Description'), $attributes['event_description'] + ['preset' => 'civievent']);
@@ -26,8 +26,8 @@ index b258089530..9415a2106b 100644
      $this->add('datepicker', 'start_date', ts('Start'), [], !$this->_isTemplate, ['time' => TRUE]);
 diff --git a/templates/CRM/common/SocialNetwork.tpl b/templates/CRM/common/SocialNetwork.tpl
 index c1b13cac34..5ba9622b72 100644
---- a/templates/CRM/common/SocialNetwork.tpl
-+++ b/templates/CRM/common/SocialNetwork.tpl
+--- a/vendor/civicrm/civicrm-core/templates/CRM/common/SocialNetwork.tpl
++++ b/vendor/civicrm/civicrm-core/templates/CRM/common/SocialNetwork.tpl
 @@ -22,11 +22,11 @@
      {if $emailMode eq true}
          <a href="https://twitter.com/share?url={$url|escape:'url'}&amp;text={$title|escape:'url'}" class="btn btn-default" role="button" target="_blank" title="{ts}Tweet{/ts}">{ts}Twitter{/ts}</a>
