@@ -1,4 +1,4 @@
-diff --git a/js/fullcalendar_view.js b/js/fullcalendar_view.js
+diff --git a/modules/contrib/js/fullcalendar_view.js b/js/fullcalendar_view.js
 index 80cd14438..071d30cef 100644
 --- a/modules/contrib/fullcalendar_view/js/fullcalendar_view.js
 +++ b/modules/contrib/fullcalendar_view/js/fullcalendar_view.js
