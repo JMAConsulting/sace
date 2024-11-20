@@ -36,7 +36,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         '59969633dcdb4ee3e2fec945065028d6' => __DIR__ . '/..' . '/civicrm/civicrm-core/guzzle_php81_shim.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'fb4ca2d97fe7ba6af750497425204e70' => __DIR__ . '/..' . '/sentry/sentry/src/functions.php',
-        '014237dd13e595931c6755e8f8e26793' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
+        'a321afe5b5ec99bd361b396b4b67d157' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -914,6 +914,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
         'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'Drupal' => __DIR__ . '/../..' . '/web/core/lib/Drupal.php',
+        'Drupal\\Component\\Datetime\\Time' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/Datetime/Time.php',
         'Drupal\\Component\\DependencyInjection\\Container' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/DependencyInjection/Container.php',
         'Drupal\\Component\\DependencyInjection\\PhpArrayContainer' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/DependencyInjection/PhpArrayContainer.php',
         'Drupal\\Component\\FileCache\\FileCacheFactory' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/FileCache/FileCacheFactory.php',
@@ -952,6 +953,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'Random\\RandomError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomError.php',
         'Random\\RandomException' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomException.php',
         'ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
+        'SQLite3Exception' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/SQLite3Exception.php',
         'SebastianBergmann\\Diff\\Chunk' => __DIR__ . '/..' . '/sebastian/diff/src/Chunk.php',
         'SebastianBergmann\\Diff\\ConfigurationException' => __DIR__ . '/..' . '/sebastian/diff/src/Exception/ConfigurationException.php',
         'SebastianBergmann\\Diff\\Diff' => __DIR__ . '/..' . '/sebastian/diff/src/Diff.php',

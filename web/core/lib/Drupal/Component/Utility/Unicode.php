@@ -392,7 +392,7 @@ EOD;
    *   TRUE if the text is valid UTF-8, FALSE if not.
    */
   public static function validateUtf8($text) {
-    if (isset($text) && is_string($text) && strlen($text) == 0) {
+    if (strlen($text) == 0) {
       return TRUE;
     }
     // With the PCRE_UTF8 modifier 'u', preg_match() fails silently on strings

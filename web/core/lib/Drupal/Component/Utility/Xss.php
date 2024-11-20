@@ -56,7 +56,7 @@ class Xss {
    *
    * @ingroup sanitization
    */
-  public static function filter($string, array $allowed_html_tags = NULL) {
+  public static function filter($string, ?array $allowed_html_tags = NULL) {
     if (is_null($allowed_html_tags)) {
       $allowed_html_tags = static::$htmlTags;
     }
@@ -66,9 +66,7 @@ class Xss {
       return '';
     }
     // Remove NULL characters (ignored by some browsers).
-    if ($string !== null) {
-      $string = str_replace(chr(0), '', $string);
-    }
+    $string = str_replace(chr(0), '', $string);
     // Remove Netscape 4 JS entities.
     $string = preg_replace('%&\s*\{[^}]*(\}\s*;?|$)%', '', $string);
 
