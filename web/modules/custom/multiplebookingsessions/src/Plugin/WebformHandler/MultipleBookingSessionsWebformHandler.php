@@ -62,8 +62,7 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
       $activityContacts = $this->api('ActivityContact', 'get', ['activity_id' => $webform_submission_data['activity_id'], 'record_type_id' => ['!=' => 'Activity Source']])['values'];
       $source_contact_id = $this->api('ActivityContact', 'get', ['activity_id' => $webform_submission_data['activity_id'], 'record_type_id' => "Activity Source", 'sequential' => 1])['values'][0]['contact_id'];
       for ($key = 1; $key <= 10; $key++) {
-        // Webform date field blank values are now an array of ['date' => '', 'time' => ''] which fools the first is empty
-        if (!empty($webform_submission_data['appointment_' . $key . '_duration'])) {
+        if (!empty($webform_submission_data['additional_appointment_' . $key]) && is_string($webform_submission_data['additional_appointment_' . $key])) {
           $newActivity = $activity;
           $newActivity['source_contact_id'] = $source_contact_id;
           unset($newActivity['id']);

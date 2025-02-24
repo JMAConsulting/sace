@@ -343,7 +343,7 @@ elements: |-
     civicrm_1_activity_1_cg54_custom_711:
       '#type': number
       '#title': 'Somewhat Disagree'
-      '#description': 'Strongly Disagree'
+      '#description': '<p>Somewhat Disagree</p>'
       '#title_display': none
       '#data_type': Int
       '#counter_type': character
@@ -475,7 +475,7 @@ elements: |-
     civicrm_1_activity_1_cg54_custom_713:
       '#type': number
       '#title': 'Somewhat Disagree'
-      '#description': 'Strongly Disagree'
+      '#description': '<p>Somewhat Disagree</p>'
       '#title_display': none
       '#data_type': Int
       '#counter_type': character

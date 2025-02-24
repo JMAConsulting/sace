@@ -292,12 +292,13 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_1233:
       '#type': civicrm_options
       '#title': 'Community Engagement Service'
-      '#empty_option': '- select -'
+      '#empty_option': '- Select Community Engagement Service -'
       '#options':
         1: 'Community Booth or Table'
-        2: 'Speaking Engagement'
         3: 'Discussion Panel'
         4: 'Media Interview/Response'
+        'Services Pitch': 'Services Pitch'
+        2: 'Speaking Engagement'
       '#required': true
       '#extra':
         aslist: 1
@@ -323,11 +324,12 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
       '#title': 'Delivery Format'
-      '#empty_option': '- select -'
+      '#empty_option': '- Select Delivery Format -'
       '#civicrm_live_options': 0
       '#options':
-        'In-Person Presentation': 'In-Person Presentation'
-        'Online Presentation': 'Online Presentation'
+        'In-Person Activity': 'In-Person Activity'
+        'Online Activity': 'Online Activity'
+        'Phone Activity': 'Phone Activity'
       '#required': true
       '#default_value': 'In-Person Presentation'
       '#format_items': ul
@@ -336,7 +338,7 @@ elements: |-
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_88
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 'In-Person Presentation'
+      '#default_option': 'In-Person Activity'
   flexbox_04:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_815:
@@ -353,6 +355,7 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_127:
       '#type': textfield
       '#title': 'Preferred Dates'
+      '#description': '<p><b>*Please note,</b><strong>&nbsp;the date of your booking is not finalized until you are contacted by a Public Educator.</strong>&nbsp;</p>'
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_127
       '#extra':

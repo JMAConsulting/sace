@@ -378,29 +378,32 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation Topic(s)'
+    '#description': '<p><b>*Please note,&nbsp;</b><strong>only one topic should be selected per booking prior to setting "Booking Status" as "Completed". If more than one topic applies, please use "Custom/Unsure".&nbsp;</strong></p>'
     '#title_display': inline
     '#civicrm_live_options': 0
     '#options':
-      SexualHarassment: 'Sexual Harassment'
-      SexualAssaultConsent: 'Sexual Assault & Consent'
-      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
       BystanderIntervention: 'Bystander Intervention'
       ChildSexualAbuse: 'Child Sexual Abuse'
       CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
       HealthCareSystemsandSexualViolence: 'Health Care Systems & Sexual Violence'
       HealthyRelationships: 'Healthy Relationships'
-      'Information for Partners & Supporters': 'Information for Partners & Supporters'
       IntimatePartnerViolence: 'Intimate Partner Violence'
       'Legal Systems & Sexual Violence': 'Legal Systems & Sexual Violence'
       Masculinities: Masculinities
+      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
       PrivilegeandOppression: 'Privilege & Oppression'
-      CustomUnsure: 'Custom / Unsure'
       SACEServices: 'SACE Services'
+      SexualAssaultConsent: 'Sexual Assault & Consent'
+      SexualAssaultConsentNonConsensualPhotosharing: 'Sexual Assault, Consent, and Non-Consensual Photo Sharing'
       'Sexual Assault & Self-Care': 'Sexual Assault & Self-Care'
+      SexualHarassment: 'Sexual Harassment'
+      SexualViolence: 'Sexual Violence'
       SexualViolenceTrauma: 'Sexual Violence Trauma'
+      SACEandtheSPEAKProgram: 'SPEAK Safe Preschoolers Program'
       SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
       TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
-      SexualViolence: 'Sexual Violence'
+      ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
+      CustomUnsure: 'Custom / Unsure'
     '#states_clear': false
     '#wrapper_attributes':
       class:

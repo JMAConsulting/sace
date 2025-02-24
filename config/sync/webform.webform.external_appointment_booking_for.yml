@@ -712,7 +712,7 @@ elements: |-
     '#wrapper_attributes':
       style: 'display:none;'
 css: ''
-javascript: ''
+javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-07'));\r\n})(jQuery);"
 settings:
   ajax: false
   ajax_scroll_top: form
