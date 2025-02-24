@@ -20,9 +20,11 @@ elements: |-
     '#type': processed_text
     '#admin_title': 'Online Course Youth Banner and Blurb'
     '#text': |
-      <p>The SACE Public Education team empowers individuals and communities to take action against sexual violence. To accomplish this, SACE delivers presentations, workshops and seminars, distributes brochures, and attends community events. SACE also provides education sessions to adults involved in community groups and programs (e.g. athletic, leisure, art, religious, parent, and youth-serving groups), adults with developmental disabilities, and adults receiving support from community services (e.g. adults in addiction facilities, adults recovering from domestic violence, etc.).</p>
+      <p>SACE offers a range of online courses to youth engaging in asynchronous learning. Each course includes short readings, videos, and reflection questions. Some courses also include a downloadable workbook with an associated teacher answer key.&nbsp;</p>
 
-      <p>Our Public Education sessions are offered at no fee, but when we travel outside of the City of Edmonton we require our mileage to be reimbursed. If your organization is out of town, we will contact you with a quote and an invoice for this fee.</p>
+      <p>&nbsp;</p>
+
+      <p><b>*Please note,</b><strong>&nbsp;our youth online courses are currently offered to students who are engaging in asynchronous learning and/or who will be working through the content independently.</strong></p>
 
       <p>&nbsp;</p>
 
@@ -274,14 +276,18 @@ elements: |-
 
         <p>The typical courses offered by approximate age range are listed below. For more information about each course topic, please visit <a class="ql-link" href="http://www.sace.ca/services/public-education" rel="noopener noreferrer" target="_blank">http://www.sace.ca/services/public-education</a>.</p>
 
+        <p>&nbsp;</p>
+
         <p><br />
         <b>*Please note,</b><strong> that each module builds on the learning of previous ones for each age group.</strong>&nbsp;</p>
+
+        <p>&nbsp;</p>
 
         <ul>
         	<li>Grade 7 (12-13 years) - Ask First: Sexual Harassment&nbsp;</li>
         	<li>Grade 8 (13-14 years) - Ask First: Sexual Assault &amp; Consent&nbsp;</li>
         	<li>Grade 9 (14-15 years) - Ask First: Non-Consensual Photo Sharing&nbsp;</li>
-        	<li>High School (15-18 years) – Consent: Ask Me About It!</li>
+        	<li>High School (15-18 years) - Consent: Ask Me About It!</li>
         </ul>
       '#format': html
     civicrm_1_activity_1_cg2_custom_697:
@@ -380,7 +386,7 @@ elements: |-
       '#type': processed_text
       '#admin_title': 'Your Online Course Youth Blurb'
       '#text': |
-        <p><b>*Please note,</b><strong> our online courses are designed to be used by your school for 1 semester at a time. If you would like to use it for multiple semesters, please fill out a separate booking request form for each semester.</strong></p>
+        <p><b>*Please note,</b><strong> our online courses are designed to be used by your school for one semester at a time. If you would like to use it for multiple semesters, please fill out a separate booking request form for each semester.</strong></p>
       '#format': html
     civicrm_1_activity_1_cg2_custom_25:
       '#type': checkboxes

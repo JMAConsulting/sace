@@ -23,7 +23,7 @@ elements: |-
 
       <p>&nbsp;</p>
 
-      <p><strong>Please note,</strong> that Institutional Support services are strongly tied to our Public Education program: without the educational foundation to inform why and how these policies and practices function and to support culture shift, we find that policies do not find their way into practice. Once we have received your support request, we will reach out to further explore your needs, including public education services.</p>
+      <p><b>*Please note,</b><strong>&nbsp;</strong><strong>that Institutional Support services are strongly tied to our Public Education program: without the educational foundation to inform why and how these policies and practices function and to support culture shift, we find that policies do not find their way into practice. Once we have received your support request, we will reach out to further explore your needs, including public education services.</strong></p>
 
       <p>&nbsp;</p>
 
@@ -288,8 +288,8 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_1232:
     '#type': civicrm_options
     '#title': 'Consultation Topic'
-    '#description': 'Please note that organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review.&nbsp;'
-    '#empty_option': '- select - '
+    '#description': '<p><b>*Please note,</b><strong>&nbsp;</strong><strong>that organizations seeking policy review are encouraged to book one or more presentations on the topic for their team, including staff and management, to accompany the review.&nbsp;</strong></p>'
+    '#empty_option': '- Select Consultation Topic - '
     '#civicrm_live_options': 0
     '#options':
       CreatingSaferSpaces: 'Creating Safer Spaces'
@@ -312,11 +312,12 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
       '#title': 'Delivery Format'
-      '#empty_option': '- select -'
+      '#empty_option': '- Select Delivery Format -'
       '#civicrm_live_options': 0
       '#options':
-        'In-Person Presentation': 'In-Person Presentation'
-        'Online Presentation': 'Online Presentation'
+        'In-Person Activity': 'In-Person Activity'
+        'Online Activity': 'Online Activity'
+        'Phone Activity': 'Phone Activity'
       '#required': true
       '#default_value': 'In-Person Presentation'
       '#format_items': ul
@@ -325,7 +326,7 @@ elements: |-
         multiple: 0
       '#form_key': civicrm_1_activity_1_cg2_custom_88
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': 'In-Person Presentation'
+      '#default_option': 'In-Person Activity'
   flexbox_05:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_127:
