@@ -1002,9 +1002,21 @@ elements: |-
     '#title': 'Facilitating Program'
     '#title_display': inline
     '#options':
-      PublicEducation: 'Public Education'
+      '2SLGBTQ+ Inclusion Committee': '2SLGBTQ+ Inclusion Committee'
+      'Accessibility Inclusion Committee': 'Accessibility Inclusion Committee'
+      Admin: Admin
+      CommunityAgencyDevelopment: 'Community & Agency Development'
+      CommunityEngagement: 'Community Engagement'
+      EDIOutreach: EDI/Outreach
+      'General SACE': 'General SACE'
+      'Indigenous Inclusion Committee': 'Indigenous Inclusion Committee'
       InstitutionalSupport: 'Institutional Support'
-      DiversityInclusion: 'Diversity & Inclusion/Outreach'
+      'Newcomers Inclusion Committee': 'Newcomers Inclusion Committee'
+      'Older Adults Inclusion Committee': 'Older Adults Inclusion Committee'
+      Other: Other
+      PublicEducation: 'Public Education'
+      SIL: SIL
+      VolunteerServices: 'Volunteer Services'
       WiseGuyz: WiseGuyz
     '#default_value': PublicEducation
     '#wrapper_attributes':
@@ -1012,7 +1024,7 @@ elements: |-
         - jma-grid-4
     '#form_key': civicrm_1_activity_1_cg2_custom_332
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': PublicEducation
+    '#default_option': InstitutionalSupport
     '#civicrm_live_options': '1'
   civicrm_1_activity_1_cg2_custom_341:
     '#type': civicrm_options
