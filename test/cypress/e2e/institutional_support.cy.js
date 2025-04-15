@@ -6,7 +6,13 @@ Cypress.on("uncaught:exception", (err, runnable) => {
   
   describe('Institutional Support', () => {
     before(() => {
-      cy.login();
+      cy.getCookie('your_session_cookie_name').then((cookie) => {
+        if (cookie) {
+          cy.log('Session already active');
+        } else {
+          cy.login();
+        }
+      });
     });
     
     it('Submits proposal', () => {
@@ -16,5 +22,9 @@ Cypress.on("uncaught:exception", (err, runnable) => {
       cy.online_presentation();
       cy.institutional_support();
       cy.submit_form();
+    });
+
+    it('Verifies proposal', () => {
+      cy.verify_details();
     });
   });
