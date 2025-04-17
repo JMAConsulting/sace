@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<extension key="sace" type="module">
+  <file>sace</file>
+  <name>SACE Customisations</name>
+  <description>CiviCRM Customisations for SACE</description>
+  <license>AGPL-3.0</license>
+  <authors>
+    <author>
+      <name>JMA</name>
+      <email>ben.walpole@jmaconsulting.biz</email>
+      <role>Maintainer</role>
+    </author>
+  </authors>
+  <releaseDate>2025-04-17</releaseDate>
+  <version>1.0.0</version>
+  <develStage>stable</develStage>
+  <compatibility>
+    <ver>5.78</ver>
+  </compatibility>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
+  <civix>
+    <namespace>CRM/Sace</namespace>
+    <format>25.01.1</format>
+    <angularModule>crmSace</angularModule>
+  </civix>
+  <mixins>
+    <mixin>mgd-php@1.0.0</mixin>
+    <mixin>scan-classes@1.0.0</mixin>
+    <mixin>setting-php@1.0.0</mixin>
+    <mixin>smarty@1.0.3</mixin>
+  </mixins>
+</extension>
