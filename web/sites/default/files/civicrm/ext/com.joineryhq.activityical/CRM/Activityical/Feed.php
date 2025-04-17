@@ -290,7 +290,7 @@ class CRM_Activityical_Feed {
         AND date(civicrm_activity.activity_date_time) >= (CURRENT_DATE - INTERVAL {$placeholders['activityical_past_days']} DAY)
         AND date(civicrm_activity.activity_date_time) <= (CURRENT_DATE + INTERVAL {$placeholders['activityical_future_days']} DAY)
         $extra_where
-      GROUP BY civicrm_activity.id
+      GROUP BY civicrm_activity.id, source.id, activity_type.label
       ORDER BY activity_date_time desc
     ";
 
@@ -316,7 +316,13 @@ class CRM_Activityical_Feed {
       // FIXME: how to handle timezones?
       // $row['activity_date_time'] = civicrm_activity_contact_datetime_to_utc($row['activity_date_time'], $this->contact_id);
 
-      $return[] = $row;
+      $hookEvent = \Civi\Core\Event\GenericHookEvent::create([
+        'activityId' => $row['id'],
+        'row' => $row,
+      ]);
+      \Civi::dispatcher()->dispatch('civi.activityical.feed_item_details', $hookEvent);
+
+      $return[] = $hookEvent->row;
     }
     return $return;
   }
