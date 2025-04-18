@@ -1,4 +1,7 @@
 <?php
+
+use CRM_Sacecustomfields_ExtensionUtil as E;
+
 return [
   [
     'name' => 'CustomGroup_Additional_Contact',

@@ -1,4 +1,7 @@
 <?php
+
+use CRM_Sacecustomfields_ExtensionUtil as E;
+
 return [
   [
     'name' => 'CustomGroup_CLIN_C_and_Y_Information',
