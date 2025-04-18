@@ -6,10 +6,10 @@
  * The ExtensionUtil class provides small stubs for accessing resources of this
  * extension.
  */
-class CRM_Activityical_ExtensionUtil {
-  const SHORT_NAME = 'activityical';
-  const LONG_NAME = 'com.joineryhq.activityical';
-  const CLASS_PREFIX = 'CRM_Activityical';
+class CRM_Sace_ExtensionUtil {
+  const SHORT_NAME = 'sace';
+  const LONG_NAME = 'sace';
+  const CLASS_PREFIX = 'CRM_Sace';
 
   /**
    * Translate a string using the extension's domain.
@@ -75,53 +75,16 @@ class CRM_Activityical_ExtensionUtil {
     return self::CLASS_PREFIX . '_' . str_replace('\\', '_', $suffix);
   }
 
-  /**
-   * @return \CiviMix\Schema\SchemaHelperInterface
-   */
-  public static function schema() {
-    if (!isset($GLOBALS['CiviMixSchema'])) {
-      pathload()->loadPackage('civimix-schema@5', TRUE);
-    }
-    return $GLOBALS['CiviMixSchema']->getHelper(static::LONG_NAME);
-  }
-
 }
 
-use CRM_Activityical_ExtensionUtil as E;
-
-($GLOBALS['_PathLoad'][0] ?? require __DIR__ . '/mixin/lib/pathload-0.php');
-pathload()->addSearchDir(__DIR__ . '/mixin/lib');
-spl_autoload_register('_activityical_civix_class_loader', TRUE, TRUE);
-
-function _activityical_civix_class_loader($class) {
-  if ($class === 'CRM_Activityical_DAO_Base') {
-    if (version_compare(CRM_Utils_System::version(), '5.74.beta', '>=')) {
-      class_alias('CRM_Core_DAO_Base', 'CRM_Activityical_DAO_Base');
-      // ^^ Materialize concrete names -- encourage IDE's to pick up on this association.
-    }
-    else {
-      $realClass = 'CiviMix\\Schema\\Activityical\\DAO';
-      class_alias($realClass, $class);
-      // ^^ Abstract names -- discourage IDE's from picking up on this association.
-    }
-    return;
-  }
-
-  // This allows us to tap-in to the installation process (without incurring real file-reads on typical requests).
-  if (strpos($class, 'CiviMix\\Schema\\Activityical\\') === 0) {
-    // civimix-schema@5 is designed for backported use in download/activation workflows,
-    // where new revisions may become dynamically available.
-    pathload()->loadPackage('civimix-schema@5', TRUE);
-    CiviMix\Schema\loadClass($class);
-  }
-}
+use CRM_Sace_ExtensionUtil as E;
 
 /**
  * (Delegated) Implements hook_civicrm_config().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config
  */
-function _activityical_civix_civicrm_config($config = NULL) {
+function _sace_civix_civicrm_config($config = NULL) {
   static $configured = FALSE;
   if ($configured) {
     return;
@@ -139,8 +102,8 @@ function _activityical_civix_civicrm_config($config = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function _activityical_civix_civicrm_install() {
-  _activityical_civix_civicrm_config();
+function _sace_civix_civicrm_install() {
+  _sace_civix_civicrm_config();
   // Based on <compatibility>, this does not currently require mixin/polyfill.php.
 }
 
@@ -149,8 +112,8 @@ function _activityical_civix_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function _activityical_civix_civicrm_enable(): void {
-  _activityical_civix_civicrm_config();
+function _sace_civix_civicrm_enable(): void {
+  _sace_civix_civicrm_config();
   // Based on <compatibility>, this does not currently require mixin/polyfill.php.
 }
 
@@ -165,7 +128,7 @@ function _activityical_civix_civicrm_enable(): void {
  *
  * @return bool
  */
-function _activityical_civix_insert_navigation_menu(&$menu, $path, $item) {
+function _sace_civix_insert_navigation_menu(&$menu, $path, $item) {
   // If we are done going down the path, insert menu
   if (empty($path)) {
     $menu[] = [
@@ -186,7 +149,7 @@ function _activityical_civix_insert_navigation_menu(&$menu, $path, $item) {
         if (!isset($entry['child'])) {
           $entry['child'] = [];
         }
-        $found = _activityical_civix_insert_navigation_menu($entry['child'], implode('/', $path), $item);
+        $found = _sace_civix_insert_navigation_menu($entry['child'], implode('/', $path), $item);
       }
     }
     return $found;
@@ -196,9 +159,9 @@ function _activityical_civix_insert_navigation_menu(&$menu, $path, $item) {
 /**
  * (Delegated) Implements hook_civicrm_navigationMenu().
  */
-function _activityical_civix_navigationMenu(&$nodes) {
+function _sace_civix_navigationMenu(&$nodes) {
   if (!is_callable(['CRM_Core_BAO_Navigation', 'fixNavigationMenu'])) {
-    _activityical_civix_fixNavigationMenu($nodes);
+    _sace_civix_fixNavigationMenu($nodes);
   }
 }
 
@@ -206,17 +169,17 @@ function _activityical_civix_navigationMenu(&$nodes) {
  * Given a navigation menu, generate navIDs for any items which are
  * missing them.
  */
-function _activityical_civix_fixNavigationMenu(&$nodes) {
+function _sace_civix_fixNavigationMenu(&$nodes) {
   $maxNavID = 1;
   array_walk_recursive($nodes, function($item, $key) use (&$maxNavID) {
     if ($key === 'navID') {
       $maxNavID = max($maxNavID, $item);
     }
   });
-  _activityical_civix_fixNavigationMenuItems($nodes, $maxNavID, NULL);
+  _sace_civix_fixNavigationMenuItems($nodes, $maxNavID, NULL);
 }
 
-function _activityical_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parentID) {
+function _sace_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parentID) {
   $origKeys = array_keys($nodes);
   foreach ($origKeys as $origKey) {
     if (!isset($nodes[$origKey]['attributes']['parentID']) && $parentID !== NULL) {
@@ -231,7 +194,7 @@ function _activityical_civix_fixNavigationMenuItems(&$nodes, &$maxNavID, $parent
       $origKey = $newKey;
     }
     if (isset($nodes[$origKey]['child']) && is_array($nodes[$origKey]['child'])) {
-      _activityical_civix_fixNavigationMenuItems($nodes[$origKey]['child'], $maxNavID, $nodes[$origKey]['attributes']['navID']);
+      _sace_civix_fixNavigationMenuItems($nodes[$origKey]['child'], $maxNavID, $nodes[$origKey]['attributes']['navID']);
     }
   }
 }
