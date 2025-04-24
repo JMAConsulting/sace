@@ -154,13 +154,20 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
    */
   protected function createActionSchedule($webformData, $initialActivityId): int {
 
+    $startDate = $webformData['repeat_start_date'];
+    // if left blank will come through as empty date and time subfields
+    // => default to main activity date
+    if (!array_filter($startDate)) {
+      $startDate = $webformData['civicrm_1_activity_1_activity_activity_date_time'];
+    }
+
     $actionScheduleCreate = \Civi\Api4\ActionSchedule::create(FALSE)
       ->addValue('name', 'repeat_activity_' . $initialActivityId)
       ->addValue('title', 'Repetition Schedule for Activity ID ' . $initialActivityId)
       ->addValue('used_for', 'civicrm_activity')
       ->addValue('mapping_id:name', 'activity_type')
       ->addValue('entity_value', $initialActivityId)
-      ->addValue('start_action_date', $webformData['repeat_start_date'])
+      ->addValue('start_action_date', $startDate)
       ->addValue('start_action_unit', $webformData['repeat_interval_unit'])
       ->addValue('repetition_frequency_unit', $webformData['repeat_interval_unit'])
       ->addValue('repetition_frequency_interval', $webformData['repeat_interval_count']);

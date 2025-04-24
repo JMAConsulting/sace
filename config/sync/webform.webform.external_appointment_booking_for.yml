@@ -690,10 +690,7 @@ elements: |-
     repeat_start_date:
       '#type': datetime
       '#title': 'Repeat Start'
-      '#states':
-        required:
-          ':input[name="repeat_enabled"]':
-            checked: true
+      '#description': '<p>Leave blank to use the original activity date.</p>'
     flexbox_repeat_interval:
       '#type': webform_flexbox
       '#align_items': center
