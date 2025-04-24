@@ -114,8 +114,95 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
               ->execute();
           }
         }
+        if (!empty($webform_submission_data['repeat_enabled'])) {
+          $this->saveRepeatingActivity($webform_submission_data, $data['activity'][1]['id']);
+        }
       }
     }
+  }
+
+  /**
+   * This is adapted from CRM_Core_Form_RecurringEntity::postProcess
+   * to use our webform parameter names, and cut out logic that is specific
+   * to CiviEvent
+   *
+   * @see CRM_Core_Form_RecurringEntity::postProcess
+   */
+  protected function saveRepeatingActivity($webformData, $initialActivityId) {
+    \Civi::log()->debug("Saving activity repeat options for activity ID: {$initialActivityId}, webform data: " . json_encode($webformData));
+
+    $actionScheduleId = $this->createActionSchedule($webformData, $initialActivityId);
+
+    $recursion = new \CRM_Core_BAO_RecurringEntity();
+    $recursion->scheduleId = $actionScheduleId;
+    $recursion->dateColumns = ['activity_date_time'];
+
+    if (!empty($webformData['repeat_exclude_dates'])) {
+      $recursion->excludeDates = $webformData['repeat_exclude_dates'];
+    }
+    $recursion->entity_id = $initialActivityId;
+    $recursion->entity_table = 'civicrm_activity';
+
+    $recursion->generate();
+
+
+    //TODO: generate custom end date field values based on activity duration?
+  }
+
+  /**
+   * Create the action schedule record for given params
+   * @return int id of the created record
+   */
+  protected function createActionSchedule($webformData, $initialActivityId): int {
+
+    $actionScheduleCreate = \Civi\Api4\ActionSchedule::create(FALSE)
+
+      ->addValue('name', 'repeat_activity_' . $initialActivityId)
+      ->addValue('title', 'Repetition Schedule for Activity ID ' . $initialActivityId)
+      ->addValue('used_for', 'civicrm_activity')
+      ->addValue('mapping_id:name', 'activity_type')
+      ->addValue('entity_value', $initialActivityId)
+      ->addValue('start_action_date', $webformData['repeat_start_date'])
+      ->addValue('start_action_unit', $webformData['repeat_interval_unit'])
+      ->addValue('repetition_frequency_unit', $webformData['repeat_interval_unit'])
+      ->addValue('repetition_frequency_interval', $webformData['repeat_interval_count']);
+
+    // special "repeats on" config for week/month intervals
+    switch ($webformData['repeat_interval_unit']) {
+
+      case 'week':
+        // civicrm expects lowercase weekday names
+        $serialized = strtolower(implode(',', $webformData['repeat_days_of_week']));
+        $actionScheduleCreate->addValue('start_action_condition', $serialized);
+        break;
+
+      case 'month':
+        // for month interval, we have repeat on set date and repeat on regular weekday
+        switch ($webformData['repeat_on_month_options']) {
+          case 'date':
+            $actionScheduleCreate->addValue('limit_to', $webformData['repeat_date_of_month']);
+            break;
+
+          case 'weekday':
+            $actionScheduleCreate->addValue('entity_status', implode(' ', $webformData['repeat_weekday_of_month_ordinal'], $webformData['repeat_weekday_of_month_weekday']));
+            break;
+        }
+        break;
+    }
+
+    switch ($webformData['repeat_end_type']) {
+      case 'count':
+        $actionScheduleCreate->addValue('start_action_offset', $webformData['repeat_end_after_count']);
+        break;
+
+      case 'date':
+        $actionScheduleCreate->addValue('absolute_date', $webformData['repeat_end_date']);
+        break;
+    }
+
+    $result = $actionScheduleCreate->execute()->first();
+
+    return $result['id'];
   }
 
 }
