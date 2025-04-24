@@ -143,6 +143,18 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
     $recursion->entity_id = $initialActivityId;
     $recursion->entity_table = 'civicrm_activity';
 
+    // ensure activity contacts are propagated to generated activities
+    $recursion->linkedEntities = [
+      [
+        'table' => 'civicrm_activity_contact',
+        'findCriteria' => [
+          'activity_id' => $initialActivityId,
+        ],
+        'linkedColumns' => ['activity_id'],
+        'isRecurringEntityRecord' => FALSE,
+      ],
+    ];
+
     $recursion->generate();
 
     //TODO: generate custom end date field values based on activity duration?
