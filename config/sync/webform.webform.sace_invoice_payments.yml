@@ -24,7 +24,7 @@ elements: |-
       '#title': 'Please note:'
       '#text': |
         <p>If you have reached this page in error and are interested in making a donation, please visit&nbsp;<br />
-        <a class="button button--secondary" href="https://www.sace.ca/donate/">Donate to SACE</a></p>
+        <a class="button button--secondary" href="https://secure.sace.ca/civicrm/contribute/transact?reset=1&amp;id=1">Donate to SACE</a></p>
       '#webform': sace_invoice_payments
       '#webform_id': sace_invoice_payments--processed_text
       '#webform_key': processed_text

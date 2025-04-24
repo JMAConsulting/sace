@@ -36,7 +36,7 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/ce-bookings-calendar\r\n/ped-update-booking\r\n/ped-online-course-booking-update\r\n/form/ped-multiple-update-booking\r\n/youth-online-course-booking-update\r\n/adult-online-course-booking-update\r\n/youth-presentation-booking-update\r\n/adult-presentation-booking-update\r\n/wiseguyz-booking-update\r\n/institutional-support-booking-update\r\n/community-engagement-booking-update\r\n/schedule-an-activity"
+    pages: "/ce-bookings-calendar\r\n/ped-update-booking\r\n/ped-online-course-booking-update\r\n/form/ped-multiple-update-booking\r\n/youth-online-course-booking-update\r\n/adult-online-course-booking-update\r\n/youth-presentation-booking-update\r\n/adult-presentation-booking-update\r\n/wiseguyz-booking-update\r\n/institutional-support-booking-update\r\n/community-engagement-booking-update"
   user_role:
     id: user_role
     negate: false

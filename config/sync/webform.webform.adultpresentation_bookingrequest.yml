@@ -23,7 +23,7 @@ elements: |-
     '#civicrm_live_options': 0
     '#options':
       59: 'Adult Presentation'
-    '#default_value': '59'
+    '#default_value': 59
     '#extra':
       aslist: 1
       multiple: 0
@@ -312,8 +312,8 @@ elements: |-
       SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
       TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
       SexualAssaultConsent: 'Sexual Assault & Consent'
-      CustomUnsure: 'Custom / Unsure'
       SACEandtheSPEAKProgram: 'SACE & the SPEAK Program'
+      CustomUnsure: 'Custom / Unsure'
     '#required': true
     '#states_clear': false
     '#default_value':
@@ -354,7 +354,7 @@ elements: |-
     '#text': |
       <h3><span style="color:#2e416c;"><strong>Presentation Details</strong></span></h3>
 
-      <p>In this section, tell us a bit about the presentations you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Our presentations are most effective with groups of 15 - 35 participants, but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.&nbsp;</p>
+      <p>In this section, tell us a bit about the presentations you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Our presentations are most effective with groups of 15-35 participants, but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.&nbsp;</p>
 
       <p>&nbsp;</p>
 
@@ -703,7 +703,7 @@ elements: |-
 
         <p>&nbsp;</p>
 
-        <p><b>*Please note,</b>&nbsp;<strong>a population of focus is not required to book a session. Choosing a population of focus is only necessary if you would like targeted information about sexual violence as it relates to a specific group.&nbsp;</strong></p>
+        <p><b>*Please note,</b> <strong>a population of focus is not required to book a session. Choosing a population of focus is only necessary if you would like information about sexual violence as it relates to a specific group.&nbsp;</strong></p>
       '#format': html
     civicrm_1_activity_1_cg2_custom_333:
       '#type': civicrm_options

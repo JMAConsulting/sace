@@ -154,85 +154,537 @@ elements: |-
           - civicrm_1_activity_1_fieldset_fieldset
           - flexbox_04
           - civicrm_1_activity_1_activity_activity_date_time
-    civicrm_1_activity_1_cg18_custom_148:
-      '#type': civicrm_options
-      '#required': true
-      '#data_type': 0
-      '#extra':
-        aslist: 1
-        items: |
-          1|1
-          2|2
-          3|3
-          4|4
-          5|5
-      '#form_key': civicrm_1_activity_1_cg18_custom_148
-      '#options':
-        1: '1'
-        2: '2'
-        3: '3'
-        4: '4'
-        5: '5'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Session Number'
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg18_custom_149:
-      '#type': civicrm_options
-      '#required': true
-      '#data_type': 0
-      '#extra':
-        aslist: 1
-        items: |
-          1|In person
-          2|Online
-          3|Other
-      '#form_key': civicrm_1_activity_1_cg18_custom_149
-      '#options':
-        1: 'In person'
-        2: Online
-        3: Other
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': Location
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg18_custom_150:
+    civicrm_1_activity_1_cg18_custom_181:
       '#type': civicrm_options
       '#extra':
+        multiple: 1
         aslist: 0
-        items: |
-          Yes|Yes
-          No|No
-      '#required': true
-      '#data_type': 0
-      '#form_key': civicrm_1_activity_1_cg18_custom_150
+        items: |-
+          1|Limits to confidentiality
+          2|Risks to online counselling
+          3|Change in availability
+          4|Crisis resources
+          5|Boundaries
+          6|Not relevant
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_181
       '#options':
-        'Yes': 'Yes'
-        'No': 'No'
+        1: 'Limits to confidentiality'
+        2: 'Risks to online counselling'
+        3: 'Change in availability'
+        4: 'Crisis resources'
+        5: Boundaries
+        6: 'Not relevant'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': Recorded
+      '#title': 'Reviewed Consent (when relevant)'
       '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg18_custom_151:
+    civicrm_1_activity_1_cg18_custom_182:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_182
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Reviewed Consent notes as relevant'
+    civicrm_1_activity_1_cg18_custom_180:
       '#type': civicrm_options
-      '#title': 'Forms Completed'
+      '#title': 'Client Affect'
       '#options':
-        1: 'Client History Form'
-        2: Mann-Whitney
-        3: TSC-40
-        4: 'Counselling Client Questionnaire'
-        5: 'Index of Well-Being and Coping'
-        6: Other
+        1: 'Hypo-arousal indicators'
+        2: 'Hyper-arousal indicators'
+        3: Regulated
       '#required': true
-      '#wrapper_attributes':
-        class:
-          - jma-grid-4
-          - ''
       '#extra':
         aslist: 0
         multiple: 1
-      '#form_key': civicrm_1_activity_1_cg18_custom_151
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_180
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg18_custom_183:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_183
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Client Affect brief description'
+    civicrm_1_activity_1_cg18_custom_184:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 0
+        items: |-
+          1|No safety concerns noted
+          2|Interpersonal violence (risk to client, risk to other)
+          3|Self-harm
+          4|Suicidal ideation (thoughts, active/passive, plan, self-reported level of intent)
+          5|Risk assessment (see attached other data form as needed)
+          6|Safety plan (see attached other data form as needed)
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_184
+      '#options':
+        1: 'No safety concerns noted'
+        2: 'Interpersonal violence (risk to client, risk to other)'
+        3: Self-harm
+        4: 'Suicidal ideation (thoughts, active/passive, plan, self-reported level of intent)'
+        5: 'Risk assessment (see attached other data form as needed)'
+        6: 'Safety plan (see attached other data form as needed)'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Risk Assessment (when relevant)'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg18_custom_185:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_185
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Risk assessment notes as relevant'
+    civicrm_1_activity_1_cg18_custom_186:
+      '#type': textfield
+      '#title': 'Session Focus'
+      '#required': true
+      '#required_error': 'This field is required'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_186
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg18_custom_187:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 0
+        items: |-
+          1|Assertiveness
+          2|Boundaries
+          3|Connectedness (to self and others)
+          4|Emotional Regulation
+          5|Empowerment
+          6|Feelings of fulfillment
+          7|Holding Duality
+          8|Motivation
+          9|Self-care
+          10|Self-soothing
+          11|Other
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_187
+      '#options':
+        1: Assertiveness
+        2: Boundaries
+        3: 'Connectedness (to self and others)'
+        4: 'Emotional Regulation'
+        5: Empowerment
+        6: 'Feelings of fulfillment'
+        7: 'Holding Duality'
+        8: Motivation
+        9: Self-care
+        10: Self-soothing
+        11: Other
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Relevant Updates (as reported by client): What is going well?'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg18_custom_188:
+      '#type': textfield
+      '#title': 'If others'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        required:
+          ':input[name="civicrm_1_activity_1_cg18_custom_187"]':
+            value: '11'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_188
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg18_custom_193:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_193
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'What stood out from last session as reported by client'
+    civicrm_1_activity_1_cg18_custom_194:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_194
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Significant events/changes since last session'
+    civicrm_1_activity_1_cg18_custom_195:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_195
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Relevant information textbox'
+    civicrm_1_activity_1_cg18_custom_196:
+      '#type': civicrm_options
+      '#title': 'Modalities Used CIVICRM'
+      '#options':
+        1: Client-Centred
+        2: 'Feminist Therapy'
+        3: ACT
+        4: Attachment-Based
+        5: CBT
+        6: DBT
+        7: EFT
+        8: EMDR
+        9: Mindfulness
+        10: Movement
+        11: Sandtray
+        12: 'Solution Focused'
+        13: Somatic
+        14: Other
+      '#extra':
+        aslist: 1
+        multiple: 1
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_196
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
+    modality_custom_composite:
+      '#type': webform_custom_composite
+      '#title': 'modality custom composite'
+      '#element':
+        modalities:
+          '#type': select
+          '#options':
+            Client-Centered: Client-Centered
+            'Feminist Therapy': 'Feminist Therapy'
+            ACT: ACT
+            Attachment-Based: Attachment-Based
+            CBT: CBT
+            DBT: DBT
+            EFT: EFT
+            EMDR: EMDR
+            Mindfulness: Mindfulness
+            Movement: Movement
+            Sandtray1: Sandtray1
+            Sandtray: Sandtray
+            'Solution Focused': 'Solution Focused'
+            Somatic: Somatic
+            Other: Other
+          '#title': Modalities
+        intervention:
+          '#type': textfield
+          '#title': Intervention
+        client_response:
+          '#type': textfield
+          '#title': 'Client Response'
+    civicrm_1_activity_1_cg18_custom_198:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 0
+        items: |-
+          1|3, 2, 1
+          2|Breath
+          3|Orienting to present moment
+          4|Rainbow
+          5|Stones
+          6|Visualization
+          7|Weighted Animal/Object
+          8|Other
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_198
+      '#options':
+        1: '3, 2, 1'
+        2: Breath
+        3: 'Orienting to present moment'
+        4: Rainbow
+        5: Stones
+        6: Visualization
+        7: 'Weighted Animal/Object'
+        8: Other
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Grounding/Mindfulness Strategies Practiced'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg18_custom_199:
+      '#type': textfield
+      '#title': Others
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        required:
+          ':input[name="civicrm_1_activity_1_cg18_custom_198"]':
+            value: '8'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_199
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg18_custom_189:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_189
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Client Response'
+    civicrm_1_activity_1_cg18_custom_200:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 0
+        items: |-
+          1|Attachment
+          2|Boundaries
+          3|Brain
+          4|Consent
+          5|Coping
+          6|Dissociation
+          7|Emotional literacy
+          8|Emotional regulation
+          9|Grounding
+          10|Impacts of trauma
+          11|Mindfulness
+          12|Myths and Facts
+          13|Neurobiology of trauma
+          14|Nightmares
+          15|Self-care
+          16|Self-compassion
+          17|Sexuality
+          18|Sleep
+          19|Stress response system
+          20|Triggers
+          21|Window of tolerance
+          22|Other
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_200
+      '#options':
+        1: Attachment
+        2: Boundaries
+        3: Brain
+        4: Consent
+        5: Coping
+        6: Dissociation
+        7: 'Emotional literacy'
+        8: 'Emotional regulation'
+        9: Grounding
+        10: 'Impacts of trauma'
+        11: Mindfulness
+        12: 'Myths and Facts'
+        13: 'Neurobiology of trauma'
+        14: Nightmares
+        15: Self-care
+        16: Self-compassion
+        17: Sexuality
+        18: Sleep
+        19: 'Stress response system'
+        20: Triggers
+        21: 'Window of tolerance'
+        22: Other
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Psychoeducation
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg18_custom_201:
+      '#type': textfield
+      '#title': 'Other options'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        required:
+          ':input[name="civicrm_1_activity_1_cg18_custom_200"]':
+            value: '22'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_201
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg18_custom_202:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_202
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Response from client'
+    civicrm_1_activity_1_cg18_custom_190:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 0
+        items: |-
+          1|Client initiated
+          2|Therapist offered
+          3|Client Declined
+          4|Containment
+          5|Grounding
+          6|Giving support
+          7|EMDR
+          8|Hug
+          9|Shoulder squeeze
+          10|Sitting beside
+          11|Tapping on legs, hands, shoulders
+          12|Other
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_190
+      '#options':
+        1: 'Client initiated'
+        2: 'Therapist offered'
+        3: 'Client Declined'
+        4: Containment
+        5: Grounding
+        6: 'Giving support'
+        7: EMDR
+        8: Hug
+        9: 'Shoulder squeeze'
+        10: 'Sitting beside'
+        11: 'Tapping on legs, hands, shoulders'
+        12: Other
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Touch Used with Verbal Consent: (therapist to make note if more than 1 present in a session)'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg18_custom_191:
+      '#type': textfield
+      '#title': 'If any others'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        required:
+          ':input[name="civicrm_1_activity_1_cg18_custom_190"]':
+            value: '12'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_191
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg18_custom_192:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_192
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': "Client's Response"
+    civicrm_1_activity_1_cg18_custom_203:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 0
+        items: |-
+          1|Prep for
+          2|Focus
+          3|Other
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_203
+      '#options':
+        1: 'Prep for'
+        2: Focus
+        3: Other
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Termination
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg18_custom_1440:
+      '#type': textfield
+      '#title': termination_cr_text_area
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        visible:
+          - ':input[name="civicrm_1_activity_1_cg18_custom_203"]':
+              value: '1'
+          - or
+          - ':input[name="civicrm_1_activity_1_cg18_custom_203"]':
+              value: '2'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_1440
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg18_custom_204:
+      '#type': textfield
+      '#title': 'Other option'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        required:
+          ':input[name="civicrm_1_activity_1_cg18_custom_203"]':
+            value: '3'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg18_custom_204
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg18_custom_205:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_205
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Takeaway from session (as reported by client)'
+    civicrm_1_activity_1_cg18_custom_206:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_206
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Between Session Goals/Homework'
+    civicrm_1_activity_1_cg18_custom_207:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg18_custom_207
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Counsellor Follow-Up'
   civicrm_1_contact_1_fieldset_fieldset:
     '#type': fieldset
     '#title': Counsellor
@@ -470,7 +922,6 @@ handlers:
     conditions: {  }
     weight: null
     settings:
-      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '2'
       1_contact_type: individual
@@ -490,6 +941,8 @@ handlers:
       civicrm_1_contact_1_contact_preferred_communication_method: 0
       civicrm_1_contact_1_contact_privacy: 0
       civicrm_1_contact_1_contact_preferred_language: 0
+      civicrm_1_contact_1_contact_communication_style_id: 0
+      civicrm_1_contact_1_contact_image_url: 0
       civicrm_1_contact_1_contact_contact_id: 0
       civicrm_1_contact_1_contact_user_id: 0
       civicrm_1_contact_1_contact_external_identifier: 0
@@ -507,14 +960,31 @@ handlers:
       contact_1_number_of_email: '1'
       civicrm_1_contact_1_email_email: create_civicrm_webform_element
       civicrm_1_contact_1_email_location_type_id: '3'
+      civicrm_1_contact_1_email_is_primary: '1'
       contact_1_number_of_website: '0'
       contact_1_number_of_im: '0'
+      contact_1_number_of_cg30: '0'
+      contact_1_number_of_cg71: '0'
       2_contact_type: individual
       2_webform_label: Client
       civicrm_2_contact_1_contact_contact_sub_type:
         Client: Client
       contact_2_number_of_cg6: '0'
       contact_2_number_of_cg10: '0'
+      contact_2_number_of_cg19: '0'
+      contact_2_number_of_cg21: '0'
+      contact_2_number_of_cg22: '0'
+      contact_2_number_of_cg23: '0'
+      contact_2_number_of_cg24: '0'
+      contact_2_number_of_cg25: '0'
+      contact_2_number_of_cg29: '0'
+      contact_2_number_of_cg59: '0'
+      contact_2_number_of_cg60: '0'
+      contact_2_number_of_cg62: '0'
+      contact_2_number_of_cg65: '0'
+      contact_2_number_of_cg68: '0'
+      contact_2_number_of_cg70: '0'
+      contact_2_number_of_cg76: '0'
       civicrm_2_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_2_contact_1_contact_prefix_id: 0
       civicrm_2_contact_1_contact_first_name: create_civicrm_webform_element
@@ -528,6 +998,8 @@ handlers:
       civicrm_2_contact_1_contact_preferred_communication_method: 0
       civicrm_2_contact_1_contact_privacy: 0
       civicrm_2_contact_1_contact_preferred_language: 0
+      civicrm_2_contact_1_contact_communication_style_id: 0
+      civicrm_2_contact_1_contact_image_url: 0
       civicrm_2_contact_1_contact_contact_id: create_civicrm_webform_element
       civicrm_2_contact_1_contact_user_id: 0
       civicrm_2_contact_1_contact_external_identifier: 0
@@ -548,6 +1020,8 @@ handlers:
       contact_2_number_of_website: '0'
       contact_2_number_of_im: '0'
       contact_2_number_of_relationship: '0'
+      contact_2_number_of_cg30: '0'
+      contact_2_number_of_cg71: '0'
       prefix_known: ''
       prefix_unknown: ''
       toggle_message: 0
@@ -559,6 +1033,7 @@ handlers:
         entire_result: 0
         view_link: 0
         edit_link: 0
+        view_link_secure: 0
         update_existing: 0
       civicrm_1_activity_1_activity_activity_type_id: create_civicrm_webform_element
       civicrm_1_activity_1_activity_target_contact_id:
@@ -581,6 +1056,13 @@ handlers:
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
       activity_1_settings_dynamic_custom_cg2: 0
+      civicrm_1_activity_1_cg2_custom_333: 0
+      civicrm_1_activity_1_cg2_custom_332: 0
+      civicrm_1_activity_1_cg2_custom_334: 0
+      civicrm_1_activity_1_cg2_custom_331: 0
+      civicrm_1_activity_1_cg2_custom_330: 0
+      civicrm_1_activity_1_cg2_custom_40: 0
+      civicrm_1_activity_1_cg2_custom_88: 0
       civicrm_1_activity_1_cg2_custom_126: 0
       civicrm_1_activity_1_cg2_custom_125: 0
       civicrm_1_activity_1_cg2_custom_124: 0
@@ -590,64 +1072,320 @@ handlers:
       civicrm_1_activity_1_cg2_custom_120: 0
       civicrm_1_activity_1_cg2_custom_119: 0
       civicrm_1_activity_1_cg2_custom_90: 0
-      civicrm_1_activity_1_cg2_custom_88: 0
-      civicrm_1_activity_1_cg2_custom_87: 0
       civicrm_1_activity_1_cg2_custom_43: 0
       civicrm_1_activity_1_cg2_custom_25: 0
-      civicrm_1_activity_1_cg2_custom_24: 0
       civicrm_1_activity_1_cg2_custom_34: 0
       civicrm_1_activity_1_cg2_custom_35: 0
       civicrm_1_activity_1_cg2_custom_37: 0
-      civicrm_1_activity_1_cg2_custom_40: 0
       civicrm_1_activity_1_cg2_custom_41: 0
       civicrm_1_activity_1_cg2_custom_127: 0
       civicrm_1_activity_1_cg2_custom_128: 0
       civicrm_1_activity_1_cg2_custom_129: 0
-      civicrm_1_activity_1_cg2_custom_47: 0
-      civicrm_1_activity_1_cg2_custom_48: 0
-      civicrm_1_activity_1_cg2_custom_54: 0
-      civicrm_1_activity_1_cg2_custom_55: 0
-      civicrm_1_activity_1_cg2_custom_56: 0
-      civicrm_1_activity_1_cg2_custom_57: 0
-      civicrm_1_activity_1_cg2_custom_58: 0
-      civicrm_1_activity_1_cg2_custom_59: 0
-      civicrm_1_activity_1_cg2_custom_60: 0
-      civicrm_1_activity_1_cg2_custom_61: 0
-      civicrm_1_activity_1_cg2_custom_62: 0
-      civicrm_1_activity_1_cg2_custom_63: 0
-      civicrm_1_activity_1_cg2_custom_64: 0
-      civicrm_1_activity_1_cg2_custom_67: 0
-      civicrm_1_activity_1_cg2_custom_65: 0
-      civicrm_1_activity_1_cg2_custom_68: 0
-      civicrm_1_activity_1_cg2_custom_69: 0
-      civicrm_1_activity_1_cg2_custom_70: 0
-      civicrm_1_activity_1_cg2_custom_71: 0
-      civicrm_1_activity_1_cg2_custom_72: 0
-      civicrm_1_activity_1_cg2_custom_73: 0
-      civicrm_1_activity_1_cg2_custom_74: 0
-      civicrm_1_activity_1_cg2_custom_75: 0
-      civicrm_1_activity_1_cg2_custom_76: 0
-      civicrm_1_activity_1_cg2_custom_77: 0
-      civicrm_1_activity_1_cg2_custom_78: 0
-      civicrm_1_activity_1_cg2_custom_79: 0
-      civicrm_1_activity_1_cg2_custom_80: 0
-      civicrm_1_activity_1_cg2_custom_81: 0
-      civicrm_1_activity_1_cg2_custom_82: 0
-      civicrm_1_activity_1_cg2_custom_83: 0
-      civicrm_1_activity_1_cg2_custom_84: 0
-      civicrm_1_activity_1_cg2_custom_85: 0
-      civicrm_1_activity_1_cg2_custom_86: 0
+      civicrm_1_activity_1_cg2_custom_341: 0
+      civicrm_1_activity_1_cg2_custom_655: 0
+      civicrm_1_activity_1_cg2_custom_656: 0
+      civicrm_1_activity_1_cg2_custom_657: 0
+      civicrm_1_activity_1_cg2_custom_658: 0
+      civicrm_1_activity_1_cg2_custom_659: 0
+      civicrm_1_activity_1_cg2_custom_660: 0
+      civicrm_1_activity_1_cg2_custom_661: 0
+      civicrm_1_activity_1_cg2_custom_662: 0
+      civicrm_1_activity_1_cg2_custom_697: 0
+      civicrm_1_activity_1_cg2_custom_698: 0
+      civicrm_1_activity_1_cg2_custom_815: 0
+      civicrm_1_activity_1_cg2_custom_816: 0
+      civicrm_1_activity_1_cg2_custom_1232: 0
+      civicrm_1_activity_1_cg2_custom_1233: 0
+      civicrm_1_activity_1_cg2_custom_1234: 0
+      civicrm_1_activity_1_cg2_custom_1261: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
+      civicrm_1_activity_1_cg9_custom_265: 0
       activity_1_settings_dynamic_custom_cg17: 0
       civicrm_1_activity_1_cg17_custom_144: 0
       civicrm_1_activity_1_cg17_custom_147: 0
       civicrm_1_activity_1_cg17_custom_146: 0
+      civicrm_1_activity_1_cg17_custom_152: 0
+      civicrm_1_activity_1_cg17_custom_153: 0
+      civicrm_1_activity_1_cg17_custom_154: 0
+      civicrm_1_activity_1_cg17_custom_155: 0
+      civicrm_1_activity_1_cg17_custom_156: 0
+      civicrm_1_activity_1_cg17_custom_157: 0
+      civicrm_1_activity_1_cg17_custom_158: 0
+      civicrm_1_activity_1_cg17_custom_159: 0
+      civicrm_1_activity_1_cg17_custom_160: 0
+      civicrm_1_activity_1_cg17_custom_161: 0
+      civicrm_1_activity_1_cg17_custom_162: 0
+      civicrm_1_activity_1_cg17_custom_163: 0
+      civicrm_1_activity_1_cg17_custom_164: 0
+      civicrm_1_activity_1_cg17_custom_165: 0
+      civicrm_1_activity_1_cg17_custom_166: 0
+      civicrm_1_activity_1_cg17_custom_167: 0
+      civicrm_1_activity_1_cg17_custom_168: 0
+      civicrm_1_activity_1_cg17_custom_169: 0
+      civicrm_1_activity_1_cg17_custom_170: 0
+      civicrm_1_activity_1_cg17_custom_171: 0
+      civicrm_1_activity_1_cg17_custom_172: 0
+      civicrm_1_activity_1_cg17_custom_173: 0
+      civicrm_1_activity_1_cg17_custom_174: 0
       activity_1_settings_dynamic_custom_cg18: 0
-      civicrm_1_activity_1_cg18_custom_148: create_civicrm_webform_element
-      civicrm_1_activity_1_cg18_custom_149: create_civicrm_webform_element
-      civicrm_1_activity_1_cg18_custom_150: create_civicrm_webform_element
-      civicrm_1_activity_1_cg18_custom_151: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_148: 0
+      civicrm_1_activity_1_cg18_custom_149: 0
+      civicrm_1_activity_1_cg18_custom_1439: 0
+      civicrm_1_activity_1_cg18_custom_150: 0
+      civicrm_1_activity_1_cg18_custom_151: 0
+      civicrm_1_activity_1_cg18_custom_177: 0
+      civicrm_1_activity_1_cg18_custom_181: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_182: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_180: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_183: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_184: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_185: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_186: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_187: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_188: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_193: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_194: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_195: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_196: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_198: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_199: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_189: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_200: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_201: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_202: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_190: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_191: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_192: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_203: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_1440: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_204: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_205: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_206: create_civicrm_webform_element
+      civicrm_1_activity_1_cg18_custom_207: create_civicrm_webform_element
+      activity_1_settings_dynamic_custom_cg20: 0
+      civicrm_1_activity_1_cg20_custom_216: 0
+      civicrm_1_activity_1_cg20_custom_217: 0
+      civicrm_1_activity_1_cg20_custom_218: 0
+      civicrm_1_activity_1_cg20_custom_219: 0
+      civicrm_1_activity_1_cg20_custom_220: 0
+      civicrm_1_activity_1_cg20_custom_221: 0
+      civicrm_1_activity_1_cg20_custom_222: 0
+      civicrm_1_activity_1_cg20_custom_223: 0
+      civicrm_1_activity_1_cg20_custom_224: 0
+      civicrm_1_activity_1_cg20_custom_225: 0
+      civicrm_1_activity_1_cg20_custom_226: 0
+      civicrm_1_activity_1_cg20_custom_227: 0
+      civicrm_1_activity_1_cg20_custom_228: 0
+      civicrm_1_activity_1_cg20_custom_229: 0
+      civicrm_1_activity_1_cg20_custom_230: 0
+      civicrm_1_activity_1_cg20_custom_231: 0
+      civicrm_1_activity_1_cg20_custom_232: 0
+      civicrm_1_activity_1_cg20_custom_233: 0
+      activity_1_settings_dynamic_custom_cg31: 0
+      civicrm_1_activity_1_cg31_custom_349: 0
+      civicrm_1_activity_1_cg31_custom_350: 0
+      civicrm_1_activity_1_cg31_custom_351: 0
+      civicrm_1_activity_1_cg31_custom_352: 0
+      civicrm_1_activity_1_cg31_custom_353: 0
+      civicrm_1_activity_1_cg31_custom_354: 0
+      activity_1_settings_dynamic_custom_cg49: 0
+      civicrm_1_activity_1_cg49_custom_665: 0
+      civicrm_1_activity_1_cg49_custom_666: 0
+      civicrm_1_activity_1_cg49_custom_667: 0
+      civicrm_1_activity_1_cg49_custom_668: 0
+      civicrm_1_activity_1_cg49_custom_669: 0
+      civicrm_1_activity_1_cg49_custom_670: 0
+      civicrm_1_activity_1_cg49_custom_672: 0
+      civicrm_1_activity_1_cg49_custom_671: 0
+      civicrm_1_activity_1_cg49_custom_673: 0
+      civicrm_1_activity_1_cg49_custom_674: 0
+      civicrm_1_activity_1_cg49_custom_675: 0
+      civicrm_1_activity_1_cg49_custom_676: 0
+      civicrm_1_activity_1_cg49_custom_677: 0
+      civicrm_1_activity_1_cg49_custom_678: 0
+      civicrm_1_activity_1_cg49_custom_679: 0
+      civicrm_1_activity_1_cg49_custom_680: 0
+      civicrm_1_activity_1_cg49_custom_681: 0
+      civicrm_1_activity_1_cg49_custom_682: 0
+      civicrm_1_activity_1_cg49_custom_699: 0
+      civicrm_1_activity_1_cg49_custom_700: 0
+      civicrm_1_activity_1_cg49_custom_701: 0
+      civicrm_1_activity_1_cg49_custom_703: 0
+      civicrm_1_activity_1_cg49_custom_705: 0
+      civicrm_1_activity_1_cg49_custom_812: 0
+      civicrm_1_activity_1_cg49_custom_813: 0
+      civicrm_1_activity_1_cg49_custom_1262: 0
+      civicrm_1_activity_1_cg49_custom_1263: 0
+      civicrm_1_activity_1_cg49_custom_1264: 0
+      activity_1_settings_dynamic_custom_cg53: 0
+      civicrm_1_activity_1_cg53_custom_706: 0
+      activity_1_settings_dynamic_custom_cg54: 0
+      civicrm_1_activity_1_cg54_custom_739: 0
+      civicrm_1_activity_1_cg54_custom_740: 0
+      civicrm_1_activity_1_cg54_custom_741: 0
+      civicrm_1_activity_1_cg54_custom_742: 0
+      civicrm_1_activity_1_cg54_custom_743: 0
+      civicrm_1_activity_1_cg54_custom_744: 0
+      civicrm_1_activity_1_cg54_custom_745: 0
+      civicrm_1_activity_1_cg54_custom_746: 0
+      civicrm_1_activity_1_cg54_custom_747: 0
+      civicrm_1_activity_1_cg54_custom_748: 0
+      civicrm_1_activity_1_cg54_custom_749: 0
+      civicrm_1_activity_1_cg54_custom_750: 0
+      civicrm_1_activity_1_cg54_custom_751: 0
+      civicrm_1_activity_1_cg54_custom_752: 0
+      civicrm_1_activity_1_cg54_custom_753: 0
+      civicrm_1_activity_1_cg54_custom_754: 0
+      civicrm_1_activity_1_cg54_custom_755: 0
+      civicrm_1_activity_1_cg54_custom_756: 0
+      civicrm_1_activity_1_cg54_custom_757: 0
+      civicrm_1_activity_1_cg54_custom_758: 0
+      civicrm_1_activity_1_cg54_custom_759: 0
+      civicrm_1_activity_1_cg54_custom_760: 0
+      civicrm_1_activity_1_cg54_custom_761: 0
+      civicrm_1_activity_1_cg54_custom_762: 0
+      civicrm_1_activity_1_cg54_custom_763: 0
+      civicrm_1_activity_1_cg54_custom_764: 0
+      civicrm_1_activity_1_cg54_custom_765: 0
+      civicrm_1_activity_1_cg54_custom_766: 0
+      civicrm_1_activity_1_cg54_custom_767: 0
+      civicrm_1_activity_1_cg54_custom_768: 0
+      civicrm_1_activity_1_cg54_custom_769: 0
+      civicrm_1_activity_1_cg54_custom_770: 0
+      civicrm_1_activity_1_cg54_custom_771: 0
+      civicrm_1_activity_1_cg54_custom_772: 0
+      civicrm_1_activity_1_cg54_custom_773: 0
+      civicrm_1_activity_1_cg54_custom_774: 0
+      civicrm_1_activity_1_cg54_custom_775: 0
+      civicrm_1_activity_1_cg54_custom_776: 0
+      civicrm_1_activity_1_cg54_custom_777: 0
+      civicrm_1_activity_1_cg54_custom_778: 0
+      civicrm_1_activity_1_cg54_custom_779: 0
+      civicrm_1_activity_1_cg54_custom_780: 0
+      civicrm_1_activity_1_cg54_custom_781: 0
+      civicrm_1_activity_1_cg54_custom_782: 0
+      civicrm_1_activity_1_cg54_custom_783: 0
+      civicrm_1_activity_1_cg54_custom_784: 0
+      civicrm_1_activity_1_cg54_custom_785: 0
+      civicrm_1_activity_1_cg54_custom_786: 0
+      civicrm_1_activity_1_cg54_custom_787: 0
+      civicrm_1_activity_1_cg54_custom_789: 0
+      civicrm_1_activity_1_cg54_custom_790: 0
+      civicrm_1_activity_1_cg54_custom_791: 0
+      civicrm_1_activity_1_cg54_custom_792: 0
+      civicrm_1_activity_1_cg54_custom_793: 0
+      civicrm_1_activity_1_cg54_custom_794: 0
+      civicrm_1_activity_1_cg54_custom_795: 0
+      civicrm_1_activity_1_cg54_custom_796: 0
+      civicrm_1_activity_1_cg54_custom_797: 0
+      civicrm_1_activity_1_cg54_custom_798: 0
+      civicrm_1_activity_1_cg54_custom_799: 0
+      civicrm_1_activity_1_cg54_custom_800: 0
+      civicrm_1_activity_1_cg54_custom_801: 0
+      civicrm_1_activity_1_cg54_custom_802: 0
+      civicrm_1_activity_1_cg54_custom_803: 0
+      civicrm_1_activity_1_cg54_custom_804: 0
+      civicrm_1_activity_1_cg54_custom_805: 0
+      civicrm_1_activity_1_cg54_custom_806: 0
+      civicrm_1_activity_1_cg54_custom_807: 0
+      civicrm_1_activity_1_cg54_custom_808: 0
+      civicrm_1_activity_1_cg54_custom_809: 0
+      civicrm_1_activity_1_cg54_custom_810: 0
+      civicrm_1_activity_1_cg54_custom_811: 0
+      civicrm_1_activity_1_cg54_custom_24: 0
+      civicrm_1_activity_1_cg54_custom_47: 0
+      civicrm_1_activity_1_cg54_custom_48: 0
+      civicrm_1_activity_1_cg54_custom_54: 0
+      civicrm_1_activity_1_cg54_custom_55: 0
+      civicrm_1_activity_1_cg54_custom_56: 0
+      civicrm_1_activity_1_cg54_custom_57: 0
+      civicrm_1_activity_1_cg54_custom_58: 0
+      civicrm_1_activity_1_cg54_custom_59: 0
+      civicrm_1_activity_1_cg54_custom_60: 0
+      civicrm_1_activity_1_cg54_custom_61: 0
+      civicrm_1_activity_1_cg54_custom_62: 0
+      civicrm_1_activity_1_cg54_custom_63: 0
+      civicrm_1_activity_1_cg54_custom_64: 0
+      civicrm_1_activity_1_cg54_custom_67: 0
+      civicrm_1_activity_1_cg54_custom_68: 0
+      civicrm_1_activity_1_cg54_custom_69: 0
+      civicrm_1_activity_1_cg54_custom_70: 0
+      civicrm_1_activity_1_cg54_custom_71: 0
+      civicrm_1_activity_1_cg54_custom_72: 0
+      civicrm_1_activity_1_cg54_custom_65: 0
+      civicrm_1_activity_1_cg54_custom_73: 0
+      civicrm_1_activity_1_cg54_custom_75: 0
+      civicrm_1_activity_1_cg54_custom_76: 0
+      civicrm_1_activity_1_cg54_custom_77: 0
+      civicrm_1_activity_1_cg54_custom_78: 0
+      civicrm_1_activity_1_cg54_custom_79: 0
+      civicrm_1_activity_1_cg54_custom_74: 0
+      civicrm_1_activity_1_cg54_custom_81: 0
+      civicrm_1_activity_1_cg54_custom_82: 0
+      civicrm_1_activity_1_cg54_custom_83: 0
+      civicrm_1_activity_1_cg54_custom_84: 0
+      civicrm_1_activity_1_cg54_custom_85: 0
+      civicrm_1_activity_1_cg54_custom_458: 0
+      civicrm_1_activity_1_cg54_custom_459: 0
+      civicrm_1_activity_1_cg54_custom_707: 0
+      civicrm_1_activity_1_cg54_custom_709: 0
+      civicrm_1_activity_1_cg54_custom_711: 0
+      civicrm_1_activity_1_cg54_custom_712: 0
+      civicrm_1_activity_1_cg54_custom_713: 0
+      civicrm_1_activity_1_cg54_custom_714: 0
+      civicrm_1_activity_1_cg54_custom_716: 0
+      civicrm_1_activity_1_cg54_custom_717: 0
+      civicrm_1_activity_1_cg54_custom_718: 0
+      civicrm_1_activity_1_cg54_custom_719: 0
+      civicrm_1_activity_1_cg54_custom_720: 0
+      civicrm_1_activity_1_cg54_custom_721: 0
+      civicrm_1_activity_1_cg54_custom_722: 0
+      civicrm_1_activity_1_cg54_custom_723: 0
+      civicrm_1_activity_1_cg54_custom_724: 0
+      civicrm_1_activity_1_cg54_custom_725: 0
+      civicrm_1_activity_1_cg54_custom_726: 0
+      civicrm_1_activity_1_cg54_custom_727: 0
+      civicrm_1_activity_1_cg54_custom_728: 0
+      civicrm_1_activity_1_cg54_custom_729: 0
+      civicrm_1_activity_1_cg54_custom_730: 0
+      civicrm_1_activity_1_cg54_custom_731: 0
+      civicrm_1_activity_1_cg54_custom_732: 0
+      civicrm_1_activity_1_cg54_custom_733: 0
+      civicrm_1_activity_1_cg54_custom_734: 0
+      civicrm_1_activity_1_cg54_custom_735: 0
+      civicrm_1_activity_1_cg54_custom_736: 0
+      civicrm_1_activity_1_cg54_custom_737: 0
+      civicrm_1_activity_1_cg54_custom_738: 0
+      civicrm_1_activity_1_cg54_custom_788: 0
+      civicrm_1_activity_1_cg54_custom_1268: 0
+      civicrm_1_activity_1_cg54_custom_1269: 0
+      civicrm_1_activity_1_cg54_custom_1270: 0
+      civicrm_1_activity_1_cg54_custom_1271: 0
+      civicrm_1_activity_1_cg54_custom_1272: 0
+      civicrm_1_activity_1_cg54_custom_1273: 0
+      civicrm_1_activity_1_cg54_custom_1274: 0
+      civicrm_1_activity_1_cg54_custom_1275: 0
+      civicrm_1_activity_1_cg54_custom_1276: 0
+      civicrm_1_activity_1_cg54_custom_1277: 0
+      civicrm_1_activity_1_cg54_custom_1278: 0
+      civicrm_1_activity_1_cg54_custom_1279: 0
+      civicrm_1_activity_1_cg54_custom_1280: 0
+      civicrm_1_activity_1_cg54_custom_715: 0
+      civicrm_1_activity_1_cg54_custom_1281: 0
+      civicrm_1_activity_1_cg54_custom_1283: 0
+      civicrm_1_activity_1_cg54_custom_1284: 0
+      civicrm_1_activity_1_cg54_custom_1285: 0
+      civicrm_1_activity_1_cg54_custom_1286: 0
+      activity_1_settings_dynamic_custom_cg58: 0
+      civicrm_1_activity_1_cg58_custom_1265: 0
+      civicrm_1_activity_1_cg58_custom_1266: 0
+      civicrm_1_activity_1_cg58_custom_1267: 0
+      civicrm_1_activity_1_cg58_custom_1287: 0
+      activity_1_settings_dynamic_custom_cg67: 0
+      civicrm_1_activity_1_cg67_custom_1413: 0
+      civicrm_1_activity_1_cg67_custom_1414: 0
+      civicrm_1_activity_1_cg67_custom_1423: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -656,11 +1394,14 @@ handlers:
         show_future_events: '1'
         show_public_events: all
         title_display: title
+        show_full_events: 1
+        event_sort_field: start_date
         show_remaining: '0'
         validate: 1
         block_form: 0
         disable_unregister: 0
         allow_url_load: 0
+        disable_primary_participant: 0
       membership_1_number_of_membership: '0'
       membership_2_number_of_membership: '0'
       civicrm_1_contribution_1_contribution_enable_contribution: '0'
@@ -689,9 +1430,12 @@ handlers:
             number_of_email: '1'
             number_of_website: '0'
             number_of_im: '0'
+            number_of_cg30: '0'
+            number_of_cg71: '0'
             email:
               1:
                 location_type_id: '3'
+                is_primary: '1'
           2:
             contact:
               1:
@@ -701,6 +1445,20 @@ handlers:
                 webform_label: Client
             number_of_cg6: '0'
             number_of_cg10: '0'
+            number_of_cg19: '0'
+            number_of_cg21: '0'
+            number_of_cg22: '0'
+            number_of_cg23: '0'
+            number_of_cg24: '0'
+            number_of_cg25: '0'
+            number_of_cg29: '0'
+            number_of_cg59: '0'
+            number_of_cg60: '0'
+            number_of_cg62: '0'
+            number_of_cg65: '0'
+            number_of_cg68: '0'
+            number_of_cg70: '0'
+            number_of_cg76: '0'
             matching_rule: '11'
             number_of_cg5: '0'
             number_of_cg12: '1'
@@ -712,6 +1470,8 @@ handlers:
             number_of_website: '0'
             number_of_im: '0'
             number_of_relationship: '0'
+            number_of_cg30: '0'
+            number_of_cg71: '0'
         activity:
           number_of_activity: '1'
           1:
@@ -721,6 +1481,13 @@ handlers:
             dynamic_custom_cg9: 0
             dynamic_custom_cg17: 0
             dynamic_custom_cg18: 0
+            dynamic_custom_cg20: 0
+            dynamic_custom_cg31: 0
+            dynamic_custom_cg49: 0
+            dynamic_custom_cg53: 0
+            dynamic_custom_cg54: 0
+            dynamic_custom_cg58: 0
+            dynamic_custom_cg67: 0
             activity:
               1:
                 target_contact_id:
@@ -741,9 +1508,12 @@ handlers:
           show_future_events: '1'
           show_public_events: all
           title_display: title
+          show_full_events: 1
+          event_sort_field: start_date
           show_remaining: '0'
           validate: 1
           block_form: 0
           disable_unregister: 0
           allow_url_load: 0
+          disable_primary_participant: 0
 variants: {  }

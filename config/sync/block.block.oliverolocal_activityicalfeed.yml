@@ -1,0 +1,34 @@
+uuid: 6aaf8f7e-8f5d-47ae-998d-68bc8b438b50
+langcode: en
+status: true
+dependencies:
+  module:
+    - sace_custom
+    - system
+    - user
+  theme:
+    - oliverolocal
+id: oliverolocal_activityicalfeed
+theme: oliverolocal
+region: content
+weight: 0
+provider: null
+plugin: user_activity_ical_feed
+settings:
+  id: user_activity_ical_feed
+  label: 'Activity iCal Feed'
+  label_display: visible
+  provider: sace_custom
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/user/*'
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      ce_staff: ce_staff
+      wheel: wheel

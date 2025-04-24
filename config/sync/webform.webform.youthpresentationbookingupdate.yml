@@ -378,39 +378,14 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation Topic(s)'
-    '#description': |-
-      <p><b>*Please note,&nbsp;</b><strong>only one topic should be selected per booking prior to setting "Booking Status" as "Completed". If more than one topic applies, please use "Custom/Unsure".&nbsp;</strong></p>
-
-      <p>&nbsp;</p>
-
-      <p>*These topics should only be used for the WiseGuyz GSSV sessions and Alumni Program unless otherwise approved by a Public Education Team Lead. Click the "WiseGuyz Topics" drop down for more information.</p>
-    '#more_title': 'WiseGuyz Topics'
-    '#more': |-
-      <p>Use the following topics for each session:&nbsp;</p>
-
-      <ul>
-      	<li>GSSV 1 - Gender Stereotypes</li>
-      	<li>GSSV 2 - Sexual Violence</li>
-      	<li>WiseGuyz Module 1 - Healthy Relationships</li>
-      	<li>WiseGuyz Module 2 - Sexual Health</li>
-      	<li>WiseGuyz Module 3 - Gender, Sexuality, and Media</li>
-      	<li>WiseGuyz Module 4 - Violence Prevention and Advocacy</li>
-      </ul>
     '#title_display': inline
     '#civicrm_live_options': 0
     '#options':
       SexualHarassment: 'Sexual Harassment'
       SexualAssaultConsent: 'Sexual Assault & Consent'
       NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
-      SexualAssaultConsentNonConsensualPhotosharing: 'Sexual Assault, Consent, and Non-Consensual Photo Sharing'
       SACEServices: 'SACE Services'
       CustomUnsure: 'Custom / Unsure'
-      GenderStereotypes: 'Gender Stereotypes*'
-      SexualViolence: 'Sexual Violence*'
-      HealthyRelationships: 'Healthy Relationships*'
-      SexualHealth: 'Sexual Health*'
-      GenderSexualityMedia: 'Gender, Sexuality, and Media*'
-      ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy*'
     '#states_clear': false
     '#wrapper_attributes':
       class:
@@ -612,6 +587,42 @@ elements: |-
       invisible:
         ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
           '!value': 'In-Person Presentation'
+    civicrm_1_activity_1_cg2_custom_34:
+      '#type': civicrm_options
+      '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available? If not, we can bring our own equipment.'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_34
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
+    civicrm_1_activity_1_cg2_custom_35:
+      '#type': civicrm_options
+      '#title': 'Will there be Internet access?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_35
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
     civicrm_1_activity_1_cg2_custom_37:
       '#type': textfield
       '#title': 'Parking instructions'
@@ -639,43 +650,7 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg2_custom_35:
-      '#type': civicrm_options
-      '#title': 'Will there be Internet access?'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#wrapper_attributes':
-        class:
-          - jma-grid-4
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_35
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
-    civicrm_1_activity_1_cg2_custom_34:
-      '#type': civicrm_options
-      '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available? If not, we can bring our own equipment.'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#wrapper_attributes':
-        class:
-          - jma-grid-4
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_34
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
-    civicrm_1_activity_1_cg2_custom_1289:
+    civicrm_1_activity_1_cg2_custom_1441:
       '#type': civicrm_options
       '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
       '#civicrm_live_options': 0
@@ -690,7 +665,7 @@ elements: |-
       '#extra':
         aslist: 1
         multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_1289
+      '#form_key': civicrm_1_activity_1_cg2_custom_1441
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
   civicrm_1_activity_1_cg2_custom_126:

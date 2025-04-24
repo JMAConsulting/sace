@@ -4,5 +4,6 @@ status: true
 dependencies: {  }
 name: 'User Team'
 vid: user_team
-description: ''
+description: null
 weight: 0
+new_revision: false

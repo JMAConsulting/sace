@@ -485,34 +485,22 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_332:
       '#type': civicrm_options
       '#title': 'Facilitating Program'
-      '#description': '<p>If this activity is being undertaken by a specific SACE program or committee, please indicate this here so that SACE reports will reflect the correct attribution. All activities specific to a certain area of SACE should be coded as such; non-specified work will be considered general SACE work if left blank, but only all-staff activities and those that span both departments should be considered "general". Please use "other" for any scheduled activities not attributable to SACE (ie, personal or counted as work of another org).</p>'
+      '#description': 'If this activity is being undertaken by a specific SACE program or committee, please indicate this here. SACE reports will attribute the activity to the program or committee listed here, and to general SACE work if left blank.'
       '#title_display': inline
       '#description_display': after
       '#options':
-        '2SLGBTQ+ Inclusion Committee': '2SLGBTQ+ Inclusion Committee'
-        'Accessibility Inclusion Committee': 'Accessibility Inclusion Committee'
-        Admin: Admin
-        CommunityAgencyDevelopment: 'Community & Agency Development'
-        CommunityEngagement: 'Community Engagement'
-        EDIOutreach: EDI/Outreach
-        'General SACE': 'General SACE'
-        'Indigenous Inclusion Committee': 'Indigenous Inclusion Committee'
-        InstitutionalSupport: 'Institutional Support'
-        'Newcomers Inclusion Committee': 'Newcomers Inclusion Committee'
-        'Older Adults Inclusion Committee': 'Older Adults Inclusion Committee'
-        Other: Other
         PublicEducation: 'Public Education'
-        SIL: SIL
-        VolunteerServices: 'Volunteer Services'
+        InstitutionalSupport: 'Institutional Support'
+        DiversityInclusionOutreach: 'Diversity & Inclusion/Outreach'
         WiseGuyz: WiseGuyz
-      '#required': true
+        CommunityEngagement: 'Community Engagement'
+        VolunteerServices: 'Volunteer Services'
+        CommunityAgencyDevelopment: 'Community & Agency Development'
       '#wrapper_attributes':
         class:
           - jma-grid-4
       '#form_key': civicrm_1_activity_1_cg2_custom_332
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg58_custom_1265:
       '#type': text_format
@@ -712,7 +700,7 @@ elements: |-
     '#wrapper_attributes':
       style: 'display:none;'
 css: ''
-javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-07'));\r\n})(jQuery);"
+javascript: ''
 settings:
   ajax: false
   ajax_scroll_top: form

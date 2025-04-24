@@ -648,7 +648,7 @@ display:
           type: datetime_default
           settings:
             timezone_override: ''
-            format_type: medium
+            format_type: fallback
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -979,6 +979,73 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        is_multiple_booking:
+          id: is_multiple_booking
+          table: civicrm_multiple_booking
+          field: is_multiple_booking
+          relationship: multiple_booking_activity_type_id
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_multiple_booking
+          entity_field: is_multiple_booking
+          plugin_id: field
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_false: ''
+            format_custom_true: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         nothing:
           id: nothing
           table: views
@@ -991,7 +1058,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n<div class=\"meeting-buttons\">\r\n{% if activity_type_id  == 'Youth Online Course' %}\r\n  <a href=\"/youth-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/adult-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Youth Presentation' %}\r\n  <a href=\"/youth-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Presentation' %}\r\n  <a href=\"/adult-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Consultation' %}\r\n  <a href=\"/institutional-support-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'WiseGuyz' %}\r\n  <a href=\"/wiseguyz-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Community Engagement' %}\r\n  <a href=\"/community-engagement-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id_2 }}&cid2={{ id_1 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\" target=\"_blank\" >Update Booking</a>\r\n{% elseif activity_type_id starts with 'CLIN' %} \r\n  <a href=\"/clin-update-appointment?cid1={{ id }}&aid={{ id_2 }}&cid2={{ id_1 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-intake?cid2={{ id }}&aid={{ id_2 }}\" class=\"button button--secondary\">Intake</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id_2 }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n</div>\r\n\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1 }}&bid={{ id_2 }}&cid1={{ id  }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a></div>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id_1 }}&bid={{ id_2 }}&cid1={{ id  }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id_2 }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id_1 }}&cid1={{ id }}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id_1 }}&cid1={{ id }}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid1={{ id }}&cid2={{ id_1 }}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n</div>\r\n  {% endif %}\r\n{% endif %}\r\n"
+            text: "{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n<div class=\"meeting-buttons\">\r\n{% if activity_type_id  == 'Youth Online Course' %}\r\n  <a href=\"/youth-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/adult-online-course-booking-update?cid2={{ id_1 }}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Youth Presentation' %}\r\n  <a href=\"/youth-presentation-booking-update?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Presentation' %}\r\n  <a href=\"/adult-presentation-booking-update?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Consultation' %}\r\n  <a href=\"/institutional-support-booking-update?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'WiseGuyz' %}\r\n  <a href=\"/wiseguyz-booking-update?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Community Engagement' %}\r\n  <a href=\"/community-engagement-booking-update?cid2={{ id_1}}&aid={{ id }}&cid1={{ id_3 }}&{{ activity_assignees_string }} \" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id_2 }}&cid2={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\" target=\"_blank\" >Update Booking</a>\r\n{% elseif activity_type_id starts with 'CLIN' %} \r\n  <a href=\"/clin-update-appointment?cid2={{ id }}&cid3={{ id_1 }}&aid={{ id_2 }}&cid1={{ id_1 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-intake?cid2={{ id }}&aid={{ id_2 }}\" class=\"button button--secondary\">Intake</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id }}&aid={{ id_2 }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n</div>\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %}\r\n\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a></div>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id_2 }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n</div>\r\n  {% endif %}\r\n{% endif %}\r\n"
             make_link: false
             path: ''
             absolute: false
@@ -1120,12 +1187,12 @@ display:
           field: contact
           relationship: none
           group_type: group
-          admin_label: 'Contact ( Source )'
+          admin_label: 'Contact (Assignee )'
           entity_type: civicrm_activity
           plugin_id: civicrm_entity_activity_contact
           required: false
           record_type_id:
-            2: '2'
+            1: '1'
         contact_1:
           id: contact_1
           table: civicrm_activity
@@ -1149,6 +1216,16 @@ display:
           entity_field: parent_id
           plugin_id: standard
           required: false
+        multiple_booking_activity_type_id:
+          id: multiple_booking_activity_type_id
+          table: civicrm_activity
+          field: multiple_booking_activity_type_id
+          relationship: none
+          group_type: group
+          admin_label: 'Multiple Booking Join'
+          entity_type: civicrm_activity
+          plugin_id: standard
+          required: false
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -1165,1016 +1242,9 @@ display:
     display_plugin: page
     position: 1
     display_options:
-      fields:
-        subject:
-          id: subject
-          table: civicrm_activity
-          field: subject
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: null
-          entity_field: subject
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        activity_type_id:
-          id: activity_type_id
-          table: civicrm_activity
-          field: activity_type_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: activity_type_id
-          plugin_id: field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: h3
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: list_default
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        assignee_contact_id:
-          id: assignee_contact_id
-          table: civicrm_activity
-          field: assignee_contact_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: assignee_contact_id
-          plugin_id: field
-          label: Assignee
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: true
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        target_contact_id:
-          id: target_contact_id
-          table: civicrm_activity
-          field: target_contact_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: target_contact_id
-          plugin_id: field
-          label: Organization/Target
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: true
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        activity_assignees_string:
-          id: activity_assignees_string
-          table: civicrm_activity
-          field: activity_assignees_string
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          plugin_id: civicrm_entity_vf_activity_assignees_string
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-        status_id:
-          id: status_id
-          table: civicrm_activity
-          field: status_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: status_id
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: list_default
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        id_2:
-          id: id_2
-          table: civicrm_activity
-          field: id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: id
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        id:
-          id: id
-          table: civicrm_contact
-          field: id
-          relationship: contact_2
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: id
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        id_1:
-          id: id_1
-          table: civicrm_contact
-          field: id
-          relationship: contact_1
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: id
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        activity_date_time:
-          id: activity_date_time
-          table: civicrm_activity
-          field: activity_date_time
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: activity_date_time
-          plugin_id: field
-          label: 'Start Date'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: datetime_default
-          settings:
-            timezone_override: ''
-            format_type: medium
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        end_date_661:
-          id: end_date_661
-          table: civicrm_value_booking_infor_2
-          field: end_date_661
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: custom_661
-          plugin_id: civicrm_entity_custom_field
-          label: 'End Date'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: datetime_default
-          settings:
-            timezone_override: ''
-            format_type: medium
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: 0
-        number_of_participants_per_cours_815:
-          id: number_of_participants_per_cours_815
-          table: civicrm_value_booking_infor_2
-          field: number_of_participants_per_cours_815
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: custom_815
-          plugin_id: civicrm_entity_custom_field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: number_unformatted
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: 0
-        building_room_location_details_1266:
-          id: building_room_location_details_1266
-          table: civicrm_value_ce_extenral_a_58
-          field: building_room_location_details_1266
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: custom_1266
-          plugin_id: civicrm_entity_custom_field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: string
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: 0
-        online_meeting_link_1267:
-          id: online_meeting_link_1267
-          table: civicrm_value_ce_extenral_a_58
-          field: online_meeting_link_1267
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: custom_1267
-          plugin_id: civicrm_entity_custom_field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: string
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: 0
-        is_multiple_booking:
-          id: is_multiple_booking
-          table: civicrm_multiple_booking
-          field: is_multiple_booking
-          relationship: multiple_booking_activity_type_id
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_multiple_booking
-          entity_field: is_multiple_booking
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: boolean
-          settings:
-            format: default
-            format_custom_false: ''
-            format_custom_true: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        nothing:
-          id: nothing
-          table: views
-          field: nothing
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: custom
-          label: ''
-          exclude: false
-          alter:
-            alter_text: true
-            text: "{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n<div class=\"meeting-buttons\">\r\n{% if activity_type_id  == 'Youth Online Course' %}\r\n  <a href=\"/youth-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/adult-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Youth Presentation' %}\r\n  <a href=\"/youth-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Presentation' %}\r\n  <a href=\"/adult-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Consultation' %}\r\n  <a href=\"/institutional-support-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'WiseGuyz' %}\r\n  <a href=\"/wiseguyz-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Community Engagement' %}\r\n  <a href=\"/community-engagement-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id_2 }}&cid2={{ id_1 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\" target=\"_blank\" >Update Booking</a>\r\n{% elseif activity_type_id starts with 'CLIN' %} \r\n  <a href=\"/clin-update-appointment?cid1={{ id }}&aid={{ id_2 }}&cid2={{ id_1 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-intake?cid2={{ id }}&aid={{ id_2 }}\" class=\"button button--secondary\">Intake</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id_2 }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n</div>\r\n<br />\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a></div>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id_2 }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n</div>\r\n  {% endif %}\r\n{% endif %}\r\n"
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: false
       defaults:
         relationships: false
-        fields: false
+        fields: true
       relationships:
         contact:
           id: contact

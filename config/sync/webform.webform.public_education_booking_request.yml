@@ -335,34 +335,25 @@ elements: |-
 
       <p>The typical presentation topics by approximate age range are listed below. For more information about each presentation topic, please visit <a href="https://www.sace.ca/sace-services/public-education/">www.sace.ca/sace-services/public-education</a>.</p>
 
-      <p>&nbsp;</p>
-
       <ul>
       	<li>Grade&nbsp;7 (ages 12-13) - Sexual Harassment</li>
       	<li>Grade 8 (ages 13-14) - Sexual Assault &amp; Consent</li>
       	<li>Grade 9 (ages 14-15) - Non-Consensual Photo Sharing</li>
-      	<li>High School (ages 15-18) - Sexual Assault &amp; Consent*</li>
+      	<li>High School (ages 15-18) - Sexual Assault &amp; Consent and/or Non-Consensual Photo Sharing</li>
       </ul>
 
-      <p>&nbsp;</p>
-
-      <p>If you are booking for multiple grades and presentation topics, please include more details about which topic you'd like for each grade in the "Additional needs or considerations" field below.&nbsp;</p>
-
-      <p>&nbsp;</p>
-
-      <p><b>*Please note,&nbsp;</b><strong>we are currently in the process of redeveloping our "Sexual Assault, Consent, and Non-Consensual Photo Sharing" presentation. While this session is in redevelopment, we encourage teachers to book our standard "Sexual Assault and Consent" presentation for their students.</strong></p>
+      <div class="notranslate" style="all: initial;">&nbsp;</div>
     '#format': html
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Presentation Topic(s)'
-    '#description': '<p><b>*Please note,&nbsp;</b><strong>all youth presentations include information about SACE services. "SACE Services" should only be selected as the presentation topic if you want a presentation that <u>only</u> covers SACE services.</strong></p>'
     '#title_display': inline
     '#civicrm_live_options': 0
     '#options':
-      SexualHarassment: 'Sexual Harassment'
-      SexualAssaultConsent: 'Sexual Assault & Consent'
       NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
       SACEServices: 'SACE Services'
+      SexualAssaultConsent: 'Sexual Assault & Consent'
+      SexualHarassment: 'Sexual Harassment'
       CustomUnsure: 'Custom / Unsure'
     '#required': true
     '#states':
@@ -442,7 +433,7 @@ elements: |-
     '#text': |
       <h3><span style="color:#2e416c;"><strong>Presentation Details</strong></span></h3>
 
-      <p>In this section, tell us a bit about the presentations you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Our presentations are most effective with groups of 15 - 35 participants, but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.&nbsp;</p>
+      <p>In this section, tell us a bit about the presentations you'd like. It's okay if you're not sure; put in your best answers and we can help you from there. Our presentations are most effective with groups of 15-35 participants, but can be adapted to work with larger or smaller groups. Our minimum participant requirement is 8 participants.&nbsp;</p>
 
       <p>&nbsp;</p>
 
@@ -563,8 +554,7 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_129:
       '#type': textfield
       '#title': 'Preferred start and end time(s)'
-      '#description': "<p>If you're not sure, that's okay. You can enter morning or afternoon, or simply leave this blank and we'll confirm with you later.</p>"
-      '#placeholder': 'Please include exact start and end time of each class block (if possible).'
+      '#description': 'If you&#39;re not sure, that&#39;s okay. You can enter morning or afternoon, or simply leave this blank and we&#39;ll confirm with you later.'
       '#states':
         invisible:
           ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
@@ -577,12 +567,7 @@ elements: |-
   civicrm_1_activity_1_cg2_custom_126:
     '#type': textarea
     '#title': 'Additional needs or considerations (please specify)'
-    '#placeholder': |-
-      Please include any information about additional needs or considerations here, including:
-       - Participant needs or considerations
-       - Details about the location where you would like the session to be delivered (if this is different from your organization's usual address)
-       - Preferred grade and topic combinations (if booking multiple grades/topics)
-       - Any other relevant information about the presentations
+    '#description': '<p>Please include any information about additional needs or considerations here, including details about the location where you would like the session to be delivered if this is different from your organization&#39;s usual address.</p>'
     '#data_type': Memo
     '#extra':
       cols: '60'
@@ -632,40 +617,42 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg2_custom_35:
+    flexbox_07:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_34:
+        '#type': civicrm_options
+        '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available?'
+        '#description': 'If not, we can bring our own equipment.'
+        '#civicrm_live_options': 0
+        '#options':
+          1: 'Yes'
+          0: 'No'
+        '#default_value': '0'
+        '#format_items': ul
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_activity_1_cg2_custom_34
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': '0'
+      civicrm_1_activity_1_cg2_custom_35:
+        '#type': civicrm_options
+        '#title': 'Will there be internet access?'
+        '#civicrm_live_options': 0
+        '#options':
+          1: 'Yes'
+          0: 'No'
+        '#default_value': '0'
+        '#format_items': ul
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_activity_1_cg2_custom_35
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': '0'
+    civicrm_1_activity_1_cg2_custom_1441:
       '#type': civicrm_options
-      '#title': 'Will there be internet access?'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_35
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
-    civicrm_1_activity_1_cg2_custom_34:
-      '#type': civicrm_options
-      '#title': 'Will A/V (computer, projector/SMART board, and audio capabilities) be available?'
-      '#description': '<p>If not, we can bring our own equipment.</p>'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_34
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
-    civicrm_1_activity_1_cg2_custom_1289:
-      '#type': civicrm_options
-      '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
+      '#title': 'Will participants have access to their personal devices to complete virtual evaluations? '
       '#description': '<p>With our new booking and evaluation system, we conduct most evaluations virtually through QR code and/or link. We ask that schools allow students to have their cell phones on them during the presentation (if possible given government regulations - some schools will allow them for external presenters). SACE educators will bring a handful of paper evaluations for participants who do not have cellphones and/or cannot complete the evaluation virtually.</p>'
       '#civicrm_live_options': 0
       '#options':
@@ -676,11 +663,9 @@ elements: |-
       '#extra':
         aslist: 1
         multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_1289
+      '#form_key': civicrm_1_activity_1_cg2_custom_1441
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
-    flexbox_07:
-      '#type': webform_flexbox
   session_details_virtual:
     '#type': container
     '#title': 'Online Session Details'
@@ -837,7 +822,7 @@ elements: |-
 
         <p>&nbsp;</p>
 
-        <p><b>*Please note,</b>&nbsp;<strong>a population of focus is not required to book a session. Choosing a population of focus is only necessary if you would like targeted information about sexual violence as it relates to a specific group.&nbsp;</strong></p>
+        <p><b>*Please note,</b> <strong>a population of focus is not required to book a session. Choosing a population of focus is only necessary if you would like information about sexual violence as it relates to a specific group.&nbsp;</strong></p>
       '#format': html
     civicrm_1_activity_1_cg2_custom_333:
       '#type': civicrm_options
@@ -1871,10 +1856,13 @@ handlers:
       excluded_elements:
         intro_markup: intro_markup
         youth_school_presentation_booking_html: youth_school_presentation_booking_html
+        youth_presentation_booking_html: youth_presentation_booking_html
+        post_secondary_school_booking_html: post_secondary_school_booking_html
+        adult_professional_booking_html: adult_professional_booking_html
         topics_markup: topics_markup
         sessions_markup: sessions_markup
       ignore_access: false
-      exclude_empty: false
+      exclude_empty: true
       exclude_empty_checkbox: false
       exclude_attachments: false
       html: true

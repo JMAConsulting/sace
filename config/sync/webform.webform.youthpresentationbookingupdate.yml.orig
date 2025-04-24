@@ -1,19 +1,19 @@
-uuid: 99de010a-9448-4103-b74f-aa72c1bdee02
+uuid: dbdfd3a5-38f0-4276-b533-b6c094236fd6
 langcode: en
 status: open
 dependencies:
   module:
     - pe_booking_activity_role
     - webform_civicrm
-    - wiseguyz_booking_update
+    - youth_presentation_booking_update
 weight: 0
 open: null
 close: null
 uid: 1
 template: false
 archive: false
-id: wiseguyz_booking_update
-title: 'WiseGuyz Booking Update Form'
+id: youthpresentationbookingupdate
+title: 'Youth Presentation Booking Update'
 description: ''
 categories: {  }
 elements: |-
@@ -300,28 +300,7 @@ elements: |-
     '#type': processed_text
     '#text': '<h2><span style="color:#2e416c;">Booking Details</span></h2>'
     '#format': html
-  civicrm_1_activity_1_activity_activity_type_id:
-    '#type': civicrm_options
-    '#title': 'Booking Type'
-    '#empty_option': '-Select-'
-    '#civicrm_live_options': 0
-    '#options':
-      201: WiseGuyz
-    '#required': true
-    '#states':
-      invisible:
-        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-          filled: true
-    '#states_clear': false
-    '#default_value': '201'
-    '#format_items': ul
-    '#extra':
-      aslist: 1
-      multiple: 0
-    '#form_key': civicrm_1_activity_1_activity_activity_type_id
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': ''
-  flexbox_08:
+  flexbox_03:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_subject:
       '#type': textfield
@@ -331,6 +310,29 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_activity_activity_type_id:
+      '#type': civicrm_options
+      '#title': 'Booking Type'
+      '#empty_option': '-Select-'
+      '#civicrm_live_options': 0
+      '#options':
+        55: 'Youth Presentation'
+      '#required': true
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            filled: true
+      '#states_clear': false
+      '#default_value': '55'
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_activity_activity_type_id
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+  flexbox_08:
+    '#type': webform_flexbox
     civicrm_1_activity_1_activity_status_id:
       '#type': civicrm_options
       '#title': 'Booking Status'
@@ -358,8 +360,7 @@ elements: |-
       '#civicrm_live_options': 0
       '#options':
         'In-Person Presentation': 'In-Person Presentation'
-        'In-Person Activity': 'In-Person Activity'
-        'Phone Activity': 'Phone Activity'
+        'Online Presentation': 'Online Presentation'
       '#required': true
       '#format_items': ul
       '#extra':
@@ -369,6 +370,59 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
       '#default_value': ''
+  processed_text_02:
+    '#type': processed_text
+    '#text': |
+      <h3><span style="color:#2e416c;">Presentation Topic(s)</span></h3>
+    '#format': html
+  civicrm_1_activity_1_cg2_custom_40:
+    '#type': civicrm_options
+    '#title': 'Presentation Topic(s)'
+    '#description': |-
+      <p><b>*Please note,&nbsp;</b><strong>only one topic should be selected per booking prior to setting "Booking Status" as "Completed". If more than one topic applies, please use "Custom/Unsure".&nbsp;</strong></p>
+
+      <p>&nbsp;</p>
+
+      <p>*These topics should only be used for the WiseGuyz GSSV sessions and Alumni Program unless otherwise approved by a Public Education Team Lead. Click the "WiseGuyz Topics" drop down for more information.</p>
+    '#more_title': 'WiseGuyz Topics'
+    '#more': |-
+      <p>Use the following topics for each session:&nbsp;</p>
+
+      <ul>
+      	<li>GSSV 1 - Gender Stereotypes</li>
+      	<li>GSSV 2 - Sexual Violence</li>
+      	<li>WiseGuyz Module 1 - Healthy Relationships</li>
+      	<li>WiseGuyz Module 2 - Sexual Health</li>
+      	<li>WiseGuyz Module 3 - Gender, Sexuality, and Media</li>
+      	<li>WiseGuyz Module 4 - Violence Prevention and Advocacy</li>
+      </ul>
+    '#title_display': inline
+    '#civicrm_live_options': 0
+    '#options':
+      SexualHarassment: 'Sexual Harassment'
+      SexualAssaultConsent: 'Sexual Assault & Consent'
+      NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
+      SexualAssaultConsentNonConsensualPhotosharing: 'Sexual Assault, Consent, and Non-Consensual Photo Sharing'
+      SACEServices: 'SACE Services'
+      CustomUnsure: 'Custom / Unsure'
+      GenderStereotypes: 'Gender Stereotypes*'
+      SexualViolence: 'Sexual Violence*'
+      HealthyRelationships: 'Healthy Relationships*'
+      SexualHealth: 'Sexual Health*'
+      GenderSexualityMedia: 'Gender, Sexuality, and Media*'
+      ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy*'
+    '#states_clear': false
+    '#wrapper_attributes':
+      class:
+        - jma-grid-3
+    '#format_items': ul
+    '#extra':
+      aslist: 0
+      multiple: 1
+    '#form_key': civicrm_1_activity_1_cg2_custom_40
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': ''
+    '#default_value': ''
   civicrm_1_activity_1_cg2_custom_41:
     '#type': textfield
     '#title': 'Topic Details'
@@ -443,6 +497,47 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_1261
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
+  civicrm_1_activity_1_cg2_custom_333:
+    '#type': civicrm_options
+    '#title': 'Presentation Population of Focus'
+    '#states_clear': false
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
+    '#extra':
+      aslist: 0
+      multiple: 1
+    '#form_key': civicrm_1_activity_1_cg2_custom_333
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#default_option': ''
+    '#default_value': ''
+    '#civicrm_live_options': '1'
+    '#options':
+      2SLGBTQ+: 2SLGBTQ+
+      Adults: Adults
+      'Child 3-12': 'Child 3-12'
+      FirstNationsMetisInuitIndigenous: 'First Nations, Métis, or Inuit/ Indigenous'
+      Guardians: Guardians/Parents
+      Men/Boys: 'Men/Boys/Masc/NB (Trans-Inclusive)'
+      Newcomer: Newcomer/Non-Status/Refugee/Immigrant
+      'People With Disabilities': 'People With Disabilities'
+      ProfessionalAEN: 'Professional - Arts, Entertainment, and Nightlife'
+      ProfessionalG: 'Professional - General'
+      ProfessionalH: 'Professional - Health'
+      ProfessionalJ: 'Professional - Justice'
+      ProfessionalSP: 'Professional - Service Providers'
+      ProfessionalSS: 'Professional - Social Services'
+      ProfessionalE: 'Professionals - Education'
+      Racialized/POC: Racialized/POC
+      'Seniors/Older Adults': 'Seniors/Older Adults'
+      volunteers: Volunteers
+      Women: 'Women/Girls/Femme/NB (Trans-Inclusive)'
+      Youth: 'Youth 12-18'
+  processed_text_04:
+    '#type': processed_text
+    '#text': |
+      <h3><span style="color:#2e416c;">Presentation Details</span></h3>
+    '#format': html
   flexbox_10:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_127:
@@ -498,17 +593,7 @@ elements: |-
       'Grade 8 (ages 13-14)': 'Grade 8 (ages 13-14)'
       'Grade 9 (ages 14-15)': 'Grade 9 (ages 14-15)'
       'High School (ages 15-18)': 'High School (ages 15-18)'
-      'Adults (ages 18+)': 'Adults (ages 18+)'
-    '#states':
-      invisible:
-        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '59'
-        - xor
-        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '204'
-        - xor
-        - ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-            value: '203'
+    '#states_clear': false
     '#wrapper_attributes':
       class:
         - jma-grid-4
@@ -527,42 +612,6 @@ elements: |-
       invisible:
         ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
           '!value': 'In-Person Presentation'
-    civicrm_1_activity_1_cg2_custom_34:
-      '#type': civicrm_options
-      '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available? If not, we can bring our own equipment.'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#wrapper_attributes':
-        class:
-          - jma-grid-4
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_34
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
-    civicrm_1_activity_1_cg2_custom_35:
-      '#type': civicrm_options
-      '#title': 'Will there be Internet access?'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#wrapper_attributes':
-        class:
-          - jma-grid-4
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_35
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
     civicrm_1_activity_1_cg2_custom_37:
       '#type': textfield
       '#title': 'Parking instructions'
@@ -590,6 +639,108 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_35:
+      '#type': civicrm_options
+      '#title': 'Will there be Internet access?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_35
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
+    civicrm_1_activity_1_cg2_custom_34:
+      '#type': civicrm_options
+      '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available? If not, we can bring our own equipment.'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_34
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
+    civicrm_1_activity_1_cg2_custom_1289:
+      '#type': civicrm_options
+      '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_1289
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
+<<<<<<< Updated upstream
+=======
+    civicrm_1_activity_1_cg2_custom_37:
+      '#type': textfield
+      '#title': 'Parking instructions'
+      '#size': 100
+      '#placeholder': 'If there are specific parking instructions to follow, please indicate them here'
+      '#states':
+        visible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
+            value: 'In-Person Presentation'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_37
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg58_custom_1266:
+      '#type': textfield
+      '#title': 'Building Location and Room Details'
+      '#placeholder': 'Please include any relevant information about accessing the building and/or the room.'
+      '#size': 100
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg58_custom_1266
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_1441:
+      '#type': civicrm_options
+      '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_1441
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
+>>>>>>> Stashed changes
   civicrm_1_activity_1_cg2_custom_126:
     '#type': textarea
     '#title': ' Additional needs or considerations (please specify)'
@@ -1049,7 +1200,7 @@ settings:
   ajax_effect: ''
   ajax_speed: null
   page: true
-  page_submit_path: /wiseguyz-booking-update
+  page_submit_path: /youth-presentation-booking-update
   page_confirm_path: ''
   page_theme_name: ''
   form_title: both
@@ -2080,10 +2231,10 @@ handlers:
     conditions: {  }
     weight: -49
     settings: {  }
-  wiseguyz_booking_update_handler:
-    id: wiseguyz_booking_update_handler
-    handler_id: wiseguyz_booking_update_handler
-    label: 'WiseGuyz Booking Update Handler'
+  youth_booking_update_handler:
+    id: youth_booking_update_handler
+    handler_id: youth_booking_update_handler
+    label: 'Youth Booking Update Handler'
     notes: ''
     status: true
     conditions: {  }

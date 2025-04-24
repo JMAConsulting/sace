@@ -394,7 +394,7 @@ elements: |-
     '#civicrm_live_options': 0
     '#options':
       199: 'Adult Online Course Booking Request'
-    '#default_value': '199'
+    '#default_value': 199
     '#wrapper_attributes':
       style: 'display:none;'
     '#extra':
@@ -737,11 +737,11 @@ handlers:
       civicrm_2_contact_1_phone_phone: create_civicrm_webform_element
       civicrm_2_contact_1_phone_phone_ext: 0
       civicrm_2_contact_1_phone_phone_type_id: '1'
-      civicrm_2_contact_1_phone_location_type_id: '1'
+      civicrm_2_contact_1_phone_location_type_id: '3'
       civicrm_2_contact_1_phone_is_primary: '1'
       contact_2_number_of_email: '1'
       civicrm_2_contact_1_email_email: create_civicrm_webform_element
-      civicrm_2_contact_1_email_location_type_id: '1'
+      civicrm_2_contact_1_email_location_type_id: '3'
       civicrm_2_contact_1_email_is_primary: '1'
       contact_2_number_of_website: '0'
       contact_2_number_of_im: '0'
@@ -831,13 +831,13 @@ handlers:
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
       activity_1_settings_dynamic_custom_cg2: 0
-      civicrm_1_activity_1_cg2_custom_332: 0
       civicrm_1_activity_1_cg2_custom_333: 0
+      civicrm_1_activity_1_cg2_custom_332: 0
       civicrm_1_activity_1_cg2_custom_334: 0
       civicrm_1_activity_1_cg2_custom_331: 0
       civicrm_1_activity_1_cg2_custom_330: 0
       civicrm_1_activity_1_cg2_custom_40: 0
-      civicrm_1_activity_1_cg2_custom_88: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_88: 0
       civicrm_1_activity_1_cg2_custom_126: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_125: 0
       civicrm_1_activity_1_cg2_custom_124: 0
@@ -848,7 +848,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_119: 0
       civicrm_1_activity_1_cg2_custom_90: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_43: 0
-      civicrm_1_activity_1_cg2_custom_25: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_25: 0
       civicrm_1_activity_1_cg2_custom_34: 0
       civicrm_1_activity_1_cg2_custom_35: 0
       civicrm_1_activity_1_cg2_custom_37: 0
@@ -858,13 +858,13 @@ handlers:
       civicrm_1_activity_1_cg2_custom_129: 0
       civicrm_1_activity_1_cg2_custom_341: 0
       civicrm_1_activity_1_cg2_custom_655: 0
-      civicrm_1_activity_1_cg2_custom_656: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_656: 0
       civicrm_1_activity_1_cg2_custom_657: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_658: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_659: 0
       civicrm_1_activity_1_cg2_custom_660: 0
       civicrm_1_activity_1_cg2_custom_661: 0
-      civicrm_1_activity_1_cg2_custom_662: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_662: 0
       civicrm_1_activity_1_cg2_custom_697: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_698: 0
       civicrm_1_activity_1_cg2_custom_815: create_civicrm_webform_element
@@ -873,8 +873,6 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
       civicrm_1_activity_1_cg2_custom_1261: 0
-      civicrm_1_activity_1_cg2_custom_1288: 0
-      civicrm_1_activity_1_cg2_custom_1289: 0
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
@@ -1248,11 +1246,11 @@ handlers:
             phone:
               1:
                 phone_type_id: '1'
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
             email:
               1:
-                location_type_id: '1'
+                location_type_id: '3'
                 is_primary: '1'
             relationship:
               1:

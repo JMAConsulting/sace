@@ -376,9 +376,6 @@ elements: |-
         'In-Person Presentation': 'In-Person Presentation'
         'In-Person Activity': 'In-Person Activity'
         'Phone Activity': 'Phone Activity'
-        'Online Activity': 'Online Activity'
-        'Online Course': 'Online Course'
-        'Online Presentation': 'Online Presentation'
       '#required': true
       '#format_items': ul
       '#extra':
