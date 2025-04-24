@@ -145,7 +145,6 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
 
     $recursion->generate();
 
-
     //TODO: generate custom end date field values based on activity duration?
   }
 
@@ -156,7 +155,6 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
   protected function createActionSchedule($webformData, $initialActivityId): int {
 
     $actionScheduleCreate = \Civi\Api4\ActionSchedule::create(FALSE)
-
       ->addValue('name', 'repeat_activity_' . $initialActivityId)
       ->addValue('title', 'Repetition Schedule for Activity ID ' . $initialActivityId)
       ->addValue('used_for', 'civicrm_activity')
@@ -198,6 +196,14 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
       case 'date':
         $actionScheduleCreate->addValue('absolute_date', $webformData['repeat_end_date']);
         break;
+    }
+
+    // api4 requires one or other of these to be set
+    // if we have neither (not using absolute date or weekly repetition)
+    // then set a null start_action_condition
+    if (!$actionScheduleCreate->getValue('absolute_date') && !$actionScheduleCreate->getValue('start_action_condition')) {
+      $everyDay = 'monday,tuesday,wednesday,thursday,friday,saturday,sunday';
+      $actionScheduleCreate->addValue('start_action_condition', $everyDay);
     }
 
     $result = $actionScheduleCreate->execute()->first();
