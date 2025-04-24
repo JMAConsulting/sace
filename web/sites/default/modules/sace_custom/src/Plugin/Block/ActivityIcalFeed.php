@@ -37,7 +37,7 @@ class ActivityIcalFeed extends BlockBase {
     $markup = <<<HTML
       <a href="{$feedUrl}" target="_blank">
         {$this->t('My Feed')}
-        <i class="crm-i fa-rss"></i>
+        <i class="fa fa-rss"></i>
       </a>
     HTML;
 
