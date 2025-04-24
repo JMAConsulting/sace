@@ -688,8 +688,8 @@ elements: |-
         ':input[name="repeat_enabled"]':
           checked: true
     repeat_start_date:
-      '#type': date
-      '#title': 'Repeat Start Date'
+      '#type': datetime
+      '#title': 'Repeat Start'
       '#states':
         required:
           ':input[name="repeat_enabled"]':
