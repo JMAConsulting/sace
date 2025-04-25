@@ -4775,7 +4775,7 @@ display:
             2: '2'
             9: '9'
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: status_id_op
             label: 'Booking Status'
