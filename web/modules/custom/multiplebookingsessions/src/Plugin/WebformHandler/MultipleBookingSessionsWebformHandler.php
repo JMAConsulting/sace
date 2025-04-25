@@ -62,7 +62,7 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
       $activityContacts = $this->api('ActivityContact', 'get', ['activity_id' => $webform_submission_data['activity_id'], 'record_type_id' => ['!=' => 'Activity Source']])['values'];
       $source_contact_id = $this->api('ActivityContact', 'get', ['activity_id' => $webform_submission_data['activity_id'], 'record_type_id' => "Activity Source", 'sequential' => 1])['values'][0]['contact_id'];
       for ($key = 1; $key <= 10; $key++) {
-        if (!empty($webform_submission_data['additional_appointment_' . $key]) && is_string($webform_submission_data['additional_appointment_' . $key])) {
+        if (!empty($webform_submission_data['appointment_' . $key . '_start_date_and_time']) && is_string($webform_submission_data['appointment_' . $key . '_start_date_and_time'])) {
           $newActivity = $activity;
           $newActivity['source_contact_id'] = $source_contact_id;
           unset($newActivity['id']);
@@ -71,7 +71,7 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
           $newActivity['Booking_Information.End_Date'] = $webform_submission_data['appointment_' . $key . '_end_date_and_time'];
           $newActivity['duration'] = $webform_submission_data['appointment_' . $key . '_duration'];
           // If have an empty array value then remove it from the newActivity array to prevent errors on saving when passing array to string.
-          foreach ($newActivity as $field => $value) {
+          foreach($newActivity as $field => $value) {
             if (is_array($value) && empty($value)) {
               unset($newActivity[$field]);
             }
