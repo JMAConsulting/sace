@@ -8,7 +8,15 @@ use Drupal\webform\Utility\WebformFormHelper;
  * @param $form_id
  */
 function pe_booking_activity_role_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, ['webform_submission_update_ped_booking_add_form', 'webform_submission_ped_online_course_booking_update_add_form'])) {
+  if (in_array($form_id, [
+    'webform_submission_adultonlinecoursebookingupdate_add_form',
+    'webform_submission_adultpresentationbookingupdate_add_form',
+    'webform_submission_communityengagementbookingupdate_add_form',
+    'webform_submission_institutionalsupportbookingupdat_add_form',
+    'webform_submission_wiseguyz_booking_update_add_form',
+    'webform_submission_ped_online_course_booking_updat_add_form',
+    'webform_submission_youthpresentationbookingupdate_add_form',
+  ])) {
     $elements = WebformFormHelper::flattenElements($form);
      \Drupal::service('civicrm')->initialize();
     //Activity ID
