@@ -93,7 +93,11 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
          $role = 'Facilitator';
        }
        if (!empty($role) && !empty($webform_submission_data['civicrm_' . $i . '_contact_1_contact_existing'])) {
-         ActivityRole::create(FALSE)->addValue('assignee_contact_id', $webform_submission_data['civicrm_' . $i . '_contact_1_contact_existing'])->addValue('activity_id', $aid)->addValue>
+         ActivityRole::create(FALSE)
+          ->addValue('assignee_contact_id', $webform_submission_data['civicrm_' . $i . '_contact_1_contact_existing'])
+          ->addValue('activity_id', $aid)
+          ->addValue('role_id:name', $role)
+          ->execute();
        }
      }
    }
