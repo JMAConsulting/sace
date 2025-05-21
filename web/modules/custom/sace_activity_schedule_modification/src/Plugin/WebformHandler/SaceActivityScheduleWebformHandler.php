@@ -169,7 +169,7 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
     $startDate = $webformData['repeat_start_date'];
     // if left blank will come through as empty date and time subfields
     // => default to main activity date
-    if (!array_filter($startDate)) {
+    if (!$startDate) {
       $startDate = $webformData['civicrm_1_activity_1_activity_activity_date_time'];
     }
 
