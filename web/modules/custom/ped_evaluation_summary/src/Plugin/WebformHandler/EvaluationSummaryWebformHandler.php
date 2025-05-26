@@ -2,6 +2,7 @@
 
 namespace Drupal\ped_evaluation_summary\Plugin\WebformHandler;
 
+use Civi\Api4\Activity;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
@@ -57,12 +58,28 @@ class EvaluationSummaryWebformHandler extends WebformHandlerBase {
     if ($civicrm_submission_data) {
       while ($row = $civicrm_submission_data->fetchAssoc()) {
         $data = unserialize($row['civicrm_data']);
+        $activity = Activity::get(FALSE)
+          ->addSelect('source_contact_id')
+          ->addWhere('id', '=', $data['activity'][1]['id'])
+          ->execute()
+          ->first();
 
+        $id = Activity::create(FALSE)
+          ->addValue('activity_type_id:name', 'PED - Presentation Evaluation Summary Score')
+          ->addValue('PED_Booking_Reference.Booking_Reference_ID', $data['activity'][1]['id'])
+          ->addValue('status_id:name', 'Pending')
+          ->addValue('source_contact_id', $activity['source_contact_id'])
+          ->addValue('PED_Presentation_Evaluation_Summary_Score.Result_Verified_by', $activity['source_contact_id'])
+          ->execute()
+          ->first()['id'];
+
+        Activity::update(FALSE)
+          ->addWhere('id', '=', $activity['id'])
+          ->addValue('Booking_Information.Presentation_Evaluation_Summary_Activity_ID', $id)
+          ->execute();
       }
     }
-print_r($civicrm_submission_data->fetchAll());
-//print_r($webform_submission_data);
-exit;
+
   }
 
 }
