@@ -184,6 +184,24 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_27:
+      '#type': details
+      '#title': 'Additional Booking Date 1'
+      '#open': true
+      flexbox_28:
+        '#type': webform_flexbox
+        appointment_1_start_date_and_time:
+          '#type': datetime
+          '#title': 'Start Date and Time'
+        appointment_1_end_date_and_time:
+          '#type': datetime
+          '#title': 'End Date and Time'
+        appointment_1_duration:
+          '#type': number
+          '#title': Duration
+          '#field_suffix': 'in minutes'
+          '#readonly': true
   flexbox_09:
     '#type': details
     '#title': 'Additional Booking Date 2'
@@ -192,6 +210,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_18:
+      '#type': webform_flexbox
+      appointment_2_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_2_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_2_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_10:
     '#type': details
     '#title': 'Additional Booking Date 3'
@@ -200,6 +232,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_19:
+      '#type': webform_flexbox
+      appointment_3_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_3_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_3_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_11:
     '#type': details
     '#title': 'Additional Booking Date 4'
@@ -208,6 +254,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_20:
+      '#type': webform_flexbox
+      appointment_4_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_4_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_4_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_12:
     '#type': details
     '#title': 'Additional Booking Date 5'
@@ -216,6 +276,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_21:
+      '#type': webform_flexbox
+      appointment_5_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_5_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_5_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_13:
     '#type': details
     '#title': 'Additional Booking Date 6'
@@ -224,6 +298,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_22:
+      '#type': webform_flexbox
+      appointment_6_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_6_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_6_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_14:
     '#type': details
     '#title': 'Additional Booking Date 7'
@@ -232,6 +320,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_23:
+      '#type': webform_flexbox
+      appointment_7_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_7_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_7_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_15:
     '#type': details
     '#title': 'Additional Booking Date 8'
@@ -240,6 +342,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_24:
+      '#type': webform_flexbox
+      appointment_8_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_8_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_8_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_16:
     '#type': details
     '#title': 'Additional Booking Date 9'
@@ -248,6 +364,20 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_25:
+      '#type': webform_flexbox
+      appointment_9_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_9_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_9_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   flexbox_17:
     '#type': details
     '#title': 'Additional Booking Date 10'
@@ -256,11 +386,25 @@ elements: |-
       '#title': 'Additional Booking Date'
       '#date_date_format': ''
       '#date_time_format': ''
+      '#access': false
+    flexbox_26:
+      '#type': webform_flexbox
+      appointment_10_start_date_and_time:
+        '#type': datetime
+        '#title': 'Start Date and Time'
+      appointment_10_end_date_and_time:
+        '#type': datetime
+        '#title': 'End Date and Time'
+      appointment_10_duration:
+        '#type': number
+        '#title': Duration
+        '#readonly': true
+        '#field_suffix': 'in minutes'
   activity_id:
     '#type': hidden
     '#title': 'activity id'
 css: ''
-javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-05'));\r\n  let date_fields = $('[name^=\"additional_appointment\"].form-date');\r\n  date_fields.each(function(key, element) {\r\n    $(element).on('change', function() {\r\n      if ($(this).val().length) {\r\n        let elementId = $(this).prop('id');\r\n        let timeElement = $('#' + elementId.replace('-date', '-time'));\r\n        timeElement.prop('required', 'required');\r\n        timeElement.prop('aria-required', true);\r\n        timeElement.trigger('change');\r\n      }\r\n      else {\r\n        let elementId = $(this).prop('id');\r\n        let timeElement = $('#' + elementId.replace('-date', '-time'));\r\n        timeElement.removeAttr('required');\r\n        timeElement.removeProp('aria-required');\r\n        timeElement.trigger('change');\r\n      }\r\n    });\r\n  });\r\n})(jQuery);"
+javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-05'));\r\n  let date_fields = $('[name^=\"additional_appointment\"].form-date');\r\n  $('input[id$=\"start-date-and-time-date\"], input[id$=\"end-date-and-time-date\"], input[id$=\"start-date-and-time-time\"], input[id$=\"end-date-and-time-time\"]').on('change', function() {\r\n    var selector = $(this).attr('id').replace('-date-and-time', '').replace('-start', '').replace('-end', '').replace('-date', '').replace('-time', ''),\r\n    startdate = $('#' + selector + '-start-date-and-time-date').val(),\r\n    starttime = $('#' + selector + '-start-date-and-time-time').val(),\r\n    enddate = $('#' + selector + '-end-date-and-time-date').val(),\r\n    endtime = $('#' + selector + '-end-date-and-time-time').val();\r\n    if (enddate && startdate) {\r\n      setDuration(startdate + ' ' + starttime, enddate + ' ' + endtime, endtime, selector);\r\n    }\r\n  });\r\n  function setDuration(start, end, endTime, selector) {\r\n    start = new Date(start);\r\n    end = new Date(end);\r\n    var duration = Math.round((end.getTime() - start.getTime()) / (1000 * 60));\r\n    $('#' + selector + '-duration').val(duration);\r\n  }\r\n\r\n  $('.webform-details-toggle-state-wrapper').insertBefore('.webform-flex--1');\r\n  date_fields.each(function(key, element) {\r\n    $(element).on('change', function() {\r\n      if ($(this).val().length) {\r\n        let elementId = $(this).prop('id');\r\n        let timeElement = $('#' + elementId.replace('-date', '-time'));\r\n        timeElement.prop('required', 'required');\r\n        timeElement.prop('aria-required', true);\r\n        timeElement.trigger('change');\r\n      }\r\n      else {\r\n        let elementId = $(this).prop('id');\r\n        let timeElement = $('#' + elementId.replace('-date', '-time'));\r\n        timeElement.removeAttr('required');\r\n        timeElement.removeProp('aria-required');\r\n        timeElement.trigger('change');\r\n      }\r\n    });\r\n  });\r\n})(jQuery);"
 settings:
   ajax: false
   ajax_scroll_top: form
