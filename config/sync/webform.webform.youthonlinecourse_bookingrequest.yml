@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - ped_evaluation_summary
     - webform_civicrm
     - youth_online_course_booking_request
 weight: 0
@@ -713,7 +714,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: null
+    weight: -50
     settings:
       disable: 'Leave Fields and Save Settings'
       nid: 1
@@ -1439,6 +1440,15 @@ handlers:
     id: youth_online_course_booking_reqest_handler
     handler_id: youth_online_course_booking_reqest_handler
     label: 'Youth Online Course Booking Request Handler'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
+  evaluation_summary_handler:
+    id: evaluation_summary_handler
+    handler_id: evaluation_summary_handler
+    label: 'Evaluation Summary Handler'
     notes: ''
     status: true
     conditions: {  }
