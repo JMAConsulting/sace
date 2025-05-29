@@ -11,6 +11,7 @@ use Drupal\webform\Utility\WebformFormHelper;
 function ped_evaluation_summary_form_webform_submission_presentation_evaluation_summary__add_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
   // Get activity id from query var.
   $aid = \Drupal::request()->query->get('bid') ?? 0;
+
   if (empty($aid) || !is_numeric($aid)) {
     return;
   }
@@ -90,318 +91,404 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   // # of returned evaluations
   $elements['civicrm_1_activity_1_cg54_custom_24']['#default_value'] = $feedback;
 
-  $dropdownmapping = [
+  $summaryFields = [
   // q1
     'custom_665' => [
-      'Strongly Agree' => 'custom_48',
-      'Agree' => 'custom_54',
-      'Somewhat Agree' => 'custom_55',
-      'Somewhat Disagree' => 'custom_707',
-      'Disagree' => 'custom_56',
-      'Strongly Disagree' => 'custom_57',
-      'total' => 'custom_58',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_48',
+        'Agree' => 'custom_54',
+        'Somewhat Agree' => 'custom_55',
+        'Somewhat Disagree' => 'custom_707',
+        'Disagree' => 'custom_56',
+        'Strongly Disagree' => 'custom_57',
+        'total' => 'custom_58',
+      ],
     ],
     //g3
     'custom_667' => [
-      'Strongly Agree' => 'custom_60',
-      'Agree' => 'custom_61',
-      'Somewhat Agree' => 'custom_62',
-      'Somewhat Disagree' => 'custom_709',
-      'Disagree' => 'custom_63',
-      'Strongly Disagree' => 'custom_64',
-      'total' => 'custom_67',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_60',
+        'Agree' => 'custom_61',
+        'Somewhat Agree' => 'custom_62',
+        'Somewhat Disagree' => 'custom_709',
+        'Disagree' => 'custom_63',
+        'Strongly Disagree' => 'custom_64',
+        'total' => 'custom_67',
+      ],
     ],
     // q4
     'custom_669' => [
-      'Strongly Agree' => 'custom_68',
-      'Agree' => 'custom_69',
-      'Somewhat Agree' => 'custom_70',
-      'Somewhat Disagree' => 'custom_711',
-      'Disagree' => 'custom_71',
-      'Strongly Disagree' => 'custom_72',
-      'total' => 'custom_73',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_68',
+        'Agree' => 'custom_69',
+        'Somewhat Agree' => 'custom_70',
+        'Somewhat Disagree' => 'custom_711',
+        'Disagree' => 'custom_71',
+        'Strongly Disagree' => 'custom_72',
+        'total' => 'custom_73',
+      ],
     ],
     //q6
     'custom_671' => [
-      'Strongly Agree' => 'custom_75',
-      'Agree' => 'custom_76',
-      'Somewhat Agree' => 'custom_77',
-      'Somewhat Disagree' => 'custom_712',
-      'Disagree' => 'custom_78',
-      'Strongly Disagree' => 'custom_79',
-      'total' => 'custom_74',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_75',
+        'Agree' => 'custom_76',
+        'Somewhat Agree' => 'custom_77',
+        'Somewhat Disagree' => 'custom_712',
+        'Disagree' => 'custom_78',
+        'Strongly Disagree' => 'custom_79',
+        'total' => 'custom_74',
+      ],
     ],
     //q7
     'custom_672' => [
-      'Strongly Agree' => 'custom_81',
-      'Agree' => 'custom_82',
-      'Somewhat Agree' => 'custom_83',
-      'Somewhat Disagree' => 'custom_713',
-      'Disagree' => 'custom_84',
-      'Strongly Disagree' => 'custom_85',
-      'total' => 'custom_723',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_81',
+        'Agree' => 'custom_82',
+        'Somewhat Agree' => 'custom_83',
+        'Somewhat Disagree' => 'custom_713',
+        'Disagree' => 'custom_84',
+        'Strongly Disagree' => 'custom_85',
+        'total' => 'custom_723',
+      ],
     ],
     //q8
     'custom_673' => [
-      'Strongly Agree' => 'custom_716',
-      'Agree' => 'custom_717',
-      'Somewhat Agree' => 'custom_718',
-      'Somewhat Disagree' => 'custom_719',
-      'Disagree' => 'custom_720',
-      'Strongly Disagree' => 'custom_721',
-      'total' => 'custom_722',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_716',
+        'Agree' => 'custom_717',
+        'Somewhat Agree' => 'custom_718',
+        'Somewhat Disagree' => 'custom_719',
+        'Disagree' => 'custom_720',
+        'Strongly Disagree' => 'custom_721',
+        'total' => 'custom_722',
+      ],
     ],
     //q10
     'custom_674' => [
-      'Strongly Agree' => 'custom_725',
-      'Agree' => 'custom_726',
-      'Somewhat Agree' => 'custom_727',
-      'Somewhat Disagree' => 'custom_728',
-      'Disagree' => 'custom_729',
-      'Strongly Disagree' => 'custom_730',
-      'total' => 'custom_731',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_725',
+        'Agree' => 'custom_726',
+        'Somewhat Agree' => 'custom_727',
+        'Somewhat Disagree' => 'custom_728',
+        'Disagree' => 'custom_729',
+        'Strongly Disagree' => 'custom_730',
+        'total' => 'custom_731',
+      ],
     ],
     //q11
     'custom_675' => [
-      'Strongly Agree' => 'custom_732',
-      'Agree' => 'custom_733',
-      'Somewhat Agree' => 'custom_734',
-      'Somewhat Disagree' => 'custom_735',
-      'Disagree' => 'custom_736',
-      'Strongly Disagree' => 'custom_737',
-      'total' => 'custom_738',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_732',
+        'Agree' => 'custom_733',
+        'Somewhat Agree' => 'custom_734',
+        'Somewhat Disagree' => 'custom_735',
+        'Disagree' => 'custom_736',
+        'Strongly Disagree' => 'custom_737',
+        'total' => 'custom_738',
+      ],
     ],
     //q12
     'custom_676' => [
-      'Strongly Agree' => 'custom_739',
-      'Agree' => 'custom_740',
-      'Somewhat Agree' => 'custom_741',
-      'Somewhat Disagree' => 'custom_742',
-      'Disagree' => 'custom_743',
-      'Strongly Disagree' => 'custom_744',
-      'total' => 'custom_745',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_739',
+        'Agree' => 'custom_740',
+        'Somewhat Agree' => 'custom_741',
+        'Somewhat Disagree' => 'custom_742',
+        'Disagree' => 'custom_743',
+        'Strongly Disagree' => 'custom_744',
+        'total' => 'custom_745',
+      ],
     ],
     //q13
     'custom_677' => [
-      'Strongly Agree' => 'custom_746',
-      'Agree' => 'custom_750',
-      'Somewhat Agree' => 'custom_747',
-      'Somewhat Disagree' => 'custom_751',
-      'Disagree' => 'custom_748',
-      'Strongly Disagree' => 'custom_749',
-      'total' => 'custom_752',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_746',
+        'Agree' => 'custom_750',
+        'Somewhat Agree' => 'custom_747',
+        'Somewhat Disagree' => 'custom_751',
+        'Disagree' => 'custom_748',
+        'Strongly Disagree' => 'custom_749',
+        'total' => 'custom_752',
+      ],
     ],
     //q14
     'custom_705' => [
-      'Strongly Agree' => 'custom_753',
-      'Agree' => 'custom_754',
-      'Somewhat Agree' => 'custom_755',
-      'Somewhat Disagree' => 'custom_756',
-      'Disagree' => 'custom_757',
-      'Strongly Disagree' => 'custom_758',
-      'total' => 'custom_759',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_753',
+        'Agree' => 'custom_754',
+        'Somewhat Agree' => 'custom_755',
+        'Somewhat Disagree' => 'custom_756',
+        'Disagree' => 'custom_757',
+        'Strongly Disagree' => 'custom_758',
+        'total' => 'custom_759',
+      ],
     ],
     //q15
     'custom_681' => [
-      'Strongly Agree' => 'custom_760',
-      'Agree' => 'custom_761',
-      'Somewhat Agree' => 'custom_762',
-      'Somewhat Disagree' => 'custom_763',
-      'Disagree' => 'custom_764',
-      'Strongly Disagree' => 'custom_765',
-      'total' => 'custom_766',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_760',
+        'Agree' => 'custom_761',
+        'Somewhat Agree' => 'custom_762',
+        'Somewhat Disagree' => 'custom_763',
+        'Disagree' => 'custom_764',
+        'Strongly Disagree' => 'custom_765',
+        'total' => 'custom_766',
+      ],
     ],
     //q16
     'custom_682' => [
-      'Strongly Agree' => 'custom_767',
-      'Agree' => 'custom_768',
-      'Somewhat Agree' => 'custom_769',
-      'Somewhat Disagree' => 'custom_770',
-      'Disagree' => 'custom_771',
-      'Strongly Disagree' => 'custom_772',
-      'total' => 'custom_773',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_767',
+        'Agree' => 'custom_768',
+        'Somewhat Agree' => 'custom_769',
+        'Somewhat Disagree' => 'custom_770',
+        'Disagree' => 'custom_771',
+        'Strongly Disagree' => 'custom_772',
+        'total' => 'custom_773',
+      ],
     ],
     //q17
     'custom_680' => [
-      'Strongly Agree' => 'custom_774',
-      'Agree' => 'custom_775',
-      'Somewhat Agree' => 'custom_776',
-      'Somewhat Disagree' => 'custom_777',
-      'Disagree' => 'custom_778',
-      'Strongly Disagree' => 'custom_779',
-      'total' => 'custom_780',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_774',
+        'Agree' => 'custom_775',
+        'Somewhat Agree' => 'custom_776',
+        'Somewhat Disagree' => 'custom_777',
+        'Disagree' => 'custom_778',
+        'Strongly Disagree' => 'custom_779',
+        'total' => 'custom_780',
+      ],
     ],
     //q19
     'custom_699' => [
-      'Strongly Agree' => 'custom_781',
-      'Agree' => 'custom_782',
-      'Somewhat Agree' => 'custom_783',
-      'Somewhat Disagree' => 'custom_784',
-      'Disagree' => 'custom_785',
-      'Strongly Disagree' => 'custom_786',
-      'total' => 'custom_788',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_781',
+        'Agree' => 'custom_782',
+        'Somewhat Agree' => 'custom_783',
+        'Somewhat Disagree' => 'custom_784',
+        'Disagree' => 'custom_785',
+        'Strongly Disagree' => 'custom_786',
+        'total' => 'custom_788',
+      ],
     ],
     //q20
     'custom_700' => [
-      'Strongly Agree' => 'custom_789',
-      'Agree' => 'custom_790',
-      'Somewhat Agree' => 'custom_791',
-      'Somewhat Disagree' => 'custom_792',
-      'Disagree' => 'custom_793',
-      'Strongly Disagree' => 'custom_794',
-      'total' => 'custom_795',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_789',
+        'Agree' => 'custom_790',
+        'Somewhat Agree' => 'custom_791',
+        'Somewhat Disagree' => 'custom_792',
+        'Disagree' => 'custom_793',
+        'Strongly Disagree' => 'custom_794',
+        'total' => 'custom_795',
+      ],
     ],
     //q211
     'custom_701' => [
-      'Strongly Agree' => 'custom_796',
-      'Agree' => 'custom_797',
-      'Somewhat Agree' => 'custom_798',
-      'Somewhat Disagree' => 'custom_799',
-      'Disagree' => 'custom_800',
-      'Strongly Disagree' => 'custom_801',
-      'total' => 'custom_802',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_796',
+        'Agree' => 'custom_797',
+        'Somewhat Agree' => 'custom_798',
+        'Somewhat Disagree' => 'custom_799',
+        'Disagree' => 'custom_800',
+        'Strongly Disagree' => 'custom_801',
+        'total' => 'custom_802',
+      ],
     ],
     //q212
     'custom_1264' => [
-      'Strongly Agree' => 'custom_1268',
-      'Agree' => 'custom_1269',
-      'Somewhat Agree' => 'custom_1270',
-      'Somewhat Disagree' => 'custom_1271',
-      'Disagree' => 'custom_1272',
-      'Strongly Disagree' => 'custom_1273',
-      'total' => 'custom_1274',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_1268',
+        'Agree' => 'custom_1269',
+        'Somewhat Agree' => 'custom_1270',
+        'Somewhat Disagree' => 'custom_1271',
+        'Disagree' => 'custom_1272',
+        'Strongly Disagree' => 'custom_1273',
+        'total' => 'custom_1274',
+      ],
     ],
     //q24
     'custom_813' => [
-      'Strongly Agree' => 'custom_805',
-      'Agree' => 'custom_806',
-      'Somewhat Agree' => 'custom_807',
-      'Somewhat Disagree' => 'custom_808',
-      'Disagree' => 'custom_809',
-      'Strongly Disagree' => 'custom_810',
-      'total' => 'custom_811',
+      'dropdown' => [
+        'Strongly Agree' => 'custom_805',
+        'Agree' => 'custom_806',
+        'Somewhat Agree' => 'custom_807',
+        'Somewhat Disagree' => 'custom_808',
+        'Disagree' => 'custom_809',
+        'Strongly Disagree' => 'custom_810',
+        'total' => 'custom_811',
+      ],
     ],
-  ];
-
-  foreach ($dropdownmapping as $cf => $values) {
-    unset($values['total']);
-    foreach ($values as $option => $element) {
-      $elements['civicrm_1_activity_1_cg54_' . $element]['#default_value'] = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, $cf => $option]);
-    }
-  }
-
-  $textmapping = [
     'custom_666' => [
       'response_list' => 'q2_markup_detail',
       'response_count' => 'civicrm_1_activity_1_cg54_custom_59',
-      'show_hide' => [
-        'count' => 'q2_total_block',
-        'note' => 'civicrm_1_activity_1_cg54_custom_715',
+      'linked_elements' => [
+        'q2_total_block',
+        'civicrm_1_activity_1_cg54_custom_715',
       ],
     ],
     'custom_668' => [
       'response_list' => 'q5_markup_detail',
       'response_count' => 'civicrm_1_activity_1_cg54_custom_65',
-      'show_hide' => [
-        'count' => 'q5_total_block',
-        'note' => 'civicrm_1_activity_1_cg54_custom_1281',
+      'linked_elements' => [
+        'q5_total_block',
+        'civicrm_1_activity_1_cg54_custom_1281',
       ],
     ],
     'custom_670' => [
       'response_list' => 'q9_markup_detail',
       'response_count' => 'civicrm_1_activity_1_cg54_custom_724',
-      'show_hide' => [
-        'count' => 'q9_total_block',
-        'note' => 'civicrm_1_activity_1_cg54_custom_1286',
+      'linked_elements' => [
+        'q9_total_block',
+        'civicrm_1_activity_1_cg54_custom_1286',
       ],
     ],
     'custom_678' => [
       'response_list' => 'q18_markup_detail',
       'response_count' => 'civicrm_1_activity_1_cg54_custom_787',
-      'show_hide' => [
-        'count' => 'q18_total_block',
-        'note' => 'civicrm_1_activity_1_cg54_custom_1283',
+      'linked_elements' => [
+        'q18_total_block',
+        'civicrm_1_activity_1_cg54_custom_1283',
       ],
     ],
     'custom_679' => [
       'response_list' => 'q22_markup_detail',
       'response_count' => 'civicrm_1_activity_1_cg54_custom_803',
-      'show_hide' => [
-        'count' => 'q22_total_block',
-        'note' => 'civicrm_1_activity_1_cg54_custom_1284',
+      'linked_elements' => [
+        'q22_total_block',
+        'civicrm_1_activity_1_cg54_custom_1284',
       ],
     ],
     'custom_812' => [
       'response_list' => 'q23_markup_detail',
       'response_count' => 'civicrm_1_activity_1_cg54_custom_804',
-      'show_hide' => [
-        'count' => 'q23_total_block',
-        'note' => 'civicrm_1_activity_1_custom_1285',
+      'linked_elements' => [
+        'q23_total_block',
+        'civicrm_1_activity_1_custom_1285',
       ],
     ],
     'custom_1263' => [
-      'response_list' => 'age_responses_markup',
+      'response_list' => 'age_response_list',
       'response_count' => 'civicrm_1_activity_1_cg54_custom_1290',
-      'show_hide' => [
+      'linked_elements' => [
+        'age_question_text',
         'age_summary_block',
         'civicrm_1_activity_1_cg54_custom_1289',
       ],
     ],
   ];
 
-  foreach ($textmapping as $sourceField => $summaryElements) {
-    $result1 = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$sourceField], $sourceField => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
-    $texts = [];
-    foreach ($result1 as $value) {
-      if ($value[$sourceField]) {
-        $texts[] = sprintf('<li>%s</li>', $value[$sourceField]);
-      }
-    }
-    if (!empty($texts)) {
-      $elements[$summaryElements['response_list']]['#text'] = sprintf('
-      <details class="package-listing js-form-wrapper form-wrapper claro-details claro-details--package-listing">
-        <summary role="button" aria-controls="edit-modules-core" aria-expanded="false" aria-pressed="false" class="claro-details__summary claro-details__summary--package-listing">
-          Click for more details<span class="claro-details__summary-summary"></span>
-        </summary>
-        <div class="claro-details__wrapper details-wrapper claro-details__wrapper--package-listing">
-          <ul>%s</ul>
-        </div>
-      </details>', implode(' ', $texts));
-    }
-    $elements[$summaryElements['response_count']]['#default_value'] = count($texts);
-  }
-
   // Q: what is the advantage of having this in an option group?
   // here at least it only has effect based on the apply check below, so no use in
   // editing the option group unless you can also edit the code below.
   // may as well dump the mapping into a code file?
-  $qMapping = \Civi\Api4\OptionValue::get(FALSE)
+  $questionNumberMapping = \Civi\Api4\OptionValue::get(FALSE)
     ->addSelect('value', 'label')
     ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
     ->execute()
-    ->indexBy('label')
-    ->column('value');
+    ->indexBy('value')
+    ->column('label');
 
-  foreach ($qMapping as $Q => $cfID) {
-    $applies = ped_evaluation_summary_check_q_applies_to_booking((int) $Q, $result);
+  foreach ($questionNumberMapping as $questionNumber => $customFieldId) {
+    $customField = "custom_{$customFieldId}";
+    $questionNumber = (int) $questionNumber;
+    if (!empty($summaryFields[$customField])) {
+      $summaryFields[$customField]['question_number'] = $questionNumber;
+    }
+  }
 
-    $dropdown = $dropdownmapping['custom_' . $cfID] ?? NULL;
+  foreach ($summaryFields as $sourceField => $details) {
+    $questionNumber = $details['question_number'] ?? 0;
+    $applies = ped_evaluation_summary_check_q_applies_to_booking($questionNumber, $result);
 
-    if ($dropdown) {
-      foreach ($dropdown as $key) {
-        $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $applies;
+    // if not applicable, disable all relevant fields
+    if (!$applies) {
+      $toHide = [];
+
+      // hide any linked elements
+      $toHide = array_merge($toHide, $details['linked_elements'] ?? []);
+
+      // hide based on question number keys
+      if ($questionNumber) {
+        $toHide = array_merge($toHide, ["question_markup_{$questionNumber}", "q{$questionNumber}_markup_detail"]);
       }
+
+      // hide any dropdown target elements
+      foreach ($details['dropdown'] ?? [] as $targetField) {
+        $toHide[] = "civicrm_1_activity_1_cg54_{$targetField}";
+      }
+
+      foreach ($toHide as $elementKey) {
+        $elements[$elementKey] ??= [];
+        $elements[$elementKey]['#access'] = FALSE;
+      }
+
+      // dont need to worry about prefills
+      continue;
     }
 
-    $textmap = $textmapping['custom_' . $cfID] ?? NULL;
-    if ($textmap) {
-      foreach ($textmap['show_hide'] as $elementToShow) {
-        $elements[$elementToShow]['#access'] = $applies;
+    // prefill dropdown fields
+    foreach ($details['dropdown'] ?? [] as $optionLabel => $targetField) {
+      $targetElement = "civicrm_1_activity_1_cg54_{$targetField}";
+
+      // check target element exists to fill
+      if (!is_array($elements[$targetElement] ?? NULL)) {
+        \Civi::log()->debug("Invalid option summary target field {$targetElement}");
+        continue;
       }
+
+      $optionCount = civicrm_api3('Activity', 'getcount', [
+        'custom_706' => $aid,
+        $sourceField => $optionLabel,
+      ]);
+
+      $elements[$targetElement]['#default_value'] = $optionCount;
     }
 
-    if (isset($elements['q' . $Q . '_markup_detail'])) {
-      $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#access'] = $applies;
+    $responseList = $details['response_list'] ?? NULL;
+    // ignore if element doesnt exist (TODO: create element)
+    if (!is_array($elements[$responseList] ?? NULL)) {
+      $responseList = NULL;
+    }
+    $responseCount = $details['response_count'] ?? NULL;
+    // ignore if element doesnt exist (TODO: create element)
+    if (!is_array($elements[$responseCount] ?? NULL)) {
+      $responseCount = NULL;
+    }
+
+    if ($responseList || $responseCount) {
+      $responses = civicrm_api3('Activity', 'get', [
+        'custom_706' => $aid,
+        'return' => [$sourceField],
+        $sourceField => ['IS NOT NULL' => 1],
+        'options' => ['limit' => 0],
+      ])['values'];
+
+      // flatten to just the target field
+      $responses = array_column($responses, $sourceField);
+
+      // remove blanks
+      $responses = array_filter($responses);
+
+      if ($responses && $responseList) {
+        $list = array_map(fn ($r) => sprintf('<li>%s</li>', $r), $responses);
+        $list = implode(' ', $list);
+        $elements[$responseList]['#text'] = <<<HTML
+          <details class="package-listing js-form-wrapper form-wrapper claro-details claro-details--package-listing">
+            <summary role="button" aria-controls="edit-modules-core" aria-expanded="false" aria-pressed="false" class="claro-details__summary claro-details__summary--package-listing">
+              Click for more details<span class="claro-details__summary-summary"></span>
+            </summary>
+            <div class="claro-details__wrapper details-wrapper claro-details__wrapper--package-listing">
+              <ul>{$list}</ul>
+            </div>
+          </details>
+        HTML;
+      }
+
+      if ($responseCount) {
+        $elements[$responseCount]['#default_value'] = count($responses);
+      }
     }
   }
 
@@ -423,7 +510,7 @@ function ped_evaluation_summary_check_q_applies_to_booking(int $Q, array $bookin
     case 15:
     case 18:
     case 13:
-      return (bool) strstr(implode('', $bookingDetails["Booking_Information.Audience"]), 'Professionals');
+      return (bool) strstr(implode('', (array) $bookingDetails["Booking_Information.Audience"]), 'Professionals');
 
     case 16:
     case 14:
