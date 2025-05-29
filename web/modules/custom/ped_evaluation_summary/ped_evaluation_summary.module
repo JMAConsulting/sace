@@ -371,6 +371,10 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     $elements[$summaryElements['response_count']]['#default_value'] = count($texts);
   }
 
+  // Q: what is the advantage of having this in an option group?
+  // here at least it only has effect based on the apply check below, so no use in
+  // editing the option group unless you can also edit the code below.
+  // may as well dump the mapping into a code file?
   $qMapping = \Civi\Api4\OptionValue::get(FALSE)
     ->addSelect('value', 'label')
     ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
