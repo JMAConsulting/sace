@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel\Formatter;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -79,7 +77,7 @@ class FileEntityFormatterTest extends KernelTestBase {
   /**
    * Tests the file_link field formatter.
    */
-  public function testFormatterFileLink(): void {
+  public function testFormatterFileLink() {
     $entity_display = EntityViewDisplay::create([
       'targetEntityType' => 'file',
       'bundle' => 'file',
@@ -94,7 +92,7 @@ class FileEntityFormatterTest extends KernelTestBase {
   /**
    * Tests the file_link field formatter.
    */
-  public function testFormatterFileUri(): void {
+  public function testFormatterFileUri() {
     $entity_display = EntityViewDisplay::create([
       'targetEntityType' => 'file',
       'bundle' => 'file',
@@ -117,7 +115,7 @@ class FileEntityFormatterTest extends KernelTestBase {
   /**
    * Tests the file_extension field formatter.
    */
-  public function testFormatterFileExtension(): void {
+  public function testFormatterFileExtension() {
     $entity_display = EntityViewDisplay::create([
       'targetEntityType' => 'file',
       'bundle' => 'file',
@@ -142,7 +140,7 @@ class FileEntityFormatterTest extends KernelTestBase {
   /**
    * Tests the file_extension field formatter.
    */
-  public function testFormatterFileMime(): void {
+  public function testFormatterFileMime() {
     $entity_display = EntityViewDisplay::create([
       'targetEntityType' => 'file',
       'bundle' => 'file',
@@ -159,7 +157,7 @@ class FileEntityFormatterTest extends KernelTestBase {
   /**
    * Tests the file_size field formatter.
    */
-  public function testFormatterFileSize(): void {
+  public function testFormatterFileSize() {
     $entity_display = EntityViewDisplay::create([
       'targetEntityType' => 'file',
       'bundle' => 'file',
@@ -176,7 +174,7 @@ class FileEntityFormatterTest extends KernelTestBase {
   /**
    * Tests the file_link field formatter using a query string.
    */
-  public function testFormatterFileLinkWithQueryString(): void {
+  public function testFormatterFileLinkWithQueryString() {
     $file = File::create([
       'uri' => 'dummy-external-readonly://file-query-string?foo=bar',
       'filename' => 'file-query-string',

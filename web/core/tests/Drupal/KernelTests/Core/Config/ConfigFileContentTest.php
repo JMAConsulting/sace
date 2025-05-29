@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\Core\Config\FileStorage;
@@ -27,7 +25,7 @@ class ConfigFileContentTest extends KernelTestBase {
   /**
    * Tests setting, writing, and reading of a configuration setting.
    */
-  public function testReadWriteConfig(): void {
+  public function testReadWriteConfig() {
     $storage = $this->container->get('config.storage');
 
     $name = 'foo.bar';
@@ -190,7 +188,7 @@ class ConfigFileContentTest extends KernelTestBase {
   /**
    * Tests serialization of configuration to file.
    */
-  public function testSerialization(): void {
+  public function testSerialization() {
     $name = $this->randomMachineName(10) . '.' . $this->randomMachineName(10);
     $config_data = [
       // Indexed arrays; the order of elements is essential.

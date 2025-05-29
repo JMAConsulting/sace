@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\migrate\Event\MigrateImportEvent;
@@ -28,7 +26,9 @@ class MigrateEventsTest extends KernelTestBase {
   protected $state;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['migrate', 'migrate_events_test'];
 
@@ -55,7 +55,7 @@ class MigrateEventsTest extends KernelTestBase {
   /**
    * Tests migration events.
    */
-  public function testMigrateEvents(): void {
+  public function testMigrateEvents() {
     // Run a simple little migration, which should trigger one of each event
     // other than map_delete.
     $definition = [

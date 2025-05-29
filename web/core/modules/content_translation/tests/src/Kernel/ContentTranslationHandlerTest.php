@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_translation\Kernel;
 
 use Drupal\Core\Form\FormState;
@@ -103,7 +101,7 @@ class ContentTranslationHandlerTest extends KernelTestBase {
    * @covers ::entityFormSharedElements
    * @covers ::addTranslatabilityClue
    */
-  public function testEntityFormSharedElements(array $element, $default_translation_affected, $default_translation, $translation_form, array $expected): void {
+  public function testEntityFormSharedElements(array $element, $default_translation_affected, $default_translation, $translation_form, array $expected) {
     $this->state->set('entity_test.translation', TRUE);
     $this->state->set('entity_test.untranslatable_fields.default_translation_affected', $default_translation_affected);
     $this->entityTypeBundleInfo->clearCachedBundles();
@@ -136,7 +134,7 @@ class ContentTranslationHandlerTest extends KernelTestBase {
    *   An array of test cases, each one containing the element to alter, the
    *   form state, and the expected altered element.
    */
-  public static function providerTestEntityFormSharedElements() {
+  public function providerTestEntityFormSharedElements() {
     $tests = [];
 
     $element = [];

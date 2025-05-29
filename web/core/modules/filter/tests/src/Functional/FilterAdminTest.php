@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\filter\Functional;
 
 use Drupal\Component\Utility\Html;
@@ -17,7 +15,6 @@ use Drupal\user\RoleInterface;
  * Thoroughly test the administrative interface of the filter module.
  *
  * @group filter
- * @group #slow
  */
 class FilterAdminTest extends BrowserTestBase {
 
@@ -128,7 +125,7 @@ class FilterAdminTest extends BrowserTestBase {
   /**
    * Tests the format administration functionality.
    */
-  public function testFormatAdmin(): void {
+  public function testFormatAdmin() {
     // Add text format.
     $this->drupalGet('admin/config/content/formats');
     $this->clickLink('Add text format');
@@ -197,7 +194,7 @@ class FilterAdminTest extends BrowserTestBase {
   /**
    * Tests filter administration functionality.
    */
-  public function testFilterAdmin(): void {
+  public function testFilterAdmin() {
     $first_filter = 'filter_autop';
     $second_filter = 'filter_url';
 
@@ -375,7 +372,7 @@ class FilterAdminTest extends BrowserTestBase {
   /**
    * Tests the URL filter settings form is properly validated.
    */
-  public function testUrlFilterAdmin(): void {
+  public function testUrlFilterAdmin() {
     // The form does not save with an invalid filter URL length.
     $edit = [
       'filters[filter_url][settings][filter_url_length]' => $this->randomMachineName(4),
@@ -388,7 +385,7 @@ class FilterAdminTest extends BrowserTestBase {
   /**
    * Tests whether filter tips page is not HTML escaped.
    */
-  public function testFilterTipHtmlEscape(): void {
+  public function testFilterTipHtmlEscape() {
     $this->drupalLogin($this->adminUser);
     global $base_url;
 
@@ -413,7 +410,7 @@ class FilterAdminTest extends BrowserTestBase {
   /**
    * Tests whether a field using a disabled format is rendered.
    */
-  public function testDisabledFormat(): void {
+  public function testDisabledFormat() {
     // Create a node type and add a standard body field.
     $node_type = NodeType::create([
       'type' => $this->randomMachineName(),

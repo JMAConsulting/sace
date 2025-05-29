@@ -1,8 +1,0 @@
-name: CLIN Update Waitlist Entry
-type: module
-description: 'Helper for CLIN Update Waitlist Entry form'
-package: Custom
-version: '1.0'
-core_version_requirement: ^8 || ^9 || ^10
-dependencies:
-  - webform:webform

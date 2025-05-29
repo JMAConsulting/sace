@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Mathias Arlaud <mathias.arlaud@gmail.com>
  *
- * @final
+ * @internal
  */
 class TraceableEncoder implements EncoderInterface, DecoderInterface, SerializerAwareInterface
 {

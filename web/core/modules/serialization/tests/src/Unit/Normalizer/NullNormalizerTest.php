@@ -40,7 +40,7 @@ class NullNormalizerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::supportsNormalization
    */
-  public function testSupportsNormalization(): void {
+  public function testSupportsNormalization() {
     $mock = $this->createMock('Drupal\Core\TypedData\TypedDataInterface');
     $this->assertTrue($this->normalizer->supportsNormalization($mock));
     // Also test that an object not implementing TypedDataInterface fails.
@@ -50,7 +50,7 @@ class NullNormalizerTest extends UnitTestCase {
   /**
    * @covers ::normalize
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $mock = $this->createMock('Drupal\Core\TypedData\TypedDataInterface');
     $this->assertNull($this->normalizer->normalize($mock));
   }

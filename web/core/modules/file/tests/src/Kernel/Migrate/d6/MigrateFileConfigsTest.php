@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel\Migrate\d6;
 
 use Drupal\Tests\SchemaCheckTestTrait;
@@ -27,7 +25,7 @@ class MigrateFileConfigsTest extends MigrateDrupal6TestBase {
   /**
    * Tests migration of file variables to file.settings.yml.
    */
-  public function testFileSettings(): void {
+  public function testFileSettings() {
     $config = $this->config('file.settings');
     $this->assertSame('textfield', $config->get('description.type'));
     $this->assertSame(128, $config->get('description.length'));

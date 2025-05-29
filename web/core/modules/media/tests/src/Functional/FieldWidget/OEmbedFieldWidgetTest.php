@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Functional\FieldWidget;
 
 use Drupal\field\Entity\FieldConfig;
@@ -22,7 +20,7 @@ class OEmbedFieldWidgetTest extends MediaFunctionalTestBase {
   /**
    * Tests that the oEmbed field widget shows the configured help text.
    */
-  public function testFieldWidgetHelpText(): void {
+  public function testFieldWidgetHelpText() {
     $account = $this->drupalCreateUser(['create media']);
     $this->drupalLogin($account);
 

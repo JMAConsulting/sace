@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Scripts;
 
 use Drupal\Core\Command\DbToolsApplication;
@@ -20,7 +18,7 @@ class DbToolsApplicationTest extends KernelTestBase {
   /**
    * Tests that the dump command is correctly registered.
    */
-  public function testDumpCommandRegistration(): void {
+  public function testDumpCommandRegistration() {
     $application = new DbToolsApplication();
     $command = $application->find('dump');
     $this->assertInstanceOf('\Drupal\Core\Command\DbDumpCommand', $command);
@@ -30,7 +28,7 @@ class DbToolsApplicationTest extends KernelTestBase {
   /**
    * Tests that the dump command is correctly registered.
    */
-  public function testImportCommandRegistration(): void {
+  public function testImportCommandRegistration() {
     $application = new DbToolsApplication();
     $command = $application->find('import');
     $this->assertInstanceOf('\Drupal\Core\Command\DbImportCommand', $command);

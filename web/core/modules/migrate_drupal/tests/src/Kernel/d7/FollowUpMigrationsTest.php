@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\d7;
 
 use Drupal\node\Entity\Node;
@@ -72,7 +70,7 @@ class FollowUpMigrationsTest extends MigrateDrupal7TestBase {
    *
    * @dataProvider providerTestEntityReferenceTranslations
    */
-  public function testEntityReferenceTranslations($node_migrations): void {
+  public function testEntityReferenceTranslations($node_migrations) {
     $this->executeMigrations($node_migrations);
 
     // Test the entity reference field before the follow-up migrations.
@@ -121,7 +119,7 @@ class FollowUpMigrationsTest extends MigrateDrupal7TestBase {
   /**
    * Data provider for testEntityReferenceTranslations().
    */
-  public static function providerTestEntityReferenceTranslations() {
+  public function providerTestEntityReferenceTranslations() {
     return [
       [
         ['d7_node', 'd7_node_translation'],

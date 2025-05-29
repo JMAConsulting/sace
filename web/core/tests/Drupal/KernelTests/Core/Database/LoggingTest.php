@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\Log;
@@ -19,7 +17,7 @@ class LoggingTest extends DatabaseTestBase {
   /**
    * Tests that we can log the existence of a query.
    */
-  public function testEnableLogging(): void {
+  public function testEnableLogging() {
     Database::startLog('testing');
 
     $start = microtime(TRUE);
@@ -43,7 +41,7 @@ class LoggingTest extends DatabaseTestBase {
   /**
    * Tests that we can run two logs in parallel.
    */
-  public function testEnableMultiLogging(): void {
+  public function testEnableMultiLogging() {
     Database::startLog('testing1');
 
     $this->connection->query('SELECT [name] FROM {test} WHERE [age] > :age', [':age' => 25])->fetchCol();
@@ -62,7 +60,7 @@ class LoggingTest extends DatabaseTestBase {
   /**
    * Tests logging queries against multiple targets on the same connection.
    */
-  public function testEnableTargetLogging(): void {
+  public function testEnableTargetLogging() {
     // Clone the primary credentials to a replica connection and to another fake
     // connection.
     $connection_info = Database::getConnectionInfo('default');
@@ -88,7 +86,7 @@ class LoggingTest extends DatabaseTestBase {
    * a fake target so the query should fall back to running on the default
    * target.
    */
-  public function testEnableTargetLoggingNoTarget(): void {
+  public function testEnableTargetLoggingNoTarget() {
     Database::startLog('testing1');
 
     $this->connection->query('SELECT [name] FROM {test} WHERE [age] > :age', [':age' => 25])->fetchCol();
@@ -110,7 +108,7 @@ class LoggingTest extends DatabaseTestBase {
   /**
    * Tests that we can log queries separately on different connections.
    */
-  public function testEnableMultiConnectionLogging(): void {
+  public function testEnableMultiConnectionLogging() {
     // Clone the primary credentials to a fake connection.
     // That both connections point to the same physical database is irrelevant.
     $connection_info = Database::getConnectionInfo('default');
@@ -137,7 +135,7 @@ class LoggingTest extends DatabaseTestBase {
   /**
    * Tests that getLog with a wrong key return an empty array.
    */
-  public function testGetLoggingWrongKey(): void {
+  public function testGetLoggingWrongKey() {
     $result = Database::getLog('wrong');
 
     $this->assertEquals([], $result, 'The function getLog with a wrong key returns an empty array.');
@@ -159,7 +157,7 @@ class LoggingTest extends DatabaseTestBase {
    *
    * @group legacy
    */
-  public function testContribDriverLog($driver_namespace, $stack, array $expected_entry): void {
+  public function testContribDriverLog($driver_namespace, $stack, array $expected_entry) {
     $this->expectDeprecation('Drupal\Core\Database\Log::findCaller() is deprecated in drupal:10.1.0 and is removed from drupal:11.0.0. Use Connection::findCallerFromDebugBacktrace(). See https://www.drupal.org/node/3328053');
     $this->expectDeprecation('Drupal\Core\Database\Log::removeDatabaseEntries() is deprecated in drupal:10.1.0 and is removed from drupal:11.0.0. Use Connection::removeDatabaseEntriesFromDebugBacktrace(). See https://www.drupal.org/node/3328053');
 
@@ -188,7 +186,7 @@ class LoggingTest extends DatabaseTestBase {
    *
    * @see ::testContribDriverLog()
    */
-  public static function providerContribDriverLog() {
+  public function providerContribDriverLog() {
     $stack = [
       [
         'file' => '/var/www/core/lib/Drupal/Core/Database/Log.php',

@@ -1,7 +1,0 @@
-clin_update_appointment:
-  version: 1
-  js:
-    js/clin_update_appointment.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupalSettings

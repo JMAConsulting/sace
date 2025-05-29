@@ -23,7 +23,7 @@ class PhpUnitTestRunnerTest extends UnitTestCase {
    *
    * @covers ::execute
    */
-  public function testRunTestsError(): void {
+  public function testRunTestsError() {
     $test_id = 23;
     $log_path = 'test_log_path';
 
@@ -86,7 +86,7 @@ class PhpUnitTestRunnerTest extends UnitTestCase {
   /**
    * @covers ::phpUnitCommand
    */
-  public function testPhpUnitCommand(): void {
+  public function testPhpUnitCommand() {
     $runner = new PhpUnitTestRunner($this->root, sys_get_temp_dir());
     $this->assertMatchesRegularExpression('/phpunit/', $runner->phpUnitCommand());
   }
@@ -94,12 +94,12 @@ class PhpUnitTestRunnerTest extends UnitTestCase {
   /**
    * @covers ::xmlLogFilePath
    */
-  public function testXmlLogFilePath(): void {
+  public function testXmlLogFilePath() {
     $runner = new PhpUnitTestRunner($this->root, sys_get_temp_dir());
     $this->assertStringEndsWith('phpunit-23.xml', $runner->xmlLogFilePath(23));
   }
 
-  public static function providerTestSummarizeResults() {
+  public function providerTestSummarizeResults() {
     return [
       [
         [
@@ -144,7 +144,7 @@ class PhpUnitTestRunnerTest extends UnitTestCase {
    * @dataProvider providerTestSummarizeResults
    * @covers ::summarizeResults
    */
-  public function testSummarizeResults($results, $has_status): void {
+  public function testSummarizeResults($results, $has_status) {
     $runner = new PhpUnitTestRunner($this->root, sys_get_temp_dir());
     $summary = $runner->summarizeResults($results);
 

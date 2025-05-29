@@ -46,7 +46,7 @@ class RouteProcessorCsrfTest extends UnitTestCase {
   /**
    * Tests the processOutbound() method with no _csrf_token route requirement.
    */
-  public function testProcessOutboundNoRequirement(): void {
+  public function testProcessOutboundNoRequirement() {
     $this->csrfToken->expects($this->never())
       ->method('get');
 
@@ -65,7 +65,7 @@ class RouteProcessorCsrfTest extends UnitTestCase {
   /**
    * Tests the processOutbound() method with a _csrf_token route requirement.
    */
-  public function testProcessOutbound(): void {
+  public function testProcessOutbound() {
     $route = new Route('/test-path', [], ['_csrf_token' => 'TRUE']);
     $parameters = [];
 
@@ -87,7 +87,7 @@ class RouteProcessorCsrfTest extends UnitTestCase {
   /**
    * Tests the processOutbound() method with a dynamic path and one replacement.
    */
-  public function testProcessOutboundDynamicOne(): void {
+  public function testProcessOutboundDynamicOne() {
     $route = new Route('/test-path/{slug}', [], ['_csrf_token' => 'TRUE']);
     $parameters = ['slug' => 100];
 
@@ -106,7 +106,7 @@ class RouteProcessorCsrfTest extends UnitTestCase {
   /**
    * Tests the processOutbound() method with two parameter replacements.
    */
-  public function testProcessOutboundDynamicTwo(): void {
+  public function testProcessOutboundDynamicTwo() {
     $route = new Route('{slug_1}/test-path/{slug_2}', [], ['_csrf_token' => 'TRUE']);
     $parameters = ['slug_1' => 100, 'slug_2' => 'test'];
 

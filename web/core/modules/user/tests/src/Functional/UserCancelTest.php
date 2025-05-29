@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\comment\CommentInterface;
@@ -17,14 +15,15 @@ use Drupal\user\Entity\User;
  * Ensure that account cancellation methods work as expected.
  *
  * @group user
- * @group #slow
  */
 class UserCancelTest extends BrowserTestBase {
 
   use CommentTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'comment'];
 
@@ -45,7 +44,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Attempt to cancel account without permission.
    */
-  public function testUserCancelWithoutPermission(): void {
+  public function testUserCancelWithoutPermission() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
     $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
@@ -82,7 +81,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Tests ability to change the permission for canceling users.
    */
-  public function testUserCancelChangePermission(): void {
+  public function testUserCancelChangePermission() {
     \Drupal::service('module_installer')->install(['user_form_test']);
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
 
@@ -107,7 +106,7 @@ class UserCancelTest extends BrowserTestBase {
    * This should never be possible, or the site owner would become unable to
    * administer the site.
    */
-  public function testUserCancelUid1(): void {
+  public function testUserCancelUid1() {
     $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
 
     \Drupal::service('module_installer')->install(['views']);
@@ -131,7 +130,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Attempt invalid account cancellations.
    */
-  public function testUserCancelInvalid(): void {
+  public function testUserCancelInvalid() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
     $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
@@ -178,7 +177,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Disable account and keep all content.
    */
-  public function testUserBlock(): void {
+  public function testUserBlock() {
     $this->config('user.settings')->set('cancel_method', 'user_cancel_block')->save();
     $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
 
@@ -215,7 +214,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Disable account and unpublish all content.
    */
-  public function testUserBlockUnpublish(): void {
+  public function testUserBlockUnpublish() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_block_unpublish')->save();
     // Create comment field on page.
@@ -287,7 +286,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Tests nodes are unpublished even if inaccessible to cancelling user.
    */
-  public function testUserBlockUnpublishNodeAccess(): void {
+  public function testUserBlockUnpublishNodeAccess() {
     \Drupal::service('module_installer')->install(['node_access_test', 'user_form_test']);
 
     // Setup node access
@@ -329,7 +328,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Delete account and anonymize all content.
    */
-  public function testUserAnonymize(): void {
+  public function testUserAnonymize() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
     // Create comment field on page.
@@ -413,7 +412,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Delete account and anonymize all content using a batch process.
    */
-  public function testUserAnonymizeBatch(): void {
+  public function testUserAnonymizeBatch() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
     $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
@@ -460,7 +459,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Delete account and remove all content.
    */
-  public function testUserDelete(): void {
+  public function testUserDelete() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $this->config('user.settings')->set('cancel_method', 'user_cancel_delete')->save();
     \Drupal::service('module_installer')->install(['comment']);
@@ -541,7 +540,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Create an administrative user and delete another user.
    */
-  public function testUserCancelByAdmin(): void {
+  public function testUserCancelByAdmin() {
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
 
     // Create a regular user.
@@ -565,7 +564,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Tests deletion of a user account without an email address.
    */
-  public function testUserWithoutEmailCancelByAdmin(): void {
+  public function testUserWithoutEmailCancelByAdmin() {
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
 
     // Create a regular user.
@@ -592,7 +591,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Create an administrative user and mass-delete other users.
    */
-  public function testMassUserCancelByAdmin(): void {
+  public function testMassUserCancelByAdmin() {
     \Drupal::service('module_installer')->install(['views']);
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
     $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
@@ -647,7 +646,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Tests user cancel with node access.
    */
-  public function testUserDeleteWithContentAndNodeAccess(): void {
+  public function testUserDeleteWithContentAndNodeAccess() {
 
     \Drupal::service('module_installer')->install(['node_access_test']);
     // Rebuild node access.
@@ -663,7 +662,7 @@ class UserCancelTest extends BrowserTestBase {
   /**
    * Delete account and anonymize all content and it's translations.
    */
-  public function testUserAnonymizeTranslations(): void {
+  public function testUserAnonymizeTranslations() {
     $this->config('user.settings')->set('cancel_method', 'user_cancel_reassign')->save();
     // Create comment field on page.
     $this->addDefaultCommentField('node', 'page');

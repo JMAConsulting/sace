@@ -59,7 +59,7 @@ class MachineNameControllerTest extends UnitTestCase {
    *     - An array of request parameters.
    *     - The expected content of the JSONresponse.
    */
-  public static function providerTestMachineNameController() {
+  public function providerTestMachineNameController() {
     // cspell:ignore äwesome
     $valid_data = [
       [['text' => 'Bob', 'langcode' => 'en'], '"Bob"'],
@@ -99,7 +99,7 @@ class MachineNameControllerTest extends UnitTestCase {
    *
    * @dataProvider providerTestMachineNameController
    */
-  public function testMachineNameController(array $request_params, $expected_content): void {
+  public function testMachineNameController(array $request_params, $expected_content) {
     $request = Request::create('', 'GET', $request_params);
     $json = $this->machineNameController->transliterate($request);
     $this->assertEquals($expected_content, $json->getContent());
@@ -108,7 +108,7 @@ class MachineNameControllerTest extends UnitTestCase {
   /**
    * Tests the pattern validation.
    */
-  public function testMachineNameControllerWithInvalidReplacePattern(): void {
+  public function testMachineNameControllerWithInvalidReplacePattern() {
     $request = Request::create('', 'GET', ['text' => 'Bob', 'langcode' => 'en', 'replace' => 'Alice', 'replace_pattern' => 'Bob', 'replace_token' => 'invalid']);
 
     $this->expectException(AccessDeniedHttpException::class);
@@ -119,7 +119,7 @@ class MachineNameControllerTest extends UnitTestCase {
   /**
    * Tests the pattern validation with a missing token.
    */
-  public function testMachineNameControllerWithMissingToken(): void {
+  public function testMachineNameControllerWithMissingToken() {
     $request = Request::create('', 'GET', ['text' => 'Bob', 'langcode' => 'en', 'replace' => 'Alice', 'replace_pattern' => 'Bob']);
 
     $this->expectException(AccessDeniedHttpException::class);

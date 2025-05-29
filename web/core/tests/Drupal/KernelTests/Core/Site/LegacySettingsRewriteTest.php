@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Site;
 
 use Drupal\Core\Site\Settings;
@@ -19,7 +17,7 @@ class LegacySettingsRewriteTest extends KernelTestBase {
   /**
    * Tests the drupal_rewrite_settings() function.
    */
-  public function testDrupalRewriteSettings(): void {
+  public function testDrupalRewriteSettings() {
     include_once $this->root . '/core/includes/install.inc';
     $site_path = $this->container->getParameter('site.path');
     $tests = [

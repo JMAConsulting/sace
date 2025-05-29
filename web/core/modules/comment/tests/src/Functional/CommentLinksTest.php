@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
@@ -49,7 +47,7 @@ class CommentLinksTest extends CommentTestBase {
   /**
    * Tests that comment links are output and can be hidden.
    */
-  public function testCommentLinks(): void {
+  public function testCommentLinks() {
     // Remove additional user permissions from $this->webUser added by setUp(),
     // since this test is limited to anonymous and authenticated roles only.
     $roles = $this->webUser->getRoles();

@@ -18,7 +18,7 @@ class LibrariesDirectoryFileFinderTest extends UnitTestCase {
   /**
    * @covers ::find
    */
-  public function testFind(): void {
+  public function testFind() {
     // Place a library file in all the possible locations.
     $structure = [
       'sites' => [

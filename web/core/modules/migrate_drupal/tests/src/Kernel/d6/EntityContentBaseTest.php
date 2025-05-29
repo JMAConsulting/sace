@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\d6;
 
 use Drupal\field\Entity\FieldConfig;
@@ -63,7 +61,7 @@ class EntityContentBaseTest extends MigrateDrupal6TestBase {
    *
    * This is the default behavior.
    */
-  public function testOverwriteAllMappedProperties(): void {
+  public function testOverwriteAllMappedProperties() {
     $this->executeMigration('d6_user');
     /** @var \Drupal\user\UserInterface $account */
     $account = User::load(2);
@@ -77,7 +75,7 @@ class EntityContentBaseTest extends MigrateDrupal6TestBase {
    *
    * The selected properties are specified in the destination configuration.
    */
-  public function testOverwriteProperties(): void {
+  public function testOverwriteProperties() {
     // Execute the migration in migrate_overwrite_test, which documents how
     // property overwrites work.
     $this->executeMigration('users');
@@ -95,7 +93,7 @@ class EntityContentBaseTest extends MigrateDrupal6TestBase {
   /**
    * Tests that translation destination fails for untranslatable entities.
    */
-  public function testUntranslatable(): void {
+  public function testUntranslatable() {
     $this->enableModules(['language_test']);
     $this->installEntitySchema('no_language_entity_test');
 

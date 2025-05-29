@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -29,9 +27,8 @@ class UserEntityLabelTest extends KernelTestBase {
   /**
    * Tests label callback.
    */
-  public function testLabelCallback(): void {
+  public function testLabelCallback() {
     $this->installEntitySchema('user');
-    $this->installConfig(['user']);
 
     $account = $this->createUser();
     $anonymous = User::create(['uid' => 0]);

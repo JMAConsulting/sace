@@ -91,7 +91,7 @@ display:
           admin_label: ''
           entity_type: node
           entity_field: sticky
-          plugin_id: standard
+          plugin_id: boolean
           order: DESC
           expose:
             label: ''
@@ -270,13 +270,12 @@ display:
         groups:
           1: AND
       style:
-        type: grid_responsive
+        type: default
         options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
           uses_fields: false
-          columns: 2
-          cell_min_width: 240
-          grid_gutter: 14
-          alignment: horizontal
       row:
         type: 'entity:node'
         options:
@@ -337,7 +336,7 @@ display:
         options:
           relationship: none
           view_mode: rss
-      rendering_language: '***LANGUAGE_language_content***'
+      rendering_language: '***LANGUAGE_language_interface***'
       display_extenders: {  }
       path: rss.xml
       sitename_title: true
@@ -360,7 +359,7 @@ display:
       defaults:
         css_class: false
         header: false
-      css_class: ''
+      css_class: grid--2
       header:
         area:
           id: area
@@ -375,7 +374,7 @@ display:
             value: '<p class="text-align-center">Explore recipes across every type of occasion, ingredient, and skill level</p>'
             format: full_html
           tokenize: false
-      rendering_language: '***LANGUAGE_language_content***'
+      rendering_language: '***LANGUAGE_language_interface***'
       display_extenders: {  }
       path: node
     cache_metadata:

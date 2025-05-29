@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\forum\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -10,7 +8,6 @@ use Drupal\Tests\BrowserTestBase;
  * Tests the forum index listing.
  *
  * @group forum
- * @group legacy
  */
 class ForumIndexTest extends BrowserTestBase {
 
@@ -46,7 +43,7 @@ class ForumIndexTest extends BrowserTestBase {
   /**
    * Tests the forum index for published and unpublished nodes.
    */
-  public function testForumIndexStatus(): void {
+  public function testForumIndexStatus() {
     // The forum ID to use.
     $tid = 1;
 

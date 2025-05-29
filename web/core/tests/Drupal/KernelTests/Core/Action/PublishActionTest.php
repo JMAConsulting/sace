@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Action;
 
 use Drupal\Core\Action\Plugin\Action\Derivative\EntityPublishedActionDeriver;
@@ -30,7 +28,7 @@ class PublishActionTest extends KernelTestBase {
   /**
    * @covers \Drupal\Core\Action\Plugin\Action\Derivative\EntityPublishedActionDeriver::getDerivativeDefinitions
    */
-  public function testGetDerivativeDefinitions(): void {
+  public function testGetDerivativeDefinitions() {
     $deriver = new EntityPublishedActionDeriver(\Drupal::entityTypeManager(), \Drupal::translation());
     $definitions = $deriver->getDerivativeDefinitions([
       'action_label' => 'Save',
@@ -45,7 +43,7 @@ class PublishActionTest extends KernelTestBase {
   /**
    * @covers \Drupal\Core\Action\Plugin\Action\PublishAction::execute
    */
-  public function testPublishAction(): void {
+  public function testPublishAction() {
     $entity = EntityTestMulRevPub::create(['name' => 'test']);
     $entity->setUnpublished()->save();
 
@@ -63,7 +61,7 @@ class PublishActionTest extends KernelTestBase {
   /**
    * @covers \Drupal\Core\Action\Plugin\Action\UnpublishAction::execute
    */
-  public function testUnpublishAction(): void {
+  public function testUnpublishAction() {
     $entity = EntityTestMulRevPub::create(['name' => 'test']);
     $entity->setPublished()->save();
 

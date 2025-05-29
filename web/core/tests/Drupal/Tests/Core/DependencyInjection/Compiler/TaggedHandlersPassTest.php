@@ -27,7 +27,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessNoConsumers(): void {
+  public function testProcessNoConsumers() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer');
@@ -44,7 +44,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessRequiredHandlers(): void {
+  public function testProcessRequiredHandlers() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer')
@@ -64,7 +64,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    * @covers ::process
    * @covers ::processServiceIdCollectorPass
    */
-  public function testIdCollectorProcessRequiredHandlers(): void {
+  public function testIdCollectorProcessRequiredHandlers() {
     $this->expectException(LogicException::class);
     $this->expectExceptionMessage("At least one service tagged with 'consumer_id' is required.");
     $container = $this->buildContainer();
@@ -83,7 +83,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessMissingInterface(): void {
+  public function testProcessMissingInterface() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id0', __NAMESPACE__ . '\ValidConsumer')
@@ -103,7 +103,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcess(): void {
+  public function testProcess() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer')
@@ -128,7 +128,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testServiceIdProcess(): void {
+  public function testServiceIdProcess() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer')
@@ -154,7 +154,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessPriority(): void {
+  public function testProcessPriority() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer')
@@ -185,7 +185,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testServiceIdProcessPriority(): void {
+  public function testServiceIdProcessPriority() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer')
@@ -218,7 +218,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessNoPriorityParam(): void {
+  public function testProcessNoPriorityParam() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer')
@@ -251,7 +251,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessWithIdParameter(): void {
+  public function testProcessWithIdParameter() {
     $container = $this->buildContainer();
     $container
       ->register('consumer_id', __NAMESPACE__ . '\ValidConsumer')
@@ -286,7 +286,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessInterfaceMismatch(): void {
+  public function testProcessInterfaceMismatch() {
     $container = $this->buildContainer();
 
     $container
@@ -311,7 +311,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessWithExtraArguments(): void {
+  public function testProcessWithExtraArguments() {
     $container = $this->buildContainer();
 
     $container
@@ -341,7 +341,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessNoPriorityAndExtraArguments(): void {
+  public function testProcessNoPriorityAndExtraArguments() {
     $container = $this->buildContainer();
 
     $container
@@ -370,7 +370,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessWithIdAndExtraArguments(): void {
+  public function testProcessWithIdAndExtraArguments() {
     $container = $this->buildContainer();
 
     $container
@@ -402,7 +402,7 @@ class TaggedHandlersPassTest extends UnitTestCase {
    *
    * @covers ::process
    */
-  public function testProcessWithDifferentArgumentsOrderAndDefaultValue(): void {
+  public function testProcessWithDifferentArgumentsOrderAndDefaultValue() {
     $container = $this->buildContainer();
 
     $container

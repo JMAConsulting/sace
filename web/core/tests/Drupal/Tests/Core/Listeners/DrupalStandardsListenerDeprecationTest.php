@@ -33,7 +33,7 @@ class DrupalStandardsListenerDeprecationTest extends UnitTestCase {
    *
    * @covers ::testFunction
    */
-  public function testDeprecation(): void {
+  public function testDeprecation() {
     // Meaningless assertion so this test is not risky.
     $this->assertTrue(TRUE);
   }

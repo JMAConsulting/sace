@@ -13,8 +13,6 @@ use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\Tests\media\Traits\MediaTypeCreationTrait;
 use Drupal\Tests\TestFileCreationTrait;
 
-// cspell:ignore hoglet
-
 /**
  * Tests media library integration with content moderation.
  *
@@ -38,14 +36,6 @@ class ContentModerationTest extends WebDriverTestBase {
     'node',
     'views',
   ];
-
-  /**
-   * {@inheritdoc}
-   *
-   * @todo Remove and fix test to not rely on super user.
-   * @see https://www.drupal.org/project/drupal/issues/3437620
-   */
-  protected bool $usesSuperUserAccessPolicy = TRUE;
 
   /**
    * {@inheritdoc}
@@ -188,7 +178,7 @@ class ContentModerationTest extends WebDriverTestBase {
   /**
    * Tests the media library widget only shows published media.
    */
-  public function testAdministrationPage(): void {
+  public function testAdministrationPage() {
     // User 1 should be able to see all media items.
     $this->drupalLogin($this->rootUser);
     $this->drupalGet('admin/content/media');
@@ -258,7 +248,7 @@ class ContentModerationTest extends WebDriverTestBase {
   /**
    * Tests the media library widget only shows published media.
    */
-  public function testWidget(): void {
+  public function testWidget() {
     $assert_session = $this->assertSession();
 
     // All users should only be able to see published media items.

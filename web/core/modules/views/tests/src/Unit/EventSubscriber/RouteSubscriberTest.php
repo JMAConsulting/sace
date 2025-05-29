@@ -66,7 +66,7 @@ class RouteSubscriberTest extends UnitTestCase {
   /**
    * @covers ::routeRebuildFinished
    */
-  public function testRouteRebuildFinished(): void {
+  public function testRouteRebuildFinished() {
     [$display_1, $display_2] = $this->setupMocks();
 
     $display_1->expects($this->once())
@@ -89,7 +89,7 @@ class RouteSubscriberTest extends UnitTestCase {
    *
    * @see \Drupal\views\EventSubscriber\RouteSubscriber::onAlterRoutes()
    */
-  public function testOnAlterRoutes(): void {
+  public function testOnAlterRoutes() {
     $collection = new RouteCollection();
     // The first route will be overridden later.
     $collection->add('test_route', new Route('test_route', ['_controller' => 'Drupal\Tests\Core\Controller\TestController']));

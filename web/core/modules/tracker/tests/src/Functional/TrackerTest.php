@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\tracker\Functional;
 
 use Drupal\comment\CommentInterface;
@@ -81,7 +79,7 @@ class TrackerTest extends BrowserTestBase {
   /**
    * Tests for the presence of nodes on the global tracker listing.
    */
-  public function testTrackerAll(): void {
+  public function testTrackerAll() {
     $this->drupalLogin($this->user);
 
     $unpublished = $this->drupalCreateNode([
@@ -142,7 +140,7 @@ class TrackerTest extends BrowserTestBase {
   /**
    * Tests for the presence of nodes on a user's tracker listing.
    */
-  public function testTrackerUser(): void {
+  public function testTrackerUser() {
     $this->drupalLogin($this->user);
 
     $unpublished = $this->drupalCreateNode([
@@ -237,7 +235,7 @@ class TrackerTest extends BrowserTestBase {
   /**
    * Tests the metadata for the "new"/"updated" indicators.
    */
-  public function testTrackerHistoryMetadata(): void {
+  public function testTrackerHistoryMetadata() {
     $this->drupalLogin($this->user);
 
     // Create a page node.
@@ -289,7 +287,7 @@ class TrackerTest extends BrowserTestBase {
   /**
    * Tests for ordering on a users tracker listing when comments are posted.
    */
-  public function testTrackerOrderingNewComments(): void {
+  public function testTrackerOrderingNewComments() {
     $this->drupalLogin($this->user);
 
     $node_one = $this->drupalCreateNode([
@@ -359,7 +357,7 @@ class TrackerTest extends BrowserTestBase {
   /**
    * Tests that existing nodes are indexed by cron.
    */
-  public function testTrackerCronIndexing(): void {
+  public function testTrackerCronIndexing() {
     $this->drupalLogin($this->user);
 
     // Create 3 nodes.
@@ -423,7 +421,7 @@ class TrackerTest extends BrowserTestBase {
   /**
    * Tests that publish/unpublish works at admin/content/node.
    */
-  public function testTrackerAdminUnpublish(): void {
+  public function testTrackerAdminUnpublish() {
     \Drupal::service('module_installer')->install(['views']);
     $admin_user = $this->drupalCreateUser([
       'access content overview',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Entity;
 
 use Drupal\Core\Language\Language;
@@ -67,7 +65,7 @@ class FieldEntityTranslationTest extends ViewTestBase {
   /**
    * Tests that different translation mechanisms can be used for base fields.
    */
-  public function testTranslationRows(): void {
+  public function testTranslationRows() {
     $node = Node::create([
       'type' => 'article',
       'title' => 'example EN',

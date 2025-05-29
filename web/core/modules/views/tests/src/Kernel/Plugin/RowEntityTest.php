@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Core\Form\FormState;
@@ -19,7 +17,9 @@ use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
 class RowEntityTest extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'entity_test',
@@ -48,7 +48,7 @@ class RowEntityTest extends ViewsKernelTestBase {
   /**
    * Tests the entity row handler.
    */
-  public function testEntityRow(): void {
+  public function testEntityRow() {
     $user = User::create([
       'name' => 'test user',
     ]);

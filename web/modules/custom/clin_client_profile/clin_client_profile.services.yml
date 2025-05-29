@@ -1,5 +1,0 @@
-services:
-  clin_client_profile.contact_information_redirect_subscriber:
-    class: Drupal\clin_client_profile\EventSubscriber\ContactInformationRedirectSubscriber
-    tags:
-      - { name: event_subscriber }

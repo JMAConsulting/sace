@@ -2,8 +2,6 @@
 
 namespace Drupal\Core\Render\Element;
 
-use Drupal\Core\Render\Attribute\RenderElement;
-
 /**
  * Provides a render element for a set of links rendered as a drop-down button.
  *
@@ -24,26 +22,27 @@ use Drupal\Core\Render\Attribute\RenderElement;
  *
  * Usage Example:
  * @code
- * $form['actions']['extra_actions'] = [
+ * $form['actions']['extra_actions'] = array(
  *   '#type' => 'dropbutton',
  *   '#dropbutton_type' => 'small',
- *   '#links' => [
- *     'simple_form' => [
+ *   '#links' => array(
+ *     'simple_form' => array(
  *       'title' => $this->t('Simple Form'),
  *       'url' => Url::fromRoute('fapi_example.simple_form'),
- *     ],
- *     'demo' => [
+ *     ),
+ *     'demo' => array(
  *       'title' => $this->t('Build Demo'),
  *       'url' => Url::fromRoute('fapi_example.build_demo'),
- *     ],
- *   ],
- * ];
+ *     ),
+ *   ),
+ * );
  * @endcode
  *
  * @see \Drupal\Core\Render\Element\Operations
+ *
+ * @RenderElement("dropbutton")
  */
-#[RenderElement('dropbutton')]
-class Dropbutton extends RenderElementBase {
+class Dropbutton extends RenderElement {
 
   /**
    * {@inheritdoc}

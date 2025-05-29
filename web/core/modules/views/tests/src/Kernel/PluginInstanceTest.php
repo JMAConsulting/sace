@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel;
 
 use Drupal\views\Views;
@@ -13,13 +11,6 @@ use Drupal\views\Plugin\views\PluginBase;
  * @group views
  */
 class PluginInstanceTest extends ViewsKernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'path_alias',
-  ];
 
   /**
    * All views plugin types.
@@ -74,7 +65,7 @@ class PluginInstanceTest extends ViewsKernelTestBase {
   /**
    * Confirms that there is plugin data for all views plugin types.
    */
-  public function testPluginData(): void {
+  public function testPluginData() {
     // Check that we have an array of data.
     $this->assertIsArray($this->definitions);
 
@@ -96,7 +87,7 @@ class PluginInstanceTest extends ViewsKernelTestBase {
    * This will iterate through all plugins from _views_fetch_plugin_data(),
    * filtering out deprecated plugins.
    */
-  public function testPluginInstances(): void {
+  public function testPluginInstances() {
     $this->assertPluginInstances(FALSE);
   }
 

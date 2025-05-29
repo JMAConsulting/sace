@@ -41,7 +41,7 @@ class JsonTest extends TestCase {
     parent::setUp();
 
     // Setup a string with the full ASCII table.
-    // @todo Add tests for non-ASCII characters and Unicode.
+    // @todo: Add tests for non-ASCII characters and Unicode.
     $this->string = '';
     for ($i = 1; $i < 128; $i++) {
       $this->string .= chr($i);
@@ -57,7 +57,7 @@ class JsonTest extends TestCase {
   /**
    * Tests encoding for every ASCII character.
    */
-  public function testEncodingAscii(): void {
+  public function testEncodingAscii() {
     // Verify there aren't character encoding problems with the source string.
     $this->assertSame(127, strlen($this->string), 'A string with the full ASCII table has the correct length.');
     foreach ($this->htmlUnsafe as $char) {
@@ -68,7 +68,7 @@ class JsonTest extends TestCase {
   /**
    * Tests encoding length.
    */
-  public function testEncodingLength(): void {
+  public function testEncodingLength() {
     // Verify that JSON encoding produces a string with all of the characters.
     $json = Json::encode($this->string);
     // Verify that a JSON-encoded string is larger than the source string.
@@ -78,7 +78,7 @@ class JsonTest extends TestCase {
   /**
    * Tests end and start of the encoded string.
    */
-  public function testEncodingStartEnd(): void {
+  public function testEncodingStartEnd() {
     $json = Json::encode($this->string);
     // The first and last characters should be ", and no others.
     $this->assertStringStartsWith('"', $json, 'A JSON encoded string begins with ".');
@@ -89,7 +89,7 @@ class JsonTest extends TestCase {
   /**
    * Tests converting PHP variables to JSON strings and back.
    */
-  public function testReversibility(): void {
+  public function testReversibility() {
     $json = Json::encode($this->string);
     // Verify that encoding/decoding is reversible.
     $json_decoded = Json::decode($json);
@@ -99,7 +99,7 @@ class JsonTest extends TestCase {
   /**
    * Tests the reversibility of structured data.
    */
-  public function testStructuredReversibility(): void {
+  public function testStructuredReversibility() {
     // Verify reversibility for structured data. Also verify that necessary
     // characters are escaped.
     $source = [TRUE, FALSE, 0, 1, '0', '1', $this->string, ['key1' => $this->string, 'key2' => ['nested' => TRUE]]];

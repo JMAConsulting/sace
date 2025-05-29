@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel;
 
 use Drupal\Core\Database\Database;
@@ -21,14 +19,6 @@ class NodeAccessLanguageTest extends NodeAccessTestBase {
    * {@inheritdoc}
    */
   protected static $modules = ['language', 'node_access_test'];
-
-  /**
-   * {@inheritdoc}
-   *
-   * @todo Remove and fix test to not rely on super user.
-   * @see https://www.drupal.org/project/drupal/issues/3437620
-   */
-  protected bool $usesSuperUserAccessPolicy = TRUE;
 
   /**
    * {@inheritdoc}
@@ -53,7 +43,7 @@ class NodeAccessLanguageTest extends NodeAccessTestBase {
   /**
    * Tests node access with multiple node languages and no private nodes.
    */
-  public function testNodeAccess(): void {
+  public function testNodeAccess() {
     $web_user = $this->drupalCreateUser(['access content']);
 
     $expected_node_access = ['view' => TRUE, 'update' => FALSE, 'delete' => FALSE];
@@ -123,7 +113,7 @@ class NodeAccessLanguageTest extends NodeAccessTestBase {
   /**
    * Tests node access with multiple node languages and private nodes.
    */
-  public function testNodeAccessPrivate(): void {
+  public function testNodeAccessPrivate() {
     $web_user = $this->drupalCreateUser(['access content']);
     $expected_node_access = ['view' => TRUE, 'update' => FALSE, 'delete' => FALSE];
     $expected_node_access_no_access = ['view' => FALSE, 'update' => FALSE, 'delete' => FALSE];
@@ -189,7 +179,7 @@ class NodeAccessLanguageTest extends NodeAccessTestBase {
   /**
    * Tests select queries with a 'node_access' tag and langcode metadata.
    */
-  public function testNodeAccessQueryTag(): void {
+  public function testNodeAccessQueryTag() {
     // Create a normal authenticated user.
     $web_user = $this->drupalCreateUser(['access content']);
 

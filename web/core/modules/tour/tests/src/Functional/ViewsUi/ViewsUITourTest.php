@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\tour\Functional\ViewsUi;
 
 use Drupal\Tests\tour\Functional\TourTestBase;
@@ -11,7 +9,6 @@ use Drupal\language\Entity\ConfigurableLanguage;
  * Tests the Views UI tour.
  *
  * @group tour
- * @group legacy
  */
 class ViewsUITourTest extends TourTestBase {
 
@@ -56,7 +53,7 @@ class ViewsUITourTest extends TourTestBase {
   /**
    * Tests views_ui tour tip availability.
    */
-  public function testViewsUiTourTips(): void {
+  public function testViewsUiTourTips() {
     // Create a basic view that shows all content, with a page and a block
     // display.
     $view['label'] = $this->randomMachineName(16);
@@ -71,7 +68,7 @@ class ViewsUITourTest extends TourTestBase {
   /**
    * Tests views_ui tour tip availability in a different language.
    */
-  public function testViewsUiTourTipsTranslated(): void {
+  public function testViewsUiTourTipsTranslated() {
     $langcode = 'nl';
 
     // Add a default locale storage for this test.

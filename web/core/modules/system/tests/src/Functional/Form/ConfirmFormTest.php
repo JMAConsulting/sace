@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Form;
 
 use Drupal\Core\Url;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class ConfirmFormTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['form_test'];
 
@@ -24,7 +24,7 @@ class ConfirmFormTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testConfirmForm(): void {
+  public function testConfirmForm() {
     // Test the building of the form.
     $this->drupalGet('form-test/confirm-form');
     $site_name = $this->config('system.site')->get('name');
@@ -57,7 +57,7 @@ class ConfirmFormTest extends BrowserTestBase {
   /**
    * Tests that the confirm form does not use external destinations.
    */
-  public function testConfirmFormWithExternalDestination(): void {
+  public function testConfirmFormWithExternalDestination() {
     $this->drupalGet('form-test/confirm-form');
     $this->assertSession()->linkByHrefExists(Url::fromRoute('form_test.route8')->toString());
     $this->drupalGet('form-test/confirm-form', ['query' => ['destination' => 'node']]);

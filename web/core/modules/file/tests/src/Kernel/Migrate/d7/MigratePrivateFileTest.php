@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel\Migrate\d7;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
@@ -54,7 +52,7 @@ class MigratePrivateFileTest extends MigrateDrupal7TestBase {
   /**
    * Tests that all expected files are migrated.
    */
-  public function testFileMigration(): void {
+  public function testFileMigration() {
     $this->assertEntity(3, 'Babylon5.txt', 'private://Babylon5.txt', 'text/plain', 3, 1486104045, 1486104045, '1');
   }
 

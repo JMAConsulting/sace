@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\KernelString;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -18,7 +16,7 @@ class UuidItemTest extends FieldKernelTestBase {
   /**
    * Tests 'uuid' random values.
    */
-  public function testSampleValue(): void {
+  public function testSampleValue() {
     $entity = EntityTest::create([]);
     $entity->save();
 

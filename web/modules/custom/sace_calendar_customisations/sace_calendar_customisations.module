@@ -2,8 +2,6 @@
 
 use Drupal\views\ViewExecutable;
 use Drupal\Core\Asset\AttachedAssetsInterface;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Block\BlockPluginInterface;
 
 function sace_calendar_customisations_block_view_fullcalendar_block_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
   $build['#attached']['library'][] = 'sace_calendar_customisations/calendar_block';
@@ -95,78 +93,5 @@ function sace_calendar_customisations_js_settings_alter(&$settings, AttachedAsse
       $calender_view_settings['slotLabelInterval'] = '01:00:00';
       $settings['fullCalendarView'][$key]['calendar_options'] = json_encode($calender_view_settings);
     }
-  }
-}
-
-// Preprocess background colours to pull from CiviCRM Appointment Colours extension versus UI 
-function sace_calendar_customisations_preprocess_views_view_fullcalendar(&$variables) {
-  $view = $variables['view'];
-  if ($view->id() == 'clin_calendar' || ($view->id() == 'team_calendar' && isset($view->args[0]))) {
-    // Fetch appointment colours based on activity type.
-    $appointmentColours = \Civi\Api4\AppointmentColours::get(FALSE)
-      ->addSelect('colour_hex', 'option_value.label')
-      ->addJoin('OptionValue AS option_value', 'LEFT', ['activity_type_id', '=', 'option_value.value'])
-      ->addWhere('option_value.option_group_id', '=', 2)
-      ->addWhere('colour_hex', 'IS NOT NULL')
-      ->addWhere('colour_hex', '!=', '000000')
-      ->execute();
-
-    $mapping = [];
-    foreach ($appointmentColours as $item) {
-      $value = $item['option_value.label'];
-      $colourHex = $item['colour_hex'];
-      $mapping[$value] = $colourHex;
-    }
-    $events = [];
-    if (isset($variables['#attached']['drupalSettings']['fullCalendarView'][$variables['view_index']]['calendar_options'])) {
-      $events = $variables['#attached']['drupalSettings']['fullCalendarView'][$variables['view_index']]['calendar_options'];
-    }
-    // Decode event data from JSON into array for modification
-    $eventData = json_decode($events, true);
-
-    // Get title of event and match to activity type + hex code
-    if ($eventData !== null) {
-    $events = $eventData['events'];
-    foreach ($events as &$event) {
-     $title = $event['title'];
-
-      $parts = explode('-', $title, 2);
-      $extractedTitle = trim($parts[1]);
-      if (isset($mapping[$extractedTitle])) {
-        $event['backgroundColor'] = '#'.$mapping[$extractedTitle];
-      }
-    }
-  }
-  $eventData['events']=$events;
-  // Encode modified data back to JSON
-  $variables['#attached']['drupalSettings']['fullCalendarView'][$variables['view_index']]['calendar_options']  = json_encode($eventData);
-  }
-}
-
-/**
- * Implements hook_library_info_alter().
- */
-function sace_calendar_customisations_library_info_alter(&$libraries, $extension) {
-  if ($extension === 'fullcalendar_block') {
-    foreach ($libraries as &$library) {
-      if (!strstr($library['cdn']['url'], '/fullcalendar')) {continue;}
-      foreach (['js'] as $component) {
-        $component_path = explode('.', $component);
-        $updated_libraries = [];
-        $asset_key = '/libraries/drupal-fullcalendar/dist/index.global.min.js';
-        $updated_libraries[$asset_key] = ['minified' => 1];
-        NestedArray::setValue($library, $component_path, $updated_libraries);
-      }
-    }
-  }
-}
-
-function sace_calendar_customisations_fullcalendar_block_settings_alter(array &$block_settings, array &$block_content, BlockPluginInterface $block) {
-  if ($block_settings['calendar_options']['initialView'] == 'resourceTimeGridDay') {
-     \Drupal::service('civicrm')->initialize();
-     $block_settings['calendar_options']['resources'] = [];
-     foreach(\Civi\Api4\Contact::get(FALSE)->addSelect('display_name')->addWhere('contact_type', '=', 'Household')->execute() as $room) {
-       $block_settings['calendar_options']['resources'][] = ['id' => $room['id'], 'title' => $room['display_name']];
-     }
   }
 }

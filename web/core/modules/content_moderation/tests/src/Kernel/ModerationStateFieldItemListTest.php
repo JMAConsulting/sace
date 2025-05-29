@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -16,7 +14,6 @@ use Drupal\workflows\Entity\Workflow;
  * @coversDefaultClass \Drupal\content_moderation\Plugin\Field\ModerationStateFieldItemList
  *
  * @group content_moderation
- * @group #slow
  */
 class ModerationStateFieldItemListTest extends KernelTestBase {
 
@@ -80,7 +77,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests the field item list when accessing an index.
    */
-  public function testArrayIndex(): void {
+  public function testArrayIndex() {
     $this->assertFalse($this->testNode->isPublished());
     $this->assertEquals('draft', $this->testNode->moderation_state[0]->value);
   }
@@ -88,7 +85,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests the field item list when iterating.
    */
-  public function testArrayIteration(): void {
+  public function testArrayIteration() {
     $states = [];
     foreach ($this->testNode->moderation_state as $item) {
       $states[] = $item->value;
@@ -99,14 +96,14 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * @covers ::getValue
    */
-  public function testGetValue(): void {
+  public function testGetValue() {
     $this->assertEquals([['value' => 'draft']], $this->testNode->moderation_state->getValue());
   }
 
   /**
    * @covers ::get
    */
-  public function testGet(): void {
+  public function testGet() {
     $this->assertEquals('draft', $this->testNode->moderation_state->get(0)->value);
     $this->expectException(\InvalidArgumentException::class);
     $this->testNode->moderation_state->get(2);
@@ -115,7 +112,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests the item list when it is emptied and appended to.
    */
-  public function testEmptyStateAndAppend(): void {
+  public function testEmptyStateAndAppend() {
     // This test case mimics the lifecycle of an entity that is being patched in
     // a rest resource.
     $this->testNode->moderation_state->setValue([]);
@@ -131,7 +128,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests an empty value assigned to the field item.
    */
-  public function testEmptyFieldItem(): void {
+  public function testEmptyFieldItem() {
     $this->testNode->moderation_state->value = '';
     $this->assertEquals('', $this->testNode->moderation_state->value);
     $this->assertEmptiedModerationFieldItemList();
@@ -140,7 +137,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests an empty value assigned to the field item list.
    */
-  public function testEmptyFieldItemList(): void {
+  public function testEmptyFieldItemList() {
     $this->testNode->moderation_state = '';
     $this->assertEquals('', $this->testNode->moderation_state->value);
     $this->assertEmptiedModerationFieldItemList();
@@ -149,7 +146,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests the field item when it is unset.
    */
-  public function testUnsetItemList(): void {
+  public function testUnsetItemList() {
     unset($this->testNode->moderation_state);
     $this->assertEquals(NULL, $this->testNode->moderation_state->value);
     $this->assertEmptiedModerationFieldItemList();
@@ -158,7 +155,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests the field item when it is assigned NULL.
    */
-  public function testAssignNullItemList(): void {
+  public function testAssignNullItemList() {
     $this->testNode->moderation_state = NULL;
     $this->assertEquals(NULL, $this->testNode->moderation_state->value);
     $this->assertEmptiedModerationFieldItemList();
@@ -184,7 +181,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests the list class with a non moderated entity.
    */
-  public function testNonModeratedEntity(): void {
+  public function testNonModeratedEntity() {
     $unmoderated_node = Node::create([
       'type' => 'unmoderated',
       'title' => 'Test title',
@@ -202,7 +199,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
    *
    * @dataProvider moderationStateChangesTestCases
    */
-  public function testModerationStateChanges($initial_state, $final_state, $first_published, $first_is_default, $second_published, $second_is_default): void {
+  public function testModerationStateChanges($initial_state, $final_state, $first_published, $first_is_default, $second_published, $second_is_default) {
     $this->testNode->moderation_state->value = $initial_state;
     $this->assertEquals($first_published, $this->testNode->isPublished());
     $this->assertEquals($first_is_default, $this->testNode->isDefaultRevision());
@@ -216,7 +213,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Data provider for ::testModerationStateChanges.
    */
-  public static function moderationStateChangesTestCases() {
+  public function moderationStateChangesTestCases() {
     return [
       'Draft to draft' => [
         'draft',
@@ -256,7 +253,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests updating the state for an entity without a workflow.
    */
-  public function testEntityWithNoWorkflow(): void {
+  public function testEntityWithNoWorkflow() {
     $node_type = NodeType::create([
       'type' => 'example_no_workflow',
       'name' => 'No-Workflow example',
@@ -284,7 +281,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
    *
    * @dataProvider entityUnserializeTestCases
    */
-  public function testEntityUnserialize($state, $default, $published): void {
+  public function testEntityUnserialize($state, $default, $published) {
     $this->testNode->moderation_state->value = $state;
 
     $this->assertEquals($state, $this->testNode->moderation_state->value);
@@ -301,7 +298,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Test cases for ::testEntityUnserialize.
    */
-  public static function entityUnserializeTestCases() {
+  public function entityUnserializeTestCases() {
     return [
       'Default draft state' => [
         'draft',
@@ -321,7 +318,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
    *
    * @dataProvider moderatedEntityWithExistingIdTestCases
    */
-  public function testModeratedEntityWithExistingId($state): void {
+  public function testModeratedEntityWithExistingId($state) {
     $node = Node::create([
       'title' => 'Test title',
       'type' => 'example',
@@ -335,7 +332,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests cases for ::testModeratedEntityWithExistingId.
    */
-  public static function moderatedEntityWithExistingIdTestCases() {
+  public function moderatedEntityWithExistingIdTestCases() {
     return [
       'Draft non-default state' => [
         'draft',
@@ -349,7 +346,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Test customizing the default moderation state.
    */
-  public function testWorkflowCustomizedInitialState(): void {
+  public function testWorkflowCustomizedInitialState() {
     $workflow = Workflow::load('editorial');
     $configuration = $workflow->getTypePlugin()->getConfiguration();
 
@@ -381,7 +378,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests the field item list when used with existing unmoderated content.
    */
-  public function testWithExistingUnmoderatedContent(): void {
+  public function testWithExistingUnmoderatedContent() {
     $node = Node::create([
       'title' => 'Test title',
       'type' => 'unmoderated',
@@ -414,7 +411,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Test generating sample values for entities with a moderation state.
    */
-  public function testModerationStateSampleValues(): void {
+  public function testModerationStateSampleValues() {
     $this->container->get('current_user')->setAccount(
       $this->createUser([
         'use editorial transition create_new_draft',
@@ -431,7 +428,7 @@ class ModerationStateFieldItemListTest extends KernelTestBase {
   /**
    * Tests field item list translation support with unmoderated content.
    */
-  public function testTranslationWithExistingUnmoderatedContent(): void {
+  public function testTranslationWithExistingUnmoderatedContent() {
     $node = Node::create([
       'title' => 'Published en',
       'langcode' => 'en',

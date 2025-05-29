@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\node\Entity\NodeType;
@@ -53,7 +51,7 @@ class NodeRevisionsUiBypassAccessTest extends NodeTestBase {
   /**
    * Checks that the Revision tab is displayed correctly.
    */
-  public function testDisplayRevisionTab(): void {
+  public function testDisplayRevisionTab() {
     $this->drupalPlaceBlock('local_tasks_block');
 
     $this->drupalLogin($this->editor);

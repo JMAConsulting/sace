@@ -20,7 +20,7 @@ class BuilderTest extends TestCase {
   /**
    * Provides test data for testBuilder.
    */
-  public static function builderTestData() {
+  public function builderTestData() {
     return [
       [
         DrupalCoreRecommendedBuilder::class,
@@ -88,7 +88,7 @@ class BuilderTest extends TestCase {
    *
    * @dataProvider builderTestData
    */
-  public function testBuilder($builderClass, $expected): void {
+  public function testBuilder($builderClass, $expected) {
     $fixtures = new Fixtures();
     $drupalCoreInfo = $fixtures->drupalCoreComposerFixture();
 

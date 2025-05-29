@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Functional;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -44,7 +42,9 @@ class BlockContentListViewsTest extends BlockContentTestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -75,7 +75,7 @@ class BlockContentListViewsTest extends BlockContentTestBase {
   /**
    * Tests the content block listing page.
    */
-  public function testListing(): void {
+  public function testListing() {
     // Test with an admin user.
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/content/block');

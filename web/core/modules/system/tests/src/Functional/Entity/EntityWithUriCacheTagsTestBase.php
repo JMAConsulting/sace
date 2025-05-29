@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Entity;
 
 use Drupal\Core\Cache\Cache;
@@ -22,7 +20,7 @@ abstract class EntityWithUriCacheTagsTestBase extends EntityCacheTagsTestBase {
    * - "<entity type>_view"
    * - "<entity_type>:<entity ID>"
    */
-  public function testEntityUri(): void {
+  public function testEntityUri() {
     $entity_url = $this->entity->toUrl();
     $entity_type = $this->entity->getEntityTypeId();
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -27,7 +25,7 @@ class MailDsnSettingsUpdateTest extends UpdatePathTestBase {
   /**
    * Tests system_post_update_mailer_dsn_settings().
    */
-  public function testSystemPostUpdateMailerDsnSettings(): void {
+  public function testSystemPostUpdateMailerDsnSettings() {
     $this->runUpdates();
 
     // Confirm that config was created.

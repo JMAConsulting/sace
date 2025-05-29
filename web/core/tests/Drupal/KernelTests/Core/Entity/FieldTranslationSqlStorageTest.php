@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -18,7 +16,7 @@ class FieldTranslationSqlStorageTest extends EntityLanguageTestBase {
   /**
    * Tests field SQL storage.
    */
-  public function testFieldSqlStorage(): void {
+  public function testFieldSqlStorage() {
     $entity_type = 'entity_test_mul';
 
     $controller = $this->entityTypeManager->getStorage($entity_type);

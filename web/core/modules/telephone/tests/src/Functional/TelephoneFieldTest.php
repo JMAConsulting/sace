@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\telephone\Functional;
 
 use Drupal\field\Entity\FieldConfig;
@@ -13,11 +11,14 @@ use Drupal\field\Entity\FieldStorageConfig;
  * Tests the creation of telephone fields.
  *
  * @group telephone
+ * @group #slow
  */
 class TelephoneFieldTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'field',
@@ -87,7 +88,7 @@ class TelephoneFieldTest extends BrowserTestBase {
    *
    * @covers \Drupal\telephone\Plugin\Field\FieldWidget\TelephoneDefaultWidget::formElement
    */
-  public function testTelephoneWidget(): void {
+  public function testTelephoneWidget() {
     $this->drupalGet('node/add/article');
     $this->assertSession()->fieldValueEquals("field_telephone[0][value]", '');
     $this->assertSession()->elementAttributeContains('css', 'input[name="field_telephone[0][value]"]', 'maxlength', (string) TelephoneItem::MAX_LENGTH);
@@ -98,9 +99,26 @@ class TelephoneFieldTest extends BrowserTestBase {
    * Tests the telephone formatter.
    *
    * @covers \Drupal\telephone\Plugin\Field\FieldFormatter\TelephoneLinkFormatter::viewElements
+   *
+   * @dataProvider providerPhoneNumbers
    */
-  public function testTelephoneFormatter(): void {
-    $phone_numbers = [
+  public function testTelephoneFormatter($input, $expected) {
+    // Test basic entry of telephone field.
+    $edit = [
+      'title[0][value]' => $this->randomMachineName(),
+      'field_telephone[0][value]' => $input,
+    ];
+
+    $this->drupalGet('node/add/article');
+    $this->submitForm($edit, 'Save');
+    $this->assertSession()->responseContains('<a href="tel:' . $expected . '">');
+  }
+
+  /**
+   * Provides the phone numbers to check and expected results.
+   */
+  public function providerPhoneNumbers() {
+    return [
       'standard phone number' => ['123456789', '123456789'],
       'whitespace is removed' => ['1234 56789', '123456789'],
       'parse_url(0) return FALSE workaround' => ['0', '0-'],
@@ -113,18 +131,6 @@ class TelephoneFieldTest extends BrowserTestBase {
       'php bug 70588 workaround - invalid port number - upper edge check' => ['99999', '9-9999'],
       'lowest number not affected by php bug 70588' => ['100000', '100000'],
     ];
-    foreach ($phone_numbers as $data) {
-      [$input, $expected] = $data;
-      // Test basic entry of telephone field.
-      $edit = [
-        'title[0][value]' => $this->randomMachineName(),
-        'field_telephone[0][value]' => $input,
-      ];
-
-      $this->drupalGet('node/add/article');
-      $this->submitForm($edit, 'Save');
-      $this->assertSession()->responseContains('<a href="tel:' . $expected . '">');
-    }
   }
 
 }

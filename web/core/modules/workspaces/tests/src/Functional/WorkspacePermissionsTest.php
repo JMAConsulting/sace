@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\workspaces\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -11,7 +9,6 @@ use Drupal\workspaces\Entity\Workspace;
  * Tests permission controls on workspaces.
  *
  * @group workspaces
- * @group #slow
  */
 class WorkspacePermissionsTest extends BrowserTestBase {
 
@@ -30,7 +27,7 @@ class WorkspacePermissionsTest extends BrowserTestBase {
   /**
    * Verifies that a user can create but not edit a workspace.
    */
-  public function testCreateWorkspace(): void {
+  public function testCreateWorkspace() {
     $editor = $this->drupalCreateUser([
       'access administration pages',
       'administer site configuration',
@@ -56,7 +53,7 @@ class WorkspacePermissionsTest extends BrowserTestBase {
   /**
    * Verifies that a user can create and edit only their own workspace.
    */
-  public function testEditOwnWorkspace(): void {
+  public function testEditOwnWorkspace() {
     $permissions = [
       'access administration pages',
       'administer site configuration',
@@ -100,7 +97,7 @@ class WorkspacePermissionsTest extends BrowserTestBase {
   /**
    * Verifies that a user can edit any workspace.
    */
-  public function testEditAnyWorkspace(): void {
+  public function testEditAnyWorkspace() {
     $permissions = [
       'access administration pages',
       'administer site configuration',
@@ -144,7 +141,7 @@ class WorkspacePermissionsTest extends BrowserTestBase {
   /**
    * Verifies that a user can create and delete only their own workspace.
    */
-  public function testDeleteOwnWorkspace(): void {
+  public function testDeleteOwnWorkspace() {
     $permissions = [
       'access administration pages',
       'administer site configuration',
@@ -178,7 +175,7 @@ class WorkspacePermissionsTest extends BrowserTestBase {
   /**
    * Verifies that a user can delete any workspace.
    */
-  public function testDeleteAnyWorkspace(): void {
+  public function testDeleteAnyWorkspace() {
     $permissions = [
       'access administration pages',
       'administer site configuration',

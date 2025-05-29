@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\comment\CommentManagerInterface;
@@ -23,7 +21,7 @@ class CommentPagerTest extends CommentTestBase {
   /**
    * Confirms comment paging works correctly with flat and threaded comments.
    */
-  public function testCommentPaging(): void {
+  public function testCommentPaging() {
     $this->drupalLogin($this->adminUser);
 
     // Set comment variables.
@@ -113,7 +111,7 @@ class CommentPagerTest extends CommentTestBase {
   /**
    * Confirms comment paging works correctly with flat and threaded comments.
    */
-  public function testCommentPermalink(): void {
+  public function testCommentPermalink() {
     $this->drupalLogin($this->adminUser);
 
     // Set comment variables.
@@ -145,7 +143,7 @@ class CommentPagerTest extends CommentTestBase {
   /**
    * Tests comment ordering and threading.
    */
-  public function testCommentOrderingThreading(): void {
+  public function testCommentOrderingThreading() {
     $this->drupalLogin($this->adminUser);
 
     // Set comment variables.
@@ -246,7 +244,7 @@ class CommentPagerTest extends CommentTestBase {
   /**
    * Tests calculation of first page with new comment.
    */
-  public function testCommentNewPageIndicator(): void {
+  public function testCommentNewPageIndicator() {
     $this->drupalLogin($this->adminUser);
 
     // Set comment variables.
@@ -338,7 +336,7 @@ class CommentPagerTest extends CommentTestBase {
   /**
    * Confirms comment paging works correctly with two pagers.
    */
-  public function testTwoPagers(): void {
+  public function testTwoPagers() {
     // Add another field to article content-type.
     $this->addDefaultCommentField('node', 'article', 'comment_2');
     // Set default to display comment list with unique pager id.

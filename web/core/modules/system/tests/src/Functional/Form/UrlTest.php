@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Form;
 
 use Drupal\Component\Serialization\Json;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class UrlTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['form_test'];
 
@@ -29,7 +29,7 @@ class UrlTest extends BrowserTestBase {
   /**
    * Tests that #type 'url' fields are properly validated and trimmed.
    */
-  public function testFormUrl(): void {
+  public function testFormUrl() {
     $edit = [];
     $edit['url'] = 'http://';
     $edit['url_required'] = ' ';

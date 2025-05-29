@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\Core\Entity\Query\Sql;
 
 use Drupal\Core\Entity\EntityType;
-use Drupal\Core\Extension\ModuleHandler;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Core\Entity\Query\QueryException;
 use Drupal\Core\Entity\Query\Sql\Query;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @coversDefaultClass \Drupal\Core\Entity\Query\Sql\Query
@@ -35,13 +33,6 @@ class QueryTest extends UnitTestCase {
     $namespaces = ['Drupal\Core\Entity\Query\Sql'];
 
     $this->query = new Query($entity_type, $conjunction, $connection, $namespaces);
-
-    $container = $this->createMock(ContainerInterface::class);
-    $container->expects($this->any())
-      ->method('get')
-      ->with('module_handler')
-      ->will($this->returnValue($this->createMock(ModuleHandler::class)));
-    \Drupal::setContainer($container);
   }
 
   /**
@@ -49,7 +40,7 @@ class QueryTest extends UnitTestCase {
    *
    * @covers ::prepare
    */
-  public function testNoBaseTable(): void {
+  public function testNoBaseTable() {
     $this->expectException(QueryException::class);
     $this->expectExceptionMessage('No base table for example_entity_query, invalid query.');
     $this->query->execute();
@@ -60,7 +51,7 @@ class QueryTest extends UnitTestCase {
    *
    * @covers ::prepare
    */
-  public function testNoRevisionTable(): void {
+  public function testNoRevisionTable() {
     $this->expectException(QueryException::class);
     $this->expectExceptionMessage('No revision table for example_entity_query, invalid query.');
     $this->query->allRevisions()->execute();

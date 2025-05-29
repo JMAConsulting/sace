@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -22,7 +20,7 @@ class ClaroVerticalTabsTest extends KernelTestBase {
   /**
    * Confirms that Claro can render vertical tabs correctly.
    */
-  public function testVerticalTabs(): void {
+  public function testVerticalTabs() {
     // Enable the Claro theme.
     \Drupal::service('theme_installer')->install(['claro']);
     $this->config('system.theme')->set('default', 'claro')->save();

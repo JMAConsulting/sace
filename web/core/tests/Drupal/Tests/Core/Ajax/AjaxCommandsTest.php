@@ -43,7 +43,7 @@ class AjaxCommandsTest extends UnitTestCase {
    *   - Array of css elements
    *   - Expected value
    */
-  public static function providerCss() {
+  public function providerCss() {
     return [
       'empty' => [
         [],
@@ -120,7 +120,7 @@ class AjaxCommandsTest extends UnitTestCase {
    * @covers \Drupal\Core\Ajax\AddCssCommand
    * @dataProvider providerCss
    */
-  public function testAddCssCommand($css, $expected): void {
+  public function testAddCssCommand($css, $expected) {
     $command = new AddCssCommand($css);
 
     $this->assertEquals($expected, $command->render());
@@ -130,7 +130,7 @@ class AjaxCommandsTest extends UnitTestCase {
    * @covers \Drupal\Core\Ajax\AddCssCommand
    * @group legacy
    */
-  public function testStringAddCssCommand(): void {
+  public function testStringAddCssCommand() {
     $this->expectDeprecation("The Drupal\Core\Ajax\AddCssCommand with a string argument is deprecated in drupal:10.1.0 and is removed from drupal:11.0.0. See http://www.drupal.org/node/3154948");
 
     $command = new AddCssCommand('<style>p{ text-decoration:blink; }</style>');
@@ -146,7 +146,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\AfterCommand
    */
-  public function testAfterCommand(): void {
+  public function testAfterCommand() {
     $command = new AfterCommand('#page-title', '<p>New Text!</p>', ['my-setting' => 'setting']);
 
     $expected = [
@@ -163,7 +163,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\AlertCommand
    */
-  public function testAlertCommand(): void {
+  public function testAlertCommand() {
     $command = new AlertCommand('Set condition 1 throughout the ship!');
     $expected = [
       'command' => 'alert',
@@ -178,7 +178,7 @@ class AjaxCommandsTest extends UnitTestCase {
    *
    * @dataProvider announceCommandProvider
    */
-  public function testAnnounceCommand($message, $priority, array $expected): void {
+  public function testAnnounceCommand($message, $priority, array $expected) {
     if ($priority === NULL) {
       $command = new AnnounceCommand($message);
     }
@@ -196,7 +196,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * Data provider for testAnnounceCommand().
    */
-  public static function announceCommandProvider() {
+  public function announceCommandProvider() {
     return [
       'no priority' => [
         'Things are going to change!',
@@ -231,7 +231,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\AppendCommand
    */
-  public function testAppendCommand(): void {
+  public function testAppendCommand() {
     $command = new AppendCommand('#page-title', '<p>New Text!</p>', ['my-setting' => 'setting']);
 
     $expected = [
@@ -248,7 +248,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\BeforeCommand
    */
-  public function testBeforeCommand(): void {
+  public function testBeforeCommand() {
     $command = new BeforeCommand('#page-title', '<p>New Text!</p>', ['my-setting' => 'setting']);
 
     $expected = [
@@ -265,7 +265,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\ChangedCommand
    */
-  public function testChangedCommand(): void {
+  public function testChangedCommand() {
     $command = new ChangedCommand('#page-title', '#page-title-changed');
 
     $expected = [
@@ -280,7 +280,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\CssCommand
    */
-  public function testCssCommand(): void {
+  public function testCssCommand() {
     $command = new CssCommand('#page-title', ['text-decoration' => 'blink']);
     $command->setProperty('font-size', '40px')->setProperty('font-weight', 'bold');
 
@@ -300,7 +300,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\DataCommand
    */
-  public function testDataCommand(): void {
+  public function testDataCommand() {
     $command = new DataCommand('#page-title', 'my-data', ['key' => 'value']);
 
     $expected = [
@@ -316,7 +316,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\HtmlCommand
    */
-  public function testHtmlCommand(): void {
+  public function testHtmlCommand() {
     $command = new HtmlCommand('#page-title', '<p>New Text!</p>', ['my-setting' => 'setting']);
 
     $expected = [
@@ -333,7 +333,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\InsertCommand
    */
-  public function testInsertCommand(): void {
+  public function testInsertCommand() {
     $command = new InsertCommand('#page-title', '<p>New Text!</p>', ['my-setting' => 'setting']);
 
     $expected = [
@@ -350,7 +350,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\InvokeCommand
    */
-  public function testInvokeCommand(): void {
+  public function testInvokeCommand() {
     $command = new InvokeCommand('#page-title', 'myMethod', ['var1', 'var2']);
 
     $expected = [
@@ -366,7 +366,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\PrependCommand
    */
-  public function testPrependCommand(): void {
+  public function testPrependCommand() {
     $command = new PrependCommand('#page-title', '<p>New Text!</p>', ['my-setting' => 'setting']);
 
     $expected = [
@@ -383,7 +383,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\RemoveCommand
    */
-  public function testRemoveCommand(): void {
+  public function testRemoveCommand() {
     $command = new RemoveCommand('#page-title');
 
     $expected = [
@@ -397,7 +397,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\ReplaceCommand
    */
-  public function testReplaceCommand(): void {
+  public function testReplaceCommand() {
     $command = new ReplaceCommand('#page-title', '<p>New Text!</p>', ['my-setting' => 'setting']);
 
     $expected = [
@@ -414,7 +414,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\RestripeCommand
    */
-  public function testRestripeCommand(): void {
+  public function testRestripeCommand() {
     $command = new RestripeCommand('#page-title');
 
     $expected = [
@@ -428,7 +428,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\SettingsCommand
    */
-  public function testSettingsCommand(): void {
+  public function testSettingsCommand() {
     $command = new SettingsCommand(['key' => 'value'], TRUE);
 
     $expected = [
@@ -443,7 +443,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\OpenDialogCommand
    */
-  public function testOpenDialogCommand(): void {
+  public function testOpenDialogCommand() {
     $command = new OpenDialogCommand('#some-dialog', 'Title', '<p>Text!</p>', [
       'url' => FALSE,
       'width' => 500,
@@ -471,7 +471,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\OpenModalDialogCommand
    */
-  public function testOpenModalDialogCommand(): void {
+  public function testOpenModalDialogCommand() {
     $command = $this->getMockBuilder('Drupal\Core\Ajax\OpenModalDialogCommand')
       ->setConstructorArgs([
         'Title', '<p>Text!</p>', [
@@ -506,7 +506,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\CloseModalDialogCommand
    */
-  public function testCloseModalDialogCommand(): void {
+  public function testCloseModalDialogCommand() {
     $command = new CloseModalDialogCommand();
     $expected = [
       'command' => 'closeDialog',
@@ -520,7 +520,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\CloseDialogCommand
    */
-  public function testCloseDialogCommand(): void {
+  public function testCloseDialogCommand() {
     $command = new CloseDialogCommand('#some-dialog', TRUE);
     $expected = [
       'command' => 'closeDialog',
@@ -534,7 +534,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\SetDialogOptionCommand
    */
-  public function testSetDialogOptionCommand(): void {
+  public function testSetDialogOptionCommand() {
     $command = new SetDialogOptionCommand('#some-dialog', 'width', '500');
     $expected = [
       'command' => 'setDialogOption',
@@ -549,7 +549,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\SetDialogTitleCommand
    */
-  public function testSetDialogTitleCommand(): void {
+  public function testSetDialogTitleCommand() {
     $command = new SetDialogTitleCommand('#some-dialog', 'Example');
     $expected = [
       'command' => 'setDialogOption',
@@ -564,7 +564,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\RedirectCommand
    */
-  public function testRedirectCommand(): void {
+  public function testRedirectCommand() {
     $command = new RedirectCommand('http://example.com');
     $expected = [
       'command' => 'redirect',
@@ -577,7 +577,7 @@ class AjaxCommandsTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Ajax\UpdateBuildIdCommand
    */
-  public function testUpdateBuildIdCommand(): void {
+  public function testUpdateBuildIdCommand() {
     $old = 'ThisStringIsOld';
     $new = 'ThisStringIsNew';
     $command = new UpdateBuildIdCommand($old, $new);

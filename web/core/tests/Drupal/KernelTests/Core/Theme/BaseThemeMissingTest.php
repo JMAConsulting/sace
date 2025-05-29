@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\Core\Extension\InfoParserException;
@@ -46,7 +44,7 @@ class BaseThemeMissingTest extends KernelTestBase {
   /**
    * Tests exception is thrown.
    */
-  public function testMissingBaseThemeException(): void {
+  public function testMissingBaseThemeException() {
     $this->expectException(InfoParserException::class);
     $this->expectExceptionMessage('Missing required key ("base theme") in core/tests/fixtures/test_missing_base_theme/test_missing_base_theme.info.yml, see https://www.drupal.org/node/3066038');
     $this->themeInstaller->install(['test_missing_base_theme']);

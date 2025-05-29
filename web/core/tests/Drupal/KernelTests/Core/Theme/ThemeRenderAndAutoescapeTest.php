@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\Component\Utility\Html;
@@ -37,7 +35,7 @@ class ThemeRenderAndAutoescapeTest extends KernelTestBase {
   /**
    * @dataProvider providerTestThemeRenderAndAutoescape
    */
-  public function testThemeRenderAndAutoescape($arg, $expected): void {
+  public function testThemeRenderAndAutoescape($arg, $expected) {
     if (is_array($arg) && isset($arg['#type']) && $arg['#type'] === 'link') {
       $arg = Link::createFromRoute($arg['#title'], $arg['#url']);
     }
@@ -57,7 +55,7 @@ class ThemeRenderAndAutoescapeTest extends KernelTestBase {
   /**
    * Provide test examples.
    */
-  public static function providerTestThemeRenderAndAutoescape() {
+  public function providerTestThemeRenderAndAutoescape() {
     return [
       'empty string unchanged' => ['', ''],
       'simple string unchanged' => ['ab', 'ab'],
@@ -81,7 +79,7 @@ class ThemeRenderAndAutoescapeTest extends KernelTestBase {
   /**
    * Ensures invalid content is handled correctly.
    */
-  public function testThemeEscapeAndRenderNotPrintable(): void {
+  public function testThemeEscapeAndRenderNotPrintable() {
     $this->expectException(\Exception::class);
     theme_render_and_autoescape(new NonPrintable());
   }
@@ -89,7 +87,7 @@ class ThemeRenderAndAutoescapeTest extends KernelTestBase {
   /**
    * Ensure cache metadata is bubbled when using theme_render_and_autoescape().
    */
-  public function testBubblingMetadata(): void {
+  public function testBubblingMetadata() {
     $link = new GeneratedLink();
     $link->setGeneratedLink('<a href="http://example.com"></a>');
     $link->addCacheTags(['foo']);
@@ -113,7 +111,7 @@ class ThemeRenderAndAutoescapeTest extends KernelTestBase {
   /**
    * Ensure cache metadata is bubbled when using theme_render_and_autoescape().
    */
-  public function testBubblingMetadataWithRenderable(): void {
+  public function testBubblingMetadataWithRenderable() {
     $link = new Link('', Url::fromRoute('<current>'));
 
     $context = new RenderContext();

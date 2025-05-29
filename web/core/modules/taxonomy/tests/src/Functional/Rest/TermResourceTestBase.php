@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Rest;
 
 use Drupal\Core\Cache\Cache;
@@ -15,7 +13,7 @@ abstract class TermResourceTestBase extends EntityResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['content_translation', 'path', 'taxonomy'];
+  protected static $modules = ['taxonomy', 'path'];
 
   /**
    * {@inheritdoc}
@@ -33,17 +31,6 @@ abstract class TermResourceTestBase extends EntityResourceTestBase {
    * @var \Drupal\taxonomy\TermInterface
    */
   protected $entity;
-
-  /**
-   * Marks some tests as skipped because XML cannot be deserialized.
-   *
-   * @before
-   */
-  public function termResourceTestBaseSkipTests(): void {
-    if (static::$format === 'xml' && $this->name() === 'testPatchPath') {
-      $this->markTestSkipped('Deserialization of the XML format is not supported.');
-    }
-  }
 
   /**
    * {@inheritdoc}
@@ -294,7 +281,7 @@ abstract class TermResourceTestBase extends EntityResourceTestBase {
    *
    * @see \Drupal\Tests\rest\Functional\EntityResource\Node\NodeResourceTestBase::testPatchPath()
    */
-  public function testPatchPath(): void {
+  public function testPatchPath() {
     $this->initAuthentication();
     $this->provisionEntityResource();
     $this->setUpAuthorization('GET');
@@ -343,7 +330,7 @@ abstract class TermResourceTestBase extends EntityResourceTestBase {
    *
    * @dataProvider providerTestGetTermWithParent
    */
-  public function testGetTermWithParent(array $parent_term_ids): void {
+  public function testGetTermWithParent(array $parent_term_ids) {
     // Create all possible parent terms.
     Term::create(['vid' => Vocabulary::load('camelids')->id()])
       ->setName('Lamoids')
@@ -369,7 +356,7 @@ abstract class TermResourceTestBase extends EntityResourceTestBase {
     $this->assertSame($expected, $actual);
   }
 
-  public static function providerTestGetTermWithParent() {
+  public function providerTestGetTermWithParent() {
     return [
       'root parent: [0] (= no parent)' => [
         [0],

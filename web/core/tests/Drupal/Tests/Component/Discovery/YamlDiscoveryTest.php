@@ -30,7 +30,7 @@ class YamlDiscoveryTest extends TestCase {
   /**
    * Tests the YAML file discovery.
    */
-  public function testDiscovery(): void {
+  public function testDiscovery() {
     vfsStreamWrapper::register();
     $root = new vfsStreamDirectory('modules');
     vfsStreamWrapper::setRoot($root);
@@ -73,7 +73,7 @@ class YamlDiscoveryTest extends TestCase {
   /**
    * Tests if filename is output for a broken YAML file.
    */
-  public function testForBrokenYml(): void {
+  public function testForBrokenYml() {
     vfsStreamWrapper::register();
     $root = new vfsStreamDirectory('modules');
     vfsStreamWrapper::setRoot($root);

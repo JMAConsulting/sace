@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_translation\Functional;
 
 use Drupal\Core\Url;
@@ -76,7 +74,7 @@ class ContentTranslationUntranslatableFieldsTest extends ContentTranslationPendi
   /**
    * Tests that hiding untranslatable field widgets works correctly.
    */
-  public function testHiddenWidgets(): void {
+  public function testHiddenWidgets() {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = $this->container->get('entity_type.manager');
     $id = $this->createEntity(['title' => $this->randomString()], 'en');

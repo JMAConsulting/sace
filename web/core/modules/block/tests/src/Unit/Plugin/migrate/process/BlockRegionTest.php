@@ -26,7 +26,7 @@ class BlockRegionTest extends UnitTestCase {
    * @return array|string
    *   The transformed value.
    */
-  protected function transform(array $value, ?Row $row = NULL) {
+  protected function transform(array $value, Row $row = NULL) {
     $executable = $this->prophesize(MigrateExecutableInterface::class)->reveal();
     if (empty($row)) {
       $row = $this->prophesize(Row::class)->reveal();
@@ -57,7 +57,7 @@ class BlockRegionTest extends UnitTestCase {
    *
    * @covers ::transform
    */
-  public function testTransformSameThemeRegionExists(): void {
+  public function testTransformSameThemeRegionExists() {
     $this->assertSame('triptych_second', $this->transform(['bartik', 'bartik', 'triptych_middle']));
   }
 
@@ -69,7 +69,7 @@ class BlockRegionTest extends UnitTestCase {
    *
    * @covers ::transform
    */
-  public function testTransformSameThemeRegionNotExists(): void {
+  public function testTransformSameThemeRegionNotExists() {
     $this->assertSame('content', $this->transform(['bartik', 'bartik', 'footer']));
   }
 

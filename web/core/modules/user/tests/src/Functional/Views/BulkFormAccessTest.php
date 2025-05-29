@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional\Views;
 
 use Drupal\user\Entity\User;
@@ -16,7 +14,9 @@ use Drupal\user\Entity\User;
 class BulkFormAccessTest extends UserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['user_access_test'];
 
@@ -35,7 +35,7 @@ class BulkFormAccessTest extends UserTestBase {
   /**
    * Tests if users that may not be edited, can not be edited in bulk.
    */
-  public function testUserEditAccess(): void {
+  public function testUserEditAccess() {
     // Create an authenticated user.
     $no_edit_user = $this->drupalCreateUser([], 'no_edit');
     // Ensure this account is not blocked.
@@ -97,7 +97,7 @@ class BulkFormAccessTest extends UserTestBase {
   /**
    * Tests if users that may not be deleted, can not be deleted in bulk.
    */
-  public function testUserDeleteAccess(): void {
+  public function testUserDeleteAccess() {
     // Create two authenticated users.
     $account = $this->drupalCreateUser([], 'no_delete');
     $account2 = $this->drupalCreateUser([], 'may_delete');

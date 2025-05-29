@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -31,7 +29,7 @@ class UserMailDefaultsTest extends KernelTestBase {
    *
    * @dataProvider userMailsProvider
    */
-  public function testMailDefaults($key): void {
+  public function testMailDefaults($key) {
     $body = $this->config('user.mail')->get("$key.body");
     $this->assertStringContainsString("\n\n", $body);
   }
@@ -42,7 +40,7 @@ class UserMailDefaultsTest extends KernelTestBase {
    * @return array
    *   Array of arrays containing the set of user mail configuration keys.
    */
-  public static function userMailsProvider() {
+  public function userMailsProvider() {
     return [
       ['cancel_confirm'],
       ['password_reset'],

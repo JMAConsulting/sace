@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\dblog\Kernel;
 
 use Drupal\Core\Database\Database;
@@ -22,7 +20,7 @@ class ConnectionFailureTest extends KernelTestBase {
   /**
    * Tests logging of connection failures.
    */
-  public function testConnectionFailureLogging(): void {
+  public function testConnectionFailureLogging() {
     $this->installSchema('dblog', ['watchdog']);
 
     // MySQL errors like "1153 - Got a packet bigger than 'max_allowed_packet'

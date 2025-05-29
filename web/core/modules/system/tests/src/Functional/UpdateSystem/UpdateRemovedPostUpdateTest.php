@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\UpdateSystem;
 
 use Drupal\Core\Database\Database;
@@ -73,7 +71,7 @@ class UpdateRemovedPostUpdateTest extends BrowserTestBase {
   /**
    * Tests hook_post_update_NAME().
    */
-  public function testRemovedPostUpdate(): void {
+  public function testRemovedPostUpdate() {
     // Mimic the behavior of ModuleInstaller::install().
     $key_value = \Drupal::service('keyvalue');
     $existing_updates = $key_value->get('post_update')->get('existing_updates', []);

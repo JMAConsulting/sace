@@ -101,13 +101,14 @@ class PrivateTempStoreTest extends UnitTestCase {
    *
    * @covers ::get
    */
-  public function testGet(): void {
-    $calls = ['1:test_2', '1:test', '1:test'];
-    $this->keyValue->expects($this->exactly(count($calls)))
+  public function testGet() {
+    $this->keyValue->expects($this->exactly(3))
       ->method('get')
-      ->with($this->callback(function (string $key) use (&$calls): bool {
-        return array_shift($calls) == $key;
-      }))
+      ->withConsecutive(
+        ['1:test_2'],
+        ['1:test'],
+        ['1:test'],
+      )
       ->willReturnOnConsecutiveCalls(
         FALSE,
         $this->ownObject,
@@ -124,7 +125,7 @@ class PrivateTempStoreTest extends UnitTestCase {
    *
    * @covers ::set
    */
-  public function testSetWithNoLockAvailable(): void {
+  public function testSetWithNoLockAvailable() {
     $this->lock->expects($this->exactly(2))
       ->method('acquire')
       ->with('1:test')
@@ -145,7 +146,7 @@ class PrivateTempStoreTest extends UnitTestCase {
    *
    * @covers ::set
    */
-  public function testSet(): void {
+  public function testSet() {
     $this->lock->expects($this->once())
       ->method('acquire')
       ->with('1:test')
@@ -168,7 +169,7 @@ class PrivateTempStoreTest extends UnitTestCase {
    *
    * @covers ::getMetadata
    */
-  public function testGetMetadata(): void {
+  public function testGetMetadata() {
     $this->keyValue->expects($this->exactly(2))
       ->method('get')
       ->with('1:test')
@@ -189,7 +190,7 @@ class PrivateTempStoreTest extends UnitTestCase {
    *
    * @covers ::delete
    */
-  public function testDeleteLocking(): void {
+  public function testDeleteLocking() {
     $this->keyValue->expects($this->once())
       ->method('get')
       ->with('1:test')
@@ -216,7 +217,7 @@ class PrivateTempStoreTest extends UnitTestCase {
    *
    * @covers ::delete
    */
-  public function testDeleteWithNoLockAvailable(): void {
+  public function testDeleteWithNoLockAvailable() {
     $this->keyValue->expects($this->once())
       ->method('get')
       ->with('1:test')
@@ -241,18 +242,19 @@ class PrivateTempStoreTest extends UnitTestCase {
    *
    * @covers ::delete
    */
-  public function testDelete(): void {
+  public function testDelete() {
     $this->lock->expects($this->once())
       ->method('acquire')
       ->with('1:test_2')
       ->willReturn(TRUE);
 
-    $calls = ['1:test_1', '1:test_2', '1:test_3'];
-    $this->keyValue->expects($this->exactly(count($calls)))
+    $this->keyValue->expects($this->exactly(3))
       ->method('get')
-      ->with($this->callback(function (string $key) use (&$calls): bool {
-        return array_shift($calls) == $key;
-      }))
+      ->withConsecutive(
+        ['1:test_1'],
+        ['1:test_2'],
+        ['1:test_3'],
+      )
       ->willReturnOnConsecutiveCalls(
         FALSE,
         $this->ownObject,

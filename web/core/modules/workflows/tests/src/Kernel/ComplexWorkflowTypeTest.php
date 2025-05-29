@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\workflows\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -24,7 +22,7 @@ class ComplexWorkflowTypeTest extends KernelTestBase {
   /**
    * @covers \Drupal\workflows\Entity\Workflow::loadMultipleByType
    */
-  public function testLoadMultipleByType(): void {
+  public function testLoadMultipleByType() {
     $workflow1 = Workflow::create([
       'id' => 'test1',
       'label' => 'Test 1',

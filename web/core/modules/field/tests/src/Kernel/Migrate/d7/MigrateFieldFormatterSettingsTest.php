@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\Migrate\d7;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -15,9 +13,6 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
  */
 class MigrateFieldFormatterSettingsTest extends MigrateDrupal7TestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = [
     'comment',
     'datetime',
@@ -98,7 +93,7 @@ class MigrateFieldFormatterSettingsTest extends MigrateDrupal7TestBase {
   /**
    * Tests migration of D7 field formatter settings.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $this->assertEntity('comment.comment_node_article.default');
     $this->assertComponent('comment.comment_node_article.default', 'comment_body', 'text_default', 'hidden', 0);
 

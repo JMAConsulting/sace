@@ -2,7 +2,6 @@
 
 namespace Drupal\Core\Render\Element;
 
-use Drupal\Core\Render\Attribute\FormElement;
 use Drupal\Core\Render\Element;
 
 /**
@@ -17,17 +16,18 @@ use Drupal\Core\Render\Element;
  *
  * Usage example:
  * @code
- * $form['phone'] = [
+ * $form['phone'] = array(
  *   '#type' => 'tel',
  *   '#title' => $this->t('Phone'),
  *   '#pattern' => '[^\d]*',
- * ];
+ * );
  * @endcode
  *
  * @see \Drupal\Core\Render\Element
+ *
+ * @FormElement("tel")
  */
-#[FormElement('tel')]
-class Tel extends FormElementBase {
+class Tel extends FormElement {
 
   /**
    * {@inheritdoc}

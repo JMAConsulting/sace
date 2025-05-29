@@ -93,16 +93,15 @@
    */
   Drupal.behaviors.states = {
     attach(context, settings) {
-      // Uses once to avoid duplicates if attach is called multiple times.
-      const elements = once('states', '[data-drupal-states]', context);
-      const il = elements.length;
+      const $states = $(context).find('[data-drupal-states]');
+      const il = $states.length;
       for (let i = 0; i < il; i++) {
         const config = JSON.parse(
-          elements[i].getAttribute('data-drupal-states'),
+          $states[i].getAttribute('data-drupal-states'),
         );
         Object.keys(config || {}).forEach((state) => {
           new states.Dependent({
-            element: $(elements[i]),
+            element: $($states[i]),
             state: states.State.sanitize(state),
             constraints: config[state],
           });
@@ -315,7 +314,7 @@
      */
     verifyConstraints(constraints, selector) {
       let result;
-      if (Array.isArray(constraints)) {
+      if ($.isArray(constraints)) {
         // This constraint is an array (OR or XOR).
         const hasXor = $.inArray('xor', constraints) === -1;
         const len = constraints.length;

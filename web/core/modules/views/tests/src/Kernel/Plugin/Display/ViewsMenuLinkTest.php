@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin\Display;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -53,7 +51,7 @@ class ViewsMenuLinkTest extends ViewsKernelTestBase {
   /**
    * Tests views internal menu link options.
    */
-  public function testMenuLinkOverrides(): void {
+  public function testMenuLinkOverrides() {
     // Link from views module.
     $views_link = $this->menuLinkManager->getDefinition('views_view:views.test_page_display_menu.page_3');
     $this->assertTrue((bool) $views_link['enabled'], 'Menu link is enabled.');

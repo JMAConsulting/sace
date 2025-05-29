@@ -47,7 +47,7 @@ class SqliteDateSql implements DateSqlInterface {
     'd' => '%d',
     // No format for full day name.
     'l' => '%d',
-    // No format for day of month number without leading zeros.
+    // no format for day of month number without leading zeros.
     'j' => '%d',
     'W' => '%W',
     'H' => '%H',

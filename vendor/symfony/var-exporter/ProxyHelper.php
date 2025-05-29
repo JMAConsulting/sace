@@ -58,37 +58,6 @@ final class ProxyHelper
                 throw new LogicException(sprintf('Cannot generate lazy ghost: class "%s" extends "%s" which is internal.', $class->name, $parent->name));
             }
         }
-
-        $hooks = '';
-        $propertyScopes = Hydrator::$propertyScopes[$class->name] ??= Hydrator::getPropertyScopes($class->name);
-        foreach ($propertyScopes as $name => $scope) {
-            if (!isset($scope[4]) || ($p = $scope[3])->isVirtual()) {
-                continue;
-            }
-
-            $type = self::exportType($p);
-            $hooks .= "\n        public {$type} \${$name} {\n";
-
-            foreach ($p->getHooks() as $hook => $method) {
-                if ($method->isFinal()) {
-                    throw new LogicException(sprintf('Cannot generate lazy ghost: hook "%s::%s()" is final.', $class->name, $method->name));
-                }
-
-                if ('get' === $hook) {
-                    $ref = ($method->returnsReference() ? '&' : '');
-                    $hooks .= "            {$ref}get { \$this->initializeLazyObject(); return parent::\${$name}::get(); }\n";
-                } elseif ('set' === $hook) {
-                    $parameters = self::exportParameters($method, true);
-                    $arg = '$'.$method->getParameters()[0]->name;
-                    $hooks .= "            set({$parameters}) { \$this->initializeLazyObject(); parent::\${$name}::set({$arg}); }\n";
-                } else {
-                    throw new LogicException(sprintf('Cannot generate lazy ghost: hook "%s::%s()" is not supported.', $class->name, $method->name));
-                }
-            }
-
-            $hooks .= "        }\n";
-        }
-
         $propertyScopes = self::exportPropertyScopes($class->name);
 
         return <<<EOPHP
@@ -97,7 +66,7 @@ final class ProxyHelper
                 use \Symfony\Component\VarExporter\LazyGhostTrait;
 
                 private const LAZY_OBJECT_PROPERTY_SCOPES = {$propertyScopes};
-            {$hooks}}
+            }
 
             // Help opcache.preload discover always-needed symbols
             class_exists(\Symfony\Component\VarExporter\Internal\Hydrator::class);
@@ -126,74 +95,14 @@ final class ProxyHelper
             throw new LogicException(sprintf('Cannot generate lazy proxy with PHP < 8.3: class "%s" is readonly.', $class->name));
         }
 
-        $hookedProperties = [];
-        if (\PHP_VERSION_ID >= 80400 && $class) {
-            $propertyScopes = Hydrator::$propertyScopes[$class->name] ??= Hydrator::getPropertyScopes($class->name);
-            foreach ($propertyScopes as $name => $scope) {
-                if (isset($scope[4]) && !($p = $scope[3])->isVirtual()) {
-                    $hookedProperties[$name] = [$p, $p->getHooks()];
-                }
-            }
-        }
-
         $methodReflectors = [$class?->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) ?? []];
         foreach ($interfaces as $interface) {
             if (!$interface->isInterface()) {
                 throw new LogicException(sprintf('Cannot generate lazy proxy: "%s" is not an interface.', $interface->name));
             }
             $methodReflectors[] = $interface->getMethods();
-
-            if (\PHP_VERSION_ID >= 80400 && !$class) {
-                foreach ($interface->getProperties() as $p) {
-                    $hookedProperties[$p->name] ??= [$p, []];
-                    $hookedProperties[$p->name][1] += $p->getHooks();
-                }
-            }
         }
-
-        $hooks = '';
-        foreach ($hookedProperties as $name => [$p, $methods]) {
-            $type = self::exportType($p);
-            $hooks .= "\n        public {$type} \${$p->name} {\n";
-
-            foreach ($methods as $hook => $method) {
-                if ($method->isFinal()) {
-                    throw new LogicException(sprintf('Cannot generate lazy proxy: hook "%s::%s()" is final.', $class->name, $method->name));
-                }
-
-                if ('get' === $hook) {
-                    $ref = ($method->returnsReference() ? '&' : '');
-                    $hooks .= <<<EOPHP
-                                {$ref}get {
-                                    if (isset(\$this->lazyObjectState)) {
-                                        return (\$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)())->{$p->name};
-                                    }
-
-                                    return parent::\${$p->name}::get();
-                                }
-
-                    EOPHP;
-                } elseif ('set' === $hook) {
-                    $parameters = self::exportParameters($method, true);
-                    $arg = '$'.$method->getParameters()[0]->name;
-                    $hooks .= <<<EOPHP
-                                set({$parameters}) {
-                                    if (isset(\$this->lazyObjectState)) {
-                                        \$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)();
-                                        \$this->lazyObjectState->realInstance->{$p->name} = {$arg};
-                                    }
-
-                                    parent::\${$p->name}::set({$arg});
-                                }
-
-                    EOPHP;
-                } else {
-                    throw new LogicException(sprintf('Cannot generate lazy proxy: hook "%s::%s()" is not supported.', $class->name, $method->name));
-                }
-            }
-
-            $hooks .= "        }\n";
-        }
+        $methodReflectors = array_merge(...$methodReflectors);
 
         $extendsInternalClass = false;
         if ($parent = $class) {
@@ -203,7 +112,6 @@ final class ProxyHelper
         }
         $methodsHaveToBeProxied = $extendsInternalClass;
         $methods = [];
-        $methodReflectors = array_merge(...$methodReflectors);
 
         foreach ($methodReflectors as $method) {
             if ('__get' !== strtolower($method->name) || 'mixed' === ($type = self::exportType($method) ?? 'mixed')) {
@@ -320,7 +228,7 @@ final class ProxyHelper
                 {$lazyProxyTraitStatement}
 
                 private const LAZY_OBJECT_PROPERTY_SCOPES = {$propertyScopes};
-            {$hooks}{$body}}
+            {$body}}
 
             // Help opcache.preload discover always-needed symbols
             class_exists(\Symfony\Component\VarExporter\Internal\Hydrator::class);
@@ -330,7 +238,7 @@ final class ProxyHelper
             EOPHP;
     }
 
-    public static function exportParameters(\ReflectionFunctionAbstract $function, bool $withParameterTypes = true, ?string &$args = null): string
+    public static function exportSignature(\ReflectionFunctionAbstract $function, bool $withParameterTypes = true, ?string &$args = null): string
     {
         $byRefIndex = 0;
         $args = '';
@@ -360,15 +268,8 @@ final class ProxyHelper
             $args = implode(', ', $args);
         }
 
-        return implode(', ', $parameters);
-    }
-
-    public static function exportSignature(\ReflectionFunctionAbstract $function, bool $withParameterTypes = true, ?string &$args = null): string
-    {
-        $parameters = self::exportParameters($function, $withParameterTypes, $args);
-
         $signature = 'function '.($function->returnsReference() ? '&' : '')
-            .($function->isClosure() ? '' : $function->name).'('.$parameters.')';
+            .($function->isClosure() ? '' : $function->name).'('.implode(', ', $parameters).')';
 
         if ($function instanceof \ReflectionMethod) {
             $signature = ($function->isPublic() ? 'public ' : ($function->isProtected() ? 'protected ' : 'private '))

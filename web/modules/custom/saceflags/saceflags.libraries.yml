@@ -1,7 +1,0 @@
-saceflags:
-  version: 1.x
-  js:
-    js/flag_colours.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupalSettings

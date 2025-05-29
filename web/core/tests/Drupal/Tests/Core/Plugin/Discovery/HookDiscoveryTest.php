@@ -43,7 +43,7 @@ class HookDiscoveryTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Plugin\Discovery::getDefinitions()
    */
-  public function testGetDefinitionsWithoutPlugins(): void {
+  public function testGetDefinitionsWithoutPlugins() {
     $this->assertCount(0, $this->hookDiscovery->getDefinitions());
   }
 
@@ -52,7 +52,7 @@ class HookDiscoveryTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Plugin\Discovery::getDefinitions()
    */
-  public function testGetDefinitions(): void {
+  public function testGetDefinitions() {
     $this->moduleHandler->expects($this->atLeastOnce())
       ->method('invokeAllWith')
       ->with('test_plugin')
@@ -81,7 +81,7 @@ class HookDiscoveryTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Plugin\Discovery::getDefinition()
    */
-  public function testGetDefinition(): void {
+  public function testGetDefinition() {
     $this->moduleHandler->expects($this->exactly(4))
       ->method('invokeAllWith')
       ->with('test_plugin')
@@ -110,7 +110,7 @@ class HookDiscoveryTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Plugin\Discovery::getDefinition()
    */
-  public function testGetDefinitionWithUnknownID(): void {
+  public function testGetDefinitionWithUnknownID() {
     $this->expectException(PluginNotFoundException::class);
     $this->hookDiscovery->getDefinition('test_non_existent', TRUE);
   }

@@ -41,7 +41,7 @@ class LinkFieldFormStatesTest extends WebDriverTestBase {
   /**
    * @dataProvider linkFieldFormStatesData
    */
-  public function testLinkFieldFormStates(string $uri, string $title): void {
+  public function testLinkFieldFormStates(string $uri, string $title) {
     $this->drupalGet('entity_test/add');
     $session = $this->assertSession();
     $session->elementNotExists('css', '#edit-links-0-uri[required]');
@@ -64,7 +64,7 @@ class LinkFieldFormStatesTest extends WebDriverTestBase {
   /**
    * Provides data for ::testLinkFieldJSFormStates.
    */
-  public static function linkFieldFormStatesData() {
+  public function linkFieldFormStatesData() {
     return [
       'Fill uri, keep title empty' => [
         'https://example.com',

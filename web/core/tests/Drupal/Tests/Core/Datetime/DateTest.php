@@ -102,7 +102,7 @@ class DateTest extends UnitTestCase {
    *
    * @covers ::formatInterval
    */
-  public function testFormatInterval($interval, $granularity, $expected, $langcode = NULL): void {
+  public function testFormatInterval($interval, $granularity, $expected, $langcode = NULL) {
     // Mocks a simple formatPlural implementation.
     $this->stringTranslation->expects($this->any())
       ->method('translateString')
@@ -124,7 +124,7 @@ class DateTest extends UnitTestCase {
   /**
    * Provides some test data for the format interval test.
    */
-  public static function providerTestFormatInterval() {
+  public function providerTestFormatInterval() {
     $data = [
       // Checks for basic seconds.
       [1, 1, '1 sec'],
@@ -159,7 +159,7 @@ class DateTest extends UnitTestCase {
   /**
    * Tests the formatInterval method for 0 second.
    */
-  public function testFormatIntervalZeroSecond(): void {
+  public function testFormatIntervalZeroSecond() {
     $result = $this->dateFormatter->formatInterval(0, 1, 'xxx-lolspeak');
     $this->assertEquals(new TranslatableMarkup('0 sec', [], ['langcode' => 'xxx-lolspeak'], $this->stringTranslation), $result);
   }
@@ -169,7 +169,7 @@ class DateTest extends UnitTestCase {
    *
    * @covers \Drupal\Core\Datetime\DateFormatter::getSampleDateFormats
    */
-  public function testGetSampleDateFormats(): void {
+  public function testGetSampleDateFormats() {
     $timestamp = strtotime('2015-03-22 14:23:00');
     $expected = $this->dateFormatter->getSampleDateFormats('en', $timestamp, 'Australia/Sydney');
 
@@ -189,7 +189,7 @@ class DateTest extends UnitTestCase {
    *
    * @covers ::formatTimeDiffUntil
    */
-  public function testFormatTimeDiffUntil(): void {
+  public function testFormatTimeDiffUntil() {
     $expected = '1 second';
     $request_time = self::createTimestamp('2013-12-11 10:09:08');
     $timestamp = self::createTimestamp('2013-12-11 10:09:09');
@@ -222,7 +222,7 @@ class DateTest extends UnitTestCase {
    *
    * @covers ::formatTimeDiffSince
    */
-  public function testFormatTimeDiffSince(): void {
+  public function testFormatTimeDiffSince() {
     $expected = '1 second';
     $timestamp = self::createTimestamp('2013-12-11 10:09:07');
     $request_time = self::createTimestamp('2013-12-11 10:09:08');
@@ -404,7 +404,7 @@ class DateTest extends UnitTestCase {
    * @covers \Drupal\Core\Datetime\FormattedDateDiff::getString
    * @covers \Drupal\Core\Datetime\FormattedDateDiff::getCacheMaxAge
    */
-  public function testFormattedDateDiff(): void {
+  public function testFormattedDateDiff() {
     $string = '10 minutes';
     $max_age = 60;
     $object = new FormattedDateDiff($string, $max_age);

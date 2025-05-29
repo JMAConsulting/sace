@@ -46,7 +46,7 @@ class AliasPathProcessorTest extends UnitTestCase {
    *
    * @see \Drupal\path_alias\PathProcessor\AliasPathProcessor::processInbound
    */
-  public function testProcessInbound(): void {
+  public function testProcessInbound() {
     $this->aliasManager->expects($this->exactly(2))
       ->method('getPathByAlias')
       ->willReturnMap([
@@ -65,7 +65,7 @@ class AliasPathProcessorTest extends UnitTestCase {
    *
    * @dataProvider providerTestProcessOutbound
    */
-  public function testProcessOutbound($path, array $options, $expected_path): void {
+  public function testProcessOutbound($path, array $options, $expected_path) {
     $this->aliasManager->expects($this->any())
       ->method('getAliasByPath')
       ->willReturnMap([
@@ -83,7 +83,7 @@ class AliasPathProcessorTest extends UnitTestCase {
   /**
    * @return array
    */
-  public static function providerTestProcessOutbound() {
+  public function providerTestProcessOutbound() {
     return [
       ['internal-url', [], 'url-alias'],
       ['internal-url', ['alias' => TRUE], 'internal-url'],

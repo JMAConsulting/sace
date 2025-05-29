@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -34,7 +32,7 @@ class GlobalThemeSettingsDefaultLogoUrlUpdateTest extends UpdatePathTestBase {
   /**
    * Tests update of system.theme.global:logo.url.
    */
-  public function testUpdate(): void {
+  public function testUpdate() {
     $logo_url_before = $this->config('system.theme.global')->get('logo.url');
     $this->assertSame('', $logo_url_before);
 

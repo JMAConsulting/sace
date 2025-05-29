@@ -1,14 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Database;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\PagerSelectExtender;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Tests the pager query select extender.
@@ -28,7 +24,7 @@ class SelectPagerDefaultTest extends DatabaseTestBase {
    * Note that we have to make an HTTP request to a test page handler
    * because the pager depends on GET parameters.
    */
-  public function testEvenPagerQuery(): void {
+  public function testEvenPagerQuery() {
     // To keep the test from being too brittle, we determine up front
     // what the page count should be dynamically, and pass the control
     // information forward to the actual query on the other side of the
@@ -62,7 +58,7 @@ class SelectPagerDefaultTest extends DatabaseTestBase {
    * Note that we have to make an HTTP request to a test page handler
    * because the pager depends on GET parameters.
    */
-  public function testOddPagerQuery(): void {
+  public function testOddPagerQuery() {
     // To keep the test from being too brittle, we determine up front
     // what the page count should be dynamically, and pass the control
     // information forward to the actual query on the other side of the
@@ -95,7 +91,7 @@ class SelectPagerDefaultTest extends DatabaseTestBase {
    *
    * This is a regression test for #467984.
    */
-  public function testInnerPagerQuery(): void {
+  public function testInnerPagerQuery() {
     $connection = Database::getConnection();
     $query = $connection->select('test', 't')
       ->extend(PagerSelectExtender::class);
@@ -119,7 +115,7 @@ class SelectPagerDefaultTest extends DatabaseTestBase {
    *
    * This is a regression test for #467984.
    */
-  public function testHavingPagerQuery(): void {
+  public function testHavingPagerQuery() {
     $query = Database::getConnection()->select('test', 't')
       ->extend(PagerSelectExtender::class);
     $query
@@ -138,13 +134,12 @@ class SelectPagerDefaultTest extends DatabaseTestBase {
   /**
    * Confirms that every pager gets a valid, non-overlapping element ID.
    */
-  public function testElementNumbers(): void {
+  public function testElementNumbers() {
 
     $request = Request::createFromGlobals();
     $request->query->replace([
       'page' => '3, 2, 1, 0',
     ]);
-    $request->setSession(new Session(new MockArraySessionStorage()));
     \Drupal::getContainer()->get('request_stack')->push($request);
 
     $connection = Database::getConnection();

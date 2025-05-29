@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Migrate\d6;
 
 use Drupal\Core\Database\Database;
@@ -45,7 +43,7 @@ class MigrateNodeTest extends MigrateNodeTestBase {
   /**
    * Tests node migration from Drupal 6 to 8.
    */
-  public function testNode(): void {
+  public function testNode() {
     // Confirm there are only classic node migration map tables. This shows
     // that only the classic migration ran.
     $results = $this->nodeMigrateMapTableCount('6');

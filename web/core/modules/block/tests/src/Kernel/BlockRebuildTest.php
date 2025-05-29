@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block\Kernel;
 
 use Drupal\block\Entity\Block;
@@ -47,7 +45,7 @@ class BlockRebuildTest extends KernelTestBase {
   /**
    * @covers ::block_rebuild
    */
-  public function testRebuildNoBlocks(): void {
+  public function testRebuildNoBlocks() {
     block_rebuild();
     $messages = \Drupal::messenger()->all();
     \Drupal::messenger()->deleteAll();
@@ -57,7 +55,7 @@ class BlockRebuildTest extends KernelTestBase {
   /**
    * @covers ::block_rebuild
    */
-  public function testRebuildNoInvalidBlocks(): void {
+  public function testRebuildNoInvalidBlocks() {
     $this->placeBlock('system_powered_by_block', ['region' => 'content']);
 
     block_rebuild();
@@ -69,7 +67,7 @@ class BlockRebuildTest extends KernelTestBase {
   /**
    * @covers ::block_rebuild
    */
-  public function testRebuildInvalidBlocks(): void {
+  public function testRebuildInvalidBlocks() {
     $this->placeBlock('system_powered_by_block', ['region' => 'content']);
     $block1 = $this->placeBlock('system_powered_by_block');
     $block2 = $this->placeBlock('system_powered_by_block');

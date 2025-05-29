@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\datetime_range\Kernel;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -93,7 +91,7 @@ class SeparatorTranslationTest extends KernelTestBase {
   /**
    * Tests the translation of the range separator.
    */
-  public function testSeparatorTranslation(): void {
+  public function testSeparatorTranslation() {
     // Create an entity.
     $entity = EntityTest::create([
       'name' => $this->randomString(),

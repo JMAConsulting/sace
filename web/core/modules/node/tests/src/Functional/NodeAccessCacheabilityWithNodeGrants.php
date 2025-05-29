@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -31,7 +29,7 @@ class NodeAccessCacheabilityWithNodeGrants extends BrowserTestBase {
   /**
    * Tests node view access cacheability with node grants.
    */
-  public function testAccessCacheabilityWithNodeGrants(): void {
+  public function testAccessCacheabilityWithNodeGrants() {
     NodeType::create(['type' => 'page', 'name' => 'Page'])->save();
     $this->createEntityReferenceField('node', 'page', 'ref', 'Ref', 'node');
     EntityViewDisplay::create([

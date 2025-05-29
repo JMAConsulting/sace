@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Plugin;
 
 use Drupal\Core\Plugin\Context\ContextHandler;
@@ -31,7 +29,7 @@ class ContextHandlerTest extends KernelTestBase {
   /**
    * @covers ::applyContextMapping
    */
-  public function testApplyContextMapping(): void {
+  public function testApplyContextMapping() {
     $entity = EntityTest::create([]);
     $context_definition = EntityContextDefinition::fromEntity($entity);
     $context = EntityContext::fromEntity($entity);
@@ -49,7 +47,7 @@ class ContextHandlerTest extends KernelTestBase {
   /**
    * @covers ::applyContextMapping
    */
-  public function testApplyContextMappingAlreadyApplied(): void {
+  public function testApplyContextMappingAlreadyApplied() {
     $entity = EntityTest::create([]);
     $context_definition = EntityContextDefinition::fromEntity($entity);
     $context = EntityContext::fromEntity($entity);

@@ -104,16 +104,16 @@ interface CacheBackendInterface {
    * @param array $items
    *   An array of cache items, keyed by cid. In the form:
    *   @code
-   *   $items = [
-   *     $cid => [
+   *   $items = array(
+   *     $cid => array(
    *       // Required, will be automatically serialized if not a string.
    *       'data' => $data,
    *       // Optional, defaults to CacheBackendInterface::CACHE_PERMANENT.
    *       'expire' => CacheBackendInterface::CACHE_PERMANENT,
    *       // (optional) The cache tags for this item, see CacheBackendInterface::set().
-   *       'tags' => [],
-   *     ],
-   *   ];
+   *       'tags' => array(),
+   *     ),
+   *   );
    *   @endcode
    */
   public function setMultiple(array $items);

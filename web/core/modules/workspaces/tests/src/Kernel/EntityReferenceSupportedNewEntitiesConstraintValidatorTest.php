@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\workspaces\Kernel;
 
 use Drupal\Core\Entity\EntityTypeManager;
@@ -28,6 +26,7 @@ class EntityReferenceSupportedNewEntitiesConstraintValidatorTest extends KernelT
     'user',
     'workspaces',
     'entity_test',
+    'path_alias',
   ];
 
   /**
@@ -57,7 +56,7 @@ class EntityReferenceSupportedNewEntitiesConstraintValidatorTest extends KernelT
   /**
    * @covers ::validate
    */
-  public function testNewEntitiesAllowedInDefaultWorkspace(): void {
+  public function testNewEntitiesAllowedInDefaultWorkspace() {
     $entity = EntityTestMulRevPub::create([
       'unsupported_reference' => [
         'entity' => EntityTest::create([]),
@@ -72,7 +71,7 @@ class EntityReferenceSupportedNewEntitiesConstraintValidatorTest extends KernelT
   /**
    * @covers ::validate
    */
-  public function testNewEntitiesForbiddenInNonDefaultWorkspace(): void {
+  public function testNewEntitiesForbiddenInNonDefaultWorkspace() {
     $this->switchToWorkspace('stage');
     $entity = EntityTestMulRevPub::create([
       'unsupported_reference' => [

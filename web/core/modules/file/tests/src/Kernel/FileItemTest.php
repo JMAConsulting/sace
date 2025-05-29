@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel;
 
 use Drupal\Core\Field\FieldItemInterface;
@@ -22,7 +20,9 @@ use Drupal\user\Entity\Role;
 class FileItemTest extends FieldKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['file'];
 
@@ -80,7 +80,7 @@ class FileItemTest extends FieldKernelTestBase {
   /**
    * Tests using entity fields of the file field type.
    */
-  public function testFileItem(): void {
+  public function testFileItem() {
     // Check that the selection handler was automatically assigned to
     // 'default:file'.
     $field_definition = FieldConfig::load('entity_test.entity_test.file_test');

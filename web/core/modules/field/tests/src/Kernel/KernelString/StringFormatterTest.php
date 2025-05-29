@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\KernelString;
 
 use Drupal\Component\Utility\Html;
@@ -21,7 +19,9 @@ use Drupal\KernelTests\KernelTestBase;
 class StringFormatterTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'field',
@@ -119,7 +119,7 @@ class StringFormatterTest extends KernelTestBase {
   /**
    * Tests string formatter output.
    */
-  public function testStringFormatter(): void {
+  public function testStringFormatter() {
     $value = $this->randomString();
     $value .= "\n\n<strong>" . $this->randomString() . '</strong>';
     $value .= "\n\n" . $this->randomString();
@@ -192,7 +192,7 @@ class StringFormatterTest extends KernelTestBase {
   /**
    * Test "link_to_entity" feature on fields which are added to config entity.
    */
-  public function testLinkToContentForEntitiesWithNoCanonicalPath(): void {
+  public function testLinkToContentForEntitiesWithNoCanonicalPath() {
     $this->enableModules(['entity_test']);
     $field_name = 'test_field_name';
     $entity_type = $bundle = 'entity_test_label';

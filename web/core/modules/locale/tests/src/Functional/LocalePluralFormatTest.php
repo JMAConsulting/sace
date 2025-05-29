@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Component\Gettext\PoItem;
@@ -26,7 +24,9 @@ class LocalePluralFormatTest extends BrowserTestBase {
   protected $adminUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['locale'];
 
@@ -52,7 +52,7 @@ class LocalePluralFormatTest extends BrowserTestBase {
   /**
    * Tests locale_get_plural() and \Drupal::translation()->formatPlural().
    */
-  public function testGetPluralFormat(): void {
+  public function testGetPluralFormat() {
     // Import some .po files with formulas to set up the environment.
     // These will also add the languages to the system.
     $this->importPoFile($this->getPoFileWithSimplePlural(), [
@@ -161,7 +161,7 @@ class LocalePluralFormatTest extends BrowserTestBase {
   /**
    * Tests plural editing of DateFormatter strings.
    */
-  public function testPluralEditDateFormatter(): void {
+  public function testPluralEditDateFormatter() {
 
     // Import some .po files with formulas to set up the environment.
     // These will also add the languages to the system.
@@ -235,7 +235,7 @@ class LocalePluralFormatTest extends BrowserTestBase {
   /**
    * Tests plural editing and export functionality.
    */
-  public function testPluralEditExport(): void {
+  public function testPluralEditExport() {
     // Import some .po files with formulas to set up the environment.
     // These will also add the languages to the system.
     $this->importPoFile($this->getPoFileWithSimplePlural(), [

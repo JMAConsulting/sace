@@ -57,17 +57,17 @@ class LanguageNegotiationContentEntityTest extends LanguageNegotiationTestBase {
     $language_de = $this->createMock(LanguageInterface::class);
     $language_de->expects($this->any())
       ->method('getId')
-      ->willReturn('de');
+      ->will($this->returnValue('de'));
     $language_de->expects($this->any())
       ->method('getName')
-      ->willReturn('German');
+      ->will($this->returnValue('German'));
     $language_en = $this->createMock(LanguageInterface::class);
     $language_en->expects($this->any())
       ->method('getId')
-      ->willReturn('en');
+      ->will($this->returnValue('en'));
     $language_en->expects($this->any())
       ->method('getName')
-      ->willReturn('English');
+      ->will($this->returnValue('English'));
     $this->languages = [
       'de' => $language_de,
       'en' => $language_en,
@@ -76,10 +76,10 @@ class LanguageNegotiationContentEntityTest extends LanguageNegotiationTestBase {
     $language_manager = $this->createMock(ConfigurableLanguageManagerInterface::class);
     $language_manager->expects($this->any())
       ->method('getLanguages')
-      ->willReturn($this->languages);
+      ->will($this->returnValue($this->languages));
     $language_manager->expects($this->any())
       ->method('getNativeLanguages')
-      ->willReturn($this->languages);
+      ->will($this->returnValue($this->languages));
     $this->languageManager = $language_manager;
 
     $container = new ContainerBuilder();
@@ -97,7 +97,7 @@ class LanguageNegotiationContentEntityTest extends LanguageNegotiationTestBase {
   /**
    * @covers ::getLangcode
    */
-  public function testGetLangcode(): void {
+  public function testGetLangcode() {
     $languageNegotiationContentEntity = $this->createLanguageNegotiationPlugin();
 
     // Case 1: Empty request.
@@ -131,7 +131,7 @@ class LanguageNegotiationContentEntityTest extends LanguageNegotiationTestBase {
   /**
    * @covers ::processOutbound
    */
-  public function testProcessOutbound(): void {
+  public function testProcessOutbound() {
 
     // Case 1: Not all processing conditions are met.
     $languageNegotiationContentEntityMock = $this->createPartialMock($this->getPluginClass(),
@@ -167,10 +167,10 @@ class LanguageNegotiationContentEntityTest extends LanguageNegotiationTestBase {
       ['hasLowerLanguageNegotiationWeight', 'meetsContentEntityRoutesCondition', 'getLangcode']);
     $languageNegotiationContentEntityMock->expects($this->any())
       ->method('hasLowerLanguageNegotiationWeight')
-      ->willReturn(TRUE);
+      ->will($this->returnValue(TRUE));
     $languageNegotiationContentEntityMock->expects($this->any())
       ->method('meetsContentEntityRoutesCondition')
-      ->willReturn(TRUE);
+      ->will($this->returnValue(TRUE));
     $languageNegotiationContentEntityMock->expects($this->exactly(2))
       ->method('getLangcode')
       ->willReturnOnConsecutiveCalls(
@@ -208,7 +208,7 @@ class LanguageNegotiationContentEntityTest extends LanguageNegotiationTestBase {
   /**
    * @covers ::getLanguageSwitchLinks
    */
-  public function testGetLanguageSwitchLinks(): void {
+  public function testGetLanguageSwitchLinks() {
     $languageNegotiationContentEntity = $this->createLanguageNegotiationPlugin();
     $languageNegotiationContentEntity->setLanguageManager($this->languageManager);
 

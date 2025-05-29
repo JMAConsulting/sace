@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -34,7 +32,7 @@ class ExcludedModulesEventSubscriberTest extends KernelTestBase {
   /**
    * Tests excluding modules from the config export.
    */
-  public function testExcludedModules(): void {
+  public function testExcludedModules() {
     // Assert that config_test is in the active config.
     $active = $this->container->get('config.storage');
     $this->assertNotEmpty($active->listAll('config_test.'));

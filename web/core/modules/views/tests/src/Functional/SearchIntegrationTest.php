@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional;
 
 use Drupal\Tests\Traits\Core\CronRunTrait;
@@ -16,7 +14,9 @@ class SearchIntegrationTest extends ViewTestBase {
   use CronRunTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'search'];
 
@@ -35,7 +35,7 @@ class SearchIntegrationTest extends ViewTestBase {
   /**
    * Tests search integration.
    */
-  public function testSearchIntegration(): void {
+  public function testSearchIntegration() {
     // Create a content type.
     $type = $this->drupalCreateContentType();
 

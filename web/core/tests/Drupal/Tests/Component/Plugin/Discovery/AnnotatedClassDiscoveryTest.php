@@ -24,7 +24,7 @@ class AnnotatedClassDiscoveryTest extends TestCase {
    *
    * @var string[]
    */
-  public static function provideBadAnnotations() {
+  public function provideBadAnnotations() {
     return [
       ['addtogroup'],
       ['code'],
@@ -58,7 +58,7 @@ class AnnotatedClassDiscoveryTest extends TestCase {
    *
    * @coversNothing
    */
-  public function testAutoloadBadAnnotations($annotation): void {
+  public function testAutoloadBadAnnotations($annotation) {
     // Set up a class file in vfsStream.
     vfsStreamWrapper::register();
     $root = new vfsStreamDirectory('root');

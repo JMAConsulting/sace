@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -34,14 +32,6 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   *
-   * @todo Remove and fix test to not rely on super user.
-   * @see https://www.drupal.org/project/drupal/issues/3437620
-   */
-  protected bool $usesSuperUserAccessPolicy = TRUE;
-
-  /**
    * An admin user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -68,7 +58,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
    *
    * @covers ::validate
    */
-  public function testValidTransition(): void {
+  public function testValidTransition() {
     $this->setCurrentUser($this->adminUser);
 
     $node_type = NodeType::create([
@@ -99,7 +89,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
    *
    * @covers ::validate
    */
-  public function testInvalidTransition(): void {
+  public function testInvalidTransition() {
     $this->setCurrentUser($this->adminUser);
 
     $node_type = NodeType::create([
@@ -128,7 +118,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   /**
    * Tests validation with an invalid state.
    */
-  public function testInvalidState(): void {
+  public function testInvalidState() {
     $node_type = NodeType::create([
       'type' => 'example',
       'name' => 'Example',
@@ -152,7 +142,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   /**
    * Tests validation with no initial state or an invalid state.
    */
-  public function testInvalidStateWithoutExisting(): void {
+  public function testInvalidStateWithoutExisting() {
     $this->setCurrentUser($this->adminUser);
     // Create content without moderation enabled for the content type.
     $node_type = NodeType::create([
@@ -202,7 +192,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   /**
    * Tests state transition validation with multiple languages.
    */
-  public function testInvalidStateMultilingual(): void {
+  public function testInvalidStateMultilingual() {
     $this->setCurrentUser($this->adminUser);
 
     ConfigurableLanguage::createFromLangcode('fr')->save();
@@ -260,7 +250,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   /**
    * Tests that content without prior moderation information can be moderated.
    */
-  public function testExistingContentWithNoModeration(): void {
+  public function testExistingContentWithNoModeration() {
     $this->setCurrentUser($this->adminUser);
 
     $node_type = NodeType::create([
@@ -297,7 +287,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   /**
    * Tests that content without prior moderation information can be translated.
    */
-  public function testExistingMultilingualContentWithNoModeration(): void {
+  public function testExistingMultilingualContentWithNoModeration() {
     $this->setCurrentUser($this->adminUser);
 
     // Enable French.
@@ -343,7 +333,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   /**
    * @dataProvider transitionAccessValidationTestCases
    */
-  public function testTransitionAccessValidation($permissions, $target_state, $messages): void {
+  public function testTransitionAccessValidation($permissions, $target_state, $messages) {
     $node_type = NodeType::create([
       'type' => 'example',
       'name' => 'Example',
@@ -374,7 +364,7 @@ class EntityStateChangeValidationTest extends KernelTestBase {
   /**
    * Test cases for ::testTransitionAccessValidation.
    */
-  public static function transitionAccessValidationTestCases() {
+  public function transitionAccessValidationTestCases() {
     return [
       'Invalid transition, no permissions validated' => [
         [],

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\filter\Functional;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -28,7 +26,7 @@ class FilterFormatUpdateFilterSortingTest extends UpdatePathTestBase {
   /**
    * Tests filter_post_update_sort_filters().
    */
-  public function testFilterPostUpdateSortFilters(): void {
+  public function testFilterPostUpdateSortFilters() {
     $format_config = $this->config('filter.format.plain_text');
     $this->assertSame(['filter_html_escape', 'filter_url', 'filter_autop'], array_keys($format_config->get('filters')));
 

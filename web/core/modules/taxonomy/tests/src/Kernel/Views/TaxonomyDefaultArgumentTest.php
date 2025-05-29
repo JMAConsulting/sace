@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Views;
 
 use Drupal\field\Entity\FieldConfig;
@@ -56,16 +54,15 @@ class TaxonomyDefaultArgumentTest extends TaxonomyTestBase {
   /**
    * Tests the relationship.
    */
-  public function testNodePath(): void {
+  public function testNodePath() {
     $view = $this->initViewWithRequest($this->nodes[0]->toUrl()->toString());
 
     $expected = implode(',', [$this->term1->id(), $this->term2->id()]);
     $this->assertEquals($expected, $view->argument['tid']->getDefaultArgument());
-    $this->assertEquals($this->nodes[0]->getCacheTags(), $view->argument['tid']->getPlugin('argument_default')->getCacheTags());
     $view->destroy();
   }
 
-  public function testNodePathWithViewSelection(): void {
+  public function testNodePathWithViewSelection() {
     // Change the term entity reference field to use a view as selection plugin.
     \Drupal::service('module_installer')->install(['entity_reference_test']);
 
@@ -84,15 +81,13 @@ class TaxonomyDefaultArgumentTest extends TaxonomyTestBase {
 
     $expected = implode(',', [$this->term1->id(), $this->term2->id()]);
     $this->assertEquals($expected, $view->argument['tid']->getDefaultArgument());
-    $this->assertEquals($this->nodes[0]->getCacheTags(), $view->argument['tid']->getPlugin('argument_default')->getCacheTags());
   }
 
-  public function testTermPath(): void {
+  public function testTermPath() {
     $view = $this->initViewWithRequest($this->term1->toUrl()->toString());
 
     $expected = $this->term1->id();
     $this->assertEquals($expected, $view->argument['tid']->getDefaultArgument());
-    $this->assertEmpty($view->argument['tid']->getPlugin('argument_default')->getCacheTags());
   }
 
 }

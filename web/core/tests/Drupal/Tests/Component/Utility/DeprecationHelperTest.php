@@ -21,7 +21,7 @@ class DeprecationHelperTest extends TestCase {
    *
    * @dataProvider deprecatedHelperTestCases
    */
-  public function testDeprecationHelper(string $currentVersion, array $tests): void {
+  public function testDeprecationHelper(string $currentVersion, array $tests) {
     foreach ($tests as $deprecatedVersion => $expectedCallable) {
       $result = DeprecationHelper::backwardsCompatibleCall(
         $currentVersion,

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\responsive_image\Kernel;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -42,7 +40,7 @@ class ResponsiveImageIntegrationTest extends KernelTestBase {
   /**
    * Tests integration with entity view display.
    */
-  public function testEntityViewDisplayDependency(): void {
+  public function testEntityViewDisplayDependency() {
     // Create a responsive image style.
     ResponsiveImageStyle::create([
       'id' => 'foo',

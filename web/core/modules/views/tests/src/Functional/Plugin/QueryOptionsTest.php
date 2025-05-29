@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -21,7 +19,9 @@ class QueryOptionsTest extends ViewTestBase {
   public static $testViews = ['test_view'];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'views_ui'];
 
@@ -33,7 +33,7 @@ class QueryOptionsTest extends ViewTestBase {
   /**
    * Test that query overrides are stored.
    */
-  public function testStoreQuerySettingsOverride(): void {
+  public function testStoreQuerySettingsOverride() {
     // Show the default display so the override selection is shown.
     \Drupal::configFactory()->getEditable('views.settings')->set('ui.show.default_display', TRUE)->save();
 

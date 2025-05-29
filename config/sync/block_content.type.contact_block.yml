@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 id: contact_block
 label: 'Contact Block'
-revision: false
+revision: 0
 description: ''

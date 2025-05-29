@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Entity;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -78,7 +76,7 @@ class ContentEntityFormCorrectUserInputMappingOnFieldDeltaElementsTest extends B
   /**
    * Tests the correct user input mapping on complex fields.
    */
-  public function testCorrectUserInputMappingOnComplexFields(): void {
+  public function testCorrectUserInputMappingOnComplexFields() {
     /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
     $storage = $this->container->get('entity_type.manager')->getStorage($this->entityTypeId);
 

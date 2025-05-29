@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Common;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
@@ -28,7 +26,7 @@ class DrupalFlushAllCachesTest extends KernelTestBase {
   /**
    * Tests that drupal_flush_all_caches() uses core.extension properly.
    */
-  public function testDrupalFlushAllCachesModuleList(): void {
+  public function testDrupalFlushAllCachesModuleList() {
     $this->assertFalse(function_exists('system_test_help'));
     $core_extension = \Drupal::configFactory()->getEditable('core.extension');
     $module = $core_extension->get('module');

@@ -10,7 +10,6 @@
   'use strict';
 
   var ID = 'blazybox';
-  var ID_ITEM = 'blzybx';
   var NICK = 'bbox';
   var ID_ONCE = ID;
   var IFRAME = 'iframe';
@@ -26,8 +25,6 @@
   var B_PROVIDER = 'b-provider--';
   var C_HIDDEN = 'visually-hidden';
   var ARIA_HIDDEN = 'aria-hidden';
-  var DATA_ID = 'data-' + ID;
-  var S_TRIGGER = '[' + DATA_ID + '-trigger]';
   var FN_SANITIZER = $.sanitizer;
   var FN_MULTIMEDIA = $.multimedia || false;
   var CACHED_HTML = {};
@@ -165,9 +162,6 @@
       }, 101);
 
       me.check();
-      opts.provider = provider;
-
-      $.trigger(ID + ':opened', [me, link, opts]);
       PROVIDER = provider;
     },
 
@@ -193,6 +187,7 @@
           .find(S_CONTENT).innerHTML = '';
       };
 
+      var called = false;
       var transitioning = function () {
         if (OC_BODY_CLOSING) {
           $.removeClass(body, OC_BODY_CLOSING);
@@ -201,6 +196,9 @@
           $el.removeClass(OC);
           closing();
         }
+
+        $el.off('transitionend', transitioning);
+        called = true;
       };
 
       $.removeClass(body, C_IS_OPEN);
@@ -221,11 +219,16 @@
         closing();
       }
 
-      $el.one('transitionend', transitioning);
+      $el.on('transitionend', transitioning);
+
+      // Failsafe in case transitionend is screwed up, people click it rapidly.
+      setTimeout(function () {
+        if (!called && $el.hasClass(OC)) {
+          transitioning();
+        }
+      }, 1200);
 
       Drupal.detachBehaviors($el[0]);
-
-      $.trigger(ID + ':closed', [me]);
     },
 
     check: function () {
@@ -342,23 +345,6 @@
   };
 
   /**
-   * Launch a blazybox.
-   *
-   * @param {Event} e
-   *   The click event.
-   */
-  function launch(e) {
-    var me = Drupal.blazyBox;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    var target = e.target;
-    var link = target.href ? target : $.closest(target, S_TRIGGER);
-    me.open(link);
-  }
-
-  /**
    * BlazyBox utility functions.
    *
    * @param {HTMLElement} el
@@ -377,16 +363,6 @@
   }
 
   /**
-   * Trigger click on a blazybox link.
-   *
-   * @param {HTMLElement} el
-   *   The triggering element of blazybox HTML element.
-   */
-  function subprocess(el) {
-    $.on(el, 'click.' + ID, launch);
-  }
-
-  /**
    * Attaches Blazybox behavior to HTML element.
    *
    * @type {Drupal~behavior}
@@ -394,13 +370,9 @@
   Drupal.behaviors.blazyBox = {
     attach: function (context) {
 
-      $.ready(function () {
-        Drupal.blazyBox.attach();
+      Drupal.blazyBox.attach();
 
-        $.once(process, ID_ONCE, S_ELEMENT, context);
-        $.once(subprocess, ID_ITEM, S_TRIGGER, context);
-      });
-
+      $.once(process, ID_ONCE, S_ELEMENT, context);
     },
     detach: function (context, setting, trigger) {
       if (trigger === 'unload') {

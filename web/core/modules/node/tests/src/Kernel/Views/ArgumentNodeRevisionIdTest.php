@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Views;
 
 use Drupal\node\Entity\Node;
@@ -43,7 +41,7 @@ class ArgumentNodeRevisionIdTest extends ViewsKernelTestBase {
   /**
    * Tests the node revision id argument via the node_vid handler.
    */
-  public function testNodeRevisionRelationship(): void {
+  public function testNodeRevisionRelationship() {
     NodeType::create(['type' => 'page', 'name' => 'page'])->save();
     $node = Node::create(['type' => 'page', 'title' => 'test1', 'uid' => 1]);
     $node->save();

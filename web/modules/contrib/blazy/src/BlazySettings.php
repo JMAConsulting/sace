@@ -2,8 +2,8 @@
 
 namespace Drupal\blazy;
 
-use Drupal\Component\Utility\NestedArray;
 use Drupal\blazy\Utility\Arrays;
+use Drupal\Component\Utility\NestedArray;
 
 /**
  * Provides settings object.
@@ -341,6 +341,14 @@ class BlazySettings implements \Countable {
     // }
     $instance = new self($data);
 
+    // @todo remove post gridstack 2.12 due to newly added $key.
+    if ($instance->get('namespace') == 'gridstack'
+      && $instance->get('engine')) {
+      if ($key == 'blazies') {
+        $key = 'gridstacks';
+      }
+    }
+
     $settings[$key] = $instance;
     return $instance;
   }
@@ -375,7 +383,7 @@ class BlazySettings implements \Countable {
 
     if (is_array($value) && $merge) {
       $value = array_merge((array) $this->get($key, []), $value);
-      // @todo recheck Array to string conversion.
+      // @todo disable if any more Array to string conversion.
       if (isset($value[1])) {
         $value = array_unique($value, SORT_REGULAR);
       }

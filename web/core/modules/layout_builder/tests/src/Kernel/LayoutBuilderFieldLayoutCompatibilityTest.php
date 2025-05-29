@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Kernel;
 
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
@@ -35,7 +33,7 @@ class LayoutBuilderFieldLayoutCompatibilityTest extends LayoutBuilderCompatibili
   /**
    * Tests the compatibility of Layout Builder and Field Layout.
    */
-  public function testCompatibility(): void {
+  public function testCompatibility() {
     // Ensure that the configurable field is shown in the correct region and
     // that the non-configurable field is shown outside the layout.
     $expected_fields = [

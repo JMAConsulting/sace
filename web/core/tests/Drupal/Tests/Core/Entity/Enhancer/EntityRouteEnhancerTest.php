@@ -21,7 +21,7 @@ class EntityRouteEnhancerTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Entity\Enhancer\EntityRouteEnhancer::enhancer()
    */
-  public function testEnhancer(): void {
+  public function testEnhancer() {
     $route_enhancer = new EntityRouteEnhancer();
 
     // Set a controller to ensure it is not overridden.

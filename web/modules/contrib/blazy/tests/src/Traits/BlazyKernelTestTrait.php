@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\blazy\Traits;
 
+use Drupal\blazy\internals\Internals;
+
 /**
  * A trait common for Kernel tests.
  */
@@ -57,7 +59,7 @@ trait BlazyKernelTestTrait {
    * Setup common Kernel manager classes.
    */
   protected function setUpKernelManager() {
-    $this->root                   = $this->container->getParameter('app.root');
+    $this->root                   = Internals::root($this->container);
     $this->fileSystem             = $this->container->get('file_system');
     $this->entityFieldManager     = $this->container->get('entity_field.manager');
     $this->fieldTypePluginManager = $this->container->get('plugin.manager.field.field_type');
@@ -70,7 +72,6 @@ trait BlazyKernelTestTrait {
     $this->blazyAdminFormatter    = $this->container->get('blazy.admin.formatter');
     $this->blazyAdmin             = $this->container->get('blazy.admin');
     $this->languageManager        = $this->container->get('language_manager');
-    $this->libraries              = $this->container->get('blazy.libraries');
   }
 
 }

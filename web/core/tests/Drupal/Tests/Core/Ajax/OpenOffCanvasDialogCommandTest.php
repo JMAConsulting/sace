@@ -18,7 +18,7 @@ class OpenOffCanvasDialogCommandTest extends UnitTestCase {
    *
    * @dataProvider dialogPosition
    */
-  public function testRender($position): void {
+  public function testRender($position) {
     $command = new OpenOffCanvasDialogCommand('Title', '<p>Text!</p>', ['url' => 'example'], NULL, $position);
 
     $expected = [
@@ -34,7 +34,8 @@ class OpenOffCanvasDialogCommandTest extends UnitTestCase {
         'resizable' => 'w',
         'draggable' => FALSE,
         'drupalAutoButtons' => FALSE,
-        'classes' => ['ui-dialog' => 'ui-dialog-off-canvas ui-dialog-position-' . $position, 'ui-dialog-content' => 'drupal-off-canvas-reset'],
+        'dialogClass' => 'ui-dialog-off-canvas ui-dialog-position-' . $position,
+        'classes' => ['ui-dialog-content' => 'drupal-off-canvas-reset'],
         'width' => 300,
         'drupalOffCanvasPosition' => $position,
       ],

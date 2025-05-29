@@ -20,7 +20,7 @@ class YamlDirectoryDiscoveryTest extends UnitTestCase {
   /**
    * @covers ::getDefinitions
    */
-  public function testGetDefinitions(): void {
+  public function testGetDefinitions() {
     vfsStream::setup('modules', NULL, [
       'module_a' => [
         'subdir1' => [
@@ -68,7 +68,7 @@ class YamlDirectoryDiscoveryTest extends UnitTestCase {
   /**
    * @covers ::getDefinitions
    */
-  public function testGetDefinitionsWithTranslatableDefinitions(): void {
+  public function testGetDefinitionsWithTranslatableDefinitions() {
     vfsStream::setup('modules', NULL, [
       'module_a' => [
         'subdir1' => [

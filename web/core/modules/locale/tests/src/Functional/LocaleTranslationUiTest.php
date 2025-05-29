@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Core\Site\Settings;
@@ -15,12 +13,13 @@ use Drupal\Core\Language\LanguageInterface;
  * Tests the validation of translation strings and search results.
  *
  * @group locale
- * @group #slow
  */
 class LocaleTranslationUiTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['locale'];
 
@@ -30,14 +29,9 @@ class LocaleTranslationUiTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * {@inheritdoc}
-   */
-  protected bool $useOneTimeLoginLinks = FALSE;
-
-  /**
    * Enable interface translation to English.
    */
-  public function testEnglishTranslation(): void {
+  public function testEnglishTranslation() {
     $admin_user = $this->drupalCreateUser([
       'administer languages',
       'access administration pages',
@@ -52,7 +46,7 @@ class LocaleTranslationUiTest extends BrowserTestBase {
   /**
    * Adds a language and tests string translation by users with the appropriate permissions.
    */
-  public function testStringTranslation(): void {
+  public function testStringTranslation() {
     // User to add and remove language.
     $admin_user = $this->drupalCreateUser([
       'administer languages',
@@ -253,7 +247,7 @@ class LocaleTranslationUiTest extends BrowserTestBase {
   /**
    * Tests the rebuilding of JavaScript translation files on deletion.
    */
-  public function testJavaScriptTranslation(): void {
+  public function testJavaScriptTranslation() {
     $user = $this->drupalCreateUser([
       'translate interface',
       'administer languages',
@@ -334,7 +328,7 @@ class LocaleTranslationUiTest extends BrowserTestBase {
   /**
    * Tests the validation of the translation input.
    */
-  public function testStringValidation(): void {
+  public function testStringValidation() {
     // User to add language and strings.
     $admin_user = $this->drupalCreateUser([
       'administer languages',
@@ -395,7 +389,7 @@ class LocaleTranslationUiTest extends BrowserTestBase {
   /**
    * Tests translation search form.
    */
-  public function testStringSearch(): void {
+  public function testStringSearch() {
     // User to add and remove language.
     $admin_user = $this->drupalCreateUser([
       'administer languages',
@@ -555,7 +549,7 @@ class LocaleTranslationUiTest extends BrowserTestBase {
   /**
    * Tests that only changed strings are saved customized when edited.
    */
-  public function testUICustomizedStrings(): void {
+  public function testUICustomizedStrings() {
     $user = $this->drupalCreateUser([
       'translate interface',
       'administer languages',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Form;
 
 use Drupal\Tests\BrowserTestBase;
@@ -19,7 +17,9 @@ class StateValuesCleanAdvancedTest extends BrowserTestBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['file', 'form_test'];
 
@@ -38,7 +38,7 @@ class StateValuesCleanAdvancedTest extends BrowserTestBase {
   /**
    * Tests \Drupal\Core\Form\FormState::cleanValues().
    */
-  public function testFormStateValuesCleanAdvanced(): void {
+  public function testFormStateValuesCleanAdvanced() {
 
     // Get an image for uploading.
     $image_files = $this->drupalGetTestFiles('image');

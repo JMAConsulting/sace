@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config_translation\Functional;
 
 use Drupal\field\Entity\FieldConfig;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class ConfigTranslationCacheTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -119,7 +119,7 @@ class ConfigTranslationCacheTest extends BrowserTestBase {
   /**
    * Tests the translation of field and field storage configuration.
    */
-  public function testFieldConfigTranslation(): void {
+  public function testFieldConfigTranslation() {
     // Add a test field which has a translatable field setting and a
     // translatable field storage setting.
     $field_name = $this->randomMachineName();

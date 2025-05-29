@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\image\Kernel;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -42,7 +40,7 @@ class ImageStyleIntegrationTest extends KernelTestBase {
   /**
    * Tests the dependency between ImageStyle and entity display components.
    */
-  public function testEntityDisplayDependency(): void {
+  public function testEntityDisplayDependency() {
     // Create two image styles.
     /** @var \Drupal\image\ImageStyleInterface $style */
     $style = ImageStyle::create([
@@ -136,7 +134,7 @@ class ImageStyleIntegrationTest extends KernelTestBase {
   /**
    * Tests renaming the ImageStyle.
    */
-  public function testEntityDisplayDependencyRename(): void {
+  public function testEntityDisplayDependencyRename() {
     // Create an image style.
     /** @var \Drupal\image\ImageStyleInterface $style */
     $style = ImageStyle::create([

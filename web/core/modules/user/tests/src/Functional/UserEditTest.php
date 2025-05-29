@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Core\Cache\Cache;
@@ -22,7 +20,7 @@ class UserEditTest extends BrowserTestBase {
   /**
    * Tests user edit page.
    */
-  public function testUserEdit(): void {
+  public function testUserEdit() {
     // Test user edit functionality.
     $user1 = $this->drupalCreateUser(['change own username']);
     $user2 = $this->drupalCreateUser([]);
@@ -94,7 +92,7 @@ class UserEditTest extends BrowserTestBase {
     $this->assertSame(1, (int) \Drupal::database()->select('sessions', 's')->countQuery()->execute()->fetchField());
 
     // Make sure the changed timestamp is updated.
-    $this->assertEquals(\Drupal::time()->getRequestTime(), $user1->getChangedTime(), 'Changing a user sets "changed" timestamp.');
+    $this->assertEquals(REQUEST_TIME, $user1->getChangedTime(), 'Changing a user sets "changed" timestamp.');
 
     // Make sure the user can log in with their new password.
     $this->drupalLogout();
@@ -147,7 +145,7 @@ class UserEditTest extends BrowserTestBase {
    * password that is literally "0" was not possible. This test ensures that
    * this regression can't happen again.
    */
-  public function testUserWith0Password(): void {
+  public function testUserWith0Password() {
     $admin = $this->drupalCreateUser(['administer users']);
     $this->drupalLogin($admin);
     // Create a regular user.
@@ -162,7 +160,7 @@ class UserEditTest extends BrowserTestBase {
   /**
    * Tests editing of a user account without an email address.
    */
-  public function testUserWithoutEmailEdit(): void {
+  public function testUserWithoutEmailEdit() {
     // Test that an admin can edit users without an email address.
     $admin = $this->drupalCreateUser(['administer users']);
     $this->drupalLogin($admin);
@@ -179,7 +177,7 @@ class UserEditTest extends BrowserTestBase {
   /**
    * Tests well known change password route redirects to user edit form.
    */
-  public function testUserWellKnownChangePasswordAuth(): void {
+  public function testUserWellKnownChangePasswordAuth() {
     $account = $this->drupalCreateUser([]);
     $this->drupalLogin($account);
     $this->drupalGet('.well-known/change-password');
@@ -189,7 +187,7 @@ class UserEditTest extends BrowserTestBase {
   /**
    * Tests well known change password route returns 403 to anonymous user.
    */
-  public function testUserWellKnownChangePasswordAnon(): void {
+  public function testUserWellKnownChangePasswordAnon() {
     $this->drupalGet('.well-known/change-password');
     $this->assertSession()->statusCodeEquals(403);
   }
@@ -197,7 +195,7 @@ class UserEditTest extends BrowserTestBase {
   /**
    * Tests that a user is able to change site language.
    */
-  public function testUserChangeSiteLanguage(): void {
+  public function testUserChangeSiteLanguage() {
     // Install these modules here as these aren't needed for other test methods.
     \Drupal::service('module_installer')->install([
       'content_translation',
@@ -250,7 +248,7 @@ class UserEditTest extends BrowserTestBase {
   /**
    * Tests the account form implements entity field access for mail.
    */
-  public function testUserMailFieldAccess(): void {
+  public function testUserMailFieldAccess() {
     \Drupal::state()->set('user_access_test_forbid_mail_edit', TRUE);
     \Drupal::service('module_installer')->install(['user_access_test']);
     $user = $this->drupalCreateUser();

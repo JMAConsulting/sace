@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Validation;
 
 use Drupal\Component\Plugin\PluginBase;
@@ -24,7 +22,7 @@ class ConstraintFactoryTest extends KernelTestBase {
   /**
    * @covers ::createInstance
    */
-  public function testCreateInstance(): void {
+  public function testCreateInstance() {
     $constraint_manager = \Drupal::typedDataManager()->getValidationConstraintManager();
 
     // If the plugin is a \Symfony\Component\Validator\Constraint, they will be

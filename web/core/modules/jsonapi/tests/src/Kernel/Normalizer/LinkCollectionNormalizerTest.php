@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\jsonapi\Kernel\Normalizer;
 
 use Drupal\Core\Cache\CacheableMetadata;
@@ -77,7 +75,7 @@ class LinkCollectionNormalizerTest extends KernelTestBase {
   /**
    * Tests the link collection normalizer.
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $link_context = new ResourceObject(new CacheableMetadata(), new ResourceType('n/a', 'n/a', 'n/a'), 'n/a', NULL, [], new LinkCollection([]));
     $link_collection = (new LinkCollection([]))
       ->withLink('related', new Link(new CacheableMetadata(), Url::fromUri('http://example.com/post/42'), 'related', ['title' => 'Most viewed']))
@@ -110,7 +108,7 @@ class LinkCollectionNormalizerTest extends KernelTestBase {
    *
    * @dataProvider linkAccessTestData
    */
-  public function testLinkAccess($current_user_id, $edit_form_uid, $expected_link_keys, $expected_cache_contexts): void {
+  public function testLinkAccess($current_user_id, $edit_form_uid, $expected_link_keys, $expected_cache_contexts) {
     // Get the current user and an edit-form URL.
     foreach ($this->testUsers as $user) {
       $uid = (int) $user->id();
@@ -170,19 +168,19 @@ class LinkCollectionNormalizerTest extends KernelTestBase {
    *
    * @return array[]
    */
-  public static function linkAccessTestData() {
+  public function linkAccessTestData() {
     return [
       'the edit-form link is present because uid 2 has access to the targeted resource (its own edit form)' => [
-        'current_user_id' => 2,
-        'edit_form_uid' => 2,
-        'expected_link_keys' => ['edit-form'],
-        'expected_cache_contexts' => ['url.site', 'user'],
+        'uid' => 2,
+        'edit-form uid' => 2,
+        'expected link keys' => ['edit-form'],
+        'expected cache contexts' => ['url.site', 'user'],
       ],
       "the edit-form link is omitted because uid 3 doesn't have access to the targeted resource (another account's edit form)" => [
-        'current_user_id' => 3,
-        'edit_form_uid' => 2,
-        'expected_link_keys' => [],
-        'expected_cache_contexts' => ['url.site', 'user'],
+        'uid' => 3,
+        'edit-form uid' => 2,
+        'expected link keys' => [],
+        'expected cache contexts' => ['url.site', 'user'],
       ],
     ];
   }
@@ -190,7 +188,7 @@ class LinkCollectionNormalizerTest extends KernelTestBase {
   /**
    * Get an instance of the normalizer to test.
    */
-  protected function getNormalizer(?AccountInterface $current_user = NULL) {
+  protected function getNormalizer(AccountInterface $current_user = NULL) {
     if (is_null($current_user)) {
       $current_user = $this->setUpCurrentUser();
     }

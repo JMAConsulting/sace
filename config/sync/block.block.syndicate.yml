@@ -9,7 +9,7 @@ dependencies:
 id: syndicate
 theme: oliverolocal
 region: social
-weight: -10
+weight: 0
 provider: null
 plugin: node_syndicate_block
 settings:

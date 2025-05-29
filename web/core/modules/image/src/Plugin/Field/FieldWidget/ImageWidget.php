@@ -2,7 +2,6 @@
 
 namespace Drupal\image\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Image\ImageFactory;
@@ -15,12 +14,15 @@ use Drupal\image\Entity\ImageStyle;
 
 /**
  * Plugin implementation of the 'image_image' widget.
+ *
+ * @FieldWidget(
+ *   id = "image_image",
+ *   label = @Translation("Image"),
+ *   field_types = {
+ *     "image"
+ *   }
+ * )
  */
-#[FieldWidget(
-  id: 'image_image',
-  label: new TranslatableMarkup('Image'),
-  field_types: ['image'],
-)]
 class ImageWidget extends FileWidget {
 
   /**
@@ -34,7 +36,7 @@ class ImageWidget extends FileWidget {
    * Constructs an ImageWidget object.
    *
    * @param string $plugin_id
-   *   The plugin ID for the widget.
+   *   The plugin_id for the widget.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
@@ -48,7 +50,7 @@ class ImageWidget extends FileWidget {
    * @param \Drupal\Core\Image\ImageFactory $image_factory
    *   The image factory service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, ElementInfoManagerInterface $element_info, ?ImageFactory $image_factory = NULL) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, ElementInfoManagerInterface $element_info, ImageFactory $image_factory = NULL) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings, $element_info);
     $this->imageFactory = $image_factory ?: \Drupal::service('image.factory');
   }
@@ -125,7 +127,7 @@ class ImageWidget extends FileWidget {
       // If there's only one field, return it as delta 0.
       if (empty($elements[0]['#default_value']['fids'])) {
         $file_upload_help['#description'] = $this->getFilteredDescription();
-        $elements[0]['#description'] = \Drupal::service('renderer')->renderInIsolation($file_upload_help);
+        $elements[0]['#description'] = \Drupal::service('renderer')->renderPlain($file_upload_help);
       }
     }
     else {

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Migrate\d6;
 
 use Drupal\Tests\migrate_drupal\Kernel\d6\MigrateDrupal6TestBase;
@@ -31,7 +29,7 @@ class MigrateUserContactSettingsTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal6 user contact settings migration.
    */
-  public function testUserContactSettings(): void {
+  public function testUserContactSettings() {
     $user_data = \Drupal::service('user.data');
     $module = $key = 'contact';
     $uid = 2;

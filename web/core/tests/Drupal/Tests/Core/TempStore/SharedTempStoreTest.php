@@ -100,13 +100,13 @@ class SharedTempStoreTest extends UnitTestCase {
   /**
    * @covers ::get
    */
-  public function testGet(): void {
-    $calls = ['test_2', 'test'];
-    $this->keyValue->expects($this->exactly(count($calls)))
+  public function testGet() {
+    $this->keyValue->expects($this->exactly(2))
       ->method('get')
-      ->with($this->callback(function (string $key) use (&$calls): bool {
-        return array_shift($calls) == $key;
-      }))
+      ->withConsecutive(
+        ['test_2'],
+        ['test'],
+      )
       ->willReturnOnConsecutiveCalls(
         FALSE,
         $this->ownObject,
@@ -121,13 +121,14 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::getIfOwner
    */
-  public function testGetIfOwner(): void {
-    $calls = ['test_2', 'test', 'test'];
-    $this->keyValue->expects($this->exactly(count($calls)))
+  public function testGetIfOwner() {
+    $this->keyValue->expects($this->exactly(3))
       ->method('get')
-      ->with($this->callback(function (string $key) use (&$calls): bool {
-        return array_shift($calls) == $key;
-      }))
+      ->withConsecutive(
+        ['test_2'],
+        ['test'],
+        ['test'],
+      )
       ->willReturnOnConsecutiveCalls(
         FALSE,
         $this->ownObject,
@@ -144,7 +145,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::set
    */
-  public function testSetWithNoLockAvailable(): void {
+  public function testSetWithNoLockAvailable() {
     $this->lock->expects($this->exactly(2))
       ->method('acquire')
       ->with('test')
@@ -165,7 +166,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::set
    */
-  public function testSet(): void {
+  public function testSet() {
     $this->lock->expects($this->once())
       ->method('acquire')
       ->with('test')
@@ -188,7 +189,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::setIfNotExists
    */
-  public function testSetIfNotExists(): void {
+  public function testSetIfNotExists() {
     $this->keyValue->expects($this->once())
       ->method('setWithExpireIfNotExists')
       ->with('test', $this->ownObject, 604800)
@@ -202,7 +203,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::setIfOwner
    */
-  public function testSetIfOwnerWhenNotExists(): void {
+  public function testSetIfOwnerWhenNotExists() {
     $this->keyValue->expects($this->once())
       ->method('setWithExpireIfNotExists')
       ->willReturn(TRUE);
@@ -215,7 +216,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::setIfOwner
    */
-  public function testSetIfOwnerNoObject(): void {
+  public function testSetIfOwnerNoObject() {
     $this->keyValue->expects($this->once())
       ->method('setWithExpireIfNotExists')
       ->willReturn(FALSE);
@@ -233,7 +234,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::setIfOwner
    */
-  public function testSetIfOwner(): void {
+  public function testSetIfOwner() {
     $this->lock->expects($this->once())
       ->method('acquire')
       ->with('test')
@@ -246,7 +247,7 @@ class SharedTempStoreTest extends UnitTestCase {
     $this->keyValue->expects($this->exactly(2))
       ->method('get')
       ->with('test')
-      ->willReturn($this->ownObject, $this->otherObject);
+      ->will($this->onConsecutiveCalls($this->ownObject, $this->otherObject));
 
     $this->assertTrue($this->tempStore->setIfOwner('test', 'test_data'));
     $this->assertFalse($this->tempStore->setIfOwner('test', 'test_data'));
@@ -257,7 +258,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::getMetadata
    */
-  public function testGetMetadata(): void {
+  public function testGetMetadata() {
     $this->keyValue->expects($this->exactly(2))
       ->method('get')
       ->with('test')
@@ -277,7 +278,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::delete
    */
-  public function testDelete(): void {
+  public function testDelete() {
     $this->lock->expects($this->once())
       ->method('acquire')
       ->with('test')
@@ -300,7 +301,7 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::delete
    */
-  public function testDeleteWithNoLockAvailable(): void {
+  public function testDeleteWithNoLockAvailable() {
     $this->lock->expects($this->exactly(2))
       ->method('acquire')
       ->with('test')
@@ -321,18 +322,19 @@ class SharedTempStoreTest extends UnitTestCase {
    *
    * @covers ::deleteIfOwner
    */
-  public function testDeleteIfOwner(): void {
+  public function testDeleteIfOwner() {
     $this->lock->expects($this->once())
       ->method('acquire')
       ->with('test_2')
       ->willReturn(TRUE);
 
-    $calls = ['test_1', 'test_2', 'test_3'];
-    $this->keyValue->expects($this->exactly(count($calls)))
+    $this->keyValue->expects($this->exactly(3))
       ->method('get')
-      ->with($this->callback(function (string $key) use (&$calls): bool {
-        return array_shift($calls) == $key;
-      }))
+      ->withConsecutive(
+        ['test_1'],
+        ['test_2'],
+        ['test_3'],
+      )
       ->willReturnOnConsecutiveCalls(
         FALSE,
         $this->ownObject,
@@ -350,7 +352,7 @@ class SharedTempStoreTest extends UnitTestCase {
   /**
    * Tests the serialization of a shared temp store.
    */
-  public function testSerialization(): void {
+  public function testSerialization() {
     // Add an unserializable request to the request stack. If the tempstore
     // didn't use DependencySerializationTrait, an exception would be thrown
     // when we try to serialize the tempstore.

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Render;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -25,7 +23,7 @@ class ElementInfoIntegrationTest extends KernelTestBase {
   /**
    * Ensures that the element info can be altered by themes.
    */
-  public function testElementInfoByTheme(): void {
+  public function testElementInfoByTheme() {
     /** @var \Drupal\Core\Theme\ThemeInitializationInterface $theme_initializer */
     $theme_initializer = $this->container->get('theme.initialization');
 

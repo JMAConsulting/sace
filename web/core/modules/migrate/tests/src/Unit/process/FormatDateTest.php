@@ -19,7 +19,7 @@ class FormatDateTest extends MigrateProcessTestCase {
   /**
    * Tests that missing configuration will throw an exception.
    */
-  public function testMigrateExceptionMissingFromFormat(): void {
+  public function testMigrateExceptionMissingFromFormat() {
     $configuration = [
       'from_format' => '',
       'to_format' => 'Y-m-d',
@@ -34,7 +34,7 @@ class FormatDateTest extends MigrateProcessTestCase {
   /**
    * Tests that missing configuration will throw an exception.
    */
-  public function testMigrateExceptionMissingToFormat(): void {
+  public function testMigrateExceptionMissingToFormat() {
     $configuration = [
       'from_format' => 'm/d/Y',
       'to_format' => '',
@@ -49,7 +49,7 @@ class FormatDateTest extends MigrateProcessTestCase {
   /**
    * Tests that date format mismatches will throw an exception.
    */
-  public function testMigrateExceptionBadFormat(): void {
+  public function testMigrateExceptionBadFormat() {
     $configuration = [
       'from_format' => 'm/d/Y',
       'to_format' => 'Y-m-d',
@@ -64,7 +64,7 @@ class FormatDateTest extends MigrateProcessTestCase {
   /**
    * Tests that an unexpected date value will throw an exception.
    */
-  public function testMigrateExceptionUnexpectedValue(): void {
+  public function testMigrateExceptionUnexpectedValue() {
     $configuration = [
       'from_format' => 'm/d/Y',
       'to_format' => 'Y-m-d',
@@ -90,7 +90,7 @@ class FormatDateTest extends MigrateProcessTestCase {
    * @param $expected
    *   The expected value of the migration process plugin.
    */
-  public function testTransform($configuration, $value, $expected): void {
+  public function testTransform($configuration, $value, $expected) {
     $this->plugin = new FormatDate($configuration, 'test_format_date', []);
     $actual = $this->plugin->transform($value, $this->migrateExecutable, $this->row, 'field_date');
 
@@ -103,7 +103,7 @@ class FormatDateTest extends MigrateProcessTestCase {
    * @return array
    *   Array of date formats and actual/expected values.
    */
-  public static function datesDataProvider() {
+  public function datesDataProvider() {
     return [
       'datetime_date' => [
         'configuration' => [

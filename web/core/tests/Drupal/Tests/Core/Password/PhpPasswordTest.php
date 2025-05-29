@@ -47,7 +47,7 @@ class PhpPasswordTest extends UnitTestCase {
    * @covers ::hash
    * @covers ::needsRehash
    */
-  public function testPasswordNeedsUpdate(): void {
+  public function testPasswordNeedsUpdate() {
     $weakHash = (new PhpPassword(PASSWORD_BCRYPT, ['cost' => 4]))->hash($this->password);
     $this->assertTrue($this->passwordHasher->needsRehash($weakHash), 'Password hash with weak cost settings needs a new hash.');
   }
@@ -58,7 +58,7 @@ class PhpPasswordTest extends UnitTestCase {
    * @covers ::check
    * @covers ::needsRehash
    */
-  public function testPasswordChecking(): void {
+  public function testPasswordChecking() {
     $this->assertTrue($this->passwordHasher->check($this->password, $this->passwordHash), 'Password check succeeds.');
     $this->assertFalse($this->passwordHasher->needsRehash($this->passwordHash), 'Does not need a new hash.');
   }
@@ -70,7 +70,7 @@ class PhpPasswordTest extends UnitTestCase {
    * @covers ::check
    * @covers ::needsRehash
    */
-  public function testPasswordRehashing(): void {
+  public function testPasswordRehashing() {
     // Increment the cost by one.
     $strongHasher = new PhpPassword(PASSWORD_BCRYPT, ['cost' => 6]);
     $this->assertTrue($strongHasher->needsRehash($this->passwordHash), 'Needs a new hash after incrementing the cost option.');
@@ -91,7 +91,7 @@ class PhpPasswordTest extends UnitTestCase {
    *
    * @dataProvider providerLongPasswords
    */
-  public function testLongPassword($password, $allowed): void {
+  public function testLongPassword($password, $allowed) {
 
     $passwordHash = $this->passwordHasher->hash($password);
 
@@ -106,7 +106,7 @@ class PhpPasswordTest extends UnitTestCase {
   /**
    * Provides the test matrix for testLongPassword().
    */
-  public static function providerLongPasswords() {
+  public function providerLongPasswords() {
     // '512 byte long password is allowed.'
     $passwords['allowed'] = [str_repeat('x', PasswordInterface::PASSWORD_MAX_LENGTH), TRUE];
     // 513 byte long password is not allowed.

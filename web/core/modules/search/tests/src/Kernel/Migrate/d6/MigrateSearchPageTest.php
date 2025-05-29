@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Kernel\Migrate\d6;
 
 use Drupal\Core\Database\Database;
@@ -31,7 +29,7 @@ class MigrateSearchPageTest extends MigrateDrupal6TestBase {
   /**
    * Tests Drupal 6 search settings to Drupal 8 search page entity migration.
    */
-  public function testSearchPage(): void {
+  public function testSearchPage() {
     $id = 'node_search';
     /** @var \Drupal\search\Entity\SearchPage $search_page */
     $search_page = SearchPage::load($id);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional\Views;
 
 use Drupal\user\Entity\Role;
@@ -18,7 +16,9 @@ use Drupal\views\Views;
 class BulkFormTest extends UserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['views_ui'];
 
@@ -37,7 +37,7 @@ class BulkFormTest extends UserTestBase {
   /**
    * Tests the user bulk form.
    */
-  public function testBulkForm(): void {
+  public function testBulkForm() {
     // Log in as a user without 'administer users'.
     $this->drupalLogin($this->drupalCreateUser(['administer permissions']));
     $user_storage = $this->container->get('entity_type.manager')->getStorage('user');
@@ -142,7 +142,7 @@ class BulkFormTest extends UserTestBase {
   /**
    * Tests the user bulk form with a combined field filter on the bulk column.
    */
-  public function testBulkFormCombineFilter(): void {
+  public function testBulkFormCombineFilter() {
     // Add a user.
     User::load($this->users[0]->id());
     $view = Views::getView('test_user_bulk_form_combine_filter');

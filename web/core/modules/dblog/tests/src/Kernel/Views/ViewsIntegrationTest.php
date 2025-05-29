@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\dblog\Kernel\Views;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -50,7 +48,7 @@ class ViewsIntegrationTest extends ViewsKernelTestBase {
   /**
    * Tests the messages escaping functionality.
    */
-  public function testMessages(): void {
+  public function testMessages() {
 
     // Remove the watchdog entries added by the potential batch process.
     $this->container->get('database')->truncate('watchdog')->execute();
@@ -94,7 +92,7 @@ class ViewsIntegrationTest extends ViewsKernelTestBase {
   /**
    * Tests the relationship with the users_field_data table.
    */
-  public function testRelationship(): void {
+  public function testRelationship() {
     $view = Views::getView('dblog_integration_test');
     $view->setDisplay('page_1');
     // The uid relationship should now join to the {users_field_data} table.
@@ -107,7 +105,7 @@ class ViewsIntegrationTest extends ViewsKernelTestBase {
   /**
    * Tests views can be filtered by severity and log type.
    */
-  public function testFiltering(): void {
+  public function testFiltering() {
     // Remove the watchdog entries added by the potential batch process.
     $this->container->get('database')->truncate('watchdog')->execute();
     $this->createLogEntries();

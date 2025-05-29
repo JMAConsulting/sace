@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\content_moderation\Entity\ContentModerationState;
@@ -14,7 +12,9 @@ use Drupal\KernelTests\KernelTestBase;
 class ContentModerationStateAccessControlHandlerTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'content_moderation',
@@ -43,7 +43,7 @@ class ContentModerationStateAccessControlHandlerTest extends KernelTestBase {
    * @covers ::checkAccess
    * @covers ::checkCreateAccess
    */
-  public function testHandler(): void {
+  public function testHandler() {
     $entity = ContentModerationState::create([]);
     $this->assertFalse($this->accessControlHandler->access($entity, 'view'));
     $this->assertFalse($this->accessControlHandler->access($entity, 'update'));

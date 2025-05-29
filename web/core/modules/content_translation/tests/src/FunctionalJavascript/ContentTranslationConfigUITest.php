@@ -33,7 +33,7 @@ class ContentTranslationConfigUITest extends WebDriverTestBase {
   /**
    * Tests that the content translation configuration javascript does't fail.
    */
-  public function testContentTranslationConfigUI(): void {
+  public function testContentTranslationConfigUI() {
     $content_translation_manager = $this->container->get('content_translation.manager');
     $content_translation_manager->setEnabled('node', 'article', TRUE);
     $this->rebuildContainer();

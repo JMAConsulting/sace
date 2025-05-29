@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\path_alias\Functional;
 
 use Drupal\Core\Database\Database;
@@ -19,7 +17,9 @@ class UrlAlterFunctionalTest extends BrowserTestBase {
   use PathAliasTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['path', 'url_alter_test'];
 
@@ -31,7 +31,7 @@ class UrlAlterFunctionalTest extends BrowserTestBase {
   /**
    * Tests that URL altering works and that it occurs in the correct order.
    */
-  public function testUrlAlter(): void {
+  public function testUrlAlter() {
     // Ensure that the path_alias table exists after Drupal installation.
     $this->assertTrue(Database::getConnection()->schema()->tableExists('path_alias'), 'The path_alias table exists after Drupal installation.');
 

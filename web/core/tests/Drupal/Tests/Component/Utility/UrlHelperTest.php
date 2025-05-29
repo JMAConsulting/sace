@@ -19,7 +19,7 @@ class UrlHelperTest extends TestCase {
    *
    * @return array
    */
-  public static function providerTestBuildQuery() {
+  public function providerTestBuildQuery() {
     return [
       [['a' => ' &#//+%20@۞'], 'a=%20%26%23//%2B%2520%40%DB%9E', 'Value was properly encoded.'],
       [[' &#//+%20@۞' => 'a'], '%20%26%23%2F%2F%2B%2520%40%DB%9E=a', 'Key was properly encoded.'],
@@ -42,7 +42,7 @@ class UrlHelperTest extends TestCase {
    * @param string $message
    *   The assertion message.
    */
-  public function testBuildQuery($query, $expected, $message): void {
+  public function testBuildQuery($query, $expected, $message) {
     $this->assertEquals(UrlHelper::buildQuery($query), $expected, $message);
   }
 
@@ -112,7 +112,7 @@ class UrlHelperTest extends TestCase {
   /**
    * Tests that we get the same thing out that we put in.
    */
-  public function testCompressUncompress(): void {
+  public function testCompressUncompress() {
     $data = [];
     while (count($data) < 30) {
       $data[] = 'drupal/drupal' . count($data);
@@ -127,7 +127,7 @@ class UrlHelperTest extends TestCase {
   /**
    * Tests passing an invalid string as a compressed query parameter.
    */
-  public function testUncompressInvalidString(): void {
+  public function testUncompressInvalidString() {
     // Pass an invalid string to ::uncompressQueryParameter() and ensure it
     // returns the passed string without resulting in a PHP warning.
     $this->assertSame('llama', UrlHelper::uncompressQueryParameter('llama'));
@@ -230,7 +230,7 @@ class UrlHelperTest extends TestCase {
    * @param array $expected
    *   An array containing query parameters.
    */
-  public function testFilterQueryParameters($query, $exclude, $expected): void {
+  public function testFilterQueryParameters($query, $exclude, $expected) {
     $filtered = UrlHelper::filterQueryParameters($query, $exclude);
     $this->assertEquals($expected, $filtered, 'The query was not properly filtered.');
   }
@@ -268,7 +268,7 @@ class UrlHelperTest extends TestCase {
    * @param array $expected
    *   Associative array with expected parameters.
    */
-  public function testParse($url, $expected): void {
+  public function testParse($url, $expected) {
     $parsed = UrlHelper::parse($url);
     $this->assertEquals($expected, $parsed, 'The URL was not properly parsed.');
   }
@@ -390,7 +390,7 @@ class UrlHelperTest extends TestCase {
    * @param string $expected
    *   The expected encoded path.
    */
-  public function testEncodePath($path, $expected): void {
+  public function testEncodePath($path, $expected) {
     $encoded = UrlHelper::encodePath($path);
     $this->assertEquals($expected, $encoded);
   }
@@ -418,7 +418,7 @@ class UrlHelperTest extends TestCase {
    * @param bool $expected
    *   Expected result.
    */
-  public function testIsExternal($path, $expected): void {
+  public function testIsExternal($path, $expected) {
     $isExternal = UrlHelper::isExternal($path);
     $this->assertEquals($expected, $isExternal);
   }
@@ -480,7 +480,7 @@ class UrlHelperTest extends TestCase {
    *
    * @runInSeparateProcess
    */
-  public function testFilterBadProtocol($uri, $expected, $protocols): void {
+  public function testFilterBadProtocol($uri, $expected, $protocols) {
     UrlHelper::setAllowedProtocols($protocols);
     $this->assertEquals($expected, UrlHelper::filterBadProtocol($uri));
     // Multiple calls to UrlHelper::filterBadProtocol() do not cause double
@@ -521,7 +521,7 @@ class UrlHelperTest extends TestCase {
    *
    * @runInSeparateProcess
    */
-  public function testStripDangerousProtocols($uri, $expected, $protocols): void {
+  public function testStripDangerousProtocols($uri, $expected, $protocols) {
     UrlHelper::setAllowedProtocols($protocols);
     $stripped = UrlHelper::stripDangerousProtocols($uri);
     $this->assertEquals($expected, $stripped);
@@ -598,7 +598,7 @@ class UrlHelperTest extends TestCase {
    * @covers ::externalIsLocal
    * @dataProvider providerTestExternalIsLocal
    */
-  public function testExternalIsLocal($url, $base_url, $expected): void {
+  public function testExternalIsLocal($url, $base_url, $expected) {
     $this->assertSame($expected, UrlHelper::externalIsLocal($url, $base_url));
   }
 
@@ -607,7 +607,7 @@ class UrlHelperTest extends TestCase {
    *
    * @see \Drupal\Tests\Component\Utility\UrlHelperTest::testExternalIsLocal()
    */
-  public static function providerTestExternalIsLocal() {
+  public function providerTestExternalIsLocal() {
     return [
       // Different mixes of trailing slash.
       ['http://example.com', 'http://example.com', TRUE],
@@ -650,7 +650,7 @@ class UrlHelperTest extends TestCase {
    * @covers ::externalIsLocal
    * @dataProvider providerTestExternalIsLocalInvalid
    */
-  public function testExternalIsLocalInvalid($url, $base_url): void {
+  public function testExternalIsLocalInvalid($url, $base_url) {
     $this->expectException(\InvalidArgumentException::class);
     UrlHelper::externalIsLocal($url, $base_url);
   }
@@ -660,7 +660,7 @@ class UrlHelperTest extends TestCase {
    *
    * @see \Drupal\Tests\Component\Utility\UrlHelperTest::testExternalIsLocalInvalid()
    */
-  public static function providerTestExternalIsLocalInvalid() {
+  public function providerTestExternalIsLocalInvalid() {
     return [
       ['http://example.com/foo', ''],
       ['http://example.com/foo', 'bar'],

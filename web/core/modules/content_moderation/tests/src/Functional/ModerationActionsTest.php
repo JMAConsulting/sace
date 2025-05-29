@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Functional;
 
 use Drupal\node\Entity\Node;
@@ -20,7 +18,9 @@ class ModerationActionsTest extends BrowserTestBase {
   use ContentModerationTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'content_moderation',
@@ -61,7 +61,7 @@ class ModerationActionsTest extends BrowserTestBase {
    *
    * @dataProvider nodeStatusActionsTestCases
    */
-  public function testNodeStatusActions($action, $bundle, $warning_appears, $starting_status, $final_status): void {
+  public function testNodeStatusActions($action, $bundle, $warning_appears, $starting_status, $final_status) {
     // Create and run an action on a node.
     $node = Node::create([
       'type' => $bundle,
@@ -102,7 +102,7 @@ class ModerationActionsTest extends BrowserTestBase {
    * @return array
    *   An array of test cases.
    */
-  public static function nodeStatusActionsTestCases() {
+  public function nodeStatusActionsTestCases() {
     return [
       'Moderated bundle shows warning (publish action)' => [
         'node_publish_action',

@@ -113,7 +113,7 @@ class ConfigEntityMapperTest extends UnitTestCase {
   /**
    * Tests ConfigEntityMapper::setEntity() and ConfigEntityMapper::getEntity().
    */
-  public function testEntityGetterAndSetter(): void {
+  public function testEntityGetterAndSetter() {
     $this->entity
       ->expects($this->once())
       ->method('id')
@@ -152,7 +152,7 @@ class ConfigEntityMapperTest extends UnitTestCase {
   /**
    * Tests ConfigEntityMapper::getOverviewRouteParameters().
    */
-  public function testGetOverviewRouteParameters(): void {
+  public function testGetOverviewRouteParameters() {
     $entity_type = $this->createMock('Drupal\Core\Config\Entity\ConfigEntityTypeInterface');
     $this->entityTypeManager
       ->expects($this->once())
@@ -175,7 +175,7 @@ class ConfigEntityMapperTest extends UnitTestCase {
   /**
    * Tests ConfigEntityMapper::getType().
    */
-  public function testGetType(): void {
+  public function testGetType() {
     $result = $this->configEntityMapper->getType();
     $this->assertSame('configurable_language', $result);
   }
@@ -183,7 +183,7 @@ class ConfigEntityMapperTest extends UnitTestCase {
   /**
    * Tests ConfigEntityMapper::getTypeName().
    */
-  public function testGetTypeName(): void {
+  public function testGetTypeName() {
     $entity_type = $this->createMock('Drupal\Core\Config\Entity\ConfigEntityTypeInterface');
     $entity_type->expects($this->once())
       ->method('getLabel')
@@ -201,7 +201,7 @@ class ConfigEntityMapperTest extends UnitTestCase {
   /**
    * Tests ConfigEntityMapper::getTypeLabel().
    */
-  public function testGetTypeLabel(): void {
+  public function testGetTypeLabel() {
     $entity_type = $this->createMock('Drupal\Core\Config\Entity\ConfigEntityTypeInterface');
     $entity_type->expects($this->once())
       ->method('getLabel')
@@ -219,7 +219,7 @@ class ConfigEntityMapperTest extends UnitTestCase {
   /**
    * Tests ConfigEntityMapper::getOperations().
    */
-  public function testGetOperations(): void {
+  public function testGetOperations() {
     $result = $this->configEntityMapper->getOperations();
 
     $expected = [

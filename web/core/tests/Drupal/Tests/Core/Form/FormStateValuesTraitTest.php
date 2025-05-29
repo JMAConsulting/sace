@@ -19,7 +19,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *
    * @covers ::setValueForElement
    */
-  public function testSetValueForElement(): void {
+  public function testSetValueForElement() {
     $element = [
       '#parents' => [
         'foo',
@@ -43,7 +43,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *
    * @dataProvider providerGetValue
    */
-  public function testGetValue($key, $expected, $default = NULL): void {
+  public function testGetValue($key, $expected, $default = NULL) {
     $form_state = (new FormStateValuesTraitStub())->setValues([
       'foo' => 'one',
       'bar' => [
@@ -62,7 +62,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *   - The expected value (mixed).
    *   - The default value (mixed).
    */
-  public static function providerGetValue() {
+  public function providerGetValue() {
     $data = [];
     $data[] = [
       'foo', 'one',
@@ -91,7 +91,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
   /**
    * @covers ::getValue
    */
-  public function testGetValueModifyReturn(): void {
+  public function testGetValueModifyReturn() {
     $initial_values = $values = [
       'foo' => 'one',
       'bar' => [
@@ -113,7 +113,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *
    * @dataProvider providerSetValue
    */
-  public function testSetValue($key, $value, $expected): void {
+  public function testSetValue($key, $value, $expected) {
     $form_state = (new FormStateValuesTraitStub())->setValues([
       'bar' => 'wrong',
     ]);
@@ -130,7 +130,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *   - The new value to set (mixed).
    *   - The expected form state values after setting the new value (mixed[]).
    */
-  public static function providerSetValue() {
+  public function providerSetValue() {
     $data = [];
     $data[] = [
       'foo', 'one', ['bar' => 'wrong', 'foo' => 'one'],
@@ -149,7 +149,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *
    * @dataProvider providerHasValue
    */
-  public function testHasValue($key, $expected): void {
+  public function testHasValue($key, $expected) {
     $form_state = (new FormStateValuesTraitStub())->setValues([
       'foo' => 'one',
       'bar' => [
@@ -170,7 +170,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *   - The key to check for in the form state (string)
    *   - Whether the form state has an item with that key (bool).
    */
-  public static function providerHasValue() {
+  public function providerHasValue() {
     $data = [];
     $data[] = [
       'foo', TRUE,
@@ -198,7 +198,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *
    * @dataProvider providerIsValueEmpty
    */
-  public function testIsValueEmpty($key, $expected): void {
+  public function testIsValueEmpty($key, $expected) {
     $form_state = (new FormStateValuesTraitStub())->setValues([
       'foo' => 'one',
       'bar' => [
@@ -219,7 +219,7 @@ class FormStateValuesTraitTest extends UnitTestCase {
    *   - The key to check for in the form state (string)
    *   - Whether the value is empty or not (bool).
    */
-  public static function providerIsValueEmpty() {
+  public function providerIsValueEmpty() {
     $data = [];
     $data[] = [
       'foo', FALSE,

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -16,7 +14,9 @@ use Drupal\user\Entity\User;
 abstract class FileManagedUnitTestBase extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['file_test', 'file', 'system', 'field', 'user'];
 

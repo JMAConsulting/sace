@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel;
 
 use Drupal\field\Entity\FieldConfig;
@@ -32,7 +30,7 @@ class NodeLoadMultipleTest extends NodeAccessTestBase {
   /**
    * Creates four nodes and ensures that they are loaded correctly.
    */
-  public function testNodeMultipleLoad(): void {
+  public function testNodeMultipleLoad() {
     $node1 = $this->drupalCreateNode(['type' => 'article', 'promote' => 1]);
     $node2 = $this->drupalCreateNode(['type' => 'article', 'promote' => 1]);
     $node3 = $this->drupalCreateNode(['type' => 'article', 'promote' => 0]);
@@ -59,7 +57,7 @@ class NodeLoadMultipleTest extends NodeAccessTestBase {
   /**
    * Creates four nodes with not case sensitive fields and load them.
    */
-  public function testNodeMultipleLoadCaseSensitiveFalse(): void {
+  public function testNodeMultipleLoadCaseSensitiveFalse() {
     $field_first_storage = FieldStorageConfig::create([
       'field_name' => 'field_first',
       'entity_type' => 'node',

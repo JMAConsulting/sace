@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\Core\Cache\Cache;
@@ -120,7 +118,7 @@ class ConfigurableLanguageManagerTest extends BrowserTestBase {
    * The interface language uses the preferred language for admin pages of the
    * user and after that the URL. The Content uses just the URL.
    */
-  public function testUrlContentTranslationWithPreferredAdminLanguage(): void {
+  public function testUrlContentTranslationWithPreferredAdminLanguage() {
     $assert_session = $this->assertSession();
     // Set the interface language to use the preferred administration language
     // and then the URL.
@@ -161,7 +159,7 @@ class ConfigurableLanguageManagerTest extends BrowserTestBase {
   /**
    * Tests translation with URL and Session Language Negotiators.
    */
-  public function testUrlContentTranslationWithSessionLanguage(): void {
+  public function testUrlContentTranslationWithSessionLanguage() {
     $assert_session = $this->assertSession();
     /** @var \Drupal\language\LanguageNegotiatorInterface $language_negotiator */
     $language_negotiator = \Drupal::getContainer()->get('language_negotiator');
@@ -213,7 +211,7 @@ class ConfigurableLanguageManagerTest extends BrowserTestBase {
    * admin language negotiator because of the recursive way that the negotiator
    * is called.
    */
-  public function testUserProfileTranslationWithPreferredAdminLanguage(): void {
+  public function testUserProfileTranslationWithPreferredAdminLanguage() {
     $assert_session = $this->assertSession();
     // Set the interface language to use the preferred administration language.
     /** @var \Drupal\language\LanguageNegotiatorInterface $language_negotiator */

@@ -59,7 +59,7 @@ class FilterTest extends WebDriverTestBase {
   /**
    * Tests adding a filter handler.
    */
-  public function testAddingFilter(): void {
+  public function testAddingFilter() {
     $web_assert = $this->assertSession();
 
     $url = '/admin/structure/views/view/content';

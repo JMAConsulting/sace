@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\jsonapi\Kernel\ResourceType;
 
 use Drupal\Core\Cache\Cache;
@@ -68,7 +66,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
   /**
    * @covers ::all
    */
-  public function testAll(): void {
+  public function testAll() {
     // Make sure that there are resources being created.
     $all = $this->resourceTypeRepository->all();
     $this->assertNotEmpty($all);
@@ -83,7 +81,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
    * @covers ::get
    * @dataProvider getProvider
    */
-  public function testGet($entity_type_id, $bundle, $entity_class): void {
+  public function testGet($entity_type_id, $bundle, $entity_class) {
     // Make sure that there are resources being created.
     $resource_type = $this->resourceTypeRepository->get($entity_type_id, $bundle);
     $this->assertInstanceOf(ResourceType::class, $resource_type);
@@ -99,7 +97,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
    * @return array
    *   The data for the test method.
    */
-  public static function getProvider() {
+  public function getProvider() {
     return [
       ['node', 'article', 'Drupal\node\Entity\Node'],
       ['node', '42', 'Drupal\node\Entity\Node'],
@@ -111,7 +109,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
   /**
    * Ensures that the ResourceTypeRepository's cache does not become stale.
    */
-  public function testCaching(): void {
+  public function testCaching() {
     $this->assertEmpty($this->resourceTypeRepository->get('node', 'article')->getRelatableResourceTypesByField('field_relationship'));
     $this->createEntityReferenceField('node', 'article', 'field_relationship', 'Related entity', 'node');
     $this->assertCount(3, $this->resourceTypeRepository->get('node', 'article')->getRelatableResourceTypesByField('field_relationship'));
@@ -128,7 +126,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
    * @covers ::getFields
    * @dataProvider getFieldsProvider
    */
-  public function testMappingNameConflictCheck($field_name_list): void {
+  public function testMappingNameConflictCheck($field_name_list) {
     $entity_type = \Drupal::entityTypeManager()->getDefinition('node');
     $bundle = 'article';
     $reflection_class = new \ReflectionClass($this->resourceTypeRepository);
@@ -149,7 +147,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
    * @return array
    *   The data for the test method.
    */
-  public static function getFieldsProvider() {
+  public function getFieldsProvider() {
     return [
       [['type', 'node_type']],
       [['id', 'node_id']],
@@ -159,7 +157,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
   /**
    * Tests that resource types can be disabled by a build subscriber.
    */
-  public function testResourceTypeDisabling(): void {
+  public function testResourceTypeDisabling() {
     $this->assertFalse($this->resourceTypeRepository->getByTypeName('node--article')->isInternal());
     $this->assertFalse($this->resourceTypeRepository->getByTypeName('node--page')->isInternal());
     $this->assertFalse($this->resourceTypeRepository->getByTypeName('user--user')->isInternal());
@@ -177,7 +175,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
   /**
    * Tests that resource type fields can be aliased per resource type.
    */
-  public function testResourceTypeFieldAliasing(): void {
+  public function testResourceTypeFieldAliasing() {
     $this->assertSame($this->resourceTypeRepository->getByTypeName('node--article')->getPublicName('uid'), 'uid');
     $this->assertSame($this->resourceTypeRepository->getByTypeName('node--page')->getPublicName('uid'), 'uid');
     $resource_type_field_aliases = [
@@ -197,7 +195,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
   /**
    * Tests that resource type fields can be disabled per resource type.
    */
-  public function testResourceTypeFieldDisabling(): void {
+  public function testResourceTypeFieldDisabling() {
     $this->assertTrue($this->resourceTypeRepository->getByTypeName('node--article')->isFieldEnabled('uid'));
     $this->assertTrue($this->resourceTypeRepository->getByTypeName('node--page')->isFieldEnabled('uid'));
     $disabled_resource_type_fields = [
@@ -217,7 +215,7 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
   /**
    * Tests that resource types can be renamed.
    */
-  public function testResourceTypeRenaming(): void {
+  public function testResourceTypeRenaming() {
     \Drupal::state()->set('jsonapi_test_resource_type_builder.renamed_resource_types', [
       'node--article' => 'articles',
       'node--page' => 'pages',

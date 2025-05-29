@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\filter\Kernel;
 
 use Drupal\filter\Entity\FilterFormat;
@@ -15,9 +13,6 @@ use Drupal\user\RoleInterface;
  */
 class FilterDefaultConfigTest extends KernelTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['system', 'user', 'filter', 'filter_test'];
 
   /**
@@ -38,7 +33,7 @@ class FilterDefaultConfigTest extends KernelTestBase {
   /**
    * Tests installation of default formats.
    */
-  public function testInstallation(): void {
+  public function testInstallation() {
     // Verify that the format was installed correctly.
     $format = FilterFormat::load('filter_test');
     $this->assertTrue((bool) $format);
@@ -73,7 +68,7 @@ class FilterDefaultConfigTest extends KernelTestBase {
   /**
    * Tests that changes to FilterFormat::$roles do not have an effect.
    */
-  public function testUpdateRoles(): void {
+  public function testUpdateRoles() {
     // Verify role permissions declared in default config.
     $format = FilterFormat::load('filter_test');
     $this->assertEquals([RoleInterface::ANONYMOUS_ID, RoleInterface::AUTHENTICATED_ID], array_keys(filter_get_roles_by_format($format)));

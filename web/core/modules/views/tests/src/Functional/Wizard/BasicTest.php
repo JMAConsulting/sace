@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Wizard;
 
 use Drupal\Component\Serialization\Json;
@@ -29,7 +27,7 @@ class BasicTest extends WizardTestBase {
     $this->drupalPlaceBlock('page_title_block');
   }
 
-  public function testViewsWizardAndListing(): void {
+  public function testViewsWizardAndListing() {
     $this->drupalCreateContentType(['type' => 'article']);
     $this->drupalCreateContentType(['type' => 'page']);
 
@@ -203,7 +201,7 @@ class BasicTest extends WizardTestBase {
    *
    * @see \Drupal\views\Plugin\views\display\DisplayPluginBase::mergeDefaults()
    */
-  public function testWizardDefaultValues(): void {
+  public function testWizardDefaultValues() {
     $random_id = $this->randomMachineName(16);
     // Create a basic view.
     $view = [];

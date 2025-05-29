@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_ui\Functional;
 
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -22,7 +20,9 @@ class MenuUiLanguageTest extends BrowserTestBase {
   use MenuUiTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'language',
@@ -58,7 +58,7 @@ class MenuUiLanguageTest extends BrowserTestBase {
   /**
    * Tests menu language settings and the defaults for menu link items.
    */
-  public function testMenuLanguage(): void {
+  public function testMenuLanguage() {
     // Create a test menu to test the various language-related settings.
     // Machine name has to be lowercase.
     $menu_name = $this->randomMachineName(16);

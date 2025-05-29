@@ -85,7 +85,7 @@ class Test {
    * @param int $code
    *   The status code.
    */
-  public function httpResponseException(int $code) {
+  public function httpResponseException($code) {
     throw new HttpException($code);
   }
 

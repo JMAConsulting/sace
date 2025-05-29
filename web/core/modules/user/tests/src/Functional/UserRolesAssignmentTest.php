@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -33,7 +31,7 @@ class UserRolesAssignmentTest extends BrowserTestBase {
   /**
    * Test that user can be assigned role and that the role can be removed again.
    */
-  public function testAssignAndRemoveRole(): void {
+  public function testAssignAndRemoveRole() {
     $rid = $this->drupalCreateRole(['administer users']);
     $account = $this->drupalCreateUser();
 
@@ -55,7 +53,7 @@ class UserRolesAssignmentTest extends BrowserTestBase {
   /**
    * Tests assigning a role at user creation and removing the role.
    */
-  public function testCreateUserWithRole(): void {
+  public function testCreateUserWithRole() {
     $rid = $this->drupalCreateRole(['administer users']);
     // Create a new user and add the role at the same time.
     $edit = [

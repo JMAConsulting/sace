@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\field\Entity\FieldConfig;
@@ -15,7 +13,9 @@ use Drupal\field\Entity\FieldStorageConfig;
 class NodeAccessFieldTest extends NodeTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node_access_test', 'field_ui'];
 
@@ -89,7 +89,7 @@ class NodeAccessFieldTest extends NodeTestBase {
   /**
    * Tests administering fields when node access is restricted.
    */
-  public function testNodeAccessAdministerField(): void {
+  public function testNodeAccessAdministerField() {
     // Create a page node.
     $fieldData = [];
     $value = $fieldData[0]['value'] = $this->randomMachineName();

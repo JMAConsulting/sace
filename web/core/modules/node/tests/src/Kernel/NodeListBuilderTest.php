@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -31,7 +29,7 @@ class NodeListBuilderTest extends KernelTestBase {
   /**
    * Tests that the correct cache contexts are set.
    */
-  public function testCacheContexts(): void {
+  public function testCacheContexts() {
     /** @var \Drupal\Core\Entity\EntityListBuilderInterface $list_builder */
     $list_builder = $this->container->get('entity_type.manager')->getListBuilder('node');
 

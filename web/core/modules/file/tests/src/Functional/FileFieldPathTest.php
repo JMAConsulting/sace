@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional;
 
 use Drupal\file\Entity\File;
@@ -21,7 +19,7 @@ class FileFieldPathTest extends FileFieldTestBase {
   /**
    * Tests the normal formatter display on node display.
    */
-  public function testUploadPath(): void {
+  public function testUploadPath() {
     /** @var \Drupal\node\NodeStorageInterface $node_storage */
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $field_name = $this->randomMachineName();
@@ -41,8 +39,8 @@ class FileFieldPathTest extends FileFieldTestBase {
     $date_formatter = $this->container->get('date.formatter');
     $expected_filename =
       'public://' .
-      $date_formatter->format(\Drupal::time()->getRequestTime(), 'custom', 'Y') . '-' .
-      $date_formatter->format(\Drupal::time()->getRequestTime(), 'custom', 'm') . '/' .
+      $date_formatter->format(REQUEST_TIME, 'custom', 'Y') . '-' .
+      $date_formatter->format(REQUEST_TIME, 'custom', 'm') . '/' .
       $test_file->getFilename();
     $this->assertPathMatch($expected_filename, $node_file->getFileUri(), "The file {$node_file->getFileUri()} was uploaded to the correct path.");
 

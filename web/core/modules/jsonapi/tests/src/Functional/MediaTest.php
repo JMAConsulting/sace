@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\jsonapi\Functional;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -360,16 +358,16 @@ class MediaTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function doTestPostIndividual(): void {
+  public function testPostIndividual() {
     // @todo Mimic \Drupal\Tests\rest\Functional\EntityResource\Media\MediaResourceTestBase::testPost()
     // @todo Later, use https://www.drupal.org/project/drupal/issues/2958554 to upload files rather than the REST module.
-    parent::doTestPostIndividual();
+    parent::testPostIndividual();
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getExpectedGetRelationshipDocumentData($relationship_field_name, ?EntityInterface $entity = NULL) {
+  protected function getExpectedGetRelationshipDocumentData($relationship_field_name, EntityInterface $entity = NULL) {
     $data = parent::getExpectedGetRelationshipDocumentData($relationship_field_name, $entity);
     switch ($relationship_field_name) {
       case 'thumbnail':
@@ -406,7 +404,7 @@ class MediaTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  public function testCollectionFilterAccess(): void {
+  public function testCollectionFilterAccess() {
     $this->doTestCollectionFilterAccessForPublishableEntities('name', 'view media', 'administer media');
   }
 

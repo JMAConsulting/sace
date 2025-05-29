@@ -1,13 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\KernelTests\KernelTestBase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Tests built-in image theme functions.
@@ -17,7 +13,9 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 class ImageTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system'];
 
@@ -45,7 +43,6 @@ class ImageTest extends KernelTestBase {
     // the Request containing the correct hostname. KernelTestBase doesn't set
     // it, so push another request onto the stack to ensure it's correct.
     $request = Request::create('/', 'GET', [], [], [], $_SERVER);
-    $request->setSession(new Session(new MockArraySessionStorage()));
     $this->container = \Drupal::service('kernel')->getContainer();
     $this->container->get('request_stack')->push($request);
 
@@ -60,7 +57,7 @@ class ImageTest extends KernelTestBase {
   /**
    * Tests that an image with the sizes attribute is output correctly.
    */
-  public function testThemeImageWithSizes(): void {
+  public function testThemeImageWithSizes() {
     // Test with multipliers.
     $sizes = '(max-width: ' . rand(10, 30) . 'em) 100vw, (max-width: ' . rand(30, 50) . 'em) 50vw, 30vw';
     $image = [
@@ -81,7 +78,7 @@ class ImageTest extends KernelTestBase {
   /**
    * Tests that an image with the src attribute is output correctly.
    */
-  public function testThemeImageWithSrc(): void {
+  public function testThemeImageWithSrc() {
 
     $image = [
       '#theme' => 'image',
@@ -100,7 +97,7 @@ class ImageTest extends KernelTestBase {
   /**
    * Tests that an image with the srcset and multipliers is output correctly.
    */
-  public function testThemeImageWithSrcsetMultiplier(): void {
+  public function testThemeImageWithSrcsetMultiplier() {
     // Test with multipliers.
     $image = [
       '#theme' => 'image',
@@ -128,7 +125,7 @@ class ImageTest extends KernelTestBase {
   /**
    * Tests that an image with the srcset and widths is output correctly.
    */
-  public function testThemeImageWithSrcsetWidth(): void {
+  public function testThemeImageWithSrcsetWidth() {
     // Test with multipliers.
     $widths = [
       rand(0, 500) . 'w',

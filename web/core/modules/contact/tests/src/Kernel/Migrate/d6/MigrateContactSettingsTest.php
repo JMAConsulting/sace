@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\contact\Kernel\Migrate\d6;
 
 use Drupal\Tests\SchemaCheckTestTrait;
@@ -32,7 +30,7 @@ class MigrateContactSettingsTest extends MigrateDrupal6TestBase {
   /**
    * Tests migration of contact variables to contact.settings.yml.
    */
-  public function testContactSettings(): void {
+  public function testContactSettings() {
     $config = $this->config('contact.settings');
     $this->assertTrue($config->get('user_default_enabled'));
     $this->assertSame(3, $config->get('flood.limit'));

@@ -3,8 +3,7 @@
 namespace Drupal\filter\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Attribute\RenderElement;
-use Drupal\Core\Render\Element\RenderElementBase;
+use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 
@@ -22,18 +21,19 @@ use Drupal\Core\Url;
  *
  * Usage Example:
  * @code
- * $form['body'] = [
+ * $form['body'] = array(
  *   '#type' => 'text_format',
  *   '#title' => 'Body',
  *   '#format' => 'full_html',
  *   '#default_value' => '<p>The quick brown fox jumped over the lazy dog.</p>',
- * ];
+ * );
  * @endcode
  *
  * @see \Drupal\Core\Render\Element\Textarea
+ *
+ * @RenderElement("text_format")
  */
-#[RenderElement('text_format')]
-class TextFormat extends RenderElementBase {
+class TextFormat extends RenderElement {
 
   /**
    * {@inheritdoc}

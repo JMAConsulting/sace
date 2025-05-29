@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\rest\Functional\Views;
 
 use Drupal\node\Entity\Node;
@@ -69,7 +67,7 @@ class FieldCounterTest extends ViewTestBase {
   /**
    * Tests the display of an excluded title field when used as a token.
    */
-  public function testExcludedTitleTokenDisplay(): void {
+  public function testExcludedTitleTokenDisplay() {
     $actual_json = $this->drupalGet($this->view->getPath(), ['query' => ['_format' => 'json']]);
     $this->assertSession()->statusCodeEquals(200);
 

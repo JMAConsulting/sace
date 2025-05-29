@@ -2,17 +2,15 @@
 
 namespace Drupal\node\Plugin\views\argument;
 
-use Drupal\views\Attribute\ViewsArgument;
 use Drupal\views\Plugin\views\argument\NumericArgument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\node\NodeStorageInterface;
 
 /**
  * Argument handler to accept a node revision id.
+ *
+ * @ViewsArgument("node_vid")
  */
-#[ViewsArgument(
-  id: 'node_vid',
-)]
 class Vid extends NumericArgument {
 
   /**
@@ -28,7 +26,7 @@ class Vid extends NumericArgument {
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\node\NodeStorageInterface $node_storage

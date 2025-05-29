@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
@@ -25,7 +23,7 @@ class MigrateUserFloodTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migration.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $expected = [
       '_core' => [
         'default_config_hash' => 'UYfMzeP1S8jKm9PSvxf7nQNe8DsNS-3bc2WSNNXBQWs',

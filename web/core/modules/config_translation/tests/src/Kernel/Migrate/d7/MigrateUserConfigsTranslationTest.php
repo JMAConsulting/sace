@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config_translation\Kernel\Migrate\d7;
 
 use Drupal\Tests\SchemaCheckTestTrait;
@@ -47,7 +45,7 @@ class MigrateUserConfigsTranslationTest extends MigrateDrupal7TestBase {
   /**
    * Tests migration of i18n user variables to user.mail and user.settings.
    */
-  public function testUserConfig(): void {
+  public function testUserConfig() {
     // Tests migration of i18n user variables to user.mail.yml.
     $language_manager = \Drupal::service('language_manager');
     $config = $language_manager->getLanguageConfigOverride('is', 'user.mail');

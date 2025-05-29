@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\ckeditor5\FunctionalJavascript;
 
 use Behat\Mink\Element\TraversableElement;
-use Drupal\editor\Entity\Editor;
-use Drupal\filter\Entity\FilterFormat;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\user\RoleInterface;
 
 // cspell:ignore esque
 
@@ -51,30 +48,9 @@ abstract class CKEditor5TestBase extends WebDriverTestBase {
   /**
    * Add and save a new text format using CKEditor 5.
    */
-  protected function addNewTextFormat($name = 'ckeditor5'): void {
-    FilterFormat::create([
-      'format' => $name,
-      'roles' => [RoleInterface::AUTHENTICATED_ID],
-      'name' => $name,
-      'filters' => [
-        'filter_html' => [
-          'status' => TRUE,
-          'settings' => [
-            'allowed_html' => '<br> <p> <h2> <h3> <h4> <h5> <h6> <strong> <em>',
-          ],
-        ],
-        'filter_align' => ['status' => TRUE],
-        'filter_caption' => ['status' => TRUE],
-      ],
-    ])->save();
-
-    Editor::create([
-      'editor' => $name,
-      'format' => $name,
-      'image_upload' => [
-        'status' => FALSE,
-      ],
-    ])->save();
+  public function addNewTextFormat($page, $assert_session, $name = 'ckeditor5') {
+    $this->createNewTextFormat($page, $assert_session, $name);
+    $this->saveNewTextFormat($page, $assert_session);
   }
 
   /**
@@ -150,7 +126,7 @@ JS;
    *
    * @see \Behat\Mink\WebAssert::fieldValueEquals()
    */
-  protected function assertHtmlEsqueFieldValueEquals($field, $value, ?TraversableElement $container = NULL) {
+  protected function assertHtmlEsqueFieldValueEquals($field, $value, TraversableElement $container = NULL) {
     $assert_session = $this->assertSession();
 
     $node = $assert_session->fieldExists($field, $container);

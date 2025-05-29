@@ -96,7 +96,7 @@ class TwigExtensionTest extends UnitTestCase {
    *
    * @dataProvider providerTestEscaping
    */
-  public function testEscaping($template, $expected): void {
+  public function testEscaping($template, $expected) {
     $loader = new FilesystemLoader();
     $twig = new Environment($loader, [
       'debug' => TRUE,
@@ -121,7 +121,7 @@ class TwigExtensionTest extends UnitTestCase {
    *   An array of test data each containing of a twig template string and
    *   a boolean expecting whether the path will be safe.
    */
-  public static function providerTestEscaping() {
+  public function providerTestEscaping() {
     return [
       ['{{ path("foo") }}', FALSE],
       ['{{ path("foo", {}) }}', FALSE],
@@ -148,7 +148,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests the active_theme function.
    */
-  public function testActiveTheme(): void {
+  public function testActiveTheme() {
     $active_theme = $this->getMockBuilder('\Drupal\Core\Theme\ActiveTheme')
       ->disableOriginalConstructor()
       ->getMock();
@@ -169,7 +169,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests the format_date filter.
    */
-  public function testFormatDate(): void {
+  public function testFormatDate() {
     $this->dateFormatter->expects($this->exactly(1))
       ->method('format')
       ->willReturnCallback(function ($timestamp) {
@@ -187,7 +187,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests the file_url filter.
    */
-  public function testFileUrl(): void {
+  public function testFileUrl() {
     $this->fileUrlGenerator->expects($this->once())
       ->method('generateString')
       ->with('public://picture.jpg')
@@ -203,7 +203,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Tests the active_theme_path function.
    */
-  public function testActiveThemePath(): void {
+  public function testActiveThemePath() {
     $active_theme = $this->getMockBuilder('\Drupal\Core\Theme\ActiveTheme')
       ->disableOriginalConstructor()
       ->getMock();
@@ -227,7 +227,7 @@ class TwigExtensionTest extends UnitTestCase {
    *
    * @covers ::escapeFilter
    */
-  public function testSafeStringEscaping(): void {
+  public function testSafeStringEscaping() {
     $loader = new FilesystemLoader();
     $twig = new Environment($loader, [
       'debug' => TRUE,
@@ -249,7 +249,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * @covers ::safeJoin
    */
-  public function testSafeJoin(): void {
+  public function testSafeJoin() {
     $this->renderer->expects($this->any())
       ->method('render')
       ->with(['#markup' => '<strong>will be rendered</strong>', '#printed' => FALSE])
@@ -288,7 +288,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * @dataProvider providerTestRenderVar
    */
-  public function testRenderVar($result, $input): void {
+  public function testRenderVar($result, $input) {
     $this->renderer->expects($this->any())
       ->method('render')
       ->with($result += ['#printed' => FALSE])
@@ -312,7 +312,7 @@ class TwigExtensionTest extends UnitTestCase {
    * @covers ::escapeFilter
    * @covers ::bubbleArgMetadata
    */
-  public function testEscapeWithGeneratedLink(): void {
+  public function testEscapeWithGeneratedLink() {
     $loader = new FilesystemLoader();
     $twig = new Environment($loader, [
       'debug' => TRUE,
@@ -345,7 +345,7 @@ class TwigExtensionTest extends UnitTestCase {
    * @covers ::renderVar
    * @covers ::bubbleArgMetadata
    */
-  public function testRenderVarWithGeneratedLink(): void {
+  public function testRenderVarWithGeneratedLink() {
     $link = new GeneratedLink();
     $link->setGeneratedLink('<a href="http://example.com"></a>');
     $link->addCacheTags(['foo']);
@@ -369,7 +369,7 @@ class TwigExtensionTest extends UnitTestCase {
    * @covers ::renderVar
    * @dataProvider providerTestRenderVarEarlyReturn
    */
-  public function testRenderVarEarlyReturn($expected, $input): void {
+  public function testRenderVarEarlyReturn($expected, $input) {
     $result = $this->systemUnderTest->renderVar($input);
     $this->assertSame($expected, $result);
   }
@@ -377,7 +377,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * Data provider for ::testRenderVarEarlyReturn().
    */
-  public static function providerTestRenderVarEarlyReturn() {
+  public function providerTestRenderVarEarlyReturn() {
     return [
       'null' => ['', NULL],
       'empty array' => ['', []],
@@ -397,7 +397,7 @@ class TwigExtensionTest extends UnitTestCase {
    *
    * @covers ::createAttribute
    */
-  public function testCreateAttribute(): void {
+  public function testCreateAttribute() {
     $name = '__string_template_test_1__';
     $loader = new ArrayLoader([$name => "{% for iteration in iterations %}<div{{ create_attribute(iteration) }}></div>{% endfor %}"]);
     $twig = new Environment($loader);
@@ -425,7 +425,7 @@ class TwigExtensionTest extends UnitTestCase {
   /**
    * @covers ::getLink
    */
-  public function testLinkWithOverriddenAttributes(): void {
+  public function testLinkWithOverriddenAttributes() {
     $url = Url::fromRoute('<front>', [], ['attributes' => ['class' => ['foo']]]);
 
     $build = $this->systemUnderTest->getLink('test', $url, ['class' => ['bar']]);
@@ -439,7 +439,7 @@ class TwigExtensionTest extends UnitTestCase {
    * @covers ::suggestThemeHook
    * @dataProvider providerTestTwigAddSuggestionFilter
    */
-  public function testTwigAddSuggestionFilter($original_render_array, $suggestion, $expected_render_array): void {
+  public function testTwigAddSuggestionFilter($original_render_array, $suggestion, $expected_render_array) {
     $processed_render_array = $this->systemUnderTest->suggestThemeHook($original_render_array, $suggestion);
     $this->assertEquals($expected_render_array, $processed_render_array);
   }
@@ -449,7 +449,7 @@ class TwigExtensionTest extends UnitTestCase {
    *
    * @return \Iterator
    */
-  public static function providerTestTwigAddSuggestionFilter(): \Iterator {
+  public function providerTestTwigAddSuggestionFilter(): \Iterator {
     yield 'suggestion should be added' => [
       [
         '#theme' => 'kitten',
@@ -555,7 +555,7 @@ class TwigExtensionTest extends UnitTestCase {
    * @covers ::addClass
    * @dataProvider providerTestTwigAddClass
    */
-  public function testTwigAddClass($element, $classes, $expected_result): void {
+  public function testTwigAddClass($element, $classes, $expected_result) {
     $processed = $this->systemUnderTest->addClass($element, $classes);
     $this->assertEquals($expected_result, $processed);
   }
@@ -565,7 +565,7 @@ class TwigExtensionTest extends UnitTestCase {
    *
    * @return \Iterator
    */
-  public static function providerTestTwigAddClass(): \Iterator {
+  public function providerTestTwigAddClass(): \Iterator {
     yield 'should add a class on element' => [
       ['#type' => 'container'],
       'my-class',
@@ -605,7 +605,7 @@ class TwigExtensionTest extends UnitTestCase {
    * @covers ::setAttribute
    * @dataProvider providerTestTwigSetAttribute
    */
-  public function testTwigSetAttribute($element, $key, $value, $expected_result): void {
+  public function testTwigSetAttribute($element, $key, $value, $expected_result) {
     $processed = $this->systemUnderTest->setAttribute($element, $key, $value);
     $this->assertEquals($expected_result, $processed);
   }
@@ -615,7 +615,7 @@ class TwigExtensionTest extends UnitTestCase {
    *
    * @return \Iterator
    */
-  public static function providerTestTwigSetAttribute(): \Iterator {
+  public function providerTestTwigSetAttribute(): \Iterator {
     yield 'should add attributes on element' => [
       ['#theme' => 'image'],
       'title',

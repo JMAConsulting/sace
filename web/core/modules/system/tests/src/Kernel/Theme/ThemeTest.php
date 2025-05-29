@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Theme;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -37,7 +35,7 @@ class ThemeTest extends KernelTestBase {
    *   - the render element's #attributes
    *   - any attributes set in the template's preprocessing function
    */
-  public function testAttributeMerging(): void {
+  public function testAttributeMerging() {
     $theme_test_render_element = [
       'elements' => [
         '#attributes' => ['data-foo' => 'bar'],
@@ -52,7 +50,7 @@ class ThemeTest extends KernelTestBase {
   /**
    * Tests that ThemeManager renders the expected data types.
    */
-  public function testThemeDataTypes(): void {
+  public function testThemeDataTypes() {
     // theme_test_false is an implemented theme hook so \Drupal::theme() service
     // should return a string or an object that implements MarkupInterface,
     // even though the theme function itself can return anything.
@@ -77,7 +75,7 @@ class ThemeTest extends KernelTestBase {
   /**
    * Tests function theme_get_suggestions() for SA-CORE-2009-003.
    */
-  public function testThemeSuggestions(): void {
+  public function testThemeSuggestions() {
     // Set the front page as something random otherwise the CLI
     // test runner fails.
     $this->config('system.site')->set('page.front', '/nobody-home')->save();
@@ -104,7 +102,7 @@ class ThemeTest extends KernelTestBase {
   /**
    * Tests the listInfo() function.
    */
-  public function testListThemes(): void {
+  public function testListThemes() {
     $this->container->get('theme_installer')->install(['test_subtheme']);
     $theme_handler = $this->container->get('theme_handler');
     $themes = $theme_handler->listInfo();
@@ -129,7 +127,7 @@ class ThemeTest extends KernelTestBase {
   /**
    * Tests child element rendering for 'render element' theme hooks.
    */
-  public function testDrupalRenderChildren(): void {
+  public function testDrupalRenderChildren() {
     $element = [
       '#theme' => 'theme_test_render_element_children',
       'child' => [
@@ -150,7 +148,7 @@ class ThemeTest extends KernelTestBase {
   /**
    * Tests drupal_find_theme_templates().
    */
-  public function testFindThemeTemplates(): void {
+  public function testFindThemeTemplates() {
     $registry = $this->container->get('theme.registry')->get();
     $templates = drupal_find_theme_templates($registry, '.html.twig', $this->getThemePath('test_theme'));
     $this->assertEquals('node--1', $templates['node__1']['template'], 'Template node--1.html.twig was found in test_theme.');
@@ -159,7 +157,7 @@ class ThemeTest extends KernelTestBase {
   /**
    * Tests the update registry is correct during theme install and uninstall.
    */
-  public function testThemeUpdateManagement(): void {
+  public function testThemeUpdateManagement() {
     // Install modules the theme is dependent on and enable the post update
     // function.
     \Drupal::state()->set('test_theme_depending_on_modules.post_update', TRUE);
@@ -186,7 +184,7 @@ class ThemeTest extends KernelTestBase {
   /**
    * Tests the update registry is correct during theme install and uninstall.
    */
-  public function testThemeUpdateManagementRemovedPostUpdates(): void {
+  public function testThemeUpdateManagementRemovedPostUpdates() {
     // Install modules the theme is dependent on and enable the removed post
     // updates function.
     \Drupal::state()->set('test_theme_depending_on_modules.removed_post_updates', TRUE);

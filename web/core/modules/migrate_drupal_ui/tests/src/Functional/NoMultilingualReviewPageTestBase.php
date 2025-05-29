@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal_ui\Functional;
 
 /**
@@ -12,7 +10,7 @@ abstract class NoMultilingualReviewPageTestBase extends MultilingualReviewPageTe
   /**
    * Tests the review page when content_translation is enabled.
    */
-  public function testMigrateUpgradeReviewPage(): void {
+  public function testMigrateUpgradeReviewPage() {
     $this->prepare();
     // Start the upgrade process.
     $this->submitCredentialForm();

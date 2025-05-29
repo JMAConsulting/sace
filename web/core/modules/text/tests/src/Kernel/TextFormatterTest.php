@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\text\Kernel;
 
 use Drupal\field\Entity\FieldConfig;
@@ -31,7 +29,9 @@ class TextFormatterTest extends EntityKernelTestBase {
   protected $bundle = 'entity_test';
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['text'];
 
@@ -69,7 +69,7 @@ class TextFormatterTest extends EntityKernelTestBase {
   /**
    * Tests all text field formatters.
    */
-  public function testFormatters(): void {
+  public function testFormatters() {
     $formatters = [
       'text_default',
       'text_trimmed',

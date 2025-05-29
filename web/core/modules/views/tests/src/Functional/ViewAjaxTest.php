@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional;
 
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
@@ -37,7 +35,7 @@ class ViewAjaxTest extends ViewTestBase {
   /**
    * Tests an ajax view.
    */
-  public function testAjaxView(): void {
+  public function testAjaxView() {
     $this->drupalGet('test_ajax_view');
 
     $drupal_settings = $this->getDrupalSettings();
@@ -51,7 +49,7 @@ class ViewAjaxTest extends ViewTestBase {
   /**
    * Ensures that non-ajax view cannot be accessed via an ajax HTTP request.
    */
-  public function testNonAjaxViewViaAjax(): void {
+  public function testNonAjaxViewViaAjax() {
     $client = $this->getHttpClient();
     $response = $client->request('POST', $this->buildUrl('views/ajax'), [
       'form_params' => ['view_name' => 'test_ajax_view', 'view_display_id' => 'default'],

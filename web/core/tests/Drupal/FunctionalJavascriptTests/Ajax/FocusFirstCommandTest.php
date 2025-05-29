@@ -25,7 +25,7 @@ class FocusFirstCommandTest extends WebDriverTestBase {
   /**
    * Tests AjaxFocusFirstCommand on a page.
    */
-  public function testFocusFirst(): void {
+  public function testFocusFirst() {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 

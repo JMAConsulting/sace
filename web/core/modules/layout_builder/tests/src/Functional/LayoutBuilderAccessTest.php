@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Functional;
 
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
@@ -72,7 +70,7 @@ class LayoutBuilderAccessTest extends BrowserTestBase {
    * @param array $permission_dependencies
    *   An array of expected permission dependencies.
    */
-  public function testAccessWithBundles(array $permissions, $default_access, $non_editable_access, $editable_access, array $permission_dependencies): void {
+  public function testAccessWithBundles(array $permissions, $default_access, $non_editable_access, $editable_access, array $permission_dependencies) {
     $permissions[] = 'edit own bundle_with_section_field content';
     $permissions[] = 'access content';
     $user = $this->drupalCreateUser($permissions);
@@ -143,7 +141,7 @@ class LayoutBuilderAccessTest extends BrowserTestBase {
   /**
    * Provides test data for ::testAccessWithBundles().
    */
-  public static function providerTestAccessWithBundles() {
+  public function providerTestAccessWithBundles() {
     // Data provider values are:
     // - the permissions to grant to the user
     // - whether access is expected for the defaults
@@ -187,7 +185,7 @@ class LayoutBuilderAccessTest extends BrowserTestBase {
    *
    * @dataProvider providerTestAccessWithoutBundles
    */
-  public function testAccessWithoutBundles(array $permissions, $default_access, $non_editable_access, $editable_access, array $permission_dependencies): void {
+  public function testAccessWithoutBundles(array $permissions, $default_access, $non_editable_access, $editable_access, array $permission_dependencies) {
     $permissions[] = 'access user profiles';
     $user = $this->drupalCreateUser($permissions);
     $this->drupalLogin($user);
@@ -237,7 +235,7 @@ class LayoutBuilderAccessTest extends BrowserTestBase {
   /**
    * Provides test data for ::testAccessWithoutBundles().
    */
-  public static function providerTestAccessWithoutBundles() {
+  public function providerTestAccessWithoutBundles() {
     // Data provider values are:
     // - the permissions to grant to the user
     // - whether access is expected for the defaults

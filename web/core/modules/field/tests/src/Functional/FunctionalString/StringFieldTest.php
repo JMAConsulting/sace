@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\FunctionalString;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class StringFieldTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['entity_test', 'file'];
 
@@ -53,7 +53,7 @@ class StringFieldTest extends BrowserTestBase {
   /**
    * Tests widgets.
    */
-  public function testTextfieldWidgets(): void {
+  public function testTextfieldWidgets() {
     $this->_testTextfieldWidgets('string', 'string_textfield');
     $this->_testTextfieldWidgets('string_long', 'string_textarea');
   }

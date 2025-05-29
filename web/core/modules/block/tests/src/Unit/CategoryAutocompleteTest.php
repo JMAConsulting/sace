@@ -48,7 +48,7 @@ class CategoryAutocompleteTest extends UnitTestCase {
    *
    * @dataProvider providerTestAutocompleteSuggestions
    */
-  public function testAutocompleteSuggestions($string, $suggestions): void {
+  public function testAutocompleteSuggestions($string, $suggestions) {
     $suggestions = array_map(function ($suggestion) {
       return ['value' => $suggestion, 'label' => Html::escape($suggestion)];
     }, $suggestions);
@@ -61,7 +61,7 @@ class CategoryAutocompleteTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestAutocompleteSuggestions() {
+  public function providerTestAutocompleteSuggestions() {
     $test_parameters = [];
     $test_parameters[] = [
       'string' => 'Com',

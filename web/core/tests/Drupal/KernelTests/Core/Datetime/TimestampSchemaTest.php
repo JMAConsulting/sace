@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Datetime;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -34,7 +32,7 @@ class TimestampSchemaTest extends KernelTestBase {
   /**
    * Tests if the timestamp field schema is validated.
    */
-  public function testTimestampSchema(): void {
+  public function testTimestampSchema() {
     $this->installConfig(['field_timestamp_test']);
     // Make at least an assertion.
     $this->assertTrue(TRUE);

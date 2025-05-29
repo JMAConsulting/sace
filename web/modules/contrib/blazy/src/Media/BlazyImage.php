@@ -2,10 +2,10 @@
 
 namespace Drupal\blazy\Media;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\blazy\BlazyDefault;
-use Drupal\blazy\Utility\Sanitize;
 use Drupal\blazy\internals\Internals;
+use Drupal\blazy\Utility\Sanitize;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\media\MediaInterface;
 
@@ -441,9 +441,7 @@ class BlazyImage {
     $dim = ['width' => $width, 'height' => $height];
 
     // Funnily $uri is ignored at all core image effects.
-    if ($style) {
-      $style->transformDimensions($dim, $uri);
-    }
+    $style->transformDimensions($dim, $uri);
 
     // Sometimes they are string, cast them integer to reduce JS logic.
     self::toInt($dim, 'width', 'height');

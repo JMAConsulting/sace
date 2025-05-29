@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\dependencies;
 
 use Drupal\migrate\Exception\RequirementsException;
@@ -22,7 +20,7 @@ class MigrateDependenciesTest extends MigrateDrupal6TestBase {
   /**
    * Tests that the order is correct when loading several migrations.
    */
-  public function testMigrationDependenciesOrder(): void {
+  public function testMigrationDependenciesOrder() {
     $migration_items = ['d6_comment', 'd6_filter_format', 'd6_node:page'];
     /** @var \Drupal\migrate\Plugin\RequirementsInterface[] $migrations */
     $migrations = $this->container->get('plugin.manager.migration')->createInstances($migration_items);

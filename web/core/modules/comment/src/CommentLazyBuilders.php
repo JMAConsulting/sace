@@ -184,8 +184,7 @@ class CommentLazyBuilders implements TrustedCallbackInterface {
         ];
       }
       $field_definition = $commented_entity->getFieldDefinition($entity->getFieldName());
-      if ($entity->isPublished()
-        && $entity->access('create')
+      if ($entity->access('create')
         && $field_definition->getSetting('default_mode') === CommentManagerInterface::COMMENT_MODE_THREADED) {
         $links['comment-reply'] = [
           'title' => t('Reply'),

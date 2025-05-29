@@ -15,7 +15,7 @@
     <table class="form-layout-compressed{if $context EQ 'profile'} crm-profile-tagsandgroups{/if}">
       <tr>
         <td>
-          {if isset($form.tag) && $form.tag}
+          {if $form.tag}
             <div class="crm-section tag-section">
               {if !empty($title)}{$form.tag.label}<br>{/if}
               {$form.tag.html}

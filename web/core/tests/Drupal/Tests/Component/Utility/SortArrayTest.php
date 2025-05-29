@@ -30,7 +30,7 @@ class SortArrayTest extends TestCase {
    * @param int $expected
    *   The expected output from calling the method.
    */
-  public function testSortByWeightElement($a, $b, $expected): void {
+  public function testSortByWeightElement($a, $b, $expected) {
     $result = SortArray::sortByWeightElement($a, $b);
     $this->assertBothNegativePositiveOrZero($expected, $result);
   }
@@ -44,7 +44,7 @@ class SortArrayTest extends TestCase {
    *
    * @see \Drupal\Tests\Component\Utility\SortArrayTest::testSortByWeightElement()
    */
-  public static function providerSortByWeightElement() {
+  public function providerSortByWeightElement() {
     $tests = [];
 
     // Weights set and equal.
@@ -106,7 +106,7 @@ class SortArrayTest extends TestCase {
    * @param int $expected
    *   The expected output from calling the method.
    */
-  public function testSortByWeightProperty($a, $b, $expected): void {
+  public function testSortByWeightProperty($a, $b, $expected) {
     $result = SortArray::sortByWeightProperty($a, $b);
     $this->assertBothNegativePositiveOrZero($expected, $result);
   }
@@ -120,7 +120,7 @@ class SortArrayTest extends TestCase {
    *
    * @see \Drupal\Tests\Component\Utility\SortArrayTest::testSortByWeightProperty()
    */
-  public static function providerSortByWeightProperty() {
+  public function providerSortByWeightProperty() {
     $tests = [];
 
     // Weights set and equal.
@@ -182,7 +182,7 @@ class SortArrayTest extends TestCase {
    * @param int $expected
    *   The expected output from calling the method.
    */
-  public function testSortByTitleElement($a, $b, $expected): void {
+  public function testSortByTitleElement($a, $b, $expected) {
     $result = SortArray::sortByTitleElement($a, $b);
     $this->assertBothNegativePositiveOrZero($expected, $result);
   }
@@ -196,7 +196,7 @@ class SortArrayTest extends TestCase {
    *
    * @see \Drupal\Tests\Component\Utility\SortArrayTest::testSortByTitleElement()
    */
-  public static function providerSortByTitleElement() {
+  public function providerSortByTitleElement() {
     $tests = [];
 
     // Titles set and equal.
@@ -251,7 +251,7 @@ class SortArrayTest extends TestCase {
    * @param int $expected
    *   The expected output from calling the method.
    */
-  public function testSortByTitleProperty($a, $b, $expected): void {
+  public function testSortByTitleProperty($a, $b, $expected) {
     $result = SortArray::sortByTitleProperty($a, $b);
     $this->assertBothNegativePositiveOrZero($expected, $result);
   }
@@ -265,7 +265,7 @@ class SortArrayTest extends TestCase {
    *
    * @see \Drupal\Tests\Component\Utility\SortArrayTest::testSortByTitleProperty()
    */
-  public static function providerSortByTitleProperty() {
+  public function providerSortByTitleProperty() {
     $tests = [];
 
     // Titles set and equal.

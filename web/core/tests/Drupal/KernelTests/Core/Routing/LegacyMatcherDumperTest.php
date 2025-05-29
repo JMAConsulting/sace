@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Routing;
 
 use Drupal\Core\Database\Connection;
@@ -45,7 +43,7 @@ class LegacyMatcherDumperTest extends KernelTestBase {
   /**
    * Tests the constructor deprecations.
    */
-  public function testConstructorDeprecationNoLogger(): void {
+  public function testConstructorDeprecationNoLogger() {
     $this->expectDeprecation('Calling Drupal\Core\Routing\MatcherDumper::__construct() without the $logger argument is deprecated in drupal:10.1.0 and it will be required in drupal:11.0.0. See https://www.drupal.org/node/2932520');
     $dumper = new MatcherDumper($this->connection, $this->state);
     $this->assertNotNull($dumper);
@@ -54,7 +52,7 @@ class LegacyMatcherDumperTest extends KernelTestBase {
   /**
    * Tests the constructor deprecations.
    */
-  public function testConstructorDeprecationWithLegacyTableNameParam(): void {
+  public function testConstructorDeprecationWithLegacyTableNameParam() {
     $this->expectDeprecation('Calling Drupal\Core\Routing\MatcherDumper::__construct() without the $logger argument is deprecated in drupal:10.1.0 and it will be required in drupal:11.0.0. See https://www.drupal.org/node/2932520');
     $dumper = new MatcherDumper($this->connection, $this->state, 'foo');
     $this->assertNotNull($dumper);
@@ -63,7 +61,7 @@ class LegacyMatcherDumperTest extends KernelTestBase {
   /**
    * Tests the constructor deprecations.
    */
-  public function testConstructorDeprecationWithLogger(): void {
+  public function testConstructorDeprecationWithLogger() {
     $logger = $this->createMock(LoggerInterface::class);
     $dumper = new MatcherDumper($this->connection, $this->state, $logger);
     $this->assertNotNull($dumper);

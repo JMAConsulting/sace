@@ -3,8 +3,6 @@
 namespace Drupal\views\Plugin\views\pager;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\views\Attribute\ViewsPager;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 
@@ -12,19 +10,20 @@ use Drupal\views\Plugin\views\display\DisplayPluginBase;
  * Plugin for views without pagers.
  *
  * @ingroup views_pager_plugins
+ *
+ * @ViewsPager(
+ *   id = "none",
+ *   title = @Translation("Display all items"),
+ *   help = @Translation("Display all items that this view might find."),
+ *   display_types = {"basic"}
+ * )
  */
-#[ViewsPager(
-  id: "none",
-  title: new TranslatableMarkup("Display all items"),
-  help: new TranslatableMarkup("Display all items that this view might find."),
-  display_types: ["basic"],
-)]
 class None extends PagerPluginBase {
 
   /**
    * {@inheritdoc}
    */
-  public function init(ViewExecutable $view, DisplayPluginBase $display, ?array &$options = NULL) {
+  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
 
     // If the pager is set to none, then it should show all items.

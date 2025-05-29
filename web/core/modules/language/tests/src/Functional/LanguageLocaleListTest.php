@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\Core\Url;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class LanguageLocaleListTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['language', 'locale'];
 
@@ -44,7 +44,7 @@ class LanguageLocaleListTest extends BrowserTestBase {
   /**
    * Tests adding, editing, and deleting languages.
    */
-  public function testLanguageLocaleList(): void {
+  public function testLanguageLocaleList() {
     // User to add and remove language.
     $admin_user = $this->drupalCreateUser([
       'administer languages',

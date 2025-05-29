@@ -11,7 +11,7 @@ use Drupal\Component\Utility\Html;
  * Correct:
  * @code
  *  $attributes = new Attribute();
- *  $attributes['class'] = [];
+ *  $attributes['class'] = array();
  *  $attributes['class'][] = 'cat';
  * @endcode
  * Incorrect:

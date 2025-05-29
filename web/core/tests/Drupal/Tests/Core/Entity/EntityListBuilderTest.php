@@ -95,7 +95,7 @@ class EntityListBuilderTest extends UnitTestCase {
   /**
    * @covers ::getOperations
    */
-  public function testGetOperations(): void {
+  public function testGetOperations() {
     $operation_name = $this->randomMachineName();
     $operations = [
       $operation_name => [

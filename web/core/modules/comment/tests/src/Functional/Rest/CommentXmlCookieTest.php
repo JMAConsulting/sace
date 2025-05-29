@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional\Rest;
 
 use Drupal\Tests\rest\Functional\CookieResourceTestTrait;
@@ -34,5 +32,21 @@ class CommentXmlCookieTest extends CommentResourceTestBase {
    * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testPostDxWithoutCriticalBaseFields() {
+    // Deserialization of the XML format is not supported.
+    $this->markTestSkipped();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testPostSkipCommentApproval() {
+    // Deserialization of the XML format is not supported.
+    $this->markTestSkipped();
+  }
 
 }

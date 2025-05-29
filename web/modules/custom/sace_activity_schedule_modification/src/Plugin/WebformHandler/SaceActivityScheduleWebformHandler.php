@@ -143,18 +143,6 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
     $recursion->entity_id = $initialActivityId;
     $recursion->entity_table = 'civicrm_activity';
 
-    // ensure activity contacts are propagated to generated activities
-    $recursion->linkedEntities = [
-      [
-        'table' => 'civicrm_activity_contact',
-        'findCriteria' => [
-          'activity_id' => $initialActivityId,
-        ],
-        'linkedColumns' => ['activity_id'],
-        'isRecurringEntityRecord' => FALSE,
-      ],
-    ];
-
     $recursion->generate();
 
     //TODO: generate custom end date field values based on activity duration?
@@ -179,7 +167,7 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
       ->addValue('used_for', 'civicrm_activity')
       ->addValue('mapping_id:name', 'activity_type')
       ->addValue('entity_value', $initialActivityId)
-      ->addValue('start_action_date', $startDate)
+      ->addValue('start_action_date', $webformData['repeat_start_date'])
       ->addValue('start_action_unit', $webformData['repeat_interval_unit'])
       ->addValue('repetition_frequency_unit', $webformData['repeat_interval_unit'])
       ->addValue('repetition_frequency_interval', $webformData['repeat_interval_count']);

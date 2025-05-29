@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config\Storage;
 
 use Drupal\Core\Config\MemoryStorage;
@@ -52,7 +50,7 @@ class MemoryStorageTest extends ConfigStorageTestBase {
   /**
    * {@inheritdoc}
    */
-  public function testInvalidStorage(): void {
+  public function testInvalidStorage() {
     $this->markTestSkipped('MemoryStorage cannot be invalid.');
   }
 

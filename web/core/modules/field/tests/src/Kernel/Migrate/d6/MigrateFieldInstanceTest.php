@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\Migrate\d6;
 
 use Drupal\field\Entity\FieldConfig;
@@ -24,7 +22,7 @@ class MigrateFieldInstanceTest extends MigrateDrupal6TestBase {
   /**
    * Tests migration of file variables to file.settings.yml.
    */
-  public function testFieldInstanceMigration(): void {
+  public function testFieldInstanceMigration() {
     $this->migrateFields();
     $this->installConfig(['comment']);
     $this->executeMigration('d6_comment_type');
@@ -179,7 +177,7 @@ class MigrateFieldInstanceTest extends MigrateDrupal6TestBase {
   /**
    * Tests migrating fields into non-existent content types.
    */
-  public function testMigrateFieldIntoUnknownNodeType(): void {
+  public function testMigrateFieldIntoUnknownNodeType() {
     $this->sourceDatabase->delete('node_type')
       ->condition('type', 'test_planet')
       ->execute();

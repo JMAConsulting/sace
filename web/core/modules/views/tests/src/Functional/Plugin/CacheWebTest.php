@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Tests\system\Functional\Cache\AssertPageCacheContextsAndTagsTrait;
@@ -27,7 +25,9 @@ class CacheWebTest extends ViewTestBase {
   public static $testViews = ['test_display'];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['taxonomy'];
 
@@ -48,7 +48,7 @@ class CacheWebTest extends ViewTestBase {
   /**
    * Tests the output caching on an actual page.
    */
-  public function testCacheOutputOnPage(): void {
+  public function testCacheOutputOnPage() {
     $view = Views::getView('test_display');
     $view->storage->setStatus(TRUE);
     $view->setDisplay('page_1');
@@ -88,7 +88,7 @@ class CacheWebTest extends ViewTestBase {
   /**
    * Tests that a display without caching still contains the cache metadata.
    */
-  public function testDisplayWithoutCacheStillBubblesMetadata(): void {
+  public function testDisplayWithoutCacheStillBubblesMetadata() {
     $view = Views::getView('test_display');
 
     $uncached_block = $view->buildRenderable('block_1', [], FALSE);

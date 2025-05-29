@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\shortcut\Functional;
 
 use Drupal\Tests\content_translation\Functional\ContentTranslationUITestBase;
@@ -21,7 +19,9 @@ class ShortcutTranslationUITest extends ContentTranslationUITestBase {
   protected $defaultCacheContexts = ['languages:language_interface', 'session', 'theme', 'user', 'url.path', 'url.query_args', 'url.site'];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'language',

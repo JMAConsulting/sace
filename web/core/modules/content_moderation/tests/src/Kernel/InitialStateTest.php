@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\entity_test\Entity\EntityTestRev;
@@ -44,7 +42,7 @@ class InitialStateTest extends KernelTestBase {
   /**
    * Tests the correct initial state.
    */
-  public function testInitialState(): void {
+  public function testInitialState() {
     $node_type = NodeType::create([
       'type' => 'example',
       'name' => 'Example',

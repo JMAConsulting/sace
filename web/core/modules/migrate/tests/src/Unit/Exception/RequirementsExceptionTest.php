@@ -18,7 +18,7 @@ class RequirementsExceptionTest extends UnitTestCase {
   /**
    * @covers ::getRequirements
    */
-  public function testGetRequirements(): void {
+  public function testGetRequirements() {
     $exception = new RequirementsException('Missing requirements ', ['requirements' => static::MISSING_REQUIREMENTS]);
     $this->assertEquals(['requirements' => static::MISSING_REQUIREMENTS], $exception->getRequirements());
   }
@@ -27,7 +27,7 @@ class RequirementsExceptionTest extends UnitTestCase {
    * @covers ::getRequirementsString
    * @dataProvider getRequirementsProvider
    */
-  public function testGetExceptionString($expected, $message, $requirements): void {
+  public function testGetExceptionString($expected, $message, $requirements) {
     $exception = new RequirementsException($message, $requirements);
     $this->assertEquals($expected, $exception->getRequirementsString());
   }

@@ -9,7 +9,6 @@ use Drupal\Tests\UnitTestCase;
 /**
  * @coversDefaultClass \Drupal\book\BookUninstallValidator
  * @group book
- * @group legacy
  */
 class BookUninstallValidatorTest extends UnitTestCase {
 
@@ -33,7 +32,7 @@ class BookUninstallValidatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidateNotBook(): void {
+  public function testValidateNotBook() {
     $this->bookUninstallValidator->expects($this->never())
       ->method('hasBookOutlines');
     $this->bookUninstallValidator->expects($this->never())
@@ -48,7 +47,7 @@ class BookUninstallValidatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidateEntityQueryWithoutResults(): void {
+  public function testValidateEntityQueryWithoutResults() {
     $this->bookUninstallValidator->expects($this->once())
       ->method('hasBookOutlines')
       ->willReturn(FALSE);
@@ -65,7 +64,7 @@ class BookUninstallValidatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidateEntityQueryWithResults(): void {
+  public function testValidateEntityQueryWithResults() {
     $this->bookUninstallValidator->expects($this->once())
       ->method('hasBookOutlines')
       ->willReturn(FALSE);
@@ -82,7 +81,7 @@ class BookUninstallValidatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidateOutlineStorage(): void {
+  public function testValidateOutlineStorage() {
     $this->bookUninstallValidator->expects($this->once())
       ->method('hasBookOutlines')
       ->willReturn(TRUE);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Plugin;
 
 use Drupal\Core\Plugin\Context\Context;
@@ -25,7 +23,7 @@ class ContextDefinitionTest extends KernelTestBase {
   /**
    * @covers ::isSatisfiedBy
    */
-  public function testIsSatisfiedBy(): void {
+  public function testIsSatisfiedBy() {
     $this->installEntitySchema('user');
 
     $value = EntityTest::create([]);
@@ -51,7 +49,7 @@ class ContextDefinitionTest extends KernelTestBase {
   /**
    * @covers ::__construct
    */
-  public function testEntityContextDefinitionAssert(): void {
+  public function testEntityContextDefinitionAssert() {
     $this->expectException(\AssertionError::class);
     $this->expectExceptionMessage('assert(!str_starts_with($data_type, \'entity:\') || $this instanceof EntityContextDefinition)');
     new ContextDefinition('entity:entity_test');
@@ -60,7 +58,7 @@ class ContextDefinitionTest extends KernelTestBase {
   /**
    * @covers ::create
    */
-  public function testCreateWithEntityDataType(): void {
+  public function testCreateWithEntityDataType() {
     $this->assertInstanceOf(EntityContextDefinition::class, ContextDefinition::create('entity:user'));
   }
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\UpdateSystem;
 
 use Drupal\Core\Url;
@@ -28,7 +26,7 @@ class RebuildScriptTest extends BrowserTestBase {
   /**
    * Tests redirect in rebuild.php.
    */
-  public function testRebuild(): void {
+  public function testRebuild() {
     $cache = $this->container->get('cache.default');
 
     $cache->set('rebuild_test', TRUE);

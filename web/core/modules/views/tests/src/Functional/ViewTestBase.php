@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional;
 
 use Behat\Mink\Exception\ElementNotFoundException;
@@ -25,7 +23,9 @@ abstract class ViewTestBase extends BrowserTestBase {
   use ViewResultAssertionTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['views', 'views_test_config'];
 

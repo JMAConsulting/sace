@@ -131,20 +131,20 @@ class ThemeInitialization implements ThemeInitializationInterface {
     if ($active_theme->getEngine()) {
       // Include the engine.
       include_once $this->root . '/' . $active_theme->getOwner();
-      foreach (array_reverse($active_theme->getBaseThemeExtensions()) as $base) {
+      foreach ($active_theme->getBaseThemeExtensions() as $base) {
         $base->load();
       }
       $active_theme->getExtension()->load();
     }
     else {
-      // Include non-engine theme files
-      foreach (array_reverse($active_theme->getBaseThemeExtensions()) as $base) {
+      // include non-engine theme files
+      foreach ($active_theme->getBaseThemeExtensions() as $base) {
         // Include the theme file or the engine.
         if ($base->owner) {
           include_once $this->root . '/' . $base->owner;
         }
       }
-      // And our theme gets one too.
+      // and our theme gets one too.
       if ($active_theme->getOwner()) {
         include_once $this->root . '/' . $active_theme->getOwner();
       }
@@ -178,7 +178,7 @@ class ThemeInitialization implements ThemeInitializationInterface {
     $values['libraries_override'] = [];
 
     // Get libraries overrides declared by base themes.
-    foreach (array_reverse($base_themes) as $base) {
+    foreach ($base_themes as $base) {
       if (!empty($base->info['libraries-override'])) {
         foreach ($base->info['libraries-override'] as $library => $override) {
           $values['libraries_override'][$base->getPath()][$library] = $override;

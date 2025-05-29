@@ -4,7 +4,6 @@ namespace Drupal\views\Plugin\views\area;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\Attribute\ViewsArea;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -12,8 +11,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Views area handlers. Insert a view inside of an area.
  *
  * @ingroup views_area_handlers
+ *
+ * @ViewsArea("view")
  */
-#[ViewsArea("view")]
 class View extends AreaPluginBase {
 
   /**
@@ -36,7 +36,7 @@ class View extends AreaPluginBase {
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityStorageInterface $view_storage

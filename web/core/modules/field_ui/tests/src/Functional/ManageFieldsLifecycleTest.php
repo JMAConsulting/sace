@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field_ui\Functional;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -22,7 +20,7 @@ class ManageFieldsLifecycleTest extends ManageFieldsFunctionalTestBase {
    * In order to act on the same fields, and not create the fields over and over
    * again the following tests create, update and delete the same fields.
    */
-  public function testCRUDFields(): void {
+  public function testCRUDFields() {
     $this->manageFieldsPage();
     $this->createField();
     $this->updateField();

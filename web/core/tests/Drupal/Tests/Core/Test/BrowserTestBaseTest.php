@@ -26,10 +26,10 @@ class BrowserTestBaseTest extends UnitTestCase {
       ->method('getDriver')
       ->willReturn($driver);
 
-    $btb = $this->getMockBuilder(BrowserTestBaseMockableClass::class)
+    $btb = $this->getMockBuilder(BrowserTestBase::class)
       ->disableOriginalConstructor()
       ->onlyMethods(['getSession'])
-      ->getMock();
+      ->getMockForAbstractClass();
     $btb->expects($this->any())
       ->method('getSession')
       ->willReturn($session);
@@ -40,13 +40,13 @@ class BrowserTestBaseTest extends UnitTestCase {
   /**
    * @covers ::getHttpClient
    */
-  public function testGetHttpClient(): void {
+  public function testGetHttpClient() {
     // Our stand-in for the Guzzle client object.
     $expected = new \stdClass();
 
     $browserkit_client = $this->getMockBuilder(DrupalTestBrowser::class)
       ->onlyMethods(['getClient'])
-      ->getMock();
+      ->getMockForAbstractClass();
     $browserkit_client->expects($this->once())
       ->method('getClient')
       ->willReturn($expected);
@@ -63,7 +63,7 @@ class BrowserTestBaseTest extends UnitTestCase {
   /**
    * @covers ::getHttpClient
    */
-  public function testGetHttpClientException(): void {
+  public function testGetHttpClientException() {
     // A driver type that isn't BrowserKitDriver. This should cause a
     // RuntimeException.
     $btb = $this->mockBrowserTestBaseWithDriver(new \stdClass());
@@ -80,13 +80,13 @@ class BrowserTestBaseTest extends UnitTestCase {
    *
    * @covers ::tearDown
    */
-  public function testTearDownWithoutSetUp(): void {
+  public function testTearDownWithoutSetUp() {
     $method = 'cleanupEnvironment';
     $this->assertTrue(method_exists(BrowserTestBase::class, $method));
-    $btb = $this->getMockBuilder(BrowserTestBaseMockableClass::class)
+    $btb = $this->getMockBuilder(BrowserTestBase::class)
       ->disableOriginalConstructor()
       ->onlyMethods([$method])
-      ->getMock();
+      ->getMockForAbstractClass();
     $btb->expects($this->never())->method($method);
     $ref_tearDown = new \ReflectionMethod($btb, 'tearDown');
     $ref_tearDown->invoke($btb);
@@ -97,19 +97,12 @@ class BrowserTestBaseTest extends UnitTestCase {
    *
    * @group legacy
    */
-  public function testGetRandomGeneratorPropertyDeprecation(): void {
+  public function testGetRandomGeneratorPropertyDeprecation() {
     $this->expectDeprecation('Accessing the randomGenerator property is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Use getRandomGenerator() instead. See https://www.drupal.org/node/3358445');
     // We purposely test accessing an undefined property here. We need to tell
     // PHPStan to ignore that.
     // @phpstan-ignore-next-line
     $this->assertInstanceOf(Random::class, $this->randomGenerator);
   }
-
-}
-
-/**
- * A class extending BrowserTestBase for testing purposes.
- */
-class BrowserTestBaseMockableClass extends BrowserTestBase {
 
 }

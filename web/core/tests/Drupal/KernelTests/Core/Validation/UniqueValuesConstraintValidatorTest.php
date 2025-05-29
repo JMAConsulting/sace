@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Validation;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -47,7 +45,7 @@ class UniqueValuesConstraintValidatorTest extends KernelTestBase {
    *
    * @covers ::validate
    */
-  public function testValidation(): void {
+  public function testValidation() {
     // Create entity with two values for the testing field.
     $definition = [
       'id' => (int) rand(0, getrandmax()),
@@ -114,7 +112,7 @@ class UniqueValuesConstraintValidatorTest extends KernelTestBase {
    *
    * @covers ::validate
    */
-  public function testValidationReference(): void {
+  public function testValidationReference() {
 
     $users = [];
     for ($i = 0; $i <= 5; $i++) {
@@ -190,7 +188,7 @@ class UniqueValuesConstraintValidatorTest extends KernelTestBase {
    *
    * @covers ::validate
    */
-  public function testValidationOwn(): void {
+  public function testValidationOwn() {
     // Create new entity with two identical values for the testing field.
     $definition = [
       'user_id' => 0,
@@ -238,7 +236,7 @@ class UniqueValuesConstraintValidatorTest extends KernelTestBase {
    *
    * @covers ::validate
    */
-  public function testValidationMultiple(): void {
+  public function testValidationMultiple() {
     // Create entity with two different values for the testing field.
     $definition = [
       'user_id' => 0,

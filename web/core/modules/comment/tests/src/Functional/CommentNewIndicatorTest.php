@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\Component\Serialization\Json;
@@ -57,7 +55,7 @@ class CommentNewIndicatorTest extends CommentTestBase {
   /**
    * Tests new comment marker.
    */
-  public function testCommentNewCommentsIndicator(): void {
+  public function testCommentNewCommentsIndicator() {
     // Test if the right links are displayed when no comment is present for the
     // node.
     $this->drupalLogin($this->adminUser);

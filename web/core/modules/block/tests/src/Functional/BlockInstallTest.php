@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -18,7 +16,7 @@ class BlockInstallTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testCacheTagInvalidationUponInstallation(): void {
+  public function testCacheTagInvalidationUponInstallation() {
     // Warm the page cache.
     $this->drupalGet('');
     $this->assertSession()->pageTextNotContains('Powered by Drupal');

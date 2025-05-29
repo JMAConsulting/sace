@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\content_moderation\Entity\Handler\ModerationHandler;
@@ -20,7 +18,9 @@ class EntityTypeInfoTest extends KernelTestBase {
   use ContentModerationTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'content_moderation',
@@ -65,7 +65,7 @@ class EntityTypeInfoTest extends KernelTestBase {
   /**
    * @covers ::entityBaseFieldInfo
    */
-  public function testEntityBaseFieldInfo(): void {
+  public function testEntityBaseFieldInfo() {
     $definition = $this->entityTypeManager->getDefinition('entity_test');
     $definition->setHandlerClass('moderation', ModerationHandler::class);
 
@@ -84,7 +84,7 @@ class EntityTypeInfoTest extends KernelTestBase {
    *
    * @dataProvider providerTestEntityTypeAlter
    */
-  public function testEntityTypeAlter($entity_type_id, $moderatable): void {
+  public function testEntityTypeAlter($entity_type_id, $moderatable) {
     $entity_types = $this->entityTypeManager->getDefinitions();
     $this->assertSame($moderatable, $entity_types[$entity_type_id]->hasHandlerClass('moderation'));
   }
@@ -98,7 +98,7 @@ class EntityTypeInfoTest extends KernelTestBase {
    *   - An entity type ID.
    *   - Whether the entity type is moderatable or not.
    */
-  public static function providerTestEntityTypeAlter() {
+  public function providerTestEntityTypeAlter() {
     $tests = [];
     $tests['non_internal_non_revisionable'] = ['entity_test', FALSE];
     $tests['non_internal_revisionable'] = ['entity_test_rev', TRUE];
@@ -110,7 +110,7 @@ class EntityTypeInfoTest extends KernelTestBase {
   /**
    * @covers ::entityBaseFieldInfo
    */
-  public function testBaseFieldOnlyAddedToModeratedEntityTypes(): void {
+  public function testBaseFieldOnlyAddedToModeratedEntityTypes() {
     $definition = $this->entityTypeManager->getDefinition('entity_test_with_bundle');
 
     EntityTestBundle::create([
@@ -131,7 +131,7 @@ class EntityTypeInfoTest extends KernelTestBase {
   /**
    * Tests entity base field provider.
    */
-  public function testEntityBaseFieldProvider(): void {
+  public function testEntityBaseFieldProvider() {
     $this->enableModeration('entity_test_mulrev', 'entity_test_mulrev');
     $this->container->get('state')->set('entity_test.field_test_item', TRUE);
 

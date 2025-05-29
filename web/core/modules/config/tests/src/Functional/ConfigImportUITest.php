@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config\Functional;
 
 use Drupal\Core\Config\InstallStorage;
@@ -17,7 +15,9 @@ use Drupal\Tests\BrowserTestBase;
 class ConfigImportUITest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'config',
@@ -53,7 +53,7 @@ class ConfigImportUITest extends BrowserTestBase {
   /**
    * Tests importing configuration.
    */
-  public function testImport(): void {
+  public function testImport() {
     $name = 'system.site';
     $dynamic_name = 'config_test.dynamic.new';
     /** @var \Drupal\Core\Config\StorageInterface $sync */
@@ -238,7 +238,7 @@ class ConfigImportUITest extends BrowserTestBase {
   /**
    * Tests concurrent importing of configuration.
    */
-  public function testImportLock(): void {
+  public function testImportLock() {
     // Create updated configuration object.
     $new_site_name = 'Config import test ' . $this->randomString();
     $this->prepareSiteNameUpdate($new_site_name);
@@ -265,7 +265,7 @@ class ConfigImportUITest extends BrowserTestBase {
   /**
    * Tests verification of site UUID before importing configuration.
    */
-  public function testImportSiteUuidValidation(): void {
+  public function testImportSiteUuidValidation() {
     $sync = \Drupal::service('config.storage.sync');
     // Create updated configuration object.
     $config_data = $this->config('system.site')->get();
@@ -282,7 +282,7 @@ class ConfigImportUITest extends BrowserTestBase {
   /**
    * Tests the screen that shows differences between active and sync.
    */
-  public function testImportDiff(): void {
+  public function testImportDiff() {
     $sync = $this->container->get('config.storage.sync');
     $config_name = 'config_test.system';
     $change_key = 'foo';
@@ -358,7 +358,7 @@ class ConfigImportUITest extends BrowserTestBase {
   /**
    * Tests that multiple validation errors are listed on the page.
    */
-  public function testImportValidation(): void {
+  public function testImportValidation() {
     // Set state value so that
     // \Drupal\config_import_test\EventSubscriber::onConfigImportValidate() logs
     // validation errors.
@@ -380,7 +380,7 @@ class ConfigImportUITest extends BrowserTestBase {
     $this->assertNotEquals($this->config('system.site')->get('name'), $new_site_name);
   }
 
-  public function testConfigUninstallConfigException(): void {
+  public function testConfigUninstallConfigException() {
     $sync = $this->container->get('config.storage.sync');
 
     $core_extension = $this->config('core.extension')->get();
@@ -406,7 +406,7 @@ class ConfigImportUITest extends BrowserTestBase {
   /**
    * Tests an import that results in an error.
    */
-  public function testImportErrorLog(): void {
+  public function testImportErrorLog() {
     $name_primary = 'config_test.dynamic.primary';
     $name_secondary = 'config_test.dynamic.secondary';
     $sync = $this->container->get('config.storage.sync');
@@ -460,7 +460,7 @@ class ConfigImportUITest extends BrowserTestBase {
    *
    * @see \Drupal\Core\Entity\Event\BundleConfigImportValidate
    */
-  public function testEntityBundleDelete(): void {
+  public function testEntityBundleDelete() {
     \Drupal::service('module_installer')->install(['node']);
     $this->copyConfig($this->container->get('config.storage'), $this->container->get('config.storage.sync'));
 
@@ -504,7 +504,7 @@ class ConfigImportUITest extends BrowserTestBase {
    *
    * @see \Drupal\Core\EventSubscriber\ConfigImportSubscriber
    */
-  public function testExtensionValidation(): void {
+  public function testExtensionValidation() {
     \Drupal::service('module_installer')->install(['node']);
     \Drupal::service('theme_installer')->install(['test_subtheme']);
     $this->rebuildContainer();
@@ -517,7 +517,7 @@ class ConfigImportUITest extends BrowserTestBase {
     $module_data = $this->container->get('extension.list.module')->getList();
     $this->assertTrue(isset($module_data['node']->requires['text']), 'The Node module depends on the Text module.');
     unset($core['theme']['test_basetheme']);
-    $theme_data = \Drupal::service('extension.list.theme')->reset()->getList();
+    $theme_data = \Drupal::service('theme_handler')->rebuildThemeData();
     $this->assertTrue(isset($theme_data['test_subtheme']->requires['test_basetheme']), 'The Test Subtheme theme depends on the Test Basetheme theme.');
     // This module does not exist.
     $core['module']['does_not_exist'] = 0;
@@ -537,7 +537,7 @@ class ConfigImportUITest extends BrowserTestBase {
   /**
    * Tests that errors set in the batch and on the ConfigImporter are merged.
    */
-  public function testBatchErrors(): void {
+  public function testBatchErrors() {
     $new_site_name = 'Config import test ' . $this->randomString();
     $this->prepareSiteNameUpdate($new_site_name);
     \Drupal::state()->set('config_import_steps_alter.error', TRUE);

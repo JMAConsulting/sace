@@ -46,7 +46,7 @@ class PathRootsSubscriberTest extends UnitTestCase {
    * @covers ::onRouteAlter
    * @covers ::onRouteFinished
    */
-  public function testSubscribing(): void {
+  public function testSubscribing() {
 
     // Ensure that onRouteFinished can be called without throwing notices
     // when no path roots got set.

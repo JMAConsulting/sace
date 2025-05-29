@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional;
 
 use Drupal\node\Entity\Node;
@@ -60,7 +58,7 @@ class RenderCacheWebTest extends ViewTestBase {
   /**
    * Tests rendering caching of a views block with arguments.
    */
-  public function testEmptyView(): void {
+  public function testEmptyView() {
     $this->placeBlock('views_block:node_id_argument-block_1', ['region' => 'header']);
     $this->drupalGet('<front>');
     $this->assertEquals([], $this->cssSelect('div.region-header div.views-field-title'));
@@ -81,7 +79,7 @@ class RenderCacheWebTest extends ViewTestBase {
   /**
    * Tests render caching for display rendered with different args on same page.
    */
-  public function testRepeatedDisplay(): void {
+  public function testRepeatedDisplay() {
     $this->drupalGet("views_test_render_cache/node_id_argument/block_1/{$this->nodes[0]->id()}/{$this->nodes[1]->id()}");
     // Confirm there are two displays.
     $displays = $this->cssSelect('.views-element-container .view-id-node_id_argument.view-display-id-block_1');

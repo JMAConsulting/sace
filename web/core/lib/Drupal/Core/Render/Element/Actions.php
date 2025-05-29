@@ -3,7 +3,6 @@
 namespace Drupal\Core\Render\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Attribute\RenderElement;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 
@@ -16,14 +15,15 @@ use Drupal\Core\Render\Element;
  *
  * Usage example:
  * @code
- * $form['actions'] = ['#type' => 'actions'];
- * $form['actions']['submit'] = [
+ * $form['actions'] = array('#type' => 'actions');
+ * $form['actions']['submit'] = array(
  *   '#type' => 'submit',
  *   '#value' => $this->t('Save'),
- * ];
+ * );
  * @endcode
+ *
+ * @RenderElement("actions")
  */
-#[RenderElement('actions')]
 class Actions extends Container {
 
   /**
@@ -100,7 +100,7 @@ class Actions extends Container {
         // Add this button to the corresponding dropbutton.
         // @todo Change #type 'dropbutton' to be based on item-list.html.twig
         //   instead of links.html.twig to avoid this preemptive rendering.
-        $button = \Drupal::service('renderer')->renderInIsolation($element[$key]);
+        $button = \Drupal::service('renderer')->renderPlain($element[$key]);
         $dropbuttons[$dropbutton]['#links'][$key] = [
           'title' => $button,
         ];

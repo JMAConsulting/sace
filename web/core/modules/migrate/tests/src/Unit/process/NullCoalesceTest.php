@@ -21,7 +21,7 @@ class NullCoalesceTest extends MigrateProcessTestCase {
    *
    * @covers ::transform
    */
-  public function testExceptionOnInvalidValue(): void {
+  public function testExceptionOnInvalidValue() {
     $this->expectException(MigrateException::class);
     (new NullCoalesce([], 'null_coalesce', []))->transform('invalid', $this->migrateExecutable, $this->row, 'destination_property');
   }
@@ -40,7 +40,7 @@ class NullCoalesceTest extends MigrateProcessTestCase {
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  public function testTransform(array $source, $expected_result): void {
+  public function testTransform(array $source, $expected_result) {
     $plugin = new NullCoalesce([], 'null_coalesce', []);
     $result = $plugin->transform($source, $this->migrateExecutable, $this->row, 'destination_property');
     $this->assertSame($expected_result, $result);
@@ -49,7 +49,7 @@ class NullCoalesceTest extends MigrateProcessTestCase {
   /**
    * Provides Data for ::testTransform.
    */
-  public static function transformDataProvider() {
+  public function transformDataProvider() {
     return [
       'all null' => [
         'source' => [NULL, NULL, NULL],
@@ -94,7 +94,7 @@ class NullCoalesceTest extends MigrateProcessTestCase {
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  public function testTransformWithDefault(array $source, $default_value, $expected_result): void {
+  public function testTransformWithDefault(array $source, $default_value, $expected_result) {
     $plugin = new NullCoalesce(['default_value' => $default_value], 'null_coalesce', []);
     $result = $plugin->transform($source, $this->migrateExecutable, $this->row, 'destination_property');
     $this->assertSame($expected_result, $result);
@@ -103,7 +103,7 @@ class NullCoalesceTest extends MigrateProcessTestCase {
   /**
    * Provides Data for ::testTransformWithDefault.
    */
-  public static function transformWithDefaultProvider() {
+  public function transformWithDefaultProvider() {
     return [
       'default not used' => [
         'source' => [NULL, NULL, 'Test', 'Test 2'],

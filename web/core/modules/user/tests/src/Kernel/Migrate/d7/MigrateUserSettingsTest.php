@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Migrate\d7;
 
 use Drupal\Tests\SchemaCheckTestTrait;
@@ -30,7 +28,7 @@ class MigrateUserSettingsTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migration.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $config = $this->config('user.settings');
     $this->assertTrue($config->get('notify.status_blocked'));
     $this->assertTrue($config->get('notify.status_activated'));

@@ -32,7 +32,7 @@ class SessionConfigurationTest extends UnitTestCase {
    *
    * @dataProvider providerTestGeneratedCookieDomain
    */
-  public function testGeneratedCookieDomain($uri, $expected_domain): void {
+  public function testGeneratedCookieDomain($uri, $expected_domain) {
     $config = $this->createSessionConfiguration();
 
     $request = Request::create($uri);
@@ -47,7 +47,7 @@ class SessionConfigurationTest extends UnitTestCase {
    * @return array
    *   Test data
    */
-  public static function providerTestGeneratedCookieDomain() {
+  public function providerTestGeneratedCookieDomain() {
     return [
       ['http://example.com/path/index.php', '.example.com'],
       ['http://www.example.com/path/index.php', '.www.example.com'],
@@ -71,7 +71,7 @@ class SessionConfigurationTest extends UnitTestCase {
    *
    * @dataProvider providerTestEnforcedCookieDomain
    */
-  public function testEnforcedCookieDomain($uri, $expected_domain): void {
+  public function testEnforcedCookieDomain($uri, $expected_domain) {
     $config = $this->createSessionConfiguration(['cookie_domain' => '.example.com']);
 
     $request = Request::create($uri);
@@ -86,7 +86,7 @@ class SessionConfigurationTest extends UnitTestCase {
    * @return array
    *   Test data
    */
-  public static function providerTestEnforcedCookieDomain() {
+  public function providerTestEnforcedCookieDomain() {
     return [
       ['http://example.com/path/index.php', '.example.com'],
       ['http://www.example.com/path/index.php', '.example.com'],
@@ -109,7 +109,7 @@ class SessionConfigurationTest extends UnitTestCase {
    *
    * @dataProvider providerTestCookieSecure
    */
-  public function testCookieSecure($uri, $expected_secure): void {
+  public function testCookieSecure($uri, $expected_secure) {
     $config = $this->createSessionConfiguration();
 
     $request = Request::create($uri);
@@ -121,7 +121,7 @@ class SessionConfigurationTest extends UnitTestCase {
   /**
    * Test that session.cookie_samesite is configured correctly.
    */
-  public function testSameSiteCookie(): void {
+  public function testSameSiteCookie() {
     $request = Request::create('https://example.com');
 
     $config = $this->createSessionConfiguration(['cookie_samesite' => 'Strict']);
@@ -137,7 +137,7 @@ class SessionConfigurationTest extends UnitTestCase {
    *
    * @dataProvider providerTestCookieSecure
    */
-  public function testCookieSecureNotOverridable($uri, $expected_secure): void {
+  public function testCookieSecureNotOverridable($uri, $expected_secure) {
     $config = $this->createSessionConfiguration(['cookie_secure' => FALSE]);
 
     $request = Request::create($uri);
@@ -152,7 +152,7 @@ class SessionConfigurationTest extends UnitTestCase {
    * @return array
    *   Test data
    */
-  public static function providerTestCookieSecure() {
+  public function providerTestCookieSecure() {
     return [
       ['http://example.com/path/index.php', FALSE],
       ['https://www.example.com/path/index.php', TRUE],
@@ -170,7 +170,7 @@ class SessionConfigurationTest extends UnitTestCase {
    *
    * @dataProvider providerTestGeneratedSessionName
    */
-  public function testGeneratedSessionName($uri, $expected_name): void {
+  public function testGeneratedSessionName($uri, $expected_name) {
     $config = $this->createSessionConfiguration();
 
     $request = Request::create($uri);
@@ -185,7 +185,7 @@ class SessionConfigurationTest extends UnitTestCase {
    * @return array
    *   Test data
    */
-  public static function providerTestGeneratedSessionName() {
+  public function providerTestGeneratedSessionName() {
     $data = [
       ['http://example.com/path/index.php', 'SESS', 'example.com'],
       ['http://www.example.com/path/index.php', 'SESS', 'www.example.com'],
@@ -218,7 +218,7 @@ class SessionConfigurationTest extends UnitTestCase {
    *
    * @dataProvider providerTestEnforcedSessionName
    */
-  public function testEnforcedSessionNameViaCookieDomain($uri, $expected_name): void {
+  public function testEnforcedSessionNameViaCookieDomain($uri, $expected_name) {
     $config = $this->createSessionConfiguration(['cookie_domain' => '.example.com']);
 
     $request = Request::create($uri);
@@ -233,7 +233,7 @@ class SessionConfigurationTest extends UnitTestCase {
    * @return array
    *   Test data
    */
-  public static function providerTestEnforcedSessionName() {
+  public function providerTestEnforcedSessionName() {
     $data = [
       ['http://example.com/path/index.php', 'SESS', '.example.com'],
       ['http://www.example.com/path/index.php', 'SESS', '.example.com'],
@@ -266,12 +266,11 @@ class SessionConfigurationTest extends UnitTestCase {
    *
    * @dataProvider providerTestConstructorDefaultSettings
    */
-  public function testConstructorDefaultSettings(array $options, int $expected_sid_length, int $expected_sid_bits_per_character, string $expected_name_suffix): void {
+  public function testConstructorDefaultSettings(array $options, int $expected_sid_length, int $expected_sid_bits_per_character) {
     $config = $this->createSessionConfiguration($options);
     $options = $config->getOptions(Request::createFromGlobals());
     $this->assertSame($expected_sid_length, $options['sid_length']);
     $this->assertSame($expected_sid_bits_per_character, $options['sid_bits_per_character']);
-    $this->assertSame($expected_name_suffix, $options['name_suffix']);
   }
 
   /**
@@ -280,13 +279,12 @@ class SessionConfigurationTest extends UnitTestCase {
    * @return array
    *   Test data
    */
-  public static function providerTestConstructorDefaultSettings() {
+  public function providerTestConstructorDefaultSettings() {
     return [
-      [[], 48, 6, ''],
-      [['sid_length' => 100], 100, 6, ''],
-      [['sid_bits_per_character' => 5], 48, 5, ''],
-      [['name_suffix' => 'some-suffix'], 48, 6, 'some-suffix'],
-      [['sid_length' => 100, 'sid_bits_per_character' => 5, 'name_suffix' => 'some-suffix'], 100, 5, 'some-suffix'],
+      [[], 48, 6],
+      [['sid_length' => 100], 100, 6],
+      [['sid_bits_per_character' => 5], 48, 5],
+      [['sid_length' => 100, 'sid_bits_per_character' => 5], 100, 5],
     ];
   }
 

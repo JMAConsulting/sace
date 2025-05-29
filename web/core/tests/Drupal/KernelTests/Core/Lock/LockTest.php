@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Lock;
 
 use Drupal\Core\Lock\DatabaseLockBackend;
@@ -32,7 +30,7 @@ class LockTest extends KernelTestBase {
   /**
    * Tests backend release functionality.
    */
-  public function testBackendLockRelease(): void {
+  public function testBackendLockRelease() {
     $success = $this->lock->acquire('lock_a');
     $this->assertTrue($success, 'Could acquire first lock.');
 
@@ -72,7 +70,7 @@ class LockTest extends KernelTestBase {
   /**
    * Tests backend release functionality.
    */
-  public function testBackendLockReleaseAll(): void {
+  public function testBackendLockReleaseAll() {
     $success = $this->lock->acquire('lock_a');
     $this->assertTrue($success, 'Could acquire first lock.');
 

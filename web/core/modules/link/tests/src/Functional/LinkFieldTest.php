@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\link\Functional;
 
 use Drupal\Component\Utility\Html;
@@ -27,7 +25,9 @@ class LinkFieldTest extends BrowserTestBase {
   use PathAliasTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'entity_test',
@@ -73,7 +73,7 @@ class LinkFieldTest extends BrowserTestBase {
    *
    * This is being as one to avoid multiple Drupal install.
    */
-  public function testLinkField(): void {
+  public function testLinkField() {
     $this->doTestURLValidation();
     $this->doTestLinkTitle();
     $this->doTestLinkFormatter();
@@ -960,7 +960,7 @@ class LinkFieldTest extends BrowserTestBase {
   /**
    * Tests <nolink> and <none> as link uri.
    */
-  public function testNoLinkUri(): void {
+  public function testNoLinkUri() {
     $field_name = $this->randomMachineName();
     $this->fieldStorage = FieldStorageConfig::create([
       'field_name' => $field_name,

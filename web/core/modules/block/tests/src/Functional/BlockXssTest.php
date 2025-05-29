@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block\Functional;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -19,7 +17,9 @@ use Drupal\views\Entity\View;
 class BlockXssTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'block_content', 'menu_ui', 'views'];
 
@@ -31,7 +31,7 @@ class BlockXssTest extends BrowserTestBase {
   /**
    * Tests that nothing is escaped other than the blocks explicitly tested.
    */
-  public function testNoUnexpectedEscaping(): void {
+  public function testNoUnexpectedEscaping() {
     $this->drupalLogin($this->drupalCreateUser([
       'administer blocks',
       'access administration pages',
@@ -44,11 +44,11 @@ class BlockXssTest extends BrowserTestBase {
   /**
    * Tests XSS in title.
    */
-  public function testXssInTitle(): void {
+  public function testXssInTitle() {
     $this->container->get('module_installer')->install(['block_test']);
     $this->drupalPlaceBlock('test_xss_title', ['label' => '<script>alert("XSS label");</script>']);
 
-    \Drupal::keyValue('block_test')->set('content', $this->randomMachineName());
+    \Drupal::state()->set('block_test.content', $this->randomMachineName());
     $this->drupalGet('');
     // Check that the block title was properly sanitized when rendered.
     $this->assertSession()->responseNotContains('<script>alert("XSS label");</script>');
@@ -67,7 +67,7 @@ class BlockXssTest extends BrowserTestBase {
   /**
    * Tests XSS in category.
    */
-  public function testXssInCategory(): void {
+  public function testXssInCategory() {
     $this->container->get('module_installer')->install(['block_test']);
     $this->drupalPlaceBlock('test_xss_title');
     $this->drupalLogin($this->drupalCreateUser([
@@ -82,11 +82,8 @@ class BlockXssTest extends BrowserTestBase {
   /**
    * Tests various modules that provide blocks for XSS.
    */
-  public function testBlockXss(): void {
-    $this->drupalLogin($this->drupalCreateUser([
-      'administer blocks',
-      'access administration pages',
-    ]));
+  public function testBlockXss() {
+    $this->drupalLogin($this->rootUser);
 
     $this->doViewTest();
     $this->doMenuTest();

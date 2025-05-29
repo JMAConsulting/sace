@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Component\Plugin\Discovery\DiscoveryInterface;
@@ -27,7 +25,7 @@ class FieldDefinitionIntegrityTest extends KernelTestBase {
   /**
    * Tests the integrity of field plugin definitions.
    */
-  public function testFieldPluginDefinitionIntegrity(): void {
+  public function testFieldPluginDefinitionIntegrity() {
     // Enable all core modules that provide field plugins, and their
     // dependencies.
     $this->enableModules(
@@ -92,7 +90,7 @@ class FieldDefinitionIntegrityTest extends KernelTestBase {
   /**
    * Tests to load field plugin definitions used in core's existing entities.
    */
-  public function testFieldPluginDefinitionAvailability(): void {
+  public function testFieldPluginDefinitionAvailability() {
     $this->enableModules(
       $this->modulesWithSubdirectory('src' . DIRECTORY_SEPARATOR . 'Entity')
     );

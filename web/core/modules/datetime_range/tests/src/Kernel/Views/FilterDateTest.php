@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\datetime_range\Kernel\Views;
 
 use Drupal\datetime_range\Plugin\Field\FieldType\DateRangeItem;
@@ -118,7 +116,7 @@ class FilterDateTest extends DateTimeHandlerTestBase {
   /**
    * Tests offsets with date-only fields.
    */
-  public function testDateOffsets(): void {
+  public function testDateOffsets() {
     $view = Views::getView('test_filter_datetime');
     $field_start = static::$fieldName . '_value';
     $field_end = static::$fieldName . '_end_value';

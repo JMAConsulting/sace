@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\entity_test\Entity\EntityTestMulRev;
@@ -17,7 +15,9 @@ use Drupal\language\Entity\ConfigurableLanguage;
 class EntityRevisionsTest extends EntityKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'system',
@@ -38,7 +38,7 @@ class EntityRevisionsTest extends EntityKernelTestBase {
   /**
    * Tests getLoadedRevisionId() returns the correct ID throughout the process.
    */
-  public function testLoadedRevisionId(): void {
+  public function testLoadedRevisionId() {
     // Create a basic EntityTestMulRev entity and save it.
     $entity = EntityTestMulRev::create();
     $entity->save();
@@ -80,7 +80,7 @@ class EntityRevisionsTest extends EntityKernelTestBase {
   /**
    * Tests the loaded revision ID after an entity re-save, clone and duplicate.
    */
-  public function testLoadedRevisionIdWithNoNewRevision(): void {
+  public function testLoadedRevisionIdWithNoNewRevision() {
     // Create a basic EntityTestMulRev entity and save it.
     $entity = EntityTestMulRev::create();
     $entity->save();
@@ -118,7 +118,7 @@ class EntityRevisionsTest extends EntityKernelTestBase {
   /**
    * Tests the loaded revision ID for translatable entities.
    */
-  public function testTranslatedLoadedRevisionId(): void {
+  public function testTranslatedLoadedRevisionId() {
     ConfigurableLanguage::createFromLangcode('fr')->save();
 
     // Create a basic EntityTestMulRev entity and save it.
@@ -159,7 +159,7 @@ class EntityRevisionsTest extends EntityKernelTestBase {
   /**
    * Tests re-saving the entity in entity_test_entity_insert().
    */
-  public function testSaveInHookEntityInsert(): void {
+  public function testSaveInHookEntityInsert() {
     // Create an entity which will be saved again in entity_test_entity_insert().
     $entity = EntityTestMulRev::create(['name' => 'EntityLoadedRevisionTest']);
     $entity->save();
@@ -173,7 +173,7 @@ class EntityRevisionsTest extends EntityKernelTestBase {
    *
    * @covers ::isLatestRevision
    */
-  public function testIsLatestRevision(): void {
+  public function testIsLatestRevision() {
     // Create a basic EntityTestMulRev entity and save it.
     $entity = EntityTestMulRev::create();
     $entity->save();
@@ -206,7 +206,7 @@ class EntityRevisionsTest extends EntityKernelTestBase {
    * @covers \Drupal\Core\Entity\ContentEntityStorageBase::getLatestRevisionId
    * @covers \Drupal\Core\Entity\ContentEntityStorageBase::getLatestTranslationAffectedRevisionId
    */
-  public function testIsLatestAffectedRevisionTranslation(): void {
+  public function testIsLatestAffectedRevisionTranslation() {
     ConfigurableLanguage::createFromLangcode('it')->save();
 
     // Create a basic EntityTestMulRev entity and save it.
@@ -266,7 +266,7 @@ class EntityRevisionsTest extends EntityKernelTestBase {
    *
    * @covers \Drupal\Core\Entity\ContentEntityStorageBase::doSave
    */
-  public function testDefaultRevisionFlag(): void {
+  public function testDefaultRevisionFlag() {
     // Create a basic EntityTestMulRev entity and save it.
     $entity = EntityTestMulRev::create();
     $entity->save();

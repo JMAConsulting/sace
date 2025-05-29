@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel;
 
 use Drupal\file\Entity\File;
@@ -21,7 +19,9 @@ class AccessTest extends KernelTestBase {
   use TestFileCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['file', 'system', 'user'];
 
@@ -39,7 +39,7 @@ class AccessTest extends KernelTestBase {
   /**
    * Tests 'update' and 'delete' access to file entities.
    */
-  public function testFileAccess(): void {
+  public function testFileAccess() {
     // Create a user so the tested users do not have the magic ID of user 1.
     $this->createUser();
 
@@ -118,7 +118,7 @@ class AccessTest extends KernelTestBase {
    *
    * @see \Drupal\file\FileAccessControlHandler::checkFieldAccess()
    */
-  public function testCheckFieldAccess(): void {
+  public function testCheckFieldAccess() {
     $this->setUpCurrentUser();
     /** @var \Drupal\file\FileInterface $file */
     $file = File::create([
@@ -145,7 +145,7 @@ class AccessTest extends KernelTestBase {
    *
    * @see \Drupal\file\FileAccessControlHandler::checkCreateAccess()
    */
-  public function testCreateAccess(): void {
+  public function testCreateAccess() {
     $user1 = $this->createUser([
       'delete own files',
     ]);
@@ -166,7 +166,7 @@ class AccessTest extends KernelTestBase {
   /**
    * Tests cacheability metadata.
    */
-  public function testFileCacheability(): void {
+  public function testFileCacheability() {
     $file = File::create([
       'filename' => 'green-scarf',
       'uri' => 'private://green-scarf',

@@ -21,7 +21,7 @@ class RestResourceConfigTest extends UnitTestCase {
    * This also tests that no exceptions are thrown during that method so that
    * alternate methods such as OPTIONS and PUT are supported.
    */
-  public function testNormalizeRestMethod(): void {
+  public function testNormalizeRestMethod() {
     $expected = ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS', 'FOO'];
     $methods = ['get', 'put', 'post', 'patch', 'delete', 'options', 'foo'];
     $configuration = [];

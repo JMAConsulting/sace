@@ -63,7 +63,7 @@ class InlineBlockPrivateFilesTest extends InlineBlockTestBase {
   /**
    * Tests access to private files added to inline blocks in the layout builder.
    */
-  public function testPrivateFiles(): void {
+  public function testPrivateFiles() {
     $assert_session = $this->assertSession();
     LayoutBuilderEntityViewDisplay::load('node.bundle_with_section_field.default')
       ->enableLayoutBuilder()

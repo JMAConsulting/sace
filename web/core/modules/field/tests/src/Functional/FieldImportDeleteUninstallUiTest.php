@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -19,7 +17,9 @@ use Drupal\field\Entity\FieldStorageConfig;
 class FieldImportDeleteUninstallUiTest extends FieldTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'entity_test',
@@ -46,7 +46,7 @@ class FieldImportDeleteUninstallUiTest extends FieldTestBase {
   /**
    * Tests deleting field storages and fields as part of config import.
    */
-  public function testImportDeleteUninstall(): void {
+  public function testImportDeleteUninstall() {
     // Create a telephone field.
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'field_tel',
@@ -126,20 +126,6 @@ class FieldImportDeleteUninstallUiTest extends FieldTestBase {
     $deleted_storages = \Drupal::state()->get('field.storage.deleted', []);
     $this->assertFalse(isset($deleted_storages[$field_storage->uuid()]), 'Telephone field has been completed removed from the system.');
     $this->assertFalse(isset($deleted_storages[$field_storage->uuid()]), 'Text field has been completed removed from the system.');
-  }
-
-  /**
-   * Tests if the synchronization form is available when the core.extension.yml is missing.
-   */
-  public function testSynchronizeForm(): void {
-    $sync = $this->container->get('config.storage.sync');
-    $this->copyConfig($this->container->get('config.storage'), $sync);
-
-    $sync->delete('core.extension');
-    $this->drupalGet('admin/config/development/configuration');
-    $assertSession = $this->assertSession();
-    $this->assertSession()->elementExists('css', 'input[value="Import all"]')->click();
-    $assertSession->pageTextContains('The core.extension configuration does not exist.');
   }
 
 }

@@ -130,7 +130,7 @@ class CustomPageExceptionHtmlSubscriberTest extends UnitTestCase {
   /**
    * Tests onHandleException with a POST request.
    */
-  public function testHandleWithPostRequest(): void {
+  public function testHandleWithPostRequest() {
     $request = Request::create('/test', 'POST', ['name' => 'druplicon', 'pass' => '12345']);
 
     $request_context = new RequestContext();
@@ -156,7 +156,7 @@ class CustomPageExceptionHtmlSubscriberTest extends UnitTestCase {
   /**
    * Tests onHandleException with a GET request.
    */
-  public function testHandleWithGetRequest(): void {
+  public function testHandleWithGetRequest() {
     $request = Request::create('/test', 'GET', ['name' => 'druplicon', 'pass' => '12345']);
     $request->attributes->set(AccessAwareRouterInterface::ACCESS_RESULT, AccessResult::forbidden()->addCacheTags(['druplicon']));
 

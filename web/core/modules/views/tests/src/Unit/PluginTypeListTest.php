@@ -17,7 +17,7 @@ class PluginTypeListTest extends UnitTestCase {
   /**
    * Tests the plugins list is correct.
    */
-  public function testPluginList(): void {
+  public function testPluginList() {
     $plugin_list = [
       'access',
       'area',

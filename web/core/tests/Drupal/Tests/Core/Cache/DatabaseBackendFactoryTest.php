@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\Core\Cache;
 
-use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Component\Serialization\PhpSerialize;
 use Drupal\Core\Cache\CacheTagsChecksumInterface;
 use Drupal\Core\Cache\DatabaseBackend;
 use Drupal\Core\Cache\DatabaseBackendFactory;
@@ -24,20 +22,18 @@ class DatabaseBackendFactoryTest extends UnitTestCase {
    * @covers ::get
    * @dataProvider getProvider
    */
-  public function testGet(array $settings, $expected_max_rows_foo, $expected_max_rows_bar): void {
+  public function testGet(array $settings, $expected_max_rows_foo, $expected_max_rows_bar) {
     $database_backend_factory = new DatabaseBackendFactory(
       $this->prophesize(Connection::class)->reveal(),
       $this->prophesize(CacheTagsChecksumInterface::class)->reveal(),
-      new Settings($settings),
-      new PhpSerialize(),
-      $this->prophesize(TimeInterface::class)->reveal(),
+      new Settings($settings)
     );
 
     $this->assertSame($expected_max_rows_foo, $database_backend_factory->get('foo')->getMaxRows());
     $this->assertSame($expected_max_rows_bar, $database_backend_factory->get('bar')->getMaxRows());
   }
 
-  public static function getProvider() {
+  public function getProvider() {
     return [
       'default' => [
         [],

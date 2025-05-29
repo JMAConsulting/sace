@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Form;
 
 use Drupal\Core\Form\FormInterface;
@@ -64,7 +62,7 @@ class FormElementMaxlengthTest extends KernelTestBase implements FormInterface {
   /**
    * Ensures maxlength attribute can be used in compatible elements.
    */
-  public function testAttributes(): void {
+  public function testAttributes() {
 
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
     $form_builder = $this->container->get('form_builder');

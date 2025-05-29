@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -42,7 +40,7 @@ class CommentCSSTest extends CommentTestBase {
   /**
    * Tests CSS classes on comments.
    */
-  public function testCommentClasses(): void {
+  public function testCommentClasses() {
     // Create all permutations for comments, users, and nodes.
     $parameters = [
       'node_uid' => [0, $this->webUser->id()],

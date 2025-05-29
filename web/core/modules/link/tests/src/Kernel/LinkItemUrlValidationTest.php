@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\link\Kernel;
 
 use Drupal\Tests\field\Kernel\FieldKernelTestBase;
@@ -21,7 +19,7 @@ class LinkItemUrlValidationTest extends FieldKernelTestBase {
   /**
    * Tests link validation.
    */
-  public function testExternalLinkValidation(): void {
+  public function testExternalLinkValidation() {
     $definition = \Drupal::typedDataManager()
       ->createDataDefinition('field_item:link');
     $link_item = \Drupal::typedDataManager()->create($definition);

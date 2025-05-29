@@ -22,7 +22,7 @@ class PluginWithFormsTraitTest extends UnitTestCase {
    * @covers ::hasFormClass
    * @dataProvider providerGetFormClass
    */
-  public function testGetFormClass(PluginWithFormsInterface $block_plugin, $operation, $expected_class): void {
+  public function testGetFormClass(PluginWithFormsInterface $block_plugin, $operation, $expected_class) {
     $this->assertSame($expected_class, $block_plugin->getFormClass($operation));
     $this->assertSame($expected_class !== NULL, $block_plugin->hasFormClass($operation));
   }
@@ -30,7 +30,7 @@ class PluginWithFormsTraitTest extends UnitTestCase {
   /**
    * @return array
    */
-  public static function providerGetFormClass() {
+  public function providerGetFormClass() {
     $block_plugin_without_forms = new TestClass([], 'block_plugin_without_forms', [
       'provider' => 'block_test',
     ]);

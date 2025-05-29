@@ -5,7 +5,6 @@ namespace Drupal\Core\Render\Element;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Html as HtmlUtility;
 use Drupal\Core\Form\FormHelper;
-use Drupal\Core\Render\Attribute\RenderElement;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url as CoreUrl;
@@ -26,9 +25,10 @@ use Drupal\Core\Url as CoreUrl;
  *   '#url' => \Drupal\Core\Url::fromRoute('examples.description')
  * ];
  * @endcode
+ *
+ * @RenderElement("link")
  */
-#[RenderElement('link')]
-class Link extends RenderElementBase {
+class Link extends RenderElement {
 
   /**
    * {@inheritdoc}
@@ -126,24 +126,31 @@ class Link extends RenderElementBase {
    * A typical example comes from node links, which are stored in a renderable
    * array similar to this:
    * @code
-   * $build['links'] = [
+   * $build['links'] = array(
    *   '#theme' => 'links__node',
-   *   '#pre_render' => [Link::class, 'preRenderLinks'],
-   *   'comment' => [
+   *   '#pre_render' => array(Link::class, 'preRenderLinks'),
+   *   'comment' => array(
    *     '#theme' => 'links__node__comment',
-   *     '#links' => [
+   *     '#links' => array(
    *       // An array of links associated with node comments, suitable for
    *       // passing in to links.html.twig.
    *     ),
    *   ),
-   *   'translation' => [
+   *   'statistics' => array(
+   *     '#theme' => 'links__node__statistics',
+   *     '#links' => array(
+   *       // An array of links associated with node statistics, suitable for
+   *       // passing in to links.html.twig.
+   *     ),
+   *   ),
+   *   'translation' => array(
    *     '#theme' => 'links__node__translation',
-   *     '#links' => [
+   *     '#links' => array(
    *       // An array of links associated with node translation, suitable for
    *       // passing in to links.html.twig.
-   *     ],
-   *   ],
-   * ];
+   *     ),
+   *   ),
+   * );
    * @endcode
    *
    * In this example, the links are grouped by functionality, which can be

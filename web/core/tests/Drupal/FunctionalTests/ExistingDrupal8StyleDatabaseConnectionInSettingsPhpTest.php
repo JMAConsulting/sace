@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests;
 
 use Drupal\Core\Database\Connection;
@@ -57,7 +55,7 @@ class ExistingDrupal8StyleDatabaseConnectionInSettingsPhpTest extends BrowserTes
   /**
    * Confirms that the site works with Drupal 8 style database connection array.
    */
-  public function testExistingDrupal8StyleDatabaseConnectionInSettingsPhp(): void {
+  public function testExistingDrupal8StyleDatabaseConnectionInSettingsPhp() {
     $this->drupalLogin($this->drupalCreateUser());
     $this->assertSession()->addressEquals('user/2');
     $this->assertSession()->statusCodeEquals(200);
@@ -75,7 +73,7 @@ class ExistingDrupal8StyleDatabaseConnectionInSettingsPhpTest extends BrowserTes
   /**
    * Confirms that the replica database connection works.
    */
-  public function testReplicaDrupal8StyleDatabaseConnectionInSettingsPhp(): void {
+  public function testReplicaDrupal8StyleDatabaseConnectionInSettingsPhp() {
     $this->drupalLogin($this->drupalCreateUser());
 
     $replica = Database::getConnection('replica', 'default');

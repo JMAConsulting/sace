@@ -35,7 +35,6 @@ class VendorHardeningPluginTest extends TestCase {
           'tests' => [
             'SomeTest.php' => '<?php',
           ],
-          'SomeFile.php' => '<?php',
         ],
       ],
     ]);
@@ -44,7 +43,7 @@ class VendorHardeningPluginTest extends TestCase {
   /**
    * @covers ::cleanPackage
    */
-  public function testCleanPackage(): void {
+  public function testCleanPackage() {
 
     $config = $this->getMockBuilder(Config::class)
       ->disableOriginalConstructor()
@@ -80,7 +79,7 @@ class VendorHardeningPluginTest extends TestCase {
   /**
    * @covers ::cleanPathsForPackage
    */
-  public function testCleanPathsForPackage(): void {
+  public function testCleanPathsForPackage() {
     $plugin = $this->getMockBuilder(VendorHardeningPlugin::class)
       ->onlyMethods(['getInstallPathForPackage'])
       ->getMock();
@@ -93,22 +92,20 @@ class VendorHardeningPluginTest extends TestCase {
     $ref_io->setValue($plugin, $io->reveal());
 
     $this->assertFileExists(vfsStream::url('vendor/drupal/package/tests/SomeTest.php'));
-    $this->assertFileExists(vfsStream::url('vendor/drupal/package/SomeFile.php'));
 
     $package = $this->prophesize(PackageInterface::class);
     $package->getName()->willReturn('drupal/package');
 
     $ref_clean = new \ReflectionMethod($plugin, 'cleanPathsForPackage');
-    $ref_clean->invokeArgs($plugin, [$package->reveal(), ['tests', 'SomeFile.php']]);
+    $ref_clean->invokeArgs($plugin, [$package->reveal(), ['tests']]);
 
     $this->assertFileDoesNotExist(vfsStream::url('vendor/drupal/package/tests'));
-    $this->assertFileDoesNotExist(vfsStream::url('vendor/drupal/package/SomeFile.php'));
   }
 
   /**
    * @covers ::cleanAllPackages
    */
-  public function testCleanAllPackages(): void {
+  public function testCleanAllPackages() {
     $config = $this->getMockBuilder(Config::class)
       ->disableOriginalConstructor()
       ->getMock();
@@ -148,7 +145,7 @@ class VendorHardeningPluginTest extends TestCase {
   /**
    * @covers ::writeAccessRestrictionFiles
    */
-  public function testWriteAccessRestrictionFiles(): void {
+  public function testWriteAccessRestrictionFiles() {
     $dir = vfsStream::url('vendor');
 
     // Set up mocks so that writeAccessRestrictionFiles() can eventually use
@@ -174,7 +171,7 @@ class VendorHardeningPluginTest extends TestCase {
     $this->assertFileExists($dir . '/web.config');
   }
 
-  public static function providerFindBinOverlap() {
+  public function providerFindBinOverlap() {
     return [
       [
         [],
@@ -223,7 +220,7 @@ class VendorHardeningPluginTest extends TestCase {
    * @covers ::findBinOverlap
    * @dataProvider providerFindBinOverlap
    */
-  public function testFindBinOverlap($expected, $binaries, $clean_paths): void {
+  public function testFindBinOverlap($expected, $binaries, $clean_paths) {
     $plugin = $this->getMockBuilder(VendorHardeningPlugin::class)
       ->disableOriginalConstructor()
       ->getMock();

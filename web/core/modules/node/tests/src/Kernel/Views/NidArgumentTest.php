@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Views;
 
 use Drupal\node\Entity\Node;
@@ -52,7 +50,7 @@ class NidArgumentTest extends ViewsKernelTestBase {
   /**
    * Tests the nid argument.
    */
-  public function testNidArgument(): void {
+  public function testNidArgument() {
     $view = Views::getView('test_nid_argument');
     $view->setDisplay();
 

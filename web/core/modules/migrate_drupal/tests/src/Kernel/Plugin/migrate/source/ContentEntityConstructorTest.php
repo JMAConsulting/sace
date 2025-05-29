@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\Plugin\migrate\source;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
@@ -32,7 +30,7 @@ class ContentEntityConstructorTest extends KernelTestBase {
    *
    * @dataProvider providerTestConstructor
    */
-  public function testConstructor($configuration, $plugin_definition, $exception_class, $expected): void {
+  public function testConstructor($configuration, $plugin_definition, $exception_class, $expected) {
     $migration = $this->prophesize(MigrationInterface::class)->reveal();
     $this->expectException($exception_class);
     $this->expectExceptionMessage($expected);
@@ -42,7 +40,7 @@ class ContentEntityConstructorTest extends KernelTestBase {
   /**
    * Provides data for constructor tests.
    */
-  public static function providerTestConstructor() {
+  public function providerTestConstructor() {
     return [
       'entity type missing' => [
         [],

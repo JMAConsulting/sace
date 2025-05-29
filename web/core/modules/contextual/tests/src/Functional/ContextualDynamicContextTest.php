@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\contextual\Functional;
 
 use Drupal\Component\Serialization\Json;
@@ -45,7 +43,9 @@ class ContextualDynamicContextTest extends BrowserTestBase {
   protected $anonymousUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'contextual',
@@ -86,7 +86,7 @@ class ContextualDynamicContextTest extends BrowserTestBase {
    * Ensures that contextual link placeholders always exist, even if the user is
    * not allowed to use contextual links.
    */
-  public function testDifferentPermissions(): void {
+  public function testDifferentPermissions() {
     $this->drupalLogin($this->editorUser);
 
     // Create three nodes in the following order:
@@ -170,7 +170,7 @@ class ContextualDynamicContextTest extends BrowserTestBase {
   /**
    * Tests the contextual placeholder content is protected by a token.
    */
-  public function testTokenProtection(): void {
+  public function testTokenProtection() {
     $this->drupalLogin($this->editorUser);
 
     // Create a node that will have a contextual link.

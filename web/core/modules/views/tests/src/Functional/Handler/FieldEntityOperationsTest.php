@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Handler;
 
 use Drupal\Core\Url;
@@ -24,7 +22,9 @@ class FieldEntityOperationsTest extends ViewTestBase {
   public static $testViews = ['test_entity_operations'];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'language', 'views_ui'];
 
@@ -46,7 +46,7 @@ class FieldEntityOperationsTest extends ViewTestBase {
   /**
    * Tests entity operations field.
    */
-  public function testEntityOperations(): void {
+  public function testEntityOperations() {
     // Add languages and refresh the container so the entity type manager will
     // have fresh data.
     ConfigurableLanguage::createFromLangcode('hu')->save();

@@ -1,13 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\search\SearchTextProcessorInterface;
-
-// cspell:ignore verygreatdrupalmodule
 
 /**
  * Test search text preprocessing functionality.
@@ -24,7 +20,7 @@ class SearchTextProcessorTest extends KernelTestBase {
   /**
    * Tests that text processing handles Unicode characters correctly.
    */
-  public function testSearchTextProcessorUnicode(): void {
+  public function testSearchTextProcessorUnicode() {
     // This test uses a file that was constructed so that the even lines are
     // boundary characters, and the odd lines are valid word characters. (It
     // was generated as a sequence of all the Unicode characters, and then the
@@ -79,7 +75,7 @@ class SearchTextProcessorTest extends KernelTestBase {
   /**
    * Tests that text analysis does the right thing with punctuation.
    */
-  public function testSearchTextProcessorPunctuation(): void {
+  public function testSearchTextProcessorPunctuation() {
     $cases = [
       ['20.03/94-28,876', '20039428876', 'Punctuation removed from numbers'],
       ['great...drupal--module', 'great drupal module', 'Multiple dot and dashes are word boundaries'],

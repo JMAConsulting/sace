@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Core\Render\RenderContext;
@@ -18,9 +16,6 @@ use Drupal\views\Views;
  */
 class FieldKernelTest extends ViewsKernelTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['user'];
 
   /**
@@ -53,7 +48,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests that the render function is called.
    */
-  public function testRender(): void {
+  public function testRender() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 
@@ -71,7 +66,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests all things related to the query.
    */
-  public function testQuery(): void {
+  public function testQuery() {
     // Tests adding additional fields to the query.
     $view = Views::getView('test_view');
     $view->initHandlers();
@@ -136,7 +131,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests general rewriting of the output.
    */
-  public function testRewrite(): void {
+  public function testRewrite() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 
@@ -163,7 +158,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests rewriting of the output with HTML.
    */
-  public function testRewriteHtmlWithTokens(): void {
+  public function testRewriteHtmlWithTokens() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 
@@ -192,7 +187,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests rewriting of the output with HTML and aggregation.
    */
-  public function testRewriteHtmlWithTokensAndAggregation(): void {
+  public function testRewriteHtmlWithTokensAndAggregation() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 
@@ -224,7 +219,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests the arguments tokens on field level.
    */
-  public function testArgumentTokens(): void {
+  public function testArgumentTokens() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 
@@ -262,7 +257,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests the field tokens, row level and field level.
    */
-  public function testFieldTokens(): void {
+  public function testFieldTokens() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 
@@ -361,7 +356,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests the exclude setting.
    */
-  public function testExclude(): void {
+  public function testExclude() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $view = Views::getView('test_field_output');
@@ -388,7 +383,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests everything related to empty output of a field.
    */
-  public function testEmpty(): void {
+  public function testEmpty() {
     $this->_testHideIfEmpty();
     $this->_testEmptyText();
   }
@@ -730,7 +725,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests views_handler_field::isValueEmpty().
    */
-  public function testIsValueEmpty(): void {
+  public function testIsValueEmpty() {
     $view = Views::getView('test_view');
     $view->initHandlers();
     $field = $view->field['name'];
@@ -752,7 +747,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests whether the filters are click sortable as expected.
    */
-  public function testClickSortable(): void {
+  public function testClickSortable() {
     // Test that clickSortable is TRUE by default.
     $item = [
       'table' => 'views_test_data',
@@ -775,7 +770,7 @@ class FieldKernelTest extends ViewsKernelTestBase {
   /**
    * Tests the trimText method.
    */
-  public function testTrimText(): void {
+  public function testTrimText() {
     // Test unicode. See https://www.drupal.org/node/513396#comment-2839416.
     // cSpell:disable
     $text = [

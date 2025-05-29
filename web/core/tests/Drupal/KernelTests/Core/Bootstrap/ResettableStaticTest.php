@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Bootstrap;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -19,7 +17,7 @@ class ResettableStaticTest extends KernelTestBase {
    * Tests that a variable reference returned by drupal_static() gets reset when
    * drupal_static_reset() is called.
    */
-  public function testDrupalStatic(): void {
+  public function testDrupalStatic() {
     $name = __CLASS__ . '_' . __METHOD__;
     $var = &drupal_static($name, 'foo');
     $this->assertEquals('foo', $var, 'Variable returned by drupal_static() was set to its default.');

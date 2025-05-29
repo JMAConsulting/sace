@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\image\Kernel\Migrate\d7;
 
 use Drupal\image\Entity\ImageStyle;
@@ -33,7 +31,7 @@ class MigrateImageStylesTest extends MigrateDrupal7TestBase {
   /**
    * Tests the image styles migration.
    */
-  public function testImageStylesMigration(): void {
+  public function testImageStylesMigration() {
     $this->assertEntity('custom_image_style_1', "Custom image style 1", ['image_scale_and_crop', 'image_desaturate'], [['width' => 55, 'height' => 55, 'anchor' => 'center-center'], []]);
     $this->assertEntity('custom_image_style_2', "Custom image style 2", ['image_resize', 'image_rotate'], [['width' => 55, 'height' => 100], ['degrees' => 45, 'bgcolor' => '#FFFFFF', 'random' => FALSE]]);
     $this->assertEntity('custom_image_style_3', "Custom image style 3", ['image_scale', 'image_crop'], [['width' => 150, 'height' => NULL, 'upscale' => FALSE], ['width' => 50, 'height' => 50, 'anchor' => 'left-top']]);

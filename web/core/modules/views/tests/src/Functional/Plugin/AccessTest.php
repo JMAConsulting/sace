@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -25,7 +23,9 @@ class AccessTest extends ViewTestBase {
   public static $testViews = ['test_access_none', 'test_access_static', 'test_access_dynamic'];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node'];
 
@@ -72,7 +72,7 @@ class AccessTest extends ViewTestBase {
   /**
    * Tests none access plugin.
    */
-  public function testAccessNone(): void {
+  public function testAccessNone() {
     $view = Views::getView('test_access_none');
     $view->setDisplay();
 
@@ -89,7 +89,7 @@ class AccessTest extends ViewTestBase {
    *
    * @see \Drupal\views_test\Plugin\views\access\StaticTest
    */
-  public function testStaticAccessPlugin(): void {
+  public function testStaticAccessPlugin() {
     $view = Views::getView('test_access_static');
     $view->setDisplay();
 

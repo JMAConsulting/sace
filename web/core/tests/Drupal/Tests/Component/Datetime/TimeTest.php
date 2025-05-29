@@ -48,7 +48,7 @@ class TimeTest extends TestCase {
    *
    * @covers ::getRequestTime
    */
-  public function testGetRequestTime(): void {
+  public function testGetRequestTime() {
     $expected = 12345678;
 
     $request = Request::createFromGlobals();
@@ -67,7 +67,7 @@ class TimeTest extends TestCase {
    *
    * @covers ::getRequestMicroTime
    */
-  public function testGetRequestMicroTime(): void {
+  public function testGetRequestMicroTime() {
     $expected = 1234567.89;
 
     $request = Request::createFromGlobals();
@@ -84,7 +84,7 @@ class TimeTest extends TestCase {
   /**
    * @covers ::getRequestTime
    */
-  public function testGetRequestTimeNoRequest(): void {
+  public function testGetRequestTimeNoRequest() {
     // With no request, and no global variable, we expect to get the int part
     // of the microtime.
     $expected = 1234567;
@@ -97,7 +97,7 @@ class TimeTest extends TestCase {
   /**
    * @covers ::getRequestMicroTime
    */
-  public function testGetRequestMicroTimeNoRequest(): void {
+  public function testGetRequestMicroTimeNoRequest() {
     $expected = 1234567.89;
     unset($_SERVER['REQUEST_TIME_FLOAT']);
     $this->assertEquals($expected, $this->time->getRequestMicroTime());
@@ -110,7 +110,7 @@ class TimeTest extends TestCase {
    *
    * @covers ::getCurrentTime
    */
-  public function testGetCurrentTime(): void {
+  public function testGetCurrentTime() {
     $expected = 12345678;
     $this->assertEquals($expected, $this->time->getCurrentTime());
   }
@@ -120,7 +120,7 @@ class TimeTest extends TestCase {
    *
    * @covers ::getCurrentMicroTime
    */
-  public function testGetCurrentMicroTime(): void {
+  public function testGetCurrentMicroTime() {
     $expected = 1234567.89;
     $this->assertEquals($expected, $this->time->getCurrentMicroTime());
   }

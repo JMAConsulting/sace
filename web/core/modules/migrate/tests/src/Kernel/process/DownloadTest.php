@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel\process;
 
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
@@ -35,7 +33,7 @@ class DownloadTest extends FileTestBase {
   /**
    * Tests a download that overwrites an existing local file.
    */
-  public function testOverwritingDownload(): void {
+  public function testOverwritingDownload() {
     // Create a pre-existing file at the destination.
     $destination_uri = $this->createUri('existing_file.txt');
 
@@ -48,7 +46,7 @@ class DownloadTest extends FileTestBase {
   /**
    * Tests a download that renames the downloaded file if there's a collision.
    */
-  public function testNonDestructiveDownload(): void {
+  public function testNonDestructiveDownload() {
     // Create a pre-existing file at the destination.
     $destination_uri = $this->createUri('another_existing_file.txt');
 
@@ -61,7 +59,7 @@ class DownloadTest extends FileTestBase {
   /**
    * Tests that an exception is thrown if the destination URI is not writable.
    */
-  public function testWriteProtectedDestination(): void {
+  public function testWriteProtectedDestination() {
     // Create a pre-existing file at the destination.
     $destination_uri = $this->createUri('not-writable.txt');
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media_library\Kernel;
 
 use Drupal\Core\Cache\Cache;
@@ -16,7 +14,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * Tests the media library state value object.
  *
  * @group media_library
- * @group #slow
  *
  * @coversDefaultClass \Drupal\media_library\MediaLibraryState
  */
@@ -66,7 +63,7 @@ class MediaLibraryStateTest extends KernelTestBase {
   /**
    * Tests the media library state methods.
    */
-  public function testMethods(): void {
+  public function testMethods() {
     $opener_id = 'test';
     $allowed_media_type_ids = ['document', 'image'];
     $selected_media_type_id = 'image';
@@ -101,7 +98,7 @@ class MediaLibraryStateTest extends KernelTestBase {
    * @covers ::create
    * @dataProvider providerCreate
    */
-  public function testCreate($opener_id, array $allowed_media_type_ids, $selected_type_id, $remaining_slots, $exception_message = ''): void {
+  public function testCreate($opener_id, array $allowed_media_type_ids, $selected_type_id, $remaining_slots, $exception_message = '') {
     if ($exception_message) {
       $this->expectException(\InvalidArgumentException::class);
       $this->expectExceptionMessage($exception_message);
@@ -121,7 +118,7 @@ class MediaLibraryStateTest extends KernelTestBase {
    * @return array
    *   The data sets to test.
    */
-  public static function providerCreate() {
+  public function providerCreate() {
     $test_data = [];
 
     // Assert no exception is thrown when we add the parameters as expected.
@@ -279,7 +276,7 @@ class MediaLibraryStateTest extends KernelTestBase {
    * @covers ::fromRequest
    * @dataProvider providerFromRequest
    */
-  public function testFromRequest(array $query_overrides, $exception_expected): void {
+  public function testFromRequest(array $query_overrides, $exception_expected) {
     // Override the query parameters and verify an exception is thrown when
     // required state parameters are changed.
     $query = MediaLibraryState::create('test', ['file', 'image'], 'image', 2)->all();
@@ -296,7 +293,7 @@ class MediaLibraryStateTest extends KernelTestBase {
   /**
    * @covers ::fromRequest
    */
-  public function testFromRequestQueryLess(): void {
+  public function testFromRequestQueryLess() {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('The opener ID parameter is required and must be a string.');
     $state = MediaLibraryState::fromRequest(new Request());
@@ -309,7 +306,7 @@ class MediaLibraryStateTest extends KernelTestBase {
    * @return array
    *   The data sets to test.
    */
-  public static function providerFromRequest() {
+  public function providerFromRequest() {
     $test_data = [];
 
     // Assert no exception is thrown when we use valid state parameters.
@@ -367,7 +364,7 @@ class MediaLibraryStateTest extends KernelTestBase {
   /**
    * @covers ::getOpenerParameters
    */
-  public function testOpenerParameters(): void {
+  public function testOpenerParameters() {
     $state = MediaLibraryState::create('test', ['file'], 'file', -1, [
       'foo' => 'baz',
     ]);
@@ -377,7 +374,7 @@ class MediaLibraryStateTest extends KernelTestBase {
   /**
    * Tests that hash is unaffected by allowed media type order.
    */
-  public function testHashUnaffectedByMediaTypeOrder(): void {
+  public function testHashUnaffectedByMediaTypeOrder() {
     $state1 = MediaLibraryState::create('test', ['file', 'image'], 'image', 2);
     $state2 = MediaLibraryState::create('test', ['image', 'file'], 'image', 2);
     $this->assertSame($state1->getHash(), $state2->getHash());
@@ -386,7 +383,7 @@ class MediaLibraryStateTest extends KernelTestBase {
   /**
    * Tests that hash is unaffected by opener parameter order.
    */
-  public function testHashUnaffectedByOpenerParamOrder(): void {
+  public function testHashUnaffectedByOpenerParamOrder() {
     $state1 = MediaLibraryState::create('test', ['file'], 'file', -1, [
       'foo' => 'baz',
       'baz' => 'foo',

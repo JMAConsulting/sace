@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\Core\Url;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class LanguageListTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['language'];
 
@@ -30,7 +30,7 @@ class LanguageListTest extends BrowserTestBase {
   /**
    * Functional tests for adding, editing and deleting languages.
    */
-  public function testLanguageList(): void {
+  public function testLanguageList() {
 
     // User to add and remove language.
     $admin_user = $this->drupalCreateUser([
@@ -209,7 +209,7 @@ class LanguageListTest extends BrowserTestBase {
   /**
    * Functional tests for the language states (locked or configurable).
    */
-  public function testLanguageStates(): void {
+  public function testLanguageStates() {
     // Add some languages, and also lock some of them.
     ConfigurableLanguage::create(['label' => $this->randomMachineName(), 'id' => 'l1'])->save();
     ConfigurableLanguage::create(['label' => $this->randomMachineName(), 'id' => 'l2', 'locked' => TRUE])->save();

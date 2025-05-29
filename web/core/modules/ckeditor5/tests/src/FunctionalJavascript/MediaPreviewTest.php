@@ -19,7 +19,7 @@ class MediaPreviewTest extends MediaTestBase {
   /**
    * Tests that failed media embed preview requests inform the end user.
    */
-  public function testErrorMessages(): void {
+  public function testErrorMessages() {
     // This test currently frequently causes the SQLite database to lock, so
     // skip the test on SQLite until the issue can be resolved.
     // @todo https://www.drupal.org/project/drupal/issues/3273626
@@ -87,16 +87,15 @@ class MediaPreviewTest extends MediaTestBase {
   /**
    * The CKEditor Widget must load a preview generated using the default theme.
    */
-  public function testPreviewUsesDefaultThemeAndIsClientCacheable(): void {
+  public function testPreviewUsesDefaultThemeAndIsClientCacheable() {
     // Make the node edit form use the admin theme, like on most Drupal sites.
     $this->config('node.settings')
       ->set('use_admin_theme', TRUE)
       ->save();
 
     // Allow the test user to view the admin theme.
-    $this->adminUser
-      ->addRole($this->drupalCreateRole(['view the administration theme']))
-      ->save();
+    $this->adminUser->addRole($this->drupalCreateRole(['view the administration theme']));
+    $this->adminUser->save();
 
     // Configure a different default and admin theme, like on most Drupal sites.
     $this->config('system.theme')
@@ -144,7 +143,7 @@ class MediaPreviewTest extends MediaTestBase {
    *
    * @dataProvider previewAccessProvider
    */
-  public function testEmbedPreviewAccess($media_embed_enabled, $can_use_format): void {
+  public function testEmbedPreviewAccess($media_embed_enabled, $can_use_format) {
     // Reconfigure the host entity's text format to suit our needs.
     /** @var \Drupal\filter\FilterFormatInterface $format */
     $format = FilterFormat::load($this->host->body->format);
@@ -187,7 +186,7 @@ class MediaPreviewTest extends MediaTestBase {
   /**
    * Data provider for ::testEmbedPreviewAccess.
    */
-  public static function previewAccessProvider() {
+  public function previewAccessProvider() {
     return [
       'media_embed filter enabled' => [
         TRUE,
@@ -207,7 +206,7 @@ class MediaPreviewTest extends MediaTestBase {
   /**
    * Ensure media preview isn't clickable.
    */
-  public function testMediaPointerEvent(): void {
+  public function testMediaPointerEvent() {
     $entityViewDisplay = EntityViewDisplay::load('media.image.view_mode_1');
     $thumbnail = $entityViewDisplay->getComponent('thumbnail');
     $thumbnail['settings']['image_link'] = 'file';

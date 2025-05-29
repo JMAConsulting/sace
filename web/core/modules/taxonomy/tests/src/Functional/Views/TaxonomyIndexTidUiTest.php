@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Views;
 
 use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
@@ -39,7 +37,9 @@ class TaxonomyIndexTidUiTest extends UITestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'node',
@@ -113,7 +113,7 @@ class TaxonomyIndexTidUiTest extends UITestBase {
   /**
    * Tests the filter UI.
    */
-  public function testFilterUI(): void {
+  public function testFilterUI() {
     $this->drupalGet('admin/structure/views/nojs/handler/test_filter_taxonomy_index_tid/default/filter/tid');
 
     $result = $this->assertSession()->selectExists('edit-options-value')->findAll('css', 'option');
@@ -160,7 +160,7 @@ class TaxonomyIndexTidUiTest extends UITestBase {
   /**
    * Tests exposed taxonomy filters.
    */
-  public function testExposedFilter(): void {
+  public function testExposedFilter() {
     $node_type = $this->drupalCreateContentType(['type' => 'page']);
 
     // Create the tag field itself.
@@ -291,7 +291,7 @@ class TaxonomyIndexTidUiTest extends UITestBase {
   /**
    * Tests exposed grouped taxonomy filters.
    */
-  public function testExposedGroupedFilter(): void {
+  public function testExposedGroupedFilter() {
     // Create a content type with a taxonomy field.
     $this->drupalCreateContentType(['type' => 'article']);
     $field_name = 'field_views_testing_tags';
@@ -335,7 +335,7 @@ class TaxonomyIndexTidUiTest extends UITestBase {
   /**
    * Tests that an exposed taxonomy filter doesn't show unpublished terms.
    */
-  public function testExposedUnpublishedFilterOptions(): void {
+  public function testExposedUnpublishedFilterOptions() {
     $this->terms[1][0]->setUnpublished()->save();
     // Expose the filter.
     $this->drupalGet('admin/structure/views/nojs/handler/test_filter_taxonomy_index_tid/default/filter/tid');
@@ -374,7 +374,7 @@ class TaxonomyIndexTidUiTest extends UITestBase {
   /**
    * Tests using the TaxonomyIndexTid in a filter group.
    */
-  public function testFilterGrouping(): void {
+  public function testFilterGrouping() {
     $node_type = $this->drupalCreateContentType(['type' => 'page']);
 
     // Create the tag field itself.

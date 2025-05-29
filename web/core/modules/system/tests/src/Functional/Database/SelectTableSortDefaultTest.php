@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Database;
 
 /**
@@ -22,13 +20,13 @@ class SelectTableSortDefaultTest extends DatabaseTestBase {
    * Note that we have to make an HTTP request to a test page handler
    * because the pager depends on GET parameters.
    */
-  public function testTableSortQuery(): void {
+  public function testTableSortQuery() {
     $sorts = [
       ['field' => 'Task ID', 'sort' => 'desc', 'first' => 'perform at superbowl', 'last' => 'eat'],
       ['field' => 'Task ID', 'sort' => 'asc', 'first' => 'eat', 'last' => 'perform at superbowl'],
       ['field' => 'Task', 'sort' => 'asc', 'first' => 'code', 'last' => 'sleep'],
       ['field' => 'Task', 'sort' => 'desc', 'first' => 'sleep', 'last' => 'code'],
-      // More elements here
+      // more elements here
 
     ];
 
@@ -50,13 +48,13 @@ class SelectTableSortDefaultTest extends DatabaseTestBase {
    * If a tablesort's orderByHeader is called before another orderBy, then its
    * header happens first.
    */
-  public function testTableSortQueryFirst(): void {
+  public function testTableSortQueryFirst() {
     $sorts = [
       ['field' => 'Task ID', 'sort' => 'desc', 'first' => 'perform at superbowl', 'last' => 'eat'],
       ['field' => 'Task ID', 'sort' => 'asc', 'first' => 'eat', 'last' => 'perform at superbowl'],
       ['field' => 'Task', 'sort' => 'asc', 'first' => 'code', 'last' => 'sleep'],
       ['field' => 'Task', 'sort' => 'desc', 'first' => 'sleep', 'last' => 'code'],
-      // More elements here
+      // more elements here
 
     ];
 
@@ -78,7 +76,7 @@ class SelectTableSortDefaultTest extends DatabaseTestBase {
    * Specifically that no sort is set in a tableselect, and that header links
    * are correct.
    */
-  public function testTableSortDefaultSort(): void {
+  public function testTableSortDefaultSort() {
     $assert = $this->assertSession();
 
     $this->drupalGet('database_test/tablesort_default_sort');

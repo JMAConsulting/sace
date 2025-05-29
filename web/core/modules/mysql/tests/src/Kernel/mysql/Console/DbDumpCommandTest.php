@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\mysql\Kernel\mysql\Console;
 
 use Drupal\Core\Command\DbDumpCommand;
@@ -43,7 +41,7 @@ class DbDumpCommandTest extends DriverSpecificKernelTestBase {
   /**
    * Tests the command directly.
    */
-  public function testDbDumpCommand(): void {
+  public function testDbDumpCommand() {
     $command = new DbDumpCommand();
     $command_tester = new CommandTester($command);
     $command_tester->execute([]);
@@ -63,7 +61,7 @@ class DbDumpCommandTest extends DriverSpecificKernelTestBase {
   /**
    * Tests schema only option.
    */
-  public function testSchemaOnly(): void {
+  public function testSchemaOnly() {
     $command = new DbDumpCommand();
     $command_tester = new CommandTester($command);
     $command_tester->execute(['--schema-only' => 'router']);
@@ -89,7 +87,7 @@ class DbDumpCommandTest extends DriverSpecificKernelTestBase {
   /**
    * Tests insert count option.
    */
-  public function testInsertCount(): void {
+  public function testInsertCount() {
     $command = new DbDumpCommand();
     $command_tester = new CommandTester($command);
     $command_tester->execute(['--insert-count' => '1']);

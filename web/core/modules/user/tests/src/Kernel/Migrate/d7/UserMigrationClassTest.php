@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
@@ -19,7 +17,7 @@ class UserMigrationClassTest extends MigrateDrupal7TestBase {
    * Ensures profile fields are merged into the d7_profile_values migration's
    * process pipeline.
    */
-  public function testClass(): void {
+  public function testClass() {
     $migration = $this->getMigration('d7_user');
     /** @var \Drupal\migrate\Plugin\MigrationInterface[] $migrations */
     $this->assertSame('d7_user', $migration->id());

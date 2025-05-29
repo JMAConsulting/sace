@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\rest\Kernel\Entity;
 
 use Drupal\KernelTests\Core\Config\ConfigEntityValidationTestBase;
@@ -12,7 +10,6 @@ use Drupal\rest\RestResourceConfigInterface;
  * Tests validation of rest_resource_config entities.
  *
  * @group rest
- * @group #slow
  */
 class RestResourceConfigValidationTest extends ConfigEntityValidationTestBase {
 
@@ -39,16 +36,6 @@ class RestResourceConfigValidationTest extends ConfigEntityValidationTestBase {
       'configuration' => [],
     ]);
     $this->entity->save();
-  }
-
-  /**
-   * Tests that the resource plugin ID is validated.
-   */
-  public function testInvalidPluginId(): void {
-    $this->entity->set('plugin_id', 'non_existent');
-    $this->assertValidationErrors([
-      'plugin_id' => "The 'non_existent' plugin does not exist.",
-    ]);
   }
 
 }

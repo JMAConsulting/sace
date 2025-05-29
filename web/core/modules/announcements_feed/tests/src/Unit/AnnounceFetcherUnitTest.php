@@ -50,14 +50,14 @@ class AnnounceFetcherUnitTest extends UnitTestCase {
    *
    * @dataProvider urlProvider
    */
-  public function testValidateUrl($url, $isValid): void {
+  public function testValidateUrl($url, $isValid) {
     $this->assertEquals($isValid, $this->fetcher->validateUrl($url));
   }
 
   /**
    * Data for the testValidateUrl.
    */
-  public static function urlProvider(): array {
+  public function urlProvider(): array {
     return [
       ['https://www.drupal.org', TRUE],
       ['https://drupal.org', TRUE],

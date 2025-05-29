@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel\Views;
 
 use Drupal\file\Entity\File;
@@ -33,7 +31,7 @@ class FileViewsFieldAccessTest extends FieldFieldAccessTestBase {
   /**
    * Check access for file fields.
    */
-  public function testFileFields(): void {
+  public function testFileFields() {
     ConfigurableLanguage::create([
       'id' => 'fr',
       'label' => 'French',
@@ -66,7 +64,7 @@ class FileViewsFieldAccessTest extends FieldFieldAccessTestBase {
     $this->assertFieldAccess('file', 'filesize', '4 bytes');
     $this->assertFieldAccess('file', 'status', 'Permanent');
     // $this->assertFieldAccess('file', 'created', \Drupal::service('date.formatter')->format(123456));
-    // $this->assertFieldAccess('file', 'changed', \Drupal::service('date.formatter')->format(\Drupal::time()->getRequestTime()));
+    // $this->assertFieldAccess('file', 'changed', \Drupal::service('date.formatter')->format(REQUEST_TIME));
   }
 
 }

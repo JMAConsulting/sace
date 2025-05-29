@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Installer;
 
 use Drupal\Core\Extension\ProfileExtensionList;
@@ -22,7 +20,7 @@ class InstallerDependenciesResolutionTest extends KernelTestBase {
   /**
    * Verifies that the exception message in the profile step is correct.
    */
-  public function testDependenciesResolution(): void {
+  public function testDependenciesResolution() {
     // Prime the \Drupal\Core\Extension\ExtensionList::getPathname static cache
     // with the location of the testing profile as it is not the currently
     // active profile and we don't yet have any cached way to retrieve its

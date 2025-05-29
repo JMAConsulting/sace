@@ -37,7 +37,7 @@ class SettingSummariesContentTypeTest extends WebDriverTestBase {
   /**
    * Tests a vertical tab 'Workflow' summary.
    */
-  public function testWorkflowSummary(): void {
+  public function testWorkflowSummary() {
     $this->drupalGet('admin/structure/types/manage/test');
     $page = $this->getSession()->getPage();
     $page->find('css', 'a[href="#edit-workflow"]')->click();

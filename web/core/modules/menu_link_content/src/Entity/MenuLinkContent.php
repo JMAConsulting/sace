@@ -6,8 +6,6 @@ use Drupal\Core\Entity\EditorialContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Url;
-use Drupal\link\AttributeXss;
 use Drupal\link\LinkItemInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 
@@ -94,12 +92,7 @@ class MenuLinkContent extends EditorialContentEntityBase implements MenuLinkCont
    * {@inheritdoc}
    */
   public function getUrlObject() {
-    $url = $this->link->first()->getUrl();
-    assert($url instanceof Url);
-    if ($attributes = $url->getOption('attributes')) {
-      $url->setOption('attributes', AttributeXss::sanitizeAttributes($attributes));
-    }
-    return $url;
+    return $this->link->first()->getUrl();
   }
 
   /**

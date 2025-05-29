@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -14,14 +12,16 @@ use Drupal\KernelTests\KernelTestBase;
 class ConfigDiffTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['config_test', 'system'];
 
   /**
    * Tests calculating the difference between two sets of configuration.
    */
-  public function testDiff(): void {
+  public function testDiff() {
     $active = $this->container->get('config.storage');
     $sync = $this->container->get('config.storage.sync');
     $config_name = 'config_test.system';
@@ -108,7 +108,7 @@ class ConfigDiffTest extends KernelTestBase {
   /**
    * Tests calculating the difference between two sets of config collections.
    */
-  public function testCollectionDiff(): void {
+  public function testCollectionDiff() {
     /** @var \Drupal\Core\Config\StorageInterface $active */
     $active = $this->container->get('config.storage');
     /** @var \Drupal\Core\Config\StorageInterface $sync */

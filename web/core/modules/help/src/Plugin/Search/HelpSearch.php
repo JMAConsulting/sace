@@ -13,10 +13,8 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\State\StateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\help\HelpSectionManager;
 use Drupal\help\SearchableHelpInterface;
-use Drupal\search\Attribute\Search;
 use Drupal\search\Plugin\SearchIndexingInterface;
 use Drupal\search\Plugin\SearchPluginBase;
 use Drupal\search\SearchIndexInterface;
@@ -32,14 +30,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\help\HelpSearchInterface
  * @see \Drupal\help\HelpSectionPluginInterface
  *
+ * @SearchPlugin(
+ *   id = "help_search",
+ *   title = @Translation("Help"),
+ *   use_admin_theme = TRUE,
+ * )
+ *
  * @internal
  *   Plugin classes are internal.
  */
-#[Search(
-  id: 'help_search',
-  title: new TranslatableMarkup('Help'),
-  use_admin_theme: TRUE,
-)]
 class HelpSearch extends SearchPluginBase implements AccessibleInterface, SearchIndexingInterface {
 
   /**
@@ -123,7 +122,7 @@ class HelpSearch extends SearchPluginBase implements AccessibleInterface, Search
    * @param array $configuration
    *   Configuration for the plugin.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Database\Connection $database
@@ -158,7 +157,7 @@ class HelpSearch extends SearchPluginBase implements AccessibleInterface, Search
   /**
    * {@inheritdoc}
    */
-  public function access($operation = 'view', ?AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($operation = 'view', AccountInterface $account = NULL, $return_as_object = FALSE) {
     $result = AccessResult::allowedIfHasPermission($account, 'access help pages');
     return $return_as_object ? $result : $result->isAllowed();
   }

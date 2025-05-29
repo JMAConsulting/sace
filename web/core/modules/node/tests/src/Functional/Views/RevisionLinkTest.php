@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional\Views;
 
 /**
@@ -30,7 +28,7 @@ class RevisionLinkTest extends NodeTestBase {
   /**
    * Tests revision links.
    */
-  public function testRevisionLinks(): void {
+  public function testRevisionLinks() {
     // Create one user which can view/revert and delete and one which can only
     // do one of them.
     $this->drupalCreateContentType(['name' => 'page', 'type' => 'page']);

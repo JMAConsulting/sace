@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Migrate\d7;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -60,7 +58,7 @@ class MigrateCommentEntityFormDisplaySubjectTest extends MigrateDrupal7TestBase 
   /**
    * Tests the migrated display configuration.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $this->assertSubjectVisible('comment.comment_node_page.default');
     $this->assertSubjectVisible('comment.comment_node_article.default');
     $this->assertSubjectVisible('comment.comment_node_book.default');

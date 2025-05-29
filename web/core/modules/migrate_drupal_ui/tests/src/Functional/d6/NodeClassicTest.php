@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal_ui\Functional\d6;
 
 use Drupal\migrate_drupal\NodeMigrateType;
@@ -29,6 +27,7 @@ class NodeClassicTest extends MigrateUpgradeExecuteTestBase {
     'config_translation',
     'migrate_drupal_ui',
     'telephone',
+    'statistics',
   ];
 
   /**
@@ -77,7 +76,7 @@ class NodeClassicTest extends MigrateUpgradeExecuteTestBase {
   /**
    * Tests node classic migration via the UI.
    */
-  public function testNodeClassicUpgrade(): void {
+  public function testNodeClassicUpgrade() {
     // Add a node classic migrate table to d8.
     $this->makeNodeMigrateMapTable(NodeMigrateType::NODE_MIGRATE_TYPE_CLASSIC, '6');
 

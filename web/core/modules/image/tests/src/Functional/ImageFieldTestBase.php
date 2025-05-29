@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\image\Functional;
 
 use Drupal\Tests\image\Kernel\ImageFieldCreationTrait;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * @todo Test the following functions.
+ * TODO: Test the following functions.
  *
  * In file:
  * - image.effects.inc:
@@ -29,7 +27,9 @@ abstract class ImageFieldTestBase extends BrowserTestBase {
   use ImageFieldCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'node',

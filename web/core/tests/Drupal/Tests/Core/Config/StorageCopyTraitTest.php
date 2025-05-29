@@ -26,7 +26,7 @@ class StorageCopyTraitTest extends UnitTestCase {
    *
    * @dataProvider providerTestReplaceStorageContents
    */
-  public function testReplaceStorageContents($source_collections, $target_collections): void {
+  public function testReplaceStorageContents($source_collections, $target_collections) {
     $source = new MemoryStorage();
     $target = new MemoryStorage();
     // Empty the storage should be the same.
@@ -68,7 +68,7 @@ class StorageCopyTraitTest extends UnitTestCase {
   /**
    * Provides data for testCheckRequirements().
    */
-  public static function providerTestReplaceStorageContents() {
+  public function providerTestReplaceStorageContents() {
     $data = [];
     $data[] = [TRUE, TRUE];
     $data[] = [TRUE, FALSE];
@@ -121,7 +121,7 @@ class StorageCopyTraitTest extends UnitTestCase {
    *
    * @covers ::replaceStorageContents
    */
-  public function testWithInvalidConfiguration(): void {
+  public function testWithInvalidConfiguration() {
     $source = new TestStorage();
     $this->generateRandomData($source);
 
@@ -174,7 +174,7 @@ class StorageCopyTraitTest extends UnitTestCase {
 class TestStorage extends MemoryStorage {
 
   /**
-   * Provides a setter to bypass the array type hint on ::write().
+   * Provides a setter to bypass the array typehint on ::write().
    *
    * This method allows us to create invalid configurations. The method
    * ::write() only allows values of the type array.

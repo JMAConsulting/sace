@@ -3,12 +3,11 @@
 namespace Drupal\Core\Template;
 
 use Twig\Environment;
-use Twig\TwigFunction;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
-use Twig\NodeVisitor\NodeVisitorInterface;
+use Twig\NodeVisitor\AbstractNodeVisitor;
 
 /**
  * Provides a TwigNodeVisitor to change the generated parse-tree.
@@ -19,7 +18,7 @@ use Twig\NodeVisitor\NodeVisitorInterface;
  *
  * @see twig_render
  */
-class TwigNodeVisitor implements NodeVisitorInterface {
+class TwigNodeVisitor extends AbstractNodeVisitor {
 
   /**
    * Tracks whether there is a render array aware filter active already.
@@ -29,14 +28,14 @@ class TwigNodeVisitor implements NodeVisitorInterface {
   /**
    * {@inheritdoc}
    */
-  public function enterNode(Node $node, Environment $env): Node {
+  protected function doEnterNode(Node $node, Environment $env) {
     return $node;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function leaveNode(Node $node, Environment $env): ?Node {
+  protected function doLeaveNode(Node $node, Environment $env) {
     // We use this to inject a call to render_var -> TwigExtension->renderVar()
     // before anything is printed.
     if ($node instanceof PrintNode) {
@@ -48,20 +47,16 @@ class TwigNodeVisitor implements NodeVisitorInterface {
       $class = get_class($node);
       $line = $node->getTemplateLine();
       return new $class(
-        new FunctionExpression(
-          new TwigFunction('render_var', [$env->getExtension(TwigExtension::class), 'renderVar']),
-          new Node([$node->getNode('expr')]),
-          $line
-        ),
+        new FunctionExpression('render_var', new Node([$node->getNode('expr')]), $line),
         $line
       );
     }
     // Change the 'escape' filter to our own 'drupal_escape' filter.
     elseif ($node instanceof FilterExpression) {
-      $name = $node->getAttribute('twig_callable')->getName();
+      $name = $node->getNode('filter')->getAttribute('value');
       if ('escape' == $name || 'e' == $name) {
         // Use our own escape filter that is MarkupInterface aware.
-        $node->setAttribute('twig_callable', $env->getFilter('drupal_escape'));
+        $node->getNode('filter')->setAttribute('value', 'drupal_escape');
 
         // Store that we have a filter active already that knows
         // how to deal with render arrays.

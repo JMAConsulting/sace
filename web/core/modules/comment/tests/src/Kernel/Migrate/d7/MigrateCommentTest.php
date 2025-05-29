@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Migrate\d7;
 
 use Drupal\comment\Entity\Comment;
@@ -66,7 +64,7 @@ class MigrateCommentTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migrated comments.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $comment = Comment::load(1);
     $this->assertInstanceOf(Comment::class, $comment);
     $this->assertSame('Subject field in English', $comment->getSubject());

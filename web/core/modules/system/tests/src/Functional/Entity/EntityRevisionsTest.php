@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Entity;
 
 use Drupal\entity_test\Entity\EntityTestMulRev;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class EntityRevisionsTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['entity_test', 'language'];
 
@@ -54,7 +54,7 @@ class EntityRevisionsTest extends BrowserTestBase {
   /**
    * Check node revision related operations.
    */
-  public function testRevisions(): void {
+  public function testRevisions() {
 
     // All revisable entity variations have to have the same results.
     foreach (entity_test_entity_types(ENTITY_TEST_TYPES_REVISABLE) as $entity_type) {
@@ -186,7 +186,7 @@ class EntityRevisionsTest extends BrowserTestBase {
   /**
    * Tests that an entity revision is upcasted in the correct language.
    */
-  public function testEntityRevisionParamConverter(): void {
+  public function testEntityRevisionParamConverter() {
     // Create a test entity with multiple revisions and translations for them.
     $entity = EntityTestMulRev::create([
       'name' => 'default revision - en',
@@ -228,7 +228,7 @@ class EntityRevisionsTest extends BrowserTestBase {
    * @covers \Drupal\Core\Entity\ContentEntityBase::setNewRevision
    * @covers \Drupal\Core\Entity\ContentEntityBase::isNewRevision
    */
-  public function testNewRevisionRevert(): void {
+  public function testNewRevisionRevert() {
     $entity = EntityTestMulRev::create(['name' => 'EntityLoadedRevisionTest']);
     $entity->save();
 

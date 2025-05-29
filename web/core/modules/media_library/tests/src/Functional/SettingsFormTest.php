@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media_library\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -27,7 +25,7 @@ class SettingsFormTest extends BrowserTestBase {
   /**
    * Tests the Media Library settings form.
    */
-  public function testSettingsForm(): void {
+  public function testSettingsForm() {
     $account = $this->drupalCreateUser([
       'access administration pages',
       'administer media',

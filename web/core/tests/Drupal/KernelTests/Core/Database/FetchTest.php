@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\RowCountException;
@@ -20,7 +18,7 @@ class FetchTest extends DatabaseTestBase {
   /**
    * Confirms that we can fetch a record properly in default object mode.
    */
-  public function testQueryFetchDefault(): void {
+  public function testQueryFetchDefault() {
     $records = [];
     $result = $this->connection->query('SELECT [name] FROM {test} WHERE [age] = :age', [':age' => 25]);
     $this->assertInstanceOf(StatementInterface::class, $result);
@@ -36,7 +34,7 @@ class FetchTest extends DatabaseTestBase {
   /**
    * Confirms that we can fetch a record to an object explicitly.
    */
-  public function testQueryFetchObject(): void {
+  public function testQueryFetchObject() {
     $records = [];
     $result = $this->connection->query('SELECT [name] FROM {test} WHERE [age] = :age', [':age' => 25], ['fetch' => \PDO::FETCH_OBJ]);
     foreach ($result as $record) {
@@ -51,7 +49,7 @@ class FetchTest extends DatabaseTestBase {
   /**
    * Confirms that we can fetch a record to an associative array explicitly.
    */
-  public function testQueryFetchArray(): void {
+  public function testQueryFetchArray() {
     $records = [];
     $result = $this->connection->query('SELECT [name] FROM {test} WHERE [age] = :age', [':age' => 25], ['fetch' => \PDO::FETCH_ASSOC]);
     foreach ($result as $record) {
@@ -69,7 +67,7 @@ class FetchTest extends DatabaseTestBase {
    *
    * @see \Drupal\system\Tests\Database\FakeRecord
    */
-  public function testQueryFetchClass(): void {
+  public function testQueryFetchClass() {
     $records = [];
     $result = $this->connection->query('SELECT [name] FROM {test} WHERE [age] = :age', [':age' => 25], ['fetch' => FakeRecord::class]);
     foreach ($result as $record) {
@@ -87,7 +85,7 @@ class FetchTest extends DatabaseTestBase {
    * @see \Drupal\Tests\system\Functional\Database\FakeRecord
    * @see \Drupal\Core\Database\StatementPrefetch::fetchObject
    */
-  public function testQueryFetchObjectClass(): void {
+  public function testQueryFetchObjectClass() {
     $records = 0;
     $query = $this->connection->query('SELECT [name] FROM {test} WHERE [age] = :age', [':age' => 25]);
     while ($result = $query->fetchObject(FakeRecord::class, [1])) {
@@ -126,7 +124,7 @@ class FetchTest extends DatabaseTestBase {
    *
    * @group legacy
    */
-  public function testQueryFetchClasstype(): void {
+  public function testQueryFetchClasstype() {
     $this->expectDeprecation('Fetch mode FETCH_CLASS | FETCH_CLASSTYPE is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Use supported modes only. See https://www.drupal.org/node/3377999');
     $records = [];
     $result = $this->connection->query('SELECT [classname], [name], [job] FROM {test_classtype} WHERE [age] = :age', [':age' => 26], ['fetch' => \PDO::FETCH_CLASS | \PDO::FETCH_CLASSTYPE]);
@@ -144,7 +142,7 @@ class FetchTest extends DatabaseTestBase {
   /**
    * Confirms that we can fetch a record into an indexed array explicitly.
    */
-  public function testQueryFetchNum(): void {
+  public function testQueryFetchNum() {
     $records = [];
     $result = $this->connection->query('SELECT [name] FROM {test} WHERE [age] = :age', [':age' => 25], ['fetch' => \PDO::FETCH_NUM]);
     foreach ($result as $record) {
@@ -162,7 +160,7 @@ class FetchTest extends DatabaseTestBase {
    *
    * @group legacy
    */
-  public function testQueryFetchBoth(): void {
+  public function testQueryFetchBoth() {
     $this->expectDeprecation('Fetch mode FETCH_BOTH is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Use supported modes only. See https://www.drupal.org/node/3377999');
     $records = [];
     $result = $this->connection->query('SELECT [name] FROM {test} WHERE [age] = :age', [':age' => 25], ['fetch' => \PDO::FETCH_BOTH]);
@@ -181,7 +179,7 @@ class FetchTest extends DatabaseTestBase {
   /**
    * Confirms that we can fetch all records into an array explicitly.
    */
-  public function testQueryFetchAllColumn(): void {
+  public function testQueryFetchAllColumn() {
     $query = $this->connection->select('test');
     $query->addField('test', 'name');
     $query->orderBy('name');
@@ -194,7 +192,7 @@ class FetchTest extends DatabaseTestBase {
   /**
    * Confirms that we can fetch an entire column of a result set at once.
    */
-  public function testQueryFetchCol(): void {
+  public function testQueryFetchCol() {
     $result = $this->connection->query('SELECT [name] FROM {test} WHERE [age] > :age', [':age' => 25]);
     $column = $result->fetchCol();
     $this->assertCount(3, $column, 'fetchCol() returns the right number of records.');
@@ -278,7 +276,7 @@ class FetchTest extends DatabaseTestBase {
   /**
    * Tests that rowCount() throws exception on SELECT query.
    */
-  public function testRowCount(): void {
+  public function testRowCount() {
     $result = $this->connection->query('SELECT [name] FROM {test}');
     try {
       $result->rowCount();

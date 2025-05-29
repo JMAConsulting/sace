@@ -58,7 +58,7 @@ class FieldDialogsTest extends WebDriverTestBase {
   /**
    * Tests removing a field through the rearrange dialog.
    */
-  public function testRemoveFieldHandler(): void {
+  public function testRemoveFieldHandler() {
     $this->drupalGet('admin/structure/views/view/test_content_ajax');
     $page = $this->getSession()->getPage();
 

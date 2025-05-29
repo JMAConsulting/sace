@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel;
 
 use Drupal\Core\Render\RenderContext;
@@ -73,7 +71,7 @@ class ViewsHooksTest extends ViewsKernelTestBase {
   /**
    * Tests the hooks.
    */
-  public function testHooks(): void {
+  public function testHooks() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -113,7 +111,7 @@ class ViewsHooksTest extends ViewsKernelTestBase {
    * @see views_test_data_views_form_substitutions()
    * @see \Drupal\views\Form\ViewsFormMainForm::preRenderViewsForm()
    */
-  public function testViewsFormMainFormPreRender(): void {
+  public function testViewsFormMainFormPreRender() {
     $element = [
       'output' => [
         '#plain_text' => '<!--will-be-escaped--><!--will-be-not-escaped-->',
@@ -131,7 +129,7 @@ class ViewsHooksTest extends ViewsKernelTestBase {
   /**
    * Test that hook_views_invalidate_cache() is called when a view is deleted.
    */
-  public function testViewsInvalidateCacheOnDelete(): void {
+  public function testViewsInvalidateCacheOnDelete() {
     $this->container->get('state')->set('views_hook_test_views_invalidate_cache', FALSE);
     $view = $this->viewStorage->load('test_view');
     $view->delete();

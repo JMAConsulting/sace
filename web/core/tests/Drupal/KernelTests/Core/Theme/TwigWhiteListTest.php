@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -121,7 +119,7 @@ class TwigWhiteListTest extends KernelTestBase {
   /**
    * Tests white-listing of methods doesn't interfere with chaining.
    */
-  public function testWhiteListChaining(): void {
+  public function testWhiteListChaining() {
     /** @var \Drupal\Core\Template\TwigEnvironment $environment */
     $environment = \Drupal::service('twig');
     $node = Node::create([

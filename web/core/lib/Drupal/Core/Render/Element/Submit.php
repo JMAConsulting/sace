@@ -2,8 +2,6 @@
 
 namespace Drupal\Core\Render\Element;
 
-use Drupal\Core\Render\Attribute\FormElement;
-
 /**
  * Provides a form submit button.
  *
@@ -18,15 +16,16 @@ use Drupal\Core\Render\Attribute\FormElement;
  *
  * Usage Example:
  * @code
- * $form['actions']['submit'] = [
+ * $form['actions']['submit'] = array(
  *   '#type' => 'submit',
  *   '#value' => $this->t('Save'),
- * ];
+ * );
  * @endcode
  *
  * @see \Drupal\Core\Render\Element\Button
+ *
+ * @FormElement("submit")
  */
-#[FormElement('submit')]
 class Submit extends Button {
 
   /**

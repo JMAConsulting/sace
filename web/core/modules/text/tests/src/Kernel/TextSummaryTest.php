@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\text\Kernel;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -22,9 +20,6 @@ class TextSummaryTest extends KernelTestBase {
 
   use UserCreationTrait;
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = [
     'system',
     'user',
@@ -46,7 +41,7 @@ class TextSummaryTest extends KernelTestBase {
   /**
    * Tests text summaries for a question followed by a sentence.
    */
-  public function testFirstSentenceQuestion(): void {
+  public function testFirstSentenceQuestion() {
     $text = 'A question? A sentence. Another sentence.';
     $expected = 'A question? A sentence.';
     $this->assertTextSummary($text, $expected, NULL, 30);
@@ -55,7 +50,7 @@ class TextSummaryTest extends KernelTestBase {
   /**
    * Tests summary with long example.
    */
-  public function testLongSentence(): void {
+  public function testLongSentence() {
     // 125.
     // cSpell:disable
     $text =
@@ -77,7 +72,7 @@ class TextSummaryTest extends KernelTestBase {
   /**
    * Tests various summary length edge cases.
    */
-  public function testLength(): void {
+  public function testLength() {
     FilterFormat::create([
       'format' => 'autop',
       'name' => 'Autop',
@@ -237,7 +232,7 @@ class TextSummaryTest extends KernelTestBase {
    *
    * @see text_summary()
    */
-  public function testInvalidFilterFormat(): void {
+  public function testInvalidFilterFormat() {
 
     $this->assertTextSummary($this->randomString(100), '', 'non_existent_format');
   }
@@ -247,7 +242,7 @@ class TextSummaryTest extends KernelTestBase {
    *
    * @internal
    */
-  public function assertTextSummary(string $text, string $expected, ?string $format = NULL, ?int $size = NULL): void {
+  public function assertTextSummary(string $text, string $expected, ?string $format = NULL, int $size = NULL): void {
     $summary = text_summary($text, $format, $size);
     $this->assertSame($expected, $summary, '<pre style="white-space: pre-wrap">' . $summary . '</pre> is identical to <pre style="white-space: pre-wrap">' . $expected . '</pre>');
   }
@@ -255,11 +250,11 @@ class TextSummaryTest extends KernelTestBase {
   /**
    * Tests required summary.
    */
-  public function testRequiredSummary(): void {
+  public function testRequiredSummary() {
     $this->installEntitySchema('entity_test');
     $this->setUpCurrentUser();
     $field_definition = FieldStorageConfig::create([
-      'field_name' => 'test_text_with_summary',
+      'field_name' => 'test_textwithsummary',
       'type' => 'text_with_summary',
       'entity_type' => 'entity_test',
       'cardinality' => 1,
@@ -270,7 +265,7 @@ class TextSummaryTest extends KernelTestBase {
     $field_definition->save();
 
     $instance = FieldConfig::create([
-      'field_name' => 'test_text_with_summary',
+      'field_name' => 'test_textwithsummary',
       'label' => 'A text field',
       'entity_type' => 'entity_test',
       'bundle' => 'entity_test',
@@ -287,7 +282,7 @@ class TextSummaryTest extends KernelTestBase {
       'bundle' => 'entity_test',
       'mode' => 'default',
       'status' => TRUE,
-    ])->setComponent('test_text_with_summary', [
+    ])->setComponent('test_textwithsummary', [
       'type' => 'text_textarea_with_summary',
       'settings' => [
         'summary_rows' => 2,
@@ -300,24 +295,24 @@ class TextSummaryTest extends KernelTestBase {
     $entity = EntityTest::create([
       'name' => $this->randomMachineName(),
       'type' => 'entity_test',
-      'test_text_with_summary' => ['value' => $this->randomMachineName()],
+      'test_textwithsummary' => ['value' => $this->randomMachineName()],
     ]);
     $form = \Drupal::service('entity.form_builder')->getForm($entity);
-    $this->assertNotEmpty($form['test_text_with_summary']['widget'][0]['summary'], 'Summary field is shown');
-    $this->assertNotEmpty($form['test_text_with_summary']['widget'][0]['summary']['#required'], 'Summary field is required');
+    $this->assertNotEmpty($form['test_textwithsummary']['widget'][0]['summary'], 'Summary field is shown');
+    $this->assertNotEmpty($form['test_textwithsummary']['widget'][0]['summary']['#required'], 'Summary field is required');
 
     // Test validation.
     /** @var \Symfony\Component\Validator\ConstraintViolation[] $violations */
     $violations = $entity->validate();
     $this->assertCount(1, $violations);
-    $this->assertEquals('test_text_with_summary.0.summary', $violations[0]->getPropertyPath());
+    $this->assertEquals('test_textwithsummary.0.summary', $violations[0]->getPropertyPath());
     $this->assertEquals('The summary field is required for A text field', $violations[0]->getMessage());
   }
 
   /**
    * Test text normalization when filter_html or filter_htmlcorrector enabled.
    */
-  public function testNormalization(): void {
+  public function testNormalization() {
     FilterFormat::create([
       'format' => 'filter_html_enabled',
       'name' => 'Filter HTML enabled',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 /**
@@ -76,7 +74,7 @@ PO;
   /**
    * Tests that translations ended up at the expected places.
    */
-  public function testTranslationsLoaded(): void {
+  public function testTranslationsLoaded() {
     // Ensure the title is correct.
     $this->assertEquals('SITE_NAME_' . $this->langcode, \Drupal::config('system.site')->get('name'));
 

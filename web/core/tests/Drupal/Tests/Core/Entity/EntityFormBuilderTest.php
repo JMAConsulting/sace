@@ -50,7 +50,7 @@ class EntityFormBuilderTest extends UnitTestCase {
    *
    * @covers ::getForm
    */
-  public function testGetForm(): void {
+  public function testGetForm() {
     $form_controller = $this->createMock('Drupal\Core\Entity\EntityFormInterface');
     $form_controller->expects($this->any())
       ->method('getFormId')

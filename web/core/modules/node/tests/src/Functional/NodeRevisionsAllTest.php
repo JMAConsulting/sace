@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\Core\Database\Database;
@@ -111,7 +109,7 @@ class NodeRevisionsAllTest extends NodeTestBase {
   /**
    * Checks node revision operations.
    */
-  public function testRevisions(): void {
+  public function testRevisions() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $nodes = $this->nodes;
     $logs = $this->revisionLogs;
@@ -182,7 +180,7 @@ class NodeRevisionsAllTest extends NodeTestBase {
 
     // Set the revision timestamp to an older date to make sure that the
     // confirmation message correctly displays the stored revision date.
-    $old_revision_date = \Drupal::time()->getRequestTime() - 86400;
+    $old_revision_date = REQUEST_TIME - 86400;
     Database::getConnection()->update('node_revision')
       ->condition('vid', $nodes[2]->getRevisionId())
       ->fields([

@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Routing;
 
 use Drupal\Tests\BrowserTestBase;
 
-// cspell:ignore ȅchȏ foobarbaz meΦω
+// cspell:ignore ȅchȏ meΦω
 
 /**
  * Tests incoming path case insensitivity.
@@ -37,7 +35,7 @@ class CaseInsensitivePathTest extends BrowserTestBase {
   /**
    * Tests mixed case paths.
    */
-  public function testMixedCasePaths(): void {
+  public function testMixedCasePaths() {
     // Tests paths defined by routes from standard modules as anonymous.
     $this->drupalGet('user/login');
     $this->assertSession()->statusCodeEquals(200);
@@ -103,7 +101,7 @@ class CaseInsensitivePathTest extends BrowserTestBase {
   /**
    * Tests paths with slugs.
    */
-  public function testPathsWithArguments(): void {
+  public function testPathsWithArguments() {
     $this->drupalGet('system-test/echo/foobarbaz');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextMatches('/foobarbaz/');

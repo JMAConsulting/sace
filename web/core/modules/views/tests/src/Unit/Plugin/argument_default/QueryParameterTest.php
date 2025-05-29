@@ -20,7 +20,7 @@ class QueryParameterTest extends UnitTestCase {
    * @covers ::getArgument
    * @dataProvider providerGetArgument
    */
-  public function testGetArgument($options, Request $request, $expected): void {
+  public function testGetArgument($options, Request $request, $expected) {
     $view = $this->getMockBuilder('Drupal\views\ViewExecutable')
       ->disableOriginalConstructor()
       ->onlyMethods([])
@@ -44,7 +44,7 @@ class QueryParameterTest extends UnitTestCase {
    *   - second entry: the request object to test with.
    *   - third entry: the expected default argument value.
    */
-  public static function providerGetArgument() {
+  public function providerGetArgument() {
     $data = [];
 
     $data[] = [

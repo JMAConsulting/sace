@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional\Views;
 
 use Drupal\comment\CommentInterface;
@@ -20,7 +18,9 @@ class DefaultViewRecentCommentsTest extends ViewTestBase {
   use CommentTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'comment', 'block'];
 
@@ -99,7 +99,7 @@ class DefaultViewRecentCommentsTest extends ViewTestBase {
       $comment->comment_body->format = 'full_html';
 
       // Ensure comments are sorted in ascending order.
-      $time = \Drupal::time()->getRequestTime() + ($this->defaultDisplayResults - $i);
+      $time = REQUEST_TIME + ($this->defaultDisplayResults - $i);
       $comment->setCreatedTime($time);
       $comment->changed->value = $time;
 
@@ -116,7 +116,7 @@ class DefaultViewRecentCommentsTest extends ViewTestBase {
   /**
    * Tests the block defined by the comments_recent view.
    */
-  public function testBlockDisplay(): void {
+  public function testBlockDisplay() {
     $user = $this->drupalCreateUser(['access comments']);
     $this->drupalLogin($user);
 

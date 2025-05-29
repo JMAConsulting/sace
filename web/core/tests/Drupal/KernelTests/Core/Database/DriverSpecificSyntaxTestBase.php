@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 /**
@@ -19,7 +17,7 @@ abstract class DriverSpecificSyntaxTestBase extends DriverSpecificDatabaseTestBa
    *
    * @see \Drupal\Core\Database\Connection::prepareQuery()
    */
-  public function testAllowSquareBrackets(): void {
+  public function testAllowSquareBrackets() {
     $this->connection->insert('test')
       ->fields(['name'])
       ->values([

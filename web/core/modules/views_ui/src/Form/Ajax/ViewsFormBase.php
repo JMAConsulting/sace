@@ -98,7 +98,7 @@ abstract class ViewsFormBase extends FormBase implements ViewsFormInterface {
     // being used.
     Html::resetSeenIds();
 
-    // Check to see if this is the top form of the stack. If it is, pop
+    // check to see if this is the top form of the stack. If it is, pop
     // it off; if it isn't, the user clicked somewhere else and the stack is
     // now irrelevant.
     if (!empty($view->stack)) {
@@ -150,7 +150,7 @@ abstract class ViewsFormBase extends FormBase implements ViewsFormInterface {
       $response = $this->ajaxFormWrapper($form_class, $form_state);
     }
     elseif (!$form_state->get('ajax')) {
-      // If nothing on the stack, non-js forms just go back to the main view editor.
+      // if nothing on the stack, non-js forms just go back to the main view editor.
       $display_id = $form_state->get('display_id');
       return new RedirectResponse(Url::fromRoute('entity.view.edit_display_form', ['view' => $view->id(), 'display_id' => $display_id], ['absolute' => TRUE])->toString());
     }
@@ -244,9 +244,7 @@ abstract class ViewsFormBase extends FormBase implements ViewsFormInterface {
       $display .= $output;
 
       $options = [
-        'classes' => [
-          'ui-dialog' => 'views-ui-dialog js-views-ui-dialog',
-        ],
+        'dialogClass' => 'views-ui-dialog js-views-ui-dialog',
         'width' => '75%',
       ];
 

@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\Core;
 
-use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
-use Drupal\Core\Cache\MemoryBackend;
 use Drupal\Core\Cron;
 use Drupal\Core\KeyValueStore\KeyValueMemoryFactory;
-use Drupal\Core\Lock\NullLockBackend;
 use Drupal\Core\Queue\DelayedRequeueException;
 use Drupal\Core\Queue\Memory;
 use Drupal\Core\Queue\RequeueException;
@@ -67,8 +64,7 @@ class CronTest extends UnitTestCase {
     parent::setUp();
 
     // Construct a state object used for testing logger assertions.
-    $time = $this->prophesize(TimeInterface::class)->reveal();
-    $this->state = new State(new KeyValueMemoryFactory(), new MemoryBackend($time), new NullLockBackend());
+    $this->state = new State(new KeyValueMemoryFactory());
 
     // Create a mock logger to set a flag in the resulting state.
     $logger = $this->prophesize('Drupal\Core\Logger\LoggerChannelInterface');
@@ -176,7 +172,7 @@ class CronTest extends UnitTestCase {
   /**
    * Data provider for ::testProcessQueues() method.
    */
-  public static function processQueuesTestData() {
+  public function processQueuesTestData() {
     return [
       ['Complete', 'assertFalse', 0],
       ['Exception', 'assertTrue', 1],
@@ -192,7 +188,7 @@ class CronTest extends UnitTestCase {
    * @covers ::processQueues
    * @dataProvider processQueuesTestData
    */
-  public function testProcessQueues($item, $message_logged_assertion, $count_post_run): void {
+  public function testProcessQueues($item, $message_logged_assertion, $count_post_run) {
     $this->resetTestingState();
     $this->queue->createItem($item);
     $this->assertFalse($this->state->get('cron_test.message_logged'));
@@ -205,7 +201,7 @@ class CronTest extends UnitTestCase {
   /**
    * Verify that RequeueException causes an item to be processed multiple times.
    */
-  public function testRequeueException(): void {
+  public function testRequeueException() {
     $this->resetTestingState();
     $this->queue->createItem('RequeueException');
     $this->cron->run();

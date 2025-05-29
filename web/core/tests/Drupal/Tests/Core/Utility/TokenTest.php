@@ -107,7 +107,7 @@ class TokenTest extends UnitTestCase {
   /**
    * @covers ::getInfo
    */
-  public function testGetInfo(): void {
+  public function testGetInfo() {
     $token_info = [
       'types' => [
         'foo' => [
@@ -153,7 +153,7 @@ class TokenTest extends UnitTestCase {
   /**
    * @covers ::replace
    */
-  public function testReplaceWithBubbleableMetadataObject(): void {
+  public function testReplaceWithBubbleableMetadataObject() {
     $this->moduleHandler->expects($this->any())
       ->method('invokeAll')
       ->willReturn(['[node:title]' => 'hello world']);
@@ -182,7 +182,7 @@ class TokenTest extends UnitTestCase {
   /**
    * @covers ::replace
    */
-  public function testReplaceWithHookTokensWithBubbleableMetadata(): void {
+  public function testReplaceWithHookTokensWithBubbleableMetadata() {
     $this->moduleHandler->expects($this->any())
       ->method('invokeAll')
       ->willReturnCallback(function ($hook_name, $args) {
@@ -218,7 +218,7 @@ class TokenTest extends UnitTestCase {
    * @covers ::replace
    * @covers ::replace
    */
-  public function testReplaceWithHookTokensAlterWithBubbleableMetadata(): void {
+  public function testReplaceWithHookTokensAlterWithBubbleableMetadata() {
     $this->moduleHandler->expects($this->any())
       ->method('invokeAll')
       ->willReturn([]);
@@ -255,7 +255,7 @@ class TokenTest extends UnitTestCase {
   /**
    * @covers ::resetInfo
    */
-  public function testResetInfo(): void {
+  public function testResetInfo() {
     $this->cacheTagsInvalidator->expects($this->once())
       ->method('invalidateTags')
       ->with(['token_info']);
@@ -267,7 +267,7 @@ class TokenTest extends UnitTestCase {
    * @covers ::replace
    * @dataProvider providerTestReplaceEscaping
    */
-  public function testReplaceEscaping($string, array $tokens, $expected): void {
+  public function testReplaceEscaping($string, array $tokens, $expected) {
     $this->moduleHandler->expects($this->any())
       ->method('invokeAll')
       ->willReturnCallback(function ($type, $args) {
@@ -279,7 +279,7 @@ class TokenTest extends UnitTestCase {
     $this->assertEquals($expected, $result);
   }
 
-  public static function providerTestReplaceEscaping() {
+  public function providerTestReplaceEscaping() {
     $data = [];
 
     // No tokens. The first argument to Token::replace() should not be escaped.
@@ -301,7 +301,7 @@ class TokenTest extends UnitTestCase {
   /**
    * @covers ::replacePlain
    */
-  public function testReplacePlain(): void {
+  public function testReplacePlain() {
     $this->setupSiteTokens();
     $base = 'Wow, great "[site:name]" has a slogan "[site:slogan]"';
     $plain = $this->token->replacePlain($base);
@@ -311,7 +311,7 @@ class TokenTest extends UnitTestCase {
   /**
    * Scans dummy text, then tests the output.
    */
-  public function testScan(): void {
+  public function testScan() {
     // Define text with valid and not valid, fake and existing token-like
     // strings.
     $text = 'First a [valid:simple], but dummy token, and a dummy [valid:token with: spaces].';
@@ -336,7 +336,7 @@ class TokenTest extends UnitTestCase {
    *
    * @group legacy
    */
-  public function testScanDeprecation(): void {
+  public function testScanDeprecation() {
     $this->expectDeprecation('Calling Drupal\Core\Utility\Token::scan() with a $text parameter of type other than string is deprecated in drupal:10.1.0 and will cause an error in drupal:11.0.0. See https://www.drupal.org/node/3334317');
     $this->assertSame([], $this->token->scan(NULL));
   }

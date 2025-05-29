@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Core\Container;
 
 use Drupal\Tests\BrowserTestBase;
@@ -33,7 +31,7 @@ class ServiceDeprecationTest extends BrowserTestBase {
   /**
    * @covers ::get
    */
-  public function testGetDeprecated(): void {
+  public function testGetDeprecated() {
     $this->expectDeprecation('The "deprecation_test.service" service is deprecated in drupal:9.0.0 and is removed from drupal:20.0.0. This is a test.');
     $this->expectDeprecation('The "deprecation_test.alias" alias is deprecated in drupal:9.0.0 and is removed from drupal:20.0.0. This is a test.');
     // @phpstan-ignore-next-line

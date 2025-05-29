@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -64,7 +62,7 @@ PO;
   /**
    * Tests that the expected translated text appears on the login screen.
    */
-  public function testInstallerTranslations(): void {
+  public function testInstallerTranslations() {
     $this->drupalGet('user/login');
     // cSpell:disable-next-line
     $this->assertSession()->responseContains('Geben sie das Passwort für ihren Benutzernamen ein.');

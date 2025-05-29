@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class RssResponseRelativeUrlFilterTest extends UnitTestCase {
 
-  public static function providerTestOnResponse() {
+  public function providerTestOnResponse() {
     $data = [];
 
     $valid_feed = <<<RSS
@@ -114,7 +114,7 @@ RSS;
    * @param string $expected_content
    *   The expected content from the response.
    */
-  public function testOnResponse($content, $expected_content): void {
+  public function testOnResponse($content, $expected_content) {
     $event = new ResponseEvent(
       $this->prophesize(HttpKernelInterface::class)->reveal(),
       Request::create('/'),

@@ -153,7 +153,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::getHeight().
    */
-  public function testGetHeight(): void {
+  public function testGetHeight() {
     $this->getTestImage(FALSE);
     $this->assertEquals(100, $this->image->getHeight());
   }
@@ -161,7 +161,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::getWidth().
    */
-  public function testGetWidth(): void {
+  public function testGetWidth() {
     $this->getTestImage(FALSE);
     $this->assertEquals(88, $this->image->getWidth());
   }
@@ -169,7 +169,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::getFileSize.
    */
-  public function testGetFileSize(): void {
+  public function testGetFileSize() {
     $this->getTestImage(FALSE);
     $this->assertEquals(3905, $this->image->getFileSize());
   }
@@ -177,7 +177,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::getToolkit()->getType().
    */
-  public function testGetType(): void {
+  public function testGetType() {
     $this->getTestImage(FALSE);
     $this->assertEquals(IMAGETYPE_PNG, $this->image->getToolkit()->getType());
   }
@@ -185,7 +185,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::getMimeType().
    */
-  public function testGetMimeType(): void {
+  public function testGetMimeType() {
     $this->getTestImage(FALSE);
     $this->assertEquals('image/png', $this->image->getMimeType());
   }
@@ -193,7 +193,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::isValid().
    */
-  public function testIsValid(): void {
+  public function testIsValid() {
     $this->getTestImage(FALSE);
     $this->assertTrue($this->image->isValid());
     $this->assertFileIsReadable($this->image->getSource());
@@ -202,7 +202,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::getToolkitId().
    */
-  public function testGetToolkitId(): void {
+  public function testGetToolkitId() {
     $this->getTestImage(FALSE);
     $this->assertEquals('gd', $this->image->getToolkitId());
   }
@@ -210,7 +210,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::save().
    */
-  public function testSave(): void {
+  public function testSave() {
     $this->getTestImage();
     // This will fail if save() method isn't called on the toolkit.
     $toolkit = $this->getToolkitMock();
@@ -239,7 +239,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::save().
    */
-  public function testSaveFails(): void {
+  public function testSaveFails() {
     $this->getTestImage();
     // This will fail if save() method isn't called on the toolkit.
     $this->toolkit->expects($this->once())
@@ -252,7 +252,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::save().
    */
-  public function testChmodFails(): void {
+  public function testChmodFails() {
     $this->getTestImage();
     // This will fail if save() method isn't called on the toolkit.
     $toolkit = $this->getToolkitMock();
@@ -281,7 +281,7 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::parseFile().
    */
-  public function testParseFileFails(): void {
+  public function testParseFileFails() {
     $toolkit = $this->getToolkitMock();
     $image = new Image($toolkit, 'magic-foobar.png');
 
@@ -292,11 +292,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::scale().
    */
-  public function testScaleWidth(): void {
+  public function testScaleWidth() {
     $this->getTestImageForOperation('Scale');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->scale(44, NULL, FALSE);
     $this->assertEquals(50, $ret['height']);
@@ -305,11 +305,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::scale().
    */
-  public function testScaleHeight(): void {
+  public function testScaleHeight() {
     $this->getTestImageForOperation('Scale');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->scale(NULL, 50, FALSE);
     $this->assertEquals(44, $ret['width']);
@@ -318,12 +318,12 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::scale().
    */
-  public function testScaleSame(): void {
+  public function testScaleSame() {
     $this->getTestImageForOperation('Scale');
     // Dimensions are the same, resize should not be called.
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->scale(88, 100, FALSE);
     $this->assertEquals(88, $ret['width']);
@@ -333,11 +333,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::scaleAndCrop().
    */
-  public function testScaleAndCropWidth(): void {
+  public function testScaleAndCropWidth() {
     $this->getTestImageForOperation('ScaleAndCrop');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->scaleAndCrop(34, 50);
     $this->assertEquals(5, $ret['x']);
@@ -346,11 +346,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::scaleAndCrop().
    */
-  public function testScaleAndCropHeight(): void {
+  public function testScaleAndCropHeight() {
     $this->getTestImageForOperation('ScaleAndCrop');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->scaleAndCrop(44, 40);
     $this->assertEquals(5, $ret['y']);
@@ -359,11 +359,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::scaleAndCrop().
    */
-  public function testScaleAndCropFails(): void {
+  public function testScaleAndCropFails() {
     $this->getTestImageForOperation('ScaleAndCrop');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->scaleAndCrop(44, 40);
     $this->assertEquals(0, $ret['x']);
@@ -375,11 +375,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::crop().
    */
-  public function testCropWidth(): void {
+  public function testCropWidth() {
     $this->getTestImageForOperation('Crop');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     // Cropping with width only should preserve the aspect ratio.
     $ret = $this->image->crop(0, 0, 44);
@@ -389,11 +389,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::crop().
    */
-  public function testCropHeight(): void {
+  public function testCropHeight() {
     $this->getTestImageForOperation('Crop');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     // Cropping with height only should preserve the aspect ratio.
     $ret = $this->image->crop(0, 0, NULL, 50);
@@ -403,11 +403,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::crop().
    */
-  public function testCrop(): void {
+  public function testCrop() {
     $this->getTestImageForOperation('Crop');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->crop(0, 0, 44, 50);
     $this->assertEquals(44, $ret['width']);
@@ -416,11 +416,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::convert().
    */
-  public function testConvert(): void {
+  public function testConvert() {
     $this->getTestImageForOperation('Convert');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->convert('png');
     $this->assertEquals('png', $ret['extension']);
@@ -429,11 +429,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::resize().
    */
-  public function testResize(): void {
+  public function testResize() {
     $this->getTestImageForOperation('Resize');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     // Resize with integer for width and height.
     $ret = $this->image->resize(30, 40);
@@ -444,11 +444,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::resize().
    */
-  public function testFloatResize(): void {
+  public function testFloatResize() {
     $this->getTestImageForOperation('Resize');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     // Pass a float for width.
     $ret = $this->image->resize(30.4, 40);
@@ -459,11 +459,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::desaturate().
    */
-  public function testDesaturate(): void {
+  public function testDesaturate() {
     $this->getTestImageForOperation('Desaturate');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $this->image->desaturate();
   }
@@ -471,11 +471,11 @@ class ImageTest extends UnitTestCase {
   /**
    * Tests \Drupal\Core\Image\Image::rotate().
    */
-  public function testRotate(): void {
+  public function testRotate() {
     $this->getTestImageForOperation('Rotate');
     $this->toolkitOperation->expects($this->once())
       ->method('execute')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $ret = $this->image->rotate(90);
     $this->assertEquals(90, $ret['degrees']);

@@ -17,7 +17,7 @@ class ClassFinderTest extends TestCase {
   /**
    * @covers ::findFile
    */
-  public function testFindFile(): void {
+  public function testFindFile() {
     $finder = new ClassFinder();
 
     // The full path is returned therefore only tests with

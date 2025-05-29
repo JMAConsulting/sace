@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\action\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -10,7 +8,6 @@ use Drupal\Tests\BrowserTestBase;
  * Test behaviors when visiting the action listing page.
  *
  * @group action
- * @group legacy
  */
 class ActionListTest extends BrowserTestBase {
 
@@ -29,7 +26,7 @@ class ActionListTest extends BrowserTestBase {
   /**
    * Tests the behavior when there are no actions to list in the admin page.
    */
-  public function testEmptyActionList(): void {
+  public function testEmptyActionList() {
     // Create a user with permission to view the actions administration pages.
     $this->drupalLogin($this->drupalCreateUser(['administer actions']));
 
@@ -45,7 +42,7 @@ class ActionListTest extends BrowserTestBase {
   /**
    * Tests that non-configurable actions can be created by the UI.
    */
-  public function testNonConfigurableActionsCanBeCreated(): void {
+  public function testNonConfigurableActionsCanBeCreated() {
     $this->drupalLogin($this->drupalCreateUser(['administer actions']));
     $this->drupalGet('/admin/config/system/actions');
     $this->assertSession()->elementExists('css', 'select > option[value="user_block_user_action"]');

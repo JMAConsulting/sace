@@ -17,7 +17,7 @@ class ElementTest extends UnitTestCase {
   /**
    * Tests the property() method.
    */
-  public function testProperty(): void {
+  public function testProperty() {
     $this->assertTrue(Element::property('#property'));
     $this->assertFalse(Element::property('property'));
     $this->assertFalse(Element::property('property#'));
@@ -27,7 +27,7 @@ class ElementTest extends UnitTestCase {
   /**
    * Tests the properties() method.
    */
-  public function testProperties(): void {
+  public function testProperties() {
     $element = [
       '#property1' => 'property1',
       '#property2' => 'property2',
@@ -43,7 +43,7 @@ class ElementTest extends UnitTestCase {
   /**
    * Tests the child() method.
    */
-  public function testChild(): void {
+  public function testChild() {
     $this->assertFalse(Element::child('#property'));
     $this->assertTrue(Element::child('property'));
     $this->assertTrue(Element::child('property#'));
@@ -52,7 +52,7 @@ class ElementTest extends UnitTestCase {
   /**
    * Tests the children() method.
    */
-  public function testChildren(): void {
+  public function testChildren() {
     $element = [
       'child2' => ['#weight' => 10],
       'child1' => ['#weight' => 0],
@@ -104,19 +104,19 @@ class ElementTest extends UnitTestCase {
   /**
    * Tests the children() method with an invalid key.
    */
-  public function testInvalidChildren(): void {
+  public function testInvalidChildren() {
     $element = [
       'foo' => 'bar',
     ];
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('"foo" is an invalid render array key. Value should be an array but got a string.');
+    $this->expectError();
+    $this->expectErrorMessage('"foo" is an invalid render array key');
     Element::children($element);
   }
 
   /**
    * Tests the children() method with an ignored key/value pair.
    */
-  public function testIgnoredChildren(): void {
+  public function testIgnoredChildren() {
     $element = [
       'foo' => NULL,
     ];
@@ -133,7 +133,7 @@ class ElementTest extends UnitTestCase {
    *
    * @dataProvider providerVisibleChildren
    */
-  public function testVisibleChildren(array $element, array $expected_keys): void {
+  public function testVisibleChildren(array $element, array $expected_keys) {
     $this->assertSame($expected_keys, Element::getVisibleChildren($element));
   }
 
@@ -142,7 +142,7 @@ class ElementTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerVisibleChildren() {
+  public function providerVisibleChildren() {
     return [
       [['#property1' => '', '#property2' => []], []],
       [['#property1' => '', 'child1' => []], ['child1']],
@@ -161,7 +161,7 @@ class ElementTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetAttributes
    */
-  public function testSetAttributes($element, $map, $expected_element): void {
+  public function testSetAttributes($element, $map, $expected_element) {
     Element::setAttributes($element, $map);
     $this->assertSame($expected_element, $element);
   }
@@ -169,7 +169,7 @@ class ElementTest extends UnitTestCase {
   /**
    * Data provider for testSetAttributes().
    */
-  public static function providerTestSetAttributes() {
+  public function providerTestSetAttributes() {
     $base = ['#id' => 'id', '#class' => []];
     return [
       [$base, [], $base],
@@ -183,11 +183,11 @@ class ElementTest extends UnitTestCase {
    *
    * @dataProvider providerTestIsEmpty
    */
-  public function testIsEmpty(array $element, $expected): void {
+  public function testIsEmpty(array $element, $expected) {
     $this->assertSame(Element::isEmpty($element), $expected);
   }
 
-  public static function providerTestIsEmpty() {
+  public function providerTestIsEmpty() {
     return [
       [[], TRUE],
       [['#attached' => []], FALSE],
@@ -222,28 +222,6 @@ class ElementTest extends UnitTestCase {
 
       [['#cache' => [], '#any_other_property' => TRUE], FALSE],
       [['#any_other_property' => TRUE], FALSE],
-    ];
-  }
-
-  /**
-   * @covers ::isRenderArray
-   * @dataProvider dataProviderIsRenderArray
-   */
-  public function testIsRenderArray($build, $expected): void {
-    $this->assertSame(
-      $expected,
-      Element::isRenderArray($build)
-    );
-  }
-
-  public static function dataProviderIsRenderArray() {
-    return [
-      'valid markup render array' => [['#markup' => 'hello world'], TRUE],
-      'invalid "foo" string' => [['foo', '#markup' => 'hello world'], FALSE],
-      'null is not an array' => [NULL, FALSE],
-      'an empty array is not a render array' => [[], FALSE],
-      'funny enough a key with # is valid' => [['#' => TRUE], TRUE],
-      'nested arrays can be valid too' => [['one' => [2 => ['#three' => 'charm!']]], TRUE],
     ];
   }
 

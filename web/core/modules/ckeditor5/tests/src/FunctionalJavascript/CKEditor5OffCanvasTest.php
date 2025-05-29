@@ -24,11 +24,11 @@ class CKEditor5OffCanvasTest extends CKEditor5TestBase {
   /**
    * Tests if CKEditor is properly styled inside an off-canvas dialog.
    */
-  public function testOffCanvasStyles(): void {
+  public function testOffCanvasStyles() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
-    $this->addNewTextFormat();
+    $this->addNewTextFormat($page, $assert_session);
 
     $this->drupalGet('/ckeditor5_test/off_canvas');
 

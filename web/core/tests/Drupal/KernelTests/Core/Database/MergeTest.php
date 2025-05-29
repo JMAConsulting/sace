@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\Query\Merge;
@@ -17,7 +15,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Confirms that we can merge-insert a record successfully.
    */
-  public function testMergeInsert(): void {
+  public function testMergeInsert() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
     $result = $this->connection->merge('test_people')
@@ -42,7 +40,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Confirms that we can merge-update a record successfully.
    */
-  public function testMergeUpdate(): void {
+  public function testMergeUpdate() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
     $result = $this->connection->merge('test_people')
@@ -70,7 +68,7 @@ class MergeTest extends DatabaseTestBase {
    * This test varies from the previous test because it manually defines which
    * fields are inserted, and which fields are updated.
    */
-  public function testMergeUpdateExcept(): void {
+  public function testMergeUpdateExcept() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
     $this->connection->merge('test_people')
@@ -91,7 +89,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Confirms that we can merge-update a record, with alternate replacement.
    */
-  public function testMergeUpdateExplicit(): void {
+  public function testMergeUpdateExplicit() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
     $this->connection->merge('test_people')
@@ -117,7 +115,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Confirms that we can merge-update a record successfully, with expressions.
    */
-  public function testMergeUpdateExpression(): void {
+  public function testMergeUpdateExpression() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
     $age_before = $this->connection->query('SELECT [age] FROM {test_people} WHERE [job] = :job', [':job' => 'Speaker'])->fetchField();
@@ -146,7 +144,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Tests that we can merge-insert without any update fields.
    */
-  public function testMergeInsertWithoutUpdate(): void {
+  public function testMergeInsertWithoutUpdate() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
     $this->connection->merge('test_people')
@@ -165,7 +163,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Confirms that we can merge-update without any update fields.
    */
-  public function testMergeUpdateWithoutUpdate(): void {
+  public function testMergeUpdateWithoutUpdate() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
     $this->connection->merge('test_people')
@@ -197,7 +195,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Tests that an invalid merge query throws an exception.
    */
-  public function testInvalidMerge(): void {
+  public function testInvalidMerge() {
     $this->expectException(InvalidMergeQueryException::class);
     // This merge will fail because there is no key field specified.
     $this->connection
@@ -209,7 +207,7 @@ class MergeTest extends DatabaseTestBase {
   /**
    * Tests that we can merge-insert with reserved keywords.
    */
-  public function testMergeWithReservedWords(): void {
+  public function testMergeWithReservedWords() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {select}')->fetchField();
 
     $this->connection->merge('select')

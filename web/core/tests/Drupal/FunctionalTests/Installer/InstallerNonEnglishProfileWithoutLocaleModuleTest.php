@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 use Drupal\Core\Serialization\Yaml;
@@ -61,7 +59,7 @@ class InstallerNonEnglishProfileWithoutLocaleModuleTest extends InstallerTestBas
   /**
    * Tests installing a profile with non-English language and no locale module.
    */
-  public function testNonEnglishProfileWithoutLocaleModule(): void {
+  public function testNonEnglishProfileWithoutLocaleModule() {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->addressEquals('user/1');
     // Confirm that we are logged-in after installation.

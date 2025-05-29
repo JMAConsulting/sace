@@ -47,7 +47,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
   /**
    * Data provider for test functions that should test block types.
    */
-  public static function providerBlockTypes() {
+  public function providerBlockTypes() {
     return [
       [TRUE],
       [FALSE],
@@ -74,7 +74,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
    *
    * @dataProvider providerBlockTypes
    */
-  public function testOnBuildRender($refinable_dependent_access): void {
+  public function testOnBuildRender($refinable_dependent_access) {
     $contexts = [];
     if ($refinable_dependent_access) {
       $block = $this->prophesize(TestBlockPluginWithRefinableDependentAccessInterface::class)->willImplement(PreviewFallbackInterface::class);
@@ -148,7 +148,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
    *
    * @dataProvider providerBlockTypes
    */
-  public function testOnBuildRenderWithoutPreviewFallbackString($refinable_dependent_access): void {
+  public function testOnBuildRenderWithoutPreviewFallbackString($refinable_dependent_access) {
     $contexts = [];
     if ($refinable_dependent_access) {
       $block = $this->prophesize(TestBlockPluginWithRefinableDependentAccessInterface::class);
@@ -221,7 +221,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
    *
    * @dataProvider providerBlockTypes
    */
-  public function testOnBuildRenderDenied($refinable_dependent_access): void {
+  public function testOnBuildRenderDenied($refinable_dependent_access) {
     $contexts = [];
     if ($refinable_dependent_access) {
       $block = $this->prophesize(TestBlockPluginWithRefinableDependentAccessInterface::class);
@@ -279,7 +279,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
    *
    * @dataProvider providerBlockTypes
    */
-  public function testOnBuildRenderInPreview($refinable_dependent_access): void {
+  public function testOnBuildRenderInPreview($refinable_dependent_access) {
     $contexts = [];
     if ($refinable_dependent_access) {
       $block = $this->prophesize(TestBlockPluginWithRefinableDependentAccessInterface::class)->willImplement(PreviewFallbackInterface::class);
@@ -350,7 +350,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
   /**
    * @covers ::onBuildRender
    */
-  public function testOnBuildRenderInPreviewEmptyBuild(): void {
+  public function testOnBuildRenderInPreviewEmptyBuild() {
     $block = $this->prophesize(BlockPluginInterface::class)->willImplement(PreviewFallbackInterface::class);
 
     $block->access($this->account->reveal(), TRUE)->shouldNotBeCalled();
@@ -412,7 +412,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
   /**
    * @covers ::onBuildRender
    */
-  public function testOnBuildRenderEmptyBuild(): void {
+  public function testOnBuildRenderEmptyBuild() {
     $block = $this->prophesize(BlockPluginInterface::class);
     $access_result = AccessResult::allowed();
     $block->access($this->account->reveal(), TRUE)->willReturn($access_result)->shouldBeCalled();
@@ -457,7 +457,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
   /**
    * @covers ::onBuildRender
    */
-  public function testOnBuildRenderEmptyBuildWithCacheTags(): void {
+  public function testOnBuildRenderEmptyBuildWithCacheTags() {
     $block = $this->prophesize(BlockPluginInterface::class);
     $access_result = AccessResult::allowed();
     $block->access($this->account->reveal(), TRUE)->willReturn($access_result)->shouldBeCalled();
@@ -502,7 +502,7 @@ class BlockComponentRenderArrayTest extends UnitTestCase {
   /**
    * @covers ::onBuildRender
    */
-  public function testOnBuildRenderNoBlock(): void {
+  public function testOnBuildRenderNoBlock() {
     $this->blockManager->createInstance('some_block_id', ['id' => 'some_block_id'])->willReturn(NULL);
 
     $component = new SectionComponent('some-uuid', 'some-region', ['id' => 'some_block_id']);

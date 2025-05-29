@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\rest\Functional;
 
 use Drupal\Core\Session\AccountInterface;
@@ -22,7 +20,9 @@ use GuzzleHttp\RequestOptions;
 class ResourceTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['rest', 'entity_test', 'rest_test'];
 
@@ -64,7 +64,7 @@ class ResourceTest extends BrowserTestBase {
   /**
    * Tests that a resource without formats cannot be enabled.
    */
-  public function testFormats(): void {
+  public function testFormats() {
     RestResourceConfig::create([
       'id' => 'entity.entity_test',
       'granularity' => RestResourceConfigInterface::METHOD_GRANULARITY,
@@ -90,7 +90,7 @@ class ResourceTest extends BrowserTestBase {
   /**
    * Tests that a resource without authentication cannot be enabled.
    */
-  public function testAuthentication(): void {
+  public function testAuthentication() {
     RestResourceConfig::create([
       'id' => 'entity.entity_test',
       'granularity' => RestResourceConfigInterface::METHOD_GRANULARITY,
@@ -116,7 +116,7 @@ class ResourceTest extends BrowserTestBase {
   /**
    * Tests that serialization_class is optional.
    */
-  public function testSerializationClassIsOptional(): void {
+  public function testSerializationClassIsOptional() {
     RestResourceConfig::create([
       'id' => 'serialization_test',
       'granularity' => RestResourceConfigInterface::METHOD_GRANULARITY,
@@ -152,7 +152,7 @@ class ResourceTest extends BrowserTestBase {
   /**
    * Tests that resource URI paths are formatted properly.
    */
-  public function testUriPaths(): void {
+  public function testUriPaths() {
     /** @var \Drupal\rest\Plugin\Type\ResourcePluginManager $manager */
     $manager = \Drupal::service('plugin.manager.rest');
 

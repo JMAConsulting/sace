@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\Database;
@@ -18,9 +16,6 @@ abstract class DatabaseTestBase extends KernelTestBase {
   use DatabaseTestSchemaDataTrait;
   use DatabaseTestSchemaInstallTrait;
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['database_test'];
 
   /**

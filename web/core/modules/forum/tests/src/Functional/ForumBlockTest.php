@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\forum\Functional;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -13,7 +11,6 @@ use Drupal\Tests\BrowserTestBase;
  * Tests the forum blocks.
  *
  * @group forum
- * @group legacy
  */
 class ForumBlockTest extends BrowserTestBase {
 
@@ -54,7 +51,7 @@ class ForumBlockTest extends BrowserTestBase {
   /**
    * Tests the "New forum topics" block.
    */
-  public function testNewForumTopicsBlock(): void {
+  public function testNewForumTopicsBlock() {
     $this->drupalLogin($this->adminUser);
 
     // Enable the new forum topics block.
@@ -92,7 +89,7 @@ class ForumBlockTest extends BrowserTestBase {
   /**
    * Tests the "Active forum topics" block.
    */
-  public function testActiveForumTopicsBlock(): void {
+  public function testActiveForumTopicsBlock() {
     $this->drupalLogin($this->adminUser);
 
     // Create 10 forum topics.

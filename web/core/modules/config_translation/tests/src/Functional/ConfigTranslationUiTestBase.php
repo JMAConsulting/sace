@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config_translation\Functional;
 
 use Drupal\Core\Test\AssertMailTrait;
@@ -50,7 +48,9 @@ abstract class ConfigTranslationUiTestBase extends BrowserTestBase {
   protected $localeStorage;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',

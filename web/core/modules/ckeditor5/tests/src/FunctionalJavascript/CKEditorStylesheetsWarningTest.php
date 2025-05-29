@@ -41,10 +41,10 @@ class CKEditorStylesheetsWarningTest extends CKEditor5TestBase {
    *
    * @dataProvider providerTestWarningFilterUI
    */
-  public function testWarningFilterUi($theme, $expected_warning): void {
+  public function testWarningFilterUi($theme, $expected_warning) {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
-    $this->addNewTextFormat();
+    $this->addNewTextFormat($page, $assert_session);
     $this->drupalGet('admin/config/content/formats/manage/ckeditor5');
 
     $assert_session->pageTextNotContains($expected_warning);

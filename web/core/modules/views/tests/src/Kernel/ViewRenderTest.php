@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel;
 
 use Drupal\views\Views;
@@ -21,7 +19,7 @@ class ViewRenderTest extends ViewsKernelTestBase {
   /**
    * Tests render functionality.
    */
-  public function testRender(): void {
+  public function testRender() {
     $state = $this->container->get('state');
     $state->set('views_render.test', 0);
 

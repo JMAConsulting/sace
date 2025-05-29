@@ -267,8 +267,6 @@ abstract class AbstractNormalizer implements NormalizerInterface, DenormalizerIn
 
     /**
      * Is this attribute allowed?
-     *
-     * @return bool
      */
     protected function isAllowedAttribute(object|string $classOrObject, string $attribute, ?string $format = null, array $context = [])
     {
@@ -358,16 +356,7 @@ abstract class AbstractNormalizer implements NormalizerInterface, DenormalizerIn
 
                         $variadicParameters = [];
                         foreach ($data[$key] as $parameterKey => $parameterData) {
-                            try {
-                                $variadicParameters[$parameterKey] = $this->denormalizeParameter($reflectionClass, $constructorParameter, $paramName, $parameterData, $attributeContext, $format);
-                            } catch (NotNormalizableValueException $exception) {
-                                if (!isset($context['not_normalizable_value_exceptions'])) {
-                                    throw $exception;
-                                }
-
-                                $context['not_normalizable_value_exceptions'][] = $exception;
-                                $params[$paramName] = $parameterData;
-                            }
+                            $variadicParameters[$parameterKey] = $this->denormalizeParameter($reflectionClass, $constructorParameter, $paramName, $parameterData, $attributeContext, $format);
                         }
 
                         $params = array_merge(array_values($params), $variadicParameters);
@@ -416,7 +405,7 @@ abstract class AbstractNormalizer implements NormalizerInterface, DenormalizerIn
 
                     $exception = NotNormalizableValueException::createForUnexpectedDataType(
                         sprintf('Failed to create object because the class misses the "%s" property.', $constructorParameter->name),
-                        null,
+                        $data,
                         [$constructorParameterType],
                         $attributeContext['deserialization_path'] ?? null,
                         true

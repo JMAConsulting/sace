@@ -7,8 +7,6 @@ namespace Drupal\Tests\Core\Common;
 use Drupal\Component\Utility\Tags;
 use Drupal\Tests\UnitTestCase;
 
-// cspell:ignore sloopal troopal
-
 /**
  * Tests explosion and implosion of autocomplete tags.
  *
@@ -26,7 +24,7 @@ class TagsTest extends UnitTestCase {
   /**
    * Explodes a series of tags.
    */
-  public function testExplodeTags(): void {
+  public function testExplodeTags() {
     $string = implode(', ', array_keys($this->validTags));
     $tags = Tags::explode($string);
     $this->assertEquals(array_values($this->validTags), $tags);
@@ -35,7 +33,7 @@ class TagsTest extends UnitTestCase {
   /**
    * Implodes a series of tags.
    */
-  public function testImplodeTags(): void {
+  public function testImplodeTags() {
     $tags = array_values($this->validTags);
     // Let's explode and implode to our heart's content.
     for ($i = 0; $i < 10; $i++) {

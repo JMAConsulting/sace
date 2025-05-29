@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config_translation\Kernel\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
@@ -36,7 +34,7 @@ class MigrateSystemSiteTranslationTest extends MigrateDrupal7TestBase {
   /**
    * Tests migration of system (site) variables to system.site.yml.
    */
-  public function testSystemSite(): void {
+  public function testSystemSite() {
     $language_manager = \Drupal::service('language_manager');
     $config_translation = $language_manager->getLanguageConfigOverride('fr', 'system.site');
     $this->assertSame('The Site Name', $config_translation->get('name'));

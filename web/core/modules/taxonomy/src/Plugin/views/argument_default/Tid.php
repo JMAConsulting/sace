@@ -6,9 +6,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\taxonomy\TermInterface;
-use Drupal\views\Attribute\ViewsArgumentDefault;
 use Drupal\views\Plugin\views\argument_default\ArgumentDefaultPluginBase;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -16,11 +14,12 @@ use Drupal\taxonomy\VocabularyStorageInterface;
 
 /**
  * Taxonomy tid default argument.
+ *
+ * @ViewsArgumentDefault(
+ *   id = "taxonomy_tid",
+ *   title = @Translation("Taxonomy term ID from URL")
+ * )
  */
-#[ViewsArgumentDefault(
-  id: 'taxonomy_tid',
-  title: new TranslatableMarkup('Taxonomy term ID from URL'),
-)]
 class Tid extends ArgumentDefaultPluginBase implements CacheableDependencyInterface {
 
   /**
@@ -43,7 +42,7 @@ class Tid extends ArgumentDefaultPluginBase implements CacheableDependencyInterf
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.   *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
@@ -181,7 +180,7 @@ class Tid extends ArgumentDefaultPluginBase implements CacheableDependencyInterf
         }
         if (!empty($this->options['limit'])) {
           $tids = [];
-          // Filter by vocabulary
+          // filter by vocabulary
           foreach ($taxonomy as $tid => $vocab) {
             if (!empty($this->options['vids'][$vocab])) {
               $tids[] = $tid;
@@ -195,19 +194,6 @@ class Tid extends ArgumentDefaultPluginBase implements CacheableDependencyInterf
         }
       }
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheTags() {
-    $tags = parent::getCacheTags();
-    if (!empty($this->options['node'])) {
-      if (($node = $this->routeMatch->getParameter('node')) && $node instanceof NodeInterface) {
-        $tags = Cache::mergeTags($tags, $node->getCacheTags());
-      }
-    }
-    return $tags;
   }
 
   /**

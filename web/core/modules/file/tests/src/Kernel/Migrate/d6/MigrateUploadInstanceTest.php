@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel\Migrate\d6;
 
 use Drupal\field\Entity\FieldConfig;
@@ -30,7 +28,7 @@ class MigrateUploadInstanceTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal 6 upload settings to Drupal 8 field instance migration.
    */
-  public function testUploadFieldInstance(): void {
+  public function testUploadFieldInstance() {
     $field = FieldConfig::load('node.page.upload');
     $settings = $field->getSettings();
     $this->assertSame('node.page.upload', $field->id());

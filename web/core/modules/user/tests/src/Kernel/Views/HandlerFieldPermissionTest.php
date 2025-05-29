@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Views;
 
 use Drupal\views\Views;
@@ -24,7 +22,7 @@ class HandlerFieldPermissionTest extends UserKernelTestBase {
   /**
    * Tests the permission field handler output.
    */
-  public function testFieldPermission(): void {
+  public function testFieldPermission() {
     $this->setupPermissionTestData();
 
     $view = Views::getView('test_field_permission');

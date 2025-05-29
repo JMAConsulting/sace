@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\path\Kernel\Migrate\d7;
 
 /**
@@ -33,7 +31,7 @@ class MigrateUrlAliasTest extends MigrateUrlAliasTestBase {
   /**
    * Tests the URL alias migration with translated nodes.
    */
-  public function testUrlAliasWithTranslatedNodes(): void {
+  public function testUrlAliasWithTranslatedNodes() {
     // Alias for the 'The thing about Deep Space 9' node in English.
     $path_alias = $this->loadPathAliasByConditions(['alias' => '/deep-space-9']);
     $this->assertSame('/node/2', $path_alias->getPath());

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Form;
 
 use Drupal\form_test\FormTestObject;
@@ -15,7 +13,9 @@ use Drupal\KernelTests\ConfigFormTestBase;
 class FormObjectTest extends ConfigFormTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['form_test'];
 

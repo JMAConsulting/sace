@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Views;
 
 use Drupal\node\NodeInterface;
@@ -59,7 +57,7 @@ class TaxonomyRelationshipTest extends TaxonomyTestBase {
   /**
    * Tests the taxonomy parent plugin UI.
    */
-  public function testTaxonomyRelationships(): void {
+  public function testTaxonomyRelationships() {
 
     // Check the generated views data of taxonomy_index.
     $views_data = Views::viewsData()->get('taxonomy_index');

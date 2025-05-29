@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Update;
 
 use Drupal\Core\Database\Database;
@@ -32,14 +30,14 @@ class UpdatePathTestBaseTest extends UpdatePathTestBase {
   /**
    * Tests that the database was properly loaded.
    */
-  public function testDatabaseProperlyLoaded(): void {
+  public function testDatabaseProperlyLoaded() {
     $this->testDatabaseLoaded();
   }
 
   /**
    * Tests that updates are properly run.
    */
-  public function testUpdateHookN(): void {
+  public function testUpdateHookN() {
     $connection = Database::getConnection();
 
     // Increment the schema version.
@@ -76,7 +74,7 @@ class UpdatePathTestBaseTest extends UpdatePathTestBase {
   /**
    * Tests that path aliases are not processed during database updates.
    */
-  public function testPathAliasProcessing(): void {
+  public function testPathAliasProcessing() {
     // Add a path alias for the '/admin' system path.
     $values = [
       'path' => '/admin/structure',
@@ -122,7 +120,7 @@ class UpdatePathTestBaseTest extends UpdatePathTestBase {
    *
    * @see update_test_schema_update_8003()
    */
-  public function testModuleListChange(): void {
+  public function testModuleListChange() {
     // Set a value in the cache to prove caches are cleared.
     \Drupal::service('cache.default')->set(__CLASS__, 'Test');
 
@@ -169,7 +167,7 @@ class UpdatePathTestBaseTest extends UpdatePathTestBase {
    * @see \Drupal\FunctionalTests\Update\UpdatePathTestBase::runUpdates()
    * @see \Drupal\Core\Test\TestSetupTrait::$configSchemaCheckerExclusions
    */
-  public function testSchemaChecking(): void {
+  public function testSchemaChecking() {
     // Create some configuration that should be skipped.
     $this->config('config_schema_test.no_schema')->set('foo', 'bar')->save();
     $this->runUpdates();
@@ -180,7 +178,7 @@ class UpdatePathTestBaseTest extends UpdatePathTestBase {
   /**
    * Tests that setup is done correctly.
    */
-  public function testSetup(): void {
+  public function testSetup() {
     $this->assertCount(3, $this->databaseDumpFiles);
     $this->assertSame(1, Settings::get('entity_update_batch_size'));
   }

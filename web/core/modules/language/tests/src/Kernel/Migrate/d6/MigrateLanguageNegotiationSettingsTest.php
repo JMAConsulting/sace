@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel\Migrate\d6;
 
 use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationUrl;
@@ -22,7 +20,7 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal6TestBase {
   /**
    * Tests the migration with LANGUAGE_NEGOTIATION_PATH_DEFAULT.
    */
-  public function testLanguageNegotiationWithDefaultPathPrefix(): void {
+  public function testLanguageNegotiationWithDefaultPathPrefix() {
     $this->executeMigrations([
       'language',
       'd6_language_negotiation_settings',
@@ -56,7 +54,7 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal6TestBase {
   /**
    * Tests the migration with LANGUAGE_NEGOTIATION_NONE.
    */
-  public function testLanguageNegotiationWithNoNegotiation(): void {
+  public function testLanguageNegotiationWithNoNegotiation() {
     $this->sourceDatabase->update('variable')
       ->fields(['value' => serialize(0)])
       ->condition('name', 'language_negotiation')
@@ -88,7 +86,7 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal6TestBase {
   /**
    * Tests the migration with LANGUAGE_NEGOTIATION_PATH.
    */
-  public function testLanguageNegotiationWithPathPrefix(): void {
+  public function testLanguageNegotiationWithPathPrefix() {
     $this->sourceDatabase->update('variable')
       ->fields(['value' => serialize(2)])
       ->condition('name', 'language_negotiation')
@@ -129,7 +127,7 @@ class MigrateLanguageNegotiationSettingsTest extends MigrateDrupal6TestBase {
   /**
    * Tests the migration with LANGUAGE_NEGOTIATION_DOMAIN.
    */
-  public function testLanguageNegotiationWithDomain(): void {
+  public function testLanguageNegotiationWithDomain() {
     $this->sourceDatabase->update('variable')
       ->fields(['value' => serialize(3)])
       ->condition('name', 'language_negotiation')

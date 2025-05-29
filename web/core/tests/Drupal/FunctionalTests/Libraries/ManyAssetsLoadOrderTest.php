@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Libraries;
 
 use Drupal\Tests\BrowserTestBase;
@@ -28,7 +26,7 @@ class ManyAssetsLoadOrderTest extends BrowserTestBase {
    *
    * Confirms the load order reflects the configured weights for each asset.
    */
-  public function testLoadOrder(): void {
+  public function testLoadOrder() {
     $this->drupalGet('many_assets_test');
 
     $js = $this->getSession()->getPage()->findAll('css', 'script[data-weight]');

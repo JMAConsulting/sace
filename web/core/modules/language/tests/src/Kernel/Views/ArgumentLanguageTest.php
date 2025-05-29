@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel\Views;
 
 use Drupal\views\Views;
@@ -24,7 +22,7 @@ class ArgumentLanguageTest extends LanguageTestBase {
   /**
    * Tests the language argument.
    */
-  public function testArgument(): void {
+  public function testArgument() {
     $view = Views::getView('test_view');
     foreach (['en' => 'John', 'xx-lolspeak' => 'George'] as $langcode => $name) {
       $view->setDisplay();

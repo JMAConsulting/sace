@@ -24,7 +24,7 @@ class SubformStateTest extends UnitTestCase {
    *
    * @var mixed[]
    */
-  protected static $formStateValues = [
+  protected $formStateValues = [
     'foo' => 'bar',
     'dog' => [
       'breed' => 'Pit bull',
@@ -68,9 +68,9 @@ class SubformStateTest extends UnitTestCase {
    * @param string $expected
    *   The expected state values.
    */
-  public function testGetValues(array $parents, $expected): void {
+  public function testGetValues(array $parents, $expected) {
     $parent_form_state = new FormState();
-    $parent_form_state->setValues(static::$formStateValues);
+    $parent_form_state->setValues($this->formStateValues);
 
     $subform = NestedArray::getValue($this->parentForm, $parents);
     $subform_state = SubformState::createForSubform($subform, $this->parentForm, $parent_form_state);
@@ -86,11 +86,11 @@ class SubformStateTest extends UnitTestCase {
   /**
    * Provides data to self::testGetValues().
    */
-  public static function providerGetValues(): array {
+  public function providerGetValues() {
     $data = [];
     $data['exist'] = [
       ['dog'],
-      static::$formStateValues['dog'],
+      $this->formStateValues['dog'],
     ];
 
     return $data;
@@ -107,7 +107,7 @@ class SubformStateTest extends UnitTestCase {
    * @param string $expected
    *   The expected state values.
    */
-  public function testGetValuesBroken(array $parents, $expected): void {
+  public function testGetValuesBroken(array $parents, $expected) {
     $this->expectException(\UnexpectedValueException::class);
     $this->testGetValues($parents, $expected);
   }
@@ -115,11 +115,11 @@ class SubformStateTest extends UnitTestCase {
   /**
    * Provides data to self::testGetValuesBroken().
    */
-  public static function providerGetValuesBroken(): array {
+  public function providerGetValuesBroken() {
     $data = [];
     $data['exist'] = [
       ['foo'],
-      static::$formStateValues['foo'],
+      $this->formStateValues['foo'],
     ];
     $data['nested'] = [
       ['dog', 'name'],
@@ -134,9 +134,9 @@ class SubformStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetValue
    */
-  public function testGetValue($parents, $key, $expected, $default = NULL): void {
+  public function testGetValue($parents, $key, $expected, $default = NULL) {
     $parent_form_state = new FormState();
-    $parent_form_state->setValues(static::$formStateValues);
+    $parent_form_state->setValues($this->formStateValues);
 
     $subform = NestedArray::getValue($this->parentForm, $parents);
     $subform_state = SubformState::createForSubform($subform, $this->parentForm, $parent_form_state);
@@ -152,7 +152,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * Provides data to self::testGetValue().
    */
-  public static function providerTestGetValue() {
+  public function providerTestGetValue() {
     $data = [];
     $data['exist'] = [
       ['dog'],
@@ -168,7 +168,7 @@ class SubformStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetValueBroken
    */
-  public function testGetValueBroken(array $parents, $key, $expected, $default = NULL): void {
+  public function testGetValueBroken(array $parents, $key, $expected, $default = NULL) {
     $this->expectException(\UnexpectedValueException::class);
     $this->testGetValue($parents, $key, $expected, $default);
   }
@@ -176,7 +176,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * Provides data to self::testGetValueBroken().
    */
-  public static function providerTestGetValueBroken() {
+  public function providerTestGetValueBroken() {
     $data = [];
     $data['nested'] = [
       ['dog', 'name'],
@@ -192,9 +192,9 @@ class SubformStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetValues
    */
-  public function testSetValues($parents, $new_values, $expected): void {
+  public function testSetValues($parents, $new_values, $expected) {
     $parent_form_state = new FormState();
-    $parent_form_state->setValues(static::$formStateValues);
+    $parent_form_state->setValues($this->formStateValues);
 
     $subform = NestedArray::getValue($this->parentForm, $parents);
     $subform_state = SubformState::createForSubform($subform, $this->parentForm, $parent_form_state);
@@ -205,7 +205,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * Provides data to self::testSetValues().
    */
-  public static function providerTestSetValues() {
+  public function providerTestSetValues() {
     $data = [];
     $data['exist'] = [
       ['dog'],
@@ -223,7 +223,7 @@ class SubformStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetValuesBroken
    */
-  public function testSetValuesBroken($parents, $new_values, $expected): void {
+  public function testSetValuesBroken($parents, $new_values, $expected) {
     $this->expectException(\UnexpectedValueException::class);
     $this->testSetValues($parents, $new_values, $expected);
   }
@@ -231,14 +231,14 @@ class SubformStateTest extends UnitTestCase {
   /**
    * Provides data to self::testSetValuesBroken().
    */
-  public static function providerTestSetValuesBroken(): array {
+  public function providerTestSetValuesBroken() {
     $data = [];
     $data['exist'] = [
       ['foo'],
       [],
       [
         'foo' => [],
-        'dog' => static::$formStateValues['dog'],
+        'dog' => $this->formStateValues['dog'],
       ],
     ];
     return $data;
@@ -247,7 +247,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * @covers ::getCompleteFormState
    */
-  public function testGetCompleteFormStateWithParentCompleteForm(): void {
+  public function testGetCompleteFormStateWithParentCompleteForm() {
     $parent_form_state = $this->prophesize(FormStateInterface::class);
     $subform_state = SubformState::createForSubform($this->parentForm['dog'], $this->parentForm, $parent_form_state->reveal());
     $this->assertSame($parent_form_state->reveal(), $subform_state->getCompleteFormState());
@@ -256,7 +256,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * @covers ::getCompleteFormState
    */
-  public function testGetCompleteFormStateWithParentSubform(): void {
+  public function testGetCompleteFormStateWithParentSubform() {
     $complete_form_state = $this->prophesize(FormStateInterface::class);
     $parent_form_state = $this->prophesize(SubformStateInterface::class);
     $parent_form_state->getCompleteFormState()
@@ -269,7 +269,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * @covers ::setLimitValidationErrors
    */
-  public function testSetLimitValidationErrors(): void {
+  public function testSetLimitValidationErrors() {
     $parent_limit_validation_errors = ['dog', 'name'];
     $limit_validation_errors = ['name'];
 
@@ -284,7 +284,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * @covers ::getLimitValidationErrors
    */
-  public function testGetLimitValidationErrors(): void {
+  public function testGetLimitValidationErrors() {
     $parent_limit_validation_errors = ['dog', 'name'];
     $limit_validation_errors = ['name'];
 
@@ -300,7 +300,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * @covers ::setErrorByName
    */
-  public function testSetErrorByName(): void {
+  public function testSetErrorByName() {
     $parent_form_error_name = 'dog][name';
     $subform_error_name = 'name';
     // cSpell:disable-next-line
@@ -317,7 +317,7 @@ class SubformStateTest extends UnitTestCase {
   /**
    * @covers ::getFormObject
    */
-  public function testFormObject(): void {
+  public function testFormObject() {
     $parent_form_state = $this->prophesize(FormStateInterface::class);
     $parent_form_object = $this->prophesize(FormInterface::class)->reveal();
     $parent_form_state->getFormObject()->willReturn($parent_form_object)->shouldBeCalledOnce();

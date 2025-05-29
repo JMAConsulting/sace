@@ -19,7 +19,7 @@ class PluralTranslationTest extends UnitTestCase {
    *
    * @dataProvider providerTestGet
    */
-  public function testGet(array $values): void {
+  public function testGet(array $values) {
     $annotation = new PluralTranslation($values);
 
     $default_values = [
@@ -53,12 +53,12 @@ class PluralTranslationTest extends UnitTestCase {
   /**
    * @dataProvider providerTestMissingData
    */
-  public function testMissingData($data): void {
+  public function testMissingData($data) {
     $this->expectException(\InvalidArgumentException::class);
     new PluralTranslation($data);
   }
 
-  public static function providerTestMissingData() {
+  public function providerTestMissingData() {
     $data = [];
     $data['all-missing'] = [[]];
     $data['singular-missing'] = [['plural' => 'muh']];

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\path\Kernel;
 
 use Drupal\content_translation_test\Entity\EntityTestTranslatableUISkip;
@@ -16,7 +14,9 @@ use Drupal\language\Entity\ConfigurableLanguage;
 class PathNoCanonicalLinkTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'path',
@@ -48,7 +48,7 @@ class PathNoCanonicalLinkTest extends KernelTestBase {
   /**
    * Tests for no canonical link templates.
    */
-  public function testNoCanonicalLinkTemplate(): void {
+  public function testNoCanonicalLinkTemplate() {
     $entity_type = EntityTestTranslatableUISkip::create([
       'name' => 'name english',
       'language' => 'en',

@@ -4,7 +4,6 @@ namespace Drupal\search\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\WorkspaceSafeFormInterface;
 use Drupal\Core\Url;
 use Drupal\search\SearchPageInterface;
 
@@ -19,7 +18,7 @@ use Drupal\search\SearchPageInterface;
  *
  * @internal
  */
-class SearchPageForm extends FormBase implements WorkspaceSafeFormInterface {
+class SearchPageForm extends FormBase {
 
   /**
    * The search page entity.
@@ -38,7 +37,7 @@ class SearchPageForm extends FormBase implements WorkspaceSafeFormInterface {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?SearchPageInterface $search_page = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, SearchPageInterface $search_page = NULL) {
     $this->entity = $search_page;
 
     $plugin = $this->entity->getPlugin();

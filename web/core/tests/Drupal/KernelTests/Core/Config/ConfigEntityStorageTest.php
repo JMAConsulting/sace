@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\Core\Config\ConfigDuplicateUUIDException;
@@ -15,14 +13,16 @@ use Drupal\KernelTests\KernelTestBase;
 class ConfigEntityStorageTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['config_test'];
 
   /**
    * Tests creating configuration entities with changed UUIDs.
    */
-  public function testUUIDConflict(): void {
+  public function testUUIDConflict() {
     $entity_type = 'config_test';
     $id = 'test_1';
     // Load the original configuration entity.
@@ -55,7 +55,7 @@ class ConfigEntityStorageTest extends KernelTestBase {
    *
    * @covers \Drupal\Core\Config\Entity\ConfigEntityStorage::hasData
    */
-  public function testHasData(): void {
+  public function testHasData() {
     $storage = \Drupal::entityTypeManager()->getStorage('config_test');
     $this->assertFalse($storage->hasData());
 

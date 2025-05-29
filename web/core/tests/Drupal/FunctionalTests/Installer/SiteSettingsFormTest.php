@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 use Drupal\Tests\BrowserTestBase;
@@ -26,7 +24,7 @@ class SiteSettingsFormTest extends BrowserTestBase {
   /**
    * Confirms that the form is extensible.
    */
-  public function testSiteSettingsForm(): void {
+  public function testSiteSettingsForm() {
     // Test that the form page can be loaded without errors.
     $this->drupalGet('test-form');
     $this->assertSession()->statusCodeEquals(200);

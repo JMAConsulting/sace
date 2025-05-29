@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -14,7 +12,9 @@ use Drupal\KernelTests\KernelTestBase;
 class ConfigOverrideTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system', 'config_test'];
 
@@ -30,7 +30,7 @@ class ConfigOverrideTest extends KernelTestBase {
   /**
    * Tests configuration override.
    */
-  public function testConfOverride(): void {
+  public function testConfOverride() {
     $expected_original_data = [
       'foo' => 'bar',
       'baz' => NULL,

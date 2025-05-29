@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\Boolean;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -17,7 +15,9 @@ use Drupal\Tests\BrowserTestBase;
 class BooleanFieldTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'entity_test',
@@ -62,7 +62,7 @@ class BooleanFieldTest extends BrowserTestBase {
   /**
    * Tests boolean field.
    */
-  public function testBooleanField(): void {
+  public function testBooleanField() {
     $on = $this->randomMachineName();
     $off = $this->randomMachineName();
     $label = $this->randomMachineName();
@@ -183,7 +183,7 @@ class BooleanFieldTest extends BrowserTestBase {
   /**
    * Tests field access.
    */
-  public function testFormAccess(): void {
+  public function testFormAccess() {
     $on = 'boolean_on';
     $off = 'boolean_off';
     $label = 'boolean_label';

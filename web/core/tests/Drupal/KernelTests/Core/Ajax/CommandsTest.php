@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Ajax;
 
 use Drupal\Core\Ajax\AjaxResponse;
@@ -32,7 +30,7 @@ class CommandsTest extends KernelTestBase {
   /**
    * Regression test: Settings command exists regardless of JS aggregation.
    */
-  public function testAttachedSettings(): void {
+  public function testAttachedSettings() {
     $assert = function ($message) {
       $response = new AjaxResponse();
       $response->setAttachments([
@@ -41,7 +39,7 @@ class CommandsTest extends KernelTestBase {
       ]);
 
       $ajax_response_attachments_processor = \Drupal::service('ajax_response.attachments_processor');
-      $subscriber = new AjaxResponseSubscriber(fn() => $ajax_response_attachments_processor);
+      $subscriber = new AjaxResponseSubscriber($ajax_response_attachments_processor);
       $event = new ResponseEvent(
         \Drupal::service('http_kernel'),
         new Request(),
@@ -69,7 +67,7 @@ class CommandsTest extends KernelTestBase {
    *
    * @doesNotPerformAssertions
    */
-  public function testEmptyInsertCommand(): void {
+  public function testEmptyInsertCommand() {
     (new InsertCommand('foobar', []))->render();
   }
 

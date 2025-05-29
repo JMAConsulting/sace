@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\filter\Functional;
 
 use Drupal\filter\Entity\FilterFormat;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class FilterDefaultFormatTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['filter'];
 
@@ -27,7 +27,7 @@ class FilterDefaultFormatTest extends BrowserTestBase {
   /**
    * Tests if the default text format is accessible to users.
    */
-  public function testDefaultTextFormats(): void {
+  public function testDefaultTextFormats() {
     // Create two text formats, and two users. The first user has access to
     // both formats, but the second user only has access to the second one.
     $admin_user = $this->drupalCreateUser(['administer filters']);

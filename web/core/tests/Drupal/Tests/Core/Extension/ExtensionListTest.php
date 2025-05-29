@@ -26,7 +26,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::getName
    */
-  public function testGetNameWithNonExistingExtension(): void {
+  public function testGetNameWithNonExistingExtension() {
     [$cache, $info_parser, $module_handler, $state] = $this->getMocks();
     $test_extension_list = new TestExtension($this->randomMachineName(), 'test_extension', $cache->reveal(), $info_parser->reveal(), $module_handler->reveal(), $state->reveal(), 'testing');
 
@@ -41,7 +41,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::getName
    */
-  public function testGetName(): void {
+  public function testGetName() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $this->assertEquals('test name', $test_extension_list->getName('test_name'));
@@ -50,7 +50,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::get
    */
-  public function testGetWithNonExistingExtension(): void {
+  public function testGetWithNonExistingExtension() {
     [$cache, $info_parser, $module_handler, $state] = $this->getMocks();
     $test_extension_list = new TestExtension($this->randomMachineName(), 'test_extension', $cache->reveal(), $info_parser->reveal(), $module_handler->reveal(), $state->reveal(), 'testing');
 
@@ -65,7 +65,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::get
    */
-  public function testGet(): void {
+  public function testGet() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $extension = $test_extension_list->get('test_name');
@@ -76,7 +76,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::getList
    */
-  public function testGetList(): void {
+  public function testGetList() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $extensions = $test_extension_list->getList();
@@ -88,7 +88,7 @@ class ExtensionListTest extends UnitTestCase {
    * @covers ::getExtensionInfo
    * @covers ::getAllInstalledInfo
    */
-  public function testGetExtensionInfo(): void {
+  public function testGetExtensionInfo() {
     $test_extension_list = $this->setupTestExtensionList();
     $test_extension_list->setInstalledExtensions(['test_name']);
 
@@ -104,7 +104,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::getAllAvailableInfo
    */
-  public function testGetAllAvailableInfo(): void {
+  public function testGetAllAvailableInfo() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $infos = $test_extension_list->getAllAvailableInfo();
@@ -121,7 +121,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::getAllInstalledInfo
    */
-  public function testGetAllInstalledInfo(): void {
+  public function testGetAllInstalledInfo() {
     $test_extension_list = $this->setupTestExtensionList(['test_name', 'test_name_2']);
     $test_extension_list->setInstalledExtensions(['test_name_2']);
 
@@ -137,12 +137,12 @@ class ExtensionListTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getPathNames
+   * @covers ::getPathnames
    */
-  public function testGetPathNames(): void {
+  public function testGetPathnames() {
     $test_extension_list = $this->setupTestExtensionList();
 
-    $filenames = $test_extension_list->getPathNames();
+    $filenames = $test_extension_list->getPathnames();
     $this->assertEquals([
       'test_name' => 'example/test_name/test_name.info.yml',
     ], $filenames);
@@ -151,7 +151,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::getPathname
    */
-  public function testGetPathname(): void {
+  public function testGetPathname() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $pathname = $test_extension_list->getPathname('test_name');
@@ -162,7 +162,7 @@ class ExtensionListTest extends UnitTestCase {
    * @covers ::setPathname
    * @covers ::getPathname
    */
-  public function testSetPathname(): void {
+  public function testSetPathname() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $test_extension_list->setPathname('test_name', 'vfs://drupal_root/example2/test_name/test_name.info.yml');
@@ -172,7 +172,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::getPath
    */
-  public function testGetPath(): void {
+  public function testGetPath() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $path = $test_extension_list->getPath('test_name');
@@ -182,14 +182,14 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * @covers ::reset
    */
-  public function testReset(): void {
+  public function testReset() {
     $test_extension_list = $this->setupTestExtensionList();
 
     $path = $test_extension_list->getPath('test_name');
     $this->assertEquals('example/test_name', $path);
     $pathname = $test_extension_list->getPathname('test_name');
     $this->assertEquals('example/test_name/test_name.info.yml', $pathname);
-    $filenames = $test_extension_list->getPathNames();
+    $filenames = $test_extension_list->getPathnames();
     $this->assertEquals([
       'test_name' => 'example/test_name/test_name.info.yml',
     ], $filenames);
@@ -201,7 +201,7 @@ class ExtensionListTest extends UnitTestCase {
     $this->assertEquals('example/test_name', $path);
     $pathname = $test_extension_list->getPathname('test_name');
     $this->assertEquals('example/test_name/test_name.info.yml', $pathname);
-    $filenames = $test_extension_list->getPathNames();
+    $filenames = $test_extension_list->getPathnames();
     $this->assertEquals([
       'test_name' => 'example/test_name/test_name.info.yml',
     ], $filenames);
@@ -212,7 +212,7 @@ class ExtensionListTest extends UnitTestCase {
    *
    * @dataProvider providerCheckIncompatibility
    */
-  public function testCheckIncompatibility($additional_settings, $expected): void {
+  public function testCheckIncompatibility($additional_settings, $expected) {
     $test_extension_list = $this->setupTestExtensionList(['test_name'], $additional_settings);
     $this->assertSame($expected, $test_extension_list->checkIncompatibility('test_name'));
   }
@@ -220,7 +220,7 @@ class ExtensionListTest extends UnitTestCase {
   /**
    * DataProvider for testCheckIncompatibility().
    */
-  public static function providerCheckIncompatibility() {
+  public function providerCheckIncompatibility() {
     return [
       'core_incompatible true' => [
         [

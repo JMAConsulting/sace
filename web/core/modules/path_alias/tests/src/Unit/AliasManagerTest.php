@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\path_alias\Unit;
 
-use Drupal\Component\Datetime\Time;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\path_alias\AliasRepositoryInterface;
@@ -77,7 +76,7 @@ class AliasManagerTest extends UnitTestCase {
     $this->languageManager = $this->createMock('Drupal\Core\Language\LanguageManagerInterface');
     $this->cache = $this->createMock('Drupal\Core\Cache\CacheBackendInterface');
 
-    $this->aliasManager = new AliasManager($this->aliasRepository, $this->aliasWhitelist, $this->languageManager, $this->cache, new Time());
+    $this->aliasManager = new AliasManager($this->aliasRepository, $this->aliasWhitelist, $this->languageManager, $this->cache);
 
   }
 
@@ -86,7 +85,7 @@ class AliasManagerTest extends UnitTestCase {
    *
    * @covers ::getPathByAlias
    */
-  public function testGetPathByAliasNoMatch(): void {
+  public function testGetPathByAliasNoMatch() {
     $alias = '/' . $this->randomMachineName();
 
     $language = new Language(['id' => 'en']);
@@ -111,7 +110,7 @@ class AliasManagerTest extends UnitTestCase {
    *
    * @covers ::getPathByAlias
    */
-  public function testGetPathByAliasMatch(): void {
+  public function testGetPathByAliasMatch() {
     $alias = $this->randomMachineName();
     $path = $this->randomMachineName();
 
@@ -132,7 +131,7 @@ class AliasManagerTest extends UnitTestCase {
    *
    * @covers ::getPathByAlias
    */
-  public function testGetPathByAliasLangcode(): void {
+  public function testGetPathByAliasLangcode() {
     $alias = $this->randomMachineName();
     $path = $this->randomMachineName();
 
@@ -154,7 +153,7 @@ class AliasManagerTest extends UnitTestCase {
    *
    * @covers ::getAliasByPath
    */
-  public function testGetAliasByPathWhitelist(): void {
+  public function testGetAliasByPathWhitelist() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;
@@ -179,7 +178,7 @@ class AliasManagerTest extends UnitTestCase {
    *
    * @covers ::getAliasByPath
    */
-  public function testGetAliasByPathNoMatch(): void {
+  public function testGetAliasByPathNoMatch() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;
@@ -211,22 +210,12 @@ class AliasManagerTest extends UnitTestCase {
   }
 
   /**
-   * Tests the getAliasByPath method exception.
-   *
-   * @covers ::getAliasByPath
-   */
-  public function testGetAliasByPathException(): void {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->aliasManager->getAliasByPath('no-leading-slash-here');
-  }
-
-  /**
    * Tests the getAliasByPath method for a path that has a matching alias.
    *
    * @covers ::getAliasByPath
    * @covers ::writeCache
    */
-  public function testGetAliasByPathMatch(): void {
+  public function testGetAliasByPathMatch() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;
@@ -264,7 +253,7 @@ class AliasManagerTest extends UnitTestCase {
    * @covers ::getAliasByPath
    * @covers ::writeCache
    */
-  public function testGetAliasByPathCachedMatch(): void {
+  public function testGetAliasByPathCachedMatch() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;
@@ -318,7 +307,7 @@ class AliasManagerTest extends UnitTestCase {
    * @covers ::getAliasByPath
    * @covers ::writeCache
    */
-  public function testGetAliasByPathCachedMissLanguage(): void {
+  public function testGetAliasByPathCachedMissLanguage() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;
@@ -367,7 +356,7 @@ class AliasManagerTest extends UnitTestCase {
    * @covers ::getAliasByPath
    * @covers ::writeCache
    */
-  public function testGetAliasByPathCachedMissNoAlias(): void {
+  public function testGetAliasByPathCachedMissNoAlias() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;
@@ -415,7 +404,7 @@ class AliasManagerTest extends UnitTestCase {
    * @covers ::getAliasByPath
    * @covers ::writeCache
    */
-  public function testGetAliasByPathUncachedMissNoAlias(): void {
+  public function testGetAliasByPathUncachedMissNoAlias() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;
@@ -462,7 +451,7 @@ class AliasManagerTest extends UnitTestCase {
   /**
    * @covers ::cacheClear
    */
-  public function testCacheClear(): void {
+  public function testCacheClear() {
     $path = '/path';
     $alias = '/alias';
     $language = $this->setUpCurrentLanguage();
@@ -499,7 +488,7 @@ class AliasManagerTest extends UnitTestCase {
    * @covers ::getAliasByPath
    * @covers ::writeCache
    */
-  public function testGetAliasByPathUncachedMissWithAlias(): void {
+  public function testGetAliasByPathUncachedMissWithAlias() {
     $path_part1 = $this->randomMachineName();
     $path_part2 = $this->randomMachineName();
     $path = '/' . $path_part1 . '/' . $path_part2;

@@ -30,7 +30,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::string
    */
-  public function testRandomStringUniqueness(): void {
+  public function testRandomStringUniqueness() {
     $strings = [];
     $random = new Random();
     for ($i = 0; $i <= 50; $i++) {
@@ -45,7 +45,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::name
    */
-  public function testRandomNamesUniqueness(): void {
+  public function testRandomNamesUniqueness() {
     $names = [];
     $random = new Random();
     for ($i = 0; $i <= 10; $i++) {
@@ -60,7 +60,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::name
    */
-  public function testRandomNameException(): void {
+  public function testRandomNameException() {
     // There are fewer than 100 possibilities so an exception should occur to
     // prevent infinite loops.
     $random = new Random();
@@ -76,7 +76,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::string
    */
-  public function testRandomStringException(): void {
+  public function testRandomStringException() {
     // There are fewer than 100 possibilities so an exception should occur to
     // prevent infinite loops.
     $random = new Random();
@@ -92,7 +92,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::name
    */
-  public function testRandomNameNonUnique(): void {
+  public function testRandomNameNonUnique() {
     // There are fewer than 100 possibilities if we were forcing uniqueness so
     // exception would occur.
     $random = new Random();
@@ -107,7 +107,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::string
    */
-  public function testRandomStringNonUnique(): void {
+  public function testRandomStringNonUnique() {
     // There are fewer than 100 possibilities if we were forcing uniqueness so
     // exception would occur.
     $random = new Random();
@@ -167,7 +167,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::object
    */
-  public function testRandomObject(): void {
+  public function testRandomObject() {
     // For values of 0 and 1 \Drupal\Component\Utility\Random::object() will
     // have different execution paths.
     $random = new Random();
@@ -182,7 +182,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::string
    */
-  public function testRandomStringValidator(): void {
+  public function testRandomStringValidator() {
     $random = new Random();
     $this->firstStringGenerated = '';
     $str = $random->string(1, TRUE, [$this, '_RandomStringValidate']);
@@ -194,7 +194,7 @@ class RandomTest extends TestCase {
    *
    * @covers ::word
    */
-  public function testRandomWordValidator(): void {
+  public function testRandomWordValidator() {
     $random = new Random();
     $this->assertNotEquals($random->word(20), $random->word(20));
   }

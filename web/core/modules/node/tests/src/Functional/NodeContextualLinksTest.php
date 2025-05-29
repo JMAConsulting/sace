@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\node\Entity\Node;
@@ -28,7 +26,7 @@ class NodeContextualLinksTest extends NodeTestBase {
   /**
    * Tests contextual links.
    */
-  public function testNodeContextualLinks(): void {
+  public function testNodeContextualLinks() {
     // Create a node item.
     $node = Node::create([
       'type' => 'article',

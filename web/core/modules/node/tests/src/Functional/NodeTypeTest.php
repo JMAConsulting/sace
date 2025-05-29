@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\field\Entity\FieldConfig;
@@ -14,7 +12,6 @@ use Drupal\Tests\system\Functional\Cache\AssertPageCacheContextsAndTagsTrait;
  * Ensures that node type functions work correctly.
  *
  * @group node
- * @group #slow
  */
 class NodeTypeTest extends NodeTestBase {
 
@@ -22,7 +19,9 @@ class NodeTypeTest extends NodeTestBase {
   use AssertPageCacheContextsAndTagsTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['field_ui', 'block'];
 
@@ -36,7 +35,7 @@ class NodeTypeTest extends NodeTestBase {
    *
    * Load available node types and validate the returned data.
    */
-  public function testNodeTypeGetFunctions(): void {
+  public function testNodeTypeGetFunctions() {
     $node_types = NodeType::loadMultiple();
     $node_names = node_type_get_names();
 
@@ -53,7 +52,7 @@ class NodeTypeTest extends NodeTestBase {
   /**
    * Tests creating a content type programmatically and via a form.
    */
-  public function testNodeTypeCreation(): void {
+  public function testNodeTypeCreation() {
     // Create a content type programmatically.
     $type = $this->drupalCreateContentType();
 
@@ -104,7 +103,7 @@ class NodeTypeTest extends NodeTestBase {
   /**
    * Tests editing a node type using the UI.
    */
-  public function testNodeTypeEditing(): void {
+  public function testNodeTypeEditing() {
     $assert = $this->assertSession();
     $this->drupalPlaceBlock('system_breadcrumb_block');
     $web_user = $this->drupalCreateUser([
@@ -179,7 +178,7 @@ class NodeTypeTest extends NodeTestBase {
   /**
    * Tests deleting a content type that still has content.
    */
-  public function testNodeTypeDeletion(): void {
+  public function testNodeTypeDeletion() {
     $this->drupalPlaceBlock('page_title_block');
     // Create a content type programmatically.
     $type = $this->drupalCreateContentType();
@@ -211,8 +210,8 @@ class NodeTypeTest extends NodeTestBase {
     $locked = \Drupal::state()->get('node.type.locked');
     $locked['default'] = 'default';
     \Drupal::state()->set('node.type.locked', $locked);
-    // Call to flush all caches after installing the node_test_config module in
-    // the same way installing a module through the UI does.
+    // Call to flush all caches after installing the forum module in the same
+    // way installing a module through the UI does.
     $this->resetAll();
     $this->drupalGet('admin/structure/types/manage/default');
     $this->assertSession()->linkNotExists('Delete');
@@ -232,7 +231,7 @@ class NodeTypeTest extends NodeTestBase {
   /**
    * Tests operations from Field UI and User modules for content types.
    */
-  public function testNodeTypeOperations(): void {
+  public function testNodeTypeOperations() {
     // Create an admin user who can only manage node fields.
     $admin_user_1 = $this->drupalCreateUser([
       'administer content types',
@@ -264,7 +263,7 @@ class NodeTypeTest extends NodeTestBase {
   /**
    * Tests for when there are no content types defined.
    */
-  public function testNodeTypeNoContentType(): void {
+  public function testNodeTypeNoContentType() {
     /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
     $this->assertCount(2, $bundle_info->getBundleInfo('node'), 'The bundle information service has 2 bundles for the Node entity type.');

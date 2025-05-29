@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Extension;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -15,7 +13,7 @@ class ModuleExtensionListTest extends KernelTestBase {
   /**
    * @covers ::getList
    */
-  public function testGetList(): void {
+  public function testGetList() {
     \Drupal::configFactory()->getEditable('core.extension')
       ->set('module.testing', 1000)
       ->set('profile', 'testing')

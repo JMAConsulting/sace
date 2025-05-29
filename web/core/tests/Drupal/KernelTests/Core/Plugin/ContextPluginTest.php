@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Plugin;
 
 use Drupal\Component\Plugin\Exception\ContextException;
@@ -19,9 +17,6 @@ use Drupal\user\Entity\User;
  */
 class ContextPluginTest extends KernelTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = [
     'system',
     'user',
@@ -34,7 +29,7 @@ class ContextPluginTest extends KernelTestBase {
   /**
    * Tests basic context definition and value getters and setters.
    */
-  public function testContext(): void {
+  public function testContext() {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $type = NodeType::create(['type' => 'page', 'name' => 'Page']);

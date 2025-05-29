@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 /**
@@ -44,7 +42,7 @@ class InstallerLanguageDirectionTest extends InstallerTestBase {
   /**
    * Confirms that the installation succeeded.
    */
-  public function testInstalled(): void {
+  public function testInstalled() {
     $this->assertSession()->addressEquals('user/1');
     $this->assertSession()->statusCodeEquals(200);
   }

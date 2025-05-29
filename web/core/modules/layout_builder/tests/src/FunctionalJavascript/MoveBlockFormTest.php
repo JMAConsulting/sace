@@ -8,8 +8,6 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 use Drupal\Tests\contextual\FunctionalJavascript\ContextualLinkClickTrait;
 
-// cspell:ignore fieldbody fieldlinks
-
 /**
  * Tests moving blocks via the form.
  *
@@ -98,7 +96,7 @@ class MoveBlockFormTest extends WebDriverTestBase {
   /**
    * Tests moving a block.
    */
-  public function testMoveBlock(): void {
+  public function testMoveBlock() {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 

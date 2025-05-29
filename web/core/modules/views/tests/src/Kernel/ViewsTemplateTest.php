@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
@@ -35,7 +33,7 @@ class ViewsTemplateTest extends ViewsKernelTestBase {
   /**
    * Tests render functionality.
    */
-  public function testTemplate(): void {
+  public function testTemplate() {
     // Make sure that the rendering just calls the preprocess function once.
     $output = Views::getView('test_view_display_template')->preview();
     $renderer = $this->container->get('renderer');
@@ -48,7 +46,7 @@ class ViewsTemplateTest extends ViewsKernelTestBase {
    * @covers views_theme_suggestions_container_alter
    * @throws \Exception
    */
-  public function testThemeSuggestionsContainerAlter(): void {
+  public function testThemeSuggestionsContainerAlter() {
     $build = [
       '#type' => 'view',
       '#name' => 'test_page_display',
@@ -59,11 +57,11 @@ class ViewsTemplateTest extends ViewsKernelTestBase {
     $output = $this->render($build);
     $extension = '.html.twig';
     $expected = '<!-- FILE NAME SUGGESTIONS:' . PHP_EOL
-      . '   ▪️ container--more-link--test-page-display--default' . $extension . PHP_EOL
-      . '   ▪️ container--more-link--default' . $extension . PHP_EOL
-      . '   ▪️ container--more-link--test-page-display' . $extension . PHP_EOL
-      . '   ▪️ container--more-link' . $extension . PHP_EOL
-      . '   ✅ container' . $extension . PHP_EOL
+      . '   * container--more-link--test-page-display--default' . $extension . PHP_EOL
+      . '   * container--more-link--default' . $extension . PHP_EOL
+      . '   * container--more-link--test-page-display' . $extension . PHP_EOL
+      . '   * container--more-link' . $extension . PHP_EOL
+      . '   x container' . $extension . PHP_EOL
       . '-->' . PHP_EOL;
     $this->assertStringContainsString($expected, $output, 'Views more link container suggestions found in Twig debug output');
   }

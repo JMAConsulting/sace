@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\forum\Kernel\Migrate\d6;
 
 use Drupal\Tests\taxonomy\Kernel\Migrate\d6\MigrateTaxonomyVocabularyTest as TaxonomyVocabularyTest;
@@ -56,7 +54,7 @@ class MigrateTaxonomyVocabularyTest extends TaxonomyVocabularyTest {
   /**
    * Tests the Drupal 6 taxonomy vocabularies migration.
    */
-  public function testTaxonomyVocabulary(): void {
+  public function testTaxonomyVocabulary() {
     $this->assertEntity('forums', 'Forums', '', 0);
     $this->assertEntity('trees', 'Trees', 'A list of trees.', 0);
     $this->assertEntity('freetags', 'FreeTags', '', 0);

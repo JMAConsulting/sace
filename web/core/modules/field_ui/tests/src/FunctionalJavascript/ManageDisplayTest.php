@@ -83,7 +83,7 @@ class ManageDisplayTest extends WebDriverTestBase {
   /**
    * Tests formatter settings.
    */
-  public function testFormatterUI(): void {
+  public function testFormatterUI() {
     $manage_fields = 'admin/structure/types/manage/' . $this->type;
     $manage_display = $manage_fields . '/display';
 
@@ -254,7 +254,7 @@ class ManageDisplayTest extends WebDriverTestBase {
   /**
    * Tests widget settings.
    */
-  public function testWidgetUI(): void {
+  public function testWidgetUI() {
     // Admin Manage Fields page.
     $manage_fields = 'admin/structure/types/manage/' . $this->type;
     // Admin Manage Display page.
@@ -424,7 +424,7 @@ class ManageDisplayTest extends WebDriverTestBase {
   /**
    * Confirms that notifications to save appear when necessary.
    */
-  public function testNotAppliedUntilSavedWarning(): void {
+  public function testNotAppliedUntilSavedWarning() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

@@ -56,7 +56,7 @@ class FieldLayoutTest extends WebDriverTestBase {
   /**
    * Tests that layouts are unique per view mode.
    */
-  public function testEntityViewModes(): void {
+  public function testEntityViewModes() {
     // By default, the field is not visible.
     $this->drupalGet('entity_test/1/test');
     $this->assertSession()->elementNotExists('css', '.layout__region--content ');
@@ -84,7 +84,7 @@ class FieldLayoutTest extends WebDriverTestBase {
   /**
    * Tests the use of field layout for entity form displays.
    */
-  public function testEntityForm(): void {
+  public function testEntityForm() {
     // By default, the one-column layout is used.
     $this->drupalGet('entity_test/manage/1/edit');
     $this->assertFieldInRegion('field_test_text[0][value]', 'content');
@@ -153,7 +153,7 @@ class FieldLayoutTest extends WebDriverTestBase {
   /**
    * Tests the use of field layout for entity view displays.
    */
-  public function testEntityView(): void {
+  public function testEntityView() {
     // The one-column layout is in use.
     $this->drupalGet('entity_test/structure/entity_test/display');
     $this->assertEquals(['Content', 'Disabled'], $this->getRegionTitles());
@@ -216,7 +216,7 @@ class FieldLayoutTest extends WebDriverTestBase {
   /**
    * Tests layout plugins with forms.
    */
-  public function testLayoutForms(): void {
+  public function testLayoutForms() {
     $this->drupalGet('entity_test/structure/entity_test/display');
     // Switch to a field layout with settings.
     $this->click('#edit-field-layouts');
@@ -255,7 +255,7 @@ class FieldLayoutTest extends WebDriverTestBase {
   /**
    * Tests changing the formatter and region at the same time.
    */
-  public function testChangingFormatterAndRegion(): void {
+  public function testChangingFormatterAndRegion() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

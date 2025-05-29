@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Migrate;
 
 use Drupal\Tests\SchemaCheckTestTrait;
@@ -32,11 +30,10 @@ class MigrateTaxonomyConfigsTest extends MigrateDrupal6TestBase {
   /**
    * Tests migration of taxonomy variables to taxonomy.settings.yml.
    */
-  public function testTaxonomySettings(): void {
+  public function testTaxonomySettings() {
     $config = $this->config('taxonomy.settings');
     $this->assertSame(100, $config->get('terms_per_page_admin'));
     $this->assertFalse($config->get('override_selector'));
-    $this->assertTrue($config->get('maintain_index_table'));
     $this->assertConfigSchema(\Drupal::service('config.typed'), 'taxonomy.settings', $config->get());
   }
 

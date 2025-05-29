@@ -93,7 +93,7 @@ class EditorConfigEntityUnitTest extends UnitTestCase {
   /**
    * @covers ::calculateDependencies
    */
-  public function testCalculateDependencies(): void {
+  public function testCalculateDependencies() {
     $format_id = 'filter.format.test';
     $values = ['editor' => $this->editorId, 'format' => $format_id];
 

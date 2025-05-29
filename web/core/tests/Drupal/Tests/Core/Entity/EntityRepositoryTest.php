@@ -66,7 +66,7 @@ class EntityRepositoryTest extends UnitTestCase {
    *
    * @covers ::getTranslationFromContext
    */
-  public function testGetTranslationFromContext(): void {
+  public function testGetTranslationFromContext() {
     $language = new Language(['id' => 'en']);
     $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->willReturn($language)

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Core\Session\AccountInterface;
@@ -28,7 +26,9 @@ class FieldEntityLinkTest extends ViewsKernelTestBase {
   public static $testViews = ['test_entity_test_link'];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['user', 'entity_test'];
 
@@ -67,7 +67,7 @@ class FieldEntityLinkTest extends ViewsKernelTestBase {
   /**
    * Tests entity link fields.
    */
-  public function testEntityLink(): void {
+  public function testEntityLink() {
     // Anonymous users cannot see edit/delete links.
     $expected_results = ['canonical' => TRUE, 'edit-form' => FALSE, 'delete-form' => FALSE, 'canonical_raw' => TRUE, 'canonical_raw_absolute' => TRUE];
     $this->doTestEntityLink(\Drupal::currentUser(), $expected_results);

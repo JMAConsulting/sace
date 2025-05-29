@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -24,7 +22,7 @@ class SortTest extends ViewsKernelTestBase {
   /**
    * Tests numeric ordering of the result set.
    */
-  public function testNumericOrdering(): void {
+  public function testNumericOrdering() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -77,7 +75,7 @@ class SortTest extends ViewsKernelTestBase {
   /**
    * Tests string ordering of the result set.
    */
-  public function testStringOrdering(): void {
+  public function testStringOrdering() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 

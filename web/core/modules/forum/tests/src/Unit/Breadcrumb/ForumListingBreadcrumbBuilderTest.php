@@ -16,7 +16,6 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @coversDefaultClass \Drupal\forum\Breadcrumb\ForumListingBreadcrumbBuilder
  * @group forum
- * @group legacy
  */
 class ForumListingBreadcrumbBuilderTest extends UnitTestCase {
 
@@ -101,7 +100,7 @@ class ForumListingBreadcrumbBuilderTest extends UnitTestCase {
    *
    * @covers ::build
    */
-  public function testBuild(): void {
+  public function testBuild() {
     // Build all our dependencies, backwards.
     $translation_manager = $this->getMockBuilder('Drupal\Core\StringTranslation\TranslationInterface')
       ->disableOriginalConstructor()

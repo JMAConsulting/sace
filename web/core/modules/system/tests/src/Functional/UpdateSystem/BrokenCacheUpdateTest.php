@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\UpdateSystem;
 
 use Drupal\Core\Database\Database;
@@ -32,7 +30,7 @@ class BrokenCacheUpdateTest extends BrowserTestBase {
   /**
    * Ensures that a broken or out-of-date element info cache is not used.
    */
-  public function testUpdate(): void {
+  public function testUpdate() {
     $connection = Database::getConnection();
 
     // Create broken element info caches entries.

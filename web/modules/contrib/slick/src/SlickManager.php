@@ -319,8 +319,7 @@ class SlickManager extends BlazyManagerBase implements SlickManagerInterface {
         $data['#wrapper_attributes'] = $this->merge($data['#wrapper_attributes'], $attrs);
       }
     }
-
-    parent::toBlazy($data, $captions, $delta);
+    // @todo enable blazy:2.17: parent::toBlazy($data, $captions, $delta);
   }
 
   /**
@@ -380,7 +379,7 @@ class SlickManager extends BlazyManagerBase implements SlickManagerInterface {
   protected function prepareOptions(
     Slick &$optionset,
     array &$options,
-    array &$settings,
+    array &$settings
   ): void {
     $blazies    = $settings['blazies'];
     $route_name = $blazies->get('route_name');
@@ -516,12 +515,8 @@ class SlickManager extends BlazyManagerBase implements SlickManagerInterface {
    * Returns slick navigation with the structured array similar to main display.
    */
   protected function buildNavigation(array &$build, array $items, $id): array {
-    $settings = $this->toHashtag($build);
-    $options  = $build['#options'];
-
-    // Only designed for main display, not thumbnails.
-    unset($settings['skin_arrows'], $settings['skin_dots']);
-
+    $settings              = $this->toHashtag($build);
+    $options               = $build['#options'];
     $settings['optionset'] = $settings['optionset_thumbnail'];
     $settings['skin']      = $settings['skin_thumbnail'];
     $settings['display']   = 'thumbnail';

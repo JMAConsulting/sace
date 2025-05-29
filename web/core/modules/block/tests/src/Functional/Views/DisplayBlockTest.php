@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block\Functional\Views;
 
 use Drupal\Component\Serialization\Json;
@@ -27,7 +25,9 @@ class DisplayBlockTest extends ViewTestBase {
   use AssertBlockAppearsTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'node',
@@ -61,7 +61,7 @@ class DisplayBlockTest extends ViewTestBase {
   /**
    * Tests default and content block categories.
    */
-  public function testBlockCategory(): void {
+  public function testBlockCategory() {
     $this->drupalLogin($this->drupalCreateUser([
       'administer views',
       'administer blocks',
@@ -143,7 +143,7 @@ class DisplayBlockTest extends ViewTestBase {
   /**
    * Tests removing a block display.
    */
-  public function testDeleteBlockDisplay(): void {
+  public function testDeleteBlockDisplay() {
     // To test all combinations possible we first place create two instances
     // of the block display of the first view.
     $block_1 = $this->drupalPlaceBlock('views_block:test_view_block-block_1', ['label' => 'test_view_block-block_1:1']);
@@ -196,7 +196,7 @@ class DisplayBlockTest extends ViewTestBase {
   /**
    * Tests the block form for a Views block.
    */
-  public function testViewsBlockForm(): void {
+  public function testViewsBlockForm() {
     $this->drupalLogin($this->drupalCreateUser(['administer blocks']));
     $default_theme = $this->config('system.theme')->get('default');
     $this->drupalGet('admin/structure/block/add/views_block:test_view_block-block_1/' . $default_theme);
@@ -260,7 +260,7 @@ class DisplayBlockTest extends ViewTestBase {
   /**
    * Tests the actual rendering of the views block.
    */
-  public function testBlockRendering(): void {
+  public function testBlockRendering() {
     // Create a block and set a custom title.
     $block = $this->drupalPlaceBlock('views_block:test_view_block-block_1', [
       'label' => 'test_view_block-block_1:1',
@@ -288,13 +288,13 @@ class DisplayBlockTest extends ViewTestBase {
     $this->drupalGet('');
     $this->assertSession()->elementNotExists('xpath', $block_title_xpath);
 
-    $this->assertCacheTags(array_merge($block->getCacheTags(), ['block_view', 'config:block_list', 'config:system.site', 'config:views.view.test_view_block', 'http_response', 'CACHE_MISS_IF_UNCACHEABLE_HTTP_METHOD:form', 'rendered']));
+    $this->assertCacheTags(array_merge($block->getCacheTags(), ['block_view', 'config:block_list', 'config:system.site', 'config:views.view.test_view_block', 'http_response', 'rendered']));
   }
 
   /**
    * Tests the various test cases of empty block rendering.
    */
-  public function testBlockEmptyRendering(): void {
+  public function testBlockEmptyRendering() {
     $url = new Url('test_page_test.test_page');
     // Remove all views_test_data entries.
     \Drupal::database()->truncate('views_test_data')->execute();
@@ -377,7 +377,7 @@ class DisplayBlockTest extends ViewTestBase {
   /**
    * Tests the contextual links on a Views block.
    */
-  public function testBlockContextualLinks(): void {
+  public function testBlockContextualLinks() {
     $this->drupalLogin($this->drupalCreateUser([
       'administer views',
       'access contextual links',

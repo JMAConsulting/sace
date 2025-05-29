@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\editor\Kernel;
 
 use Drupal\editor\Entity\Editor;
@@ -16,7 +14,9 @@ use Drupal\KernelTests\KernelTestBase;
 class EditorManagerTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system', 'user', 'filter', 'editor'];
 
@@ -55,7 +55,7 @@ class EditorManagerTest extends KernelTestBase {
   /**
    * Tests the configurable text editor manager.
    */
-  public function testManager(): void {
+  public function testManager() {
     $this->editorManager = $this->container->get('plugin.manager.editor');
 
     // Case 1: no text editor available:

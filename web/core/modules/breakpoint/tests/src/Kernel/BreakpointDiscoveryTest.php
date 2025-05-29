@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\breakpoint\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -14,7 +12,9 @@ use Drupal\KernelTests\KernelTestBase;
 class BreakpointDiscoveryTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'system',
@@ -33,7 +33,7 @@ class BreakpointDiscoveryTest extends KernelTestBase {
   /**
    * Tests the breakpoint group created for a theme.
    */
-  public function testThemeBreakpoints(): void {
+  public function testThemeBreakpoints() {
     // Verify the breakpoint group for breakpoint_theme_test was created.
     $expected_breakpoints = [
       'breakpoint_theme_test.mobile' => [
@@ -98,7 +98,7 @@ class BreakpointDiscoveryTest extends KernelTestBase {
   /**
    * Tests the custom breakpoint group provided by a theme and a module.
    */
-  public function testCustomBreakpointGroups(): void {
+  public function testCustomBreakpointGroups() {
     // Verify the breakpoint group for breakpoint_theme_test.group2 was created.
     $expected_breakpoints = [
       'breakpoint_theme_test.group2.narrow' => [
@@ -150,7 +150,7 @@ class BreakpointDiscoveryTest extends KernelTestBase {
   /**
    * Tests the breakpoint group created for a module.
    */
-  public function testModuleBreakpoints(): void {
+  public function testModuleBreakpoints() {
     $expected_breakpoints = [
       'breakpoint_module_test.mobile' => [
         'label' => 'mobile',
@@ -186,7 +186,7 @@ class BreakpointDiscoveryTest extends KernelTestBase {
   /**
    * Tests the collection of breakpoint groups.
    */
-  public function testBreakpointGroups(): void {
+  public function testBreakpointGroups() {
     $expected = [
       'olivero' => 'Olivero',
       'breakpoint_module_test' => 'Breakpoint test module',

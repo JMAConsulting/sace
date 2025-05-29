@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\UpdateSystem;
 
 use Drupal\Core\Url;
@@ -56,7 +54,7 @@ class UpdatePathLastRemovedTest extends BrowserTestBase {
   /**
    * Tests that a module with a too old schema version can not be updated.
    */
-  public function testLastRemovedVersion(): void {
+  public function testLastRemovedVersion() {
     /** @var \Drupal\Core\Update\UpdateHookRegistry $update_registry */
     $update_registry = \Drupal::service('update.update_hook_registry');
 

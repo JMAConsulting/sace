@@ -9,7 +9,6 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
   use Prophecy\PhpUnit\ProphecyTrait;
   use Prophecy\Prophet;
   use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
-  use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
   use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
   use Symfony\Component\DependencyInjection\Definition;
   use Symfony\Component\DependencyInjection\Reference;
@@ -95,7 +94,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      * @covers ::getArray
      * @covers ::supportsMachineFormat
      */
-    public function testDumpForEmptyContainer(): void {
+    public function testDumpForEmptyContainer() {
       $serialized_definition = $this->dumper->dump();
       $this->assertEquals(serialize($this->containerDefinition), $serialized_definition);
     }
@@ -107,7 +106,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @dataProvider getAliasesDataProvider
      */
-    public function testGetAliases($aliases, $definition_aliases): void {
+    public function testGetAliases($aliases, $definition_aliases) {
       $this->containerDefinition['aliases'] = $definition_aliases;
       $this->containerBuilder->getAliases()->willReturn($aliases);
       $this->assertEquals($this->containerDefinition, $this->dumper->getArray(), 'Expected definition matches dump.');
@@ -121,7 +120,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *     - aliases as returned by ContainerBuilder.
      *     - aliases as expected in the container definition.
      */
-    public static function getAliasesDataProvider() {
+    public function getAliasesDataProvider() {
       return [
         [[], []],
         [
@@ -146,7 +145,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @dataProvider getParametersDataProvider
      */
-    public function testGetParameters($parameters, $definition_parameters, $is_frozen): void {
+    public function testGetParameters($parameters, $definition_parameters, $is_frozen) {
       $this->containerDefinition['parameters'] = $definition_parameters;
       $this->containerDefinition['frozen'] = $is_frozen;
 
@@ -166,7 +165,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *     - parameters as expected in the container definition.
      *     - frozen value
      */
-    public static function getParametersDataProvider() {
+    public function getParametersDataProvider() {
       return [
         [[], [], TRUE],
         [
@@ -209,7 +208,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @dataProvider getDefinitionsDataProvider
      */
-    public function testGetServiceDefinitions($services, $definition_services): void {
+    public function testGetServiceDefinitions($services, $definition_services) {
       $this->containerDefinition['services'] = $definition_services;
 
       $this->containerBuilder->getDefinitions()->willReturn($services);
@@ -348,13 +347,6 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
         'arguments' => [[new Reference('bar')]],
         'arguments_count' => 1,
         'arguments_expected' => static::getCollection([static::getCollection([static::getServiceCall('bar')])]),
-      ] + $base_service_definition;
-
-      // Test an IteratorArgument collection with a reference to resolve.
-      $service_definitions[] = [
-        'arguments' => [new IteratorArgument([new Reference('bar')])],
-        'arguments_count' => 1,
-        'arguments_expected' => static::getCollection([static::getIterator([static::getServiceCall('bar')])]),
       ] + $base_service_definition;
 
       // Test a collection with a variable to resolve.
@@ -502,7 +494,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @dataProvider publicPrivateDataProvider
      */
-    public function testGetServiceDefinitionWithReferenceToAlias($public): void {
+    public function testGetServiceDefinitionWithReferenceToAlias($public) {
       $bar_definition = new Definition('\stdClass');
       $bar_definition_php_array = [
         'class' => '\stdClass',
@@ -546,7 +538,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
       $this->assertEquals(static::serializeDefinition($data), $dump['services']['foo'], 'Expected definition matches dump.');
     }
 
-    public static function publicPrivateDataProvider() {
+    public function publicPrivateDataProvider() {
       return [
         [TRUE],
         [FALSE],
@@ -561,7 +553,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @covers ::getServiceDefinition
      */
-    public function testGetServiceDefinitionForDecoratedService(): void {
+    public function testGetServiceDefinitionForDecoratedService() {
       $bar_definition = new Definition('\stdClass');
       $bar_definition->setPublic(TRUE);
       $bar_definition->setDecoratedService((string) new Reference('foo'));
@@ -577,7 +569,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @covers ::dumpValue
      */
-    public function testGetServiceDefinitionForExpression(): void {
+    public function testGetServiceDefinitionForExpression() {
       $expression = new Expression('');
 
       $bar_definition = new Definition('\stdClass');
@@ -595,7 +587,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @covers ::dumpValue
      */
-    public function testGetServiceDefinitionForObject(): void {
+    public function testGetServiceDefinitionForObject() {
       $service = new \stdClass();
 
       $bar_definition = new Definition('\stdClass');
@@ -614,7 +606,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      * @covers ::dumpValue
      * @group legacy
      */
-    public function testGetServiceDefinitionForObjectServiceId(): void {
+    public function testGetServiceDefinitionForObjectServiceId() {
       $service = new \stdClass();
       $service->_serviceId = 'foo';
 
@@ -644,7 +636,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @covers ::dumpValue
      */
-    public function testGetServiceDefinitionForResource(): void {
+    public function testGetServiceDefinitionForResource() {
       $resource = fopen('php://memory', 'r');
 
       $bar_definition = new Definition('\stdClass');
@@ -662,7 +654,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *
      * @dataProvider percentsEscapeProvider
      */
-    public function testPercentsEscape($expected, $argument): void {
+    public function testPercentsEscape($expected, $argument) {
       $definition = new Definition('\stdClass', [$argument]);
       $definition->setPublic(TRUE);
       $this->containerBuilder->getDefinitions()->willReturn([
@@ -688,7 +680,7 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
      *     - expected final value.
      *     - escaped value in service definition.
      */
-    public static function percentsEscapeProvider() {
+    public function percentsEscapeProvider() {
       return [
         ['%foo%', '%%foo%%'],
         ['foo%bar%', 'foo%%bar%%'],
@@ -719,20 +711,11 @@ namespace Drupal\Tests\Component\DependencyInjection\Dumper {
     /**
      * Helper function to return a machine-optimized collection.
      */
-    protected static function getCollection($collection) {
+    protected static function getCollection($collection, $resolve = TRUE) {
       return (object) [
         'type' => 'collection',
         'value' => $collection,
-      ];
-    }
-
-    /**
-     * Helper function to return a machine-optimized iterator.
-     */
-    protected static function getIterator($collection) {
-      return (object) [
-        'type' => 'iterator',
-        'value' => $collection,
+        'resolve' => $resolve,
       ];
     }
 

@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\WorkspaceDynamicSafeFormInterface;
 use Drupal\layout_builder\LayoutTempstoreRepositoryInterface;
 use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
@@ -22,11 +21,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @internal
  *   Form classes are internal.
  */
-class OverridesEntityForm extends ContentEntityForm implements WorkspaceDynamicSafeFormInterface {
+class OverridesEntityForm extends ContentEntityForm {
 
   use PreviewToggleTrait;
-  use LayoutBuilderEntityFormTrait;
-  use WorkspaceSafeFormTrait;
 
   /**
    * Layout tempstore repository.
@@ -74,6 +71,13 @@ class OverridesEntityForm extends ContentEntityForm implements WorkspaceDynamicS
   /**
    * {@inheritdoc}
    */
+  public function getBaseFormId() {
+    return $this->getEntity()->getEntityTypeId() . '_layout_builder_form';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function init(FormStateInterface $form_state) {
     parent::init($form_state);
 
@@ -90,7 +94,7 @@ class OverridesEntityForm extends ContentEntityForm implements WorkspaceDynamicS
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?SectionStorageInterface $section_storage = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, SectionStorageInterface $section_storage = NULL) {
     $this->sectionStorage = $section_storage;
     $form = parent::buildForm($form, $form_state);
     $form['#attributes']['class'][] = 'layout-builder-form';
@@ -146,7 +150,24 @@ class OverridesEntityForm extends ContentEntityForm implements WorkspaceDynamicS
         $message = $this->t('You are editing the layout for this @singular_label.', $variables);
       }
     }
-    return $this->buildMessageContainer($message, 'overrides');
+
+    return [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'layout-builder__message',
+          'layout-builder__message--overrides',
+        ],
+      ],
+      'message' => [
+        '#theme' => 'status_messages',
+        '#message_list' => ['status' => [$message]],
+        '#status_headings' => [
+          'status' => $this->t('Status message'),
+        ],
+      ],
+      '#weight' => -900,
+    ];
   }
 
   /**
@@ -154,7 +175,10 @@ class OverridesEntityForm extends ContentEntityForm implements WorkspaceDynamicS
    */
   public function save(array $form, FormStateInterface $form_state) {
     $return = parent::save($form, $form_state);
-    $this->saveTasks($form_state, $this->t('The layout override has been saved.'));
+
+    $this->layoutTempstoreRepository->delete($this->sectionStorage);
+    $this->messenger()->addStatus($this->t('The layout override has been saved.'));
+    $form_state->setRedirectUrl($this->sectionStorage->getRedirectUrl());
     return $return;
   }
 
@@ -163,10 +187,20 @@ class OverridesEntityForm extends ContentEntityForm implements WorkspaceDynamicS
    */
   protected function actions(array $form, FormStateInterface $form_state) {
     $actions = parent::actions($form, $form_state);
-    $actions = $this->buildActions($actions);
+    $actions['#attributes']['role'] = 'region';
+    $actions['#attributes']['aria-label'] = $this->t('Layout Builder tools');
+    $actions['submit']['#value'] = $this->t('Save layout');
     $actions['delete']['#access'] = FALSE;
+    $actions['#weight'] = -1000;
 
-    $actions['discard_changes']['#limit_validation_errors'] = [];
+    $actions['discard_changes'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Discard changes'),
+      '#submit' => ['::redirectOnSubmit'],
+      '#redirect' => 'discard_changes',
+      // Discard is not dependent on form input.
+      '#limit_validation_errors' => [],
+    ];
     // @todo This button should be conditionally displayed, see
     //   https://www.drupal.org/node/2917777.
     $actions['revert'] = [
@@ -175,7 +209,25 @@ class OverridesEntityForm extends ContentEntityForm implements WorkspaceDynamicS
       '#submit' => ['::redirectOnSubmit'],
       '#redirect' => 'revert',
     ];
+    $actions['preview_toggle'] = $this->buildContentPreviewToggle();
     return $actions;
+  }
+
+  /**
+   * Form submission handler.
+   */
+  public function redirectOnSubmit(array $form, FormStateInterface $form_state) {
+    $form_state->setRedirectUrl($this->sectionStorage->getLayoutBuilderUrl($form_state->getTriggeringElement()['#redirect']));
+  }
+
+  /**
+   * Retrieves the section storage object.
+   *
+   * @return \Drupal\layout_builder\SectionStorageInterface
+   *   The section storage for the current form.
+   */
+  public function getSectionStorage() {
+    return $this->sectionStorage;
   }
 
 }

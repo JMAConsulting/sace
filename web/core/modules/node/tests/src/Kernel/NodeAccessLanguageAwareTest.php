@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel;
 
 use Drupal\Core\Database\Database;
@@ -24,14 +22,6 @@ class NodeAccessLanguageAwareTest extends NodeAccessTestBase {
    * @var array
    */
   protected static $modules = ['language', 'node_access_test_language'];
-
-  /**
-   * {@inheritdoc}
-   *
-   * @todo Remove and fix test to not rely on super user.
-   * @see https://www.drupal.org/project/drupal/issues/3437620
-   */
-  protected bool $usesSuperUserAccessPolicy = TRUE;
 
   /**
    * A set of nodes to use in testing.
@@ -161,7 +151,7 @@ class NodeAccessLanguageAwareTest extends NodeAccessTestBase {
   /**
    * Tests node access and node access queries with multiple node languages.
    */
-  public function testNodeAccessLanguageAware(): void {
+  public function testNodeAccessLanguageAware() {
     // The node_access_test_language module only grants view access.
     $expected_node_access = ['view' => TRUE, 'update' => FALSE, 'delete' => FALSE];
     $expected_node_access_no_access = ['view' => FALSE, 'update' => FALSE, 'delete' => FALSE];

@@ -11,7 +11,10 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 class ContextDefinition implements ContextDefinitionInterface {
 
-  use DependencySerializationTrait;
+  use DependencySerializationTrait {
+    __sleep as traitSleep;
+  }
+
   use TypedDataTrait;
 
   /**
@@ -91,7 +94,7 @@ class ContextDefinition implements ContextDefinitionInterface {
    *
    * @param string $data_type
    *   The required data type.
-   * @param string|null|\Stringable $label
+   * @param string|null $label
    *   The label of this context definition for the UI.
    * @param bool $required
    *   Whether the context definition is required.

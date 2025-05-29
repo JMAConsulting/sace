@@ -80,7 +80,7 @@ class CssCollectionRendererUnitTest extends UnitTestCase {
    *
    * @see testRender
    */
-  public static function providerTestRender() {
+  public function providerTestRender() {
     $create_link_element = function ($href, $media = 'all', $custom_attributes = []) {
       $attributes = [
         'rel' => 'stylesheet',
@@ -280,14 +280,14 @@ class CssCollectionRendererUnitTest extends UnitTestCase {
    *
    * @dataProvider providerTestRender
    */
-  public function testRender(array $css_assets, array $render_elements): void {
+  public function testRender(array $css_assets, array $render_elements) {
     $this->assertSame($render_elements, $this->renderer->render($css_assets));
   }
 
   /**
    * Tests a CSS asset group with the invalid 'type' => 'internal'.
    */
-  public function testRenderInvalidType(): void {
+  public function testRenderInvalidType() {
     $this->expectException('Exception');
     $this->expectExceptionMessage('Invalid CSS asset type.');
 

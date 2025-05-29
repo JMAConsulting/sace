@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Routing;
 
 use Drupal\Core\Url;
@@ -32,7 +30,7 @@ class DestinationTest extends BrowserTestBase {
   /**
    * Tests that $_GET/$_REQUEST['destination'] only contain internal URLs.
    */
-  public function testDestination(): void {
+  public function testDestination() {
     $http_client = $this->getHttpClient();
     $session = $this->getSession();
 

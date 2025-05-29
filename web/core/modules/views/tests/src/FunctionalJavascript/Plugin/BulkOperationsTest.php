@@ -14,7 +14,9 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 class BulkOperationsTest extends WebDriverTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'views'];
 
@@ -38,7 +40,7 @@ class BulkOperationsTest extends WebDriverTestBase {
     $this->drupalLogin($this->createUser(['bypass node access', 'administer nodes', 'access content overview']));
   }
 
-  public function testBulkOperations(): void {
+  public function testBulkOperations() {
     $node_1 = $this->drupalCreateNode([
       'type' => 'page',
       'title' => 'The first node',

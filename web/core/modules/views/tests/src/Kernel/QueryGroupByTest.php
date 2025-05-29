@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel;
 
 use Drupal\entity_test\Entity\EntityTestMul;
@@ -33,7 +31,9 @@ class QueryGroupByTest extends ViewsKernelTestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'entity_test',
@@ -68,7 +68,7 @@ class QueryGroupByTest extends ViewsKernelTestBase {
   /**
    * Tests aggregate count feature.
    */
-  public function testAggregateCount(): void {
+  public function testAggregateCount() {
     $this->setupTestEntities();
 
     $view = Views::getView('test_aggregate_count');
@@ -89,7 +89,7 @@ class QueryGroupByTest extends ViewsKernelTestBase {
   /**
    * Tests aggregate count feature with no group by.
    */
-  public function testAggregateCountFunction(): void {
+  public function testAggregateCountFunction() {
     $this->setupTestEntities();
 
     $view = Views::getView('test_aggregate_count_function');
@@ -161,49 +161,49 @@ class QueryGroupByTest extends ViewsKernelTestBase {
   /**
    * Tests the count aggregation function.
    */
-  public function testGroupByCount(): void {
+  public function testGroupByCount() {
     $this->groupByTestHelper('count', [4, 3]);
   }
 
   /**
    * Tests the sum aggregation function.
    */
-  public function testGroupBySum(): void {
+  public function testGroupBySum() {
     $this->groupByTestHelper('sum', [10, 18]);
   }
 
   /**
    * Tests the average aggregation function.
    */
-  public function testGroupByAverage(): void {
+  public function testGroupByAverage() {
     $this->groupByTestHelper('avg', [2.5, 6]);
   }
 
   /**
    * Tests the min aggregation function.
    */
-  public function testGroupByMin(): void {
+  public function testGroupByMin() {
     $this->groupByTestHelper('min', [1, 5]);
   }
 
   /**
    * Tests the max aggregation function.
    */
-  public function testGroupByMax(): void {
+  public function testGroupByMax() {
     $this->groupByTestHelper('max', [4, 7]);
   }
 
   /**
    * Tests aggregation with no specific function.
    */
-  public function testGroupByNone(): void {
+  public function testGroupByNone() {
     $this->groupByTestHelper(NULL, [1, 5]);
   }
 
   /**
    * Tests groupby with filters.
    */
-  public function testGroupByCountOnlyFilters(): void {
+  public function testGroupByCountOnlyFilters() {
     // Check if GROUP BY and HAVING are included when a view
     // doesn't display SUM, COUNT, MAX, etc. functions in SELECT statement.
 
@@ -221,7 +221,7 @@ class QueryGroupByTest extends ViewsKernelTestBase {
   /**
    * Tests grouping on base field.
    */
-  public function testGroupByBaseField(): void {
+  public function testGroupByBaseField() {
     $this->setupTestEntities();
 
     $view = Views::getView('test_group_by_count');
@@ -237,7 +237,7 @@ class QueryGroupByTest extends ViewsKernelTestBase {
   /**
    * Tests grouping a field with cardinality > 1.
    */
-  public function testGroupByFieldWithCardinality(): void {
+  public function testGroupByFieldWithCardinality() {
     $field_storage = FieldStorageConfig::create([
       'type' => 'integer',
       'field_name' => 'field_test',
@@ -317,7 +317,7 @@ class QueryGroupByTest extends ViewsKernelTestBase {
   /**
    * Tests groupby with a non-existent field on some bundle.
    */
-  public function testGroupByWithFieldsNotExistingOnBundle(): void {
+  public function testGroupByWithFieldsNotExistingOnBundle() {
     $field_storage = FieldStorageConfig::create([
       'type' => 'integer',
       'field_name' => 'field_test',

@@ -46,7 +46,7 @@ class OliveroMessagesTest extends JsMessageTest {
   /**
    * Tests data-drupal-selector="messages" exists.
    */
-  public function testDataDrupalSelectors(): void {
+  public function testDataDrupalSelectors() {
     $web_assert = $this->assertSession();
     $this->drupalGet('js_message_test_link');
 

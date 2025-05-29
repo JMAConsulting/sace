@@ -40,7 +40,7 @@ class ViewsDataHelperTest extends UnitTestCase {
   /**
    * Tests fetchFields.
    */
-  public function testFetchFields(): void {
+  public function testFetchFields() {
     $views_data = $this->getMockBuilder('Drupal\views\ViewsData')
       ->disableOriginalConstructor()
       ->getMock();

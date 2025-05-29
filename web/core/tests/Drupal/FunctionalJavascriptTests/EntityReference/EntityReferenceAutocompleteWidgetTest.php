@@ -58,7 +58,7 @@ class EntityReferenceAutocompleteWidgetTest extends WebDriverTestBase {
   /**
    * Tests that the default autocomplete widget return the correct results.
    */
-  public function testEntityReferenceAutocompleteWidget(): void {
+  public function testEntityReferenceAutocompleteWidget() {
     /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
     $display_repository = \Drupal::service('entity_display.repository');
 
@@ -164,7 +164,7 @@ class EntityReferenceAutocompleteWidgetTest extends WebDriverTestBase {
    * Ensures that the entity the autocomplete widget stores the entity it is
    * rendered on, and is available in the autocomplete results' AJAX request.
    */
-  public function testEntityReferenceAutocompleteWidgetAttachedEntity(): void {
+  public function testEntityReferenceAutocompleteWidgetAttachedEntity() {
     $user = $this->drupalCreateUser([
       'administer entity_test content',
     ]);

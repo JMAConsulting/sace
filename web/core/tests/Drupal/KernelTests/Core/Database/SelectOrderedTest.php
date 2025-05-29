@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 /**
@@ -14,7 +12,7 @@ class SelectOrderedTest extends DatabaseTestBase {
   /**
    * Tests basic ORDER BY.
    */
-  public function testSimpleSelectOrdered(): void {
+  public function testSimpleSelectOrdered() {
     $query = $this->connection->select('test');
     $query->addField('test', 'name');
     $age_field = $query->addField('test', 'age', 'age');
@@ -36,7 +34,7 @@ class SelectOrderedTest extends DatabaseTestBase {
   /**
    * Tests multiple ORDER BY.
    */
-  public function testSimpleSelectMultiOrdered(): void {
+  public function testSimpleSelectMultiOrdered() {
     $query = $this->connection->select('test');
     $query->addField('test', 'name');
     $age_field = $query->addField('test', 'age', 'age');
@@ -67,7 +65,7 @@ class SelectOrderedTest extends DatabaseTestBase {
   /**
    * Tests ORDER BY descending.
    */
-  public function testSimpleSelectOrderedDesc(): void {
+  public function testSimpleSelectOrderedDesc() {
     $query = $this->connection->select('test');
     $query->addField('test', 'name');
     $age_field = $query->addField('test', 'age', 'age');

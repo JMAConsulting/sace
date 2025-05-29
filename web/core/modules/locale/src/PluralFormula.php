@@ -31,7 +31,7 @@ class PluralFormula implements PluralFormulaInterface {
    *   'de' => [
    *     'plurals' => 2,
    *     'formula' => [
-   *       // @todo Provide the formula.
+   *       // @todo
    *     ]
    *   ],
    * ]

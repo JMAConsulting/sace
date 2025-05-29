@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
@@ -24,7 +22,7 @@ class EntityDisplayFormBaseTest extends KernelTestBase {
   /**
    * @covers ::copyFormValuesToEntity
    */
-  public function testCopyFormValuesToEntity(): void {
+  public function testCopyFormValuesToEntity() {
     $field_values = [];
     $entity = $this->prophesize(EntityDisplayInterface::class);
     $entity->getPluginCollections()->willReturn([]);

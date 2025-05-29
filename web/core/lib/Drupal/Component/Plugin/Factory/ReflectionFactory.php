@@ -42,7 +42,7 @@ class ReflectionFactory extends DefaultFactory {
    * @param string $plugin_id
    *   The identifier of the plugin implementation.
    * @param mixed $plugin_definition
-   *   The definition associated with the plugin ID.
+   *   The definition associated with the plugin_id.
    * @param array $configuration
    *   An array of configuration that may be passed to the instance.
    *

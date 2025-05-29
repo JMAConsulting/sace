@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional\Views;
 
 use Drupal\Core\Cache\Cache;
@@ -37,7 +35,9 @@ class FrontPageTest extends ViewTestBase {
   protected $nodeStorage;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'contextual'];
 
@@ -54,7 +54,7 @@ class FrontPageTest extends ViewTestBase {
   /**
    * Tests the frontpage.
    */
-  public function testFrontPage(): void {
+  public function testFrontPage() {
     $site_name = $this->randomMachineName();
     $this->config('system.site')
       ->set('name', $site_name)
@@ -92,7 +92,7 @@ class FrontPageTest extends ViewTestBase {
       $values['promote'] = TRUE;
       $values['status'] = TRUE;
       // Test descending sort order.
-      $values['created'] = \Drupal::time()->getRequestTime() - $i;
+      $values['created'] = REQUEST_TIME - $i;
       // Test the sticky order.
       if ($i == 5) {
         $values['sticky'] = TRUE;
@@ -175,7 +175,7 @@ class FrontPageTest extends ViewTestBase {
   /**
    * Tests the cache tags when using the "none" cache plugin.
    */
-  public function testCacheTagsWithCachePluginNone(): void {
+  public function testCacheTagsWithCachePluginNone() {
     $this->enablePageCaching();
     $this->doTestFrontPageViewCacheTags(FALSE);
   }
@@ -183,7 +183,7 @@ class FrontPageTest extends ViewTestBase {
   /**
    * Tests the cache tags when using the "tag" cache plugin.
    */
-  public function testCacheTagsWithCachePluginTag(): void {
+  public function testCacheTagsWithCachePluginTag() {
     $this->enablePageCaching();
 
     $view = Views::getView('frontpage');
@@ -199,7 +199,7 @@ class FrontPageTest extends ViewTestBase {
   /**
    * Tests the cache tags when using the "time" cache plugin.
    */
-  public function testCacheTagsWithCachePluginTime(): void {
+  public function testCacheTagsWithCachePluginTime() {
     $this->enablePageCaching();
 
     $view = Views::getView('frontpage');

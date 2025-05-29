@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Migrate\d6;
 
 use Drupal\Tests\migrate_drupal\Kernel\d6\MigrateDrupal6TestBase;
@@ -32,7 +30,7 @@ class MigrateTermNodeTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal 6 term-node association to Drupal 8 migration.
    */
-  public function testTermNode(): void {
+  public function testTermNode() {
     // This is a base plugin id and we want to run all derivatives.
     $this->executeMigrations(['d6_term_node']);
 
@@ -53,7 +51,7 @@ class MigrateTermNodeTest extends MigrateDrupal6TestBase {
   /**
    * Tests that term relationships are ignored for un-migrated nodes.
    */
-  public function testSkipNonExistentNode(): void {
+  public function testSkipNonExistentNode() {
     // Node 2 is migrated by d6_node__story, but we need to pretend that it
     // failed, so record that in the map table.
     $this->mockFailure('d6_node:story', ['nid' => 2, 'language' => 'en']);

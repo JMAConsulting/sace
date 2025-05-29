@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Kernel;
 
 use Drupal\block\Entity\Block;
@@ -38,7 +36,7 @@ class LocaleConfigManagerTest extends KernelTestBase {
   /**
    * Tests hasTranslation().
    */
-  public function testHasTranslation(): void {
+  public function testHasTranslation() {
     $this->installSchema('locale', ['locales_location', 'locales_source', 'locales_target']);
     $this->installConfig(['locale_test']);
     $locale_config_manager = \Drupal::service('locale.config_manager');
@@ -55,7 +53,7 @@ class LocaleConfigManagerTest extends KernelTestBase {
   /**
    * Tests getStringTranslation().
    */
-  public function testGetStringTranslation(): void {
+  public function testGetStringTranslation() {
     $this->installSchema('locale', ['locales_location', 'locales_source', 'locales_target']);
     $this->installConfig(['locale_test']);
 
@@ -76,7 +74,7 @@ class LocaleConfigManagerTest extends KernelTestBase {
   /**
    * Tests getDefaultConfigLangcode().
    */
-  public function testGetDefaultConfigLangcode(): void {
+  public function testGetDefaultConfigLangcode() {
     // Install the Language module's configuration so we can use the
     // module_installer service.
     $this->installConfig(['language']);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional\Views;
 
 use Drupal\comment\Tests\CommentTestTrait;
@@ -16,7 +14,9 @@ abstract class CommentTestBase extends ViewTestBase {
   use CommentTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'comment', 'comment_test_views'];
 

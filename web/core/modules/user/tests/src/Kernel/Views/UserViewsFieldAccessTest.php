@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Views;
 
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -29,7 +27,7 @@ class UserViewsFieldAccessTest extends FieldFieldAccessTestBase {
     $this->installEntitySchema('user');
   }
 
-  public function testUserFields(): void {
+  public function testUserFields() {
     ConfigurableLanguage::createFromLangcode('es')->save();
     ConfigurableLanguage::createFromLangcode('fr')->save();
 
@@ -57,7 +55,7 @@ class UserViewsFieldAccessTest extends FieldFieldAccessTestBase {
     $this->assertFieldAccess('user', 'timezone', 'ut1');
     $this->assertFieldAccess('user', 'status', 'On');
     // $this->assertFieldAccess('user', 'created', \Drupal::service('date.formatter')->format(123456));
-    // $this->assertFieldAccess('user', 'changed', \Drupal::service('date.formatter')->format(\Drupal::time()->getRequestTime()));
+    // $this->assertFieldAccess('user', 'changed', \Drupal::service('date.formatter')->format(REQUEST_TIME));
   }
 
 }

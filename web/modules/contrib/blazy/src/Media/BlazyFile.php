@@ -2,126 +2,25 @@
 
 namespace Drupal\blazy\Media;
 
+use Drupal\blazy\internals\Internals;
+use Drupal\blazy\Utility\Path;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Image\ImageFactory;
-use Drupal\Core\Image\ImageInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Site\Settings;
-use Drupal\Core\StreamWrapper\PublicStream;
-use Drupal\blazy\Utility\Path;
-use Drupal\blazy\internals\Internals;
 use Drupal\file\FileInterface;
-use Drupal\file\FileRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides file_BLAH for D9.3 - D11+.
+ * Provides file_BLAH BC for D8 - D10+ till D11 rules.
  *
- * Blazy 3.x now depends on D9.4, not D9.2, safe to remove deprecated.
+ * @internal
+ *   This is an internal part of the Blazy system and should only be used by
+ *   blazy-related code in Blazy module.
  *
- * @see https://www.drupal.org/node/2940031
+ * @todo recap similiraties and make them plugins.
+ * @todo remove deprecated functions post D11, not D10, or when D8 is dropped.
  */
-class BlazyFile implements BlazyFileInterface {
-
-  /**
-   * The file system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
-
-  /**
-   * The file repository service.
-   *
-   * @var \Drupal\file\FileRepository
-   */
-  protected $fileRepository;
-
-  /**
-   * The image object.
-   *
-   * @var \Drupal\Core\Image\ImageInterface|null
-   */
-  protected $image;
-
-  /**
-   * The image factory service.
-   *
-   * @var \Drupal\Core\Image\ImageFactory
-   */
-  protected $imageFactory;
-
-  /**
-   * A logger instance.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
-   */
-  protected $logger;
-
-  /**
-   * Constructs a SVG manager object.
-   */
-  public function __construct(
-    FileSystemInterface $file_system,
-    FileRepository $file_repository,
-    ImageFactory $image_factory,
-    LoggerChannelFactoryInterface $logger,
-  ) {
-    $this->fileSystem = $file_system;
-    $this->fileRepository = $file_repository;
-    $this->imageFactory = $image_factory;
-    $this->logger = $logger->get('image');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('file_system'),
-      $container->get('file.repository'),
-      $container->get('image.factory'),
-      $container->get('logger.factory')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fileSystem(): FileSystemInterface {
-    return $this->fileSystem;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fileRepository(): FileRepository {
-    return $this->fileRepository;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function imageFactory(): ImageFactory {
-    return $this->imageFactory;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function image($source = NULL, $toolkit_id = NULL): ImageInterface {
-    return $this->imageFactory->get($source, $toolkit_id);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function realpath($uri): string {
-    return $this->fileSystem->realpath($uri);
-  }
+class BlazyFile {
 
   /**
    * Returns TRUE if an external URL.
@@ -172,7 +71,10 @@ class BlazyFile implements BlazyFileInterface {
         ? $gen->generateString($uri)
         : $gen->generateAbsoluteString($uri);
     }
-    return '';
+
+    $function = 'file_create_url';
+    /* @phpstan-ignore-next-line */
+    return is_callable($function) ? $function($uri) : '';
   }
 
   /**
@@ -202,16 +104,20 @@ class BlazyFile implements BlazyFileInterface {
 
     // Returns as is if an external URL: UCG or external OEmbed image URL.
     if (self::isExternal($uri)) {
-      return $uri;
+      $url = $uri;
     }
-
-    // If valid URI, use image style, or as is, and make it relative path.
-    if (self::isValidUri($uri)) {
+    elseif (self::isValidUri($uri)) {
       $stylable = $style && !self::isSvg($uri);
       $url = $stylable ? $style->buildUrl($uri) : self::createUrl($uri);
 
       if ($gen = Path::fileUrlGenerator()) {
         $url = $gen->transformRelative($url);
+      }
+      else {
+        // @todo remove when D8 is dropped at 3.x.
+        $function = 'file_url_transform_relative';
+        /* @phpstan-ignore-next-line */
+        $url = is_callable($function) ? $function($url) : $url;
       }
     }
 
@@ -229,7 +135,6 @@ class BlazyFile implements BlazyFileInterface {
   public static function buildUri($url): ?string {
     if (!self::isExternal($url)
       && $normal_path = UrlHelper::parse($url)['path']) {
-
       // If the request has a base path, remove it from the beginning of the
       // normal path as it should not be included in the URI.
       $base_path = \Drupal::request()->getBasePath();
@@ -237,17 +142,13 @@ class BlazyFile implements BlazyFileInterface {
         $normal_path = str_replace($base_path, '', $normal_path);
       }
 
-      $scheme = \blazy()->config('default_scheme', 'system.file');
-
-      $active_path = $scheme == 'public'
-        ? PublicStream::basePath()
-        : Settings::get('file_private_path');
+      $public_path = Settings::get('file_public_path', 'sites/default/files');
 
       // Only concerns for the correct URI, not image URL which is already being
       // displayed via SRC attribute. Don't bother language prefixes for IMG.
-      if ($active_path && mb_strpos($normal_path, $active_path) !== FALSE) {
-        $path = str_replace($active_path, '', $normal_path);
-        return self::normalizeUri($path);
+      if ($public_path && mb_strpos($normal_path, $public_path) !== FALSE) {
+        $rel_path = str_replace($public_path, '', $normal_path);
+        return self::normalizeUri($rel_path);
       }
     }
     return NULL;
@@ -274,17 +175,17 @@ class BlazyFile implements BlazyFileInterface {
   }
 
   /**
-   * Normalizes URI for BlazyFilter URLs, etc., hardly formatters.
+   * Normalizes URI for sub-modules.
    */
   public static function normalizeUri($path): string {
     $uri = $path;
     if ($stream = Path::streamWrapperManager()) {
-      // The double slash was from buildUri.
-      if (substr($path, 0, 2) === '//') {
-        $scheme = \blazy()->config('default_scheme', 'system.file');
-        $uri = $scheme . ':' . $path;
+      $uri = $stream->normalizeUri($path);
+
+      // @todo re-check why scheme is gone since 2.9. It was there <= 2.5.
+      if (substr($uri, 0, 2) === '//') {
+        $uri = 'public:' . $uri;
       }
-      $uri = $stream->normalizeUri($uri);
     }
     return $uri;
   }

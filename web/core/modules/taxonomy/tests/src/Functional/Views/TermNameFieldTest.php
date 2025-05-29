@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Views;
 
 use Drupal\Core\Link;
@@ -29,7 +27,7 @@ class TermNameFieldTest extends TaxonomyTestBase {
   /**
    * Tests term name field plugin functionality.
    */
-  public function testTermNameField(): void {
+  public function testTermNameField() {
     $this->term1->name->value = $this->randomMachineName() . ' ' . $this->randomMachineName();
     $this->term1->save();
 

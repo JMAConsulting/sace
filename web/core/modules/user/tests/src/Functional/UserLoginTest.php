@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Core\Test\AssertMailTrait;
@@ -34,7 +32,7 @@ class UserLoginTest extends BrowserTestBase {
   /**
    * Tests login with destination.
    */
-  public function testLoginCacheTagsAndDestination(): void {
+  public function testLoginCacheTagsAndDestination() {
     $this->drupalGet('user/login');
     // The user login form says "Enter your <site name> username.", hence it
     // depends on config:system.site, and its cache tags should be present.
@@ -50,7 +48,7 @@ class UserLoginTest extends BrowserTestBase {
   /**
    * Tests the global login flood control.
    */
-  public function testGlobalLoginFloodControl(): void {
+  public function testGlobalLoginFloodControl() {
     $this->config('user.flood')
       ->set('ip_limit', 10)
       // Set a high per-user limit out so that it is not relevant in the test.
@@ -94,7 +92,7 @@ class UserLoginTest extends BrowserTestBase {
   /**
    * Tests the per-user login flood control.
    */
-  public function testPerUserLoginFloodControl(): void {
+  public function testPerUserLoginFloodControl() {
     $this->config('user.flood')
       // Set a high global limit out so that it is not relevant in the test.
       ->set('ip_limit', 4000)
@@ -141,7 +139,7 @@ class UserLoginTest extends BrowserTestBase {
   /**
    * Tests user password is re-hashed upon login after changing $count_log2.
    */
-  public function testPasswordRehashOnLogin(): void {
+  public function testPasswordRehashOnLogin() {
     // Retrieve instance of password hashing algorithm.
     $password_hasher = $this->container->get('password');
 
@@ -169,13 +167,7 @@ class UserLoginTest extends BrowserTestBase {
     $this->assertTrue($password_hasher->needsRehash($account->getPassword()));
 
     $account->passRaw = $password;
-    $this->drupalGet('user/login');
-    $edit = [
-      'name' => $account->getAccountName(),
-      'pass' => $account->passRaw,
-    ];
-    $this->submitForm($edit, 'Log in');
-
+    $this->drupalLogin($account);
     // Load the stored user, which should have a different password hash now.
     $user_storage->resetCache([$account->id()]);
     $account = $user_storage->load($account->id());
@@ -188,7 +180,7 @@ class UserLoginTest extends BrowserTestBase {
   /**
    * Tests log in with a maximum length and a too long password.
    */
-  public function testPasswordLengthLogin(): void {
+  public function testPasswordLengthLogin() {
     // Create a new user and authenticate.
     $account = $this->drupalCreateUser([]);
     $current_password = $account->passRaw;
@@ -249,7 +241,7 @@ class UserLoginTest extends BrowserTestBase {
   /**
    * Tests with a browser that denies cookies.
    */
-  public function testCookiesNotAccepted(): void {
+  public function testCookiesNotAccepted() {
     $this->drupalGet('user/login');
     $form_build_id = $this->getSession()->getPage()->findField('form_build_id');
 
@@ -291,7 +283,7 @@ class UserLoginTest extends BrowserTestBase {
    *
    * @internal
    */
-  public function assertFailedLogin(User $account, ?string $flood_trigger = NULL): void {
+  public function assertFailedLogin(User $account, string $flood_trigger = NULL): void {
     $database = \Drupal::database();
     $edit = [
       'name' => $account->getAccountName(),
@@ -354,7 +346,7 @@ class UserLoginTest extends BrowserTestBase {
   /**
    * Tests that user login form has the autocomplete attributes.
    */
-  public function testAutocompleteHtmlAttributes(): void {
+  public function testAutocompleteHtmlAttributes() {
     $this->drupalGet('user/login');
     $name_field = $this->getSession()->getPage()->findField('name');
     $pass_field = $this->getSession()->getPage()->findField('pass');

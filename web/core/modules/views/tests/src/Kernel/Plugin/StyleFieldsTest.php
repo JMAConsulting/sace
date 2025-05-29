@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -24,7 +22,7 @@ class StyleFieldsTest extends ViewsKernelTestBase {
   /**
    * Tests inline fields and separator.
    */
-  public function testInlineFields(): void {
+  public function testInlineFields() {
     $renderer = $this->container->get('renderer');
     $view = Views::getView('test_view');
     $view->setDisplay();

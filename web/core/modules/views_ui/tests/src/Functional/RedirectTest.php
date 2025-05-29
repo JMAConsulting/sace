@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views_ui\Functional;
 
 /**
@@ -26,7 +24,7 @@ class RedirectTest extends UITestBase {
   /**
    * Tests the redirecting.
    */
-  public function testRedirect(): void {
+  public function testRedirect() {
     $view_name = 'test_view';
 
     $random_destination = $this->randomMachineName();

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\TypedData;
 
 use Drupal\Core\TypedData\DataDefinition;
@@ -35,7 +33,7 @@ class ComplexDataConstraintValidatorTest extends KernelTestBase {
    *
    * For testing a map including a constraint on one of its keys is defined.
    */
-  public function testValidation(): void {
+  public function testValidation() {
     // Create a definition that specifies some ComplexData constraint.
     $definition = MapDataDefinition::create()
       ->setPropertyDefinition('key', DataDefinition::create('integer'))

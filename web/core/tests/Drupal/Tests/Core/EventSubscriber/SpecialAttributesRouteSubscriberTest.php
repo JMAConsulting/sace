@@ -23,7 +23,7 @@ class SpecialAttributesRouteSubscriberTest extends UnitTestCase {
    * @return array
    *   An array of invalid routes.
    */
-  public static function providerTestOnRouteBuildingInvalidVariables() {
+  public function providerTestOnRouteBuildingInvalidVariables() {
     // Build an array of mock route objects based on paths.
     $routes = [];
     $paths = [
@@ -49,7 +49,7 @@ class SpecialAttributesRouteSubscriberTest extends UnitTestCase {
    * @return array
    *   An array of valid routes.
    */
-  public static function providerTestOnRouteBuildingValidVariables() {
+  public function providerTestOnRouteBuildingValidVariables() {
     // Build an array of mock route objects based on paths.
     $routes = [];
     $paths = [
@@ -76,7 +76,7 @@ class SpecialAttributesRouteSubscriberTest extends UnitTestCase {
    *
    * @covers ::onAlterRoutes
    */
-  public function testOnRouteBuildingValidVariables(Route $route): void {
+  public function testOnRouteBuildingValidVariables(Route $route) {
     $route_collection = new RouteCollection();
     $route_collection->add('test', $route);
 
@@ -94,7 +94,7 @@ class SpecialAttributesRouteSubscriberTest extends UnitTestCase {
    * @dataProvider providerTestOnRouteBuildingInvalidVariables
    * @covers ::onAlterRoutes
    */
-  public function testOnRouteBuildingInvalidVariables(Route $route): void {
+  public function testOnRouteBuildingInvalidVariables(Route $route) {
     $route_collection = new RouteCollection();
     $route_collection->add('test', $route);
 

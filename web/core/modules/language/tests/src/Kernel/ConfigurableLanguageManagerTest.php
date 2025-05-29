@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -49,7 +47,7 @@ class ConfigurableLanguageManagerTest extends LanguageTestBase {
   /**
    * @covers ::getLanguageSwitchLinks
    */
-  public function testLanguageSwitchLinks(): void {
+  public function testLanguageSwitchLinks() {
     $this->languageNegotiator->setCurrentUser($this->prophesize('Drupal\Core\Session\AccountInterface')->reveal());
     $this->languageManager->getLanguageSwitchLinks(LanguageInterface::TYPE_INTERFACE, new Url('<current>'));
   }

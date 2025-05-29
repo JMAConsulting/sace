@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\Migrate\d7;
 
 use Drupal\field\Entity\FieldStorageConfig;
@@ -70,7 +68,7 @@ class MigrateFieldTest extends MigrateDrupal7TestBase {
   /**
    * Tests migrating D7 fields to field_storage_config entities.
    */
-  public function testFields(): void {
+  public function testFields() {
     \Drupal::service('module_installer')->install(['datetime_range']);
     $this->installConfig(static::$modules);
     $this->executeMigration('d7_field');
@@ -196,7 +194,7 @@ class MigrateFieldTest extends MigrateDrupal7TestBase {
   /**
    * Tests migrating D7 datetime fields.
    */
-  public function testDatetimeFields(): void {
+  public function testDatetimeFields() {
     $this->installConfig(static::$modules);
     $this->executeMigration('d7_field');
 

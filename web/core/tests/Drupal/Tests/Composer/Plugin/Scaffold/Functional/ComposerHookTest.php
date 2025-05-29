@@ -59,7 +59,7 @@ class ComposerHookTest extends BuildTestBase {
     $this->fileSystem = new Filesystem();
     $this->fixtures = new Fixtures();
     $this->fixtures->createIsolatedComposerCacheDir();
-    $this->fixturesDir = $this->fixtures->tmpDir($this->name());
+    $this->fixturesDir = $this->fixtures->tmpDir($this->getName());
     $replacements = ['SYMLINK' => 'false', 'PROJECT_ROOT' => $this->fixtures->projectRoot()];
     $this->fixtures->cloneFixtureProjects($this->fixturesDir, $replacements);
   }
@@ -77,7 +77,7 @@ class ComposerHookTest extends BuildTestBase {
   /**
    * Tests to see if scaffold operation runs at the correct times.
    */
-  public function testComposerHooks(): void {
+  public function testComposerHooks() {
     $topLevelProjectDir = 'composer-hooks-fixture';
     $sut = $this->fixturesDir . '/' . $topLevelProjectDir;
     // First test: run composer install. This is the same as composer update
@@ -126,7 +126,7 @@ class ComposerHookTest extends BuildTestBase {
   /**
    * Tests to see if scaffold messages are omitted when running scaffold twice.
    */
-  public function testScaffoldMessagesDoNotPrintTwice(): void {
+  public function testScaffoldMessagesDoNotPrintTwice() {
     $topLevelProjectDir = 'drupal-drupal';
     $sut = $this->fixturesDir . '/' . $topLevelProjectDir;
     // First test: run composer install. This is the same as composer update

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -16,7 +14,7 @@ class MigrateStatusTest extends MigrateTestBase {
   /**
    * Tests different connection types.
    */
-  public function testStatus(): void {
+  public function testStatus() {
     // Create a minimally valid migration.
     $definition = [
       'id' => 'migrate_status_test',

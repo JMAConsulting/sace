@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Form;
 
 use Drupal\form_test\Form\FormTestFileForm;
@@ -22,7 +20,7 @@ class FileElementTest extends KernelTestBase {
   /**
    * Tests that file elements are built and processed correctly.
    */
-  public function testFileElement(): void {
+  public function testFileElement() {
     $form = $this->container->get('form_builder')
       ->getForm(FormTestFileForm::class);
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Kernel\Migrate\d7;
 
 use Drupal\block_content\BlockContentInterface;
@@ -15,9 +13,6 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
  */
 class MigrateCustomBlockTest extends MigrateDrupal7TestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = [
     'block_content',
     'filter',
@@ -43,7 +38,7 @@ class MigrateCustomBlockTest extends MigrateDrupal7TestBase {
   /**
    * Tests migration of content blocks from Drupal 7 to Drupal 8.
    */
-  public function testCustomBlockMigration(): void {
+  public function testCustomBlockMigration() {
     $block = BlockContent::load(1);
     $this->assertInstanceOf(BlockContentInterface::class, $block);
     /** @var \Drupal\block_content\BlockContentInterface $block */

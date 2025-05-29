@@ -1,18 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\image\Kernel;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\File\FileExists;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Url;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Tests\TestFileCreationTrait;
 
 /**
@@ -28,7 +26,9 @@ class ImageThemeFunctionTest extends KernelTestBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'entity_test',
@@ -84,14 +84,14 @@ class ImageThemeFunctionTest extends KernelTestBase {
   /**
    * Tests usage of the image field formatters.
    */
-  public function testImageFormatterTheme(): void {
+  public function testImageFormatterTheme() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
 
     // Create an image.
     $files = $this->drupalGetTestFiles('image');
     $file = reset($files);
-    $original_uri = \Drupal::service('file_system')->copy($file->uri, 'public://', FileExists::Rename);
+    $original_uri = \Drupal::service('file_system')->copy($file->uri, 'public://', FileSystemInterface::EXISTS_RENAME);
 
     // Create a style.
     $style = ImageStyle::create(['name' => 'test', 'label' => 'Test']);
@@ -146,14 +146,14 @@ class ImageThemeFunctionTest extends KernelTestBase {
   /**
    * Tests usage of the image style theme function.
    */
-  public function testImageStyleTheme(): void {
+  public function testImageStyleTheme() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
 
     // Create an image.
     $files = $this->drupalGetTestFiles('image');
     $file = reset($files);
-    $original_uri = \Drupal::service('file_system')->copy($file->uri, 'public://', FileExists::Rename);
+    $original_uri = \Drupal::service('file_system')->copy($file->uri, 'public://', FileSystemInterface::EXISTS_RENAME);
 
     // Create a style.
     $style = ImageStyle::create(['name' => 'image_test', 'label' => 'Test']);
@@ -183,7 +183,7 @@ class ImageThemeFunctionTest extends KernelTestBase {
   /**
    * Tests image alt attribute functionality.
    */
-  public function testImageAltFunctionality(): void {
+  public function testImageAltFunctionality() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
 

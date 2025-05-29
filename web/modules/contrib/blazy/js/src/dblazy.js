@@ -18,7 +18,7 @@
  */
 
 /* global define */
-(function (_win, _doc, _ds) {
+(function (_win, _doc) {
 
   'use strict';
 
@@ -30,7 +30,6 @@
   var PROTO_SPLICE = PROTO_A.splice;
   var PROTO_SOME = PROTO_A.some;
   var V_SYMBOL = typeof Symbol !== 'undefined' && Symbol;
-  var C_TOUCH = 'touchevents';
   var IS_JQ = 'jQuery' in _win;
   var IS_CASH = 'cash' in _win;
   var V_CLASS = 'class';
@@ -171,14 +170,12 @@
       return setTimeout(callback, delay || 0, DB);
     };
 
-    wwoBigPipe(function () {
-      if (_doc.readyState !== 'loading') {
-        cb();
-      }
-      else {
-        _doc.addEventListener('DOMContentLoaded', cb);
-      }
-    });
+    if (_doc.readyState !== 'loading') {
+      cb();
+    }
+    else {
+      _doc.addEventListener('DOMContentLoaded', cb);
+    }
 
     return this;
   }
@@ -578,72 +575,6 @@
    */
   function isAttr(x) {
     return x && 'getAttribute' in x;
-  }
-
-  function isBigPipe() {
-    return 'bigPipePlaceholderIds' in _ds;
-  }
-
-  // Checks if BigPipe replacement jobs are done.
-  function wwoBigPipeDone() {
-    if (isBigPipe()) {
-      return isEmpty(_ds.bigPipePlaceholderIds);
-    }
-    // If BigPipe is not installed, always done.
-    return true;
-  }
-
-  // Wait for BigPipe to be done before calling a function, not really once.
-  // This should also avoid multiple invocations of the callback function.
-  function wwoBigPipe(cb, t) {
-    if (wwoBigPipeDone()) {
-      // DOM ready fix.
-      setTimeout(cb, t || 101);
-    }
-  }
-
-  /**
-   * Returns true if a touch device.
-   *
-   * @private
-   *
-   * @param {Function} cb
-   *   The callback function called on matchMedia change.
-   *
-   * @return {bool}
-   *   True if a touch device.
-   */
-  function isTouch(cb) {
-    var query = {};
-
-    // @todo remove check when min D.10.
-    if ('matchMedia' in _win) {
-      query = _win.matchMedia('(hover: none), (pointer: coarse)');
-      if (cb) {
-        query.addEventListener('change', cb);
-      }
-    }
-
-    return (
-      ('ontouchstart' in _win) ||
-      (_win.DocumentTouch && _doc instanceof _win.DocumentTouch) ||
-      query.matches ||
-      (navigator.maxTouchPoints > 0) ||
-      (navigator.msMaxTouchPoints > 0)
-    );
-  }
-
-  /**
-   * Dynamically add [no-]touchevents class to html.
-   *
-   * Basically similar to core/drupal.touchevents-test, only with change.
-   */
-  function touchOrNot() {
-    var html = _doc.documentElement;
-    var matches = isTouch(touchOrNot);
-
-    removeClass(html, [C_TOUCH, 'no-' + C_TOUCH]);
-    addClass(html, matches ? C_TOUCH : 'no-' + C_TOUCH);
   }
 
   /**
@@ -1273,7 +1204,6 @@
    *
    * To check if the returned element is found:
    *   - use $.isElm(el) which returns a bool, or !$.isNull(el).
-   *   - or use it directly as condition if not using asArray argument.
    * To check if the returned elements are found:
    *   - use regular els.length check.
    *
@@ -1820,7 +1750,7 @@
           var data = {
             bubbles: true,
             cancelable: true,
-            detail: isObj(details) ? details : {}
+            detail: details || {}
           };
 
           if (isObj(param)) {
@@ -1906,11 +1836,6 @@
   DB.isNativeLazy = 'loading' in HTMLImageElement.prototype;
   DB.isAmd = typeof define === 'function' && define.amd;
   DB.isWin = isWin;
-  DB.isBigPipe = isBigPipe;
-  DB.wwoBigPipeDone = wwoBigPipeDone;
-  DB.wwoBigPipe = wwoBigPipe;
-  DB.isTouch = isTouch;
-  DB.touchOrNot = touchOrNot;
   DB._er = -1;
   DB._ok = 1;
 
@@ -2041,32 +1966,6 @@
     };
   };
 
-  function boxSize(entry) {
-    var width;
-    var height;
-    var size;
-
-    if (entry.contentBoxSize) {
-      size = entry.contentBoxSize[0];
-      if (size) {
-        width = size.inlineSize;
-        height = size.blockSize;
-      }
-    }
-
-    if (!height) {
-      // entry.contentRect is deprecated.
-      size = entry.contentRect || rect(entry.target);
-      width = size.width;
-      height = size.height;
-    }
-
-    return {
-      width: Math.floor(width),
-      height: Math.floor(height)
-    };
-  }
-
   /**
    * A simple wrapper to delay callback function on window resize.
    *
@@ -2076,31 +1975,26 @@
    *   The callback function.
    * @param {undefined|String|Array.<Element>|Element} t
    *   The timeout, selector, or element(s).
-   * @param {Function} cbt
-   *   The touch callback function, else default to cb.
    *
    * @return {Function}
    *   The callback function.
-   *
-   * See https://dev.to/murashow/quick-guide-to-resize-observer-gam
-   * See https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
    */
-  DB.resize = function (cb, t, cbt) {
+  DB.resize = function (cb, t) {
     // Preserves oldies till updated: lory, extended, etc.
     // Safe to replace, previously only called: $.resize(cb)();
     if (this.isRo && !isUnd(t)) {
       var observer = new ResizeObserver(function (entries) {
         var me = this;
         var winsize = windowSize();
-        var touch = isTouch(cbt || cb);
 
         each(entries, function (entry) {
-          var size = boxSize(entry);
+          var rect = entry.contentRect;
+          var width = Math.floor(rect.width);
+          var height = Math.floor(rect.height);
           var data = {
-            width: size.width,
-            height: size.height,
-            window: winsize,
-            touch: touch
+            width: width,
+            height: height,
+            window: winsize
           };
 
           // Pass it to callback.
@@ -2110,7 +2004,7 @@
 
       var elms = toElms(t);
       if (elms.length) {
-        each(elms, function (el) {
+        each(toElms(t), function (el) {
           if (isElm(el)) {
             observer.observe(el);
           }
@@ -2424,4 +2318,4 @@
     _win.dBlazy = DB;
   }
 
-})(this, this.document, drupalSettings);
+})(this, this.document);

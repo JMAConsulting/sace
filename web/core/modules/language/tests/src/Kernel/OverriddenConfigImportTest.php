@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel;
 
 use Drupal\Core\Config\ConfigImporter;
@@ -59,7 +57,7 @@ class OverriddenConfigImportTest extends KernelTestBase {
   /**
    * Tests importing overridden config alongside config in the default language.
    */
-  public function testConfigImportUpdates(): void {
+  public function testConfigImportUpdates() {
     $storage = $this->container->get('config.storage');
     $sync = $this->container->get('config.storage.sync');
     /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */

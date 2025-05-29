@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\BrowserTestBase;
 class UserCreateFailMailTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system_mail_failure_test'];
 
@@ -26,7 +26,7 @@ class UserCreateFailMailTest extends BrowserTestBase {
   /**
    * Tests the create user administration page.
    */
-  public function testUserAdd(): void {
+  public function testUserAdd() {
     $user = $this->drupalCreateUser(['administer users']);
     $this->drupalLogin($user);
 

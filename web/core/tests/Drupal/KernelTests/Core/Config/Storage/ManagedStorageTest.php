@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config\Storage;
 
 use Drupal\Core\Config\StorageManagerInterface;
@@ -63,7 +61,7 @@ class ManagedStorageTest extends ConfigStorageTestBase implements StorageManager
   /**
    * {@inheritdoc}
    */
-  public function testInvalidStorage(): void {
+  public function testInvalidStorage() {
     $this->markTestSkipped('ManagedStorage cannot be invalid.');
   }
 

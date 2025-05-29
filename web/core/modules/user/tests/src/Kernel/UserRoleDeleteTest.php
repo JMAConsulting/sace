@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel;
 
 use Drupal\filter\Entity\FilterFormat;
@@ -18,7 +16,9 @@ use Drupal\user\Entity\User;
 class UserRoleDeleteTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system', 'user', 'field'];
 
@@ -35,7 +35,7 @@ class UserRoleDeleteTest extends KernelTestBase {
    *
    * @see user_user_role_delete()
    */
-  public function testRoleDeleteUserRoleReferenceDelete(): void {
+  public function testRoleDeleteUserRoleReferenceDelete() {
     // Create two test roles.
     $role_storage = $this->container->get('entity_type.manager')->getStorage('user_role');
     $role_storage->create(['id' => 'test_role_one', 'label' => 'Test role 1'])->save();
@@ -80,7 +80,7 @@ class UserRoleDeleteTest extends KernelTestBase {
   /**
    * Tests the removal of user role dependencies.
    */
-  public function testDependenciesRemoval(): void {
+  public function testDependenciesRemoval() {
     $this->enableModules(['node', 'filter']);
     /** @var \Drupal\user\RoleStorage $role_storage */
     $role_storage = $this->container->get('entity_type.manager')->getStorage('user_role');

@@ -21,7 +21,7 @@ class ConfirmFormHelperTest extends UnitTestCase {
    *
    * Tests the cancel link title.
    */
-  public function testCancelLinkTitle(): void {
+  public function testCancelLinkTitle() {
     $cancel_text = 'Cancel text';
     $form = $this->createMock('Drupal\Core\Form\ConfirmFormInterface');
     $form->expects($this->any())
@@ -38,7 +38,7 @@ class ConfirmFormHelperTest extends UnitTestCase {
    *
    * Tests a cancel link route.
    */
-  public function testCancelLinkRoute(): void {
+  public function testCancelLinkRoute() {
     $route_name = 'foo_bar';
     $cancel_route = new Url($route_name);
     $form = $this->createMock('Drupal\Core\Form\ConfirmFormInterface');
@@ -55,7 +55,7 @@ class ConfirmFormHelperTest extends UnitTestCase {
    *
    * Tests a cancel link route with parameters.
    */
-  public function testCancelLinkRouteWithParams(): void {
+  public function testCancelLinkRouteWithParams() {
     $expected = Url::fromRoute('foo_bar.baz', ['baz' => 'banana'], ['absolute' => TRUE]);
     $form = $this->createMock('Drupal\Core\Form\ConfirmFormInterface');
     $form->expects($this->any())
@@ -71,7 +71,7 @@ class ConfirmFormHelperTest extends UnitTestCase {
    *
    * Tests a cancel link route with a URL object.
    */
-  public function testCancelLinkRouteWithUrl(): void {
+  public function testCancelLinkRouteWithUrl() {
     $cancel_route = new Url(
       'foo_bar.baz', [
         'baz' => 'banana',
@@ -96,7 +96,7 @@ class ConfirmFormHelperTest extends UnitTestCase {
    *
    * @dataProvider providerTestCancelLinkDestination
    */
-  public function testCancelLinkDestination($destination): void {
+  public function testCancelLinkDestination($destination) {
     $query = ['destination' => $destination];
     $form = $this->createMock('Drupal\Core\Form\ConfirmFormInterface');
 
@@ -119,7 +119,7 @@ class ConfirmFormHelperTest extends UnitTestCase {
   /**
    * Provides test data for testCancelLinkDestination().
    */
-  public static function providerTestCancelLinkDestination() {
+  public function providerTestCancelLinkDestination() {
     $data = [];
     $data[] = ['baz'];
     $data[] = ['/baz'];

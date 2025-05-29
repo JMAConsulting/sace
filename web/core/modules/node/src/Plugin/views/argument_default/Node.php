@@ -5,19 +5,18 @@ namespace Drupal\node\Plugin\views\argument_default;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\views\Attribute\ViewsArgumentDefault;
 use Drupal\views\Plugin\views\argument_default\ArgumentDefaultPluginBase;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Default argument plugin to extract a node.
+ *
+ * @ViewsArgumentDefault(
+ *   id = "node",
+ *   title = @Translation("Content ID from URL")
+ * )
  */
-#[ViewsArgumentDefault(
-  id: 'node',
-  title: new TranslatableMarkup('Content ID from URL'),
-)]
 class Node extends ArgumentDefaultPluginBase implements CacheableDependencyInterface {
 
   /**
@@ -33,7 +32,7 @@ class Node extends ArgumentDefaultPluginBase implements CacheableDependencyInter
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
@@ -61,9 +60,7 @@ class Node extends ArgumentDefaultPluginBase implements CacheableDependencyInter
    * {@inheritdoc}
    */
   public function getArgument() {
-    // Get the node object from current route.
-    $node = $this->routeMatch->getParameter('node') ?? $this->routeMatch->getParameter('node_preview');
-    if ($node instanceof NodeInterface) {
+    if (($node = $this->routeMatch->getParameter('node')) && $node instanceof NodeInterface) {
       return $node->id();
     }
   }

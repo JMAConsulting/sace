@@ -22,14 +22,13 @@ class BlazyViewsFieldMedia extends BlazyViewsFieldPluginBase {
 
     if ($entity instanceof Media) {
       $options['defer'] = TRUE;
-      $settings = $this->mergedViewsSettings($options, $entity);
+      $settings = $this->mergedViewsSettings($options);
 
       // Due to minimal settings, assumed core fields are in use.
       $settings['image'] = 'field_media_image';
       $data['#entity']   = $entity;
       $data['#settings'] = $settings;
       $data['#delta']    = $values->index;
-      $data['#view']     = $this->view;
 
       // Populate media metadata earlier for their relevant libraries.
       // Need field.target_bundles, since this views field has none.
@@ -40,11 +39,8 @@ class BlazyViewsFieldMedia extends BlazyViewsFieldPluginBase {
       $this->blazyManager->preSettings($data['#settings']);
       $data['fallback'] = $entity->label();
 
-      // Merge settings.
-      $this->mergedSettings = $data['#settings'];
-
       // Pass results to \Drupal\blazy\BlazyEntity.
-      // @todo phpstan bug only undertands the doc return types, not dynamic.
+      // @todo phpstan bug only undestands the doc return types, not dynamic.
       /* @phpstan-ignore-next-line */
       return $this->blazyEntity->build($data);
     }

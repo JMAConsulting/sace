@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Core\Url;
@@ -16,7 +14,9 @@ use Drupal\Tests\BrowserTestBase;
 class UserBlocksTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'views'];
 
@@ -47,7 +47,7 @@ class UserBlocksTest extends BrowserTestBase {
   /**
    * Tests that user login block is hidden from user/login.
    */
-  public function testUserLoginBlockVisibility(): void {
+  public function testUserLoginBlockVisibility() {
     // Array keyed list where key being the URL address and value being expected
     // visibility as boolean type.
     $paths = [
@@ -70,7 +70,7 @@ class UserBlocksTest extends BrowserTestBase {
   /**
    * Tests the user login block.
    */
-  public function testUserLoginBlock(): void {
+  public function testUserLoginBlock() {
     // Create a user with some permission that anonymous users lack.
     $user = $this->drupalCreateUser(['administer permissions']);
 

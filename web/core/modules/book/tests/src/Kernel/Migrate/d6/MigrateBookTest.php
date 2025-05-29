@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\book\Kernel\Migrate\d6;
 
 use Drupal\Tests\migrate_drupal\Kernel\d6\MigrateDrupal6TestBase;
@@ -11,7 +9,6 @@ use Drupal\node\Entity\Node;
  * Upgrade book structure.
  *
  * @group book
- * @group legacy
  */
 class MigrateBookTest extends MigrateDrupal6TestBase {
 
@@ -47,7 +44,7 @@ class MigrateBookTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal 6 book structure to Drupal 8 migration.
    */
-  public function testBook(): void {
+  public function testBook() {
     $nodes = Node::loadMultiple([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     $this->assertSame('1', $nodes[1]->book['bid']);
     $this->assertSame('0', $nodes[1]->book['pid']);

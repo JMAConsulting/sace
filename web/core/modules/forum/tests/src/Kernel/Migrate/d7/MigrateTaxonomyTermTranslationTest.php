@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\forum\Kernel\Migrate\d7;
 
 use Drupal\Tests\taxonomy\Kernel\Migrate\d7\MigrateTaxonomyTermTranslationTest as TaxonomyTermTranslationTest;
@@ -31,7 +29,7 @@ class MigrateTaxonomyTermTranslationTest extends TaxonomyTermTranslationTest {
   /**
    * Tests the Drupal i18n  taxonomy term to Drupal 8 migration.
    */
-  public function testTaxonomyTermTranslation(): void {
+  public function testTaxonomyTermTranslation() {
     // Forums vocabulary, no multilingual option.
     $this->assertEntity(1, 'en', 'General discussion', 'forums', NULL, NULL, 2, []);
     $this->assertEntity(5, 'en', 'Custom Forum', 'forums', 'Where the cool kids are.', NULL, 3, []);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
@@ -18,7 +16,9 @@ use Drupal\KernelTests\KernelTestBase;
 class ConfigEntityQueryTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['config_test'];
 
@@ -142,7 +142,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests basic functionality.
    */
-  public function testConfigEntityQuery(): void {
+  public function testConfigEntityQuery() {
     // Run a test without any condition.
     $this->queryResults = $this->entityStorage->getQuery()
       ->execute();
@@ -372,7 +372,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests ID conditions.
    */
-  public function testStringIdConditions(): void {
+  public function testStringIdConditions() {
     // We need an entity with a non-numeric ID.
     $entity = ConfigQueryTest::create([
       'label' => 'entity_1',
@@ -428,7 +428,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests count query.
    */
-  public function testCount(): void {
+  public function testCount() {
     // Test count on no conditions.
     $count = $this->entityStorage->getQuery()
       ->count()
@@ -454,7 +454,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests sorting and range on config entity queries.
    */
-  public function testSortRange(): void {
+  public function testSortRange() {
     // Sort by simple ascending/descending.
     $this->queryResults = $this->entityStorage->getQuery()
       ->sort('number', 'DESC')
@@ -544,7 +544,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests sorting with tableSort on config entity queries.
    */
-  public function testTableSort(): void {
+  public function testTableSort() {
     $header = [
       ['data' => 'ID', 'specifier' => 'id'],
       ['data' => 'Number', 'specifier' => 'number'],
@@ -612,7 +612,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests dotted path matching.
    */
-  public function testDotted(): void {
+  public function testDotted() {
     $this->queryResults = $this->entityStorage->getQuery()
       ->condition('array.level1.*', 1)
       ->execute();
@@ -686,7 +686,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests case sensitivity.
    */
-  public function testCaseSensitivity(): void {
+  public function testCaseSensitivity() {
     // Filter by label with a known containing case-sensitive word.
     $this->queryResults = $this->entityStorage->getQuery()
       ->condition('label', 'TEST', 'CONTAINS')
@@ -702,7 +702,7 @@ class ConfigEntityQueryTest extends KernelTestBase {
   /**
    * Tests lookup keys are added to the key value store.
    */
-  public function testLookupKeys(): void {
+  public function testLookupKeys() {
     \Drupal::service('state')->set('config_test.lookup_keys', TRUE);
     \Drupal::entityTypeManager()->clearCachedDefinitions();
     $key_value = $this->container->get('keyvalue')->get(QueryFactory::CONFIG_LOOKUP_PREFIX . 'config_test');
@@ -755,24 +755,6 @@ class ConfigEntityQueryTest extends KernelTestBase {
     $entity_id = array_pop($expected);
     $test_entities[$entity_id]->delete();
     $this->assertNull($key_value->get('style:test'));
-  }
-
-  /**
-   * Test the entity query alter hooks are invoked.
-   *
-   * @see config_test_entity_query_tag__config_query_test__config_entity_query_alter_hook_test_alter()
-   */
-  public function testAlterHook(): void {
-    // Run a test without any condition.
-    $this->queryResults = $this->entityStorage->getQuery()
-      ->execute();
-    $this->assertResults(['1', '2', '3', '4', '5', '6', '7']);
-
-    // config_test alter hook removes the entity with id '7'.
-    $this->queryResults = $this->entityStorage->getQuery()
-      ->addTag('config_entity_query_alter_hook_test')
-      ->execute();
-    $this->assertResults(['1', '2', '3', '4', '5', '6']);
   }
 
   /**

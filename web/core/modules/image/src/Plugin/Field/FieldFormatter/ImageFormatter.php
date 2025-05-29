@@ -3,13 +3,11 @@
 namespace Drupal\image\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\image\Entity\ImageStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,14 +16,15 @@ use Drupal\Core\Cache\Cache;
 
 /**
  * Plugin implementation of the 'image' formatter.
+ *
+ * @FieldFormatter(
+ *   id = "image",
+ *   label = @Translation("Image"),
+ *   field_types = {
+ *     "image"
+ *   }
+ * )
  */
-#[FieldFormatter(
-  id: 'image',
-  label: new TranslatableMarkup('Image'),
-  field_types: [
-    'image',
-  ],
-)]
 class ImageFormatter extends ImageFormatterBase {
 
   /**
@@ -53,7 +52,7 @@ class ImageFormatter extends ImageFormatterBase {
    * Constructs an ImageFormatter object.
    *
    * @param string $plugin_id
-   *   The plugin ID for the formatter.
+   *   The plugin_id for the formatter.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition

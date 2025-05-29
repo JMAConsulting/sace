@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -16,7 +14,9 @@ use Drupal\node\NodeInterface;
 class LocaleContentTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'locale'];
 
@@ -28,7 +28,7 @@ class LocaleContentTest extends BrowserTestBase {
   /**
    * Verifies that machine name fields are always LTR.
    */
-  public function testMachineNameLTR(): void {
+  public function testMachineNameLTR() {
     // User to add and remove language.
     $admin_user = $this->drupalCreateUser([
       'administer languages',
@@ -66,7 +66,7 @@ class LocaleContentTest extends BrowserTestBase {
   /**
    * Tests if a content type can be set to multilingual and language is present.
    */
-  public function testContentTypeLanguageConfiguration(): void {
+  public function testContentTypeLanguageConfiguration() {
     $type1 = $this->drupalCreateContentType();
     $type2 = $this->drupalCreateContentType();
 
@@ -157,7 +157,7 @@ class LocaleContentTest extends BrowserTestBase {
   /**
    * Tests if a dir and lang tags exist in node's attributes.
    */
-  public function testContentTypeDirLang(): void {
+  public function testContentTypeDirLang() {
     $type = $this->drupalCreateContentType();
 
     // User to add and remove language.

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional;
 
 use Drupal\node\Entity\Node;
@@ -35,7 +33,7 @@ class FileFieldAnonymousSubmissionTest extends FileFieldTestBase {
   /**
    * Tests the basic node submission for an anonymous visitor.
    */
-  public function testAnonymousNode(): void {
+  public function testAnonymousNode() {
     $type = 'Article';
     $title = 'test page';
 
@@ -64,7 +62,7 @@ class FileFieldAnonymousSubmissionTest extends FileFieldTestBase {
   /**
    * Tests file submission for an anonymous visitor.
    */
-  public function testAnonymousNodeWithFile(): void {
+  public function testAnonymousNodeWithFile() {
     $type = 'Article';
     $title = 'Test page';
     $this->createFileField('field_image', 'node', 'article', [], ['file_extensions' => 'txt png']);
@@ -100,7 +98,7 @@ class FileFieldAnonymousSubmissionTest extends FileFieldTestBase {
   /**
    * Tests file submission for an anonymous visitor with a missing node title.
    */
-  public function testAnonymousNodeWithFileWithoutTitle(): void {
+  public function testAnonymousNodeWithFileWithoutTitle() {
     $this->drupalLogout();
     $this->doTestNodeWithFileWithoutTitle();
   }
@@ -108,7 +106,7 @@ class FileFieldAnonymousSubmissionTest extends FileFieldTestBase {
   /**
    * Tests file submission for an authenticated user with a missing node title.
    */
-  public function testAuthenticatedNodeWithFileWithoutTitle(): void {
+  public function testAuthenticatedNodeWithFileWithoutTitle() {
     $admin_user = $this->drupalCreateUser([
       'bypass node access',
       'access content overview',

@@ -4,7 +4,6 @@ namespace Drupal\views\Plugin\views\argument;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextDefinition;
-use Drupal\views\Attribute\ViewsArgument;
 
 /**
  * Basic argument handler for arguments that are numeric.
@@ -12,10 +11,9 @@ use Drupal\views\Attribute\ViewsArgument;
  * Incorporates break_phrase.
  *
  * @ingroup views_argument_handlers
+ *
+ * @ViewsArgument("numeric")
  */
-#[ViewsArgument(
-  id: 'numeric',
-)]
 class NumericArgument extends ArgumentPluginBase {
 
   /**
@@ -36,7 +34,7 @@ class NumericArgument extends ArgumentPluginBase {
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
-    // Allow '+' for "or". Allow ',' for "and".
+    // allow + for or, , for and
     $form['break_phrase'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Allow multiple values'),

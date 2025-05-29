@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Form;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\BrowserTestBase;
 class RebuildTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'form_test'];
 
@@ -45,7 +45,7 @@ class RebuildTest extends BrowserTestBase {
   /**
    * Tests preservation of values.
    */
-  public function testRebuildPreservesValues(): void {
+  public function testRebuildPreservesValues() {
     $edit = [
       'checkbox_1_default_off' => TRUE,
       'checkbox_1_default_on' => FALSE,

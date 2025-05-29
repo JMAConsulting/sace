@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Functional;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -40,7 +38,9 @@ abstract class BlockContentTestBase extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'block_content'];
 

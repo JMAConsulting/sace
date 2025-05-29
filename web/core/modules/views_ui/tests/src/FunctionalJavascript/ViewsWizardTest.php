@@ -40,7 +40,7 @@ class ViewsWizardTest extends WebDriverTestBase {
   /**
    * Tests creating a View using the wizard.
    */
-  public function testCreateViewWizard(): void {
+  public function testCreateViewWizard() {
     $this->drupalGet('admin/structure/views/add');
     $page = $this->getSession()->getPage();
 

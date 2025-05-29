@@ -3,7 +3,6 @@
 namespace Drupal\search\Plugin\views\argument;
 
 use Drupal\search\ViewsSearchQuery;
-use Drupal\views\Attribute\ViewsArgument;
 use Drupal\views\Plugin\views\argument\ArgumentPluginBase;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\ViewExecutable;
@@ -13,10 +12,9 @@ use Drupal\views\Views;
  * Argument handler for search keywords.
  *
  * @ingroup views_argument_handlers
+ *
+ * @ViewsArgument("search")
  */
-#[ViewsArgument(
-  id: 'search',
-)]
 class Search extends ArgumentPluginBase {
 
   /**
@@ -36,13 +34,12 @@ class Search extends ArgumentPluginBase {
   /**
    * The search score.
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public string $search_score;
 
   /**
    * {@inheritdoc}
    */
-  public function init(ViewExecutable $view, DisplayPluginBase $display, ?array &$options = NULL) {
+  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
 
     $this->searchType = $this->definition['search_type'];

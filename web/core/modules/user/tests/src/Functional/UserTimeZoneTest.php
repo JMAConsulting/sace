@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Core\Datetime\Entity\DateFormat;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class UserTimeZoneTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'system_test'];
 
@@ -27,7 +27,7 @@ class UserTimeZoneTest extends BrowserTestBase {
   /**
    * Tests the display of dates and time when user-configurable time zones are set.
    */
-  public function testUserTimeZone(): void {
+  public function testUserTimeZone() {
     // Setup date/time settings for Los Angeles time.
     $this->config('system.date')
       ->set('timezone.user.configurable', 1)

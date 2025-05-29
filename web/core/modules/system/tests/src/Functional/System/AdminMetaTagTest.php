@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Tests\BrowserTestBase;
@@ -21,7 +19,7 @@ class AdminMetaTagTest extends BrowserTestBase {
   /**
    * Verify that the meta tag HTML is generated correctly.
    */
-  public function testMetaTag(): void {
+  public function testMetaTag() {
     [$version] = explode('.', \Drupal::VERSION);
     $string = '<meta name="Generator" content="Drupal ' . $version . ' (https://www.drupal.org)" />';
     $this->drupalGet('node');

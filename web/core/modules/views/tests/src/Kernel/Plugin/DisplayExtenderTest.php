@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -26,7 +24,7 @@ class DisplayExtenderTest extends ViewsKernelTestBase {
   /**
    * Tests display extenders.
    */
-  public function testDisplayExtenders(): void {
+  public function testDisplayExtenders() {
     $this->config('views.settings')->set('display_extenders', ['display_extender_test'])->save();
     $this->assertCount(1, Views::getEnabledDisplayExtenders(), 'Make sure that there is only one enabled display extender.');
 
@@ -47,7 +45,7 @@ class DisplayExtenderTest extends ViewsKernelTestBase {
   /**
    * Tests display extenders validation.
    */
-  public function testDisplayExtendersValidate(): void {
+  public function testDisplayExtendersValidate() {
     $this->config('views.settings')->set('display_extenders', ['display_extender_test_3'])->save();
 
     $view = Views::getView('test_view');

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Functional\Views;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -32,7 +30,9 @@ abstract class BlockContentTestBase extends ViewTestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',

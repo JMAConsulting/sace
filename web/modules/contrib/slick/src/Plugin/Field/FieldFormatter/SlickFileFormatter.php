@@ -76,4 +76,13 @@ class SlickFileFormatter extends SlickFileFormatterBase {
     return $storage->isMultiple() && $storage->getSetting('target_type') === 'file';
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * @todo remove post blazy:2.17.
+   */
+  public function buildElement(array &$element, $entity) {
+    $this->blazyOembed->build($element);
+  }
+
 }

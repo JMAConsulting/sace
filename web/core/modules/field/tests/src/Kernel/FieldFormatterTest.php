@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -87,7 +85,7 @@ class FieldFormatterTest extends KernelTestBase {
   /**
    * Tests availability of third party settings in field render arrays.
    */
-  public function testThirdPartySettings(): void {
+  public function testThirdPartySettings() {
     $third_party_settings = [
       'field_test' => [
         'foo' => 'bar',

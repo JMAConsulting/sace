@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Theme;
 
 use Drupal\Component\Utility\Xss;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class ThemeSuggestionsAlterTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['theme_test'];
 
@@ -35,7 +35,7 @@ class ThemeSuggestionsAlterTest extends BrowserTestBase {
   /**
    * Tests that hooks to provide theme suggestions work.
    */
-  public function testTemplateSuggestions(): void {
+  public function testTemplateSuggestions() {
     $this->drupalGet('theme-test/suggestion-provided');
     $this->assertSession()->pageTextContains('Template for testing suggestions provided by the module declaring the theme hook.');
 
@@ -52,7 +52,7 @@ class ThemeSuggestionsAlterTest extends BrowserTestBase {
   /**
    * Tests hook_theme_suggestions_alter().
    */
-  public function testGeneralSuggestionsAlter(): void {
+  public function testGeneralSuggestionsAlter() {
     $this->drupalGet('theme-test/general-suggestion-alter');
     $this->assertSession()->pageTextContains('Original template for testing hook_theme_suggestions_alter().');
     $this->assertSession()->pageTextContains('Hooks: theme_test_theme none');
@@ -77,7 +77,7 @@ class ThemeSuggestionsAlterTest extends BrowserTestBase {
   /**
    * Tests that theme suggestion alter hooks work for templates.
    */
-  public function testTemplateSuggestionsAlter(): void {
+  public function testTemplateSuggestionsAlter() {
     $this->drupalGet('theme-test/suggestion-alter');
     $this->assertSession()->pageTextContains('Original template for testing hook_theme_suggestions_HOOK_alter().');
 
@@ -99,7 +99,7 @@ class ThemeSuggestionsAlterTest extends BrowserTestBase {
   /**
    * Tests that theme suggestion alter hooks work for specific theme calls.
    */
-  public function testSpecificSuggestionsAlter(): void {
+  public function testSpecificSuggestionsAlter() {
     // Test that the default template is rendered.
     $this->drupalGet('theme-test/specific-suggestion-alter');
     $this->assertSession()->pageTextContains('Template for testing specific theme calls.');
@@ -130,7 +130,7 @@ class ThemeSuggestionsAlterTest extends BrowserTestBase {
    * Hook hook_theme_suggestions_alter() should fire before
    * hook_theme_suggestions_HOOK_alter() within an extension (module or theme).
    */
-  public function testExecutionOrder(): void {
+  public function testExecutionOrder() {
     // Install our test theme and module.
     $this->config('system.theme')
       ->set('default', 'test_theme')

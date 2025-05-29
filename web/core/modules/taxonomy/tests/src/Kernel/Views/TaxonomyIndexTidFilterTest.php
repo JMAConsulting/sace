@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Views;
 
 use Drupal\taxonomy\Entity\Term;
@@ -61,7 +59,7 @@ class TaxonomyIndexTidFilterTest extends TaxonomyTestBase {
   /**
    * Tests dependencies are not added for terms that do not exist.
    */
-  public function testConfigDependency(): void {
+  public function testConfigDependency() {
     /** @var \Drupal\views\Entity\View $view */
     $view = View::load('test_filter_taxonomy_index_tid__non_existing_dependency');
 

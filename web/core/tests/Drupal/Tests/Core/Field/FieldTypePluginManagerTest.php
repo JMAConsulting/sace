@@ -79,7 +79,7 @@ class FieldTypePluginManagerTest extends UnitTestCase {
   /**
    * @covers ::getGroupedDefinitions
    */
-  public function testGetGroupedDefinitions(): void {
+  public function testGetGroupedDefinitions() {
     $this->discovery->getDefinitions()->willReturn([
       'telephone' => [
         'category' => 'general',
@@ -132,7 +132,7 @@ class FieldTypePluginManagerTest extends UnitTestCase {
   /**
    * @covers ::getGroupedDefinitions
    */
-  public function testGetGroupedDefinitionsInvalid(): void {
+  public function testGetGroupedDefinitionsInvalid() {
     $this->discovery->getDefinitions()->willReturn([
       'string' => [
         'category' => 'text',
@@ -172,7 +172,7 @@ class FieldTypePluginManagerTest extends UnitTestCase {
   /**
    * @covers ::getGroupedDefinitions
    */
-  public function testGetGroupedDefinitionsEmpty(): void {
+  public function testGetGroupedDefinitionsEmpty() {
     $this->fieldTypeCategoryManager->getDefinitions()->willReturn([]);
     $this->assertEquals([], $this->fieldTypeManager->getGroupedDefinitions([]));
   }

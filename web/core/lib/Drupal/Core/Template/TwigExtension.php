@@ -23,7 +23,6 @@ use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Node;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Twig\Runtime\EscaperRuntime;
 
 /**
  * A class providing Drupal Twig extensions.
@@ -158,18 +157,10 @@ class TwigExtension extends AbstractExtension {
   public function getNodeVisitors() {
     // The node visitor is needed to wrap all variables with
     // render_var -> TwigExtension->renderVar() function.
-    $visitors = [
+    return [
       new TwigNodeVisitor(),
       new TwigNodeVisitorCheckDeprecations(),
     ];
-    if (\in_array('__toString', TwigSandboxPolicy::getMethodsAllowedOnAllObjects(), TRUE)) {
-      // When __toString is an allowed method, there is no point in running
-      // \Twig\Extension\SandboxExtension::ensureToStringAllowed, so we add a
-      // node visitor to remove any CheckToStringNode nodes added by the
-      // sandbox extension.
-      $visitors[] = new RemoveCheckToStringNodeVisitor();
-    }
-    return $visitors;
   }
 
   /**
@@ -470,7 +461,7 @@ class TwigExtension extends AbstractExtension {
       if ($strategy == 'html') {
         return Html::escape($return);
       }
-      return $env->getRuntime(EscaperRuntime::class)->escape($arg, $strategy, $charset, $autoescape);
+      return twig_escape_filter($env, $return, $strategy, $charset, $autoescape);
     }
 
     // This is a normal render array, which is safe by definition, with

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Field\FieldType;
 
 use Drupal\Core\Entity\EntityStorageException;
@@ -55,7 +53,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSavePreHashed(): void {
+  public function testPreSavePreHashed() {
     $entity = EntityTest::create([
       'name' => $this->randomString(),
     ]);
@@ -70,7 +68,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveNewNull(): void {
+  public function testPreSaveNewNull() {
     $entity = EntityTest::create([
       'name' => $this->randomString(),
     ]);
@@ -83,7 +81,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveNewEmptyString(): void {
+  public function testPreSaveNewEmptyString() {
     $entity = EntityTest::create([
       'name' => $this->randomString(),
     ]);
@@ -100,7 +98,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveNewMultipleSpacesString(): void {
+  public function testPreSaveNewMultipleSpacesString() {
     $entity = EntityTest::create([
       'name' => $this->randomString(),
     ]);
@@ -117,7 +115,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveExistingNull(): void {
+  public function testPreSaveExistingNull() {
     $entity = EntityTest::create();
     $entity->test_field = $this->randomString();
     $entity->save();
@@ -133,7 +131,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveExistingEmptyString(): void {
+  public function testPreSaveExistingEmptyString() {
     $entity = EntityTest::create();
     $entity->test_field = $this->randomString();
     $entity->save();
@@ -149,7 +147,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveExistingMultipleSpacesString(): void {
+  public function testPreSaveExistingMultipleSpacesString() {
     $entity = EntityTest::create();
     $entity->test_field = $this->randomString();
     $entity->save();
@@ -164,7 +162,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveExceptionNew(): void {
+  public function testPreSaveExceptionNew() {
     $entity = EntityTest::create();
     $entity->test_field = str_repeat('a', PasswordInterface::PASSWORD_MAX_LENGTH + 1);
     $this->expectException(EntityStorageException::class);
@@ -175,7 +173,7 @@ class PasswordItemTest extends FieldKernelTestBase {
   /**
    * @covers ::preSave
    */
-  public function testPreSaveExceptionExisting(): void {
+  public function testPreSaveExceptionExisting() {
     $entity = EntityTest::create();
     $entity->test_field = 'will_be_hashed';
     $entity->save();

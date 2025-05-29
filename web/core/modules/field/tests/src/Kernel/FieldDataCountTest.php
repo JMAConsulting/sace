@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Database\Database;
@@ -48,7 +46,7 @@ class FieldDataCountTest extends FieldKernelTestBase {
   /**
    * Tests entityCount() and hadData() methods.
    */
-  public function testEntityCountAndHasData(): void {
+  public function testEntityCountAndHasData() {
     // Create a field with a cardinality of 2 to show that we are counting
     // entities and not rows in a table.
     /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage */
@@ -146,7 +144,7 @@ class FieldDataCountTest extends FieldKernelTestBase {
   /**
    * Verify that we can count a table that contains an entry with index 0.
    */
-  public function testCountWithIndex0(): void {
+  public function testCountWithIndex0() {
     // Create a field that will require dedicated storage.
     /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage */
     $field_storage = FieldStorageConfig::create([

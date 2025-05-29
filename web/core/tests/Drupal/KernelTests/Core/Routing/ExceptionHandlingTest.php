@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Routing;
 
 use Drupal\Component\Utility\Html;
@@ -34,7 +32,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests on a route with a non-supported HTTP method.
    */
-  public function test405(): void {
+  public function test405() {
     $request = Request::create('/router_test/test15', 'PATCH');
 
     /** @var \Symfony\Component\HttpKernel\HttpKernelInterface $kernel */
@@ -47,7 +45,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests a route with a non-supported _format parameter.
    */
-  public function test406(): void {
+  public function test406() {
     $request = Request::create('/router_test/test2?_format=non_existent_format');
 
     /** @var \Symfony\Component\HttpKernel\HttpKernelInterface $kernel */
@@ -60,7 +58,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests the exception handling for json and 403 status code.
    */
-  public function testJson403(): void {
+  public function testJson403() {
     $request = Request::create('/router_test/test15');
     $request->query->set('_format', 'json');
     $request->setRequestFormat('json');
@@ -78,7 +76,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests the exception handling for json and 404 status code.
    */
-  public function testJson404(): void {
+  public function testJson404() {
     $request = Request::create('/not-found');
     $request->query->set('_format', 'json');
     $request->setRequestFormat('json');
@@ -95,7 +93,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests the exception handling for HTML and 403 status code.
    */
-  public function testHtml403(): void {
+  public function testHtml403() {
     $request = Request::create('/router_test/test15');
     $request->setFormat('html', ['text/html']);
 
@@ -110,7 +108,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests the exception handling for HTML and 404 status code.
    */
-  public function testHtml404(): void {
+  public function testHtml404() {
     $request = Request::create('/not-found');
     $request->setFormat('html', ['text/html']);
 
@@ -125,7 +123,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests that the exception response is executed in the original context.
    */
-  public function testExceptionResponseGeneratedForOriginalRequest(): void {
+  public function testExceptionResponseGeneratedForOriginalRequest() {
     // Test with 404 path pointing to a route that uses '_controller'.
     $response = $this->doTest404Route('/router_test/test25');
     $this->assertStringContainsString('/not-found', $response->getContent());
@@ -163,7 +161,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests if exception backtraces are properly escaped when output to HTML.
    */
-  public function testBacktraceEscaping(): void {
+  public function testBacktraceEscaping() {
     // Enable verbose error logging.
     $this->config('system.logging')->set('error_level', ERROR_REPORTING_DISPLAY_VERBOSE)->save();
 
@@ -185,7 +183,7 @@ class ExceptionHandlingTest extends KernelTestBase {
   /**
    * Tests exception message escaping.
    */
-  public function testExceptionEscaping(): void {
+  public function testExceptionEscaping() {
     // Enable verbose error logging.
     $this->config('system.logging')->set('error_level', ERROR_REPORTING_DISPLAY_VERBOSE)->save();
 

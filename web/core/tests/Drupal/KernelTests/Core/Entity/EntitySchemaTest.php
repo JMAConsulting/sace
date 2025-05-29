@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -21,7 +19,9 @@ class EntitySchemaTest extends EntityKernelTestBase {
   use EntityDefinitionTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['entity_test_update'];
 
@@ -59,7 +59,7 @@ class EntitySchemaTest extends EntityKernelTestBase {
   /**
    * Tests the custom bundle field creation and deletion.
    */
-  public function testCustomFieldCreateDelete(): void {
+  public function testCustomFieldCreateDelete() {
     // Install the module which adds the field.
     $this->installModule('entity_schema_test');
     $storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('entity_test_update');
@@ -100,7 +100,7 @@ class EntitySchemaTest extends EntityKernelTestBase {
   /**
    * Tests that entity schema responds to changes in the entity type definition.
    */
-  public function testEntitySchemaUpdate(): void {
+  public function testEntitySchemaUpdate() {
     $this->installModule('entity_schema_test');
     $storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('entity_test_update');
     \Drupal::service('field_storage_definition.listener')->onFieldStorageDefinitionCreate($storage_definitions['custom_base_field']);
@@ -145,7 +145,7 @@ class EntitySchemaTest extends EntityKernelTestBase {
    *
    * @dataProvider providerTestPrimaryKeyUpdate
    */
-  public function testPrimaryKeyUpdate($entity_type_id, $field_name): void {
+  public function testPrimaryKeyUpdate($entity_type_id, $field_name) {
     // EntityKernelTestBase::setUp() already installs the schema for the
     // 'entity_test' entity type.
     if ($entity_type_id !== 'entity_test') {
@@ -157,20 +157,32 @@ class EntitySchemaTest extends EntityKernelTestBase {
     $entity_type = $update_manager->getEntityType($entity_type_id);
 
     /* @see \Drupal\Core\Entity\ContentEntityBase::baseFieldDefinitions() */
-    $field = match ($field_name) {
-      'id' => BaseFieldDefinition::create('integer')
-        ->setLabel('ID')
-        ->setReadOnly(TRUE)
-        ->setSetting('unsigned', TRUE),
-      'revision_id' => BaseFieldDefinition::create('integer')
-        ->setLabel('Revision ID')
-        ->setReadOnly(TRUE)
-        ->setSetting('unsigned', TRUE),
-      'langcode' => BaseFieldDefinition::create('language')
-        ->setLabel('Language')
-        ->setRevisionable($entity_type->isRevisionable())
-        ->setTranslatable($entity_type->isTranslatable()),
-    };
+    switch ($field_name) {
+      case 'id':
+        $field = BaseFieldDefinition::create('integer')
+          ->setLabel('ID')
+          ->setReadOnly(TRUE)
+          ->setSetting('unsigned', TRUE);
+        break;
+
+      case 'revision_id':
+        $field = BaseFieldDefinition::create('integer')
+          ->setLabel('Revision ID')
+          ->setReadOnly(TRUE)
+          ->setSetting('unsigned', TRUE);
+        break;
+
+      case 'langcode':
+        $field = BaseFieldDefinition::create('language')
+          ->setLabel('Language');
+        if ($entity_type->isRevisionable()) {
+          $field->setRevisionable(TRUE);
+        }
+        if ($entity_type->isTranslatable()) {
+          $field->setTranslatable(TRUE);
+        }
+        break;
+    }
 
     $field
       ->setName($field_name)
@@ -270,7 +282,7 @@ class EntitySchemaTest extends EntityKernelTestBase {
    * @return array
    *   An array of test cases consisting of an entity type ID and a field name.
    */
-  public static function providerTestPrimaryKeyUpdate() {
+  public function providerTestPrimaryKeyUpdate() {
     // Build up test cases for all possible entity type configurations.
     // For each entity type we test reinstalling each field that is part of
     // any table's primary key.
@@ -302,7 +314,7 @@ class EntitySchemaTest extends EntityKernelTestBase {
   /**
    * Tests that modifying the UUID field for a translatable entity works.
    */
-  public function testModifyingTranslatableColumnSchema(): void {
+  public function testModifyingTranslatableColumnSchema() {
     $this->installModule('entity_schema_test');
     $this->updateEntityType(TRUE);
     $fields = ['revision_log', 'uuid'];
@@ -319,7 +331,7 @@ class EntitySchemaTest extends EntityKernelTestBase {
   /**
    * Tests fields from an uninstalled module are removed from the schema.
    */
-  public function testCleanUpStorageDefinition(): void {
+  public function testCleanUpStorageDefinition() {
     // Find all the entity types provided by the entity_test module and install
     // the schema for them.
     $entity_type_ids = [];
@@ -374,7 +386,7 @@ class EntitySchemaTest extends EntityKernelTestBase {
   /**
    * Tests the installed storage schema for identifier fields.
    */
-  public function testIdentifierSchema(): void {
+  public function testIdentifierSchema() {
     $this->installEntitySchema('entity_test_rev');
 
     $key_value_store = \Drupal::keyValue('entity.storage_schema.sql');

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 use Drupal\KernelTests\AssertConfigTrait;
@@ -28,7 +26,7 @@ class MinimalInstallerTest extends ConfigAfterInstallerTestBase {
   /**
    * Ensures that the exported minimal configuration is up to date.
    */
-  public function testMinimalConfig(): void {
+  public function testMinimalConfig() {
     $this->assertInstalledConfig([]);
   }
 

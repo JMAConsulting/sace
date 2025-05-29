@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_translation\Functional;
 
 use Drupal\Core\Url;
@@ -85,7 +83,7 @@ class ContentTranslationLinkTagTest extends BrowserTestBase {
   /**
    * Tests alternate link tag found for entity types with canonical links.
    */
-  public function testCanonicalAlternateTags(): void {
+  public function testCanonicalAlternateTags() {
     /** @var \Drupal\Core\Language\LanguageManagerInterface $languageManager */
     $languageManager = $this->container->get('language_manager');
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
@@ -142,7 +140,7 @@ class ContentTranslationLinkTagTest extends BrowserTestBase {
   /**
    * Tests alternate link tag missing for entity types without canonical links.
    */
-  public function testCanonicalAlternateTagsMissing(): void {
+  public function testCanonicalAlternateTagsMissing() {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
     $entityTypeManager = $this->container->get('entity_type.manager');
 

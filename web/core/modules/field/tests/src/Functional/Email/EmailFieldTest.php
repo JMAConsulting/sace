@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\Email;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -17,7 +15,9 @@ use Drupal\Tests\BrowserTestBase;
 class EmailFieldTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'entity_test', 'field_ui'];
 
@@ -56,7 +56,7 @@ class EmailFieldTest extends BrowserTestBase {
   /**
    * Tests email field.
    */
-  public function testEmailField(): void {
+  public function testEmailField() {
     // Create a field with settings to validate.
     $field_name = $this->randomMachineName();
     $this->fieldStorage = FieldStorageConfig::create([

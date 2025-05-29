@@ -53,7 +53,7 @@ class TextFieldTest extends UnitTestCase {
   /**
    * @covers ::defineValueProcessPipeline
    */
-  public function testFilteredTextValueProcessPipeline(): void {
+  public function testFilteredTextValueProcessPipeline() {
     $field_info = [
       'widget_type' => 'text_textfield',
     ];
@@ -76,7 +76,7 @@ class TextFieldTest extends UnitTestCase {
   /**
    * @covers ::defineValueProcessPipeline
    */
-  public function testBooleanTextImplicitValueProcessPipeline(): void {
+  public function testBooleanTextImplicitValueProcessPipeline() {
     $info = [
       'widget_type' => 'optionwidgets_onoff',
       'global_settings' => [
@@ -101,7 +101,7 @@ class TextFieldTest extends UnitTestCase {
   /**
    * @covers ::defineValueProcessPipeline
    */
-  public function testBooleanTextExplicitValueProcessPipeline(): void {
+  public function testBooleanTextExplicitValueProcessPipeline() {
     $info = [
       'widget_type' => 'optionwidgets_onoff',
       'global_settings' => [
@@ -126,7 +126,7 @@ class TextFieldTest extends UnitTestCase {
   /**
    * Data provider for testGetFieldType().
    */
-  public static function getFieldTypeProvider() {
+  public function getFieldTypeProvider() {
     return [
       ['string_long', 'text_textfield', ['text_processing' => FALSE]],
       ['string', 'text_textfield', [
@@ -163,7 +163,7 @@ class TextFieldTest extends UnitTestCase {
    * @covers ::getFieldType
    * @dataProvider getFieldTypeProvider
    */
-  public function testGetFieldType($expected_type, $widget_type, array $settings = []): void {
+  public function testGetFieldType($expected_type, $widget_type, array $settings = []) {
     $row = new Row();
     $row->setSourceProperty('widget_type', $widget_type);
     $row->setSourceProperty('global_settings', $settings);

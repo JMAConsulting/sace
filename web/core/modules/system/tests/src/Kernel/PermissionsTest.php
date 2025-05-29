@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -22,7 +20,7 @@ class PermissionsTest extends KernelTestBase {
   /**
    * Tests the 'access content' permission is provided by the System module.
    */
-  public function testAccessContentPermission(): void {
+  public function testAccessContentPermission() {
     // Uninstalling modules requires the users_data table to exist.
     $this->installSchema('user', ['users_data']);
 

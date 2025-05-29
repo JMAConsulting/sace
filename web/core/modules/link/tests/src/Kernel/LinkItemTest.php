@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\link\Kernel;
 
 use Drupal\Component\Utility\UrlHelper;
@@ -22,7 +20,9 @@ use Drupal\link\LinkItemInterface;
 class LinkItemTest extends FieldKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['link'];
 
@@ -71,7 +71,7 @@ class LinkItemTest extends FieldKernelTestBase {
   /**
    * Tests using entity fields of the link field type.
    */
-  public function testLinkItem(): void {
+  public function testLinkItem() {
     // Create entity.
     $entity = EntityTest::create();
     $url = 'https://www.drupal.org?test_param=test_value';

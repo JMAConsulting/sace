@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Theme;
 
 use Drupal\Tests\BrowserTestBase;
@@ -71,7 +69,7 @@ class ClaroLayoutBuilderTest extends BrowserTestBase {
    *
    * @see claro.theme
    */
-  public function testContextualLinks(): void {
+  public function testContextualLinks() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

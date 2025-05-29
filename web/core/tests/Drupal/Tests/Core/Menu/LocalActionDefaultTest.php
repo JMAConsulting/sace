@@ -81,7 +81,7 @@ class LocalActionDefaultTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Menu\LocalTaskDefault::getTitle()
    */
-  public function testGetTitle(): void {
+  public function testGetTitle() {
     $this->pluginDefinition['title'] = (new TranslatableMarkup('Example', [], [], $this->stringTranslation));
     $this->stringTranslation->expects($this->once())
       ->method('translateString')
@@ -97,7 +97,7 @@ class LocalActionDefaultTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Menu\LocalTaskDefault::getTitle()
    */
-  public function testGetTitleWithContext(): void {
+  public function testGetTitleWithContext() {
     $this->pluginDefinition['title'] = (new TranslatableMarkup('Example', [], ['context' => 'context'], $this->stringTranslation));
     $this->stringTranslation->expects($this->once())
       ->method('translateString')
@@ -111,7 +111,7 @@ class LocalActionDefaultTest extends UnitTestCase {
   /**
    * Tests the getTitle method with title arguments.
    */
-  public function testGetTitleWithTitleArguments(): void {
+  public function testGetTitleWithTitleArguments() {
     $this->pluginDefinition['title'] = (new TranslatableMarkup('Example @test', ['@test' => 'value'], [], $this->stringTranslation));
     $this->stringTranslation->expects($this->once())
       ->method('translateString')

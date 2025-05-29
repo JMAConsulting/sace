@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Views;
 
 use Drupal\comment\Entity\Comment;
@@ -107,7 +105,7 @@ class CommentUserNameTest extends ViewsKernelTestBase {
   /**
    * Tests the username formatter.
    */
-  public function testUsername(): void {
+  public function testUsername() {
     $view_id = $this->randomMachineName();
     $view = View::create([
       'id' => $view_id,

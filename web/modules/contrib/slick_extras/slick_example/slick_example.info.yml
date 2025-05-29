@@ -1,13 +1,16 @@
 name: Slick Example
 type: module
 description: 'Provides Slick Carousel examples.'
-core_version_requirement: '>=9.4'
+core_version_requirement: ^8.8 || ^9 || ^10
 package: Slick
 dependencies:
   - slick_extras:slick_extras
-  - slick_views:slick_views (>= 3.x)
+  - slick_views:slick_views (>= 2.8)
 
-# Information added by Drupal.org packaging script on 2024-04-28
-version: '2.0.1'
+# Add a fake version so local drush and Git checkouts do not fail dependencies.
+# version: 8.x-1.x
+
+# Information added by Drupal.org packaging script on 2023-09-19
+version: '8.x-1.0-rc8'
 project: 'slick_extras'
-datestamp: 1714298914
+datestamp: 1695136579

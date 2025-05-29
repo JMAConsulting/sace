@@ -10,7 +10,6 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
  * General Tour tests that require JavaScript.
  *
  * @group tour
- * @group legacy
  */
 class TourJavascriptTest extends WebDriverTestBase {
 
@@ -44,7 +43,7 @@ class TourJavascriptTest extends WebDriverTestBase {
   /**
    * Confirm the 'tips' and 'tour 'query arguments.
    */
-  public function testQueryArg(): void {
+  public function testQueryArg() {
     $assert_session = $this->assertSession();
 
     $this->drupalGet('tour-test-1');
@@ -73,7 +72,7 @@ class TourJavascriptTest extends WebDriverTestBase {
   /**
    * Tests stepping through a tour.
    */
-  public function testGeneralTourUse(): void {
+  public function testGeneralTourUse() {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 

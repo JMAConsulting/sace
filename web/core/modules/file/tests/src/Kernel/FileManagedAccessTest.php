@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
@@ -32,7 +30,7 @@ class FileManagedAccessTest extends KernelTestBase {
   /**
    * Tests if public file is always accessible.
    */
-  public function testFileAccess(): void {
+  public function testFileAccess() {
     $this->installEntitySchema('user');
     $this->installEntitySchema('file');
     $this->installSchema('file', ['file_usage']);

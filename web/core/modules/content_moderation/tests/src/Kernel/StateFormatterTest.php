@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\Core\Render\RenderContext;
@@ -19,7 +17,9 @@ class StateFormatterTest extends KernelTestBase {
   use ContentModerationTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'workflows',
@@ -48,7 +48,7 @@ class StateFormatterTest extends KernelTestBase {
    *
    * @dataProvider formatterTestCases
    */
-  public function testStateFieldFormatter($field_value, $formatter_settings, $expected_output): void {
+  public function testStateFieldFormatter($field_value, $formatter_settings, $expected_output) {
     $entity = EntityTestRev::create([
       'moderation_state' => $field_value,
     ]);
@@ -64,7 +64,7 @@ class StateFormatterTest extends KernelTestBase {
   /**
    * Test cases for testStateFieldFormatter().
    */
-  public static function formatterTestCases() {
+  public function formatterTestCases() {
     return [
       'Draft State' => [
         'draft',

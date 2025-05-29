@@ -21,7 +21,7 @@ class SkipOpTest extends TestCase {
   /**
    * @covers ::process
    */
-  public function testProcess(): void {
+  public function testProcess() {
     $fixtures = new Fixtures();
     $destination = $fixtures->destinationPath('[web-root]/robots.txt');
     $options = ScaffoldOptions::create([]);

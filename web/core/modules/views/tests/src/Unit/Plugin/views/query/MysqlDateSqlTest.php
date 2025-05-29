@@ -37,7 +37,7 @@ class MysqlDateSqlTest extends UnitTestCase {
    *
    * @covers ::getDateField
    */
-  public function testGetDateField(): void {
+  public function testGetDateField() {
     $date_sql = new MysqlDateSql($this->database);
 
     $expected = 'foo.field';
@@ -54,7 +54,7 @@ class MysqlDateSqlTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetDateFormat
    */
-  public function testGetDateFormat($field, $format, $expected_format): void {
+  public function testGetDateFormat($field, $format, $expected_format) {
     $date_sql = new MysqlDateSql($this->database);
 
     $this->assertEquals("DATE_FORMAT($field, '$expected_format')", $date_sql->getDateFormat($field, $format));
@@ -63,7 +63,7 @@ class MysqlDateSqlTest extends UnitTestCase {
   /**
    * Provider for date formatting test.
    */
-  public static function providerTestGetDateFormat() {
+  public function providerTestGetDateFormat() {
     return [
       ['foo.field', 'Y-y-M-m', '%Y-%y-%b-%m'],
       ['bar.field', 'n-F D d l', '%c-%M %a %d %W'],
@@ -76,7 +76,7 @@ class MysqlDateSqlTest extends UnitTestCase {
    *
    * @covers ::setFieldTimezoneOffset
    */
-  public function testSetFieldTimezoneOffset(): void {
+  public function testSetFieldTimezoneOffset() {
     $date_sql = new MysqlDateSql($this->database);
 
     $field = 'foobar.field';
@@ -89,7 +89,7 @@ class MysqlDateSqlTest extends UnitTestCase {
    *
    * @covers ::setTimezoneOffset
    */
-  public function testSetTimezoneOffset(): void {
+  public function testSetTimezoneOffset() {
     $database = $this->prophesize(Connection::class);
     $database->query("SET @@session.time_zone = '42'")->shouldBeCalledTimes(1);
     $date_sql = new MysqlDateSql($database->reveal());

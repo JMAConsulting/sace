@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Functional;
 
 use Drupal\node\NodeInterface;
@@ -18,7 +16,9 @@ class ModerationLocaleTest extends ModerationStateTestBase {
   use ContentTranslationTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'node',
@@ -26,14 +26,6 @@ class ModerationLocaleTest extends ModerationStateTestBase {
     'locale',
     'content_translation',
   ];
-
-  /**
-   * {@inheritdoc}
-   *
-   * @todo Remove and fix test to not rely on super user.
-   * @see https://www.drupal.org/project/drupal/issues/3437620
-   */
-  protected bool $usesSuperUserAccessPolicy = TRUE;
 
   /**
    * {@inheritdoc}
@@ -66,7 +58,7 @@ class ModerationLocaleTest extends ModerationStateTestBase {
   /**
    * Tests article translations can be moderated separately.
    */
-  public function testTranslateModeratedContent(): void {
+  public function testTranslateModeratedContent() {
     // Create a published article in English.
     $edit = [
       'title[0][value]' => 'Published English node',
@@ -216,7 +208,7 @@ class ModerationLocaleTest extends ModerationStateTestBase {
   /**
    * Tests that individual translations can be moderated independently.
    */
-  public function testLanguageIndependentContentModeration(): void {
+  public function testLanguageIndependentContentModeration() {
     // Create a published article in English (revision 1).
     $this->drupalGet('node/add/article');
     $node = $this->submitNodeForm('Test 1.1 EN', 'published');
@@ -413,7 +405,7 @@ class ModerationLocaleTest extends ModerationStateTestBase {
   /**
    * Checks that new translation values are populated properly.
    */
-  public function testNewTranslationSourceValues(): void {
+  public function testNewTranslationSourceValues() {
     // Create a published article in Italian (revision 1).
     $this->drupalGet('node/add/article');
     $node = $this->submitNodeForm('Test 1.1 IT', 'published', TRUE, 'it');
@@ -450,7 +442,7 @@ class ModerationLocaleTest extends ModerationStateTestBase {
   /**
    * Tests article revision history shows revisions for the correct translation.
    */
-  public function testTranslationRevisionsHistory(): void {
+  public function testTranslationRevisionsHistory() {
     // Create a published article in English.
     $edit = [
       'title[0][value]' => 'English node',

@@ -5,7 +5,6 @@ namespace Drupal\layout_builder\Form;
 use Drupal\Core\Ajax\AjaxFormHelperTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\WorkspaceDynamicSafeFormInterface;
 use Drupal\layout_builder\Context\LayoutBuilderContextTrait;
 use Drupal\layout_builder\Controller\LayoutRebuildTrait;
 use Drupal\layout_builder\LayoutBuilderHighlightTrait;
@@ -19,13 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @internal
  *   Form classes are internal.
  */
-class MoveBlockForm extends FormBase implements WorkspaceDynamicSafeFormInterface {
+class MoveBlockForm extends FormBase {
 
   use AjaxFormHelperTrait;
   use LayoutBuilderContextTrait;
   use LayoutBuilderHighlightTrait;
   use LayoutRebuildTrait;
-  use WorkspaceSafeFormTrait;
 
   /**
    * The section storage.
@@ -107,7 +105,7 @@ class MoveBlockForm extends FormBase implements WorkspaceDynamicSafeFormInterfac
    * @return array
    *   The form array.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?SectionStorageInterface $section_storage = NULL, $delta = NULL, $region = NULL, $uuid = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, SectionStorageInterface $section_storage = NULL, $delta = NULL, $region = NULL, $uuid = NULL) {
     $parameters = array_slice(func_get_args(), 2);
     foreach ($parameters as $parameter) {
       if (is_null($parameter)) {

@@ -1,17 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional;
 
-use Drupal\Component\Utility\Html;
 use Drupal\file\Entity\File;
 
 /**
  * Tests the 'managed_file' element type.
  *
  * @group file
- * @group #slow
  * @todo Create a FileTestBase class and move FileFieldTestBase methods
  *   that aren't related to fields into it.
  */
@@ -25,7 +21,7 @@ class FileManagedFileElementTest extends FileFieldTestBase {
   /**
    * Tests the managed_file element type.
    */
-  public function testManagedFile(): void {
+  public function testManagedFile() {
     // Check that $element['#size'] is passed to the child upload element.
     $this->drupalGet('file/test');
     $field = $this->assertSession()->fieldExists("files[nested_file]");
@@ -41,14 +37,8 @@ class FileManagedFileElementTest extends FileFieldTestBase {
           $input_base_name = $tree ? 'nested_file' : 'file';
           $file_field_name = $multiple ? 'files[' . $input_base_name . '][]' : 'files[' . $input_base_name . ']';
 
-          $this->drupalGet($path);
-
-          // Ensure the aria-describedby relationship works as expected.
-          $input_id = Html::getId('edit_' . $input_base_name);
-          $this->assertSession()->elementExists('css', '#' . $input_id . '--description');
-          $this->assertSession()->elementExists('css', '[aria-describedby="' . $input_id . '--description"]');
-
           // Submit without a file.
+          $this->drupalGet($path);
           $this->submitForm([], 'Save');
           $this->assertSession()->pageTextContains("The file ids are .");
 
@@ -156,7 +146,7 @@ class FileManagedFileElementTest extends FileFieldTestBase {
   /**
    * Ensure that warning is shown if file on the field has been removed.
    */
-  public function testManagedFileRemoved(): void {
+  public function testManagedFileRemoved() {
     $this->drupalGet('file/test/1/0/1');
     $test_file = $this->getTestFile('text');
     $file_field_name = 'files[nested_file][]';
@@ -177,7 +167,7 @@ class FileManagedFileElementTest extends FileFieldTestBase {
   /**
    * Tests file names have leading . removed.
    */
-  public function testFileNameTrim(): void {
+  public function testFileNameTrim() {
     file_put_contents('public://.leading-period.txt', $this->randomString(32));
     $last_fid_prior = $this->getLastFileId();
     $this->drupalGet('file/test/0/0/0');
@@ -191,7 +181,7 @@ class FileManagedFileElementTest extends FileFieldTestBase {
   /**
    * Ensure a file entity can be saved when the file does not exist on disk.
    */
-  public function testFileRemovedFromDisk(): void {
+  public function testFileRemovedFromDisk() {
     $this->drupalGet('file/test/1/0/1');
     $test_file = $this->getTestFile('text');
     $file_field_name = 'files[nested_file][]';
@@ -214,7 +204,7 @@ class FileManagedFileElementTest extends FileFieldTestBase {
   /**
    * Verify that unused permanent files can be used.
    */
-  public function testUnusedPermanentFileValidation(): void {
+  public function testUnusedPermanentFileValidation() {
 
     // Create a permanent file without usages.
     $file = $this->getTestFile('image');

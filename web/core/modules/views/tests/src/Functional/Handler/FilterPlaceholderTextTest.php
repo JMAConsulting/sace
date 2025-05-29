@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Handler;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -33,7 +31,7 @@ class FilterPlaceholderTextTest extends ViewTestBase {
   /**
    * Tests that HTML placeholders are added, when appropriate.
    */
-  public function testPlaceholderText(): void {
+  public function testPlaceholderText() {
     $this->drupalGet('placeholder-text-test');
 
     // String filter that has no placeholder configured.

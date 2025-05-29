@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config\Storage;
 
 use Drupal\Core\Config\FileStorage;
@@ -44,7 +42,7 @@ class CachedStorageTest extends ConfigStorageTestBase {
   /**
    * {@inheritdoc}
    */
-  public function testInvalidStorage(): void {
+  public function testInvalidStorage() {
     $this->markTestSkipped('No-op as this test does not make sense');
   }
 

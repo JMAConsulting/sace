@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Entity\EntityStorageException;
@@ -20,11 +18,13 @@ use Drupal\field\Entity\FieldStorageConfig;
 class FieldStorageCrudTest extends FieldKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [];
 
-  // @todo Test creation with
+  // TODO : test creation with
   // - a full fledged $field structure, check that all the values are there
   // - a minimal $field structure, check all default values are set
   // defer actual $field comparison to a helper function, used for the two cases above
@@ -32,7 +32,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests the creation of a field storage.
    */
-  public function testCreate(): void {
+  public function testCreate() {
     $field_storage_definition = [
       'field_name' => 'field_2',
       'entity_type' => 'entity_test',
@@ -187,7 +187,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
    * This behavior is needed to allow field storage creation within updates,
    * since plugin classes (and thus the field type schema) cannot be accessed.
    */
-  public function testCreateWithExplicitSchema(): void {
+  public function testCreateWithExplicitSchema() {
     $schema = [
       'dummy' => 'foobar',
     ];
@@ -203,7 +203,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests reading field storage definitions.
    */
-  public function testRead(): void {
+  public function testRead() {
     $field_storage_definition = [
       'field_name' => 'field_1',
       'entity_type' => 'entity_test',
@@ -242,7 +242,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests creation of indexes on data column.
    */
-  public function testIndexes(): void {
+  public function testIndexes() {
     // Check that indexes specified by the field type are used by default.
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'field_1',
@@ -292,7 +292,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests the deletion of a field storage.
    */
-  public function testDeleteNoData(): void {
+  public function testDeleteNoData() {
     // Deleting and purging field storages with data is tested in
     // \Drupal\Tests\field\Kernel\BulkDeleteTest.
 
@@ -372,7 +372,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
     }
   }
 
-  public function testUpdateFieldType(): void {
+  public function testUpdateFieldType() {
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'field_type',
       'entity_type' => 'entity_test',
@@ -393,7 +393,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests changing a field storage type.
    */
-  public function testUpdateEntityType(): void {
+  public function testUpdateEntityType() {
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'field_type',
       'entity_type' => 'entity_test',
@@ -411,7 +411,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests changing a field storage entity type.
    */
-  public function testUpdateEntityTargetType(): void {
+  public function testUpdateEntityTargetType() {
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'field_type',
       'entity_type' => 'entity_test',
@@ -429,7 +429,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests updating a field storage.
    */
-  public function testUpdate(): void {
+  public function testUpdate() {
     // Create a field with a defined cardinality, so that we can ensure it's
     // respected. Since cardinality enforcement is consistent across database
     // systems, it makes a good test case.
@@ -471,7 +471,7 @@ class FieldStorageCrudTest extends FieldKernelTestBase {
   /**
    * Tests field type modules forbidding an update.
    */
-  public function testUpdateForbid(): void {
+  public function testUpdateForbid() {
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'forbidden',
       'entity_type' => 'entity_test',

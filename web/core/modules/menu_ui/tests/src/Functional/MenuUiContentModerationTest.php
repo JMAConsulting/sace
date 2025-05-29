@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_ui\Functional;
 
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -18,7 +16,9 @@ class MenuUiContentModerationTest extends BrowserTestBase {
   use ContentModerationTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -56,7 +56,7 @@ class MenuUiContentModerationTest extends BrowserTestBase {
   /**
    * Tests that node drafts can not modify the menu settings.
    */
-  public function testMenuUiWithPendingRevisions(): void {
+  public function testMenuUiWithPendingRevisions() {
     $editor = $this->drupalCreateUser([
       'administer nodes',
       'administer menu',
@@ -192,7 +192,7 @@ class MenuUiContentModerationTest extends BrowserTestBase {
   /**
    * Tests that unpublished content can be selected through the menu UI.
    */
-  public function testMenuUiWithUnpublishedContent(): void {
+  public function testMenuUiWithUnpublishedContent() {
     $editor_with_unpublished_content_access = $this->drupalCreateUser([
       'administer nodes',
       'administer menu',

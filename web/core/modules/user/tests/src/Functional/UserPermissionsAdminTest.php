@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -22,7 +20,7 @@ class UserPermissionsAdminTest extends BrowserTestBase {
   /**
    * Tests granting and revoking permissions via the UI sorts permissions.
    */
-  public function testPermissionsSorting(): void {
+  public function testPermissionsSorting() {
     $role = Role::create(['id' => 'test_role', 'label' => 'Test role']);
     // Start the role with a permission that is near the end of the alphabet.
     $role->grantPermission('view user email addresses');

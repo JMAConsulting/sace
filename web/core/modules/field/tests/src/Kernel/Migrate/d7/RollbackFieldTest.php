@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\Migrate\d7;
 
 use Drupal\field\Entity\FieldStorageConfig;
@@ -17,7 +15,7 @@ class RollbackFieldTest extends MigrateFieldTest {
   /**
    * Tests migrating D7 fields to field_storage_config entities, then rolling back.
    */
-  public function testFields(): void {
+  public function testFields() {
     // Test that the fields have migrated (prior to rollback).
     parent::testFields();
 

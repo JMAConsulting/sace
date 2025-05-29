@@ -6,7 +6,6 @@ namespace Drupal\Tests\Component\Assertion;
 
 use PHPUnit\Framework\TestCase;
 use Drupal\Component\Assertion\Inspector;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @coversDefaultClass \Drupal\Component\Assertion\Inspector
@@ -14,17 +13,12 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
  */
 class InspectorTest extends TestCase {
 
-  use ExpectDeprecationTrait;
-
   /**
    * Tests asserting argument is an array or traversable object.
    *
    * @covers ::assertTraversable
-   *
-   * @group legacy
    */
-  public function testAssertTraversable(): void {
-    $this->expectDeprecation('Drupal\Component\Assertion\Inspector::assertTraversable() is deprecated in drupal:10.3.0 and is removed from drupal:11.0.0. Use is_iterable() instead. See https://www.drupal.org/node/3422775');
+  public function testAssertTraversable() {
     $this->assertTrue(Inspector::assertTraversable([]));
     $this->assertTrue(Inspector::assertTraversable(new \ArrayObject()));
     $this->assertFalse(Inspector::assertTraversable(new \stdClass()));
@@ -37,11 +31,11 @@ class InspectorTest extends TestCase {
    * @covers ::assertAllStrings
    * @dataProvider providerTestAssertAllStrings
    */
-  public function testAssertAllStrings($input, $expected): void {
+  public function testAssertAllStrings($input, $expected) {
     $this->assertSame($expected, Inspector::assertAllStrings($input));
   }
 
-  public static function providerTestAssertAllStrings() {
+  public function providerTestAssertAllStrings() {
     $data = [
       'empty-array' => [[], TRUE],
       'array-with-strings' => [['foo', 'bar'], TRUE],
@@ -72,7 +66,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllStringable
    */
-  public function testAssertAllStringable(): void {
+  public function testAssertAllStringable() {
     $this->assertTrue(Inspector::assertAllStringable([]));
     $this->assertTrue(Inspector::assertAllStringable(['foo', 'bar']));
     $this->assertFalse(Inspector::assertAllStringable('foo'));
@@ -84,7 +78,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllArrays
    */
-  public function testAssertAllArrays(): void {
+  public function testAssertAllArrays() {
     $this->assertTrue(Inspector::assertAllArrays([]));
     $this->assertTrue(Inspector::assertAllArrays([[], []]));
     $this->assertFalse(Inspector::assertAllArrays([[], 'foo']));
@@ -95,7 +89,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertStrictArray
    */
-  public function testAssertStrictArray(): void {
+  public function testAssertStrictArray() {
     $this->assertTrue(Inspector::assertStrictArray([]));
     $this->assertTrue(Inspector::assertStrictArray(['bar', 'foo']));
     $this->assertFalse(Inspector::assertStrictArray(['foo' => 'bar', 'bar' => 'foo']));
@@ -106,7 +100,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllStrictArrays
    */
-  public function testAssertAllStrictArrays(): void {
+  public function testAssertAllStrictArrays() {
     $this->assertTrue(Inspector::assertAllStrictArrays([]));
     $this->assertTrue(Inspector::assertAllStrictArrays([[], []]));
     $this->assertFalse(Inspector::assertAllStrictArrays([['foo' => 'bar', 'bar' => 'foo']]));
@@ -117,7 +111,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllHaveKey
    */
-  public function testAssertAllHaveKey(): void {
+  public function testAssertAllHaveKey() {
     $this->assertTrue(Inspector::assertAllHaveKey([]));
     $this->assertTrue(Inspector::assertAllHaveKey([['foo' => 'bar', 'bar' => 'foo']]));
     $this->assertTrue(Inspector::assertAllHaveKey([['foo' => 'bar', 'bar' => 'foo']], 'foo'));
@@ -130,7 +124,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllIntegers
    */
-  public function testAssertAllIntegers(): void {
+  public function testAssertAllIntegers() {
     $this->assertTrue(Inspector::assertAllIntegers([]));
     $this->assertTrue(Inspector::assertAllIntegers([1, 2, 3]));
     $this->assertFalse(Inspector::assertAllIntegers([1, 2, 3.14]));
@@ -142,7 +136,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllFloat
    */
-  public function testAssertAllFloat(): void {
+  public function testAssertAllFloat() {
     $this->assertTrue(Inspector::assertAllFloat([]));
     $this->assertTrue(Inspector::assertAllFloat([1.0, 2.1, 3.14]));
     $this->assertFalse(Inspector::assertAllFloat([1, 2.1, 3.14]));
@@ -155,7 +149,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllCallable
    */
-  public function testAllCallable(): void {
+  public function testAllCallable() {
     $this->assertTrue(Inspector::assertAllCallable([
       'strchr',
       [$this, 'callMe'],
@@ -181,7 +175,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllNotEmpty
    */
-  public function testAllNotEmpty(): void {
+  public function testAllNotEmpty() {
     $this->assertTrue(Inspector::assertAllNotEmpty([1, 'two']));
     $this->assertFalse(Inspector::assertAllNotEmpty(['']));
   }
@@ -191,7 +185,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllNumeric
    */
-  public function testAssertAllNumeric(): void {
+  public function testAssertAllNumeric() {
     $this->assertTrue(Inspector::assertAllNumeric([1, '2', 3.14]));
     $this->assertFalse(Inspector::assertAllNumeric([1, 'two', 3.14]));
   }
@@ -201,7 +195,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllMatch
    */
-  public function testAssertAllMatch(): void {
+  public function testAssertAllMatch() {
     $this->assertTrue(Inspector::assertAllMatch('f', ['fee', 'fi', 'fo']));
     $this->assertTrue(Inspector::assertAllMatch('F', ['fee', 'fi', 'fo']));
     $this->assertTrue(Inspector::assertAllMatch('f', ['fee', 'fi', 'fo'], TRUE));
@@ -215,7 +209,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllRegularExpressionMatch
    */
-  public function testAssertAllRegularExpressionMatch(): void {
+  public function testAssertAllRegularExpressionMatch() {
     $this->assertTrue(Inspector::assertAllRegularExpressionMatch('/f/i', ['fee', 'fi', 'fo']));
     $this->assertTrue(Inspector::assertAllRegularExpressionMatch('/F/i', ['fee', 'fi', 'fo']));
     $this->assertTrue(Inspector::assertAllRegularExpressionMatch('/f/', ['fee', 'fi', 'fo']));
@@ -229,7 +223,7 @@ class InspectorTest extends TestCase {
    *
    * @covers ::assertAllObjects
    */
-  public function testAssertAllObjects(): void {
+  public function testAssertAllObjects() {
     $this->assertTrue(Inspector::assertAllObjects([new \ArrayObject(), new \ArrayObject()]));
     $this->assertFalse(Inspector::assertAllObjects([new \ArrayObject(), new \ArrayObject(), 'foo']));
     $this->assertTrue(Inspector::assertAllObjects([new \ArrayObject(), new \ArrayObject()], '\\Traversable'));

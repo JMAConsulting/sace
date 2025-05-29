@@ -23,7 +23,7 @@ class ConfigEntityNormalizerTest extends UnitTestCase {
    *
    * @covers ::normalize
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $test_export_properties = [
       'test' => 'test',
       '_core' => [
@@ -52,7 +52,7 @@ class ConfigEntityNormalizerTest extends UnitTestCase {
   /**
    * @covers ::denormalize
    */
-  public function testDenormalize(): void {
+  public function testDenormalize() {
     $test_value = $this->randomMachineName();
     $data = [
       'test' => $test_value,

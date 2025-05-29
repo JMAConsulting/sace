@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel\Plugin;
 
 use Drupal\Core\Url;
@@ -69,7 +67,7 @@ class LogTest extends KernelTestBase {
   /**
    * Tests the Log plugin.
    */
-  public function testLog(): void {
+  public function testLog() {
     $values = [
       'nid' => 2,
       'type' => 'page',

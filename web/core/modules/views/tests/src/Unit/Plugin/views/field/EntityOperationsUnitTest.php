@@ -85,14 +85,14 @@ class EntityOperationsUnitTest extends UnitTestCase {
   /**
    * @covers ::usesGroupBy
    */
-  public function testUsesGroupBy(): void {
+  public function testUsesGroupBy() {
     $this->assertFalse($this->plugin->usesGroupBy());
   }
 
   /**
    * @covers ::defineOptions
    */
-  public function testDefineOptions(): void {
+  public function testDefineOptions() {
     $options = $this->plugin->defineOptions();
     $this->assertIsArray($options);
     $this->assertArrayHasKey('destination', $options);
@@ -101,7 +101,7 @@ class EntityOperationsUnitTest extends UnitTestCase {
   /**
    * @covers ::render
    */
-  public function testRenderWithDestination(): void {
+  public function testRenderWithDestination() {
     $entity_type_id = $this->randomMachineName();
     $entity = $this->getMockBuilder('\Drupal\user\Entity\Role')
       ->disableOriginalConstructor()
@@ -143,7 +143,7 @@ class EntityOperationsUnitTest extends UnitTestCase {
   /**
    * @covers ::render
    */
-  public function testRenderWithoutDestination(): void {
+  public function testRenderWithoutDestination() {
     $entity_type_id = $this->randomMachineName();
     $entity = $this->getMockBuilder('\Drupal\user\Entity\Role')
       ->disableOriginalConstructor()
@@ -184,7 +184,7 @@ class EntityOperationsUnitTest extends UnitTestCase {
   /**
    * @covers ::render
    */
-  public function testRenderWithoutEntity(): void {
+  public function testRenderWithoutEntity() {
     $this->setUpMockLoggerWithMissingEntity();
 
     $entity = NULL;

@@ -25,7 +25,7 @@ class HttpExceptionNormalizerTest extends UnitTestCase {
   /**
    * @covers ::normalize
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $request_stack = $this->prophesize(RequestStack::class);
     $request_stack->getCurrentRequest()->willReturn(Request::create('http://localhost/'));
     $container = $this->prophesize(ContainerInterface::class);

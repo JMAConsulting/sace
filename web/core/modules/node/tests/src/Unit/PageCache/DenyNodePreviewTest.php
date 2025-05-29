@@ -62,7 +62,7 @@ class DenyNodePreviewTest extends UnitTestCase {
    * @dataProvider providerPrivateImageStyleDownloadPolicy
    * @covers ::check
    */
-  public function testPrivateImageStyleDownloadPolicy($expected_result, $route_name): void {
+  public function testPrivateImageStyleDownloadPolicy($expected_result, $route_name) {
     $this->routeMatch->expects($this->once())
       ->method('getRouteName')
       ->willReturn($route_name);
@@ -77,7 +77,7 @@ class DenyNodePreviewTest extends UnitTestCase {
    * @return array
    *   Data and expected results.
    */
-  public static function providerPrivateImageStyleDownloadPolicy() {
+  public function providerPrivateImageStyleDownloadPolicy() {
     return [
       [ResponsePolicyInterface::DENY, 'entity.node.preview'],
       [NULL, 'some.other.route'],

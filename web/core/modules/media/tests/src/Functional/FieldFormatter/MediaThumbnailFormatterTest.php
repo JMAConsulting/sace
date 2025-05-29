@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Functional\FieldFormatter;
 
 use Drupal\field\Entity\FieldConfig;
@@ -28,7 +26,7 @@ class MediaThumbnailFormatterTest extends MediaFunctionalTestBase {
   /**
    * Tests the media thumbnail field formatter.
    */
-  public function testRender(): void {
+  public function testRender() {
     $this->drupalLogin($this->adminUser);
 
     /** @var \Drupal\node\NodeStorage $node_storage */

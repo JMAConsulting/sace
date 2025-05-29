@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Core\Site\Settings;
@@ -24,7 +22,7 @@ class SitesDirectoryHardeningTest extends BrowserTestBase {
    *
    * Checks both the current sites directory and settings.php.
    */
-  public function testSitesDirectoryHardening(): void {
+  public function testSitesDirectoryHardening() {
     $site_path = $this->kernel->getSitePath();
     $settings_file = $this->settingsFile($site_path);
 
@@ -45,7 +43,7 @@ class SitesDirectoryHardeningTest extends BrowserTestBase {
   /**
    * Tests writable files remain writable when directory hardening is disabled.
    */
-  public function testSitesDirectoryHardeningConfig(): void {
+  public function testSitesDirectoryHardeningConfig() {
     $site_path = $this->kernel->getSitePath();
     $settings_file = $this->settingsFile($site_path);
 
@@ -60,7 +58,7 @@ class SitesDirectoryHardeningTest extends BrowserTestBase {
     $requirements = $this->checkSystemRequirements();
     $this->assertEquals(REQUIREMENT_WARNING, $requirements['configuration_files']['severity'], 'Warning severity is properly set.');
     $this->assertEquals('Protection disabled', (string) $requirements['configuration_files']['value']);
-    $description = strip_tags((string) \Drupal::service('renderer')->renderInIsolation($requirements['configuration_files']['description']));
+    $description = strip_tags((string) \Drupal::service('renderer')->renderPlain($requirements['configuration_files']['description']));
     $this->assertStringContainsString('settings.php is not protected from modifications and poses a security risk.', $description);
     $this->assertStringContainsString('services.yml is not protected from modifications and poses a security risk.', $description);
 

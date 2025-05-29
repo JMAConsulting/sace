@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\options\Kernel\Views;
 
 use Drupal\field\Entity\FieldConfig;
@@ -17,7 +15,9 @@ use Drupal\views\Tests\ViewTestData;
 abstract class OptionsTestBase extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'options',

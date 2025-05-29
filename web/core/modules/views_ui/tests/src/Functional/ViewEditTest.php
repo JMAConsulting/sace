@@ -1,10 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views_ui\Functional;
 
-use Drupal\Core\Database\Database;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\views\Entity\View;
 
@@ -12,7 +9,6 @@ use Drupal\views\Entity\View;
  * Tests some general functionality of editing views, like deleting a view.
  *
  * @group views_ui
- * @group #slow
  */
 class ViewEditTest extends UITestBase {
 
@@ -31,7 +27,7 @@ class ViewEditTest extends UITestBase {
   /**
    * Tests the delete link on a views UI.
    */
-  public function testDeleteLink(): void {
+  public function testDeleteLink() {
     $this->drupalGet('admin/structure/views/view/test_view');
     $this->assertSession()->linkExists('Delete view', 0, 'Ensure that the view delete link appears');
 
@@ -50,16 +46,16 @@ class ViewEditTest extends UITestBase {
   /**
    * Tests the machine name and administrative comment forms.
    */
-  public function testOtherOptions(): void {
-    \Drupal::service('module_installer')->install(['dblog']);
+  public function testOtherOptions() {
     $this->drupalGet('admin/structure/views/view/test_view');
     // Add a new attachment display.
     $this->submitForm([], 'Add Attachment');
+
     // Test that a long administrative comment is truncated.
     $edit = ['display_comment' => 'one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen'];
     $this->drupalGet('admin/structure/views/nojs/display/test_view/attachment_1/display_comment');
     $this->submitForm($edit, 'Apply');
-    $this->assertSession()->pageTextContains('one two three four five six seven eight nine ten eleven twelve thirteen…');
+    $this->assertSession()->pageTextContains('one two three four five six seven eight nine ten eleven twelve thirteen fourteen...');
 
     // Change the machine name for the display from page_1 to test_1.
     $edit = ['display_id' => 'test_1'];
@@ -87,17 +83,13 @@ class ViewEditTest extends UITestBase {
     $error_text = 'Display machine name must contain only lowercase letters, numbers, or underscores.';
 
     // Test that potential invalid display ID requests are detected
-    $this->drupalGet('admin/structure/views/ajax/handler/test_view/fake_display_name/filter/title');
-    $arguments = [
-      '@display_id' => 'fake_display_name',
-    ];
-    $logged = Database::getConnection()->select('watchdog')
-      ->fields('watchdog', ['variables'])
-      ->condition('type', 'views')
-      ->condition('message', 'setDisplay() called with invalid display ID "@display_id".')
-      ->execute()
-      ->fetchField();
-    $this->assertEquals(serialize($arguments), $logged);
+    try {
+      $this->drupalGet('admin/structure/views/ajax/handler/test_view/fake_display_name/filter/title');
+      $this->fail('Expected error, when setDisplay() called with invalid display ID');
+    }
+    catch (\Exception $e) {
+      $this->assertStringContainsString('setDisplay() called with invalid display ID "fake_display_name".', $e->getMessage());
+    }
 
     $edit = ['display_id' => 'test 1'];
     $this->drupalGet($machine_name_edit_url);
@@ -139,7 +131,7 @@ class ViewEditTest extends UITestBase {
   /**
    * Tests the language options on the views edit form.
    */
-  public function testEditFormLanguageOptions(): void {
+  public function testEditFormLanguageOptions() {
     $assert_session = $this->assertSession();
 
     // Language options should not exist without language module.
@@ -262,7 +254,7 @@ class ViewEditTest extends UITestBase {
   /**
    * Tests Representative Node for a Taxonomy Term.
    */
-  public function testRelationRepresentativeNode(): void {
+  public function testRelationRepresentativeNode() {
     // Populate and submit the form.
     $edit["name[taxonomy_term_field_data.tid_representative]"] = TRUE;
     $this->drupalGet('admin/structure/views/nojs/add-handler/test_groupwise_term_ui/default/relationship');

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Views;
 
 use Drupal\views\Views;
@@ -41,7 +39,7 @@ class HandlerFilterCurrentUserTest extends UserKernelTestBase {
   /**
    * Tests the current user filter handler with anonymous user.
    */
-  public function testFilterCurrentUserAsAnonymous(): void {
+  public function testFilterCurrentUserAsAnonymous() {
     $column_map = ['uid' => 'uid'];
     $this->currentUser->setAccount(new AnonymousUserSession());
 
@@ -68,7 +66,7 @@ class HandlerFilterCurrentUserTest extends UserKernelTestBase {
   /**
    * Tests the current user filter handler with logged-in user.
    */
-  public function testFilterCurrentUserAsUser(): void {
+  public function testFilterCurrentUserAsUser() {
     $column_map = ['uid' => 'uid'];
     $user = reset($this->users);
     $this->currentUser->setAccount($user);

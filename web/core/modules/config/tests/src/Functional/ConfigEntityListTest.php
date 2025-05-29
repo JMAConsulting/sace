@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config\Functional;
 
 use Drupal\Component\Serialization\Json;
@@ -20,7 +18,9 @@ class ConfigEntityListTest extends BrowserTestBase {
   use RedirectDestinationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'config_test'];
 
@@ -43,7 +43,7 @@ class ConfigEntityListTest extends BrowserTestBase {
   /**
    * Tests entity list builder methods.
    */
-  public function testList(): void {
+  public function testList() {
     $controller = \Drupal::entityTypeManager()->getListBuilder('config_test');
 
     // Test getStorage() method.
@@ -58,17 +58,11 @@ class ConfigEntityListTest extends BrowserTestBase {
     $this->assertInstanceOf(ConfigTest::class, $entity);
 
     // Test getOperations() method.
-    $edit_url = $entity->toUrl()->setOption('query', $this->getRedirectDestination()->getAsArray());
-    $edit_url->setOption('attributes', ['aria-label' => 'Edit ' . $entity->label()]);
-
-    $delete_url = $entity->toUrl('delete-form')->setOption('query', $this->getRedirectDestination()->getAsArray());
-    $delete_url->setOption('attributes', ['aria-label' => 'Delete ' . $entity->label()]);
-
     $expected_operations = [
       'edit' => [
         'title' => 'Edit',
         'weight' => 10,
-        'url' => $edit_url,
+        'url' => $entity->toUrl()->setOption('query', $this->getRedirectDestination()->getAsArray()),
       ],
       'disable' => [
         'title' => 'Disable',
@@ -85,7 +79,7 @@ class ConfigEntityListTest extends BrowserTestBase {
             'width' => 880,
           ]),
         ],
-        'url' => $delete_url,
+        'url' => $entity->toUrl('delete-form')->setOption('query', $this->getRedirectDestination()->getAsArray()),
       ],
     ];
 
@@ -146,16 +140,11 @@ class ConfigEntityListTest extends BrowserTestBase {
     $entity = $list['default'];
 
     // Test getOperations() method.
-    $edit_url = $entity->toUrl()->setOption('query', $this->getRedirectDestination()->getAsArray());
-    $edit_url->setOption('attributes', ['aria-label' => 'Edit ' . $entity->label()]);
-
-    $delete_url = $entity->toUrl('delete-form')->setOption('query', $this->getRedirectDestination()->getAsArray());
-    $delete_url->setOption('attributes', ['aria-label' => 'Delete ' . $entity->label()]);
     $expected_operations = [
       'edit' => [
         'title' => 'Edit',
         'weight' => 10,
-        'url' => $edit_url,
+        'url' => $entity->toUrl()->setOption('query', $this->getRedirectDestination()->getAsArray()),
       ],
       'delete' => [
         'title' => 'Delete',
@@ -167,41 +156,7 @@ class ConfigEntityListTest extends BrowserTestBase {
             'width' => 880,
           ]),
         ],
-        'url' => $delete_url,
-      ],
-    ];
-
-    $actual_operations = $controller->getOperations($entity);
-    // Sort the operations to normalize link order.
-    uasort($actual_operations, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
-    $this->assertEquals($expected_operations, $actual_operations, 'The operations are identical.');
-
-    // Test getOperations when label doesn't exist.
-    $entity->set('label', '');
-    $entity->save();
-
-    $edit_url = $entity->toUrl()->setOption('query', $this->getRedirectDestination()->getAsArray());
-    $edit_url->setOption('attributes', ['aria-label' => 'Edit ' . $entity->bundle() . ' ' . $entity->id()]);
-
-    $delete_url = $entity->toUrl('delete-form')->setOption('query', $this->getRedirectDestination()->getAsArray());
-    $delete_url->setOption('attributes', ['aria-label' => 'Delete ' . $entity->bundle() . ' ' . $entity->id()]);
-    $expected_operations = [
-      'edit' => [
-        'title' => 'Edit',
-        'weight' => 10,
-        'url' => $edit_url,
-      ],
-      'delete' => [
-        'title' => 'Delete',
-        'weight' => 100,
-        'attributes' => [
-          'class' => ['use-ajax'],
-          'data-dialog-type' => 'modal',
-          'data-dialog-options' => Json::encode([
-            'width' => 880,
-          ]),
-        ],
-        'url' => $delete_url,
+        'url' => $entity->toUrl('delete-form')->setOption('query', $this->getRedirectDestination()->getAsArray()),
       ],
     ];
 
@@ -214,7 +169,7 @@ class ConfigEntityListTest extends BrowserTestBase {
   /**
    * Tests the listing UI.
    */
-  public function testListUI(): void {
+  public function testListUI() {
     // Log in as an administrative user to access the full menu trail.
     $this->drupalLogin($this->drupalCreateUser([
       'access administration pages',
@@ -312,7 +267,7 @@ class ConfigEntityListTest extends BrowserTestBase {
   /**
    * Tests paging.
    */
-  public function testPager(): void {
+  public function testPager() {
     $this->drupalLogin($this->drupalCreateUser([
       'administer site configuration',
     ]));

@@ -187,7 +187,6 @@ button.media__icon--close {
 /** Instagram is only one way off, if this player is ever used. */
 .media--instagram iframe ~ .media__icon,
 .media--instagram.is-playing .media__icon,
-.media--instagram.is-playing:hover .media__icon--play,
-.media .b-error.b-checked {
+.media--instagram.is-playing:hover .media__icon--play {
   display: none;
 }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional\Views;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\views\Functional\ViewTestBase;
 class UserChangedTest extends ViewTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['views_ui', 'user_test_views'];
 
@@ -42,14 +42,14 @@ class UserChangedTest extends ViewTestBase {
   /**
    * Tests changed field.
    */
-  public function testChangedField(): void {
+  public function testChangedField() {
     $path = 'test_user_changed';
 
     $options = [];
 
     $this->drupalGet($path, $options);
 
-    $this->assertSession()->pageTextContains('Updated date: ' . date('Y-m-d', \Drupal::time()->getRequestTime()));
+    $this->assertSession()->pageTextContains('Updated date: ' . date('Y-m-d', REQUEST_TIME));
   }
 
 }

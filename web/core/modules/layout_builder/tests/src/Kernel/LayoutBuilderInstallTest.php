@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Kernel;
 
 use Drupal\field\Entity\FieldConfig;
@@ -19,7 +17,7 @@ class LayoutBuilderInstallTest extends LayoutBuilderCompatibilityTestBase {
   /**
    * Tests the compatibility of Layout Builder with existing entity displays.
    */
-  public function testCompatibility(): void {
+  public function testCompatibility() {
     // Ensure that the fields are shown.
     $expected_fields = [
       'field field--name-name field--type-string field--label-hidden field__item',

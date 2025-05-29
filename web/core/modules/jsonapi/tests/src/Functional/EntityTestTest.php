@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\jsonapi\Functional;
 
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -14,7 +12,6 @@ use Drupal\user\Entity\User;
  * JSON:API integration test for the "EntityTest" content entity type.
  *
  * @group jsonapi
- * @group #slow
  */
 class EntityTestTest extends ResourceTestBase {
 
@@ -194,7 +191,7 @@ class EntityTestTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static function getExpectedCollectionCacheability(AccountInterface $account, array $collection, ?array $sparse_fieldset = NULL, $filtered = FALSE) {
+  protected static function getExpectedCollectionCacheability(AccountInterface $account, array $collection, array $sparse_fieldset = NULL, $filtered = FALSE) {
     $cacheability = parent::getExpectedCollectionCacheability($account, $collection, $sparse_fieldset, $filtered);
     if ($filtered) {
       $cacheability->addCacheTags(['state:jsonapi__entity_test_filter_access_blacklist']);

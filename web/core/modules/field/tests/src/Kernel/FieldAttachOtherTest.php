@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Form\FormState;
@@ -27,7 +25,7 @@ class FieldAttachOtherTest extends FieldKernelTestBase {
   /**
    * Tests rendering fields with EntityDisplay build().
    */
-  public function testEntityDisplayBuild(): void {
+  public function testEntityDisplayBuild() {
     $this->createFieldWithStorage('_2');
 
     $entity_type = 'entity_test';
@@ -131,13 +129,14 @@ class FieldAttachOtherTest extends FieldKernelTestBase {
       $this->assertRaw($expected, "Value $delta is displayed, formatter settings are applied.");
     }
 
-    // @todo Check display order with several fields.
+    // TODO:
+    // - check display order with several fields
   }
 
   /**
    * Tests rendering fields with EntityDisplay::buildMultiple().
    */
-  public function testEntityDisplayViewMultiple(): void {
+  public function testEntityDisplayViewMultiple() {
     // Use a formatter that has a prepareView() step.
     $display = \Drupal::service('entity_display.repository')
       ->getViewDisplay('entity_test', 'entity_test', 'full')
@@ -165,7 +164,7 @@ class FieldAttachOtherTest extends FieldKernelTestBase {
    * Complements unit test coverage in
    * \Drupal\Tests\Core\Entity\Sql\SqlContentEntityStorageTest.
    */
-  public function testEntityCache(): void {
+  public function testEntityCache() {
     // Initialize random values and a test entity.
     $entity_init = EntityTest::create(['type' => $this->fieldTestData->field->getTargetBundle()]);
     $values = $this->_generateTestFieldValues($this->fieldTestData->field_storage->getCardinality());
@@ -248,7 +247,7 @@ class FieldAttachOtherTest extends FieldKernelTestBase {
    * This could be much more thorough, but it does verify that the correct
    * widgets show up.
    */
-  public function testEntityFormDisplayBuildForm(): void {
+  public function testEntityFormDisplayBuildForm() {
     $this->createFieldWithStorage('_2');
 
     $entity_type = 'entity_test';
@@ -300,7 +299,7 @@ class FieldAttachOtherTest extends FieldKernelTestBase {
   /**
    * Tests \Drupal\Core\Entity\Display\EntityFormDisplayInterface::extractFormValues().
    */
-  public function testEntityFormDisplayExtractFormValues(): void {
+  public function testEntityFormDisplayExtractFormValues() {
     $this->createFieldWithStorage('_2');
 
     $entity_type = 'entity_test';

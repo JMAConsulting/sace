@@ -33,7 +33,7 @@ class DuplicateContextualLinksTest extends WebDriverTestBase {
   /**
    * Tests the contextual links with same id.
    */
-  public function testSameContextualLinks(): void {
+  public function testSameContextualLinks() {
     $this->drupalPlaceBlock('views_block:contextual_recent-block_1', ['id' => 'first']);
     $this->drupalPlaceBlock('views_block:contextual_recent-block_1', ['id' => 'second']);
     $this->drupalCreateContentType(['type' => 'page']);

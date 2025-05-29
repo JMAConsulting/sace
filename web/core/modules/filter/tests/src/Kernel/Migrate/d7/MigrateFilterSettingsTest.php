@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\filter\Kernel\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
@@ -13,9 +11,6 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
  */
 class MigrateFilterSettingsTest extends MigrateDrupal7TestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['filter'];
 
   /**
@@ -30,7 +25,7 @@ class MigrateFilterSettingsTest extends MigrateDrupal7TestBase {
   /**
    * Tests migration of Filter variables to configuration.
    */
-  public function testFilterSettings(): void {
+  public function testFilterSettings() {
     $this->assertSame('plain_text', $this->config('filter.settings')->get('fallback_format'));
   }
 

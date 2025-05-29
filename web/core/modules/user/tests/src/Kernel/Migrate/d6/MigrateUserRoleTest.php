@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Migrate\d6;
 
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -102,7 +100,7 @@ class MigrateUserRoleTest extends MigrateDrupal6TestBase {
   /**
    * Data provider for user role migration tests.
    */
-  public static function providerTestUserRole() {
+  public function providerTestUserRole() {
     return [
       'filter only' => [
         'modules' => [],
@@ -283,7 +281,7 @@ class MigrateUserRoleTest extends MigrateDrupal6TestBase {
    *
    * @dataProvider providerTestUserRole
    */
-  public function testUserRole(array $modules, array $migrations, array $role_data): void {
+  public function testUserRole(array $modules, array $migrations, array $role_data) {
     if ($modules) {
       // Install modules that have migrations that may provide permissions.
       \Drupal::service('module_installer')->install($modules);

@@ -29,7 +29,7 @@ class PoHeaderTest extends TestCase {
    *
    * @dataProvider providerTestPluralsFormula
    */
-  public function testPluralsFormula($plural, $expected): void {
+  public function testPluralsFormula($plural, $expected) {
     $p = new PoHeader();
     $parsed = $p->parsePluralForms($plural);
     [$nplurals, $new_plural] = $parsed;
@@ -49,7 +49,7 @@ class PoHeaderTest extends TestCase {
    *   Pairs of plural expressions and expected plural positions keyed by plural
    *   value.
    */
-  public static function providerTestPluralsFormula() {
+  public function providerTestPluralsFormula() {
     return [
       [
         'nplurals=1; plural=0;',

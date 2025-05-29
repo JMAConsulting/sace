@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\node\Entity\Node;
@@ -39,7 +37,7 @@ class SqlEntityLoadingTest extends ViewsKernelTestBase {
     $this->installSchema('node', 'node_access');
   }
 
-  public function testViewWithNonDefaultPendingRevision(): void {
+  public function testViewWithNonDefaultPendingRevision() {
     $node_type = NodeType::create([
       'type' => 'page',
       'name' => 'Page',

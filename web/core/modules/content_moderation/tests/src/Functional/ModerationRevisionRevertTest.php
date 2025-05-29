@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -19,7 +17,9 @@ class ModerationRevisionRevertTest extends BrowserTestBase {
   use ContentModerationTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'content_moderation',
@@ -62,7 +62,7 @@ class ModerationRevisionRevertTest extends BrowserTestBase {
   /**
    * Tests that reverting a revision works.
    */
-  public function testEditingAfterRevertRevision(): void {
+  public function testEditingAfterRevertRevision() {
     // Create a draft.
     $this->drupalGet('node/add/moderated_bundle');
     $this->submitForm([

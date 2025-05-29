@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Plugin;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -23,7 +21,7 @@ class EntityContextTypedDataTest extends KernelTestBase {
   /**
    * Tests that entity contexts wrapping a config entity can be validated.
    */
-  public function testValidateConfigEntityContext(): void {
+  public function testValidateConfigEntityContext() {
     $display = EntityViewDisplay::create([
       'targetEntityType' => 'entity_test',
       'bundle' => 'entity_test',

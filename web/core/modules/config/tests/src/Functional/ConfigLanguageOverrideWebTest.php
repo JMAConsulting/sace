@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -16,7 +14,9 @@ use Drupal\Tests\BrowserTestBase;
 class ConfigLanguageOverrideWebTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -39,7 +39,7 @@ class ConfigLanguageOverrideWebTest extends BrowserTestBase {
   /**
    * Tests translating the site name.
    */
-  public function testSiteNameTranslation(): void {
+  public function testSiteNameTranslation() {
     $adminUser = $this->drupalCreateUser([
       'administer site configuration',
       'administer languages',

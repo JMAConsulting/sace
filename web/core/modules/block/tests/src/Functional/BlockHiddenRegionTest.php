@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -19,7 +17,9 @@ class BlockHiddenRegionTest extends BrowserTestBase {
   protected $adminUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'block_test', 'search'];
 
@@ -49,7 +49,7 @@ class BlockHiddenRegionTest extends BrowserTestBase {
   /**
    * Tests that hidden regions do not inherit blocks when a theme is installed.
    */
-  public function testBlockNotInHiddenRegion(): void {
+  public function testBlockNotInHiddenRegion() {
 
     // Ensure that the search form block is displayed.
     $this->drupalGet('');
@@ -69,7 +69,7 @@ class BlockHiddenRegionTest extends BrowserTestBase {
 
     // Ensure that "block_test_theme" is set as the default theme.
     $this->drupalGet('admin/structure/block');
-    $this->assertSession()->pageTextContains('Block test theme');
+    $this->assertSession()->pageTextContains('Block test theme(active tab)');
 
     // Ensure that the search form block is displayed.
     $this->drupalGet('');

@@ -74,34 +74,26 @@ class UpdateHookRegistryTest extends UnitTestCase {
   protected $keyValueFactory;
 
   /**
-   * @var \Drupal\Core\KeyValueStore\KeyValueStoreInterface|\PHPUnit\Framework\MockObject\MockObject
-   */
-  protected KeyValueStoreInterface $equivalentUpdatesStore;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
     $this->keyValueFactory = $this->createMock(KeyValueFactoryInterface::class);
     $this->keyValueStore = $this->createMock(KeyValueStoreInterface::class);
-    $this->equivalentUpdatesStore = $this->createMock(KeyValueStoreInterface::class);
 
     $this->keyValueFactory
       ->method('get')
-      ->willReturnMap([
-        ['system.schema', $this->keyValueStore],
-        ['core.equivalent_updates', $this->equivalentUpdatesStore],
-      ]);
+      ->with('system.schema')
+      ->willReturn($this->keyValueStore);
   }
 
   /**
    * @covers ::getAvailableUpdates
    */
-  public function testGetVersions(): void {
+  public function testGetVersions() {
     $module_name = 'drupal\tests\core\update\under_test';
 
-    $update_registry = new UpdateHookRegistry([], $this->keyValueFactory);
+    $update_registry = new UpdateHookRegistry([], $this->keyValueStore);
 
     // Only under_test_update_X - passes through the filter.
     $expected = [1, 20, 3000];
@@ -116,7 +108,7 @@ class UpdateHookRegistryTest extends UnitTestCase {
    * @covers ::setInstalledVersion
    * @covers ::deleteInstalledVersion
    */
-  public function testGetInstalledVersion(): void {
+  public function testGetInstalledVersion() {
     $versions = [
       'module1' => 1,
       'module2' => 20,
@@ -144,7 +136,7 @@ class UpdateHookRegistryTest extends UnitTestCase {
         $versions[$key] = $value;
       });
 
-    $update_registry = new UpdateHookRegistry([], $this->keyValueFactory);
+    $update_registry = new UpdateHookRegistry([], $this->keyValueStore);
 
     $this->assertSame(3000, $update_registry->getInstalledVersion('module3'));
     $update_registry->setInstalledVersion('module3', 3001);

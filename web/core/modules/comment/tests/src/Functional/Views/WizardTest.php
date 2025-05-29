@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional\Views;
 
 use Drupal\comment\Tests\CommentTestTrait;
@@ -19,7 +17,9 @@ class WizardTest extends WizardTestBase {
   use CommentTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'comment'];
 
@@ -41,7 +41,7 @@ class WizardTest extends WizardTestBase {
   /**
    * Tests adding a view of comments.
    */
-  public function testCommentWizard(): void {
+  public function testCommentWizard() {
     $view = [];
     $view['label'] = $this->randomMachineName(16);
     $view['id'] = $this->randomMachineName(16);

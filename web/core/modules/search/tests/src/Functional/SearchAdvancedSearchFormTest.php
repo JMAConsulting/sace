@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -58,7 +56,7 @@ class SearchAdvancedSearchFormTest extends BrowserTestBase {
   /**
    * Tests advanced search by node type.
    */
-  public function testNodeType(): void {
+  public function testNodeType() {
     // Verify some properties of the node that was created.
     $this->assertSame('page', $this->node->getType(), 'Node type is Basic page.');
     $dummy_title = 'Lorem ipsum';
@@ -91,7 +89,7 @@ class SearchAdvancedSearchFormTest extends BrowserTestBase {
   /**
    * Tests that after submitting the advanced search form, the form is refilled.
    */
-  public function testFormRefill(): void {
+  public function testFormRefill() {
     $edit = [
       'keys' => 'cat',
       'or' => 'dog gerbil',

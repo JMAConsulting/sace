@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Extension;
 
 use Drupal\Core\Entity\ContentEntityTypeInterface;
@@ -26,7 +24,7 @@ class ModuleHandlerTest extends KernelTestBase {
   /**
    * The basic functionality of retrieving enabled modules.
    */
-  public function testModuleList(): void {
+  public function testModuleList() {
     $module_list = ['system'];
     $database_module = \Drupal::database()->getProvider();
     if ($database_module !== 'core') {
@@ -87,7 +85,7 @@ class ModuleHandlerTest extends KernelTestBase {
    * @see module_test_system_info_alter()
    * @see https://www.drupal.org/files/issues/dep.gv__0.png
    */
-  public function testDependencyResolution(): void {
+  public function testDependencyResolution() {
     $this->enableModules(['module_test']);
     $this->assertTrue($this->moduleHandler()->moduleExists('module_test'), 'Test module is enabled.');
 
@@ -167,7 +165,7 @@ class ModuleHandlerTest extends KernelTestBase {
   /**
    * Tests uninstalling a module installed by a profile.
    */
-  public function testUninstallProfileDependency(): void {
+  public function testUninstallProfileDependency() {
     $profile = 'testing_install_profile_dependencies';
     $dependency = 'dblog';
     $non_dependency = 'ban';
@@ -203,31 +201,15 @@ class ModuleHandlerTest extends KernelTestBase {
     $this->assertNotContains($profile, $uninstalled_modules, 'The installation profile is not in the list of uninstalled modules.');
 
     // Try uninstalling the required module.
-    try {
-      $this->moduleInstaller()->uninstall([$dependency]);
-      $this->fail('Expected ModuleUninstallValidatorException not thrown');
-    }
-    catch (ModuleUninstallValidatorException $e) {
-      $this->assertEquals("The following reasons prevent the modules from being uninstalled: The 'Testing install profile dependencies' install profile requires 'Database Logging'", $e->getMessage());
-    }
-
-    // Try uninstalling the install profile.
-    $this->assertSame('testing_install_profile_dependencies', $this->container->getParameter('install_profile'));
-    $result = $this->moduleInstaller()->uninstall([$profile]);
-    $this->assertTrue($result, 'ModuleInstaller::uninstall() returns TRUE.');
-    $this->assertFalse($this->moduleHandler()->moduleExists($profile));
-    $this->assertFalse($this->container->getParameter('install_profile'));
-
-    // Try uninstalling the required module again.
-    $result = $this->moduleInstaller()->uninstall([$dependency]);
-    $this->assertTrue($result, 'ModuleInstaller::uninstall() returns TRUE.');
-    $this->assertFalse($this->moduleHandler()->moduleExists($dependency));
+    $this->expectException(ModuleUninstallValidatorException::class);
+    $this->expectExceptionMessage('The following reasons prevent the modules from being uninstalled: The Testing install profile dependencies module is required');
+    $this->moduleInstaller()->uninstall([$dependency]);
   }
 
   /**
    * Tests that a profile can supply only real dependencies.
    */
-  public function testProfileAllDependencies(): void {
+  public function testProfileAllDependencies() {
     $profile = 'testing_install_profile_all_dependencies';
     $dependencies = ['dblog', 'ban'];
     $this->setInstallProfile($profile);
@@ -253,14 +235,14 @@ class ModuleHandlerTest extends KernelTestBase {
 
     // Try uninstalling the dependencies.
     $this->expectException(ModuleUninstallValidatorException::class);
-    $this->expectExceptionMessage("The following reasons prevent the modules from being uninstalled: The 'Testing install profile all dependencies' install profile requires 'Database Logging'; The 'Testing install profile all dependencies' install profile requires 'Ban'");
+    $this->expectExceptionMessage('The following reasons prevent the modules from being uninstalled: The Testing install profile all dependencies module is required');
     $this->moduleInstaller()->uninstall($dependencies);
   }
 
   /**
    * Tests uninstalling a module that has content.
    */
-  public function testUninstallContentDependency(): void {
+  public function testUninstallContentDependency() {
     $this->enableModules(['module_test', 'entity_test', 'text', 'user', 'help']);
     $this->assertTrue($this->moduleHandler()->moduleExists('entity_test'), 'Test module is enabled.');
     $this->assertTrue($this->moduleHandler()->moduleExists('module_test'), 'Test module is enabled.');
@@ -315,7 +297,7 @@ class ModuleHandlerTest extends KernelTestBase {
   /**
    * Tests whether the correct module metadata is returned.
    */
-  public function testModuleMetaData(): void {
+  public function testModuleMetaData() {
     // Generate the list of available modules.
     $modules = $this->container->get('extension.list.module')->getList();
     // Check that the mtime field exists for the system module.
@@ -330,7 +312,7 @@ class ModuleHandlerTest extends KernelTestBase {
   /**
    * Tests whether module-provided stream wrappers are registered properly.
    */
-  public function testModuleStreamWrappers(): void {
+  public function testModuleStreamWrappers() {
     // file_test.module provides (among others) a 'dummy' stream wrapper.
     // Verify that it is not registered yet to prevent false positives.
     $stream_wrappers = \Drupal::service('stream_wrapper_manager')->getWrappers();
@@ -349,9 +331,9 @@ class ModuleHandlerTest extends KernelTestBase {
   /**
    * Tests whether the correct theme metadata is returned.
    */
-  public function testThemeMetaData(): void {
+  public function testThemeMetaData() {
     // Generate the list of available themes.
-    $themes = \Drupal::service('extension.list.theme')->reset()->getList();
+    $themes = \Drupal::service('theme_handler')->rebuildThemeData();
     // Check that the mtime field exists for the olivero theme.
     $this->assertNotEmpty($themes['olivero']->info['mtime'], 'The olivero.info.yml file modification time field is present.');
     // Use 0 if mtime isn't present, to avoid an array index notice.

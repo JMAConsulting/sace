@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\views\Views;
@@ -32,7 +30,7 @@ class QueryTest extends ViewsKernelTestBase {
   /**
    * Tests query plugins.
    */
-  public function testQuery(): void {
+  public function testQuery() {
     $this->_testInitQuery();
     $this->_testQueryExecute();
     $this->queryMethodsTests();

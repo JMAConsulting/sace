@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\shortcut\Kernel\Migrate;
 
 use Drupal\Tests\migrate_drupal\Kernel\MigrateDrupalTestBase;
@@ -34,7 +32,7 @@ class MigrateShortcutStubTest extends MigrateDrupalTestBase {
   /**
    * Tests creation of shortcut stubs.
    */
-  public function testStub(): void {
+  public function testStub() {
     $this->performStubTest('shortcut');
   }
 

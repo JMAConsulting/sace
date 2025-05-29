@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\Database;
@@ -17,7 +15,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Tests that connections return appropriate connection objects.
    */
-  public function testConnectionRouting(): void {
+  public function testConnectionRouting() {
     // Clone the primary credentials to a replica connection.
     // Note this will result in two independent connection objects that happen
     // to point to the same place.
@@ -51,7 +49,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Tests that connections return appropriate connection objects.
    */
-  public function testConnectionRoutingOverride(): void {
+  public function testConnectionRoutingOverride() {
     // Clone the primary credentials to a replica connection.
     // Note this will result in two independent connection objects that happen
     // to point to the same place.
@@ -69,7 +67,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Tests the closing of a database connection.
    */
-  public function testConnectionClosing(): void {
+  public function testConnectionClosing() {
     // Open the default target so we have an object to compare.
     $db1 = Database::getConnection('default', 'default');
 
@@ -84,7 +82,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Tests the connection options of the active database.
    */
-  public function testConnectionOptions(): void {
+  public function testConnectionOptions() {
     $connection_info = Database::getConnectionInfo('default');
 
     // Be sure we're connected to the default database.
@@ -119,7 +117,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Tests per-table prefix connection option.
    */
-  public function testPerTablePrefixOption(): void {
+  public function testPerTablePrefixOption() {
     $connection_info = Database::getConnectionInfo('default');
     $new_connection_info = $connection_info['default'];
     $new_connection_info['prefix'] = [
@@ -127,28 +125,28 @@ class ConnectionTest extends DatabaseTestBase {
       'test_table' => $connection_info['default']['prefix'] . '_bar',
     ];
     Database::addConnectionInfo('default', 'foo', $new_connection_info);
-    $this->expectException(\AssertionError::class);
+    $this->expectError();
     $foo_connection = Database::getConnection('foo', 'default');
   }
 
   /**
    * Tests the prefix connection option in array form.
    */
-  public function testPrefixArrayOption(): void {
+  public function testPrefixArrayOption() {
     $connection_info = Database::getConnectionInfo('default');
     $new_connection_info = $connection_info['default'];
     $new_connection_info['prefix'] = [
       'default' => $connection_info['default']['prefix'],
     ];
     Database::addConnectionInfo('default', 'foo', $new_connection_info);
-    $this->expectException(\AssertionError::class);
+    $this->expectError();
     $foo_connection = Database::getConnection('foo', 'default');
   }
 
   /**
    * Ensure that you cannot execute multiple statements in a query.
    */
-  public function testMultipleStatementsQuery(): void {
+  public function testMultipleStatementsQuery() {
     $this->expectException(\InvalidArgumentException::class);
     Database::getConnection('default', 'default')->query('SELECT * FROM {test}; SELECT * FROM {test_people}');
   }
@@ -156,7 +154,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Ensure that you cannot prepare multiple statements.
    */
-  public function testMultipleStatements(): void {
+  public function testMultipleStatements() {
     $this->expectException(\InvalidArgumentException::class);
     Database::getConnection('default', 'default')->prepareStatement('SELECT * FROM {test}; SELECT * FROM {test_people}', []);
   }
@@ -164,7 +162,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Tests that the method ::condition() returns a Condition object.
    */
-  public function testCondition(): void {
+  public function testCondition() {
     $connection = Database::getConnection('default', 'default');
     $namespace = (new \ReflectionObject($connection))->getNamespaceName() . "\\Condition";
     if (!class_exists($namespace)) {
@@ -179,7 +177,7 @@ class ConnectionTest extends DatabaseTestBase {
    *
    * @group legacy
    */
-  public function testDeprecatedGetUnprefixedTablesMap(): void {
+  public function testDeprecatedGetUnprefixedTablesMap() {
     $this->expectDeprecation('Drupal\Core\Database\Connection::getUnprefixedTablesMap() is deprecated in drupal:10.0.0 and is removed from drupal:11.0.0. There is no replacement. See https://www.drupal.org/node/3257198');
     $this->assertIsArray($this->connection->getUnprefixedTablesMap());
   }
@@ -187,7 +185,7 @@ class ConnectionTest extends DatabaseTestBase {
   /**
    * Tests that the method ::hasJson() returns TRUE.
    */
-  public function testHasJson(): void {
+  public function testHasJson() {
     $this->assertTrue($this->connection->hasJson());
   }
 

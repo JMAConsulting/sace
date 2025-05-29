@@ -30,7 +30,7 @@ class PlaceholderGeneratorTest extends RendererTestBase {
    * placeholders: the placeholder markup in #attached versus that in the HTML
    * processed by DOMDocument would no longer match.
    */
-  public function testCreatePlaceholderGeneratesValidHtmlMarkup(array $element): void {
+  public function testCreatePlaceholderGeneratesValidHtmlMarkup(array $element) {
     $build = $this->placeholderGenerator->createPlaceholder($element);
 
     $original_placeholder_markup = (string) $build['#markup'];
@@ -47,7 +47,7 @@ class PlaceholderGeneratorTest extends RendererTestBase {
    *
    * @covers ::createPlaceholder
    */
-  public function testRenderPlaceholdersDifferentSortedContextsTags(): void {
+  public function testRenderPlaceholdersDifferentSortedContextsTags() {
     $contexts_1 = ['user', 'foo'];
     $contexts_2 = ['foo', 'user'];
     $tags_1 = ['current-temperature', 'foo'];
@@ -85,7 +85,7 @@ class PlaceholderGeneratorTest extends RendererTestBase {
   /**
    * @return array
    */
-  public static function providerCreatePlaceholderGeneratesValidHtmlMarkup() {
+  public function providerCreatePlaceholderGeneratesValidHtmlMarkup() {
     return [
       'multiple-arguments' => [['#lazy_builder' => ['Drupal\Tests\Core\Render\PlaceholdersTest::callback', ['foo', 'bar']]]],
       'special-character-&' => [['#lazy_builder' => ['Drupal\Tests\Core\Render\PlaceholdersTest::callback', ['foo&bar']]]],

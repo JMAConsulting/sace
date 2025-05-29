@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\Core\Entity\EntityFieldManager;
@@ -26,7 +24,9 @@ class MigrateEntityContentBaseTest extends KernelTestBase {
   use StubTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['migrate', 'user', 'language', 'entity_test'];
 
@@ -107,7 +107,7 @@ class MigrateEntityContentBaseTest extends KernelTestBase {
   /**
    * Tests importing and rolling back translated entities.
    */
-  public function testTranslated(): void {
+  public function testTranslated() {
     // Create a destination.
     $this->createDestination(['translations' => TRUE]);
 
@@ -174,7 +174,7 @@ class MigrateEntityContentBaseTest extends KernelTestBase {
   /**
    * Tests creation of ID columns table with definitions taken from entity type.
    */
-  public function testEntityWithStringId(): void {
+  public function testEntityWithStringId() {
     $this->enableModules(['migrate_entity_test']);
     $this->installEntitySchema('migrate_string_id_entity_test');
 
@@ -220,7 +220,7 @@ class MigrateEntityContentBaseTest extends KernelTestBase {
   /**
    * Tests empty destinations.
    */
-  public function testEmptyDestinations(): void {
+  public function testEmptyDestinations() {
     $this->enableModules(['migrate_entity_test']);
     $this->installEntitySchema('migrate_string_id_entity_test');
 
@@ -281,7 +281,7 @@ class MigrateEntityContentBaseTest extends KernelTestBase {
   /**
    * Tests stub rows.
    */
-  public function testStubRows(): void {
+  public function testStubRows() {
     // Create a destination.
     $this->createDestination([]);
 

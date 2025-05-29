@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
@@ -17,7 +15,9 @@ use Drupal\comment\Entity\CommentType;
 class CommentFieldsTest extends CommentTestBase {
 
   /**
-   * {@inheritdoc}
+   * Install the field UI.
+   *
+   * @var array
    */
   protected static $modules = ['field_ui'];
 
@@ -29,7 +29,7 @@ class CommentFieldsTest extends CommentTestBase {
   /**
    * Tests that the default 'comment_body' field is correctly added.
    */
-  public function testCommentDefaultFields(): void {
+  public function testCommentDefaultFields() {
     // Do not make assumptions on default node types created by the test
     // installation profile, and create our own.
     $this->drupalCreateContentType(['type' => 'test_node_type']);
@@ -67,7 +67,7 @@ class CommentFieldsTest extends CommentTestBase {
   /**
    * Tests that you can remove a comment field.
    */
-  public function testCommentFieldDelete(): void {
+  public function testCommentFieldDelete() {
     $this->drupalCreateContentType(['type' => 'test_node_type']);
     $this->addDefaultCommentField('node', 'test_node_type');
     // We want to test the handling of removing the primary comment field, so we
@@ -97,7 +97,7 @@ class CommentFieldsTest extends CommentTestBase {
   /**
    * Tests link building with non-default comment field names.
    */
-  public function testCommentFieldLinksNonDefaultName(): void {
+  public function testCommentFieldLinksNonDefaultName() {
     $this->drupalCreateContentType(['type' => 'test_node_type']);
     $this->addDefaultCommentField('node', 'test_node_type', 'comment2');
 
@@ -143,7 +143,7 @@ class CommentFieldsTest extends CommentTestBase {
   /**
    * Tests creating a comment field through the interface.
    */
-  public function testCommentFieldCreate(): void {
+  public function testCommentFieldCreate() {
     // Create user who can administer user fields.
     $user = $this->drupalCreateUser([
       'administer user fields',
@@ -153,13 +153,10 @@ class CommentFieldsTest extends CommentTestBase {
     // Create comment field in account settings.
     $edit = [
       'new_storage_type' => 'comment',
-    ];
-    $this->drupalGet('admin/config/people/accounts/fields/add-field');
-    $this->submitForm($edit, 'Continue');
-    $edit = [
       'label' => 'User comment',
       'field_name' => 'user_comment',
     ];
+    $this->drupalGet('admin/config/people/accounts/fields/add-field');
     $this->submitForm($edit, 'Continue');
 
     // Try to save the comment field without selecting a comment type.

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\filter\Entity\FilterFormat;
@@ -49,7 +47,7 @@ class NodeRSSContentTest extends NodeTestBase {
   /**
    * Ensures that a new node includes the custom data when added to an RSS feed.
    */
-  public function testNodeRSSContent(): void {
+  public function testNodeRSSContent() {
     // Create a node.
     $node = $this->drupalCreateNode(['type' => 'article', 'promote' => 1]);
 
@@ -79,7 +77,7 @@ class NodeRSSContentTest extends NodeTestBase {
   /**
    * Tests relative, root-relative, protocol-relative and absolute URLs.
    */
-  public function testUrlHandling(): void {
+  public function testUrlHandling() {
     // Only the plain_text text format is available by default, which escapes
     // all HTML.
     FilterFormat::create([

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\rest\Functional\Views;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -38,7 +36,7 @@ class RestExportAuthTest extends ViewTestBase {
    *
    * @link https://www.drupal.org/node/2825204
    */
-  public function testAuthProvidersOptions(): void {
+  public function testAuthProvidersOptions() {
     $view_id = 'test_view_rest_export';
     $view_label = 'Test view (REST export)';
     $view_display = 'rest_export_1';

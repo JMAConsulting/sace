@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 /**
@@ -14,7 +12,7 @@ class UpdateLobTest extends DatabaseTestBase {
   /**
    * Confirms that we can update a blob column.
    */
-  public function testUpdateOneBlob(): void {
+  public function testUpdateOneBlob() {
     $data = "This is\000a test.";
     $this->assertSame(15, strlen($data), 'Test data contains a NULL.');
     $id = $this->connection->insert('test_one_blob')
@@ -34,7 +32,7 @@ class UpdateLobTest extends DatabaseTestBase {
   /**
    * Tests that we can update a blob column to null.
    */
-  public function testUpdateNullBlob(): void {
+  public function testUpdateNullBlob() {
     $id = $this->connection->insert('test_one_blob')
       ->fields(['blob1' => 'test'])
       ->execute();
@@ -52,7 +50,7 @@ class UpdateLobTest extends DatabaseTestBase {
   /**
    * Confirms that we can update two blob columns in the same table.
    */
-  public function testUpdateMultipleBlob(): void {
+  public function testUpdateMultipleBlob() {
     $id = $this->connection->insert('test_two_blobs')
       ->fields([
         'blob1' => 'This is',

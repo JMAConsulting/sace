@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Kernel\Migrate;
 
 use Drupal\field\Entity\FieldConfig;
@@ -17,9 +15,6 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
  */
 class MigrateBlockContentBodyFieldTest extends MigrateDrupal7TestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['block', 'block_content', 'filter', 'text'];
 
   /**
@@ -38,7 +33,7 @@ class MigrateBlockContentBodyFieldTest extends MigrateDrupal7TestBase {
   /**
    * Tests the block content body field migration.
    */
-  public function testBlockContentBodyFieldMigration(): void {
+  public function testBlockContentBodyFieldMigration() {
     /** @var \Drupal\field\FieldStorageConfigInterface $storage */
     $storage = FieldStorageConfig::load('block_content.body');
     $this->assertInstanceOf(FieldStorageConfigInterface::class, $storage);

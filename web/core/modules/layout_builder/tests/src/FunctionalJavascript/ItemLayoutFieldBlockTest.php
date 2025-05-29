@@ -49,7 +49,7 @@ class ItemLayoutFieldBlockTest extends WebDriverTestBase {
   /**
    * Tests configuring a field block for a user field.
    */
-  public function testAddAjaxBlock(): void {
+  public function testAddAjaxBlock() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

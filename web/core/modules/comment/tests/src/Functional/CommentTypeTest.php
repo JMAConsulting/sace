@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\Core\Url;
@@ -57,7 +55,7 @@ class CommentTypeTest extends CommentTestBase {
   /**
    * Tests creating a comment type programmatically and via a form.
    */
-  public function testCommentTypeCreation(): void {
+  public function testCommentTypeCreation() {
     // Create a comment type programmatically.
     $type = $this->createCommentType('other');
 
@@ -121,7 +119,7 @@ class CommentTypeTest extends CommentTestBase {
   /**
    * Tests editing a comment type using the UI.
    */
-  public function testCommentTypeEditing(): void {
+  public function testCommentTypeEditing() {
     $this->drupalLogin($this->adminUser);
 
     $field = FieldConfig::loadByName('comment', 'comment', 'comment_body');
@@ -156,7 +154,7 @@ class CommentTypeTest extends CommentTestBase {
   /**
    * Tests deleting a comment type that still has content.
    */
-  public function testCommentTypeDeletion(): void {
+  public function testCommentTypeDeletion() {
     // Create a comment type programmatically.
     $type = $this->createCommentType('foo');
     $this->drupalCreateContentType(['type' => 'page']);

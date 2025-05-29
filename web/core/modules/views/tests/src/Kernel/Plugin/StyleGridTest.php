@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\views\Views;
@@ -32,7 +30,7 @@ class StyleGridTest extends PluginKernelTestBase {
   /**
    * Tests the grid style.
    */
-  public function testGrid(): void {
+  public function testGrid() {
     $view = Views::getView('test_grid');
     foreach (['horizontal', 'vertical'] as $alignment) {
       $this->assertGrid($view, $alignment, 5);

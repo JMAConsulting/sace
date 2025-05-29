@@ -5,7 +5,6 @@ namespace Drupal\views;
 use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Plugin\DefaultLazyPluginCollection;
-use Drupal\views\Plugin\views\display\DisplayPluginInterface;
 
 /**
  * A class which wraps the displays of a view so you can lazy-initialize them.
@@ -60,9 +59,7 @@ class DisplayPluginCollection extends DefaultLazyPluginCollection {
    */
   public function clear() {
     foreach (array_filter($this->pluginInstances) as $display) {
-      if ($display instanceof DisplayPluginInterface) {
-        $display->destroy();
-      }
+      $display->destroy();
     }
 
     parent::clear();

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Tests\BrowserTestBase;
@@ -36,7 +34,7 @@ class TrustedHostsTest extends BrowserTestBase {
    * Checks that an error is shown when the trusted host setting is missing from
    * settings.php
    */
-  public function testStatusPageWithoutConfiguration(): void {
+  public function testStatusPageWithoutConfiguration() {
     $this->drupalGet('admin/reports/status');
     $this->assertSession()->statusCodeEquals(200);
 
@@ -47,7 +45,7 @@ class TrustedHostsTest extends BrowserTestBase {
   /**
    * Tests that the status page shows the trusted patterns from settings.php.
    */
-  public function testStatusPageWithConfiguration(): void {
+  public function testStatusPageWithConfiguration() {
     $settings['settings']['trusted_host_patterns'] = (object) [
       'value' => ['^' . preg_quote(\Drupal::request()->getHost()) . '$'],
       'required' => TRUE,
@@ -67,7 +65,7 @@ class TrustedHostsTest extends BrowserTestBase {
    *
    * @see \Drupal\Core\Http\TrustedHostsRequestFactory
    */
-  public function testFakeRequests(): void {
+  public function testFakeRequests() {
     $this->container->get('module_installer')->install(['trusted_hosts_test']);
 
     $host = $this->container->get('request_stack')->getCurrentRequest()->getHost();
@@ -85,7 +83,7 @@ class TrustedHostsTest extends BrowserTestBase {
   /**
    * Tests that shortcut module works together with host verification.
    */
-  public function testShortcut(): void {
+  public function testShortcut() {
     $this->container->get('module_installer')->install(['block', 'shortcut']);
     $this->rebuildContainer();
 
@@ -120,7 +118,7 @@ class TrustedHostsTest extends BrowserTestBase {
    *
    * @see \Drupal\Core\Http\TrustedHostsRequestFactory
    */
-  public function testRequestBags(): void {
+  public function testRequestBags() {
     $this->container->get('module_installer')->install(['trusted_hosts_test']);
 
     $host = $this->container->get('request_stack')->getCurrentRequest()->getHost();

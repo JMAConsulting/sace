@@ -45,7 +45,7 @@ class AcceptHeaderMatcherTest extends UnitTestCase {
    *
    * @see Drupal\Tests\Core\Routing\AcceptHeaderMatcherTest::testAcceptFiltering()
    */
-  public static function acceptFilterProvider() {
+  public function acceptFilterProvider() {
     return [
       // Check that JSON routes get filtered and prioritized correctly.
       ['application/json, text/xml;q=0.9', 'json', 'route_c', 'route_e'],
@@ -70,7 +70,7 @@ class AcceptHeaderMatcherTest extends UnitTestCase {
    *
    * @dataProvider acceptFilterProvider
    */
-  public function testAcceptFiltering($accept_header, $format, $included_route, $excluded_route): void {
+  public function testAcceptFiltering($accept_header, $format, $included_route, $excluded_route) {
     $collection = $this->fixtures->sampleRouteCollection();
 
     $request = Request::create('path/two', 'GET');
@@ -89,7 +89,7 @@ class AcceptHeaderMatcherTest extends UnitTestCase {
   /**
    * Confirms that the AcceptHeaderMatcher throws an exception for no-route.
    */
-  public function testNoRouteFound(): void {
+  public function testNoRouteFound() {
     // Remove the sample routes that would match any method.
     $routes = $this->fixtures->sampleRouteCollection();
     $routes->remove('route_a');

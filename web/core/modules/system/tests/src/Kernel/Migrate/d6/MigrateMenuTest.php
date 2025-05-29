@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Migrate\d6;
 
 use Drupal\Core\Database\Database;
@@ -26,7 +24,7 @@ class MigrateMenuTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal 6 menu to Drupal 8 migration.
    */
-  public function testMenu(): void {
+  public function testMenu() {
     $navigation_menu = Menu::load('navigation');
     $this->assertSame('navigation', $navigation_menu->id());
     $this->assertSame('Navigation', $navigation_menu->label());

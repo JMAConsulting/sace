@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Config;
 
 use Drupal\Core\Site\Settings;
@@ -17,7 +15,9 @@ use Drupal\KernelTests\KernelTestBase;
 class NodeImportCreateTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'field', 'text', 'system', 'user'];
 
@@ -35,7 +35,7 @@ class NodeImportCreateTest extends KernelTestBase {
   /**
    * Tests creating a content type during default config import.
    */
-  public function testImportCreateDefault(): void {
+  public function testImportCreateDefault() {
     $node_type_id = 'default';
 
     // Check that the content type does not exist yet.
@@ -51,7 +51,7 @@ class NodeImportCreateTest extends KernelTestBase {
   /**
    * Tests creating a content type during config import.
    */
-  public function testImportCreate(): void {
+  public function testImportCreate() {
     $node_type_id = 'import';
     $node_type_config_name = "node.type.$node_type_id";
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config\Functional;
 
 use Drupal\Component\Utility\Html;
@@ -28,7 +26,7 @@ class ConfigDraggableListBuilderTest extends BrowserTestBase {
   /**
    * Tests draggable lists.
    */
-  public function testDraggableList(): void {
+  public function testDraggableList() {
     $this->drupalLogin($this->drupalCreateUser(['administer permissions']));
 
     // Create more than 50 roles.
@@ -59,16 +57,6 @@ class ConfigDraggableListBuilderTest extends BrowserTestBase {
 
     $this->drupalGet('admin/people/roles');
     $this->assertSession()->responseContains('<td>' . Html::escape($role_name));
-
-    // Make sure that NULL weights do not break the list builder. Use the
-    // configuration API so that the value does not get type-casted according to
-    // the configuration schema.
-    \Drupal::configFactory()
-      ->getEditable('user.role.role_0')
-      ->set('weight', NULL)
-      ->save(TRUE);
-    $this->drupalGet('admin/people/roles');
-    $this->assertSession()->statusCodeEquals(200);
   }
 
 }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\KernelString;
 
 use Drupal\Component\Utility\Html;
@@ -20,7 +18,9 @@ use Drupal\KernelTests\KernelTestBase;
 class RawStringFormatterTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'field', 'text',
@@ -107,7 +107,7 @@ class RawStringFormatterTest extends KernelTestBase {
   /**
    * Tests string formatter output.
    */
-  public function testStringFormatter(): void {
+  public function testStringFormatter() {
     $value = $this->randomString();
     $value .= "\n\n<strong>" . $this->randomString() . '</strong>';
     $value .= "\n\n" . $this->randomString();

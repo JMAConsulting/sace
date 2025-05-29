@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\book\Kernel;
 
 use Drupal\node\Entity\Node;
@@ -12,7 +10,6 @@ use Drupal\KernelTests\KernelTestBase;
  * Tests that the Book module cannot be uninstalled if books exist.
  *
  * @group book
- * @group legacy
  */
 class BookUninstallTest extends KernelTestBase {
 
@@ -48,7 +45,7 @@ class BookUninstallTest extends KernelTestBase {
   /**
    * Tests the book_system_info_alter() method.
    */
-  public function testBookUninstall(): void {
+  public function testBookUninstall() {
     // No nodes exist.
     $validation_reasons = \Drupal::service('module_installer')->validateUninstall(['book']);
     $this->assertEquals([], $validation_reasons, 'The book module is not required.');

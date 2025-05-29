@@ -18,7 +18,7 @@ class DependencyTest extends UnitTestCase {
    * @covers ::createFromString
    * @dataProvider providerCreateFromString
    */
-  public function testCreateFromString($string, $expected_name, $expected_project, $expected_constraint): void {
+  public function testCreateFromString($string, $expected_name, $expected_project, $expected_constraint) {
     $dependency = Dependency::createFromString($string);
     $this->assertSame($expected_name, $dependency->getName());
     $this->assertSame($expected_project, $dependency->getProject());
@@ -28,7 +28,7 @@ class DependencyTest extends UnitTestCase {
   /**
    * Data provider for testCreateFromString.
    */
-  public static function providerCreateFromString() {
+  public function providerCreateFromString() {
     $tests = [];
     $tests['module_name_only'] = ['views', 'views', '', ''];
     $tests['module_and_project_names'] = ['drupal:views', 'views', 'drupal', ''];
@@ -40,7 +40,7 @@ class DependencyTest extends UnitTestCase {
   /**
    * @covers ::isCompatible
    */
-  public function testIsCompatible(): void {
+  public function testIsCompatible() {
     $dependency = new Dependency('paragraphs_demo', 'paragraphs', '>8.x-1.1');
     $this->assertFalse($dependency->isCompatible('1.1'));
     $this->assertTrue($dependency->isCompatible('1.2'));
@@ -51,7 +51,7 @@ class DependencyTest extends UnitTestCase {
    *
    * @covers ::__sleep
    */
-  public function testSerialization(): void {
+  public function testSerialization() {
     $dependency = new Dependency('paragraphs_demo', 'paragraphs', '>8.x-1.1');
     $this->assertTrue($dependency->isCompatible('1.2'));
     $reflected_constraint = (new \ReflectionObject($dependency))->getProperty('constraint');

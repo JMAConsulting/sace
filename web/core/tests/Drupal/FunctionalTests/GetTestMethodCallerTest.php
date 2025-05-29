@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests;
 
 use Drupal\Tests\BrowserTestBase;
@@ -21,11 +19,11 @@ class GetTestMethodCallerTest extends BrowserTestBase {
   /**
    * Tests BrowserTestBase::getTestMethodCaller().
    */
-  public function testGetTestMethodCaller(): void {
+  public function testGetTestMethodCaller() {
     $method_caller = $this->getTestMethodCaller();
     $expected = [
       'file' => __FILE__,
-      'line' => 25,
+      'line' => 23,
       'function' => __CLASS__ . '->' . __FUNCTION__ . '()',
       'class' => BrowserTestBase::class,
       'object' => $this,

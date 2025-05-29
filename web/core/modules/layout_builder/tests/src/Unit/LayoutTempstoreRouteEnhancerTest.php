@@ -22,7 +22,7 @@ class LayoutTempstoreRouteEnhancerTest extends UnitTestCase {
   /**
    * @covers ::enhance
    */
-  public function testEnhance(): void {
+  public function testEnhance() {
     $section_storage = $this->prophesize(SectionStorageInterface::class);
     $layout_tempstore_repository = $this->prophesize(LayoutTempstoreRepositoryInterface::class);
     $layout_tempstore_repository->get($section_storage->reveal())->willReturn('the_return_value');

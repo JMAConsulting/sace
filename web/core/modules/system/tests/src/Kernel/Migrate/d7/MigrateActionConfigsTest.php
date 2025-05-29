@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Migrate\d7;
 
 use Drupal\Tests\SchemaCheckTestTrait;
@@ -27,7 +25,7 @@ class MigrateActionConfigsTest extends MigrateDrupal7TestBase {
   /**
    * Tests migration of action variables to null.
    */
-  public function testActionSettings(): void {
+  public function testActionSettings() {
     $config = $this->config('action.settings');
     $this->assertTrue($config->isNew());
   }

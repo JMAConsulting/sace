@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Kernel\Views;
 
 use Drupal\media\Entity\Media;
@@ -86,7 +84,7 @@ class RevisionUserTest extends ViewsKernelTestBase {
   /**
    * Tests the media_revision_user relationship.
    */
-  public function testRevisionUser(): void {
+  public function testRevisionUser() {
     $primary_author = $this->createUser();
     $secondary_author = $this->createUser();
 

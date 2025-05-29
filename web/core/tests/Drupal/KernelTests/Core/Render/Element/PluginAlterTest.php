@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Render\Element;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -19,7 +17,7 @@ class PluginAlterTest extends KernelTestBase {
   /**
    * Tests hook_element_plugin_alter().
    */
-  public function testPluginAlter(): void {
+  public function testPluginAlter() {
     $info_manager = $this->container->get('plugin.manager.element_info');
     $this->assertArrayHasKey('weight', $info_manager->getDefinitions());
 

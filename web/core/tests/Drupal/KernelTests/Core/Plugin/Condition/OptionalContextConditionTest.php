@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Plugin\Condition;
 
 use Drupal\Core\Plugin\Context\Context;
@@ -26,7 +24,7 @@ class OptionalContextConditionTest extends KernelTestBase {
   /**
    * Tests with both contexts mapped to the same user.
    */
-  public function testContextMissing(): void {
+  public function testContextMissing() {
     /** @var \Drupal\Core\Condition\ConditionPluginBase $condition */
     $condition = \Drupal::service('plugin.manager.condition')
       ->createInstance('condition_test_optional_context')
@@ -40,7 +38,7 @@ class OptionalContextConditionTest extends KernelTestBase {
   /**
    * Tests with both contexts mapped to the same user.
    */
-  public function testContextNoValue(): void {
+  public function testContextNoValue() {
     /** @var \Drupal\Core\Condition\ConditionPluginBase $condition */
     $condition = \Drupal::service('plugin.manager.condition')
       ->createInstance('condition_test_optional_context')
@@ -56,7 +54,7 @@ class OptionalContextConditionTest extends KernelTestBase {
   /**
    * Tests with both contexts mapped to the same user.
    */
-  public function testContextAvailable(): void {
+  public function testContextAvailable() {
     NodeType::create(['type' => 'example', 'name' => 'Example'])->save();
     /** @var \Drupal\Core\Condition\ConditionPluginBase $condition */
     $condition = \Drupal::service('plugin.manager.condition')

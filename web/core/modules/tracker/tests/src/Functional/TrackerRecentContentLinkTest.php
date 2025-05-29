@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\tracker\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -27,7 +25,7 @@ class TrackerRecentContentLinkTest extends BrowserTestBase {
   /**
    * Tests the recent content link in menu block.
    */
-  public function testRecentContentLink(): void {
+  public function testRecentContentLink() {
     $this->drupalGet('<front>');
     $this->assertSession()->linkNotExists('Recent content');
     $this->drupalPlaceBlock('system_menu_block:tools');

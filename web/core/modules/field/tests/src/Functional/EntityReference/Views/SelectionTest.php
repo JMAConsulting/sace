@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\EntityReference\Views;
 
 use Drupal\Component\Serialization\Json;
@@ -68,10 +66,6 @@ class SelectionTest extends BrowserTestBase {
       $this->nodes[$node->id()] = $node;
     }
 
-    // Ensure the bundle to which the field is attached actually exists, or we
-    // will get config validation errors.
-    entity_test_create_bundle('test_bundle');
-
     // Create an entity reference field.
     $handler_settings = [
       'view' => [
@@ -86,7 +80,7 @@ class SelectionTest extends BrowserTestBase {
   /**
    * Tests that the Views selection handles the views output properly.
    */
-  public function testAutocompleteOutput(): void {
+  public function testAutocompleteOutput() {
     // Reset any internal static caching.
     \Drupal::service('entity_type.manager')->getStorage('node')->resetCache();
 

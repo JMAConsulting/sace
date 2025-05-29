@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -58,7 +56,7 @@ class StyleSummaryTest extends ViewTestBase {
   /**
    * Tests a summary view.
    */
-  public function testSummaryView(): void {
+  public function testSummaryView() {
     $this->drupalGet('test-summary');
 
     // Ensure styles are properly added for summary views.

@@ -24,7 +24,7 @@ class RequestFormatRouteFilterTest extends UnitTestCase {
    * @covers ::filter
    * @dataProvider filterProvider
    */
-  public function testFilter(RouteCollection $collection, $request_format, array $expected_filtered_collection): void {
+  public function testFilter(RouteCollection $collection, $request_format, array $expected_filtered_collection) {
     $route_filter = new RequestFormatRouteFilter();
 
     $request = new Request();
@@ -35,7 +35,7 @@ class RequestFormatRouteFilterTest extends UnitTestCase {
     $this->assertSame($expected_filtered_collection, array_keys($collection->all()));
   }
 
-  public static function filterProvider() {
+  public function filterProvider() {
     $route_without_format = new Route('/test');
     $route_with_format = new Route('/test');
     $route_with_format->setRequirement('_format', 'json');
@@ -63,7 +63,7 @@ class RequestFormatRouteFilterTest extends UnitTestCase {
   /**
    * @covers ::filter
    */
-  public function testNoRouteFound(): void {
+  public function testNoRouteFound() {
     $url = $this->prophesize(GeneratedUrl::class);
     $url_assembler = $this->prophesize(UnroutedUrlAssemblerInterface::class);
     $url_assembler->assemble('http://localhost/test?_format=xml', ['query' => ['_format' => 'json'], 'external' => TRUE], TRUE)
@@ -89,7 +89,7 @@ class RequestFormatRouteFilterTest extends UnitTestCase {
   /**
    * @covers ::filter
    */
-  public function testNoRouteFoundWhenNoRequestFormatAndSingleRouteWithMultipleFormats(): void {
+  public function testNoRouteFoundWhenNoRequestFormatAndSingleRouteWithMultipleFormats() {
     $this->expectException(NotAcceptableHttpException::class);
     $this->expectExceptionMessage('No route found for the specified format html.');
 

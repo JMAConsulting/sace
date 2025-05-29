@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel;
 
 use Drupal\views\Views;
@@ -23,7 +21,7 @@ class BasicTest extends ViewsKernelTestBase {
   /**
    * Tests a trivial result set.
    */
-  public function testSimpleResultSet(): void {
+  public function testSimpleResultSet() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -41,7 +39,7 @@ class BasicTest extends ViewsKernelTestBase {
   /**
    * Tests filtering of the result set.
    */
-  public function testSimpleFiltering(): void {
+  public function testSimpleFiltering() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -100,7 +98,7 @@ class BasicTest extends ViewsKernelTestBase {
   /**
    * Tests simple argument.
    */
-  public function testSimpleArgument(): void {
+  public function testSimpleArgument() {
     // Execute with a view
     $view = Views::getView('test_simple_argument');
     $view->setArguments([27]);

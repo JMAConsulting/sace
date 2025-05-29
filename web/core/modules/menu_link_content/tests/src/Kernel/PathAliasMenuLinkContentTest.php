@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_link_content\Kernel;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\KernelTests\KernelTestBase;
@@ -47,9 +46,20 @@ class PathAliasMenuLinkContentTest extends KernelTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function register(ContainerBuilder $container) {
+    parent::register($container);
+
+    $definition = $container->getDefinition('path_alias.path_processor');
+    $definition
+      ->addTag('path_processor_inbound', ['priority' => 100]);
+  }
+
+  /**
    * Tests the path aliasing changing.
    */
-  public function testPathAliasChange(): void {
+  public function testPathAliasChange() {
     $path_alias = $this->createPathAlias('/test-page', '/my-blog');
     $menu_link_content = MenuLinkContent::create([
       'title' => 'Menu title',

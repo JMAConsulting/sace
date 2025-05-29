@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 /**
@@ -20,7 +18,7 @@ class NodeViewTest extends NodeTestBase {
   /**
    * Tests the html head links.
    */
-  public function testHtmlHeadLinks(): void {
+  public function testHtmlHeadLinks() {
     $node = $this->drupalCreateNode();
 
     $this->drupalGet($node->toUrl());
@@ -35,7 +33,7 @@ class NodeViewTest extends NodeTestBase {
   /**
    * Tests the Link header.
    */
-  public function testLinkHeader(): void {
+  public function testLinkHeader() {
     $node = $this->drupalCreateNode();
     $this->drupalGet($node->toUrl());
     $this->assertArrayNotHasKey('Link', $this->getSession()->getResponseHeaders());
@@ -44,7 +42,7 @@ class NodeViewTest extends NodeTestBase {
   /**
    * Tests that we store and retrieve multi-byte UTF-8 characters correctly.
    */
-  public function testMultiByteUtf8(): void {
+  public function testMultiByteUtf8() {
     $title = '🐝';
     // To ensure that the title has multi-byte characters, we compare the byte
     // length to the character length.

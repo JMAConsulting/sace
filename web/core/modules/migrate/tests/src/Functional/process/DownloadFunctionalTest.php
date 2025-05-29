@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Functional\process;
 
 use Drupal\migrate\MigrateExecutable;
@@ -31,7 +29,7 @@ class DownloadFunctionalTest extends BrowserTestBase {
   /**
    * Tests that an exception is thrown bu migration continues with the next row.
    */
-  public function testExceptionThrow(): void {
+  public function testExceptionThrow() {
     $invalid_url = "{$this->baseUrl}/not-existent-404";
     $valid_url = "{$this->baseUrl}/core/misc/favicon.ico";
 

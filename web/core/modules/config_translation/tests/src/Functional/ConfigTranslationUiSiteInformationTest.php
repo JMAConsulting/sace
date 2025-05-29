@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config_translation\Functional;
 
 // cspell:ignore libellé
@@ -16,7 +14,7 @@ class ConfigTranslationUiSiteInformationTest extends ConfigTranslationUiTestBase
   /**
    * Tests the site information translation interface.
    */
-  public function testSiteInformationTranslationUi(): void {
+  public function testSiteInformationTranslationUi() {
     $this->drupalLogin($this->adminUser);
 
     $site_name = 'Name of the site for testing configuration translation';
@@ -121,7 +119,7 @@ class ConfigTranslationUiSiteInformationTest extends ConfigTranslationUiTestBase
   /**
    * Tests the site information translation interface.
    */
-  public function testSourceValueDuplicateSave(): void {
+  public function testSourceValueDuplicateSave() {
     $this->drupalLogin($this->adminUser);
 
     $site_name = 'Site name for testing configuration translation';

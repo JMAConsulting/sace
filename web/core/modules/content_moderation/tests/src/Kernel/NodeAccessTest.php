@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -69,7 +67,7 @@ class NodeAccessTest extends KernelTestBase {
   /**
    * @covers \Drupal\content_moderation\ModerationInformation::getDefaultRevisionId
    */
-  public function testGetDefaultRevisionId(): void {
+  public function testGetDefaultRevisionId() {
     // Create an admin user.
     $user = $this->createUser([], NULL, TRUE);
     \Drupal::currentUser()->setAccount($user);

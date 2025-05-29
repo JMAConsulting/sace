@@ -2,7 +2,6 @@
 
 namespace Drupal\views\Plugin\views\display;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
@@ -44,7 +43,7 @@ abstract class PathPluginBase extends DisplayPluginBase implements DisplayRouter
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Routing\RouteProviderInterface $route_provider
@@ -427,7 +426,7 @@ abstract class PathPluginBase extends DisplayPluginBase implements DisplayRouter
     $options['path'] = [
       'category' => 'page',
       'title' => $this->t('Path'),
-      'value' => Unicode::truncate($path, 24, FALSE, TRUE),
+      'value' => views_ui_truncate($path, 24),
     ];
   }
 

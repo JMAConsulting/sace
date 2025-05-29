@@ -12,7 +12,6 @@
 
 namespace Twig\Node;
 
-use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 
 /**
@@ -20,19 +19,18 @@ use Twig\Compiler;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-#[YieldReady]
 class BlockReferenceNode extends Node implements NodeOutputInterface
 {
-    public function __construct(string $name, int $lineno)
+    public function __construct(string $name, int $lineno, string $tag = null)
     {
-        parent::__construct([], ['name' => $name], $lineno);
+        parent::__construct([], ['name' => $name], $lineno, $tag);
     }
 
     public function compile(Compiler $compiler): void
     {
         $compiler
             ->addDebugInfo($this)
-            ->write(\sprintf("yield from \$this->unwrap()->yieldBlock('%s', \$context, \$blocks);\n", $this->getAttribute('name')))
+            ->write(sprintf("\$this->displayBlock('%s', \$context, \$blocks);\n", $this->getAttribute('name')))
         ;
     }
 }

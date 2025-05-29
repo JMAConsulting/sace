@@ -77,7 +77,7 @@ class EntityDisplayModeBaseUnitTest extends UnitTestCase {
   /**
    * @covers ::calculateDependencies
    */
-  public function testCalculateDependencies(): void {
+  public function testCalculateDependencies() {
     $target_entity_type_id = $this->randomMachineName(16);
 
     $target_entity_type = $this->createMock('\Drupal\Core\Entity\EntityTypeInterface');
@@ -101,7 +101,7 @@ class EntityDisplayModeBaseUnitTest extends UnitTestCase {
   /**
    * @covers ::setTargetType
    */
-  public function testSetTargetType(): void {
+  public function testSetTargetType() {
     // Generate mock.
     $mock = $this->getMockBuilder('Drupal\Core\Entity\EntityDisplayModeBase')
       ->onlyMethods([])
@@ -128,7 +128,7 @@ class EntityDisplayModeBaseUnitTest extends UnitTestCase {
   /**
    * @covers ::getTargetType
    */
-  public function testGetTargetType(): void {
+  public function testGetTargetType() {
     // Generate mock.
     $mock = $this->getMockBuilder('Drupal\Core\Entity\EntityDisplayModeBase')
       ->onlyMethods([])

@@ -31,7 +31,7 @@ class TextFieldTest extends UnitTestCase {
   /**
    * Data provider for testGetFieldFormatterType().
    */
-  public static function getFieldFormatterTypeProvider() {
+  public function getFieldFormatterTypeProvider() {
     return [
       ['text', 'text_plain', 'string'],
       ['text_long', 'text_default', 'basic_string'],
@@ -44,7 +44,7 @@ class TextFieldTest extends UnitTestCase {
    * @covers ::getFieldType
    * @dataProvider getFieldFormatterTypeProvider
    */
-  public function testGetFieldFormatterType($type, $formatter_type, $expected): void {
+  public function testGetFieldFormatterType($type, $formatter_type, $expected) {
     $row = new Row();
     $row->setSourceProperty('type', $type);
     $row->setSourceProperty('formatter/type', $formatter_type);

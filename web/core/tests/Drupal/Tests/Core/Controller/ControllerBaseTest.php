@@ -32,7 +32,7 @@ class ControllerBaseTest extends UnitTestCase {
   /**
    * Tests the config method.
    */
-  public function testGetConfig(): void {
+  public function testGetConfig() {
     $config_factory = $this->getConfigFactoryStub([
       'config_name' => [
         'key' => 'value',

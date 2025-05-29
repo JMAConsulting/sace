@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Handler;
 
 use Drupal\Component\Utility\Html;
@@ -70,7 +68,7 @@ class FieldWebTest extends ViewTestBase {
   /**
    * Tests the click sorting functionality.
    */
-  public function testClickSorting(): void {
+  public function testClickSorting() {
     $this->drupalGet('test_click_sort');
     $this->assertSession()->statusCodeEquals(200);
 
@@ -106,7 +104,7 @@ class FieldWebTest extends ViewTestBase {
   /**
    * Tests the default click sorting functionality with distinct.
    */
-  public function testClickSortingDistinct(): void {
+  public function testClickSortingDistinct() {
     ConfigurableLanguage::createFromLangcode('es')->save();
     $node = $this->drupalCreateNode();
     $this->drupalGet('test_distinct_click_sorting');
@@ -218,7 +216,7 @@ class FieldWebTest extends ViewTestBase {
   /**
    * Tests rewriting the output to a link.
    */
-  public function testAlterUrl(): void {
+  public function testAlterUrl() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 
@@ -408,7 +406,7 @@ class FieldWebTest extends ViewTestBase {
   /**
    * Tests the field/label/wrapper classes.
    */
-  public function testFieldClasses(): void {
+  public function testFieldClasses() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $view = Views::getView('test_field_classes');
@@ -519,7 +517,7 @@ class FieldWebTest extends ViewTestBase {
   /**
    * Tests trimming/read-more/ellipses.
    */
-  public function testTextRendering(): void {
+  public function testTextRendering() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = \Drupal::service('renderer');
 

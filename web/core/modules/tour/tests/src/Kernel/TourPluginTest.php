@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\tour\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -10,7 +8,6 @@ use Drupal\KernelTests\KernelTestBase;
  * Tests the functionality of tour plugins.
  *
  * @group tour
- * @group legacy
  */
 class TourPluginTest extends KernelTestBase {
 
@@ -41,7 +38,7 @@ class TourPluginTest extends KernelTestBase {
   /**
    * Tests tour plugins.
    */
-  public function testTourPlugins(): void {
+  public function testTourPlugins() {
     $this->assertCount(1, $this->pluginManager->getDefinitions(), 'Only tour plugins for the enabled modules were returned.');
   }
 

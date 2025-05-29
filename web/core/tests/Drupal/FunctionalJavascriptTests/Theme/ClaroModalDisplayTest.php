@@ -27,7 +27,7 @@ class ClaroModalDisplayTest extends MediaLibraryTestBase {
   /**
    * Tests the position f "add another" button in dialogs.
    */
-  public function testModalAddAnother(): void {
+  public function testModalAddAnother() {
 
     // Add unlimited field to the media type four.
     $unlimited_field_storage = FieldStorageConfig::create([

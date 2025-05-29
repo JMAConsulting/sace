@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Kernel;
 
 use Drupal\Core\Breadcrumb\Breadcrumb;
@@ -26,7 +24,7 @@ class LayoutBuilderBreadcrumbAlterTest extends EntityKernelTestBase {
   /**
    * Check that there are no errors when alter called with null route match.
    */
-  public function testBreadcrumbAlterNullRouteMatch(): void {
+  public function testBreadcrumbAlterNullRouteMatch() {
     $breadcrumb = new Breadcrumb();
     $route_match = new NullRouteMatch();
     layout_builder_system_breadcrumb_alter($breadcrumb, $route_match, []);

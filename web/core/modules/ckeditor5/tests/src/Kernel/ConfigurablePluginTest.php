@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\ckeditor5\Kernel;
 
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
@@ -46,7 +44,7 @@ class ConfigurablePluginTest extends KernelTestBase {
   /**
    * Tests default settings for configurable CKEditor 5 plugins.
    */
-  public function testDefaults(): void {
+  public function testDefaults() {
     $all_definitions = $this->manager->getDefinitions();
     $configurable_definitions = array_filter($all_definitions, function (CKEditor5PluginDefinition $definition): bool {
       return $definition->isConfigurable();

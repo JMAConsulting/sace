@@ -10,7 +10,7 @@ class ThemeTestPreprocess {
   /**
    * Preprocess callback for testing preprocess callbacks.
    *
-   * @param array $variables
+   * @param $variables
    *   An associative array containing:
    *   - foo: Text for testing preprocess callback.
    */

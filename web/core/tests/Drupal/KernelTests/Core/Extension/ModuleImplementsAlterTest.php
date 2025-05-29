@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Extension;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -24,7 +22,7 @@ class ModuleImplementsAlterTest extends KernelTestBase {
    * @see \Drupal\Core\Extension\ModuleHandler::buildImplementationInfo()
    * @see module_test_module_implements_alter()
    */
-  public function testModuleImplementsAlter(): void {
+  public function testModuleImplementsAlter() {
 
     // Get an instance of the module handler, to observe how it is going to be
     // replaced.
@@ -71,7 +69,7 @@ class ModuleImplementsAlterTest extends KernelTestBase {
    * @see \Drupal\Core\Extension\ModuleHandler::buildImplementationInfo()
    * @see module_test_module_implements_alter()
    */
-  public function testModuleImplementsAlterNonExistingImplementation(): void {
+  public function testModuleImplementsAlterNonExistingImplementation() {
 
     // Install the module_test module.
     \Drupal::service('module_installer')->install(['module_test']);

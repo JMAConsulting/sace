@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\IntegrityConstraintViolationException;
@@ -16,7 +14,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests very basic insert functionality.
    */
-  public function testSimpleInsert(): void {
+  public function testSimpleInsert() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test}')->fetchField();
 
     $query = $this->connection->insert('test');
@@ -38,7 +36,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests that we can insert multiple records in one query object.
    */
-  public function testMultiInsert(): void {
+  public function testMultiInsert() {
     $num_records_before = (int) $this->connection->query('SELECT COUNT(*) FROM {test}')->fetchField();
 
     $query = $this->connection->insert('test');
@@ -77,7 +75,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests that an insert object can be reused with new data after it executes.
    */
-  public function testRepeatedInsert(): void {
+  public function testRepeatedInsert() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {test}')->fetchField();
 
     $query = $this->connection->insert('test');
@@ -120,7 +118,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests that we can specify fields without values and specify values later.
    */
-  public function testInsertFieldOnlyDefinition(): void {
+  public function testInsertFieldOnlyDefinition() {
     // This is useful for importers, when we want to create a query and define
     // its fields once, then loop over a multi-insert execution.
     $this->connection->insert('test')
@@ -140,7 +138,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests that inserts return the proper auto-increment ID.
    */
-  public function testInsertLastInsertID(): void {
+  public function testInsertLastInsertID() {
     $id = $this->connection->insert('test')
       ->fields([
         'name' => 'Larry',
@@ -154,7 +152,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests that the INSERT INTO ... SELECT (fields) ... syntax works.
    */
-  public function testInsertSelectFields(): void {
+  public function testInsertSelectFields() {
     $query = $this->connection->select('test_people', 'tp');
     // The query builder will always append expressions after fields.
     // Add the expression first to test that the insert fields are correctly
@@ -180,7 +178,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests that the INSERT INTO ... SELECT * ... syntax works.
    */
-  public function testInsertSelectAll(): void {
+  public function testInsertSelectAll() {
     $query = $this->connection->select('test_people', 'tp')
       ->fields('tp')
       ->condition('tp.name', 'Meredith');
@@ -201,7 +199,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests that we can INSERT INTO a special named column.
    */
-  public function testSpecialColumnInsert(): void {
+  public function testSpecialColumnInsert() {
     $this->connection->insert('select')
       ->fields([
         'id' => 2,
@@ -215,7 +213,7 @@ class InsertTest extends DatabaseTestBase {
   /**
    * Tests insertion integrity violation with no default value for a column.
    */
-  public function testInsertIntegrityViolation(): void {
+  public function testInsertIntegrityViolation() {
     // Remove the default from the 'age' column, so that inserting a record
     // without its value specified will lead to integrity failure.
     $this->connection->schema()->changeField('test', 'age', 'age', [

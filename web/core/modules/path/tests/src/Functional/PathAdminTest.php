@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\path\Functional;
 
 /**
@@ -12,7 +10,9 @@ namespace Drupal\Tests\path\Functional;
 class PathAdminTest extends PathTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['path'];
 
@@ -40,7 +40,7 @@ class PathAdminTest extends PathTestBase {
   /**
    * Tests the filtering aspect of the Path UI.
    */
-  public function testPathFiltering(): void {
+  public function testPathFiltering() {
     // Create test nodes.
     $node1 = $this->drupalCreateNode();
     $node2 = $this->drupalCreateNode();

@@ -154,7 +154,7 @@ class MigrateSourceTest extends MigrateTestCase {
   /**
    * @covers ::__construct
    */
-  public function testHighwaterTrackChangesIncompatible(): void {
+  public function testHighwaterTrackChangesIncompatible() {
     $source_config = ['track_changes' => TRUE, 'high_water_property' => ['name' => 'something']];
     $this->expectException(MigrateException::class);
     $this->getSource($source_config);
@@ -165,7 +165,7 @@ class MigrateSourceTest extends MigrateTestCase {
    *
    * @covers ::count
    */
-  public function testCount(): void {
+  public function testCount() {
     // Mock the cache to validate set() receives appropriate arguments.
     $container = new ContainerBuilder();
     $cache = $this->createMock(CacheBackendInterface::class);
@@ -203,7 +203,7 @@ class MigrateSourceTest extends MigrateTestCase {
    *
    * @covers ::count
    */
-  public function testCountCacheKey(): void {
+  public function testCountCacheKey() {
     // Mock the cache to validate set() receives appropriate arguments.
     $container = new ContainerBuilder();
     $cache = $this->createMock(CacheBackendInterface::class);
@@ -220,7 +220,7 @@ class MigrateSourceTest extends MigrateTestCase {
   /**
    * Tests that we don't get a row if prepareRow() is false.
    */
-  public function testPrepareRowFalse(): void {
+  public function testPrepareRowFalse() {
     $source = $this->getSource([], ['prepare_row_false' => TRUE]);
 
     $source->rewind();
@@ -230,7 +230,7 @@ class MigrateSourceTest extends MigrateTestCase {
   /**
    * Tests that $row->needsUpdate() works as expected.
    */
-  public function testNextNeedsUpdate(): void {
+  public function testNextNeedsUpdate() {
     $source = $this->getSource();
 
     // $row->needsUpdate() === TRUE so we get a row.
@@ -246,7 +246,7 @@ class MigrateSourceTest extends MigrateTestCase {
   /**
    * Tests that an outdated highwater mark does not cause a row to be imported.
    */
-  public function testOutdatedHighwater(): void {
+  public function testOutdatedHighwater() {
     $configuration = [
       'high_water_property' => [
         'name' => 'timestamp',
@@ -265,7 +265,7 @@ class MigrateSourceTest extends MigrateTestCase {
    *
    * @throws \Exception
    */
-  public function testNewHighwater(): void {
+  public function testNewHighwater() {
     $configuration = [
       'high_water_property' => [
         'name' => 'timestamp',
@@ -284,7 +284,7 @@ class MigrateSourceTest extends MigrateTestCase {
    *
    * @covers ::prepareRow
    */
-  public function testPrepareRow(): void {
+  public function testPrepareRow() {
     $this->migrationConfiguration['id'] = 'test_migration';
 
     // Get a new migration with an id.
@@ -327,7 +327,7 @@ class MigrateSourceTest extends MigrateTestCase {
    *
    * @covers ::prepareRow
    */
-  public function testPrepareRowGlobalPrepareSkip(): void {
+  public function testPrepareRowGlobalPrepareSkip() {
     $this->migrationConfiguration['id'] = 'test_migration';
 
     $migration = $this->getMigration();
@@ -356,7 +356,7 @@ class MigrateSourceTest extends MigrateTestCase {
    *
    * @covers ::prepareRow
    */
-  public function testPrepareRowMigratePrepareSkip(): void {
+  public function testPrepareRowMigratePrepareSkip() {
     $this->migrationConfiguration['id'] = 'test_migration';
 
     $migration = $this->getMigration();
@@ -385,7 +385,7 @@ class MigrateSourceTest extends MigrateTestCase {
    *
    * @covers ::prepareRow
    */
-  public function testPrepareRowPrepareException(): void {
+  public function testPrepareRowPrepareException() {
     $this->migrationConfiguration['id'] = 'test_migration';
 
     $migration = $this->getMigration();
@@ -420,7 +420,7 @@ class MigrateSourceTest extends MigrateTestCase {
   /**
    * Tests that default values are preserved for several source methods.
    */
-  public function testDefaultPropertiesValues(): void {
+  public function testDefaultPropertiesValues() {
     $this->migrationConfiguration['id'] = 'test_migration';
     $migration = $this->getMigration();
     $source = new StubSourceGeneratorPlugin([], '', [], $migration);

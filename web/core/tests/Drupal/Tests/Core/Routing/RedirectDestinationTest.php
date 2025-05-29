@@ -73,7 +73,7 @@ class RedirectDestinationTest extends UnitTestCase {
    *
    * @covers ::get
    */
-  public function testGet(Request $request, $expected_destination): void {
+  public function testGet(Request $request, $expected_destination) {
     $this->requestStack->push($request);
     $this->setupUrlGenerator();
 
@@ -87,7 +87,7 @@ class RedirectDestinationTest extends UnitTestCase {
    *
    * @covers ::getAsArray
    */
-  public function testGetAsArray(Request $request, $expected_destination): void {
+  public function testGetAsArray(Request $request, $expected_destination) {
     $this->requestStack->push($request);
     $this->setupUrlGenerator();
 
@@ -96,7 +96,7 @@ class RedirectDestinationTest extends UnitTestCase {
     $this->assertEquals(['destination' => $expected_destination], $this->redirectDestination->getAsArray());
   }
 
-  public static function providerGet() {
+  public function providerGet() {
     $data = [];
 
     $request = Request::create('/');
@@ -125,7 +125,7 @@ class RedirectDestinationTest extends UnitTestCase {
    * @covers ::set
    * @covers ::get
    */
-  public function testSetBeforeGetCall(): void {
+  public function testSetBeforeGetCall() {
     $this->redirectDestination->set('/example');
     $this->assertEquals('/example', $this->redirectDestination->get());
   }
@@ -134,7 +134,7 @@ class RedirectDestinationTest extends UnitTestCase {
    * @covers ::set
    * @covers ::get
    */
-  public function testSetAfterGetCall(): void {
+  public function testSetAfterGetCall() {
     $request = Request::create('/');
     $request->query->set('destination', '/other-example');
     $this->requestStack->push($request);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel\Migrate\d6;
 
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -23,7 +21,7 @@ class MigrateDefaultLanguageTest extends MigrateDrupal6TestBase {
   /**
    * Tests language_default migration with an existing language.
    */
-  public function testMigrationWithExistingLanguage(): void {
+  public function testMigrationWithExistingLanguage() {
     $this->setDefaultLanguage('fr');
     $this->startCollectingMessages();
     $this->executeMigrations(['language', 'default_language']);
@@ -37,7 +35,7 @@ class MigrateDefaultLanguageTest extends MigrateDrupal6TestBase {
   /**
    * Tests language_default migration with a non-existing language.
    */
-  public function testMigrationWithNonExistentLanguage(): void {
+  public function testMigrationWithNonExistentLanguage() {
     $this->setDefaultLanguage('tv');
     $this->startCollectingMessages();
     $this->executeMigrations(['language', 'default_language']);
@@ -56,7 +54,7 @@ class MigrateDefaultLanguageTest extends MigrateDrupal6TestBase {
   /**
    * Tests language_default migration with unset default language variable.
    */
-  public function testMigrationWithUnsetVariable(): void {
+  public function testMigrationWithUnsetVariable() {
     // Delete the language_default variable.
     $this->sourceDatabase->delete('variable')
       ->condition('name', 'language_default')

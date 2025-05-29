@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\path\Functional;
 
 use Drupal\Tests\content_moderation\Traits\ContentModerationTestTrait;
@@ -18,7 +16,9 @@ class PathWithNodeAccessGrantsTest extends PathTestBase {
   use ContentModerationTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'path',

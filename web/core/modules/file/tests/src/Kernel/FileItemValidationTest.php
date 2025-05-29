@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -62,7 +60,7 @@ class FileItemValidationTest extends KernelTestBase {
    * @covers \Drupal\file\Plugin\Validation\Constraint\FileValidationConstraintValidator
    * @dataProvider getFileTypes
    */
-  public function testFileValidationConstraint($file_type): void {
+  public function testFileValidationConstraint($file_type) {
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'field_test_file',
       'entity_type' => 'entity_test',
@@ -130,7 +128,7 @@ class FileItemValidationTest extends KernelTestBase {
   /**
    * Provides a list of file types to test.
    */
-  public static function getFileTypes() {
+  public function getFileTypes() {
     return [['file'], ['image']];
   }
 

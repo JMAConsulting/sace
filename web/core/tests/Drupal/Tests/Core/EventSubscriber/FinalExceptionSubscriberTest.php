@@ -21,7 +21,7 @@ class FinalExceptionSubscriberTest extends UnitTestCase {
   /**
    * @covers ::onException
    */
-  public function testOnExceptionWithUnknownFormat(): void {
+  public function testOnExceptionWithUnknownFormat() {
     $config_factory = $this->getConfigFactoryStub();
 
     $kernel = $this->prophesize(HttpKernelInterface::class);

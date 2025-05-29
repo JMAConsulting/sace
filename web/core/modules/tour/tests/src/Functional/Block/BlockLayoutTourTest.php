@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\tour\Functional\Block;
 
 use Drupal\Tests\tour\Functional\TourTestBase;
@@ -10,7 +8,6 @@ use Drupal\Tests\tour\Functional\TourTestBase;
  * Tests the Block Layout tour.
  *
  * @group tour
- * @group legacy
  */
 class BlockLayoutTourTest extends TourTestBase {
 
@@ -46,7 +43,7 @@ class BlockLayoutTourTest extends TourTestBase {
   /**
    * Tests Block Layout tour tip availability.
    */
-  public function testBlockLayoutTourTips(): void {
+  public function testBlockLayoutTourTips() {
     $this->drupalGet('admin/structure/block');
     $this->assertTourTips();
   }

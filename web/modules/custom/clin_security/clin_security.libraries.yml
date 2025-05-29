@@ -1,7 +1,0 @@
-clin_security:
-  version: 1
-  js:
-    js/clin_security.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupalSettings

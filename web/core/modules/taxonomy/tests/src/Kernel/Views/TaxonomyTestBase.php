@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Views;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -32,7 +30,9 @@ abstract class TaxonomyTestBase extends ViewsKernelTestBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'taxonomy',

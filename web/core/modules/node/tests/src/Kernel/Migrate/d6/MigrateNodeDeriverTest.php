@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Migrate\d6;
 
 use Drupal\Tests\migrate_drupal\Kernel\d6\MigrateDrupal6TestBase;
@@ -30,7 +28,7 @@ class MigrateNodeDeriverTest extends MigrateDrupal6TestBase {
   /**
    * Tests node translation migrations with translation disabled.
    */
-  public function testNoTranslations(): void {
+  public function testNoTranslations() {
     // Without content_translation, there should be no translation migrations.
     $migrations = $this->pluginManager->createInstances('d6_node_translation');
     $this->assertSame([], $migrations,
@@ -40,7 +38,7 @@ class MigrateNodeDeriverTest extends MigrateDrupal6TestBase {
   /**
    * Tests node translation migrations with translation enabled.
    */
-  public function testTranslations(): void {
+  public function testTranslations() {
     // With content_translation, there should be translation migrations for
     // each content type.
     $this->enableModules(['language', 'content_translation']);

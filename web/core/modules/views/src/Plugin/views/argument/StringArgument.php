@@ -5,7 +5,6 @@ namespace Drupal\views\Plugin\views\argument;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextDefinition;
-use Drupal\views\Attribute\ViewsArgument;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\ManyToOneHelper;
@@ -17,10 +16,9 @@ use Drupal\views\ManyToOneHelper;
  * limits.
  *
  * @ingroup views_argument_handlers
-  */
-#[ViewsArgument(
-  id: 'string',
-)]
+ *
+ * @ViewsArgument("string")
+ */
 class StringArgument extends ArgumentPluginBase {
 
   /**
@@ -31,7 +29,7 @@ class StringArgument extends ArgumentPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function init(ViewExecutable $view, DisplayPluginBase $display, ?array &$options = NULL) {
+  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
 
     if (!empty($this->definition['many to one'])) {
@@ -139,7 +137,7 @@ class StringArgument extends ArgumentPluginBase {
       ];
     }
 
-    // Allow '+' for "or". Allow ',' for "and".
+    // allow + for or, , for and
     $form['break_phrase'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Allow multiple values'),

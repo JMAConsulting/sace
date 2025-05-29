@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -71,7 +69,7 @@ class SearchAdminThemeTest extends BrowserTestBase {
    * @see \Drupal\search_extra_type\Plugin\Search\SearchExtraTypeSearch
    * @see \Drupal\user\Plugin\Search\UserSearch
    */
-  public function testSearchUsingAdminTheme(): void {
+  public function testSearchUsingAdminTheme() {
     /** @var \Drupal\search\SearchPageRepositoryInterface $repository */
     $repository = \Drupal::service('search.search_page_repository');
     $pages = $repository->getActiveSearchPages();

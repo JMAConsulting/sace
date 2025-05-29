@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_translation\Functional;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -42,7 +40,9 @@ class ContentTranslationSyncImageTest extends ContentTranslationTestBase {
   protected $files;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'language',
@@ -103,7 +103,7 @@ class ContentTranslationSyncImageTest extends ContentTranslationTestBase {
   /**
    * Tests image field synchronization.
    */
-  public function testImageFieldSync(): void {
+  public function testImageFieldSync() {
     // Check that the alt and title fields are enabled for the image field.
     $this->drupalLogin($this->editor);
     $this->drupalGet('entity_test_mul/structure/' . $this->entityTypeId . '/fields/' . $this->entityTypeId . '.' . $this->entityTypeId . '.' . $this->fieldName);
@@ -138,7 +138,7 @@ class ContentTranslationSyncImageTest extends ContentTranslationTestBase {
     // Populate the test entity with some random initial values.
     $values = [
       'name' => $this->randomMachineName(),
-      'user_id' => 2,
+      'user_id' => mt_rand(1, 128),
       'langcode' => $default_langcode,
     ];
     $entity = \Drupal::entityTypeManager()

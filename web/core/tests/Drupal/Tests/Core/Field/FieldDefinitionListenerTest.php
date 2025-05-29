@@ -108,7 +108,7 @@ class FieldDefinitionListenerTest extends UnitTestCase {
   /**
    * @covers ::onFieldDefinitionCreate
    */
-  public function testOnFieldDefinitionCreateNewField(): void {
+  public function testOnFieldDefinitionCreateNewField() {
     $field_definition = $this->prophesize(FieldDefinitionInterface::class);
     $field_definition->getTargetEntityTypeId()->willReturn('test_entity_type');
     $field_definition->getTargetBundle()->willReturn('test_bundle');
@@ -139,7 +139,7 @@ class FieldDefinitionListenerTest extends UnitTestCase {
   /**
    * @covers ::onFieldDefinitionCreate
    */
-  public function testOnFieldDefinitionCreateExistingField(): void {
+  public function testOnFieldDefinitionCreateExistingField() {
     $field_definition = $this->prophesize(FieldDefinitionInterface::class);
     $field_definition->getTargetEntityTypeId()->willReturn('test_entity_type');
     $field_definition->getTargetBundle()->willReturn('test_bundle');
@@ -175,7 +175,7 @@ class FieldDefinitionListenerTest extends UnitTestCase {
   /**
    * @covers ::onFieldDefinitionUpdate
    */
-  public function testOnFieldDefinitionUpdate(): void {
+  public function testOnFieldDefinitionUpdate() {
     $field_definition = $this->prophesize(FieldDefinitionInterface::class);
     $field_definition->getTargetEntityTypeId()->willReturn('test_entity_type');
 
@@ -192,7 +192,7 @@ class FieldDefinitionListenerTest extends UnitTestCase {
   /**
    * @covers ::onFieldDefinitionDelete
    */
-  public function testOnFieldDefinitionDeleteMultipleBundles(): void {
+  public function testOnFieldDefinitionDeleteMultipleBundles() {
     $field_definition = $this->prophesize(FieldDefinitionInterface::class);
     $field_definition->getTargetEntityTypeId()->willReturn('test_entity_type');
     $field_definition->getTargetBundle()->willReturn('test_bundle');
@@ -232,7 +232,7 @@ class FieldDefinitionListenerTest extends UnitTestCase {
   /**
    * @covers ::onFieldDefinitionDelete
    */
-  public function testOnFieldDefinitionDeleteSingleBundles(): void {
+  public function testOnFieldDefinitionDeleteSingleBundles() {
     $field_definition = $this->prophesize(FieldDefinitionInterface::class);
     $field_definition->getTargetEntityTypeId()->willReturn('test_entity_type');
     $field_definition->getTargetBundle()->willReturn('test_bundle');

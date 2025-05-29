@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\Core\Session\AccountInterface;
@@ -48,7 +46,7 @@ class NodePreviewAnonymousTest extends BrowserTestBase {
   /**
    * Checks the node preview functionality for anonymous users.
    */
-  public function testAnonymousPagePreview(): void {
+  public function testAnonymousPagePreview() {
 
     $title_key = 'title[0][value]';
     $body_key = 'body[0][value]';

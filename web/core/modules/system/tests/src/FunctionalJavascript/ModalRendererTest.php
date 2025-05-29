@@ -26,7 +26,7 @@ class ModalRendererTest extends WebDriverTestBase {
   /**
    * Tests that links respect 'data-dialog-renderer' attribute.
    */
-  public function testModalRenderer(): void {
+  public function testModalRenderer() {
     $session_assert = $this->assertSession();
     $this->drupalGet('/dialog_renderer-test-links');
     $this->clickLink('Normal Modal!');
@@ -103,7 +103,7 @@ class ModalRendererTest extends WebDriverTestBase {
   /**
    * Confirm focus management of a dialog openers in a dropbutton.
    */
-  public function testOpenerInDropbutton(): void {
+  public function testOpenerInDropbutton() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

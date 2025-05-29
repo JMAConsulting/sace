@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\mysql\Functional;
 
 use Drupal\Core\Database\Database;
@@ -30,7 +28,7 @@ class InstallerIsolationLevelExistingSettingsTest extends InstallerExistingSetti
   /**
    * Verifies that isolation_level is not set in the database settings.
    */
-  public function testInstaller(): void {
+  public function testInstaller() {
     $contents = file_get_contents($this->container->getParameter('app.root') . '/' . $this->siteDirectory . '/settings.php');
 
     // Test that isolation_level was not set.

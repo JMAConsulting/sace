@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Routing;
 
 use Drupal\Tests\BrowserTestBase;
@@ -21,7 +19,7 @@ class DefaultFormatTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testFoo(): void {
+  public function testFoo() {
     $this->drupalGet('/default_format_test/human');
     $this->assertSame('format:html', $this->getSession()->getPage()->getContent());
     $this->assertSession()->responseHeaderEquals('X-Drupal-Cache', 'MISS');
@@ -37,7 +35,7 @@ class DefaultFormatTest extends BrowserTestBase {
     $this->assertSession()->responseHeaderEquals('X-Drupal-Cache', 'HIT');
   }
 
-  public function testMultipleRoutesWithSameSingleFormat(): void {
+  public function testMultipleRoutesWithSameSingleFormat() {
     $this->drupalGet('/default_format_test/machine');
     $this->assertSame('format:json', $this->getSession()->getPage()->getContent());
   }

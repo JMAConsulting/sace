@@ -16,7 +16,7 @@ class AnnounceRendererTest extends AnnounceTestBase {
   /**
    * Tests rendered valid when something goes wrong.
    */
-  public function testRendererException(): void {
+  public function testRendererException() {
     $this->setTestFeedResponses([
       new Response(403),
     ]);
@@ -28,7 +28,7 @@ class AnnounceRendererTest extends AnnounceTestBase {
   /**
    * Tests rendered valid content.
    */
-  public function testRendererContent(): void {
+  public function testRendererContent() {
     $feed_item_1 = [
       'id' => '1001',
       'content_html' => 'Test teaser 1',

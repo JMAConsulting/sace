@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\basic_auth\Functional;
 
 use Drupal\Core\Url;
@@ -39,7 +37,7 @@ class BasicAuthTest extends BrowserTestBase {
   /**
    * Tests http basic authentication.
    */
-  public function testBasicAuth(): void {
+  public function testBasicAuth() {
     // Enable page caching.
     $config = $this->config('system.performance');
     $config->set('cache.page.max_age', 300);
@@ -95,7 +93,7 @@ class BasicAuthTest extends BrowserTestBase {
   /**
    * Tests the global login flood control.
    */
-  public function testGlobalLoginFloodControl(): void {
+  public function testGlobalLoginFloodControl() {
     $this->config('user.flood')
       ->set('ip_limit', 2)
       // Set a high per-user limit out so that it is not relevant in the test.
@@ -120,7 +118,7 @@ class BasicAuthTest extends BrowserTestBase {
   /**
    * Tests the per-user login flood control.
    */
-  public function testPerUserLoginFloodControl(): void {
+  public function testPerUserLoginFloodControl() {
     $this->config('user.flood')
       // Set a high global limit out so that it is not relevant in the test.
       ->set('ip_limit', 4000)
@@ -158,7 +156,7 @@ class BasicAuthTest extends BrowserTestBase {
   /**
    * Tests compatibility with locale/UI translation.
    */
-  public function testLocale(): void {
+  public function testLocale() {
     ConfigurableLanguage::createFromLangcode('de')->save();
     $this->config('system.site')->set('default_langcode', 'de')->save();
 
@@ -173,7 +171,7 @@ class BasicAuthTest extends BrowserTestBase {
   /**
    * Tests if a comprehensive message is displayed when the route is denied.
    */
-  public function testUnauthorizedErrorMessage(): void {
+  public function testUnauthorizedErrorMessage() {
     $account = $this->drupalCreateUser();
     $url = Url::fromRoute('router_test.11');
 
@@ -209,7 +207,7 @@ class BasicAuthTest extends BrowserTestBase {
    *
    * @see \Drupal\basic_auth\Authentication\Provider\BasicAuth::challengeException()
    */
-  public function testCacheabilityOf401Response(): void {
+  public function testCacheabilityOf401Response() {
     $url = Url::fromRoute('router_test.11');
 
     $assert_response_cacheability = function ($expected_page_cache_header_value, $expected_dynamic_page_cache_header_value) use ($url) {
@@ -249,7 +247,7 @@ class BasicAuthTest extends BrowserTestBase {
    *
    * @see https://www.drupal.org/node/2817727
    */
-  public function testControllerNotCalledBeforeAuth(): void {
+  public function testControllerNotCalledBeforeAuth() {
     $this->drupalGet('/basic_auth_test/state/modify');
     $this->assertSession()->statusCodeEquals(401);
     $this->drupalGet('/basic_auth_test/state/read');

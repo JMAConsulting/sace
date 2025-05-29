@@ -69,7 +69,7 @@ class DisplayModeBundleSelectionTest extends WebDriverTestBase {
    *
    * @dataProvider providerBundleSelection
    */
-  public function testBundleSelection($display_mode, $path, $custom_mode): void {
+  public function testBundleSelection($display_mode, $path, $custom_mode) {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 
@@ -143,7 +143,7 @@ class DisplayModeBundleSelectionTest extends WebDriverTestBase {
   /**
    * Data provider for testBundleSelection().
    */
-  public static function providerBundleSelection() {
+  public function providerBundleSelection() {
     return [
       'view display' => ['view', 'display', 'full'],
       'form display' => ['form', 'form-display', 'foobar'],

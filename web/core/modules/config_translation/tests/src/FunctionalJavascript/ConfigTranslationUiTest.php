@@ -33,7 +33,7 @@ class ConfigTranslationUiTest extends WebDriverTestBase {
   /**
    * Tests that contextual link related to views.
    */
-  public function testViewContextualLink(): void {
+  public function testViewContextualLink() {
     $user = $this->drupalCreateUser([
       'translate configuration',
       'access contextual links',
@@ -49,7 +49,7 @@ class ConfigTranslationUiTest extends WebDriverTestBase {
   /**
    * Tests that the add, edit and delete operations open in a modal.
    */
-  public function testConfigTranslationDialog(): void {
+  public function testConfigTranslationDialog() {
     $page = $this->getSession()->getPage();
     ConfigurableLanguage::createFromLangcode('fi')->save();
 

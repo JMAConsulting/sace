@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Component\Serialization\Json;
@@ -44,7 +42,7 @@ class EntityAutocompleteTest extends EntityKernelTestBase {
   /**
    * Tests autocompletion edge cases with slashes in the names.
    */
-  public function testEntityReferenceAutocompletion(): void {
+  public function testEntityReferenceAutocompletion() {
     // Add an entity with a slash in its name.
     $entity_1 = $this->container->get('entity_type.manager')
       ->getStorage($this->entityType)
@@ -145,7 +143,7 @@ class EntityAutocompleteTest extends EntityKernelTestBase {
   /**
    * Tests that missing or invalid selection setting key are handled correctly.
    */
-  public function testSelectionSettingsHandling(): void {
+  public function testSelectionSettingsHandling() {
     $entity_reference_controller = EntityAutocompleteController::create($this->container);
     $request = Request::create('entity_reference_autocomplete/' . $this->entityType . '/default');
     $request->query->set('q', $this->randomString());

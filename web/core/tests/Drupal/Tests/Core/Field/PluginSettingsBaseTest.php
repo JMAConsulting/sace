@@ -16,7 +16,7 @@ class PluginSettingsBaseTest extends UnitTestCase {
   /**
    * @covers ::getThirdPartySettings
    */
-  public function testGetThirdPartySettings(): void {
+  public function testGetThirdPartySettings() {
     $plugin_settings = new TestPluginSettingsBase();
     $this->assertSame([], $plugin_settings->getThirdPartySettings());
     $this->assertSame([], $plugin_settings->getThirdPartySettings('test'));

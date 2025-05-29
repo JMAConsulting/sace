@@ -142,7 +142,7 @@ class MenuActiveTrailTest extends UnitTestCase {
    * @covers ::getActiveLink
    * @dataProvider provider
    */
-  public function testGetActiveLink(Request $request, $links, $menu_name, $expected_link): void {
+  public function testGetActiveLink(Request $request, $links, $menu_name, $expected_link) {
     $this->requestStack->push($request);
     if ($links !== FALSE) {
       $this->menuLinkManager->expects($this->exactly(2))
@@ -162,7 +162,7 @@ class MenuActiveTrailTest extends UnitTestCase {
    * @covers ::getActiveTrailIds
    * @dataProvider provider
    */
-  public function testGetActiveTrailIds(Request $request, $links, $menu_name, $expected_link, $expected_trail): void {
+  public function testGetActiveTrailIds(Request $request, $links, $menu_name, $expected_link, $expected_trail) {
     $expected_trail_ids = array_combine($expected_trail, $expected_trail);
 
     $this->requestStack->push($request);
@@ -195,7 +195,7 @@ class MenuActiveTrailTest extends UnitTestCase {
    *
    * @covers ::getCid
    */
-  public function testGetCid(): void {
+  public function testGetCid() {
     $data = $this->provider()[1];
     /** @var \Symfony\Component\HttpFoundation\Request $request */
     $request = $data[0];

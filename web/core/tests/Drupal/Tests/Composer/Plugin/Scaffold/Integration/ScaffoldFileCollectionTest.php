@@ -20,7 +20,7 @@ class ScaffoldFileCollectionTest extends TestCase {
   /**
    * @covers ::__construct
    */
-  public function testCreate(): void {
+  public function testCreate() {
     $fixtures = new Fixtures();
     $locationReplacements = $fixtures->getLocationReplacements();
     $scaffold_file_fixtures = [

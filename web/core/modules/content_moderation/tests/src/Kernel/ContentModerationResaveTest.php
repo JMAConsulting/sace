@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\content_moderation\Entity\ContentModerationState;
@@ -76,7 +74,7 @@ class ContentModerationResaveTest extends KernelTestBase {
   /**
    * Tests that Content Moderation works with entities being resaved.
    */
-  public function testContentModerationResave(): void {
+  public function testContentModerationResave() {
     $entity = $this->entityStorage->create();
     $this->assertSame('draft', $entity->get('moderation_state')->value);
     $this->assertNull(\Drupal::state()->get('content_moderation_test_resave'));

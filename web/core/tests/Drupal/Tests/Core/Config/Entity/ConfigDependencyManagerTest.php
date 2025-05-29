@@ -14,12 +14,12 @@ use Drupal\Core\Config\Entity\ConfigDependencyManager;
  */
 class ConfigDependencyManagerTest extends UnitTestCase {
 
-  public function testNoConfiguration(): void {
+  public function testNoConfiguration() {
     $dep_manger = new ConfigDependencyManager();
     $this->assertEmpty($dep_manger->getDependentEntities('config', 'config_test.dynamic.entity_id:745b0ce0-aece-42dd-a800-ade5b8455e84'));
   }
 
-  public function testNoConfigEntities(): void {
+  public function testNoConfigEntities() {
     $dep_manger = new ConfigDependencyManager();
     $dep_manger->setData([
       'simple.config' => [

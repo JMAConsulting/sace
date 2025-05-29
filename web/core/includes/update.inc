@@ -11,7 +11,6 @@
 use Drupal\Component\Graph\Graph;
 use Drupal\Core\Extension\Exception\UnknownExtensionException;
 use Drupal\Core\Utility\Error;
-use Drupal\Core\Update\EquivalentUpdate;
 
 /**
  * Returns whether the minimum schema requirement has been satisfied.
@@ -66,7 +65,7 @@ function update_check_requirements() {
  * system would detect and attempt to run all historical updates for a
  * module.
  *
- * @todo remove in a major version after
+ * @todo: remove in a major version after
  * https://www.drupal.org/project/drupal/issues/3130037 has been fixed.
  */
 function _update_fix_missing_schema() {
@@ -167,18 +166,12 @@ function update_do_one($module, $number, $dependency_map, &$context) {
   }
 
   $ret = [];
-  $equivalent_update = \Drupal::service('update.update_hook_registry')->getEquivalentUpdate($module, $number);
-  if ($equivalent_update instanceof EquivalentUpdate) {
-    $ret['results']['query'] = $equivalent_update->toSkipMessage();
-    $ret['results']['success'] = TRUE;
-    $context['sandbox']['#finished'] = TRUE;
-  }
-  elseif (function_exists($function)) {
+  if (function_exists($function)) {
     try {
       $ret['results']['query'] = $function($context['sandbox']);
       $ret['results']['success'] = TRUE;
     }
-    // @todo We may want to do different error handling for different
+    // @TODO We may want to do different error handling for different
     // exception types, but for now we'll just log the exception and
     // return the message for printing.
     // @see https://www.drupal.org/node/2564311
@@ -247,7 +240,7 @@ function update_invoke_post_update($function, &$context) {
         \Drupal::service('update.post_update_registry')->registerInvokedUpdates([$function]);
       }
     }
-    // @todo We may want to do different error handling for different exception
+    // @TODO We may want to do different error handling for different exception
     // types, but for now we'll just log the exception and return the message
     // for printing.
     // @see https://www.drupal.org/node/2564311

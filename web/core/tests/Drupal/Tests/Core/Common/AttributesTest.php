@@ -19,7 +19,7 @@ class AttributesTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestAttributeData() {
+  public function providerTestAttributeData() {
     return [
       // Verify that special characters are HTML encoded.
       [['&"\'<>' => 'value'], ' &amp;&quot;&#039;&lt;&gt;="value"', 'HTML encode attribute names.'],
@@ -54,14 +54,14 @@ class AttributesTest extends UnitTestCase {
    *
    * @dataProvider providerTestAttributeData
    */
-  public function testDrupalAttributes($attributes, $expected, $message): void {
+  public function testDrupalAttributes($attributes, $expected, $message) {
     $this->assertSame($expected, (string) new Attribute($attributes), $message);
   }
 
   /**
    * Tests attribute iteration.
    */
-  public function testAttributeIteration(): void {
+  public function testAttributeIteration() {
     $attribute = new Attribute(['key1' => 'value1']);
     foreach ($attribute as $value) {
       $this->assertSame((string) $value, 'value1', 'Iterate over attribute.');
@@ -71,7 +71,7 @@ class AttributesTest extends UnitTestCase {
   /**
    * Tests AttributeValueBase copy.
    */
-  public function testAttributeValueBaseCopy(): void {
+  public function testAttributeValueBaseCopy() {
     $original_attributes = new Attribute([
       'checked' => TRUE,
       'class' => ['who', 'is', 'on'],

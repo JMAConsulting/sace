@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Config\Schema\Mapping;
@@ -53,7 +51,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers \Drupal\Core\Entity\Plugin\DataType\Deriver\EntityDeriver::getDerivativeDefinitions
    */
-  public function testEntityDeriver(): void {
+  public function testEntityDeriver() {
     $definition = \Drupal::typedDataManager()->getDefinition('entity:config_test');
     $this->assertEquals(ConfigEntityAdapter::class, $definition['class']);
   }
@@ -61,7 +59,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers ::validate
    */
-  public function testValidate(): void {
+  public function testValidate() {
     $adapter = ConfigEntityAdapter::createFromEntity($this->entity);
     $violations = $adapter->validate();
     $this->assertEmpty($violations);
@@ -73,11 +71,8 @@ class ConfigEntityAdapterTest extends KernelTestBase {
     ]);
     $adapter = ConfigEntityAdapter::createFromEntity($this->entity);
     $violations = $adapter->validate();
-    $this->assertCount(2, $violations);
+    $this->assertCount(1, $violations);
     $violation = $violations->get(0);
-    $this->assertEquals('This value should be a valid number.', $violation->getMessage());
-    $this->assertEquals('weight', $violation->getPropertyPath());
-    $violation = $violations->get(1);
     $this->assertEquals('This value should be of the correct primitive type.', $violation->getMessage());
     $this->assertEquals('weight', $violation->getPropertyPath());
   }
@@ -85,7 +80,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers ::getProperties
    */
-  public function testGetProperties(): void {
+  public function testGetProperties() {
     $expected_properties = [
       'uuid' => StringData::class,
       'langcode' => StringData::class,
@@ -111,7 +106,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers ::getValue
    */
-  public function testGetValue(): void {
+  public function testGetValue() {
     $adapter = ConfigEntityAdapter::createFromEntity($this->entity);
     $this->assertEquals($this->entity->weight, $adapter->get('weight')->getValue());
     $this->assertEquals($this->entity->id(), $adapter->get('id')->getValue());
@@ -121,7 +116,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers ::set
    */
-  public function testSet(): void {
+  public function testSet() {
     $adapter = ConfigEntityAdapter::createFromEntity($this->entity);
     // Get the value via typed data to ensure that the typed representation is
     // updated correctly when the value is set.
@@ -137,7 +132,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers ::getString
    */
-  public function testGetString(): void {
+  public function testGetString() {
     $adapter = ConfigEntityAdapter::createFromEntity($this->entity);
     $this->assertEquals('foobar', $adapter->getString());
   }
@@ -145,7 +140,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers ::applyDefaultValue
    */
-  public function testApplyDefaultValue(): void {
+  public function testApplyDefaultValue() {
     $this->expectException(\BadMethodCallException::class);
     $this->expectExceptionMessage('Method not supported');
     $adapter = ConfigEntityAdapter::createFromEntity($this->entity);
@@ -155,7 +150,7 @@ class ConfigEntityAdapterTest extends KernelTestBase {
   /**
    * @covers ::getIterator
    */
-  public function testGetIterator(): void {
+  public function testGetIterator() {
     $adapter = ConfigEntityAdapter::createFromEntity($this->entity);
     $iterator = $adapter->getIterator();
     $fields = iterator_to_array($iterator);

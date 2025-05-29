@@ -31,7 +31,7 @@ class CacheableExceptionTest extends UnitTestCase {
   /**
    * @covers \Drupal\Core\Http\Exception\CacheableHttpException
    */
-  public function testCacheableHttpException(): void {
+  public function testCacheableHttpException() {
     $exception = new CacheableHttpException((new CacheableMetadata())->setCacheContexts(['route']), 500, 'test message', NULL, ['X-Drupal-Exception' => 'Test'], 123);
     $this->assertSame(['route'], $exception->getCacheContexts());
     $this->assertSame(500, $exception->getStatusCode());
@@ -43,7 +43,7 @@ class CacheableExceptionTest extends UnitTestCase {
   /**
    * @dataProvider providerTestExceptions
    */
-  public function testExceptions($status_code, $class, $argument = NULL, $expected_headers = []): void {
+  public function testExceptions($status_code, $class, $argument = NULL, $expected_headers = []) {
     $cacheable_metadata = (new CacheableMetadata())->setCacheContexts(['route']);
     $message = "$class test message";
     if ($argument) {
@@ -59,7 +59,7 @@ class CacheableExceptionTest extends UnitTestCase {
     $this->assertSame(123, $exception->getCode());
   }
 
-  public static function providerTestExceptions() {
+  public function providerTestExceptions() {
     return [
       [400, CacheableBadRequestHttpException::class],
       [401, CacheableUnauthorizedHttpException::class, 'test challenge', ['WWW-Authenticate' => 'test challenge']],

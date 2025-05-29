@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
@@ -21,7 +19,7 @@ class MigrateNodeDeriverTest extends MigrateDrupal7TestBase {
   /**
    * Tests node translation migrations with translation disabled.
    */
-  public function testNoTranslations(): void {
+  public function testNoTranslations() {
     // Without content_translation, there should be no translation migrations.
     $migrations = $this->container->get('plugin.manager.migration')->createInstances('d7_node_translation');
     $this->assertEmpty($migrations);
@@ -30,7 +28,7 @@ class MigrateNodeDeriverTest extends MigrateDrupal7TestBase {
   /**
    * Tests node translation migrations with translation enabled.
    */
-  public function testTranslations(): void {
+  public function testTranslations() {
     // With content_translation, there should be translation migrations for
     // each content type.
     $this->enableModules(['language', 'content_translation', 'filter']);
@@ -42,7 +40,7 @@ class MigrateNodeDeriverTest extends MigrateDrupal7TestBase {
    *
    * @group node
    */
-  public function testBuilder(): void {
+  public function testBuilder() {
     $process = $this->getMigration('d7_node:test_content_type')->getProcess();
     $this->assertSame('field_boolean', $process['field_boolean'][0]['source']);
     $this->assertSame('field_email', $process['field_email'][0]['source']);

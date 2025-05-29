@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional;
 
 use Drupal\node\Entity\Node;
@@ -13,12 +11,13 @@ use Drupal\user\Entity\Role;
  * Tests file listing page functionality.
  *
  * @group file
- * @group #slow
  */
 class FileListingTest extends FileFieldTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['views', 'file', 'image', 'entity_test'];
 
@@ -79,7 +78,7 @@ class FileListingTest extends FileFieldTestBase {
   /**
    * Tests file overview with different user permissions.
    */
-  public function testFileListingPages(): void {
+  public function testFileListingPages() {
     $file_usage = $this->container->get('file.usage');
     // Users without sufficient permissions should not see file listing.
     $this->drupalLogin($this->baseUser);
@@ -209,7 +208,7 @@ class FileListingTest extends FileFieldTestBase {
   /**
    * Tests file listing usage page for entities with no canonical link template.
    */
-  public function testFileListingUsageNoLink(): void {
+  public function testFileListingUsageNoLink() {
     // Login with user with right permissions and test listing.
     $this->drupalLogin($this->adminUser);
 

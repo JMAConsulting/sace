@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Functional;
 
 use Drupal\field\Entity\FieldConfig;
@@ -26,7 +24,7 @@ class MediaSourceImageTest extends MediaFunctionalTestBase {
   /**
    * Test that non-main properties do not trigger source field value change.
    */
-  public function testOnlyMainPropertiesTriggerSourceFieldChanged(): void {
+  public function testOnlyMainPropertiesTriggerSourceFieldChanged() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\ContextProvider;
 
 use Drupal\Core\Routing\RouteMatch;
@@ -36,7 +34,7 @@ class TermContextTest extends KernelTestBase {
   /**
    * @covers ::getAvailableContexts
    */
-  public function testGetAvailableContexts(): void {
+  public function testGetAvailableContexts() {
     $context_repository = $this->container->get('context.repository');
 
     // Test taxonomy_term.taxonomy_term_route_context:taxonomy_term exists.
@@ -49,7 +47,7 @@ class TermContextTest extends KernelTestBase {
   /**
    * @covers ::getRuntimeContexts
    */
-  public function testGetRuntimeContexts(): void {
+  public function testGetRuntimeContexts() {
     // Create term.
     $vocabulary = $this->createVocabulary();
     $term = $this->createTerm($vocabulary);

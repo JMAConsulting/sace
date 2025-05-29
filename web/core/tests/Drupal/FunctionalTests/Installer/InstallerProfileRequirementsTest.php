@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 /**
@@ -47,7 +45,7 @@ class InstallerProfileRequirementsTest extends InstallerTestBase {
   /**
    * Assert that the profile failed hook_requirements().
    */
-  public function testHookRequirementsFailure(): void {
+  public function testHookRequirementsFailure() {
     $this->assertSession()->pageTextContains('Testing requirements failed requirements.');
   }
 

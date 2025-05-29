@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\migrate\MigrateExecutable;
@@ -14,14 +12,16 @@ use Drupal\migrate\MigrateExecutable;
 class MigrateConfigRollbackTest extends MigrateTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system', 'language', 'config_translation'];
 
   /**
    * Tests rolling back configuration.
    */
-  public function testConfigRollback(): void {
+  public function testConfigRollback() {
     // Use system.site configuration to demonstrate importing and rolling back
     // configuration.
     $variable = [

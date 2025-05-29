@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\olivero\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -10,7 +8,6 @@ use Drupal\FunctionalTests\Update\UpdatePathTestBase;
  * Tests the update path for Olivero.
  *
  * @group Update
- * @group #slow
  */
 class OliveroPostUpdateTest extends UpdatePathTestBase {
 
@@ -31,7 +28,7 @@ class OliveroPostUpdateTest extends UpdatePathTestBase {
   /**
    * Tests update hook setting base primary color.
    */
-  public function testOliveroPrimaryColorUpdate(): void {
+  public function testOliveroPrimaryColorUpdate() {
     $config = $this->config('olivero.settings');
     $this->assertEmpty($config->get('base_primary_color'));
 

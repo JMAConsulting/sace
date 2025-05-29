@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel\Migrate\d7;
 
 use Drupal\language\Entity\ContentLanguageSettings;
@@ -41,7 +39,7 @@ class MigrateLanguageContentTaxonomyVocabularySettingsTest extends MigrateDrupal
   /**
    * Tests migration of 18ntaxonomy vocabulary settings.
    */
-  public function testLanguageContentTaxonomy(): void {
+  public function testLanguageContentTaxonomy() {
     $target_entity = 'taxonomy_term';
     // No multilingual options for terms, i18n_mode = 0.
     $this->assertLanguageContentSettings($target_entity, 'tags', LanguageInterface::LANGCODE_NOT_SPECIFIED, FALSE, ['enabled' => FALSE]);

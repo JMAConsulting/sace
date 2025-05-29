@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\path_alias\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -36,7 +34,7 @@ class PathHooksTest extends KernelTestBase {
    * @covers ::postSave
    * @covers ::postDelete
    */
-  public function testPathHooks(): void {
+  public function testPathHooks() {
     $path_alias = PathAlias::create([
       'path' => '/' . $this->randomMachineName(),
       'alias' => '/' . $this->randomMachineName(),

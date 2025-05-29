@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\node\NodeInterface;
@@ -41,7 +39,9 @@ class NodeEditFormTest extends NodeTestBase {
   protected $nodeStorage;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var string[]
    */
   protected static $modules = ['block', 'node', 'datetime'];
 
@@ -67,7 +67,7 @@ class NodeEditFormTest extends NodeTestBase {
   /**
    * Checks node edit functionality.
    */
-  public function testNodeEdit(): void {
+  public function testNodeEdit() {
     $this->drupalLogin($this->webUser);
 
     $title_key = 'title[0][value]';
@@ -89,7 +89,7 @@ class NodeEditFormTest extends NodeTestBase {
 
     // Check that the title and body fields are displayed with the correct values.
     // @todo Ideally assertLink would support HTML, but it doesn't.
-    $this->assertSession()->responseContains('Edit');
+    $this->assertSession()->responseContains('Edit<span class="visually-hidden">(active tab)</span>');
     $this->assertSession()->fieldValueEquals($title_key, $edit[$title_key]);
     $this->assertSession()->fieldValueEquals($body_key, $edit[$body_key]);
 
@@ -163,7 +163,7 @@ class NodeEditFormTest extends NodeTestBase {
   /**
    * Tests changing a node's "authored by" field.
    */
-  public function testNodeEditAuthoredBy(): void {
+  public function testNodeEditAuthoredBy() {
     $this->drupalLogin($this->adminUser);
 
     // Create node to edit.
@@ -224,7 +224,7 @@ class NodeEditFormTest extends NodeTestBase {
   /**
    * Tests the node meta information.
    */
-  public function testNodeMetaInformation(): void {
+  public function testNodeMetaInformation() {
     // Check that regular users (i.e. without the 'administer nodes' permission)
     // can not see the meta information.
     $this->drupalLogin($this->webUser);

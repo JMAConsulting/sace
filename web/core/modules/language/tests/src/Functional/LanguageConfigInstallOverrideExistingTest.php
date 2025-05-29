@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -26,7 +24,7 @@ class LanguageConfigInstallOverrideExistingTest extends BrowserTestBase {
   /**
    * Tests when language config is installed existing config is not overridden.
    */
-  public function testLanguageConfigInstallOverrideExisting(): void {
+  public function testLanguageConfigInstallOverrideExisting() {
     /** @var \Drupal\Core\Config\StorageInterface $storage */
     $storage = $this->container->get('config.storage');
     $config = $this->config('language.types');

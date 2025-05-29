@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Core\Database\Database;
@@ -16,7 +14,6 @@ use Drupal\user\UserInterface;
  * Ensure that password reset methods work as expected.
  *
  * @group user
- * @group #slow
  */
 class UserPasswordResetTest extends BrowserTestBase {
 
@@ -39,7 +36,9 @@ class UserPasswordResetTest extends BrowserTestBase {
   protected $languageManager;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'language'];
 
@@ -72,7 +71,7 @@ class UserPasswordResetTest extends BrowserTestBase {
 
     // Set the last login time that is used to generate the one-time link so
     // that it is definitely over a second ago.
-    $account->login = \Drupal::time()->getRequestTime() - mt_rand(10, 100000);
+    $account->login = REQUEST_TIME - mt_rand(10, 100000);
     Database::getConnection()->update('users_field_data')
       ->fields(['login' => $account->getLastLoginTime()])
       ->condition('uid', $account->id())
@@ -82,7 +81,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Tests password reset functionality.
    */
-  public function testUserPasswordReset(): void {
+  public function testUserPasswordReset() {
     // Verify that accessing the password reset form without having the session
     // variables set results in an access denied message.
     $this->drupalGet(Url::fromRoute('user.reset.form', ['uid' => $this->account->id()]));
@@ -176,7 +175,7 @@ class UserPasswordResetTest extends BrowserTestBase {
 
     // Create a password reset link as if the request time was 60 seconds older than the allowed limit.
     $timeout = $this->config('user.settings')->get('password_reset_timeout');
-    $bogus_timestamp = \Drupal::time()->getRequestTime() - $timeout - 60;
+    $bogus_timestamp = REQUEST_TIME - $timeout - 60;
     $_uid = $this->account->id();
     $this->drupalGet("user/reset/$_uid/$bogus_timestamp/" . user_pass_rehash($this->account, $bogus_timestamp));
     $this->assertSession()->pageTextContains('You have tried to use a one-time login link that has expired. Request a new one using the form below.');
@@ -184,7 +183,7 @@ class UserPasswordResetTest extends BrowserTestBase {
     $this->assertSession()->pageTextContains('You have tried to use a one-time login link that has expired. Request a new one using the form below.');
 
     // Create a user, block the account, and verify that a login link is denied.
-    $timestamp = \Drupal::time()->getRequestTime() - 1;
+    $timestamp = REQUEST_TIME - 1;
     $blocked_account = $this->drupalCreateUser()->block();
     $blocked_account->save();
     $this->drupalGet("user/reset/" . $blocked_account->id() . "/$timestamp/" . user_pass_rehash($blocked_account, $timestamp));
@@ -225,7 +224,7 @@ class UserPasswordResetTest extends BrowserTestBase {
     // Ensure blocked and deleted accounts can't access the user.reset.login
     // route.
     $this->drupalLogout();
-    $timestamp = \Drupal::time()->getRequestTime() - 1;
+    $timestamp = REQUEST_TIME - 1;
     $blocked_account = $this->drupalCreateUser()->block();
     $blocked_account->save();
     $this->drupalGet("user/reset/" . $blocked_account->id() . "/$timestamp/" . user_pass_rehash($blocked_account, $timestamp) . '/login');
@@ -238,8 +237,10 @@ class UserPasswordResetTest extends BrowserTestBase {
 
   /**
    * Tests password reset functionality when user has set preferred language.
+   *
+   * @dataProvider languagePrefixTestProvider
    */
-  public function testUserPasswordResetPreferredLanguage(): void {
+  public function testUserPasswordResetPreferredLanguage($setPreferredLangcode, $activeLangcode, $prefix, $visitingUrl, $expectedResetUrl, $unexpectedResetUrl) {
     // Set two new languages.
     ConfigurableLanguage::createFromLangcode('fr')->save();
     ConfigurableLanguage::createFromLangcode('zh-hant')->save();
@@ -251,37 +252,34 @@ class UserPasswordResetTest extends BrowserTestBase {
     $config->set('url.prefixes', ['en' => '', 'fr' => 'fr', 'zh-hant' => 'zh'])->save();
     $this->rebuildContainer();
 
-    foreach ($this->languagePrefixTestProvider() as $scenario) {
-      [$setPreferredLangcode, $activeLangcode, $prefix, $visitingUrl, $expectedResetUrl, $unexpectedResetUrl] = array_values($scenario);
-      $this->account->preferred_langcode = $setPreferredLangcode;
-      $this->account->save();
-      $this->assertSame($setPreferredLangcode, $this->account->getPreferredLangcode(FALSE));
+    $this->account->preferred_langcode = $setPreferredLangcode;
+    $this->account->save();
+    $this->assertSame($setPreferredLangcode, $this->account->getPreferredLangcode(FALSE));
 
-      // Test Default langcode is different from active langcode when visiting different.
-      if ($setPreferredLangcode !== 'en') {
-        $this->drupalGet($prefix . '/user/password');
-        $this->assertSame($activeLangcode, $this->getSession()->getResponseHeader('Content-language'));
-        $this->assertSame('en', $this->languageManager->getDefaultLanguage()->getId());
-      }
-
-      // Test password reset with language prefixes.
-      $this->drupalGet($visitingUrl);
-      $edit = ['name' => $this->account->getAccountName()];
-      $this->submitForm($edit, 'Submit');
-      $this->assertValidPasswordReset($edit['name']);
-
-      $resetURL = $this->getResetURL();
-      $this->assertStringContainsString($expectedResetUrl, $resetURL);
-      $this->assertStringNotContainsString($unexpectedResetUrl, $resetURL);
+    // Test Default langcode is different from active langcode when visiting different.
+    if ($setPreferredLangcode !== 'en') {
+      $this->drupalGet($prefix . '/user/password');
+      $this->assertSame($activeLangcode, $this->getSession()->getResponseHeader('Content-language'));
+      $this->assertSame('en', $this->languageManager->getDefaultLanguage()->getId());
     }
+
+    // Test password reset with language prefixes.
+    $this->drupalGet($visitingUrl);
+    $edit = ['name' => $this->account->getAccountName()];
+    $this->submitForm($edit, 'Submit');
+    $this->assertValidPasswordReset($edit['name']);
+
+    $resetURL = $this->getResetURL();
+    $this->assertStringContainsString($expectedResetUrl, $resetURL);
+    $this->assertStringNotContainsString($unexpectedResetUrl, $resetURL);
   }
 
   /**
-   * Provides scenarios for testUserPasswordResetPreferredLanguage().
+   * Data provider for testUserPasswordResetPreferredLanguage().
    *
    * @return array
    */
-  protected function languagePrefixTestProvider() {
+  public function languagePrefixTestProvider() {
     return [
       'Test language prefix set as \'\', visiting default with preferred language as en' => [
         'setPreferredLangcode' => 'en',
@@ -326,7 +324,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Tests user password reset while logged in.
    */
-  public function testUserPasswordResetLoggedIn(): void {
+  public function testUserPasswordResetLoggedIn() {
     $another_account = $this->drupalCreateUser();
     $this->drupalLogin($another_account);
     $this->drupalGet('user/password');
@@ -372,7 +370,7 @@ class UserPasswordResetTest extends BrowserTestBase {
 
     // Logged in users should not be able to access the user.reset.login or the
     // user.reset.form routes.
-    $timestamp = \Drupal::time()->getRequestTime() - 1;
+    $timestamp = REQUEST_TIME - 1;
     $this->drupalGet("user/reset/" . $this->account->id() . "/$timestamp/" . user_pass_rehash($this->account, $timestamp) . '/login');
     $this->assertSession()->statusCodeEquals(403);
     $this->drupalGet("user/reset/" . $this->account->id());
@@ -382,7 +380,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Tests the text box on incorrect login via link to password reset page.
    */
-  public function testUserResetPasswordTextboxNotFilled(): void {
+  public function testUserResetPasswordTextboxNotFilled() {
     $this->drupalGet('user/login');
     $edit = [
       'name' => $this->randomMachineName(),
@@ -409,7 +407,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Tests password reset flood control for one user.
    */
-  public function testUserResetPasswordUserFloodControl(): void {
+  public function testUserResetPasswordUserFloodControl() {
     \Drupal::configFactory()->getEditable('user.flood')
       ->set('user_limit', 3)
       ->save();
@@ -440,7 +438,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Tests password reset flood control for one IP.
    */
-  public function testUserResetPasswordIpFloodControl(): void {
+  public function testUserResetPasswordIpFloodControl() {
     \Drupal::configFactory()->getEditable('user.flood')
       ->set('ip_limit', 3)
       ->save();
@@ -466,7 +464,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Tests user password reset flood control is cleared on successful reset.
    */
-  public function testUserResetPasswordUserFloodControlIsCleared(): void {
+  public function testUserResetPasswordUserFloodControlIsCleared() {
     \Drupal::configFactory()->getEditable('user.flood')
       ->set('user_limit', 3)
       ->save();
@@ -506,7 +504,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Tests user password reset flood control is cleared on admin reset.
    */
-  public function testUserResetPasswordUserFloodControlAdmin(): void {
+  public function testUserResetPasswordUserFloodControlAdmin() {
     $admin_user = $this->drupalCreateUser([
       'administer account settings',
       'administer users',
@@ -602,7 +600,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Make sure that users cannot forge password reset URLs of other users.
    */
-  public function testResetImpersonation(): void {
+  public function testResetImpersonation() {
     // Create two identical user accounts except for the user name. They must
     // have the same empty password, so we can't use $this->drupalCreateUser().
     $edit = [];
@@ -647,7 +645,7 @@ class UserPasswordResetTest extends BrowserTestBase {
   /**
    * Test the autocomplete attribute is present.
    */
-  public function testResetFormHasAutocompleteAttribute(): void {
+  public function testResetFormHasAutocompleteAttribute() {
     $this->drupalGet('user/password');
     $field = $this->getSession()->getPage()->findField('name');
     $this->assertEquals('username', $field->getAttribute('autocomplete'));

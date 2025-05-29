@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\Core\Extension;
 
-// cspell:ignore skynet
-
 use Drupal\Core\Extension\ExtensionLifecycle;
 use Drupal\Core\Extension\InfoParser;
 use Drupal\Core\Extension\InfoParserDynamic;
@@ -47,7 +45,7 @@ class InfoParserUnitTest extends UnitTestCase {
    *
    * @covers ::parse
    */
-  public function testInfoParserNonExisting(): void {
+  public function testInfoParserNonExisting() {
     vfsStream::setup('modules');
     $this->expectException('\Drupal\Core\Extension\InfoParserException');
     $this->expectExceptionMessage('Unable to parse vfs://modules/does_not_exist.info.txt as it does not exist');
@@ -129,7 +127,7 @@ YML,
    *
    * @covers ::parse
    */
-  public function testInfoParserBroken(): void {
+  public function testInfoParserBroken() {
     $broken_info = <<<BROKEN_INFO
 # info.yml for testing broken YAML parsing exception handling.
 name: File
@@ -159,7 +157,7 @@ BROKEN_INFO;
    *
    * @covers ::parse
    */
-  public function testTestingPackageMissingCoreVersionRequirement(): void {
+  public function testTestingPackageMissingCoreVersionRequirement() {
     $missing_core_version_requirement = <<<MISSING_CORE_VERSION_REQUIREMENT
 # info.yml for testing core_version_requirement.
 package: Testing
@@ -183,7 +181,7 @@ MISSING_CORE_VERSION_REQUIREMENT;
    *
    * @covers ::parse
    */
-  public function testInfoParserCommonInfo(): void {
+  public function testInfoParserCommonInfo() {
     $common = <<<COMMON
 core_version_requirement: '*'
 name: common_test
@@ -216,7 +214,7 @@ COMMON;
    *
    * @covers ::parse
    */
-  public function testInfoParserCoreInfo(): void {
+  public function testInfoParserCoreInfo() {
     $common = <<<CORE
 name: core_test
 type: module
@@ -243,7 +241,7 @@ CORE;
    *
    * @dataProvider providerCoreIncompatibility
    */
-  public function testCoreIncompatibility($test_case, $constraint, $expected): void {
+  public function testCoreIncompatibility($test_case, $constraint, $expected) {
     $core_incompatibility = <<<CORE_INCOMPATIBILITY
 core_version_requirement: $constraint
 name: common_test
@@ -270,7 +268,7 @@ CORE_INCOMPATIBILITY;
   /**
    * Data provider for testCoreIncompatibility().
    */
-  public static function providerCoreIncompatibility() {
+  public function providerCoreIncompatibility() {
     // Remove possible stability suffix to properly parse 11.0-dev.
     $version = preg_replace('/-dev$/', '', \Drupal::VERSION);
     [$major, $minor] = explode('.', $version, 2);
@@ -304,7 +302,7 @@ CORE_INCOMPATIBILITY;
   /**
    * Tests a profile info file.
    */
-  public function testProfile(): void {
+  public function testProfile() {
     $profile = <<<PROFILE_TEST
 core_version_requirement: '*'
 name: The Perfect Profile
@@ -327,7 +325,7 @@ PROFILE_TEST;
    *
    * @covers ::parse
    */
-  public function testUnparsableCoreVersionRequirement(): void {
+  public function testUnparsableCoreVersionRequirement() {
     $unparsable_core_version_requirement = <<<UNPARSABLE_CORE_VERSION_REQUIREMENT
 # info.yml for testing invalid core_version_requirement value.
 name: Not this module
@@ -356,7 +354,7 @@ UNPARSABLE_CORE_VERSION_REQUIREMENT;
    *
    * @dataProvider providerValidLifecycle
    */
-  public function testValidLifecycle($lifecycle, $expected): void {
+  public function testValidLifecycle($lifecycle, $expected) {
     $info = <<<INFO
 package: Core
 core_version_requirement: '*'
@@ -384,7 +382,7 @@ INFO;
   /**
    * Data provider for testValidLifecycle().
    */
-  public static function providerValidLifecycle() {
+  public function providerValidLifecycle() {
     return [
       'empty' => [
         '',
@@ -416,7 +414,7 @@ INFO;
    *
    * @dataProvider providerInvalidLifecycle
    */
-  public function testInvalidLifecycle($lifecycle, $exception_message): void {
+  public function testInvalidLifecycle($lifecycle, $exception_message) {
     $info = <<<INFO
 package: Core
 core_version_requirement: '*'
@@ -441,7 +439,7 @@ INFO;
   /**
    * Data provider for testInvalidLifecycle().
    */
-  public static function providerInvalidLifecycle() {
+  public function providerInvalidLifecycle() {
     return [
       'bogus' => [
         'bogus',
@@ -465,7 +463,7 @@ INFO;
    *
    * @dataProvider providerLifecycleLink
    */
-  public function testLifecycleLink($lifecycle, $lifecycle_link = NULL, $exception_message = NULL): void {
+  public function testLifecycleLink($lifecycle, $lifecycle_link = NULL, $exception_message = NULL) {
     $info = <<<INFO
 package: Core
 core_version_requirement: '*'
@@ -499,7 +497,7 @@ INFO;
   /**
    * Data provider for testLifecycleLink().
    */
-  public static function providerLifecycleLink() {
+  public function providerLifecycleLink() {
     return [
       'valid deprecated' => [
         ExtensionLifecycle::DEPRECATED,

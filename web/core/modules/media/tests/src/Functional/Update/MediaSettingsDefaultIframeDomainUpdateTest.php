@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -49,7 +47,7 @@ class MediaSettingsDefaultIframeDomainUpdateTest extends UpdatePathTestBase {
   /**
    * Tests update of media.settings:iframe_domain.
    */
-  public function testUpdate(): void {
+  public function testUpdate() {
     $iframe_domain_before = $this->config('media.settings')->get('iframe_domain');
     $this->assertSame('', $iframe_domain_before);
 

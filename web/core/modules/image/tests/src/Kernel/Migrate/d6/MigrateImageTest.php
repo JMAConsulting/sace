@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\image\Kernel\Migrate\d6;
 
 use Drupal\node\Entity\Node;
@@ -40,7 +38,7 @@ class MigrateImageTest extends MigrateNodeTestBase {
   /**
    * Tests image migration from Drupal 6 to 8.
    */
-  public function testNode(): void {
+  public function testNode() {
     $node = Node::load(9);
     // Test the image field sub fields.
     $this->assertSame('2', $node->field_test_imagefield->target_id);

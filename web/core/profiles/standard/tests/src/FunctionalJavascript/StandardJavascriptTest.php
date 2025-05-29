@@ -22,7 +22,7 @@ class StandardJavascriptTest extends WebDriverTestBase {
   /**
    * Tests BigPipe accelerates particular Standard installation profile routes.
    */
-  public function testBigPipe(): void {
+  public function testBigPipe() {
     $this->drupalLogin($this->drupalCreateUser([
       'access content',
       'post comments',

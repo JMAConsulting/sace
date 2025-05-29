@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional\Views;
 
 /**
@@ -26,7 +24,7 @@ class CommentRowTest extends CommentTestBase {
   /**
    * Tests comment row.
    */
-  public function testCommentRow(): void {
+  public function testCommentRow() {
     $this->drupalGet('test-comment-row');
     $this->assertSession()->elementsCount('xpath', '//article[contains(@class, "comment")]', 1);
   }

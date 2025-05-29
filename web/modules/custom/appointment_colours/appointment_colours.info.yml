@@ -1,8 +1,0 @@
-name: 'AppointmentColours'
-type: module
-description: 'Support for appointment colour custom entity'
-core_version_requirement: ^9 || ^10
-package: 'sace'
-dependencies:
-  - 'drupal:civicrm_entity'
-  - 'drupal:views'

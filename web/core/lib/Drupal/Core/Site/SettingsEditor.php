@@ -27,10 +27,10 @@ final class SettingsEditor {
    * clutter up the file.
    *
    * @code
-   *   $settings['settings']['config_sync_directory'] = (object) [
+   *   $settings['settings']['config_sync_directory'] = (object) array(
    *     'value' => 'config_hash/sync',
    *     'required' => TRUE,
-   *   ];
+   *   );
    * @endcode
    *   gets dumped as:
    * @code

@@ -67,7 +67,7 @@ class DisplayTest extends WebDriverTestBase {
   /**
    * Tests adding a display.
    */
-  public function testAddDisplay(): void {
+  public function testAddDisplay() {
     $this->drupalGet('admin/structure/views/view/test_content_ajax');
     $page = $this->getSession()->getPage();
 
@@ -86,7 +86,7 @@ class DisplayTest extends WebDriverTestBase {
   /**
    * Tests setting the administrative title.
    */
-  public function testRenameDisplayAdminName(): void {
+  public function testRenameDisplayAdminName() {
     $titles = ['New admin title', '</title><script>alert("alert!")</script>'];
     foreach ($titles as $new_title) {
       $this->drupalGet('admin/structure/views/view/test_content_ajax');
@@ -108,7 +108,7 @@ class DisplayTest extends WebDriverTestBase {
   /**
    * Tests contextual links on Views page displays.
    */
-  public function testPageContextualLinks(): void {
+  public function testPageContextualLinks() {
     $view = View::load('test_display');
     $view->enable()->save();
     $this->container->get('router.builder')->rebuildIfNeeded();
@@ -160,7 +160,7 @@ class DisplayTest extends WebDriverTestBase {
   /**
    * Test if 'add' translations are filtered from multilingual display options.
    */
-  public function testAddDisplayBlockTranslation(): void {
+  public function testAddDisplayBlockTranslation() {
 
     // Set up an additional language (Hungarian).
     $langcode = 'hu';

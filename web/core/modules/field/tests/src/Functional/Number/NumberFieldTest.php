@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\Number;
 
 use Drupal\field\Entity\FieldConfig;
@@ -13,11 +11,14 @@ use Drupal\Tests\BrowserTestBase;
  * Tests the creation of numeric fields.
  *
  * @group field
+ * @group #slow
  */
 class NumberFieldTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'entity_test', 'field_ui'];
 
@@ -45,7 +46,7 @@ class NumberFieldTest extends BrowserTestBase {
   /**
    * Tests decimal field.
    */
-  public function testNumberDecimalField(): void {
+  public function testNumberDecimalField() {
     // Create a field with settings to validate.
     $field_name = $this->randomMachineName();
     FieldStorageConfig::create([
@@ -133,7 +134,7 @@ class NumberFieldTest extends BrowserTestBase {
   /**
    * Tests integer field.
    */
-  public function testNumberIntegerField(): void {
+  public function testNumberIntegerField() {
     $minimum = rand(-4000, -2000);
     $maximum = rand(2000, 4000);
 
@@ -299,7 +300,7 @@ class NumberFieldTest extends BrowserTestBase {
   /**
    * Tests float field.
    */
-  public function testNumberFloatField(): void {
+  public function testNumberFloatField() {
     // Create a field with settings to validate.
     $field_name = $this->randomMachineName();
     FieldStorageConfig::create([
@@ -390,9 +391,9 @@ class NumberFieldTest extends BrowserTestBase {
   }
 
   /**
-   * Tests setting minimum values through the interface.
+   * Tests setting the minimum value of a float field through the interface.
    */
-  public function testMinimumValues(): void {
+  public function testCreateNumberFloatField() {
     // Create a float field.
     $field_name = $this->randomMachineName();
     FieldStorageConfig::create([
@@ -412,7 +413,12 @@ class NumberFieldTest extends BrowserTestBase {
     $this->assertSetMinimumValue($field, 0.0001);
     // Set the minimum value to an integer value.
     $this->assertSetMinimumValue($field, 1);
+  }
 
+  /**
+   * Tests setting the minimum value of a decimal field through the interface.
+   */
+  public function testCreateNumberDecimalField() {
     // Create a decimal field.
     $field_name = $this->randomMachineName();
     FieldStorageConfig::create([

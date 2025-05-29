@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\filter\Functional;
 
 use Drupal\comment\Tests\CommentTestTrait;
@@ -21,7 +19,9 @@ class FilterHtmlImageSecureTest extends BrowserTestBase {
   use TestFileCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['filter', 'node', 'comment'];
 
@@ -76,7 +76,7 @@ class FilterHtmlImageSecureTest extends BrowserTestBase {
   /**
    * Tests removal of images having a non-local source.
    */
-  public function testImageSource(): void {
+  public function testImageSource() {
     global $base_url;
 
     $node = $this->drupalCreateNode();

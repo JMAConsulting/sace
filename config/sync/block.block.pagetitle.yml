@@ -2,12 +2,14 @@ uuid: c2a3b504-047f-42c3-9c5c-10a2d894b506
 langcode: en
 status: true
 dependencies:
+  module:
+    - user
   theme:
     - oliverolocal
 id: pagetitle
 theme: oliverolocal
 region: content_above
-weight: -8
+weight: 0
 provider: null
 plugin: page_title_block
 settings:
@@ -15,4 +17,11 @@ settings:
   label: 'Page title'
   label_display: '0'
   provider: core
-visibility: {  }
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

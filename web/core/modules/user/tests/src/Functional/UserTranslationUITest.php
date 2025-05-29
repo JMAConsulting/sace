@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Tests\content_translation\Functional\ContentTranslationUITestBase;
@@ -32,7 +30,9 @@ class UserTranslationUITest extends ContentTranslationUITestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'language',
@@ -98,7 +98,7 @@ class UserTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests translated user deletion.
    */
-  public function testTranslatedUserDeletion(): void {
+  public function testTranslatedUserDeletion() {
     $this->drupalLogin($this->administrator);
     $entity_id = $this->createEntity($this->getNewEntityValues('en'), 'en');
 

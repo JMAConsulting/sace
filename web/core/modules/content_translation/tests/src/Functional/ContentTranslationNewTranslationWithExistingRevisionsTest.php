@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_translation\Functional;
 
 use Drupal\Core\Url;
@@ -42,7 +40,7 @@ class ContentTranslationNewTranslationWithExistingRevisionsTest extends ContentT
   /**
    * Tests a translation with a draft is not deleted.
    */
-  public function testDraftTranslationIsNotDeleted(): void {
+  public function testDraftTranslationIsNotDeleted() {
     $this->drupalLogin($this->translator);
 
     // Create a test node.
@@ -108,7 +106,7 @@ class ContentTranslationNewTranslationWithExistingRevisionsTest extends ContentT
   /**
    * Test translation delete hooks are not invoked.
    */
-  public function testCreatingNewDraftDoesNotInvokeDeleteHook(): void {
+  public function testCreatingNewDraftDoesNotInvokeDeleteHook() {
     $this->drupalLogin($this->translator);
 
     // Create a test node.

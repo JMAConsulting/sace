@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\Core\Url;
@@ -17,7 +15,9 @@ use Drupal\Tests\BrowserTestBase;
 class LanguageConfigurationTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['language'];
 
@@ -29,7 +29,7 @@ class LanguageConfigurationTest extends BrowserTestBase {
   /**
    * Functional tests for adding, editing and deleting languages.
    */
-  public function testLanguageConfiguration(): void {
+  public function testLanguageConfiguration() {
     // Ensure the after installing the language module the weight of the English
     // language is still 0.
     $this->assertEquals(0, ConfigurableLanguage::load('en')->getWeight(), 'The English language has a weight of 0.');
@@ -160,7 +160,7 @@ class LanguageConfigurationTest extends BrowserTestBase {
   /**
    * Functional tests for setting system language weight on adding, editing and deleting languages.
    */
-  public function testLanguageConfigurationWeight(): void {
+  public function testLanguageConfigurationWeight() {
     // User to add and remove language.
     $admin_user = $this->drupalCreateUser([
       'administer languages',

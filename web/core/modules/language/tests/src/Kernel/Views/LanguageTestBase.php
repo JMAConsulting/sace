@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel\Views;
 
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -13,7 +11,9 @@ use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
 abstract class LanguageTestBase extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system', 'language'];
 

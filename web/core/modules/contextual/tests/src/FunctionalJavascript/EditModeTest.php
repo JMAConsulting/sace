@@ -67,7 +67,7 @@ class EditModeTest extends WebDriverTestBase {
   /**
    * Tests enabling and disabling edit mode.
    */
-  public function testEditModeEnableDisable(): void {
+  public function testEditModeEnableDisable() {
     $web_assert = $this->assertSession();
     $page = $this->getSession()->getPage();
     // Get the page twice to ensure edit mode remains enabled after a new page

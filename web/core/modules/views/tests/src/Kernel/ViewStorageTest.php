@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel;
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -58,7 +56,7 @@ class ViewStorageTest extends ViewsKernelTestBase {
   /**
    * Tests CRUD operations.
    */
-  public function testConfigurationEntityCRUD(): void {
+  public function testConfigurationEntityCRUD() {
     // Get the configuration entity type and controller.
     $this->entityType = \Drupal::entityTypeManager()->getDefinition('view');
     $this->controller = $this->container->get('entity_type.manager')->getStorage('view');
@@ -302,7 +300,7 @@ class ViewStorageTest extends ViewsKernelTestBase {
   /**
    * Tests the createDuplicate() View method.
    */
-  public function testCreateDuplicate(): void {
+  public function testCreateDuplicate() {
     $view = Views::getView('test_view_storage');
     $copy = $view->storage->createDuplicate();
 

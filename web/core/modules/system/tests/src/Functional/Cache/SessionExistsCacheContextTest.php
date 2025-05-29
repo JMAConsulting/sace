@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Cache;
 
 use Drupal\Core\Url;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class SessionExistsCacheContextTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['session_exists_cache_context_test'];
 
@@ -27,7 +27,7 @@ class SessionExistsCacheContextTest extends BrowserTestBase {
   /**
    * Tests \Drupal\Core\Cache\Context\SessionExistsCacheContext::getContext().
    */
-  public function testCacheContext(): void {
+  public function testCacheContext() {
     // 1. No session (anonymous).
     $this->assertSessionCookieOnClient(FALSE);
     $this->drupalGet(Url::fromRoute('<front>'));

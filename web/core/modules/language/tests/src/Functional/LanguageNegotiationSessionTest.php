@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -47,7 +45,7 @@ class LanguageNegotiationSessionTest extends BrowserTestBase {
   /**
    * Tests language negotiation via query/session parameters.
    */
-  public function testSessionLanguageNegotiationMethod(): void {
+  public function testSessionLanguageNegotiationMethod() {
     // Enable Session and Selected language for interface language detection.
     $this->drupalGet('admin/config/regional/language/detection');
     $edit = [

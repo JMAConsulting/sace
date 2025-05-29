@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Functional;
 
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
@@ -61,7 +59,7 @@ class LayoutSectionTest extends BrowserTestBase {
   /**
    * Provides test data for ::testLayoutSectionFormatter().
    */
-  public static function providerTestLayoutSectionFormatter() {
+  public function providerTestLayoutSectionFormatter() {
     $data = [];
     $data['block_with_global_context'] = [
       [
@@ -171,7 +169,7 @@ class LayoutSectionTest extends BrowserTestBase {
    *
    * @dataProvider providerTestLayoutSectionFormatter
    */
-  public function testLayoutSectionFormatter($layout_data, $expected_selector, $expected_content, $expected_cache_contexts, $expected_cache_tags, $expected_dynamic_cache): void {
+  public function testLayoutSectionFormatter($layout_data, $expected_selector, $expected_content, $expected_cache_contexts, $expected_cache_tags, $expected_dynamic_cache) {
     $node = $this->createSectionNode($layout_data);
 
     $canonical_url = $node->toUrl('canonical');
@@ -185,7 +183,7 @@ class LayoutSectionTest extends BrowserTestBase {
   /**
    * Tests the access checking of the section formatter.
    */
-  public function testLayoutSectionFormatterAccess(): void {
+  public function testLayoutSectionFormatterAccess() {
     $node = $this->createSectionNode([
       [
         'section' => new Section('layout_onecol', [], [
@@ -213,7 +211,7 @@ class LayoutSectionTest extends BrowserTestBase {
   /**
    * Ensures that the entity title is displayed.
    */
-  public function testLayoutPageTitle(): void {
+  public function testLayoutPageTitle() {
     $this->drupalPlaceBlock('page_title_block');
     $node = $this->createSectionNode([]);
 
@@ -225,7 +223,7 @@ class LayoutSectionTest extends BrowserTestBase {
   /**
    * Tests that no Layout link shows without a section field.
    */
-  public function testLayoutUrlNoSectionField(): void {
+  public function testLayoutUrlNoSectionField() {
     $node = $this->createNode([
       'type' => 'bundle_without_section_field',
       'title' => 'The node title',
@@ -244,7 +242,7 @@ class LayoutSectionTest extends BrowserTestBase {
   /**
    * Tests that deleting a field removes it from the layout.
    */
-  public function testLayoutDeletingField(): void {
+  public function testLayoutDeletingField() {
     $assert_session = $this->assertSession();
 
     $this->drupalGet('/admin/structure/types/manage/bundle_with_section_field/display/default/layout');
@@ -268,7 +266,7 @@ class LayoutSectionTest extends BrowserTestBase {
   /**
    * Tests that deleting a bundle removes the layout.
    */
-  public function testLayoutDeletingBundle(): void {
+  public function testLayoutDeletingBundle() {
     $assert_session = $this->assertSession();
 
     $display = LayoutBuilderEntityViewDisplay::load('node.bundle_with_section_field.default');

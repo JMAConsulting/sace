@@ -102,7 +102,7 @@ class UpdateFetcherTest extends UnitTestCase {
    *
    * @see \Drupal\update\UpdateFetcher::buildFetchUrl()
    */
-  public function testUpdateBuildFetchUrl(array $project, $site_key, $expected): void {
+  public function testUpdateBuildFetchUrl(array $project, $site_key, $expected) {
     $url = $this->updateFetcher->buildFetchUrl($project, $site_key);
     $this->assertEquals($url, $expected);
     $this->assertFalse($this->logger->hasErrorRecords());
@@ -117,7 +117,7 @@ class UpdateFetcherTest extends UnitTestCase {
    *   - 'site_key' - An arbitrary site key.
    *   - 'expected' - The expected URL from UpdateFetcher::buildFetchUrl().
    */
-  public static function providerTestUpdateBuildFetchUrl() {
+  public function providerTestUpdateBuildFetchUrl() {
     $data = [];
 
     // First test that we didn't break the trivial case.
@@ -131,14 +131,14 @@ class UpdateFetcherTest extends UnitTestCase {
 
     $data[] = [$project, $site_key, $expected];
 
-    // For uninstalled projects it shouldn't add the site key either.
+    // For disabled projects it shouldn't add the site key either.
     $site_key = 'site_key';
     $project['project_type'] = 'disabled';
     $expected = "http://www.example.com/{$project['name']}/current";
 
     $data[] = [$project, $site_key, $expected];
 
-    // For installed projects, test adding the site key.
+    // For enabled projects, test adding the site key.
     $project['project_type'] = '';
     $expected = "http://www.example.com/{$project['name']}/current";
     $expected .= '?site_key=site_key';
@@ -176,7 +176,7 @@ class UpdateFetcherTest extends UnitTestCase {
    * @covers ::doRequest
    * @covers ::fetchProjectData
    */
-  public function testUpdateFetcherNoFallback(): void {
+  public function testUpdateFetcherNoFallback() {
     // First, try without the HTTP fallback setting, and HTTPS mocked to fail.
     $settings = new Settings([]);
     $this->mockClient(
@@ -205,7 +205,7 @@ class UpdateFetcherTest extends UnitTestCase {
    * @covers ::doRequest
    * @covers ::fetchProjectData
    */
-  public function testUpdateFetcherHttpFallback(): void {
+  public function testUpdateFetcherHttpFallback() {
     $settings = new Settings(['update_fetch_with_http_fallback' => TRUE]);
     $this->mockClient(
       new Response(500, [], 'HTTPS failed'),

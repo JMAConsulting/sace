@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config\Functional;
 
 use Drupal\Core\Site\Settings;
@@ -25,7 +23,9 @@ class ConfigImportUploadTest extends BrowserTestBase {
   protected $webUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['config'];
 
@@ -47,7 +47,7 @@ class ConfigImportUploadTest extends BrowserTestBase {
   /**
    * Tests importing configuration.
    */
-  public function testImport(): void {
+  public function testImport() {
     // Verify access to the config upload form.
     $this->drupalGet('admin/config/development/configuration/full/import');
     $this->assertSession()->statusCodeEquals(200);

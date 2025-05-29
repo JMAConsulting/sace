@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\UpdateSystem;
 
 use Drupal\Core\Database\Database;
@@ -52,7 +50,7 @@ class UpdatePostUpdateExceptionTest extends BrowserTestBase {
   /**
    * Tests hook_post_update_NAME().
    */
-  public function testPostUpdate(): void {
+  public function testPostUpdate() {
     // There are expected to be failed updates.
     $this->checkFailedUpdates = FALSE;
 

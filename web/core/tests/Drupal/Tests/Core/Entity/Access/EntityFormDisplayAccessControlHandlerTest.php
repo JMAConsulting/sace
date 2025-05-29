@@ -215,7 +215,7 @@ class EntityFormDisplayAccessControlHandlerTest extends UnitTestCase {
    * @covers ::access
    * @covers ::checkAccess
    */
-  public function testAccess(): void {
+  public function testAccess() {
     $this->assertAllowOperations([], $this->anon);
     $this->assertAllowOperations(['view', 'update', 'delete'], $this->member);
     $this->assertAllowOperations(['view', 'update', 'delete'], $this->parentMember);

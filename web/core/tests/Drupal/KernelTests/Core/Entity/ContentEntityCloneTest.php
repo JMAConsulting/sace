@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\entity_test\Entity\EntityTestMul;
@@ -36,7 +34,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests if entity references on fields are still correct after cloning.
    */
-  public function testFieldEntityReferenceAfterClone(): void {
+  public function testFieldEntityReferenceAfterClone() {
     $user = $this->createUser();
 
     // Create a test entity.
@@ -76,7 +74,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests that the flag for enforcing a new entity is not shared.
    */
-  public function testEnforceIsNewOnClonedEntityTranslation(): void {
+  public function testEnforceIsNewOnClonedEntityTranslation() {
     // Create a test entity.
     $entity = EntityTestMul::create([
       'name' => $this->randomString(),
@@ -103,7 +101,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests if the entity fields are properly cloned.
    */
-  public function testClonedEntityFields(): void {
+  public function testClonedEntityFields() {
     $user = $this->createUser();
 
     // Create a test entity.
@@ -148,7 +146,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests that the flag for enforcing a new revision is not shared.
    */
-  public function testNewRevisionOnCloneEntityTranslation(): void {
+  public function testNewRevisionOnCloneEntityTranslation() {
     // Create a test entity.
     $entity = EntityTestMulRev::create([
       'name' => $this->randomString(),
@@ -180,7 +178,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests modifications on entity keys of a cloned entity object.
    */
-  public function testEntityKeysModifications(): void {
+  public function testEntityKeysModifications() {
     // Create a test entity with a translation, which will internally trigger
     // entity cloning for the new translation and create references for some of
     // the entity properties.
@@ -220,7 +218,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests the field values after serializing an entity and its clone.
    */
-  public function testFieldValuesAfterSerialize(): void {
+  public function testFieldValuesAfterSerialize() {
     // Create a test entity with a translation, which will internally trigger
     // entity cloning for the new translation and create references for some of
     // the entity properties.
@@ -252,7 +250,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests changing the default revision flag.
    */
-  public function testDefaultRevision(): void {
+  public function testDefaultRevision() {
     // Create a test entity with a translation, which will internally trigger
     // entity cloning for the new translation and create references for some of
     // the entity properties.
@@ -279,7 +277,7 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
   /**
    * Tests references of entity properties after entity cloning.
    */
-  public function testEntityPropertiesModifications(): void {
+  public function testEntityPropertiesModifications() {
     // Create a test entity with a translation, which will internally trigger
     // entity cloning for the new translation and create references for some of
     // the entity properties.
@@ -300,13 +298,6 @@ class ContentEntityCloneTest extends EntityKernelTestBase {
 
     foreach ($properties as $property) {
       $property_name = $property->getName();
-
-      // Only modify properties that will accept strings as default values.
-      if ($property->hasType()) {
-        if ($property->getType()->getName() !== 'string') {
-          continue;
-        }
-      }
 
       // Modify each entity property on the clone and assert that the change is
       // not propagated to the original entity.

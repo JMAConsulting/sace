@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\comment\CommentInterface;
@@ -35,7 +33,7 @@ class CommentAdminTest extends CommentTestBase {
   /**
    * Tests comment approval functionality through admin/content/comment.
    */
-  public function testApprovalAdminInterface(): void {
+  public function testApprovalAdminInterface() {
     // Set anonymous comments to require approval.
     user_role_change_permissions(RoleInterface::ANONYMOUS_ID, [
       'access comments' => TRUE,
@@ -128,7 +126,7 @@ class CommentAdminTest extends CommentTestBase {
   /**
    * Tests comment approval functionality through the node interface.
    */
-  public function testApprovalNodeInterface(): void {
+  public function testApprovalNodeInterface() {
     // Set anonymous comments to require approval.
     user_role_change_permissions(RoleInterface::ANONYMOUS_ID, [
       'access comments' => TRUE,
@@ -181,7 +179,7 @@ class CommentAdminTest extends CommentTestBase {
   /**
    * Tests comment bundle admin.
    */
-  public function testCommentAdmin(): void {
+  public function testCommentAdmin() {
     // Login.
     $this->drupalLogin($this->adminUser);
     // Browse to comment bundle overview.
@@ -203,7 +201,7 @@ class CommentAdminTest extends CommentTestBase {
   /**
    * Tests editing a comment as an admin.
    */
-  public function testEditComment(): void {
+  public function testEditComment() {
     // Enable anonymous user comments.
     user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, [
       'access comments',
@@ -244,7 +242,7 @@ class CommentAdminTest extends CommentTestBase {
   /**
    * Tests commented translation deletion admin view.
    */
-  public function testCommentedTranslationDeletion(): void {
+  public function testCommentedTranslationDeletion() {
     \Drupal::service('module_installer')->install([
       'language',
       'locale',

@@ -4,7 +4,7 @@
   {/if}
 
   {assign var=profileFieldName value=$field.name}
-  {if isset($prefix) && $prefix}
+  {if $prefix}
     {assign var="formElement" value=$form.$prefix.$profileFieldName}
     {assign var="rowIdentifier" value=$form.$prefix.$profileFieldName.id}
   {else}
@@ -111,7 +111,7 @@
               &nbsp;{$form.$phone_ext_field.html}
             {/if}
           {else}
-            {if isset($prefix) && $prefix}
+            {if $prefix}
               {if $profileFieldName eq 'organization_name' && !empty($form.onbehalfof_id)}
                 {$form.onbehalfof_id.html}
               {/if}

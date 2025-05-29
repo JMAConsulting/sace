@@ -40,7 +40,7 @@ class AccessAnnouncementTest extends OffCanvasTestBase {
   /**
    * Test of viewing announcements by a user with appropriate permission.
    */
-  public function testAnnounceFirstLogin(): void {
+  public function testAnnounceFirstLogin() {
     $this->drupalLogin(
       $this->drupalCreateUser(
         [
@@ -62,7 +62,7 @@ class AccessAnnouncementTest extends OffCanvasTestBase {
   /**
    * Testing announce icon without announce permission.
    */
-  public function testAnnounceWithoutPermission(): void {
+  public function testAnnounceWithoutPermission() {
     // User without "access announcements" permission.
     $account = $this->drupalCreateUser(
       [

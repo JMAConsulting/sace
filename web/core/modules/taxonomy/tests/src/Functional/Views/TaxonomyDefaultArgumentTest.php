@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Views;
 
 /**
@@ -26,7 +24,7 @@ class TaxonomyDefaultArgumentTest extends TaxonomyTestBase {
   /**
    * Tests escaping of page title when the taxonomy plugin provides it.
    */
-  public function testTermTitleEscaping(): void {
+  public function testTermTitleEscaping() {
     $this->term1->setName('<em>Markup</em>')->save();
     $this->drupalGet('taxonomy_default_argument_test/' . $this->term1->id());
     $this->assertSession()->assertEscaped($this->term1->label());

@@ -12,7 +12,6 @@ use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -32,16 +31,19 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 /**
  * Plugin implementation of the 'media_library_widget' widget.
  *
+ * @FieldWidget(
+ *   id = "media_library_widget",
+ *   label = @Translation("Media library"),
+ *   description = @Translation("Allows you to select items from the media library."),
+ *   field_types = {
+ *     "entity_reference"
+ *   },
+ *   multiple_values = TRUE,
+ * )
+ *
  * @internal
  *   Plugin classes are internal.
  */
-#[FieldWidget(
-  id: 'media_library_widget',
-  label: new TranslatableMarkup('Media library'),
-  description: new TranslatableMarkup('Allows you to select items from the media library.'),
-  field_types: ['entity_reference'],
-  multiple_values: TRUE,
-)]
 class MediaLibraryWidget extends WidgetBase implements TrustedCallbackInterface {
 
   /**
@@ -69,7 +71,7 @@ class MediaLibraryWidget extends WidgetBase implements TrustedCallbackInterface 
    * Constructs a MediaLibraryWidget widget.
    *
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition

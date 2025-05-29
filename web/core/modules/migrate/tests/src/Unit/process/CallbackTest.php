@@ -19,7 +19,7 @@ class CallbackTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerCallback
    */
-  public function testCallback($callable): void {
+  public function testCallback($callable) {
     $configuration = ['callable' => $callable];
     $this->plugin = new Callback($configuration, 'map', []);
     $value = $this->plugin->transform('FooBar', $this->migrateExecutable, $this->row, 'destination_property');
@@ -29,7 +29,7 @@ class CallbackTest extends MigrateProcessTestCase {
   /**
    * Data provider for ::testCallback().
    */
-  public static function providerCallback() {
+  public function providerCallback() {
     return [
       'function' => ['strtolower'],
       'class method' => [[self::class, 'strtolower']],
@@ -41,7 +41,7 @@ class CallbackTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerCallbackArray
    */
-  public function testCallbackArray($callable, $args, $result): void {
+  public function testCallbackArray($callable, $args, $result) {
     $configuration = ['callable' => $callable, 'unpack_source' => TRUE];
     $this->plugin = new Callback($configuration, 'map', []);
     $value = $this->plugin->transform($args, $this->migrateExecutable, $this->row, 'destination_property');
@@ -51,7 +51,7 @@ class CallbackTest extends MigrateProcessTestCase {
   /**
    * Data provider for ::testCallbackArray().
    */
-  public static function providerCallbackArray() {
+  public function providerCallbackArray() {
     return [
       'date format' => [
         'date',
@@ -90,7 +90,7 @@ class CallbackTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerCallbackExceptions
    */
-  public function testCallbackExceptions($message, array $configuration, $class = 'InvalidArgumentException', $args = NULL): void {
+  public function testCallbackExceptions($message, array $configuration, $class = 'InvalidArgumentException', $args = NULL) {
     $this->expectException($class);
     $this->expectExceptionMessage($message);
     $this->plugin = new Callback($configuration, 'map', []);
@@ -100,7 +100,7 @@ class CallbackTest extends MigrateProcessTestCase {
   /**
    * Data provider for ::testCallbackExceptions().
    */
-  public static function providerCallbackExceptions() {
+  public function providerCallbackExceptions() {
     return [
       'not set' => [
         'message' => 'The "callable" must be set.',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Migrate\d6;
 
 use Drupal\field\Entity\FieldConfig;
@@ -38,7 +36,7 @@ class MigrateVocabularyFieldInstanceTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal 6 vocabulary-node type association to Drupal 8 migration.
    */
-  public function testVocabularyFieldInstance(): void {
+  public function testVocabularyFieldInstance() {
     $this->executeMigration('d6_vocabulary_field_instance');
 
     // Test that the field exists. Tags has a multilingual option of 'None'.
@@ -121,7 +119,7 @@ class MigrateVocabularyFieldInstanceTest extends MigrateDrupal6TestBase {
    * Vocabulary field instances should be ignored when they belong to node
    * types which were not migrated.
    */
-  public function testSkipNonExistentNodeType(): void {
+  public function testSkipNonExistentNodeType() {
     // The "story" node type is migrated by d6_node_type but we need to pretend
     // that it didn't occur, so record that in the map table.
     $this->mockFailure('d6_node_type', ['type' => 'story']);

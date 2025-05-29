@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Kernel\Migrate\d6;
 
 use Drupal\language\Entity\ContentLanguageSettings;
@@ -46,7 +44,7 @@ class MigrateLanguageContentSettingsTest extends MigrateDrupal6TestBase {
   /**
    * Tests migration of content language settings.
    */
-  public function testLanguageContent(): void {
+  public function testLanguageContent() {
     // Assert that a translatable content is still translatable.
     $config = $this->config('language.content_settings.node.article');
     $this->assertSame($config->get('target_entity_type_id'), 'node');

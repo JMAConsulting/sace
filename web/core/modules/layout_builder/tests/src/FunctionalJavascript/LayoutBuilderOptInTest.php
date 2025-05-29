@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\layout_builder\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\Tests\layout_builder\Traits\EnableLayoutBuilderTrait;
 
 /**
  * Tests the ability for opting in and out of Layout Builder.
@@ -13,8 +12,6 @@ use Drupal\Tests\layout_builder\Traits\EnableLayoutBuilderTrait;
  * @group layout_builder
  */
 class LayoutBuilderOptInTest extends WebDriverTestBase {
-
-  use EnableLayoutBuilderTrait;
 
   /**
    * {@inheritdoc}
@@ -51,7 +48,7 @@ class LayoutBuilderOptInTest extends WebDriverTestBase {
   /**
    * Tests the interaction between the two layout checkboxes.
    */
-  public function testCheckboxLogic(): void {
+  public function testCheckboxLogic() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
@@ -77,7 +74,9 @@ class LayoutBuilderOptInTest extends WebDriverTestBase {
     $assert_session->checkboxChecked('layout[allow_custom]');
 
     // Reset the checkboxes.
-    $this->disableLayoutBuilderFromUi('before', 'default');
+    $page->uncheckField('layout[enabled]');
+    $page->pressButton('Save');
+    $page->pressButton('Confirm');
     $assert_session->checkboxNotChecked('layout[enabled]');
     $assert_session->checkboxNotChecked('layout[allow_custom]');
 
@@ -92,7 +91,7 @@ class LayoutBuilderOptInTest extends WebDriverTestBase {
   /**
    * Tests the expected default values for enabling Layout Builder.
    */
-  public function testDefaultValues(): void {
+  public function testDefaultValues() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

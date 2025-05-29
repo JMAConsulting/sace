@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_translation\Functional;
 
 use Drupal\Tests\language\Traits\LanguageTestTrait;
@@ -37,7 +35,9 @@ class ContentTranslationOperationsTest extends NodeTestBase {
   protected $baseUser2;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'language',
@@ -75,7 +75,7 @@ class ContentTranslationOperationsTest extends NodeTestBase {
   /**
    * Tests that the operation "Translate" is displayed in the content listing.
    */
-  public function testOperationTranslateLink(): void {
+  public function testOperationTranslateLink() {
     $node = $this->drupalCreateNode(['type' => 'article', 'langcode' => 'es']);
     // Verify no translation operation links are displayed for users without
     // permission.
@@ -141,7 +141,7 @@ class ContentTranslationOperationsTest extends NodeTestBase {
    *
    * @see content_translation_translate_access()
    */
-  public function testContentTranslationOverviewAccess(): void {
+  public function testContentTranslationOverviewAccess() {
     $access_control_handler = \Drupal::entityTypeManager()->getAccessControlHandler('node');
     $user = $this->createUser(['create content translations', 'access content']);
     $this->drupalLogin($user);

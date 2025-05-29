@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 /**
@@ -81,7 +79,7 @@ EOF;
   /**
    * Tests installing from config is not available due to hook_INSTALL().
    */
-  public function testConfigSync(): void {
+  public function testConfigSync() {
     $this->assertSession()->titleEquals('Select an installation profile | Drupal');
     $this->assertSession()->responseNotContains('Use existing configuration');
 

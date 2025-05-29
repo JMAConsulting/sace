@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\views\Plugin\views\join\FieldOrLanguageJoin;
@@ -50,7 +48,7 @@ class FieldOrLanguageJoinTest extends RelationshipJoinTestBase {
    * \Drupal\Tests\views\Kernel\Plugin\JoinTest::testBasePlugin() to ensure that
    * no functionality provided by the base join plugin is broken.
    */
-  public function testBase(): void {
+  public function testBase() {
     // Setup a simple join and test the result sql.
     $view = Views::getView('test_view');
     $view->initDisplay();
@@ -130,7 +128,7 @@ class FieldOrLanguageJoinTest extends RelationshipJoinTestBase {
   /**
    * Tests the adding of conditions by the join plugin.
    */
-  public function testLanguageBundleConditions(): void {
+  public function testLanguageBundleConditions() {
     // Setup a simple join and test the result sql.
     $view = Views::getView('test_view');
     $view->initDisplay();

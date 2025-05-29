@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\book\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -10,7 +8,6 @@ use Drupal\Tests\BrowserTestBase;
  * Create a book, add pages, and test book interface.
  *
  * @group book
- * @group legacy
  */
 class BookBreadcrumbTest extends BrowserTestBase {
 
@@ -150,7 +147,7 @@ class BookBreadcrumbTest extends BrowserTestBase {
   /**
    * Tests that the breadcrumb is updated when book content changes.
    */
-  public function testBreadcrumbTitleUpdates(): void {
+  public function testBreadcrumbTitleUpdates() {
     // Create a new book.
     $nodes = $this->createBreadcrumbBook();
     $book = $this->book;
@@ -186,7 +183,7 @@ class BookBreadcrumbTest extends BrowserTestBase {
   /**
    * Tests that the breadcrumb is updated when book access changes.
    */
-  public function testBreadcrumbAccessUpdates(): void {
+  public function testBreadcrumbAccessUpdates() {
     // Create a new book.
     $nodes = $this->createBreadcrumbBook();
     $this->drupalLogin($this->bookAuthor);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -14,11 +12,13 @@ use Drupal\KernelTests\KernelTestBase;
 class ConfigModuleOverridesTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['system', 'config', 'config_override_test'];
 
-  public function testSimpleModuleOverrides(): void {
+  public function testSimpleModuleOverrides() {
     $GLOBALS['config_test_run_module_overrides'] = TRUE;
     $name = 'system.site';
     $overridden_name = 'Wow overridden site name';
@@ -30,9 +30,6 @@ class ConfigModuleOverridesTest extends KernelTestBase {
       ->getEditable($name)
       ->set('name', $non_overridden_name)
       ->set('slogan', $non_overridden_slogan)
-      // `name` and `slogan` are translatable, hence a `langcode` is required.
-      // @see \Drupal\Core\Config\Plugin\Validation\Constraint\LangcodeRequiredIfTranslatableValuesConstraint
-      ->set('langcode', 'en')
       ->save();
 
     $this->assertEquals($non_overridden_name, $config_factory->get('system.site')->getOriginal('name', FALSE));

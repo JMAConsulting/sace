@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Extension\ExtensionDiscovery;
@@ -18,7 +16,7 @@ class FieldTypePluginManagerTest extends FieldKernelTestBase {
   /**
    * Tests the default settings convenience methods.
    */
-  public function testDefaultSettings(): void {
+  public function testDefaultSettings() {
     $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
     foreach (['test_field', 'shape', 'hidden_test_field'] as $type) {
       $definition = $field_type_manager->getDefinition($type);
@@ -30,7 +28,7 @@ class FieldTypePluginManagerTest extends FieldKernelTestBase {
   /**
    * Tests creation of field item instances.
    */
-  public function testCreateInstance(): void {
+  public function testCreateInstance() {
     /** @var \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager */
     $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
     foreach (['test_field', 'shape', 'hidden_test_field'] as $type) {
@@ -57,7 +55,7 @@ class FieldTypePluginManagerTest extends FieldKernelTestBase {
   /**
    * Tests creation of field item instances.
    */
-  public function testCreateInstanceWithConfig(): void {
+  public function testCreateInstanceWithConfig() {
     /** @var \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager */
     $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
     $type = 'test_field';
@@ -89,7 +87,7 @@ class FieldTypePluginManagerTest extends FieldKernelTestBase {
   /**
    * Tests all field items provide an existing main property.
    */
-  public function testMainProperty(): void {
+  public function testMainProperty() {
     // Let's enable all Drupal modules in Drupal core, so we test any field
     // type plugin.
     $this->enableAllCoreModules();
@@ -110,18 +108,6 @@ class FieldTypePluginManagerTest extends FieldKernelTestBase {
         $this->assertArrayHasKey($property, $class::propertyDefinitions($storage_definition), $message);
       }
     }
-  }
-
-  /**
-   * Tests UI definitions per entity type.
-   */
-  public function testUiDefinitionsPerEntityType(): void {
-    /** @var \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager */
-    $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
-    $definitions = $field_type_manager->getEntityTypeUiDefinitions('node');
-    $this->assertEquals('Boolean (overridden by alter)', (string) $definitions['boolean']['label']);
-    $definitions = $field_type_manager->getEntityTypeUiDefinitions('entity_test');
-    $this->assertEquals('Boolean', (string) $definitions['boolean']['label']);
   }
 
   /**

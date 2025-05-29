@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Plugin\Condition;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -22,7 +20,7 @@ class CurrentThemeConditionTest extends KernelTestBase {
   /**
    * Tests the current theme condition.
    */
-  public function testCurrentTheme(): void {
+  public function testCurrentTheme() {
     \Drupal::service('theme_installer')->install(['test_theme']);
 
     $manager = \Drupal::service('plugin.manager.condition');

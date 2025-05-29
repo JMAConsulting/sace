@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\datetime\Functional;
 
 use Drupal\field\Entity\FieldConfig;
@@ -36,7 +34,7 @@ class DateTimeWidgetTest extends DateTestBase {
   /**
    * Test default value functionality.
    */
-  public function testDateOnlyDefaultValue(): void {
+  public function testDateOnlyDefaultValue() {
     // Create a test content type.
     $this->drupalCreateContentType(['type' => 'date_only_content']);
 

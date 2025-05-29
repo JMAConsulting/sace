@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\tracker\Kernel\Migrate\d7;
 
 use Drupal\Core\Database\Database;
@@ -46,7 +44,7 @@ class MigrateTrackerUserTest extends MigrateDrupalTestBase {
   /**
    * Tests migration of tracker user table.
    */
-  public function testMigrateTrackerUser(): void {
+  public function testMigrateTrackerUser() {
     $connection = Database::getConnection('default', 'migrate');
     $num_rows = $connection
       ->select('tracker_user', 'tn')

@@ -50,7 +50,6 @@ class LazyObjectRegistry
     public static function getClassResetters($class)
     {
         $classProperties = [];
-        $hookedProperties = [];
 
         if ((self::$classReflectors[$class] ??= new \ReflectionClass($class))->isInternal()) {
             $propertyScopes = [];
@@ -61,13 +60,7 @@ class LazyObjectRegistry
         foreach ($propertyScopes as $key => [$scope, $name, $readonlyScope]) {
             $propertyScopes[$k = "\0$scope\0$name"] ?? $propertyScopes[$k = "\0*\0$name"] ?? $k = $name;
 
-            if ($k !== $key || "\0$class\0lazyObjectState" === $k) {
-                continue;
-            }
-
-            if ($k === $name && ($propertyScopes[$k][4] ?? false)) {
-                $hookedProperties[$k] = true;
-            } else {
+            if ($k === $key && "\0$class\0lazyObjectState" !== $k) {
                 $classProperties[$readonlyScope ?? $scope][$name] = $key;
             }
         }
@@ -83,13 +76,9 @@ class LazyObjectRegistry
             }, null, $scope);
         }
 
-        $resetters[] = static function ($instance, $skippedProperties, $onlyProperties = null) use ($hookedProperties) {
+        $resetters[] = static function ($instance, $skippedProperties, $onlyProperties = null) {
             foreach ((array) $instance as $name => $value) {
-                if ("\0" !== ($name[0] ?? '')
-                    && !\array_key_exists($name, $skippedProperties)
-                    && (null === $onlyProperties || \array_key_exists($name, $onlyProperties))
-                    && !isset($hookedProperties[$name])
-                ) {
+                if ("\0" !== ($name[0] ?? '') && !\array_key_exists($name, $skippedProperties) && (null === $onlyProperties || \array_key_exists($name, $onlyProperties))) {
                     unset($instance->$name);
                 }
             }

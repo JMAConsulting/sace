@@ -62,7 +62,7 @@ class ThemeNegotiatorTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Theme\ThemeNegotiator::determineActiveTheme()
    */
-  public function testDetermineActiveTheme(): void {
+  public function testDetermineActiveTheme() {
     $negotiator = $this->createMock('Drupal\Core\Theme\ThemeNegotiatorInterface');
     $negotiator->expects($this->once())
       ->method('determineActiveTheme')
@@ -90,7 +90,7 @@ class ThemeNegotiatorTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Theme\ThemeNegotiator::determineActiveTheme()
    */
-  public function testDetermineActiveThemeWithPriority(): void {
+  public function testDetermineActiveThemeWithPriority() {
     $negotiators = [];
 
     $negotiator = $this->createMock('Drupal\Core\Theme\ThemeNegotiatorInterface');
@@ -130,7 +130,7 @@ class ThemeNegotiatorTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Theme\ThemeNegotiator::determineActiveTheme()
    */
-  public function testDetermineActiveThemeWithAccessCheck(): void {
+  public function testDetermineActiveThemeWithAccessCheck() {
     $negotiators = [];
 
     $negotiator = $this->createMock('Drupal\Core\Theme\ThemeNegotiatorInterface');
@@ -175,7 +175,7 @@ class ThemeNegotiatorTest extends UnitTestCase {
    *
    * @see \Drupal\Core\Theme\ThemeNegotiatorInterface
    */
-  public function testDetermineActiveThemeWithNotApplyingNegotiator(): void {
+  public function testDetermineActiveThemeWithNotApplyingNegotiator() {
     $negotiators = [];
 
     $negotiator = $this->createMock('Drupal\Core\Theme\ThemeNegotiatorInterface');
@@ -220,7 +220,8 @@ class ThemeNegotiatorTest extends UnitTestCase {
    * @return \Drupal\Core\Theme\ThemeNegotiator
    */
   protected function createThemeNegotiator(array $negotiators) {
-    $resolver = new ClassResolver($this->container);
+    $resolver = new ClassResolver();
+    $resolver->setContainer($this->container);
     $theme_negotiator = new ThemeNegotiator($this->themeAccessCheck, $resolver, $negotiators);
     return $theme_negotiator;
   }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\datetime\Functional;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -43,7 +41,7 @@ class DateTimeFieldTest extends DateTestBase {
   /**
    * Tests date field functionality.
    */
-  public function testDateField(): void {
+  public function testDateField() {
     $field_name = $this->fieldStorage->getName();
 
     $display_repository = \Drupal::service('entity_display.repository');
@@ -174,7 +172,7 @@ class DateTimeFieldTest extends DateTestBase {
       // has the same interval.  Since the database always stores UTC, and the
       // interval will use this, force the test date to use UTC and not the local
       // or user timezone.
-      $timestamp = \Drupal::time()->getRequestTime() - 87654321;
+      $timestamp = REQUEST_TIME - 87654321;
       $entity = EntityTest::load($id);
       $field_name = $this->fieldStorage->getName();
       $date = DrupalDateTime::createFromTimestamp($timestamp, 'UTC');
@@ -201,7 +199,7 @@ class DateTimeFieldTest extends DateTestBase {
       // has the same interval.  Since the database always stores UTC, and the
       // interval will use this, force the test date to use UTC and not the local
       // or user timezone.
-      $timestamp = \Drupal::time()->getRequestTime() + 87654321;
+      $timestamp = REQUEST_TIME + 87654321;
       $entity = EntityTest::load($id);
       $field_name = $this->fieldStorage->getName();
       $date = DrupalDateTime::createFromTimestamp($timestamp, 'UTC');
@@ -222,7 +220,7 @@ class DateTimeFieldTest extends DateTestBase {
   /**
    * Tests date and time field.
    */
-  public function testDatetimeField(): void {
+  public function testDatetimeField() {
     $field_name = $this->fieldStorage->getName();
     $field_label = $this->field->label();
     // Change the field to a datetime field.
@@ -325,7 +323,7 @@ class DateTimeFieldTest extends DateTestBase {
     // has the same interval.  Since the database always stores UTC, and the
     // interval will use this, force the test date to use UTC and not the local
     // or user timezone.
-    $timestamp = \Drupal::time()->getRequestTime() - 87654321;
+    $timestamp = REQUEST_TIME - 87654321;
     $entity = EntityTest::load($id);
     $field_name = $this->fieldStorage->getName();
     $date = DrupalDateTime::createFromTimestamp($timestamp, 'UTC');
@@ -352,7 +350,7 @@ class DateTimeFieldTest extends DateTestBase {
     // has the same interval.  Since the database always stores UTC, and the
     // interval will use this, force the test date to use UTC and not the local
     // or user timezone.
-    $timestamp = \Drupal::time()->getRequestTime() + 87654321;
+    $timestamp = REQUEST_TIME + 87654321;
     $entity = EntityTest::load($id);
     $field_name = $this->fieldStorage->getName();
     $date = DrupalDateTime::createFromTimestamp($timestamp, 'UTC');
@@ -383,7 +381,7 @@ class DateTimeFieldTest extends DateTestBase {
   /**
    * Tests Date List Widget functionality.
    */
-  public function testDatelistWidget(): void {
+  public function testDatelistWidget() {
     $field_name = $this->fieldStorage->getName();
     $field_label = $this->field->label();
 
@@ -662,7 +660,7 @@ class DateTimeFieldTest extends DateTestBase {
   /**
    * Tests default value functionality.
    */
-  public function testDefaultValue(): void {
+  public function testDefaultValue() {
     // Create a test content type.
     $this->drupalCreateContentType(['type' => 'date_content']);
 
@@ -788,7 +786,7 @@ class DateTimeFieldTest extends DateTestBase {
   /**
    * Tests that invalid values are caught and marked as invalid.
    */
-  public function testInvalidField(): void {
+  public function testInvalidField() {
     // Change the field to a datetime field.
     $this->fieldStorage->setSetting('datetime_type', 'datetime');
     $this->fieldStorage->save();
@@ -879,7 +877,7 @@ class DateTimeFieldTest extends DateTestBase {
   /**
    * Tests that 'Date' field storage setting form is disabled if field has data.
    */
-  public function testDateStorageSettings(): void {
+  public function testDateStorageSettings() {
     // Create a test content type.
     $this->drupalCreateContentType(['type' => 'date_content']);
 

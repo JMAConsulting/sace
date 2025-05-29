@@ -51,7 +51,7 @@ class TestMultiWidthLayoutsTest extends WebDriverTestBase {
   /**
    * Tests changing the columns widths of a multi-width section.
    */
-  public function testWidthChange(): void {
+  public function testWidthChange() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

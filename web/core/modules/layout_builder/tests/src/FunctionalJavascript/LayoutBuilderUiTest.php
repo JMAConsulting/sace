@@ -8,8 +8,6 @@ use Drupal\block_content\Entity\BlockContentType;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\contextual\FunctionalJavascript\ContextualLinkClickTrait;
 
-// cspell:ignore fieldbody
-
 /**
  * Tests the Layout Builder UI.
  *
@@ -68,7 +66,7 @@ class LayoutBuilderUiTest extends WebDriverTestBase {
   /**
    * Tests that after removing sections reloading the page does not re-add them.
    */
-  public function testReloadWithNoSections(): void {
+  public function testReloadWithNoSections() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
@@ -92,7 +90,7 @@ class LayoutBuilderUiTest extends WebDriverTestBase {
   /**
    * Tests the message indicating unsaved changes.
    */
-  public function testUnsavedChangesMessage(): void {
+  public function testUnsavedChangesMessage() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
@@ -145,7 +143,7 @@ class LayoutBuilderUiTest extends WebDriverTestBase {
   /**
    * Tests that elements that open the dialog are properly highlighted.
    */
-  public function testAddHighlights(): void {
+  public function testAddHighlights() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
@@ -257,7 +255,7 @@ class LayoutBuilderUiTest extends WebDriverTestBase {
   /**
    * Tests removing newly added extra field.
    */
-  public function testNewExtraField(): void {
+  public function testNewExtraField() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 

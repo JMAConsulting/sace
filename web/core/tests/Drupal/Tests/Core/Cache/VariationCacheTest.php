@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\Core\Cache;
 
-use Drupal\Component\Datetime\Time;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheRedirect;
 use Drupal\Core\Cache\Context\CacheContextsManager;
@@ -126,7 +125,7 @@ class VariationCacheTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
     $this->requestStack = $this->prophesize(RequestStack::class);
-    $this->memoryBackend = new MemoryBackend(new Time());
+    $this->memoryBackend = new MemoryBackend();
     $this->cacheContextsManager = $this->prophesize(CacheContextsManager::class);
 
     $housing_type = &$this->housingType;
@@ -184,7 +183,7 @@ class VariationCacheTest extends UnitTestCase {
    * @covers ::get
    * @covers ::set
    */
-  public function testNoVariations(): void {
+  public function testNoVariations() {
     $data = 'You have a nice house!';
     $cacheability = (new CacheableMetadata())->setCacheTags(['bar', 'foo']);
     $initial_cacheability = (new CacheableMetadata())->setCacheTags(['foo']);
@@ -198,7 +197,7 @@ class VariationCacheTest extends UnitTestCase {
    * @covers ::get
    * @covers ::set
    */
-  public function testSingleVariation(): void {
+  public function testSingleVariation() {
     $cacheability = $this->housingTypeCacheability;
 
     $house_data = [
@@ -221,7 +220,7 @@ class VariationCacheTest extends UnitTestCase {
    * @covers ::get
    * @covers ::set
    */
-  public function testNestedVariations(): void {
+  public function testNestedVariations() {
     // We are running this scenario in the best possible outcome: The redirects
     // are stored in expanding order, meaning the simplest one is stored first
     // and the nested ones are stored in subsequent ::set() calls. This means no
@@ -273,7 +272,7 @@ class VariationCacheTest extends UnitTestCase {
    *
    * @depends testNestedVariations
    */
-  public function testNestedVariationsSelfHealing(): void {
+  public function testNestedVariationsSelfHealing() {
     // This is the worst possible scenario: A very specific item was stored
     // first, followed by a less specific one. This means an overly specific
     // cache redirect was stored that needs to be dumbed down. After this
@@ -330,7 +329,7 @@ class VariationCacheTest extends UnitTestCase {
    * @covers ::get
    * @covers ::set
    */
-  public function testSplitVariationsSelfHealing(): void {
+  public function testSplitVariationsSelfHealing() {
     // This is an edge case. Something varies by AB where some values of B
     // trigger the whole to vary by either C, D or nothing extra. But due to an
     // unfortunate series of requests, only ABC and ABD variations were cached.
@@ -402,7 +401,7 @@ class VariationCacheTest extends UnitTestCase {
    * @covers ::get
    * @covers ::set
    */
-  public function testIncompatibleVariationsException(): void {
+  public function testIncompatibleVariationsException() {
     // This should never happen. When someone first stores something in the
     // cache using context A and then tries to store something using context B,
     // something is wrong. There should always be at least one shared context at
@@ -492,7 +491,7 @@ class VariationCacheTest extends UnitTestCase {
    *   (optional) The cacheability that should have been used. Does not apply
    *   when checking for cache redirects.
    */
-  protected function assertCacheBackendItem(string $cid, $data, ?CacheableMetadata $cacheability = NULL) {
+  protected function assertCacheBackendItem(string $cid, $data, CacheableMetadata $cacheability = NULL) {
     $cache_backend_item = $this->memoryBackend->get($cid);
     $this->assertNotFalse($cache_backend_item, 'The data was stored and retrieved successfully.');
     $this->assertEquals($data, $cache_backend_item->data, 'Cache item contains the right data.');

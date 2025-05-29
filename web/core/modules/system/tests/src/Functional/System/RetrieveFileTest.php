@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Tests\BrowserTestBase;
@@ -22,7 +20,7 @@ class RetrieveFileTest extends BrowserTestBase {
   /**
    * Invokes system_retrieve_file() in several scenarios.
    */
-  public function testFileRetrieving(): void {
+  public function testFileRetrieving() {
     // Test 404 handling by trying to fetch a randomly named file.
     /** @var \Drupal\Core\File\FileSystemInterface $file_system */
     $file_system = \Drupal::service('file_system');

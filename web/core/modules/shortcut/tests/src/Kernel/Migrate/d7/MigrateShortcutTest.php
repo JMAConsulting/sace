@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\shortcut\Kernel\Migrate\d7;
 
 use Drupal\shortcut\Entity\Shortcut;
@@ -16,7 +14,9 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
 class MigrateShortcutTest extends MigrateDrupal7TestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'link',
@@ -63,7 +63,7 @@ class MigrateShortcutTest extends MigrateDrupal7TestBase {
   /**
    * Tests the shortcut migration.
    */
-  public function testShortcutMigration(): void {
+  public function testShortcutMigration() {
     // Check if the 4 shortcuts were migrated correctly.
     $this->assertEntity(1, 'Add content', -20, '/node/add');
     $this->assertEntity(2, 'Find content', -19, '/admin/content');

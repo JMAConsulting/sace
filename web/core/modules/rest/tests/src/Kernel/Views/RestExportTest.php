@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\rest\Kernel\Views;
 
 use Drupal\rest\Plugin\views\display\RestExport;
@@ -46,7 +44,7 @@ class RestExportTest extends ViewsKernelTestBase {
   /**
    * @covers ::buildResponse
    */
-  public function testBuildResponse(): void {
+  public function testBuildResponse() {
     /** @var \Drupal\views\Entity\View $view */
     $view = View::load('test_serializer_display_entity');
     $display = &$view->getDisplay('rest_export_1');

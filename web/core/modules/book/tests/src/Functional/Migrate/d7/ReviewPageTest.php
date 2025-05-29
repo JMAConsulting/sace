@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\book\Functional\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal_ui\Functional\NoMultilingualReviewPageTestBase;
@@ -10,7 +8,6 @@ use Drupal\Tests\migrate_drupal_ui\Functional\NoMultilingualReviewPageTestBase;
  * Tests Review page.
  *
  * @group book
- * @group legacy
  */
 class ReviewPageTest extends NoMultilingualReviewPageTestBase {
 
@@ -30,7 +27,7 @@ class ReviewPageTest extends NoMultilingualReviewPageTestBase {
   /**
    * Tests the review page.
    */
-  public function testMigrateUpgradeReviewPage(): void {
+  public function testMigrateUpgradeReviewPage() {
     $this->prepare();
     // Start the upgrade process.
     $this->submitCredentialForm();

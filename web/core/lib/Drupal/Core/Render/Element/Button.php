@@ -3,7 +3,6 @@
 namespace Drupal\Core\Render\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Attribute\FormElement;
 use Drupal\Core\Render\Element;
 
 /**
@@ -21,16 +20,17 @@ use Drupal\Core\Render\Element;
  *
  * Usage Example:
  * @code
- * $form['actions']['preview'] = [
+ * $form['actions']['preview'] = array(
  *   '#type' => 'button',
  *   '#value' => $this->t('Preview'),
- * ];
+ * );
  * @endcode
  *
  * @see \Drupal\Core\Render\Element\Submit
+ *
+ * @FormElement("button")
  */
-#[FormElement('button')]
-class Button extends FormElementBase {
+class Button extends FormElement {
 
   /**
    * {@inheritdoc}

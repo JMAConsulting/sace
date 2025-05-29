@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\StatementInterface;
@@ -16,7 +14,7 @@ class StatementTest extends DatabaseTestBase {
   /**
    * Tests that a prepared statement object can be reused for multiple inserts.
    */
-  public function testRepeatedInsertStatementReuse(): void {
+  public function testRepeatedInsertStatementReuse() {
     $num_records_before = $this->connection->select('test')->countQuery()->execute()->fetchField();
 
     $sql = "INSERT INTO {test} ([name], [age]) VALUES (:name, :age)";

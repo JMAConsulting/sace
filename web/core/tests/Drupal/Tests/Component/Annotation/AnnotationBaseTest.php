@@ -17,7 +17,7 @@ class AnnotationBaseTest extends TestCase {
    * @covers ::getProvider
    * @covers ::setProvider
    */
-  public function testSetProvider(): void {
+  public function testSetProvider() {
     $plugin = new AnnotationBaseStub();
     $plugin->setProvider('example');
     $this->assertEquals('example', $plugin->getProvider());
@@ -26,7 +26,7 @@ class AnnotationBaseTest extends TestCase {
   /**
    * @covers ::getId
    */
-  public function testGetId(): void {
+  public function testGetId() {
     $plugin = new AnnotationBaseStub();
     // Doctrine sets the public prop directly.
     $plugin->id = 'example';
@@ -37,7 +37,7 @@ class AnnotationBaseTest extends TestCase {
    * @covers ::getClass
    * @covers ::setClass
    */
-  public function testSetClass(): void {
+  public function testSetClass() {
     $plugin = new AnnotationBaseStub();
     $plugin->setClass('example');
     $this->assertEquals('example', $plugin->getClass());

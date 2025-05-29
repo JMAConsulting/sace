@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Theme;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\BrowserTestBase;
 class ImageLoadingAttributeTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['image_lazy_load_test'];
 
@@ -26,7 +26,7 @@ class ImageLoadingAttributeTest extends BrowserTestBase {
   /**
    * Tests that loading attribute is enabled for images.
    */
-  public function testImageLoadingAttribute(): void {
+  public function testImageLoadingAttribute() {
     $assert = $this->assertSession();
 
     // Get page under test.

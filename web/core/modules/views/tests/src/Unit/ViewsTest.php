@@ -41,10 +41,7 @@ class ViewsTest extends UnitTestCase {
       ->disableOriginalConstructor()
       ->getMock();
     $route_provider = $this->createMock('Drupal\Core\Routing\RouteProviderInterface');
-    $display_plugin_manager = $this->getMockBuilder('\Drupal\views\Plugin\ViewsPluginManager')
-      ->disableOriginalConstructor()
-      ->getMock();
-    $this->container->set('views.executable', new ViewExecutableFactory($user, $request_stack, $views_data, $route_provider, $display_plugin_manager));
+    $this->container->set('views.executable', new ViewExecutableFactory($user, $request_stack, $views_data, $route_provider));
 
     \Drupal::setContainer($this->container);
   }
@@ -54,7 +51,7 @@ class ViewsTest extends UnitTestCase {
    *
    * @covers ::getView
    */
-  public function testGetView(): void {
+  public function testGetView() {
     $view = new View(['id' => 'test_view'], 'view');
 
     $view_storage = $this->getMockBuilder('Drupal\Core\Config\Entity\ConfigEntityStorage')
@@ -83,7 +80,7 @@ class ViewsTest extends UnitTestCase {
    *
    * @covers ::getView
    */
-  public function testGetNonExistentView(): void {
+  public function testGetNonExistentView() {
     $entity_type_manager = $this->prophesize(EntityTypeManagerInterface::class);
     $storage = $this->prophesize(EntityStorageInterface::class);
     $storage->load('test_view_non_existent')->willReturn(NULL);
@@ -98,7 +95,7 @@ class ViewsTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetApplicableViews
    */
-  public function testGetApplicableViews($applicable_type, $expected): void {
+  public function testGetApplicableViews($applicable_type, $expected) {
     $view_1 = new View([
       'id' => 'test_view_1',
       'display' => [
@@ -212,7 +209,7 @@ class ViewsTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestGetApplicableViews() {
+  public function providerTestGetApplicableViews() {
     return [
       ['type_a', [['test_view_1', 'type_a']]],
       ['type_b', [['test_view_2', 'type_b']]],

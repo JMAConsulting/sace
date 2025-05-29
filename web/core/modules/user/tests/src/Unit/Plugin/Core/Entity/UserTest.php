@@ -44,7 +44,7 @@ class UserTest extends UserSessionTest {
    * @see \Drupal\user\Entity\User::getRoles()
    * @covers ::getRoles
    */
-  public function testUserGetRoles(): void {
+  public function testUserGetRoles() {
     // Anonymous user.
     $user = $this->createUserSession([]);
     $this->assertEquals([RoleInterface::ANONYMOUS_ID], $user->getRoles());

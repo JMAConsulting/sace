@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Views;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -14,7 +12,9 @@ use Drupal\views\Tests\ViewTestData;
 abstract class CommentViewsKernelTestBase extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['comment_test_views', 'user', 'comment'];
 
@@ -82,7 +82,8 @@ abstract class CommentViewsKernelTestBase extends ViewsKernelTestBase {
     $anonymous_role->save();
 
     $this->adminUser = $this->userStorage->create(['name' => $this->randomMachineName()]);
-    $this->adminUser->addRole('admin')->save();
+    $this->adminUser->addRole('admin');
+    $this->adminUser->save();
   }
 
 }

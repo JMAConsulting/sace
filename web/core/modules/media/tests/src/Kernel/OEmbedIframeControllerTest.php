@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Kernel;
 
 use Drupal\Core\Render\HtmlResponse;
@@ -50,7 +48,7 @@ class OEmbedIframeControllerTest extends MediaKernelTestBase {
    *
    * @covers ::render
    */
-  public function testBadHashParameter($hash): void {
+  public function testBadHashParameter($hash) {
     /** @var callable $controller */
     $controller = $this->container
       ->get('controller_resolver')
@@ -74,7 +72,7 @@ class OEmbedIframeControllerTest extends MediaKernelTestBase {
    *
    * @covers ::render
    */
-  public function testResourcePassedToPreprocess(): void {
+  public function testResourcePassedToPreprocess() {
     $hash = $this->container->get('media.oembed.iframe_url_helper')
       ->getHash('', 0, 0);
 

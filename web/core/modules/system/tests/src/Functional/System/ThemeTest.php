@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Core\StreamWrapper\PublicStream;
@@ -29,7 +27,9 @@ class ThemeTest extends BrowserTestBase {
   protected $adminUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'block', 'file'];
 
@@ -68,7 +68,7 @@ class ThemeTest extends BrowserTestBase {
   /**
    * Tests the theme settings form.
    */
-  public function testThemeSettings(): void {
+  public function testThemeSettings() {
     // Ensure a disabled theme settings form URL returns 404.
     $this->drupalGet('admin/appearance/settings/olivero');
     $this->assertSession()->statusCodeEquals(404);
@@ -189,33 +189,20 @@ class ThemeTest extends BrowserTestBase {
       $this->assertSession()->pageTextContains('The custom logo path is invalid.');
     }
 
-    // Upload a file to use for the logo. Try both the test image we've been
-    // using so far and an SVG file.
-    $upload_uris = [$file->uri, 'core/themes/olivero/logo.svg'];
+    // Upload a file to use for the logo.
+    $edit = [
+      'default_logo' => FALSE,
+      'logo_path' => '',
+      'files[logo_upload]' => \Drupal::service('file_system')->realpath($file->uri),
+    ];
+    $this->drupalGet('admin/appearance/settings');
+    $this->submitForm($edit, 'Save configuration');
+
+    $uploaded_filename = 'public://' . $this->getSession()->getPage()->findField('logo_path')->getValue();
+
     $this->drupalPlaceBlock('system_branding_block', ['region' => 'header']);
-    foreach ($upload_uris as $upload_uri) {
-      $edit = [
-        'default_logo' => FALSE,
-        'logo_path' => '',
-        'files[logo_upload]' => \Drupal::service('file_system')->realpath($upload_uri),
-      ];
-      $this->drupalGet('admin/appearance/settings');
-      $this->submitForm($edit, 'Save configuration');
-      $this->assertSession()->pageTextContains('The configuration options have been saved.');
-
-      $uploaded_filename = 'public://' . $this->getSession()->getPage()->findField('logo_path')->getValue();
-      $this->drupalGet('');
-      $this->assertSession()->elementAttributeContains('xpath', '//header//a[@rel="home"]/img', 'src', $file_url_generator->generateString($uploaded_filename));
-
-      // Clear the logo or it will use previous value.
-      $edit = [
-        'default_logo' => FALSE,
-        'logo_path' => '',
-        'files[logo_upload]' => '',
-      ];
-      $this->drupalGet('admin/appearance/settings');
-      $this->submitForm($edit, 'Save configuration');
-    }
+    $this->drupalGet('');
+    $this->assertSession()->elementAttributeContains('xpath', '//header//a[@rel="home"]/img', 'src', $file_url_generator->generateString($uploaded_filename));
 
     $this->container->get('theme_installer')->install(['olivero']);
 
@@ -253,7 +240,7 @@ class ThemeTest extends BrowserTestBase {
   /**
    * Tests the theme settings logo form.
    */
-  public function testThemeSettingsLogo(): void {
+  public function testThemeSettingsLogo() {
     // Visit Olivero's theme settings page to replace the logo.
     $this->container->get('theme_installer')->install(['olivero']);
     $this->drupalGet('admin/appearance/settings/olivero');
@@ -275,51 +262,9 @@ class ThemeTest extends BrowserTestBase {
   }
 
   /**
-   * Tests the theme settings color input.
-   */
-  public function testThemeSettingsColorHexCode() : void {
-    // Install the Olivero theme.
-    $this->container->get('theme_installer')->install(['olivero']);
-
-    // Define invalid and valid hex color codes.
-    $invalid_hex_codes = [
-      'xyz',
-      '#xyz',
-      '#ffff',
-      '#00000',
-      '#FFFFF ',
-      '00#000',
-    ];
-    $valid_hex_codes = [
-      '0F0',
-      '#F0F',
-      '#2ecc71',
-      '0074cc',
-    ];
-
-    // Visit Olivero's theme settings page.
-    $this->drupalGet('admin/appearance/settings/olivero');
-
-    // Test invalid hex color codes.
-    foreach ($invalid_hex_codes as $invalid_hex) {
-      $this->submitForm(['base_primary_color' => $invalid_hex], 'Save configuration');
-      // Invalid hex codes should throw error.
-      $this->assertSession()->statusMessageContains('"' . $invalid_hex . '" is not a valid hexadecimal color.', 'error');
-      $this->assertTrue($this->getSession()->getPage()->findField('base_primary_color')->hasClass('error'));
-    }
-
-    // Test valid hex color codes.
-    foreach ($valid_hex_codes as $valid_hex) {
-      $this->submitForm(['base_primary_color' => $valid_hex], 'Save configuration');
-      $this->assertSession()->statusMessageContains('The configuration options have been saved.', 'status');
-      $this->assertSame($valid_hex, $this->config('olivero.settings')->get('base_primary_color'));
-    }
-  }
-
-  /**
    * Tests the 'rendered' cache tag is cleared when saving theme settings.
    */
-  public function testThemeSettingsRenderCacheClear(): void {
+  public function testThemeSettingsRenderCacheClear() {
     $this->container->get('theme_installer')->install(['olivero']);
     // Ensure the frontpage is cached for anonymous users. The render cache will
     // cleared by installing a theme.
@@ -342,7 +287,7 @@ class ThemeTest extends BrowserTestBase {
   /**
    * Tests the administration theme functionality.
    */
-  public function testAdministrationTheme(): void {
+  public function testAdministrationTheme() {
     $this->container->get('theme_installer')->install(['claro']);
 
     // Install an administration theme and show it on the node admin pages.
@@ -354,7 +299,7 @@ class ThemeTest extends BrowserTestBase {
     $this->submitForm($edit, 'Save configuration');
 
     // Check the display of non stable themes.
-    $themes = \Drupal::service('extension.list.theme')->reset()->getList();
+    $themes = \Drupal::service('theme_handler')->rebuildThemeData();
     $experimental_version = $themes['experimental_theme_test']->info['version'];
     $deprecated_version = $themes['deprecated_theme_test']->info['version'];
     $this->drupalGet('admin/appearance');
@@ -426,7 +371,7 @@ class ThemeTest extends BrowserTestBase {
   /**
    * Tests switching the default theme.
    */
-  public function testSwitchDefaultTheme(): void {
+  public function testSwitchDefaultTheme() {
     /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
     $theme_installer = \Drupal::service('theme_installer');
     // First, install Stark and set it as the default theme programmatically.
@@ -442,13 +387,13 @@ class ThemeTest extends BrowserTestBase {
 
     // Test the default theme on the secondary links (blocks admin page).
     $this->drupalGet('admin/structure/block');
-    $this->assertSession()->pageTextContains('Olivero');
+    $this->assertSession()->pageTextContains('Olivero(active tab)');
     // Switch back to Stark and test again to test that the menu cache is cleared.
     $this->drupalGet('admin/appearance');
     // Stark is the first 'Set as default' link.
     $this->clickLink('Set as default');
     $this->drupalGet('admin/structure/block');
-    $this->assertSession()->pageTextContains('Stark');
+    $this->assertSession()->pageTextContains('Stark(active tab)');
   }
 
   /**
@@ -457,7 +402,7 @@ class ThemeTest extends BrowserTestBase {
    * Include test for themes that have a missing base theme somewhere further up
    * the chain than the immediate base theme.
    */
-  public function testInvalidTheme(): void {
+  public function testInvalidTheme() {
     // theme_page_test_system_info_alter() un-hides all hidden themes.
     $this->container->get('module_installer')->install(['theme_page_test']);
     // Clear the system_list() and theme listing cache to pick up the change.
@@ -477,7 +422,7 @@ class ThemeTest extends BrowserTestBase {
   /**
    * Tests uninstalling of themes works.
    */
-  public function testUninstallingThemes(): void {
+  public function testUninstallingThemes() {
     // Install olivero.
     \Drupal::service('theme_installer')->install(['olivero']);
     // Set up Claro as the admin theme.
@@ -525,7 +470,7 @@ class ThemeTest extends BrowserTestBase {
   /**
    * Tests installing a theme and setting it as default.
    */
-  public function testInstallAndSetAsDefault(): void {
+  public function testInstallAndSetAsDefault() {
     $this->markTestSkipped('Skipped due to major version-specific logic. See https://www.drupal.org/project/drupal/issues/3359322');
     $themes = [
       'olivero' => 'Olivero',
@@ -542,7 +487,7 @@ class ThemeTest extends BrowserTestBase {
       // This checks for a regression. See https://www.drupal.org/node/2498691.
       $this->assertSession()->pageTextNotContains("The $theme_machine_name theme was not found.");
 
-      $themes = \Drupal::service('extension.list.theme')->reset()->getList();
+      $themes = \Drupal::service('theme_handler')->rebuildThemeData();
       $version = $themes[$theme_machine_name]->info['version'];
 
       // Confirm the theme is indicated as the default theme and administration
@@ -555,7 +500,7 @@ class ThemeTest extends BrowserTestBase {
   /**
    * Tests the theme settings form when logo and favicon features are disabled.
    */
-  public function testThemeSettingsNoLogoNoFavicon(): void {
+  public function testThemeSettingsNoLogoNoFavicon() {
     // Install theme with no logo and no favicon feature.
     $this->container->get('theme_installer')->install(['test_theme_settings_features']);
     // Visit this theme's settings page.

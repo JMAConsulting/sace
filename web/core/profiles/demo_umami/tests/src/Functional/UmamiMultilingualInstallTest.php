@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\demo_umami\Functional;
 
 use Drupal\FunctionalTests\Installer\InstallerTestBase;
@@ -26,7 +24,7 @@ class UmamiMultilingualInstallTest extends InstallerTestBase {
   /**
    * Ensures that Umami can be installed with Spanish as the default language.
    */
-  public function testUmami(): void {
+  public function testUmami() {
     $this->drupalGet('');
     // cSpell:disable-next-line
     $this->assertSession()->pageTextContains('Quiche mediterráneo profundo');

@@ -27,7 +27,7 @@ class JUnitConverterTest extends UnitTestCase {
    * Tests errors reported.
    * @covers ::xmlToRows
    */
-  public function testXmlToRowsWithErrors(): void {
+  public function testXmlToRowsWithErrors() {
     $phpunit_error_xml = __DIR__ . '/fixtures/phpunit_error.xml';
 
     $res = JUnitConverter::xmlToRows(1, $phpunit_error_xml);
@@ -48,7 +48,7 @@ class JUnitConverterTest extends UnitTestCase {
   /**
    * @covers ::xmlToRows
    */
-  public function testXmlToRowsEmptyFile(): void {
+  public function testXmlToRowsEmptyFile() {
     // File system with an empty XML file.
     vfsStream::setup('junit_test', NULL, ['empty.xml' => '']);
     $this->assertSame([], JUnitConverter::xmlToRows(23, vfsStream::url('junit_test/empty.xml')));
@@ -57,7 +57,7 @@ class JUnitConverterTest extends UnitTestCase {
   /**
    * @covers ::xmlElementToRows
    */
-  public function testXmlElementToRows(): void {
+  public function testXmlElementToRows() {
     $junit = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
@@ -84,7 +84,7 @@ EOD;
   /**
    * @covers ::convertTestCaseToSimpletestRow
    */
-  public function testConvertTestCaseToSimpletestRow(): void {
+  public function testConvertTestCaseToSimpletestRow() {
     $junit = <<<EOD
     <testcase name="testGetTestClasses" class="Drupal\Tests\simpletest\Unit\TestDiscoveryTest" classname="Drupal.Tests.simpletest.Unit.TestDiscoveryTest" file="/Users/paul/projects/drupal/core/modules/simpletest/tests/src/Unit/TestDiscoveryTest.php" line="108" assertions="2" time="0.100787"/>
 EOD;

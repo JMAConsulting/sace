@@ -6,8 +6,6 @@ namespace Drupal\Tests\media\FunctionalJavascript;
 
 use Drupal\Component\Utility\Html;
 
-// cspell:ignore pastafazoul
-
 /**
  * Tests the media type creation.
  *
@@ -23,7 +21,7 @@ class MediaTypeCreationTest extends MediaJavascriptTestBase {
   /**
    * Tests the source field behavior on the add media type form.
    */
-  public function testSourceChangeOnMediaTypeCreationForm(): void {
+  public function testSourceChangeOnMediaTypeCreationForm() {
     $session = $this->getSession();
     $page = $session->getPage();
     $assert_session = $this->assertSession();
@@ -62,7 +60,7 @@ class MediaTypeCreationTest extends MediaJavascriptTestBase {
   /**
    * Tests the media type creation form.
    */
-  public function testMediaTypeCreationFormWithDefaultField(): void {
+  public function testMediaTypeCreationFormWithDefaultField() {
     $session = $this->getSession();
     $page = $session->getPage();
     $assert_session = $this->assertSession();
@@ -107,13 +105,11 @@ class MediaTypeCreationTest extends MediaJavascriptTestBase {
     $assert_session->pageTextContains('The media source cannot be changed after the media type is created.');
 
     // Check that the field map options are sorted alphabetically.
-    // Source field should not be included.
     $options = $this->xpath('//select[@name="field_map[attribute_1]"]/option');
-    $this->assertGreaterThanOrEqual(2, count($options));
+    $this->assertGreaterThanOrEqual(3, count($options));
     $this->assertSame('- Skip field -', $options[0]->getText());
     $this->assertSame('Name', $options[1]->getText());
-    // It should not be possible to map the source field.
-    $assert_session->optionNotExists('field_map[attribute_1]', 'Test source');
+    $this->assertSame('Test source', $options[2]->getText());
 
     // Open up the media add form and verify that the source field is right
     // after the name, and before the vertical tabs.
@@ -149,7 +145,7 @@ class MediaTypeCreationTest extends MediaJavascriptTestBase {
   /**
    * Tests creation of media type, reusing an existing source field.
    */
-  public function testMediaTypeCreationReuseSourceField(): void {
+  public function testMediaTypeCreationReuseSourceField() {
     $session = $this->getSession();
     $page = $session->getPage();
     $assert_session = $this->assertSession();

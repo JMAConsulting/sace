@@ -20,7 +20,7 @@ class TraitAccessTest extends UnitTestCase {
   /**
    * @coversNothing
    */
-  public function testSimpleStuff(): void {
+  public function testSimpleStuff() {
     $stuff = $this->getStuff();
     $this->assertSame($stuff, 'stuff', "Same old stuff");
   }

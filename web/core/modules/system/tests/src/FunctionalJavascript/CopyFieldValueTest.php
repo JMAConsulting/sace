@@ -28,7 +28,7 @@ class CopyFieldValueTest extends WebDriverTestBase {
   /**
    * Tests copy field value JavaScript functionality.
    */
-  public function testCopyFieldValue(): void {
+  public function testCopyFieldValue() {
     $this->drupalGet('/system-test/copy-field-value-test-form');
     $page = $this->getSession()->getPage();
     $source_field_selector = 'edit-source-field';

@@ -16,7 +16,7 @@ class JsonEncoderTest extends UnitTestCase {
   /**
    * Tests the supportsEncoding() method.
    */
-  public function testSupportsEncoding(): void {
+  public function testSupportsEncoding() {
     $encoder = new JsonEncoder();
 
     $this->assertTrue($encoder->supportsEncoding('json'));

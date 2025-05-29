@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\DatabaseExceptionWrapper;
@@ -17,7 +15,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Confirms that we can update a single record successfully.
    */
-  public function testSimpleUpdate(): void {
+  public function testSimpleUpdate() {
     $num_updated = $this->connection->update('test')
       ->fields(['name' => 'Tiffany'])
       ->condition('id', 1)
@@ -31,7 +29,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Confirms updating to NULL.
    */
-  public function testSimpleNullUpdate(): void {
+  public function testSimpleNullUpdate() {
     $this->ensureSampleDataNull();
     $num_updated = $this->connection->update('test_null')
       ->fields(['age' => NULL])
@@ -46,7 +44,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Confirms that we can update multiple records successfully.
    */
-  public function testMultiUpdate(): void {
+  public function testMultiUpdate() {
     $num_updated = $this->connection->update('test')
       ->fields(['job' => 'Musician'])
       ->condition('job', 'Singer')
@@ -60,7 +58,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Confirms that we can update multiple records with a non-equality condition.
    */
-  public function testMultiGTUpdate(): void {
+  public function testMultiGTUpdate() {
     $num_updated = $this->connection->update('test')
       ->fields(['job' => 'Musician'])
       ->condition('age', 26, '>')
@@ -74,7 +72,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Confirms that we can update multiple records with a where call.
    */
-  public function testWhereUpdate(): void {
+  public function testWhereUpdate() {
     $num_updated = $this->connection->update('test')
       ->fields(['job' => 'Musician'])
       ->where('[age] > :age', [':age' => 26])
@@ -88,7 +86,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Confirms that we can stack condition and where calls.
    */
-  public function testWhereAndConditionUpdate(): void {
+  public function testWhereAndConditionUpdate() {
     $update = $this->connection->update('test')
       ->fields(['job' => 'Musician'])
       ->where('[age] > :age', [':age' => 26])
@@ -103,7 +101,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Tests updating with expressions.
    */
-  public function testExpressionUpdate(): void {
+  public function testExpressionUpdate() {
     // Ensure that expressions are handled properly. This should set every
     // record's age to a square of itself.
     $num_rows = $this->connection->update('test')
@@ -118,7 +116,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Tests return value on update.
    */
-  public function testUpdateAffectedRows(): void {
+  public function testUpdateAffectedRows() {
     // At 5am in the morning, all band members but those with a priority 1 task
     // are sleeping. So we set their tasks to 'sleep'. 5 records match the
     // condition and therefore are affected by the query, even though two of
@@ -135,7 +133,7 @@ class UpdateTest extends DatabaseTestBase {
   /**
    * Confirm that we can update values in a column with special name.
    */
-  public function testSpecialColumnUpdate(): void {
+  public function testSpecialColumnUpdate() {
     $num_updated = $this->connection->update('select')
       ->fields([
         'update' => 'New update value',

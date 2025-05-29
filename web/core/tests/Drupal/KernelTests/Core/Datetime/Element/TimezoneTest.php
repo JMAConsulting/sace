@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Datetime\Element;
 
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -205,7 +203,7 @@ class TimezoneTest extends EntityKernelTestBase implements FormInterface {
    * save the form, otherwise stored times may be changed without the user
    * changing the element's values.
    */
-  public function testDatetimeElementTimesUnderstoodCorrectly(): void {
+  public function testDatetimeElementTimesUnderstoodCorrectly() {
     $this->assertTimesUnderstoodCorrectly('datetime', ['date', 'time']);
   }
 
@@ -214,7 +212,7 @@ class TimezoneTest extends EntityKernelTestBase implements FormInterface {
    *
    * See testDatetimeElementTimesUnderstoodCorrectly() for more explanation.
    */
-  public function testDatelistElementTimesUnderstoodCorrectly(): void {
+  public function testDatelistElementTimesUnderstoodCorrectly() {
     $this->assertTimesUnderstoodCorrectly('datelist', [
       'day',
       'month',
@@ -232,7 +230,7 @@ class TimezoneTest extends EntityKernelTestBase implements FormInterface {
    * accurately reflect the timezone that will be used to interpret times
    * entered through the element.
    */
-  public function testDatetimeTimezonePropertyProcessed(): void {
+  public function testDatetimeTimezonePropertyProcessed() {
     $this->assertDateTimezonePropertyProcessed('datetime');
   }
 
@@ -241,7 +239,7 @@ class TimezoneTest extends EntityKernelTestBase implements FormInterface {
    *
    * See testDatetimeTimezonePropertyProcessed() for more explanation.
    */
-  public function testDatelistTimezonePropertyProcessed(): void {
+  public function testDatelistTimezonePropertyProcessed() {
     $this->assertDateTimezonePropertyProcessed('datelist');
   }
 

@@ -12,8 +12,6 @@
 namespace Twig\Node\Expression;
 
 use Twig\Compiler;
-use Twig\Node\Expression\Unary\StringCastUnary;
-use Twig\Node\Expression\Variable\ContextVariable;
 
 class ArrayExpression extends AbstractExpression
 {
@@ -57,7 +55,7 @@ class ArrayExpression extends AbstractExpression
         return false;
     }
 
-    public function addElement(AbstractExpression $value, ?AbstractExpression $key = null): void
+    public function addElement(AbstractExpression $value, AbstractExpression $key = null): void
     {
         if (null === $key) {
             $key = new ConstantExpression(++$this->index, $value->getTemplateLine());
@@ -72,7 +70,7 @@ class ArrayExpression extends AbstractExpression
         $needsArrayMergeSpread = \PHP_VERSION_ID < 80100 && $this->hasSpreadItem($keyValuePairs);
 
         if ($needsArrayMergeSpread) {
-            $compiler->raw('CoreExtension::merge(');
+            $compiler->raw('twig_array_merge(');
         }
         $compiler->raw('[');
         $first = true;
@@ -99,17 +97,7 @@ class ArrayExpression extends AbstractExpression
                 $compiler->raw('...')->subcompile($pair['value']);
                 ++$nextIndex;
             } else {
-                $key = null;
-                if ($pair['key'] instanceof ContextVariable) {
-                    $pair['key'] = new StringCastUnary($pair['key'], $pair['key']->getTemplateLine());
-                }
-                if ($pair['key'] instanceof TempNameExpression) {
-                    $key = $pair['key']->getAttribute('name');
-                    $pair['key'] = new ConstantExpression($key, $pair['key']->getTemplateLine());
-                }
-                if ($pair['key'] instanceof ConstantExpression) {
-                    $key = $pair['key']->getAttribute('value');
-                }
+                $key = $pair['key'] instanceof ConstantExpression ? $pair['key']->getAttribute('value') : null;
 
                 if ($nextIndex !== $key) {
                     if (\is_int($key)) {

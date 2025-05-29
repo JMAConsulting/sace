@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\inline_form_errors\Kernel;
 
 use Drupal\Core\Form\FormState;
@@ -22,7 +20,7 @@ class FormElementInlineErrorTest extends KernelTestBase {
   /**
    * Tests that no inline form errors are shown when disabled for a form.
    */
-  public function testDisplayErrorMessagesNotInline(): void {
+  public function testDisplayErrorMessagesNotInline() {
     $form_id = 'test';
 
     $form = [

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\Plugin\migrate\source;
 
 use Drupal\Tests\migrate\Kernel\MigrateSqlSourceTestBase;
@@ -12,7 +10,6 @@ use Drupal\Tests\migrate\Kernel\MigrateSqlSourceTestBase;
  * @covers \Drupal\migrate_drupal\Plugin\migrate\source\Variable
  *
  * @group migrate_drupal
- * @group #slow
  */
 class VariableTest extends MigrateSqlSourceTestBase {
 
@@ -24,7 +21,7 @@ class VariableTest extends MigrateSqlSourceTestBase {
   /**
    * {@inheritdoc}
    */
-  public static function providerSource() {
+  public function providerSource() {
     $tests = [];
 
     // The source data.

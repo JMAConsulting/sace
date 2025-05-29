@@ -9,7 +9,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Batch\BatchStorageInterface;
 use Drupal\Core\Database\IntegrityConstraintViolationException;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\RenderElementBase;
+use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 function template_preprocess_select(&$variables) {
   $element = $variables['element'];
   Element::setAttributes($element, ['id', 'name', 'size']);
-  RenderElementBase::setAttributes($element, ['form-select']);
+  RenderElement::setAttributes($element, ['form-select']);
 
   $variables['attributes'] = $element['#attributes'];
   $variables['options'] = form_select_options($element);
@@ -150,7 +150,7 @@ function form_select_options($element, $choices = NULL) {
  * index is not sufficient, and supporting this would make the
  * "helper" too complicated and cumbersome to be of any help.
  *
- * As usual with functions that can return [] or FALSE, do not
+ * As usual with functions that can return array() or FALSE, do not
  * forget to use === and !== if needed.
  *
  * @param $element
@@ -194,7 +194,7 @@ function form_get_options($element, $key) {
 function template_preprocess_fieldset(&$variables) {
   $element = $variables['element'];
   Element::setAttributes($element, ['id']);
-  RenderElementBase::setAttributes($element);
+  RenderElement::setAttributes($element);
   $variables['attributes'] = $element['#attributes'] ?? [];
   $variables['prefix'] = $element['#field_prefix'] ?? NULL;
   $variables['suffix'] = $element['#field_suffix'] ?? NULL;
@@ -388,7 +388,7 @@ function template_preprocess_textarea(&$variables) {
   $element = $variables['element'];
   $attributes = ['id', 'name', 'rows', 'cols', 'maxlength', 'placeholder'];
   Element::setAttributes($element, $attributes);
-  RenderElementBase::setAttributes($element, ['form-textarea']);
+  RenderElement::setAttributes($element, ['form-textarea']);
   $variables['wrapper_attributes'] = new Attribute();
   $variables['attributes'] = new Attribute($element['#attributes']);
   $variables['value'] = $element['#value'];
@@ -576,15 +576,15 @@ function template_preprocess_form_element_label(&$variables) {
  *
  * Example:
  * @code
- * $batch = [
+ * $batch = array(
  *   'title' => t('Exporting'),
- *   'operations' => [
- *     ['my_function_1', [$account->id(), 'story']],
- *     ['my_function_2', []],
- *   ],
+ *   'operations' => array(
+ *     array('my_function_1', array($account->id(), 'story')),
+ *     array('my_function_2', array()),
+ *   ),
  *   'finished' => 'my_finished_callback',
  *   'file' => 'path_to_file_containing_my_functions',
- * ];
+ * );
  * batch_set($batch);
  * // Only needed if not inside a form _submit handler.
  * // Setting redirect in batch_process.
@@ -612,7 +612,7 @@ function template_preprocess_form_element_label(&$variables) {
  *   // The following keys allow for multi-step operations :
  *   // 'sandbox' (read / write): An array that can be freely used to
  *   //   store persistent data between iterations. It is recommended to
- *   //   use this instead of the session, which is unsafe if the user
+ *   //   use this instead of $_SESSION, which is unsafe if the user
  *   //   continues browsing in a separate window while the batch is processing.
  *   // 'finished' (write): A float number between 0 and 1 informing
  *   //   the processing engine of the completion level for the operation.
@@ -638,7 +638,7 @@ function template_preprocess_form_element_label(&$variables) {
  *   }
  *   $limit = 5;
  *   $result = \Drupal::database()->select('example')
- *     ->fields('example', ['id'])
+ *     ->fields('example', array('id'))
  *     ->condition('id', $context['sandbox']['current_id'], '>')
  *     ->orderBy('id')
  *     ->range(0, $limit)
@@ -663,18 +663,17 @@ function template_preprocess_form_element_label(&$variables) {
  *   // The 'success' parameter means no fatal PHP errors were detected. All
  *   // other error management should be handled using 'results'.
  *   if ($success) {
- *     $message = \Drupal::translation()->formatPlural(count($results), 'One item processed.', '@count items processed.');
+ *     $message = \Drupal::translation()->formatPlural(count($results), 'One post processed.', '@count posts processed.');
  *   }
  *   else {
  *     $message = t('Finished with an error.');
  *   }
  *   \Drupal::messenger()->addMessage($message);
- *   // Providing data for the redirected page is done through the session.
+ *   // Providing data for the redirected page is done through $_SESSION.
  *   foreach ($results as $result) {
- *     $items[] = t('Loaded node %title.', ['%title' => $result)];
+ *     $items[] = t('Loaded node %title.', array('%title' => $result));
  *   }
- *   $session = \Drupal::getRequest()->getSession();
- *   $session->set('my_batch_results', $items);
+ *   $_SESSION['my_batch_results'] = $items;
  * }
  * @endcode
  */
@@ -702,10 +701,10 @@ function template_preprocess_form_element_label(&$variables) {
  *     callback_batch_operation() and an array of parameter.
  *     Example:
  *     @code
- *     [
- *       ['callback_batch_operation_1', [$arg1)],
- *       ['callback_batch_operation_2', [$arg2_1, $arg2_2]],
- *     ]
+ *     array(
+ *       array('callback_batch_operation_1', array($arg1)),
+ *       array('callback_batch_operation_2', array($arg2_1, $arg2_2)),
+ *     )
  *     @endcode
  *   - title: A safe, translated string to use as the title for the progress
  *     page. Defaults to t('Processing').
@@ -719,7 +718,7 @@ function template_preprocess_form_element_label(&$variables) {
  *   - finished: Name of an implementation of callback_batch_finished(). This is
  *     executed after the batch has completed. This should be used to perform
  *     any result massaging that may be needed, and possibly save data in
- *     the session for display after final page redirection.
+ *     $_SESSION for display after final page redirection.
  *   - file: Path to the file containing the definitions of the 'operations' and
  *     'finished' functions, for instance if they don't reside in the main
  *     .module file. The path should be relative to base_path(), and thus should
@@ -868,7 +867,7 @@ function _batch_append_set(&$batch, $batch_set) {
  *   redirect response was returned by the 'finished' callback, the user will
  *   be redirected to the page that started the batch. Any query arguments will
  *   be automatically persisted.
- * @param \Drupal\Core\Url|null $url
+ * @param \Drupal\Core\Url $url
  *   (optional) URL of the batch processing page. Should only be used for
  *   separate scripts like update.php.
  * @param $redirect_callback
@@ -878,7 +877,7 @@ function _batch_append_set(&$batch, $batch_set) {
  * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
  *   A redirect response if the batch is progressive. No return value otherwise.
  */
-function batch_process($redirect = NULL, ?Url $url = NULL, $redirect_callback = NULL) {
+function batch_process($redirect = NULL, Url $url = NULL, $redirect_callback = NULL) {
   $batch =& batch_get();
 
   if (isset($batch)) {
@@ -953,10 +952,7 @@ function batch_process($redirect = NULL, ?Url $url = NULL, $redirect_callback = 
       \Drupal::service(BatchStorageInterface::class)->create($batch);
 
       // Set the batch number in the session to guarantee that it will stay alive.
-      $session = \Drupal::request()->getSession();
-      $batches = $session->get('batches', []);
-      $batches[$batch['id']] = TRUE;
-      $session->set('batches', $batches);
+      $_SESSION['batches'][$batch['id']] = TRUE;
 
       // Redirect for processing.
       $query_options = $error_url->getOption('query');

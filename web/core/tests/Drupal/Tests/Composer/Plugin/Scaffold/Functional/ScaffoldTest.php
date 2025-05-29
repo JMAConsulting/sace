@@ -8,7 +8,6 @@ use Composer\Util\Filesystem;
 use Drupal\Tests\Composer\Plugin\Scaffold\AssertUtilsTrait;
 use Drupal\Tests\Composer\Plugin\Scaffold\Fixtures;
 use Drupal\Tests\Composer\Plugin\Scaffold\ScaffoldTestResult;
-use Drupal\Tests\PhpUnitCompatibilityTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,7 +20,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ScaffoldTest extends TestCase {
   use AssertUtilsTrait;
-  use PhpUnitCompatibilityTrait;
 
   /**
    * The root of this project.
@@ -67,7 +65,7 @@ class ScaffoldTest extends TestCase {
     // a directory will be created in the system's temporary directory.
     $this->fixturesDir = getenv('SCAFFOLD_FIXTURE_DIR');
     if (!$this->fixturesDir) {
-      $this->fixturesDir = $this->fixtures->tmpDir($this->name());
+      $this->fixturesDir = $this->fixtures->tmpDir($this->getName());
     }
   }
 
@@ -137,7 +135,7 @@ class ScaffoldTest extends TestCase {
   /**
    * Data provider for testScaffoldWithExpectedException.
    */
-  public static function scaffoldExpectedExceptionTestValues() {
+  public function scaffoldExpectedExceptionTestValues() {
     return [
       [
         'drupal-drupal-missing-scaffold-file',
@@ -172,7 +170,7 @@ class ScaffoldTest extends TestCase {
    *
    * @dataProvider scaffoldExpectedExceptionTestValues
    */
-  public function testScaffoldWithExpectedException($fixture_name, $expected_exception_message, $is_link): void {
+  public function testScaffoldWithExpectedException($fixture_name, $expected_exception_message, $is_link) {
     // Test scaffold. Expect an error.
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage($expected_exception_message);
@@ -182,7 +180,7 @@ class ScaffoldTest extends TestCase {
   /**
    * Try to scaffold a project that does not scaffold anything.
    */
-  public function testEmptyProject(): void {
+  public function testEmptyProject() {
     $fixture_name = 'empty-fixture';
 
     $result = $this->scaffoldSut($fixture_name, FALSE, FALSE);
@@ -192,7 +190,7 @@ class ScaffoldTest extends TestCase {
   /**
    * Try to scaffold a project that allows a project with no scaffold files.
    */
-  public function testProjectThatScaffoldsEmptyProject(): void {
+  public function testProjectThatScaffoldsEmptyProject() {
     $fixture_name = 'project-allowing-empty-fixture';
     $result = $this->scaffoldSut($fixture_name, FALSE, FALSE);
     $this->assertStringContainsString('The allowed package fixtures/empty-fixture does not provide a file mapping for Composer Scaffold', $result->scaffoldOutput());
@@ -200,7 +198,7 @@ class ScaffoldTest extends TestCase {
     $this->assertAutoloadFileCorrect($result->docroot());
   }
 
-  public static function scaffoldOverridingSettingsExcludingHtaccessValues() {
+  public function scaffoldOverridingSettingsExcludingHtaccessValues() {
     return [
       [
         'drupal-composer-drupal-project',
@@ -229,7 +227,7 @@ class ScaffoldTest extends TestCase {
    *
    * @dataProvider scaffoldOverridingSettingsExcludingHtaccessValues
    */
-  public function testScaffoldOverridingSettingsExcludingHtaccess($fixture_name, $is_link, $relocated_docroot): void {
+  public function testScaffoldOverridingSettingsExcludingHtaccess($fixture_name, $is_link, $relocated_docroot) {
     $result = $this->scaffoldSut($fixture_name, $is_link, $relocated_docroot);
 
     $this->assertCommonDrupalAssetsWereScaffolded($result->docroot(), $is_link);
@@ -245,7 +243,7 @@ class ScaffoldTest extends TestCase {
    * replaced, and that files that were not supposed to be replaced remain
    * unchanged.
    */
-  public function testDrupalDrupalFileWasReplaced(): void {
+  public function testDrupalDrupalFileWasReplaced() {
     $fixture_name = 'drupal-drupal-test-overwrite';
     $result = $this->scaffoldSut($fixture_name, FALSE, FALSE);
 
@@ -260,10 +258,10 @@ class ScaffoldTest extends TestCase {
   /**
    * Provides test values for testDrupalDrupalFileWasAppended.
    */
-  public static function scaffoldAppendTestValues(): array {
+  public function scaffoldAppendTestValues() {
     return array_merge(
-      static::scaffoldAppendTestValuesToPermute(FALSE),
-      static::scaffoldAppendTestValuesToPermute(TRUE),
+      $this->scaffoldAppendTestValuesToPermute(FALSE),
+      $this->scaffoldAppendTestValuesToPermute(TRUE),
       [
         [
           'drupal-drupal-append-settings',
@@ -286,7 +284,7 @@ include __DIR__ . "/settings-custom-additions.php";',
    * @param bool $is_link
    *   Whether or not symlinking should be used.
    */
-  protected static function scaffoldAppendTestValuesToPermute($is_link) {
+  protected function scaffoldAppendTestValuesToPermute($is_link) {
     return [
       [
         'drupal-drupal-test-append',
@@ -344,7 +342,7 @@ include __DIR__ . "/settings-custom-additions.php";',
    *
    * @dataProvider scaffoldAppendTestValues
    */
-  public function testDrupalDrupalFileWasAppended(string $fixture_name, bool $is_link, string $scaffold_file_path, string $scaffold_file_contents, string $scaffoldOutputContains): void {
+  public function testDrupalDrupalFileWasAppended($fixture_name, $is_link, $scaffold_file_path, $scaffold_file_contents, $scaffoldOutputContains) {
     $result = $this->scaffoldSut($fixture_name, $is_link, FALSE);
     $this->assertStringContainsString($scaffoldOutputContains, $result->scaffoldOutput());
 

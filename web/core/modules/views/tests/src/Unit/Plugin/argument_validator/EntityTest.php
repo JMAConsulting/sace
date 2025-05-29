@@ -123,7 +123,7 @@ class EntityTest extends UnitTestCase {
    *
    * @see \Drupal\views\Plugin\views\argument_validator\Entity::validateArgument()
    */
-  public function testValidateArgumentNoAccess(): void {
+  public function testValidateArgumentNoAccess() {
     $options = [];
     $options['access'] = FALSE;
     $options['bundles'] = [];
@@ -143,7 +143,7 @@ class EntityTest extends UnitTestCase {
    *
    * @see \Drupal\views\Plugin\views\argument_validator\Entity::validateArgument()
    */
-  public function testValidateArgumentAccess(): void {
+  public function testValidateArgumentAccess() {
     $options = [];
     $options['access'] = TRUE;
     $options['bundles'] = [];
@@ -171,7 +171,7 @@ class EntityTest extends UnitTestCase {
   /**
    * Tests the validate argument method with bundle checking.
    */
-  public function testValidateArgumentBundle(): void {
+  public function testValidateArgumentBundle() {
     $options = [];
     $options['access'] = FALSE;
     $options['bundles'] = ['test_bundle' => 1];
@@ -190,7 +190,7 @@ class EntityTest extends UnitTestCase {
   /**
    * @covers ::calculateDependencies
    */
-  public function testCalculateDependencies(): void {
+  public function testCalculateDependencies() {
     // Create an entity type manager, storage, entity type, and entity to mock the
     // loading of entities providing bundles.
     $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
@@ -238,7 +238,7 @@ class EntityTest extends UnitTestCase {
   /**
    * Tests the validate argument method with multiple argument splitting.
    */
-  public function testValidateArgumentMultiple(): void {
+  public function testValidateArgumentMultiple() {
     $options = [];
     $options['access'] = TRUE;
     $options['bundles'] = [];

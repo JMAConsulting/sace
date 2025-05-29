@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Module;
 
 use Drupal\Core\Config\InstallStorage;
@@ -17,7 +15,9 @@ use Drupal\TestTools\Extension\SchemaInspector;
 abstract class ModuleTestBase extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system_test'];
 

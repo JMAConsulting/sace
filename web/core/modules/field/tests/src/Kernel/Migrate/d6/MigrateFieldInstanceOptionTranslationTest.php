@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\Migrate\d6;
 
 use Drupal\Tests\migrate_drupal\Kernel\d6\MigrateDrupal6TestBase;
@@ -42,7 +40,7 @@ class MigrateFieldInstanceOptionTranslationTest extends MigrateDrupal6TestBase {
   /**
    * Tests migration of file variables to file.settings.yml.
    */
-  public function testFieldInstanceOptionTranslation(): void {
+  public function testFieldInstanceOptionTranslation() {
     $language_manager = $this->container->get('language_manager');
 
     /** @var \Drupal\language\Config\LanguageConfigOverride $config_translation */

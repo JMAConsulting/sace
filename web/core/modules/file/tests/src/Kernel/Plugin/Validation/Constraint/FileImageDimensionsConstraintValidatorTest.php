@@ -54,7 +54,7 @@ class FileImageDimensionsConstraintValidatorTest extends FileValidatorTestBase {
    *
    * @covers ::validate
    */
-  public function testFileValidateImageResolution(): void {
+  public function testFileValidateImageResolution() {
     // Non-images.
     $validators = ['FileImageDimensions' => []];
     $violations = $this->validator->validate($this->nonImage, $validators);
@@ -137,7 +137,7 @@ class FileImageDimensionsConstraintValidatorTest extends FileValidatorTestBase {
       \Drupal::service('file_system')->unlink('temporary://druplicon.png');
     }
     else {
-      // @todo Should check that the error is returned if no toolkit is available.
+      // TODO: should check that the error is returned if no toolkit is available.
       $validators = [
         'FileImageDimensions' => [
           'maxDimensions' => '5x10',

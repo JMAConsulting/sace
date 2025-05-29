@@ -31,7 +31,7 @@ class JSWebAssertTest extends WebDriverTestBase {
   /**
    * Tests that JSWebAssert assertions work correctly.
    */
-  public function testJsWebAssert(): void {
+  public function testJsWebAssert() {
     $this->drupalGet('js_webassert_test_form');
 
     $session = $this->getSession();

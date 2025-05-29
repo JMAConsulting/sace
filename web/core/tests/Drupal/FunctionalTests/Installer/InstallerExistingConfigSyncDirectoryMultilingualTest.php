@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 use Drupal\Component\Serialization\Yaml;
@@ -65,7 +63,7 @@ class InstallerExistingConfigSyncDirectoryMultilingualTest extends InstallerExis
   /**
    * Confirms that the installation installed the configuration correctly.
    */
-  public function testConfigSync(): void {
+  public function testConfigSync() {
     $comparer = $this->configImporter()->getStorageComparer();
     $expected_changelist_default_collection = [
       'create' => [],

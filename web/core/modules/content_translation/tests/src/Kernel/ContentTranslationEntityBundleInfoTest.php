@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_translation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -61,7 +59,7 @@ class ContentTranslationEntityBundleInfoTest extends KernelTestBase {
   /**
    * Tests that modules can know whether bundles are translatable.
    */
-  public function testHookInvocationOrder(): void {
+  public function testHookInvocationOrder() {
     $this->contentTranslationManager->setEnabled('entity_test_mul', 'entity_test_mul', TRUE);
     $this->bundleInfo->clearCachedBundles();
     $this->bundleInfo->getAllBundleInfo();
@@ -88,7 +86,7 @@ class ContentTranslationEntityBundleInfoTest extends KernelTestBase {
   /**
    * Tests that field synchronization is skipped for disabled bundles.
    */
-  public function testFieldSynchronizationWithDisabledBundle(): void {
+  public function testFieldSynchronizationWithDisabledBundle() {
     $entity = EntityTestMul::create();
     $entity->save();
 
@@ -104,7 +102,7 @@ class ContentTranslationEntityBundleInfoTest extends KernelTestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testBundleClearOnLanguageContentSettingInsert(): void {
+  public function testBundleClearOnLanguageContentSettingInsert() {
     $node = $this->getBundledNode();
     $this->assertFalse($node->isTranslatable());
     $this->contentTranslationManager->setEnabled('node', 'bundle_test', TRUE);
@@ -117,7 +115,7 @@ class ContentTranslationEntityBundleInfoTest extends KernelTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Exception
    */
-  public function testBundleClearOnLanguageContentSettingUpdate(): void {
+  public function testBundleClearOnLanguageContentSettingUpdate() {
     $node = $this->getBundledNode();
     $this->assertFalse($node->isTranslatable());
     $this->container->get('entity_type.manager')->getStorage('language_content_settings')->create([

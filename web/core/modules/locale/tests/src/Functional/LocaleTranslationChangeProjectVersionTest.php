@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Core\StreamWrapper\PublicStream;
@@ -59,7 +57,7 @@ class LocaleTranslationChangeProjectVersionTest extends LocaleUpdateBase {
   /**
    * Tests update translations when project version changes.
    */
-  public function testUpdateImportSourceRemote(): void {
+  public function testUpdateImportSourceRemote() {
 
     // Verify that the project status has the old version.
     $status = locale_translation_get_status(['contrib_module_one']);

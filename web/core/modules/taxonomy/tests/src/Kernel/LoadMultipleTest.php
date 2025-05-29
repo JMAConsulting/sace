@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -40,7 +38,7 @@ class LoadMultipleTest extends KernelTestBase {
   /**
    * Tests loading multiple taxonomy terms by term ID and vocabulary.
    */
-  public function testTaxonomyTermMultipleLoad(): void {
+  public function testTaxonomyTermMultipleLoad() {
     // Create a vocabulary.
     $vocabulary = $this->createVocabulary();
 

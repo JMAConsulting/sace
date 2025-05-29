@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Image;
 
 use Drupal\Core\Image\ImageInterface;
@@ -53,7 +51,7 @@ class ToolkitTest extends KernelTestBase {
   /**
    * Tests that the toolkit manager only returns available toolkits.
    */
-  public function testGetAvailableToolkits(): void {
+  public function testGetAvailableToolkits() {
     $manager = $this->container->get('image.toolkit.manager');
     $toolkits = $manager->getAvailableToolkits();
 
@@ -66,7 +64,7 @@ class ToolkitTest extends KernelTestBase {
   /**
    * Tests Image's methods.
    */
-  public function testLoad(): void {
+  public function testLoad() {
     $image = $this->getImage();
     $this->assertInstanceOf(ImageInterface::class, $image);
     $this->assertEquals('test', $image->getToolkitId());
@@ -76,7 +74,7 @@ class ToolkitTest extends KernelTestBase {
   /**
    * Tests the Image::save() function.
    */
-  public function testSave(): void {
+  public function testSave() {
     $this->assertFalse($this->image->save());
     $this->assertToolkitOperationsCalled(['save']);
   }
@@ -84,7 +82,7 @@ class ToolkitTest extends KernelTestBase {
   /**
    * Tests the 'apply' method.
    */
-  public function testApply(): void {
+  public function testApply() {
     $data = ['p1' => 1, 'p2' => TRUE, 'p3' => 'text'];
 
     // The operation plugin itself does not exist, so apply will return false.
@@ -102,7 +100,7 @@ class ToolkitTest extends KernelTestBase {
   /**
    * Tests the 'apply' method without parameters.
    */
-  public function testApplyNoParameters(): void {
+  public function testApplyNoParameters() {
     // The operation plugin itself does not exist, so apply will return false.
     $this->assertFalse($this->image->apply('my_operation'));
 
@@ -116,7 +114,7 @@ class ToolkitTest extends KernelTestBase {
   /**
    * Tests image toolkit operations inheritance by derivative toolkits.
    */
-  public function testDerivative(): void {
+  public function testDerivative() {
     $toolkit_manager = $this->container->get('image.toolkit.manager');
     $operation_manager = $this->container->get('image.toolkit.operation.manager');
 

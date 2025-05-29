@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Migrate;
 
 use Drupal\Tests\migrate\Kernel\MigrateTestBase;
@@ -22,7 +20,9 @@ class MigrateUserAdminPassTest extends MigrateTestBase {
   protected $originalPasswords = [];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var string[]
    */
   protected static $modules = ['user'];
 
@@ -56,7 +56,7 @@ class MigrateUserAdminPassTest extends MigrateTestBase {
   /**
    * Tests preserving the admin user's password.
    */
-  public function testAdminPasswordPreserved(): void {
+  public function testAdminPasswordPreserved() {
     $user_data_rows = [
       [
         'id' => '1',

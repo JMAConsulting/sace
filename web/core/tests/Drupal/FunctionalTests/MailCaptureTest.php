@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests;
 
 use Drupal\Tests\BrowserTestBase;
@@ -28,7 +26,7 @@ class MailCaptureTest extends BrowserTestBase {
   /**
    * Tests to see if the wrapper function is executed correctly.
    */
-  public function testMailSend(): void {
+  public function testMailSend() {
     // Create an email.
     $subject = $this->randomString(64);
     $body = $this->randomString(128);

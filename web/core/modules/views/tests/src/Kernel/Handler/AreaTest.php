@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Component\Utility\Xss;
@@ -56,7 +54,7 @@ class AreaTest extends ViewsKernelTestBase {
   /**
    * Tests the rendering of an area.
    */
-  public function testRenderArea(): void {
+  public function testRenderArea() {
     $view = Views::getView('test_example_area');
     $view->initHandlers();
 
@@ -87,7 +85,7 @@ class AreaTest extends ViewsKernelTestBase {
   /**
    * Tests the access for an area.
    */
-  public function testAreaAccess(): void {
+  public function testAreaAccess() {
     // Test with access denied for the area handler.
     $view = Views::getView('test_example_area_access');
     $view->initDisplay();

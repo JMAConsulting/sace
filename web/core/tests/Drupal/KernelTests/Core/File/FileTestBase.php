@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\File;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
@@ -13,7 +11,9 @@ use Drupal\KernelTests\KernelTestBase;
 abstract class FileTestBase extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system'];
 

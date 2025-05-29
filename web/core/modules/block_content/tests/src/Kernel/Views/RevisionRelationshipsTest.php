@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Kernel\Views;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -44,7 +42,7 @@ class RevisionRelationshipsTest extends KernelTestBase {
   /**
    * Create a block_content with revision and rest result count for both views.
    */
-  public function testBlockContentRevisionRelationship(): void {
+  public function testBlockContentRevisionRelationship() {
     $this->installEntitySchema('block_content');
     ViewTestData::createTestViews(static::class, ['block_content_test_views']);
 

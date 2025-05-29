@@ -4,15 +4,15 @@ namespace Drupal\contextual\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\SortArray;
-use Drupal\Core\Render\Attribute\RenderElement;
-use Drupal\Core\Render\Element\RenderElementBase;
+use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Url;
 
 /**
  * Provides a contextual_links element.
+ *
+ * @RenderElement("contextual_links")
  */
-#[RenderElement('contextual_links')]
-class ContextualLinks extends RenderElementBase {
+class ContextualLinks extends RenderElement {
 
   /**
    * {@inheritdoc}
@@ -46,14 +46,14 @@ class ContextualLinks extends RenderElementBase {
    *   - route_parameters: The route parameters passed to the URL generator.
    *   - metadata: Any additional data needed in order to alter the link.
    *   @code
-   *     ['#contextual_links' => [
-   *       'block' => [
-   *         'route_parameters' => ['block' => 'system.menu-tools'],
-   *       ],
-   *       'menu' => [
-   *         'route_parameters' => ['menu' => 'tools'],
-   *       ],
-   *     ]]
+   *     array('#contextual_links' => array(
+   *       'block' => array(
+   *         'route_parameters' => array('block' => 'system.menu-tools'),
+   *       ),
+   *       'menu' => array(
+   *         'route_parameters' => array('menu' => 'tools'),
+   *       ),
+   *     ))
    *   @endcode
    *
    * @return array

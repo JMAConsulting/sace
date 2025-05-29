@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -59,7 +57,7 @@ class LanguageNegotiationUrlTest extends BrowserTestBase {
   /**
    * @covers ::processInbound
    */
-  public function testDomain(): void {
+  public function testDomain() {
     // Check if paths that contain language prefixes can be reached when
     // language is taken from the domain.
     $edit = [

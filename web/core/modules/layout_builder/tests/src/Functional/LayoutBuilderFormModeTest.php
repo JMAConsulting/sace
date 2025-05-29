@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Functional;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -95,7 +93,7 @@ class LayoutBuilderFormModeTest extends BrowserTestBase {
   /**
    * Tests that the 'Discard changes' button skips validation and ignores input.
    */
-  public function testDiscardValidation(): void {
+  public function testDiscardValidation() {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 

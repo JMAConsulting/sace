@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -21,7 +19,9 @@ class ViewsBulkTest extends ViewTestBase {
   protected $adminUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'views'];
 
@@ -43,7 +43,7 @@ class ViewsBulkTest extends ViewTestBase {
   /**
    * Tests bulk selection.
    */
-  public function testBulkSelection(): void {
+  public function testBulkSelection() {
 
     // Create first node, set updated time to the past.
     $node_1 = $this->drupalCreateNode([

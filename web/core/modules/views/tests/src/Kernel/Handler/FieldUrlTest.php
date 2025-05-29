@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Core\Link;
@@ -16,9 +14,6 @@ use Drupal\views\Views;
  */
 class FieldUrlTest extends ViewsKernelTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['system'];
 
   /**
@@ -34,7 +29,7 @@ class FieldUrlTest extends ViewsKernelTestBase {
     return $data;
   }
 
-  public function testFieldUrl(): void {
+  public function testFieldUrl() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 

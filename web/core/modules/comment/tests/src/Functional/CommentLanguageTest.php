@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\comment\Entity\Comment;
@@ -73,7 +71,7 @@ class CommentLanguageTest extends BrowserTestBase {
     $this->submitForm($edit, 'Save');
 
     // Enable content language negotiation UI.
-    \Drupal::keyValue('language_test')->set('content_language_type', TRUE);
+    \Drupal::state()->set('language_test.content_language_type', TRUE);
 
     // Set interface language detection to user and content language detection
     // to URL. Disable inheritance from interface language to ensure content
@@ -106,7 +104,7 @@ class CommentLanguageTest extends BrowserTestBase {
   /**
    * Tests that comment language is properly set.
    */
-  public function testCommentLanguage(): void {
+  public function testCommentLanguage() {
 
     // Create two nodes, one for english and one for french, and comment each
     // node using both english and french as content language by changing URL

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Core\Test\AssertMailTrait;
@@ -21,7 +19,9 @@ class SiteMaintenanceTest extends BrowserTestBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node'];
 
@@ -65,7 +65,7 @@ class SiteMaintenanceTest extends BrowserTestBase {
   /**
    * Verifies site maintenance mode functionality.
    */
-  public function testSiteMaintenance(): void {
+  public function testSiteMaintenance() {
 
     // Verify that permission message is displayed.
     $this->drupalGet(Url::fromRoute('system.site_maintenance_mode'));
@@ -175,7 +175,7 @@ class SiteMaintenanceTest extends BrowserTestBase {
   /**
    * Tests responses to non-HTML requests when in maintenance mode.
    */
-  public function testNonHtmlRequest(): void {
+  public function testNonHtmlRequest() {
     $this->drupalLogout();
     \Drupal::state()->set('system.maintenance_mode', TRUE);
     $formats = ['json', 'xml', 'non-existing'];

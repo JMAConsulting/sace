@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional\Formatter;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -10,7 +8,6 @@ use Drupal\file\Entity\File;
 /**
  * @coversDefaultClass \Drupal\file\Plugin\Field\FieldFormatter\FileAudioFormatter
  * @group file
- * @group #slow
  */
 class FileAudioFormatterTest extends FileMediaFormatterTestBase {
 
@@ -24,7 +21,7 @@ class FileAudioFormatterTest extends FileMediaFormatterTestBase {
    *
    * @dataProvider dataProvider
    */
-  public function testRender($tag_count, $formatter_settings): void {
+  public function testRender($tag_count, $formatter_settings) {
     $field_config = $this->createMediaField('file_audio', 'mp3', $formatter_settings);
 
     file_put_contents('public://file.mp3', str_repeat('t', 10));

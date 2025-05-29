@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Core\Plugin\Context\ContextDefinitionInterface;
@@ -19,7 +17,9 @@ class ContextualFiltersBlockContextTest extends ViewTestBase {
   use AssertPageCacheContextsAndTagsTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -85,7 +85,7 @@ class ContextualFiltersBlockContextTest extends ViewTestBase {
   /**
    * Tests exposed context.
    */
-  public function testBlockContext(): void {
+  public function testBlockContext() {
     $this->drupalLogin($this->drupalCreateUser([
       'administer views',
       'administer blocks',

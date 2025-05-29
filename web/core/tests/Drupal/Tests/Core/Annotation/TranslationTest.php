@@ -36,7 +36,7 @@ class TranslationTest extends UnitTestCase {
    *
    * @dataProvider providerTestGet
    */
-  public function testGet(array $values, $expected): void {
+  public function testGet(array $values, $expected) {
     $container = new ContainerBuilder();
     $container->set('string_translation', $this->translationManager);
     \Drupal::setContainer($container);

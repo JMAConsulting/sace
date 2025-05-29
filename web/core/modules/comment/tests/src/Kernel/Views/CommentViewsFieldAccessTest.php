@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Views;
 
 use Drupal\comment\Entity\Comment;
@@ -34,7 +32,7 @@ class CommentViewsFieldAccessTest extends FieldFieldAccessTestBase {
   /**
    * Check access for comment fields.
    */
-  public function testCommentFields(): void {
+  public function testCommentFields() {
     $user = User::create([
       'name' => 'test user',
     ]);
@@ -80,7 +78,7 @@ class CommentViewsFieldAccessTest extends FieldFieldAccessTestBase {
     $this->assertFieldAccess('comment', 'homepage', 'https://example.com');
     $this->assertFieldAccess('comment', 'uid', $user->getAccountName());
     // $this->assertFieldAccess('comment', 'created', \Drupal::service('date.formatter')->format(123456));
-    // $this->assertFieldAccess('comment', 'changed', \Drupal::service('date.formatter')->format(\Drupal::time()->getRequestTime()));
+    // $this->assertFieldAccess('comment', 'changed', \Drupal::service('date.formatter')->format(REQUEST_TIME));
     $this->assertFieldAccess('comment', 'status', 'On');
   }
 

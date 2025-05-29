@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Migrate\d6;
 
 use Drupal\taxonomy\Entity\Term;
@@ -31,7 +29,7 @@ class MigrateTaxonomyTermTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal 6 taxonomy term to Drupal 8 migration.
    */
-  public function testTaxonomyTerms(): void {
+  public function testTaxonomyTerms() {
     $expected_results = [
       '1' => [
         'source_vid' => 1,

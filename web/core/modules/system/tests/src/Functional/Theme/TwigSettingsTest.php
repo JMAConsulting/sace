@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Theme;
 
 use Drupal\Tests\BrowserTestBase;
@@ -15,7 +13,9 @@ use Drupal\Core\PhpStorage\PhpStorageFactory;
 class TwigSettingsTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['theme_test'];
 
@@ -27,7 +27,7 @@ class TwigSettingsTest extends BrowserTestBase {
   /**
    * Ensures Twig template auto reload setting can be overridden.
    */
-  public function testTwigAutoReloadOverride(): void {
+  public function testTwigAutoReloadOverride() {
     // Enable auto reload and rebuild the service container.
     $parameters = $this->container->getParameter('twig.config');
     $parameters['auto_reload'] = TRUE;
@@ -49,7 +49,7 @@ class TwigSettingsTest extends BrowserTestBase {
   /**
    * Ensures Twig engine debug setting can be overridden.
    */
-  public function testTwigDebugOverride(): void {
+  public function testTwigDebugOverride() {
     // Enable debug and rebuild the service container.
     $parameters = $this->container->getParameter('twig.config');
     $parameters['debug'] = TRUE;
@@ -79,7 +79,7 @@ class TwigSettingsTest extends BrowserTestBase {
   /**
    * Ensures Twig template cache setting can be overridden.
    */
-  public function testTwigCacheOverride(): void {
+  public function testTwigCacheOverride() {
     $extension = twig_extension();
     $theme_installer = $this->container->get('theme_installer');
     $theme_installer->install(['test_theme']);
@@ -124,7 +124,7 @@ class TwigSettingsTest extends BrowserTestBase {
   /**
    * Tests twig inline templates with auto_reload.
    */
-  public function testTwigInlineWithAutoReload(): void {
+  public function testTwigInlineWithAutoReload() {
     $parameters = $this->container->getParameter('twig.config');
     $parameters['auto_reload'] = TRUE;
     $parameters['debug'] = TRUE;

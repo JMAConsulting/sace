@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\EntityReference;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -21,9 +19,6 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
 
   use EntityReferenceFieldCreationTrait;
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['node', 'taxonomy', 'entity_test'];
 
   /**
@@ -110,7 +105,7 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
   /**
    * Tests the autocomplete input element and entity auto-creation.
    */
-  public function testAutoCreate(): void {
+  public function testAutoCreate() {
     $this->drupalGet('node/add/' . $this->referencingType);
     $target = $this->assertSession()->fieldExists("edit-test-field-0-target-id");
     $this->assertTrue($target->hasClass("form-autocomplete"));
@@ -163,7 +158,7 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
    * Tests if an entity reference field having multiple target bundles is
    * storing the auto-created entity in the right destination.
    */
-  public function testMultipleTargetBundles(): void {
+  public function testMultipleTargetBundles() {
     /** @var \Drupal\taxonomy\Entity\Vocabulary[] $vocabularies */
     $vocabularies = [];
     for ($i = 0; $i < 2; $i++) {
@@ -258,7 +253,7 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
   /**
    * Tests autocreation for an entity that has no bundles.
    */
-  public function testNoBundles(): void {
+  public function testNoBundles() {
     $account = $this->drupalCreateUser([
       'access content',
       "create $this->referencingType content",

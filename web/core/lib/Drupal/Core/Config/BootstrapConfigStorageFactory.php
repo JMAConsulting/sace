@@ -15,7 +15,8 @@ class BootstrapConfigStorageFactory {
    *
    * @param $class_loader
    *   The class loader. Normally Composer's ClassLoader, as included by the
-   *   front controller, but may also be decorated.
+   *   front controller, but may also be decorated; e.g.,
+   *   \Symfony\Component\ClassLoader\ApcClassLoader.
    *
    * @return \Drupal\Core\Config\StorageInterface
    *   A configuration storage implementation.

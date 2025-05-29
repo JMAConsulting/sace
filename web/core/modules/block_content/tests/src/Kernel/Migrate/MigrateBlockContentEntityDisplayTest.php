@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Kernel\Migrate;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -52,7 +50,7 @@ class MigrateBlockContentEntityDisplayTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migrated display configuration.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $this->assertDisplay('block_content.basic.default', 'body');
   }
 

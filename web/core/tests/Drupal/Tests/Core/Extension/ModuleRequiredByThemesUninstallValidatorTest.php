@@ -49,7 +49,7 @@ class ModuleRequiredByThemesUninstallValidatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidateNoThemeDependency(): void {
+  public function testValidateNoThemeDependency() {
     $this->themeExtensionList->getAllInstalledInfo()->willReturn([
       'stable9' => [
         'name' => 'Stable 9',
@@ -70,7 +70,7 @@ class ModuleRequiredByThemesUninstallValidatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidateOneThemeDependency(): void {
+  public function testValidateOneThemeDependency() {
     $module = 'single_module';
     $module_name = 'Single Module';
     $theme = 'one_theme';
@@ -109,7 +109,7 @@ class ModuleRequiredByThemesUninstallValidatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidateTwoThemeDependencies(): void {
+  public function testValidateTwoThemeDependencies() {
     $module = 'popular_module';
     $module_name = 'Popular Module';
     $theme1 = 'first_theme';

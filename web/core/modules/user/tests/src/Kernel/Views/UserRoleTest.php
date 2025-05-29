@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Views;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -19,7 +17,7 @@ class UserRoleTest extends ViewsKernelTestBase {
   /**
    * Tests numeric role.
    */
-  public function testNumericRole(): void {
+  public function testNumericRole() {
     $this->installEntitySchema('user');
     $this->installSchema('user', ['users_data']);
 

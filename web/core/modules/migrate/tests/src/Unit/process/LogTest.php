@@ -19,7 +19,7 @@ class LogTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerTestLog
    */
-  public function testLog($value, $expected_message): void {
+  public function testLog($value, $expected_message) {
     // Test the expected log message.
     $this->migrateExecutable->expects($this->once())
       ->method('saveMessage')
@@ -37,7 +37,7 @@ class LogTest extends MigrateProcessTestCase {
    * @return string[][]
    *   An array of test data arrays.
    */
-  public static function providerTestLog() {
+  public function providerTestLog() {
     $object = (object) [
       'a' => 'test',
       'b' => 'test2',

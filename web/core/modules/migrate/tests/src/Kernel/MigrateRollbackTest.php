@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\migrate\MigrateExecutable;
@@ -18,7 +16,9 @@ use Drupal\taxonomy\Entity\Vocabulary;
 class MigrateRollbackTest extends MigrateTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['field', 'taxonomy', 'text', 'user', 'system'];
 
@@ -35,7 +35,7 @@ class MigrateRollbackTest extends MigrateTestBase {
   /**
    * Tests rolling back configuration and content entities.
    */
-  public function testRollback(): void {
+  public function testRollback() {
     // We use vocabularies to demonstrate importing and rolling back
     // configuration entities.
     $vocabulary_data_rows = [

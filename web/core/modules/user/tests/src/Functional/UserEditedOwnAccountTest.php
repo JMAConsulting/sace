@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -19,7 +17,7 @@ class UserEditedOwnAccountTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testUserEditedOwnAccount(): void {
+  public function testUserEditedOwnAccount() {
     // Change account setting 'Who can register accounts?' to Administrators
     // only.
     $this->config('user.settings')->set('register', UserInterface::REGISTER_ADMINISTRATORS_ONLY)->save();

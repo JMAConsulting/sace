@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional\Views;
 
 use Drupal\node\Entity\Node;
@@ -30,7 +28,7 @@ class NodeFieldTokensTest extends NodeTestBase {
   /**
    * Tests token replacement for Views tokens supplied by the Node module.
    */
-  public function testViewsTokenReplacement(): void {
+  public function testViewsTokenReplacement() {
     // Create the Article content type with a standard body field.
     /** @var \Drupal\node\NodeTypeInterface $node_type */
     $node_type = NodeType::create(['type' => 'article', 'name' => 'Article']);

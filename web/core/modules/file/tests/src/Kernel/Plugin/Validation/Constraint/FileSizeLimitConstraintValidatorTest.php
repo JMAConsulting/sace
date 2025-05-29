@@ -17,7 +17,7 @@ class FileSizeLimitConstraintValidatorTest extends FileValidatorTestBase {
   /**
    * @covers ::validate
    */
-  public function testFileValidateSize(): void {
+  public function testFileValidateSize() {
     $validators = ['FileSizeLimit' => []];
     $violations = $this->validator->validate($this->file, $validators);
     $this->assertCount(0, $violations, 'No limits means no errors.');

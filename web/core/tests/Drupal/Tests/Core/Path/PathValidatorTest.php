@@ -71,7 +71,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::isValid
    */
-  public function testIsValidWithFrontpage(): void {
+  public function testIsValidWithFrontpage() {
     $this->accessAwareRouter->expects($this->never())
       ->method('match');
 
@@ -79,11 +79,11 @@ class PathValidatorTest extends UnitTestCase {
   }
 
   /**
-   * Tests the isValid() method for <none> (used for jump links).
+   * Tests the isValid() method for <none> (used for jumplinks).
    *
    * @covers ::isValid
    */
-  public function testIsValidWithNone(): void {
+  public function testIsValidWithNone() {
     $this->accessAwareRouter->expects($this->never())
       ->method('match');
 
@@ -95,7 +95,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::isValid
    */
-  public function testIsValidWithExternalUrl(): void {
+  public function testIsValidWithExternalUrl() {
     $this->accessAwareRouter->expects($this->never())
       ->method('match');
 
@@ -107,7 +107,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::isValid
    */
-  public function testIsValidWithInvalidExternalUrl(): void {
+  public function testIsValidWithInvalidExternalUrl() {
     $this->accessAwareRouter->expects($this->never())
       ->method('match');
 
@@ -120,7 +120,7 @@ class PathValidatorTest extends UnitTestCase {
    * @covers ::isValid
    * @covers ::getPathAttributes
    */
-  public function testIsValidWithLinkToAnyPageAccount(): void {
+  public function testIsValidWithLinkToAnyPageAccount() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -143,7 +143,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::isValid
    */
-  public function testIsValidWithoutLinkToAnyPageAccount(): void {
+  public function testIsValidWithoutLinkToAnyPageAccount() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -166,7 +166,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::isValid
    */
-  public function testIsValidWithPathAlias(): void {
+  public function testIsValidWithPathAlias() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -191,7 +191,7 @@ class PathValidatorTest extends UnitTestCase {
    * @covers ::isValid
    * @covers ::getPathAttributes
    */
-  public function testIsValidWithAccessDenied(): void {
+  public function testIsValidWithAccessDenied() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -213,7 +213,7 @@ class PathValidatorTest extends UnitTestCase {
    * @covers ::isValid
    * @covers ::getPathAttributes
    */
-  public function testIsValidWithResourceNotFound(): void {
+  public function testIsValidWithResourceNotFound() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -235,7 +235,7 @@ class PathValidatorTest extends UnitTestCase {
    * @covers ::isValid
    * @covers ::getPathAttributes
    */
-  public function testIsValidWithParamNotConverted(): void {
+  public function testIsValidWithParamNotConverted() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -257,7 +257,7 @@ class PathValidatorTest extends UnitTestCase {
    * @covers ::isValid
    * @covers ::getPathAttributes
    */
-  public function testIsValidWithMethodNotAllowed(): void {
+  public function testIsValidWithMethodNotAllowed() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -280,7 +280,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::isValid
    */
-  public function testIsValidWithFailingParameterConverting(): void {
+  public function testIsValidWithFailingParameterConverting() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -303,7 +303,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::isValid
    */
-  public function testIsValidWithNotExistingPath(): void {
+  public function testIsValidWithNotExistingPath() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -327,7 +327,7 @@ class PathValidatorTest extends UnitTestCase {
    * @covers ::getUrlIfValid
    * @covers ::getPathAttributes
    */
-  public function testGetUrlIfValidWithAccess(): void {
+  public function testGetUrlIfValidWithAccess() {
     $this->account->expects($this->exactly(2))
       ->method('hasPermission')
       ->with('link to any page')
@@ -360,7 +360,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::getUrlIfValid
    */
-  public function testGetUrlIfValidWithQuery(): void {
+  public function testGetUrlIfValidWithQuery() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -386,7 +386,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::getUrlIfValid
    */
-  public function testGetUrlIfValidWithoutAccess(): void {
+  public function testGetUrlIfValidWithoutAccess() {
     $this->account->expects($this->once())
       ->method('hasPermission')
       ->with('link to any page')
@@ -410,7 +410,7 @@ class PathValidatorTest extends UnitTestCase {
    *
    * @covers ::getUrlIfValid
    */
-  public function testGetUrlIfValidWithFrontPageAndQueryAndFragments(): void {
+  public function testGetUrlIfValidWithFrontPageAndQueryAndFragments() {
     $url = $this->pathValidator->getUrlIfValid('<front>?hei=sen#berg');
     $this->assertEquals('<front>', $url->getRouteName());
     $this->assertEquals(['hei' => 'sen'], $url->getOptions()['query']);
@@ -423,7 +423,7 @@ class PathValidatorTest extends UnitTestCase {
    * @covers ::getUrlIfValidWithoutAccessCheck
    * @covers ::getPathAttributes
    */
-  public function testGetUrlIfValidWithoutAccessCheck(): void {
+  public function testGetUrlIfValidWithoutAccessCheck() {
     $this->account->expects($this->never())
       ->method('hasPermission')
       ->with('link to any page');

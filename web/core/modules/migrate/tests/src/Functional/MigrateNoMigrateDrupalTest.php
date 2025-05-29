@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Functional;
 
 use Drupal\node\Entity\Node;
@@ -45,7 +43,7 @@ class MigrateNoMigrateDrupalTest extends BrowserTestBase {
   /**
    * Tests execution of a migration.
    */
-  public function testExecutionNoMigrateDrupal(): void {
+  public function testExecutionNoMigrateDrupal() {
     $this->drupalGet('/migrate_no_migrate_drupal_test/execute');
     $this->assertSession()->pageTextContains('Migration was successful.');
     $node_1 = Node::load(1);

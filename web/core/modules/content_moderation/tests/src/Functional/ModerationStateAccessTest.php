@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Functional;
 
 use Drupal\node\Entity\Node;
@@ -53,7 +51,7 @@ class ModerationStateAccessTest extends BrowserTestBase {
   /**
    * Tests the view operation access handler with the view permission.
    */
-  public function testViewShowsCorrectStates(): void {
+  public function testViewShowsCorrectStates() {
     $permissions = [
       'access content',
       'view all revisions',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\Core\Config\ConfigDirectoryNotDefinedException;
@@ -19,7 +17,7 @@ class FileStorageFactoryTest extends KernelTestBase {
   /**
    * @covers ::getSync
    */
-  public function testGetSync(): void {
+  public function testGetSync() {
 
     // Write some random data to the sync storage.
     $name = $this->randomMachineName();

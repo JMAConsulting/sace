@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\entity_test\Entity\EntityTestMulRevPub;
@@ -63,7 +61,7 @@ class ModerationInformationTest extends KernelTestBase {
   /**
    * @covers ::getDefaultRevisionId
    */
-  public function testGetDefaultRevisionId(): void {
+  public function testGetDefaultRevisionId() {
     $entity_test_rev = EntityTestRev::create([
       'name' => 'Default Revision',
       'moderation_state' => 'published',
@@ -84,7 +82,7 @@ class ModerationInformationTest extends KernelTestBase {
    * @covers ::isDefaultRevisionPublished
    * @dataProvider isDefaultRevisionPublishedTestCases
    */
-  public function testIsDefaultRevisionPublished($initial_state, $final_state, $initial_is_default_published, $final_is_default_published): void {
+  public function testIsDefaultRevisionPublished($initial_state, $final_state, $initial_is_default_published, $final_is_default_published) {
     $entity = EntityTestMulRevPub::create([
       'moderation_state' => $initial_state,
     ]);
@@ -99,7 +97,7 @@ class ModerationInformationTest extends KernelTestBase {
   /**
    * Test cases for ::testIsDefaultRevisionPublished.
    */
-  public static function isDefaultRevisionPublishedTestCases() {
+  public function isDefaultRevisionPublishedTestCases() {
     return [
       'Draft to draft' => [
         'draft',
@@ -131,7 +129,7 @@ class ModerationInformationTest extends KernelTestBase {
   /**
    * @covers ::isDefaultRevisionPublished
    */
-  public function testIsDefaultRevisionPublishedMultilingual(): void {
+  public function testIsDefaultRevisionPublishedMultilingual() {
     $entity = EntityTestMulRevPub::create([
       'moderation_state' => 'draft',
     ]);
@@ -153,7 +151,7 @@ class ModerationInformationTest extends KernelTestBase {
   /**
    * @covers ::hasPendingRevision
    */
-  public function testHasPendingRevision(): void {
+  public function testHasPendingRevision() {
     $entity = EntityTestMulRevPub::create([
       'moderation_state' => 'published',
     ]);
@@ -184,7 +182,7 @@ class ModerationInformationTest extends KernelTestBase {
   /**
    * @covers ::getOriginalState
    */
-  public function testGetOriginalState(): void {
+  public function testGetOriginalState() {
     $entity = EntityTestMulRevPub::create([
       'moderation_state' => 'published',
     ]);
@@ -196,7 +194,7 @@ class ModerationInformationTest extends KernelTestBase {
   /**
    * @covers ::getOriginalState
    */
-  public function testGetOriginalStateMultilingual(): void {
+  public function testGetOriginalStateMultilingual() {
     $entity = EntityTestMulRevPub::create([
       'moderation_state' => 'draft',
     ]);

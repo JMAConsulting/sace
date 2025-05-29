@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 /**
@@ -12,14 +10,16 @@ namespace Drupal\KernelTests\Core\Database;
 class RegressionTest extends DatabaseTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'user'];
 
   /**
    * Ensures that non-ASCII UTF-8 data is stored in the database properly.
    */
-  public function testRegression_310447(): void {
+  public function testRegression_310447() {
     // That's a 255 character UTF-8 string.
     $job = str_repeat("é", 255);
     $this->connection
@@ -37,7 +37,7 @@ class RegressionTest extends DatabaseTestBase {
   /**
    * Tests the Schema::tableExists() method.
    */
-  public function testDBTableExists(): void {
+  public function testDBTableExists() {
     $this->assertTrue($this->connection->schema()->tableExists('test'), 'Returns true for existent table.');
     $this->assertFalse($this->connection->schema()->tableExists('no_such_table'), 'Returns false for nonexistent table.');
   }
@@ -45,7 +45,7 @@ class RegressionTest extends DatabaseTestBase {
   /**
    * Tests the \Drupal\Core\Database\Schema::fieldExists() method.
    */
-  public function testDBFieldExists(): void {
+  public function testDBFieldExists() {
     $schema = $this->connection->schema();
     $this->assertTrue($schema->fieldExists('test', 'name'), 'Returns true for existent column.');
     $this->assertFalse($schema->fieldExists('test', 'no_such_column'), 'Returns false for nonexistent column.');
@@ -54,7 +54,7 @@ class RegressionTest extends DatabaseTestBase {
   /**
    * Tests the Schema::indexExists() method.
    */
-  public function testDBIndexExists(): void {
+  public function testDBIndexExists() {
     $this->assertTrue($this->connection->schema()->indexExists('test', 'ages'), 'Returns true for existent index.');
     $this->assertFalse($this->connection->schema()->indexExists('test', 'no_such_index'), 'Returns false for nonexistent index.');
   }

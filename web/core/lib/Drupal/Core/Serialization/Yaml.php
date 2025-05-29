@@ -12,13 +12,17 @@ use Drupal\Component\Serialization\Yaml as ComponentYaml;
  */
 class Yaml extends ComponentYaml {
 
-  public static function decode($raw) {
-    $class = Settings::get('yaml_parser_class');
-    if ($class && $class !== TRUE) {
-      return $class::decode($raw);
-    }
+  /**
+   * {@inheritdoc}
+   */
+  protected static function getSerializer() {
+    // Allow settings.php to override the YAML serializer.
+    if (!isset(static::$serializer) &&
+      $class = Settings::get('yaml_parser_class')) {
 
-    return parent::decode($raw);
+      static::$serializer = $class;
+    }
+    return parent::getSerializer();
   }
 
 }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\workflows\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -26,7 +24,7 @@ class RequiredStatesTest extends KernelTestBase {
    * @covers ::getRequiredStates
    * @covers ::__construct
    */
-  public function testGetRequiredStates(): void {
+  public function testGetRequiredStates() {
     $workflow = Workflow::create([
       'id' => 'test',
       'label' => 'Test workflow',
@@ -45,7 +43,7 @@ class RequiredStatesTest extends KernelTestBase {
   /**
    * @covers \Drupal\workflows\Entity\Workflow::preSave
    */
-  public function testDeleteRequiredStateAPI(): void {
+  public function testDeleteRequiredStateAPI() {
     $workflow = Workflow::create([
       'id' => 'test',
       'label' => 'Test workflow',
@@ -62,7 +60,7 @@ class RequiredStatesTest extends KernelTestBase {
   /**
    * @covers \Drupal\workflows\Entity\Workflow::preSave
    */
-  public function testNoStatesRequiredStateAPI(): void {
+  public function testNoStatesRequiredStateAPI() {
     $workflow = Workflow::create([
       'id' => 'test',
       'type' => 'workflow_type_required_state_test',
@@ -78,7 +76,7 @@ class RequiredStatesTest extends KernelTestBase {
   /**
    * Ensures that initialized configuration can be changed.
    */
-  public function testChangeRequiredStateAPI(): void {
+  public function testChangeRequiredStateAPI() {
     $workflow = Workflow::create([
       'id' => 'test',
       'label' => 'Test workflow',

@@ -26,7 +26,7 @@ class DateFieldTest extends UnitTestCase {
    *
    * @dataProvider providerTestDefineValueProcessPipeline
    */
-  public function testDefineValueProcessPipeline($data, $from_format, $to_format): void {
+  public function testDefineValueProcessPipeline($data, $from_format, $to_format) {
     $migration = $this->createMock('Drupal\migrate\Plugin\MigrationInterface');
     $pipeline = [
       'plugin' => 'sub_process',
@@ -66,7 +66,7 @@ class DateFieldTest extends UnitTestCase {
   /**
    * Provides data for testDefineValueProcessPipeline().
    */
-  public static function providerTestDefineValueProcessPipeline() {
+  public function providerTestDefineValueProcessPipeline() {
     return [
       [['type' => 'date'], 'Y-m-d\TH:i:s', 'Y-m-d\TH:i:s'],
       [['type' => 'datestamp'], 'U', 'U'],
@@ -134,7 +134,7 @@ class DateFieldTest extends UnitTestCase {
    *
    * @covers ::defineValueProcessPipeline
    */
-  public function testDefineValueProcessPipelineException(): void {
+  public function testDefineValueProcessPipelineException() {
     $migration = $this->createMock('Drupal\migrate\Plugin\MigrationInterface');
 
     $plugin = new DateField([], '', []);

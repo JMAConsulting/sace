@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional\Rest;
 
 use Drupal\Tests\rest\Functional\CookieResourceTestTrait;
@@ -34,5 +32,13 @@ class NodeXmlCookieTest extends NodeResourceTestBase {
    * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testPatchPath() {
+    // Deserialization of the XML format is not supported.
+    $this->markTestSkipped();
+  }
 
 }

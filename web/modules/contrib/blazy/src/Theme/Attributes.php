@@ -2,17 +2,17 @@
 
 namespace Drupal\blazy\Theme;
 
-use Drupal\Component\Serialization\Json;
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\blazy\internals\Internals;
 use Drupal\blazy\Media\BlazyImage;
 use Drupal\blazy\Media\BlazyResponsiveImage;
 use Drupal\blazy\Media\Placeholder;
 use Drupal\blazy\Media\Ratio;
 use Drupal\blazy\Utility\Arrays;
 use Drupal\blazy\Utility\Check;
-use Drupal\blazy\internals\Internals;
+use Drupal\Component\Serialization\Json;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Provides non-reusable blazy attribute static methods.
@@ -78,24 +78,17 @@ class Attributes {
       }
     }
 
-    // @todo remove when nativegrid masonry no longer needs this.
-    if ($blazies->is('grid')) {
-      $count = $blazies->get('view.count', 0);
-      if (!empty($settings['caption']) ||
-        ($count > 1 && $blazies->get('view.multifield'))) {
-        $classes[] = 'is-b-captioned';
-      }
+    if (!empty($settings['caption']) || $blazies->get('view.multifield')) {
+      $classes[] = 'is-b-captioned';
     }
 
-    // @todo remove, hardly used as identifier.
-    // if ($blazies->use('ajax')) {
-    // $classes[] = 'is-b-ajax';
-    // }
+    if ($blazies->use('ajax')) {
+      $classes[] = 'is-b-ajax';
+    }
+
     // Needed for nested grids as well: blazy blazy--grid b-nativegrid, etc.
     $attributes['class'] = array_merge(['blazy'], $classes);
-    $attributes['data-blazy'] = $data && is_array($data)
-      ? Json::encode($data)
-      : '';
+    $attributes['data-blazy'] = $data && is_array($data) ? Json::encode($data) : '';
   }
 
   /**
@@ -491,17 +484,14 @@ class Attributes {
       return $blazies->get('image.raw');
     }
 
-    // Plain hard-coded filter/ external image might not have ImageItem object.
-    // Soundcloud/remote videos (Vimeo, Youtube, etc) have meaningful titles.
-    $title = $blazies->is('image')
-      ? $blazies->get('image.title')
-      : $blazies->get('media.label');
-    $alt = $blazies->get('image.alt');
+    $title = $blazies->get('image.title') ?: $blazies->get('media.label');
+    $alt   = $blazies->get('image.alt');
 
     // @todo remove this item check at 3.x, once they are all in blazies.image.
     if ($item) {
       // Title from fake item might be just file name, except from BlazyFilter.
       // Needed by thumbnails if any image item, fake or real, no biggies.
+      // @todo recheck, alt from fake image factory might be just file name.
       $alt = empty($item->alt) ? $alt : trim($item->alt);
       $desc = $item->description ?? NULL;
 
@@ -511,25 +501,22 @@ class Attributes {
       }
 
       // Do not output an empty 'title' attribute.
-      if (isset($item->title)) {
-        $title = mb_strlen($item->title) != 0 ? trim($item->title) : '';
+      if (isset($item->title) && (mb_strlen($item->title) != 0)) {
+        $title = trim($item->title);
       }
     }
 
     // Might be abused to use HTML, fine for captions, but not attributes.
     // This should make both parties happier ever after, sort of.
     // strip_tags always sounds harsh, but not when done for a noble purpose.
-    $ext = $blazies->get('image.extension', 'x');
-
-    // Alt from fake image factory might be just file name.
-    if ($alt) {
-      $alt = strpos($alt, '.' . $ext) !== FALSE ? '' : strip_tags($alt);
-    }
-
-    // Prevents default ugly media.label filename as popup image title.
     if ($title) {
-      $title = strpos($title, '.' . $ext) !== FALSE ? '' : strip_tags($title);
+      // Prevents default ugly media.label filename as popup image title.
+      $ext = $blazies->get('image.extension', 'x');
+      $filename = strpos($title, '.' . $ext) !== FALSE;
+      $title = $filename ? '' : strip_tags($title);
     }
+
+    $alt = strip_tags($alt ?: '');
 
     // Ensures called once, else filled up even when it should be empty.
     $blazies->set('image.raw.alt', $alt)

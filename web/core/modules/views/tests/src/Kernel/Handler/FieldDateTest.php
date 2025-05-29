@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -69,7 +67,7 @@ class FieldDateTest extends ViewsKernelTestBase {
   /**
    * Sets up functional test of the views date field.
    */
-  public function testFieldDate(): void {
+  public function testFieldDate() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 

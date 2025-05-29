@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Views;
 
 use Drupal\taxonomy\Entity\Term;
@@ -32,7 +30,7 @@ class TaxonomyViewsFieldAccessTest extends FieldFieldAccessTestBase {
   /**
    * Check access for taxonomy fields.
    */
-  public function testTermFields(): void {
+  public function testTermFields() {
     $vocab = Vocabulary::create([
       'vid' => 'random',
       'name' => 'Randomness',

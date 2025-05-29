@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -25,7 +23,7 @@ class AreaMessagesTest extends ViewsKernelTestBase {
   /**
    * Tests the messages area handler.
    */
-  public function testMessageText(): void {
+  public function testMessageText() {
     \Drupal::messenger()->addStatus('My drupal set message.');
 
     $view = Views::getView('test_area_messages');

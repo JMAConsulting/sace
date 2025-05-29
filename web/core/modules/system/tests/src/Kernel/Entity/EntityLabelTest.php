@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Entity;
 
 use Drupal\Core\Plugin\Discovery\AnnotatedClassDiscovery;
@@ -17,7 +15,7 @@ class EntityLabelTest extends KernelTestBase {
   /**
    * Tests that entity type labels use sentence-case.
    */
-  public function testEntityLabelCasing(): void {
+  public function testEntityLabelCasing() {
     $base_directory = $this->root . '/core/modules/';
     $modules = scandir($base_directory);
     $paths = [];

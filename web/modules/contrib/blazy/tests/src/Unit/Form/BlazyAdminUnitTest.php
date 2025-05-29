@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\blazy\Unit\Form;
 
-use Drupal\Tests\UnitTestCase;
-use Drupal\Tests\blazy\Traits\BlazyUnitTestTrait;
 use Drupal\blazy\Form\BlazyAdmin;
+use Drupal\Tests\blazy\Traits\BlazyUnitTestTrait;
+use Drupal\Tests\UnitTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

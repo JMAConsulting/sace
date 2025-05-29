@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field_ui\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -43,7 +41,7 @@ class FieldTypeCategoriesIntegrationTest extends BrowserTestBase {
   /**
    * Tests if the libraries are loaded on FieldStorageAddForm.
    */
-  public function testLibrariesLoaded(): void {
+  public function testLibrariesLoaded() {
     $this->drupalGet('admin/structure/types/manage/' . $this->drupalCreateContentType()->id() . '/fields/add-field');
     $settings = $this->getDrupalSettings();
     $css_libraries = [

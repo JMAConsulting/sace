@@ -4,7 +4,6 @@ namespace Drupal\Core\Render\Element;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html as HtmlUtility;
-use Drupal\Core\Render\Attribute\RenderElement;
 use Drupal\Core\Render\Markup;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Template\Attribute;
@@ -16,8 +15,8 @@ use Drupal\Core\Template\Attribute;
  * - #tag: The tag name to output.
  * - #attributes: (array, optional) HTML attributes to apply to the tag. The
  *   attributes are escaped, see \Drupal\Core\Template\Attribute.
- * - #value: (string|MarkupInterface, optional) The textual contents of the tag.
- *   Strings will be XSS admin filtered.
+ * - #value: (string, optional) A string containing the textual contents of
+ *   the tag.
  * - #noscript: (bool, optional) When set to TRUE, the markup
  *   (including any prefix or suffix) will be wrapped in a <noscript> element.
  *
@@ -30,10 +29,9 @@ use Drupal\Core\Template\Attribute;
  * ];
  * @endcode
  *
- * @see \Drupal\Component\Utility\Xss::filterAdmin().
+ * @RenderElement("html_tag")
  */
-#[RenderElement('html_tag')]
-class HtmlTag extends RenderElementBase {
+class HtmlTag extends RenderElement {
 
   /**
    * Void elements do not contain values or closing tags.

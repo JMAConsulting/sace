@@ -85,7 +85,7 @@ class QuickStartTest extends TestCase {
   /**
    * Tests the quick-start command.
    */
-  public function testQuickStartCommand(): void {
+  public function testQuickStartCommand() {
     $sqlite = (new \PDO('sqlite::memory:'))->query('select sqlite_version()')->fetch()[0];
     if (version_compare($sqlite, Tasks::SQLITE_MINIMUM_VERSION) < 0) {
       $this->markTestSkipped();
@@ -141,7 +141,7 @@ class QuickStartTest extends TestCase {
   /**
    * Tests the quick-start commands.
    */
-  public function testQuickStartInstallAndServerCommands(): void {
+  public function testQuickStartInstallAndServerCommands() {
     $sqlite = (new \PDO('sqlite::memory:'))->query('select sqlite_version()')->fetch()[0];
     if (version_compare($sqlite, Tasks::SQLITE_MINIMUM_VERSION) < 0) {
       $this->markTestSkipped();
@@ -223,7 +223,7 @@ class QuickStartTest extends TestCase {
   /**
    * Tests the install command with an invalid profile.
    */
-  public function testQuickStartCommandProfileValidation(): void {
+  public function testQuickStartCommandProfileValidation() {
     // Install a site using the standard profile to ensure the one time login
     // link generation works.
     $install_command = [
@@ -235,13 +235,13 @@ class QuickStartTest extends TestCase {
     ];
     $process = new Process($install_command, NULL, ['DRUPAL_DEV_SITE_PATH' => $this->testDb->getTestSitePath()]);
     $process->run();
-    $this->assertMatchesRegularExpression("/'umami' is not a valid install profile or recipe\. Did you mean \W*'demo_umami'?/", $process->getErrorOutput());
+    $this->assertStringContainsString('\'umami\' is not a valid install profile. Did you mean \'demo_umami\'?', $process->getErrorOutput());
   }
 
   /**
    * Tests the server command when there is no installation.
    */
-  public function testServerWithNoInstall(): void {
+  public function testServerWithNoInstall() {
     $server_command = [
       $this->php,
       'core/scripts/drupal',

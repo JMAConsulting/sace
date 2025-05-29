@@ -68,7 +68,7 @@ class RoutesTest extends UnitTestCase {
   /**
    * @covers ::routes
    */
-  public function testRoutesCollection(): void {
+  public function testRoutesCollection() {
     // Get the route collection and start making assertions.
     $routes = $this->routes['ok']->routes();
 
@@ -104,7 +104,7 @@ class RoutesTest extends UnitTestCase {
   /**
    * @covers ::routes
    */
-  public function testRoutesIndividual(): void {
+  public function testRoutesIndividual() {
     // Get the route collection and start making assertions.
     $iterator = $this->routes['ok']->routes()->getIterator();
 
@@ -147,7 +147,7 @@ class RoutesTest extends UnitTestCase {
   /**
    * @covers ::routes
    */
-  public function testRoutesRelated(): void {
+  public function testRoutesRelated() {
     // Get the route collection and start making assertions.
     $iterator = $this->routes['ok']->routes()->getIterator();
 
@@ -168,7 +168,7 @@ class RoutesTest extends UnitTestCase {
   /**
    * @covers ::routes
    */
-  public function testRoutesRelationships(): void {
+  public function testRoutesRelationships() {
     // Get the route collection and start making assertions.
     $iterator = $this->routes['ok']->routes()->getIterator();
 
@@ -191,14 +191,14 @@ class RoutesTest extends UnitTestCase {
    *
    * @dataProvider expectedRoutes
    */
-  public function testRoutes($route): void {
+  public function testRoutes($route) {
     $this->assertArrayHasKey($route, $this->routes['ok']->routes()->all());
   }
 
   /**
    * Lists routes which should have been created.
    */
-  public static function expectedRoutes() {
+  public function expectedRoutes() {
     return [
       ['jsonapi.entity_type_1--bundle_1_1.individual'],
       ['jsonapi.entity_type_1--bundle_1_1.collection'],
@@ -225,14 +225,14 @@ class RoutesTest extends UnitTestCase {
    *
    * @dataProvider notExpectedRoutes
    */
-  public function testInternalRoutes($route): void {
+  public function testInternalRoutes($route) {
     $this->assertArrayNotHasKey($route, $this->routes['ok']->routes()->all());
   }
 
   /**
    * Lists routes which should have been created.
    */
-  public static function notExpectedRoutes() {
+  public function notExpectedRoutes() {
     return [
       ['jsonapi.entity_type_2--bundle_2_1.individual'],
       ['jsonapi.entity_type_2--bundle_2_1.collection'],

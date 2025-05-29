@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Kernel;
 
 use Drupal\entity_test\Entity\EntityTestBundle;
@@ -16,7 +14,9 @@ class MediaThumbnailFormatterTest extends MediaKernelTestBase {
   use EntityReferenceFieldCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'entity_test',
@@ -91,7 +91,7 @@ class MediaThumbnailFormatterTest extends MediaKernelTestBase {
    *
    * @return array[]
    */
-  public static function providerTestSettingsSummary(): array {
+  public function providerTestSettingsSummary(): array {
     return [
       'link to content' => [
         [

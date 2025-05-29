@@ -72,7 +72,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetRouteOptionsWithStandardRoute
    */
-  public function testSetRouteOptionsWithStandardRoute($controller): void {
+  public function testSetRouteOptionsWithStandardRoute($controller) {
     $route = new Route('/example', [
       '_controller' => $controller,
     ]);
@@ -86,7 +86,7 @@ class EntityResolverManagerTest extends UnitTestCase {
   /**
    * Data provider for testSetRouteOptionsWithStandardRoute.
    */
-  public static function providerTestSetRouteOptionsWithStandardRoute() {
+  public function providerTestSetRouteOptionsWithStandardRoute() {
     return [
       ['Drupal\Tests\Core\Entity\BasicControllerClass::exampleControllerMethod'],
       ['Drupal\Tests\Core\Entity\test_function_controller'],
@@ -101,7 +101,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetRouteOptionsWithStandardRouteWithArgument
    */
-  public function testSetRouteOptionsWithStandardRouteWithArgument($controller): void {
+  public function testSetRouteOptionsWithStandardRouteWithArgument($controller) {
     $route = new Route('/example/{argument}', [
       '_controller' => $controller,
       'argument' => 'test',
@@ -116,7 +116,7 @@ class EntityResolverManagerTest extends UnitTestCase {
   /**
    * Data provider for testSetRouteOptionsWithStandardRouteWithArgument.
    */
-  public static function providerTestSetRouteOptionsWithStandardRouteWithArgument() {
+  public function providerTestSetRouteOptionsWithStandardRouteWithArgument() {
     return [
       ['Drupal\Tests\Core\Entity\BasicControllerClass::exampleControllerMethodWithArgument'],
       ['Drupal\Tests\Core\Entity\test_function_controller_with_argument'],
@@ -131,7 +131,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetRouteOptionsWithContentController
    */
-  public function testSetRouteOptionsWithContentController($controller): void {
+  public function testSetRouteOptionsWithContentController($controller) {
     $route = new Route('/example/{argument}', [
       '_controller' => $controller,
       'argument' => 'test',
@@ -146,7 +146,7 @@ class EntityResolverManagerTest extends UnitTestCase {
   /**
    * Data provider for testSetRouteOptionsWithContentController.
    */
-  public static function providerTestSetRouteOptionsWithContentController() {
+  public function providerTestSetRouteOptionsWithContentController() {
     return [
       ['Drupal\Tests\Core\Entity\BasicControllerClass::exampleControllerMethodWithArgument'],
       ['Drupal\Tests\Core\Entity\test_function_controller_with_argument'],
@@ -163,7 +163,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetRouteOptionsWithEntityTypeNoUpcasting
    */
-  public function testSetRouteOptionsWithEntityTypeNoUpcasting($controller): void {
+  public function testSetRouteOptionsWithEntityTypeNoUpcasting($controller) {
     $this->setupEntityTypes();
 
     $route = new Route('/example/{entity_test}', [
@@ -179,7 +179,7 @@ class EntityResolverManagerTest extends UnitTestCase {
   /**
    * Data provider for testSetRouteOptionsWithEntityTypeNoUpcasting.
    */
-  public static function providerTestSetRouteOptionsWithEntityTypeNoUpcasting() {
+  public function providerTestSetRouteOptionsWithEntityTypeNoUpcasting() {
     return [
       ['Drupal\Tests\Core\Entity\BasicControllerClass::exampleControllerWithEntityNoUpcasting'],
       ['Drupal\Tests\Core\Entity\test_function_controller_no_upcasting'],
@@ -196,7 +196,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetRouteOptionsWithEntityTypeUpcasting
    */
-  public function testSetRouteOptionsWithEntityTypeUpcasting($controller): void {
+  public function testSetRouteOptionsWithEntityTypeUpcasting($controller) {
     $this->setupEntityTypes();
 
     $route = new Route('/example/{entity_test}', [
@@ -213,7 +213,7 @@ class EntityResolverManagerTest extends UnitTestCase {
   /**
    * Data provider for testSetRouteOptionsWithEntityTypeUpcasting.
    */
-  public static function providerTestSetRouteOptionsWithEntityTypeUpcasting() {
+  public function providerTestSetRouteOptionsWithEntityTypeUpcasting() {
     return [
       ['Drupal\Tests\Core\Entity\BasicControllerClass::exampleControllerWithEntityUpcasting'],
       ['Drupal\Tests\Core\Entity\test_function_controller_entity_upcasting'],
@@ -228,7 +228,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::getEntityTypes
    * @covers ::setParametersFromReflection
    */
-  public function testSetRouteOptionsWithEntityFormUpcasting(): void {
+  public function testSetRouteOptionsWithEntityFormUpcasting() {
     $this->setupEntityTypes();
 
     $route = new Route('/example/{entity_test}', [
@@ -250,7 +250,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::getEntityTypes
    * @covers ::setParametersFromReflection
    */
-  public function testSetRouteOptionsWithEntityUpcastingNoCreate(): void {
+  public function testSetRouteOptionsWithEntityUpcastingNoCreate() {
     $this->setupEntityTypes();
 
     $route = new Route('/example/{entity_test}', [
@@ -272,7 +272,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::getEntityTypes
    * @covers ::setParametersFromReflection
    */
-  public function testSetRouteOptionsWithEntityFormNoUpcasting(): void {
+  public function testSetRouteOptionsWithEntityFormNoUpcasting() {
     $this->setupEntityTypes();
 
     $route = new Route('/example/{entity_test}', [
@@ -294,7 +294,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::setParametersFromReflection
    * @covers ::setParametersFromEntityInformation
    */
-  public function testSetRouteOptionsWithEntityViewRouteAndManualParameters(): void {
+  public function testSetRouteOptionsWithEntityViewRouteAndManualParameters() {
     $this->setupEntityTypes();
     $route = new Route('/example/{foo}',
       [
@@ -326,7 +326,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::setParametersFromReflection
    * @covers ::setParametersFromEntityInformation
    */
-  public function testSetRouteOptionsWithEntityViewRoute(): void {
+  public function testSetRouteOptionsWithEntityViewRoute() {
     $this->setupEntityTypes();
     $route = new Route('/example/{entity_test}', [
       '_entity_view' => 'entity_test.view',
@@ -348,7 +348,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::setParametersFromReflection
    * @covers ::setParametersFromEntityInformation
    */
-  public function testSetRouteOptionsWithEntityListRoute(): void {
+  public function testSetRouteOptionsWithEntityListRoute() {
     $this->setupEntityTypes();
     $route = new Route('/example/{entity_test}', [
       '_entity_list' => 'entity_test',
@@ -370,7 +370,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::setParametersFromReflection
    * @covers ::setParametersFromEntityInformation
    */
-  public function testSetRouteOptionsWithEntityFormRoute(): void {
+  public function testSetRouteOptionsWithEntityFormRoute() {
     $this->setupEntityTypes();
     $route = new Route('/example/{entity_test}', [
       '_entity_form' => 'entity_test.edit',
@@ -395,7 +395,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::setParametersFromReflection
    * @covers ::setParametersFromEntityInformation
    */
-  public function testSetRouteOptionsWithEntityFormRouteAndArgument(): void {
+  public function testSetRouteOptionsWithEntityFormRouteAndArgument() {
     $this->setupEntityTypes();
     $route = new Route('/example/{argument}/{entity_test}', [
       '_entity_form' => 'entity_test.edit',
@@ -424,7 +424,7 @@ class EntityResolverManagerTest extends UnitTestCase {
    * @covers ::setParametersFromReflection
    * @covers ::setParametersFromEntityInformation
    */
-  public function testSetRouteOptionsWithEntityAddFormRoute(): void {
+  public function testSetRouteOptionsWithEntityAddFormRoute() {
     $this->setupEntityTypes();
     $route = new Route('/example/add', [
       '_entity_form' => 'entity_test.add',
@@ -520,7 +520,7 @@ class BasicForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity_test = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity_test = NULL) {
     return [];
   }
 
@@ -571,7 +571,7 @@ class BasicFormNoContainerInjectionInterface implements FormInterface {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity_test = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity_test = NULL) {
     return [];
   }
 

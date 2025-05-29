@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\File;
 
 use Drupal\Core\Site\Settings;
@@ -46,7 +44,7 @@ class HtaccessTest extends KernelTestBase {
   /**
    * @covers ::write
    */
-  public function testHtaccessSave(): void {
+  public function testHtaccessSave() {
     // Prepare test directories.
     $private = Settings::get('file_public_path') . '/test/private';
     $stream = 'public://test/stream';

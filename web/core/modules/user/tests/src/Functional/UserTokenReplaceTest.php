@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Core\Url;
@@ -18,7 +16,9 @@ use Drupal\user\Entity\User;
 class UserTokenReplaceTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['language', 'user_hooks_test'];
 
@@ -26,11 +26,6 @@ class UserTokenReplaceTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected bool $useOneTimeLoginLinks = FALSE;
 
   /**
    * {@inheritdoc}
@@ -43,7 +38,7 @@ class UserTokenReplaceTest extends BrowserTestBase {
   /**
    * Creates a user, then tests the tokens generated from it.
    */
-  public function testUserTokenReplacement(): void {
+  public function testUserTokenReplacement() {
     $token_service = \Drupal::token();
     $language_interface = \Drupal::languageManager()->getCurrentLanguage();
     $url_options = [

@@ -59,7 +59,7 @@ class SerializerTest extends UnitTestCase {
    *
    * @covers ::render
    */
-  public function testSerializerReceivesOptions(): void {
+  public function testSerializerReceivesOptions() {
     $mock_serializer = $this->prophesize(SerializerInterface::class);
 
     // This is the main expectation of the test. We want to make sure the

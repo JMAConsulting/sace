@@ -11,11 +11,4 @@ namespace Drupal\blazy\Plugin\Field\FieldFormatter;
  *   field_types = {"image"}
  * )
  */
-class BlazyImageFormatter extends BlazyFormatterBlazy {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $byDelta = TRUE;
-
-}
+class BlazyImageFormatter extends BlazyFormatterBlazy {}

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional\Views;
 
 /**
@@ -10,7 +8,9 @@ namespace Drupal\Tests\user\Functional\Views;
 abstract class AccessTestBase extends UserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block'];
 
@@ -59,7 +59,8 @@ abstract class AccessTestBase extends UserTestBase {
     $this->normalUser = $this->drupalCreateUser([
       'views_test_data test permission',
     ]);
-    $this->normalUser->addRole($this->normalRole)->save();
+    $this->normalUser->addRole($this->normalRole);
+    $this->normalUser->save();
     // @todo when all the plugin information is cached make a reset function and
     // call it here.
   }

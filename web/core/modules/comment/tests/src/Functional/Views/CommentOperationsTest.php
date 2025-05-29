@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional\Views;
 
 /**
@@ -26,7 +24,7 @@ class CommentOperationsTest extends CommentTestBase {
   /**
    * Tests the operations field plugin.
    */
-  public function testCommentOperations(): void {
+  public function testCommentOperations() {
     $admin_account = $this->drupalCreateUser(['administer comments']);
     $this->drupalLogin($admin_account);
     $this->drupalGet('test-comment-operations');

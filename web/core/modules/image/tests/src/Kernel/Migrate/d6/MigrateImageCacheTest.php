@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\image\Kernel\Migrate\d6;
 
 use Drupal\Core\Database\Database;
@@ -29,7 +27,7 @@ class MigrateImageCacheTest extends MigrateDrupal6TestBase {
   /**
    * Tests that an exception is thrown when ImageCache is not installed.
    */
-  public function testMissingTable(): void {
+  public function testMissingTable() {
     $this->sourceDatabase->update('system')
       ->fields([
         'status' => 0,
@@ -47,7 +45,7 @@ class MigrateImageCacheTest extends MigrateDrupal6TestBase {
   /**
    * Tests basic passing migrations.
    */
-  public function testPassingMigration(): void {
+  public function testPassingMigration() {
     $this->executeMigration('d6_imagecache_presets');
 
     /** @var \Drupal\image\Entity\ImageStyle $style */
@@ -84,7 +82,7 @@ class MigrateImageCacheTest extends MigrateDrupal6TestBase {
   /**
    * Tests that missing actions causes failures.
    */
-  public function testMissingEffectPlugin(): void {
+  public function testMissingEffectPlugin() {
     Database::getConnection('default', 'migrate')->insert("imagecache_action")
       ->fields([
         'presetid',
@@ -112,7 +110,7 @@ class MigrateImageCacheTest extends MigrateDrupal6TestBase {
   /**
    * Tests that missing action's causes failures.
    */
-  public function testInvalidCropValues(): void {
+  public function testInvalidCropValues() {
     Database::getConnection('default', 'migrate')->insert("imagecache_action")
       ->fields([
         'presetid',

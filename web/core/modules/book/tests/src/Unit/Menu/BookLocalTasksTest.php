@@ -10,7 +10,6 @@ use Drupal\Tests\Core\Menu\LocalTaskIntegrationTestBase;
  * Tests existence of book local tasks.
  *
  * @group book
- * @group legacy
  */
 class BookLocalTasksTest extends LocalTaskIntegrationTestBase {
 
@@ -30,7 +29,7 @@ class BookLocalTasksTest extends LocalTaskIntegrationTestBase {
    *
    * @dataProvider getBookAdminRoutes
    */
-  public function testBookAdminLocalTasks($route): void {
+  public function testBookAdminLocalTasks($route) {
 
     $this->assertLocalTasks($route, [
       0 => ['book.admin', 'book.settings'],
@@ -40,7 +39,7 @@ class BookLocalTasksTest extends LocalTaskIntegrationTestBase {
   /**
    * Provides a list of routes to test.
    */
-  public static function getBookAdminRoutes() {
+  public function getBookAdminRoutes() {
     return [
       ['book.admin'],
       ['book.settings'],
@@ -52,7 +51,7 @@ class BookLocalTasksTest extends LocalTaskIntegrationTestBase {
    *
    * @dataProvider getBookNodeRoutes
    */
-  public function testBookNodeLocalTasks($route): void {
+  public function testBookNodeLocalTasks($route) {
     $this->assertLocalTasks($route, [
       0 => ['entity.node.book_outline_form', 'entity.node.canonical', 'entity.node.edit_form', 'entity.node.delete_form', 'entity.node.version_history'],
     ]);
@@ -61,7 +60,7 @@ class BookLocalTasksTest extends LocalTaskIntegrationTestBase {
   /**
    * Provides a list of routes to test.
    */
-  public static function getBookNodeRoutes() {
+  public function getBookNodeRoutes() {
     return [
       ['entity.node.canonical'],
       ['entity.node.book_outline_form'],

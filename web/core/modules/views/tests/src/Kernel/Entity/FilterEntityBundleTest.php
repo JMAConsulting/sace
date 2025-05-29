@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Entity;
 
 use Drupal\node\Entity\Node;
@@ -29,7 +27,7 @@ class FilterEntityBundleTest extends ViewsKernelTestBase {
   /**
    * Tests the generic bundle filter.
    */
-  public function testFilterEntity(): void {
+  public function testFilterEntity() {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     NodeType::create(['type' => 'test_bundle', 'name' => 'Test 1'])->save();

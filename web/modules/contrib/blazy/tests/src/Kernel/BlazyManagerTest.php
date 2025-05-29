@@ -90,7 +90,7 @@ class BlazyManagerTest extends BlazyKernelTestBase {
    * @return array
    *   An array of tested data.
    */
-  public static function providerTestPreRenderImage() {
+  public function providerTestPreRenderImage() {
     $data[] = [
       [
         'content_url'  => 'node/1',
@@ -202,7 +202,7 @@ class BlazyManagerTest extends BlazyKernelTestBase {
   /**
    * Provider for ::testPreprocessBlazy.
    */
-  public static function providerPreprocessBlazy() {
+  public function providerPreprocessBlazy() {
     // $use_uri, $use_item, $iframe, $expected.
     $data[] = [
       [
@@ -282,7 +282,7 @@ class BlazyManagerTest extends BlazyKernelTestBase {
   /**
    * Provider for ::testPreprocessResponsiveImage.
    */
-  public static function providerResponsiveImage() {
+  public function providerResponsiveImage() {
     return [
       'Responsive image with picture 8.x-3' => [
         'blazy_picture_test',

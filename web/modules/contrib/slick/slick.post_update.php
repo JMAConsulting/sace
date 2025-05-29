@@ -6,10 +6,15 @@
  */
 
 /**
- * Removed deprecated old skins registration settings.
+ * Clear cache to populate Slick filter plugin and its schema.
  */
-function slick_post_update_remove_old_skins_settings() {
-  $config = \Drupal::configFactory()->getEditable('slick.settings');
-  $config->clear('disable_old_skins');
-  $config->save(TRUE);
+function slick_post_update_filter_plugin_and_schema() {
+  // Empty hook to trigger cache clear.
+}
+
+/**
+ * Clear cache to change slick.admin service parameter.
+ */
+function slick_post_update_changed_slick_admin_service_parameter() {
+  // Empty hook to trigger cache clear.
 }

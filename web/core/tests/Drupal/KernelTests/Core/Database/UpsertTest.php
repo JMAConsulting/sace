@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 use Drupal\Core\Database\Database;
@@ -17,7 +15,7 @@ class UpsertTest extends DatabaseTestBase {
   /**
    * Confirms that we can upsert (update-or-insert) records successfully.
    */
-  public function testUpsert(): void {
+  public function testUpsert() {
     $connection = Database::getConnection();
     $num_records_before = $connection->query('SELECT COUNT(*) FROM {test_people}')->fetchField();
 
@@ -61,7 +59,7 @@ class UpsertTest extends DatabaseTestBase {
   /**
    * Confirms that we can upsert records with keywords successfully.
    */
-  public function testUpsertWithKeywords(): void {
+  public function testUpsertWithKeywords() {
     $num_records_before = $this->connection->query('SELECT COUNT(*) FROM {select}')->fetchField();
 
     $upsert = $this->connection->upsert('select')
@@ -127,7 +125,7 @@ class UpsertTest extends DatabaseTestBase {
   /**
    * Tests that we can upsert a null into blob field.
    */
-  public function testUpsertNullBlob(): void {
+  public function testUpsertNullBlob() {
     $id = $this->connection->insert('test_one_blob')
       ->fields(['blob1' => 'test'])
       ->execute();

@@ -32,7 +32,7 @@ class YamlDirectoryDiscoveryTest extends TestCase {
    *
    * @covers ::findAll
    */
-  public function testDiscovery(): void {
+  public function testDiscovery() {
     vfsStream::setup('modules', NULL, [
       'test_1' => [
         'subdir1' => [
@@ -103,7 +103,7 @@ class YamlDirectoryDiscoveryTest extends TestCase {
    *
    * @covers ::findAll
    */
-  public function testDiscoveryAlternateId(): void {
+  public function testDiscoveryAlternateId() {
     vfsStream::setup('modules', NULL, [
       'test_1' => [
         'item_1.test.yml' => "alt_id: item1\nid: ignored",
@@ -126,7 +126,7 @@ class YamlDirectoryDiscoveryTest extends TestCase {
    * @covers ::findAll
    * @covers ::getIdentifier
    */
-  public function testDiscoveryNoIdException(): void {
+  public function testDiscoveryNoIdException() {
     $this->expectException(DiscoveryException::class);
     $this->expectExceptionMessage('The vfs://modules/test_1' . DIRECTORY_SEPARATOR . 'item_1.test.yml contains no data in the identifier key \'id\'');
     vfsStream::setup('modules', NULL, [
@@ -147,7 +147,7 @@ class YamlDirectoryDiscoveryTest extends TestCase {
    *
    * @covers ::findAll
    */
-  public function testDiscoveryInvalidYamlException(): void {
+  public function testDiscoveryInvalidYamlException() {
     $this->expectException(DiscoveryException::class);
     $this->expectExceptionMessage('The vfs://modules/test_1' . DIRECTORY_SEPARATOR . 'item_1.test.yml contains invalid YAML');
     vfsStream::setup('modules', NULL, [

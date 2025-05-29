@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Site\Settings;
@@ -18,7 +16,7 @@ class FieldImportCreateTest extends FieldKernelTestBase {
   /**
    * Tests creating field storages and fields during default config import.
    */
-  public function testImportCreateDefault(): void {
+  public function testImportCreateDefault() {
     $field_name = 'field_test_import';
     $field_storage_id = "entity_test.$field_name";
     $field_id = "entity_test.entity_test.$field_name";
@@ -74,7 +72,7 @@ class FieldImportCreateTest extends FieldKernelTestBase {
   /**
    * Tests creating field storages and fields during config import.
    */
-  public function testImportCreate(): void {
+  public function testImportCreate() {
     // A field storage with one single field.
     $field_name = 'field_test_import_sync';
     $field_storage_id = "entity_test.$field_name";

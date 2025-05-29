@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -27,7 +25,7 @@ class MenuLinksetSettingsUpdateTest extends UpdatePathTestBase {
   /**
    * Tests system_post_update_linkset_settings().
    */
-  public function testSystemPostUpdateLinksetSettings(): void {
+  public function testSystemPostUpdateLinksetSettings() {
     // Ensure config is not present.
     $config = $this->config('system.feature_flags');
     $this->assertTrue($config->isNew());

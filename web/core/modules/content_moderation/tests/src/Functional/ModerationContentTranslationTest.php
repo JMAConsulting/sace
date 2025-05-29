@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -26,21 +24,15 @@ class ModerationContentTranslationTest extends BrowserTestBase {
   protected $adminUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'node',
     'locale',
     'content_translation',
   ];
-
-  /**
-   * {@inheritdoc}
-   *
-   * @todo Remove and fix test to not rely on super user.
-   * @see https://www.drupal.org/project/drupal/issues/3437620
-   */
-  protected bool $usesSuperUserAccessPolicy = TRUE;
 
   /**
    * {@inheritdoc}
@@ -66,7 +58,7 @@ class ModerationContentTranslationTest extends BrowserTestBase {
   /**
    * Tests existing translations being edited after enabling content moderation.
    */
-  public function testModerationWithExistingContent(): void {
+  public function testModerationWithExistingContent() {
     // Create a published article in English.
     $edit = [
       'title[0][value]' => 'Published English node',

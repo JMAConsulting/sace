@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -44,7 +42,7 @@ class ConfigFieldDefinitionTest extends FieldKernelTestBase {
   /**
    * Makes sure a field definition is exposed for a configurable field.
    */
-  public function testBundleFieldDefinition(): void {
+  public function testBundleFieldDefinition() {
     $definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($this->entityType, $this->bundle);
     $this->assertTrue(isset($definitions[$this->fieldTestData->field->getName()]));
     $this->assertInstanceOf(FieldDefinitionInterface::class, $definitions[$this->fieldTestData->field->getName()]);
@@ -55,7 +53,7 @@ class ConfigFieldDefinitionTest extends FieldKernelTestBase {
   /**
    * Makes sure a field storage definition is exposed for a configurable field.
    */
-  public function testFieldStorageDefinition(): void {
+  public function testFieldStorageDefinition() {
     $field_storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions($this->entityType);
     $this->assertTrue(isset($field_storage_definitions[$this->fieldTestData->field->getName()]));
     $this->assertInstanceOf(FieldStorageDefinitionInterface::class, $field_storage_definitions[$this->fieldTestData->field->getName()]);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Core\Database\Database;
@@ -40,7 +38,7 @@ class StyleTableTest extends ViewTestBase {
   /**
    * Tests table caption/summary/description.
    */
-  public function testAccessibilitySettings(): void {
+  public function testAccessibilitySettings() {
     $this->drupalGet('test-table');
 
     $this->assertSession()->elementExists('xpath', '//caption/child::text()');
@@ -84,7 +82,7 @@ class StyleTableTest extends ViewTestBase {
   /**
    * Tests table fields in columns.
    */
-  public function testFieldInColumns(): void {
+  public function testFieldInColumns() {
     $this->drupalGet('test-table');
 
     // Ensure that both columns are in separate tds.
@@ -110,7 +108,7 @@ class StyleTableTest extends ViewTestBase {
   /**
    * Tests that a number with the value of "0" is displayed in the table.
    */
-  public function testNumericFieldVisible(): void {
+  public function testNumericFieldVisible() {
     // Adds a new data point in the views_test_data table to have a person with
     // an age of zero.
     $data_set = $this->dataSet();
@@ -134,7 +132,7 @@ class StyleTableTest extends ViewTestBase {
   /**
    * Tests that empty columns are hidden when empty_column is set.
    */
-  public function testEmptyColumn(): void {
+  public function testEmptyColumn() {
     // Empty the 'job' data.
     \Drupal::database()->update('views_test_data')
       ->fields(['job' => ''])
@@ -151,7 +149,7 @@ class StyleTableTest extends ViewTestBase {
   /**
    * Tests grouping by a field.
    */
-  public function testGrouping(): void {
+  public function testGrouping() {
     /** @var \Drupal\views\ViewEntityInterface $view */
     $view = \Drupal::entityTypeManager()->getStorage('view')->load('test_table');
     // Get a reference to the display configuration so we can alter some
@@ -229,7 +227,7 @@ class StyleTableTest extends ViewTestBase {
   /**
    * Tests responsive classes and column assigning.
    */
-  public function testResponsiveMergedColumns(): void {
+  public function testResponsiveMergedColumns() {
     /** @var \Drupal\views\ViewEntityInterface $view */
     $view = \Drupal::entityTypeManager()->getStorage('view')->load('test_table');
 
@@ -250,7 +248,7 @@ class StyleTableTest extends ViewTestBase {
   /**
    * Tests the cacheability of the table display.
    */
-  public function testTableCacheability(): void {
+  public function testTableCacheability() {
     \Drupal::service('module_installer')->uninstall(['page_cache']);
 
     $url = 'test-table';

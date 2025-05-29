@@ -23,7 +23,7 @@ class AuthenticationCollectorTest extends UnitTestCase {
    * @covers ::getProvider
    * @covers ::isGlobal
    */
-  public function testAuthenticationCollector(): void {
+  public function testAuthenticationCollector() {
     $providers = [];
     $global = [];
     $authentication_collector = new AuthenticationCollector();

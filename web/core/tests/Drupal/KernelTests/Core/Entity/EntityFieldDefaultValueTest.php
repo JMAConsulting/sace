@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Component\Uuid\Uuid;
@@ -32,7 +30,7 @@ class EntityFieldDefaultValueTest extends EntityKernelTestBase {
   /**
    * Tests default values on entities and fields.
    */
-  public function testDefaultValues(): void {
+  public function testDefaultValues() {
     // All entity variations have to have the same results.
     foreach (entity_test_entity_types() as $entity_type) {
       $this->assertDefaultValues($entity_type);
@@ -61,7 +59,7 @@ class EntityFieldDefaultValueTest extends EntityKernelTestBase {
   /**
    * Tests custom default value callbacks.
    */
-  public function testDefaultValueCallback(): void {
+  public function testDefaultValueCallback() {
     $entity = $this->entityTypeManager->getStorage('entity_test_default_value')->create();
     // The description field has a default value callback for testing, see
     // entity_test_field_default_value().

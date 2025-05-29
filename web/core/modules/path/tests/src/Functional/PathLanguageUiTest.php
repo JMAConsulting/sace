@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\path\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -14,7 +12,9 @@ use Drupal\Core\Language\LanguageInterface;
 class PathLanguageUiTest extends PathTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['path', 'locale', 'locale_test'];
 
@@ -56,7 +56,7 @@ class PathLanguageUiTest extends PathTestBase {
   /**
    * Tests that a language-neutral URL alias works.
    */
-  public function testLanguageNeutralUrl(): void {
+  public function testLanguageNeutralUrl() {
     $name = $this->randomMachineName(8);
     $edit = [];
     $edit['path[0][value]'] = '/admin/config/search/path';
@@ -71,7 +71,7 @@ class PathLanguageUiTest extends PathTestBase {
   /**
    * Tests that a default language URL alias works.
    */
-  public function testDefaultLanguageUrl(): void {
+  public function testDefaultLanguageUrl() {
     $name = $this->randomMachineName(8);
     $edit = [];
     $edit['path[0][value]'] = '/admin/config/search/path';
@@ -87,7 +87,7 @@ class PathLanguageUiTest extends PathTestBase {
   /**
    * Tests that a non-default language URL alias works.
    */
-  public function testNonDefaultUrl(): void {
+  public function testNonDefaultUrl() {
     $name = $this->randomMachineName(8);
     $edit = [];
     $edit['path[0][value]'] = '/admin/config/search/path';
@@ -103,7 +103,7 @@ class PathLanguageUiTest extends PathTestBase {
   /**
    * Tests language unspecific aliases are shown and saved in the node form.
    */
-  public function testNotSpecifiedNode(): void {
+  public function testNotSpecifiedNode() {
     // Create test node.
     $node = $this->drupalCreateNode();
 

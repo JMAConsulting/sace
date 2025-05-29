@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Token;
 
 use Drupal\Core\Url;
@@ -9,8 +7,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Render\BubbleableMetadata;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Tests token replacement.
@@ -31,7 +27,7 @@ class TokenReplaceKernelTest extends TokenReplaceKernelTestBase {
   /**
    * Tests whether token-replacement works in various contexts.
    */
-  public function testSystemTokenRecognition(): void {
+  public function testSystemTokenRecognition() {
     // Generate prefixes and suffixes for the token context.
     $tests = [
       ['prefix' => 'this is the ', 'suffix' => ' site'],
@@ -61,7 +57,7 @@ class TokenReplaceKernelTest extends TokenReplaceKernelTestBase {
   /**
    * Tests the clear parameter.
    */
-  public function testClear(): void {
+  public function testClear() {
     // Valid token.
     $source = '[site:name]';
     // No user passed in, should be untouched.
@@ -83,7 +79,7 @@ class TokenReplaceKernelTest extends TokenReplaceKernelTestBase {
   /**
    * Tests the generation of all system site information tokens.
    */
-  public function testSystemSiteTokenReplacement(): void {
+  public function testSystemSiteTokenReplacement() {
     $url_options = [
       'absolute' => TRUE,
       'language' => $this->interfaceLanguage,
@@ -141,7 +137,6 @@ class TokenReplaceKernelTest extends TokenReplaceKernelTestBase {
       'SERVER_NAME' => 'http://localhost',
     ];
     $request = Request::create('/subdir/', 'GET', [], [], [], $server);
-    $request->setSession(new Session(new MockArraySessionStorage()));
     $request->server->add($server);
     $request_stack->push($request);
     $bubbleable_metadata = new BubbleableMetadata();
@@ -156,9 +151,9 @@ class TokenReplaceKernelTest extends TokenReplaceKernelTestBase {
   /**
    * Tests the generation of all system date tokens.
    */
-  public function testSystemDateTokenReplacement(): void {
+  public function testSystemDateTokenReplacement() {
     // Set time to one hour before request.
-    $date = \Drupal::time()->getRequestTime() - 3600;
+    $date = REQUEST_TIME - 3600;
 
     // Generate and test tokens.
     $tests = [];

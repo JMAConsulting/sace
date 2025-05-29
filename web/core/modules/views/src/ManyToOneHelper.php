@@ -137,7 +137,7 @@ class ManyToOneHelper {
     $field = $this->handler->relationship . '_' . $this->handler->table . '.' . $this->handler->field;
     $join = $this->getJoin();
 
-    // Shortcuts
+    // shortcuts
     $options = $this->handler->options;
     $view = $this->handler->view;
     $query = $this->handler->query;
@@ -178,7 +178,7 @@ class ManyToOneHelper {
       $field = $this->handler->relationship . '_' . $this->handler->table . '.' . $this->handler->field;
       if ($this->handler->operator == 'or' && empty($this->handler->options['reduce_duplicates'])) {
         if (empty($this->handler->options['add_table']) && empty($this->handler->view->many_to_one_tables[$field])) {
-          // Query optimization, INNER joins are slightly faster, so use them
+          // query optimization, INNER joins are slightly faster, so use them
           // when we know we can.
           $join = $this->getJoin();
           $group = $this->handler->options['group'] ?? FALSE;
@@ -354,7 +354,7 @@ class ManyToOneHelper {
         $clause->condition("$alias.$field", $value);
       }
 
-      // Implode on either AND or OR.
+      // implode on either AND or OR.
       $this->handler->query->addWhere($options['group'], $clause);
     }
   }

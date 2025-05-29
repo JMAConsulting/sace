@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\Core\Url;
@@ -46,7 +44,7 @@ class CommentInterfaceTest extends CommentTestBase {
   /**
    * Tests the comment interface.
    */
-  public function testCommentInterface(): void {
+  public function testCommentInterface() {
 
     // Post comment #1 without subject or preview.
     $this->drupalLogin($this->webUser);
@@ -227,7 +225,7 @@ class CommentInterfaceTest extends CommentTestBase {
    * comment body are used for the subject. If this would break within a word,
    * then the break is put at the previous word boundary instead.
    */
-  public function testAutoFilledSubject(): void {
+  public function testAutoFilledSubject() {
     $this->drupalLogin($this->webUser);
     $this->drupalGet('node/' . $this->node->id());
 
@@ -260,7 +258,7 @@ class CommentInterfaceTest extends CommentTestBase {
    * with the additional check that HTML is stripped appropriately prior to
    * character-counting.
    */
-  public function testAutoFilledHtmlSubject(): void {
+  public function testAutoFilledHtmlSubject() {
     // Set up two default (i.e. filtered HTML) input formats, because then we
     // can select one of them. Then create a user that can use these formats,
     // log the user in, and then GET the node page on which to test the
@@ -309,7 +307,7 @@ class CommentInterfaceTest extends CommentTestBase {
   /**
    * Tests the comment formatter configured with a custom comment view mode.
    */
-  public function testViewMode(): void {
+  public function testViewMode() {
     $this->drupalLogin($this->webUser);
     $this->drupalGet($this->node->toUrl());
     $comment_text = $this->randomMachineName();

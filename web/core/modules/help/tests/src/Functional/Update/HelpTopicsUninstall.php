@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\help\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -10,7 +8,6 @@ use Drupal\FunctionalTests\Update\UpdatePathTestBase;
  * Tests merging help topics module when the module is enabled.
  *
  * @group Update
- * @group #slow
  */
 class HelpTopicsUninstall extends UpdatePathTestBase {
 
@@ -36,7 +33,7 @@ class HelpTopicsUninstall extends UpdatePathTestBase {
    * @see \help_post_update_help_topics_search()
    * @see \help_post_update_help_topics_uninstall()
    */
-  public function testHelpTopicsMerge(): void {
+  public function testHelpTopicsMerge() {
     $module_handler = \Drupal::moduleHandler();
     $this->assertTrue($module_handler->moduleExists('help'));
     $this->assertTrue($module_handler->moduleExists('help_topics'));

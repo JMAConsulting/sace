@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel\Migrate\d6;
 
 use Drupal\file\Entity\File;
@@ -75,7 +73,7 @@ class MigrateFileTest extends MigrateDrupal6TestBase implements MigrateDumpAlter
   /**
    * Tests the Drupal 6 files to Drupal 8 migration.
    */
-  public function testFiles(): void {
+  public function testFiles() {
     $this->assertEntity(1, 'Image1.png', 39325, 'public://image-1.png', 'image/png', 1);
     $this->assertEntity(2, 'Image2.jpg', 1831, 'public://image-2.jpg', 'image/jpeg', 1);
     $this->assertEntity(3, 'image-3.jpg', 1831, 'public://image-3.jpg', 'image/jpeg', 1);

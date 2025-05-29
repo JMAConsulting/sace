@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_link_content\Kernel;
 
 use Drupal\Core\Menu\MenuTreeParameters;
@@ -138,7 +136,7 @@ class MenuLinksTest extends KernelTestBase {
   /**
    * Assert that a link entity's created timestamp is set.
    */
-  public function testCreateLink(): void {
+  public function testCreateLink() {
     $options = [
       'menu_name' => 'menu-test',
       'bundle' => 'menu_link_content',
@@ -148,7 +146,7 @@ class MenuLinksTest extends KernelTestBase {
     $link = MenuLinkContent::create($options);
     $link->save();
     // Make sure the changed timestamp is set.
-    $this->assertGreaterThanOrEqual(\Drupal::time()->getRequestTime(), $link->getChangedTime(), 'Creating a menu link sets the "changed" timestamp.');
+    $this->assertEquals(REQUEST_TIME, $link->getChangedTime(), 'Creating a menu link sets the "changed" timestamp.');
     $options = [
       'title' => 'Test Link',
     ];
@@ -156,13 +154,13 @@ class MenuLinksTest extends KernelTestBase {
     $link->changed->value = 0;
     $link->save();
     // Make sure the changed timestamp is updated.
-    $this->assertGreaterThanOrEqual(\Drupal::time()->getRequestTime(), $link->getChangedTime(), 'Changing a menu link sets "changed" timestamp.');
+    $this->assertEquals(REQUEST_TIME, $link->getChangedTime(), 'Changing a menu link sets "changed" timestamp.');
   }
 
   /**
    * Tests that menu link pointing to entities get removed on entity remove.
    */
-  public function testMenuLinkOnEntityDelete(): void {
+  public function testMenuLinkOnEntityDelete() {
 
     // Create user.
     $user = User::create(['name' => 'username']);
@@ -211,7 +209,7 @@ class MenuLinksTest extends KernelTestBase {
   /**
    * Tests automatic reparenting of menu links.
    */
-  public function testMenuLinkReparenting($module = 'menu_test'): void {
+  public function testMenuLinkReparenting($module = 'menu_test') {
     // Check the initial hierarchy.
     $links = $this->createLinkHierarchy($module);
 
@@ -277,7 +275,7 @@ class MenuLinksTest extends KernelTestBase {
   /**
    * Tests the MenuLinkContent::preDelete function.
    */
-  public function testMenuLinkContentReparenting(): void {
+  public function testMenuLinkContentReparenting() {
     // Add new menu items in a hierarchy.
     $parent = MenuLinkContent::create([
       'title' => $this->randomMachineName(8),
@@ -311,7 +309,7 @@ class MenuLinksTest extends KernelTestBase {
   /**
    * Tests uninstalling a module providing default links.
    */
-  public function testModuleUninstalledMenuLinks(): void {
+  public function testModuleUninstalledMenuLinks() {
     \Drupal::service('module_installer')->install(['menu_test']);
     \Drupal::service('plugin.manager.menu.link')->rebuild();
     $menu_links = $this->menuLinkManager->loadLinksByRoute('menu_test.menu_test');
@@ -331,7 +329,7 @@ class MenuLinksTest extends KernelTestBase {
    *
    * @covers \Drupal\menu_link_content\Plugin\Validation\Constraint\MenuTreeHierarchyConstraintValidator::validate
    */
-  public function testPendingRevisions(): void {
+  public function testPendingRevisions() {
     /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
     $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
 

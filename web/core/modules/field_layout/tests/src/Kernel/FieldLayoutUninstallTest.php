@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field_layout\Kernel;
 
 use Drupal\Tests\layout_builder\Kernel\LayoutBuilderCompatibilityTestBase;
@@ -14,7 +12,7 @@ class FieldLayoutUninstallTest extends LayoutBuilderCompatibilityTestBase {
   /**
    * Ensures field layout can be uninstalled with layout builder enabled.
    */
-  public function testFieldLayoutUninstall(): void {
+  public function testFieldLayoutUninstall() {
     // Setup user schema so user hook uninstall hook doesn't break.
     $this->installSchema('user', 'users_data');
 

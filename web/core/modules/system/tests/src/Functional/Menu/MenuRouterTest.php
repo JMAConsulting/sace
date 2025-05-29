@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Menu;
 
 use Drupal\Core\Url;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class MenuRouterTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'menu_test', 'test_page_test'];
 
@@ -46,7 +46,7 @@ class MenuRouterTest extends BrowserTestBase {
   /**
    * Tests menu integration.
    */
-  public function testMenuIntegration(): void {
+  public function testMenuIntegration() {
     $this->doTestTitleMenuCallback();
     $this->doTestMenuOptionalPlaceholders();
     $this->doTestMenuHierarchy();
@@ -211,7 +211,7 @@ class MenuRouterTest extends BrowserTestBase {
    *
    * @see \Drupal\menu_test\EventSubscriber\MaintenanceModeSubscriber::onKernelRequestMaintenance()
    */
-  public function testMaintenanceModeLoginPaths(): void {
+  public function testMaintenanceModeLoginPaths() {
     $this->container->get('state')->set('system.maintenance_mode', TRUE);
 
     $offline_message = $this->config('system.site')->get('name') . ' is currently under maintenance. We should be back shortly. Thank you for your patience.';
@@ -229,7 +229,7 @@ class MenuRouterTest extends BrowserTestBase {
    * An authenticated user hitting 'user/login' should be redirected to 'user',
    * and 'user/register' should be redirected to the user edit page.
    */
-  public function testAuthUserUserLogin(): void {
+  public function testAuthUserUserLogin() {
     $web_user = $this->drupalCreateUser([]);
     $this->drupalLogin($web_user);
 
@@ -245,7 +245,7 @@ class MenuRouterTest extends BrowserTestBase {
   /**
    * Tests theme integration.
    */
-  public function testThemeIntegration(): void {
+  public function testThemeIntegration() {
     $this->defaultTheme = 'olivero';
     $this->adminTheme = 'claro';
 

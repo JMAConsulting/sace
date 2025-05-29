@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views_ui\Functional;
 
 use Drupal\views\Views;
@@ -60,7 +58,7 @@ class RearrangeFieldsTest extends UITestBase {
   /**
    * Tests field sorting.
    */
-  public function testRearrangeFields(): void {
+  public function testRearrangeFields() {
     $view_name = 'test_view';
 
     // Checks that the order on the rearrange form matches the creation order.

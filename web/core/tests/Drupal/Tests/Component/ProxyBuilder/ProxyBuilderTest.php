@@ -32,7 +32,7 @@ class ProxyBuilderTest extends TestCase {
   /**
    * @covers ::buildProxyClassName
    */
-  public function testBuildProxyClassName(): void {
+  public function testBuildProxyClassName() {
     $class_name = $this->proxyBuilder->buildProxyClassName('Drupal\Tests\Component\ProxyBuilder\TestServiceNoMethod');
     $this->assertEquals('Drupal\Tests\ProxyClass\Component\ProxyBuilder\TestServiceNoMethod', $class_name);
   }
@@ -40,7 +40,7 @@ class ProxyBuilderTest extends TestCase {
   /**
    * @covers ::buildProxyClassName
    */
-  public function testBuildProxyClassNameForModule(): void {
+  public function testBuildProxyClassNameForModule() {
     $class_name = $this->proxyBuilder->buildProxyClassName('Drupal\views_ui\ParamConverter\ViewUIConverter');
     $this->assertEquals('Drupal\views_ui\ProxyClass\ParamConverter\ViewUIConverter', $class_name);
   }
@@ -48,7 +48,7 @@ class ProxyBuilderTest extends TestCase {
   /**
    * @covers ::buildProxyNamespace
    */
-  public function testBuildProxyNamespace(): void {
+  public function testBuildProxyNamespace() {
     $class_name = $this->proxyBuilder->buildProxyNamespace('Drupal\Tests\Component\ProxyBuilder\TestServiceNoMethod');
     $this->assertEquals('Drupal\Tests\ProxyClass\Component\ProxyBuilder', $class_name);
   }
@@ -60,7 +60,7 @@ class ProxyBuilderTest extends TestCase {
    * @covers ::buildConstructorMethod
    * @covers ::buildLazyLoadItselfMethod
    */
-  public function testBuildNoMethod(): void {
+  public function testBuildNoMethod() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceNoMethod';
 
     $result = $this->proxyBuilder->build($class);
@@ -71,7 +71,7 @@ class ProxyBuilderTest extends TestCase {
    * @covers ::buildMethod
    * @covers ::buildMethodBody
    */
-  public function testBuildSimpleMethod(): void {
+  public function testBuildSimpleMethod() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceSimpleMethod';
 
     $result = $this->proxyBuilder->build($class);
@@ -95,7 +95,7 @@ EOS;
    * @covers ::buildParameter
    * @covers ::buildMethodBody
    */
-  public function testBuildMethodWithParameter(): void {
+  public function testBuildMethodWithParameter() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceMethodWithParameter';
 
     $result = $this->proxyBuilder->build($class);
@@ -119,7 +119,7 @@ EOS;
    * @covers ::buildParameter
    * @covers ::buildMethodBody
    */
-  public function testBuildComplexMethod(): void {
+  public function testBuildComplexMethod() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceComplexMethod';
 
     $result = $this->proxyBuilder->build($class);
@@ -144,7 +144,7 @@ EOS;
   /**
    * @covers ::buildMethodBody
    */
-  public function testBuildServiceMethodReturnsVoid(): void {
+  public function testBuildServiceMethodReturnsVoid() {
     $class = TestServiceMethodReturnsVoid::class;
 
     $result = $this->proxyBuilder->build($class);
@@ -169,7 +169,7 @@ EOS;
    * @covers ::buildMethod
    * @covers ::buildMethodBody
    */
-  public function testBuildReturnReference(): void {
+  public function testBuildReturnReference() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceReturnReference';
 
     $result = $this->proxyBuilder->build($class);
@@ -195,7 +195,7 @@ EOS;
    * @covers ::buildParameter
    * @covers ::buildMethodBody
    */
-  public function testBuildWithInterface(): void {
+  public function testBuildWithInterface() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceWithInterface';
 
     $result = $this->proxyBuilder->build($class);
@@ -219,7 +219,7 @@ EOS;
   /**
    * @covers ::build
    */
-  public function testBuildWithNestedInterface(): void {
+  public function testBuildWithNestedInterface() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceWithChildInterfaces';
 
     $result = $this->proxyBuilder->build($class);
@@ -234,7 +234,7 @@ EOS;
    * @covers ::buildParameter
    * @covers ::buildMethodBody
    */
-  public function testBuildWithProtectedAndPrivateMethod(): void {
+  public function testBuildWithProtectedAndPrivateMethod() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceWithProtectedMethods';
 
     $result = $this->proxyBuilder->build($class);
@@ -259,7 +259,7 @@ EOS;
    * @covers ::buildParameter
    * @covers ::buildMethodBody
    */
-  public function testBuildWithPublicStaticMethod(): void {
+  public function testBuildWithPublicStaticMethod() {
     $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceWithPublicStaticMethod';
 
     $result = $this->proxyBuilder->build($class);
@@ -285,8 +285,8 @@ EOS;
    * @covers ::buildParameter
    * @covers ::buildMethodBody
    */
-  public function testBuildWithNullableSelfTypeHint(): void {
-    $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceNullableTypeHintSelf';
+  public function testBuildWithNullableSelfTypehint() {
+    $class = 'Drupal\Tests\Component\ProxyBuilder\TestServiceNullableTypehintSelf';
 
     $result = $this->proxyBuilder->build($class);
 
@@ -296,9 +296,9 @@ EOS;
 /**
  * {@inheritdoc}
  */
-public function typeHintSelf(?\Drupal\Tests\Component\ProxyBuilder\TestServiceNullableTypeHintSelf $parameter): ?\Drupal\Tests\Component\ProxyBuilder\TestServiceNullableTypeHintSelf
+public function typehintSelf(?\Drupal\Tests\Component\ProxyBuilder\TestServiceNullableTypehintSelf $parameter): ?\Drupal\Tests\Component\ProxyBuilder\TestServiceNullableTypehintSelf
 {
-    return $this->lazyLoadItself()->typeHintSelf($parameter);
+    return $this->lazyLoadItself()->typehintSelf($parameter);
 }
 
 EOS;
@@ -432,15 +432,15 @@ class TestServiceMethodWithParameter {
 
 class TestServiceComplexMethod {
 
-  public function complexMethod(string $parameter, callable $function, ?TestServiceNoMethod $test_service = NULL, array &$elements = []): array {
+  public function complexMethod(string $parameter, callable $function, TestServiceNoMethod $test_service = NULL, array &$elements = []): array {
     return [];
   }
 
 }
 
-class TestServiceNullableTypeHintSelf {
+class TestServiceNullableTypehintSelf {
 
-  public function typeHintSelf(?self $parameter): ?self {
+  public function typehintSelf(?self $parameter): ?self {
     return NULL;
   }
 

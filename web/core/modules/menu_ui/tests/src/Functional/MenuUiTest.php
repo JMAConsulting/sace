@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_ui\Functional;
 
 use Drupal\block\Entity\Block;
@@ -23,14 +21,15 @@ use Drupal\Tests\menu_ui\Traits\MenuUiTrait;
  * Tools menu, checks their data, and deletes them using the UI.
  *
  * @group menu_ui
- * @group #slow
  */
 class MenuUiTest extends BrowserTestBase {
 
   use MenuUiTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -111,7 +110,7 @@ class MenuUiTest extends BrowserTestBase {
   /**
    * Tests menu functionality using the admin and user interfaces.
    */
-  public function testMenuAdministration(): void {
+  public function testMenuAdministration() {
     // Log in the user.
     $this->drupalLogin($this->adminUser);
     $this->items = [];
@@ -613,7 +612,7 @@ class MenuUiTest extends BrowserTestBase {
   /**
    * Test logout link isn't displayed when the user is logged out.
    */
-  public function testLogoutLinkVisibility(): void {
+  public function testLogoutLinkVisibility() {
     $adminUserWithLinkAnyPage = $this->drupalCreateUser([
       'access administration pages',
       'administer blocks',
@@ -652,7 +651,7 @@ class MenuUiTest extends BrowserTestBase {
   /**
    * Adds and removes a menu link with a query string and fragment.
    */
-  public function testMenuQueryAndFragment(): void {
+  public function testMenuQueryAndFragment() {
     $this->drupalLogin($this->adminUser);
 
     // Make a path with query and fragment on.
@@ -687,7 +686,7 @@ class MenuUiTest extends BrowserTestBase {
   /**
    * Tests renaming the built-in menu.
    */
-  public function testSystemMenuRename(): void {
+  public function testSystemMenuRename() {
     $this->drupalLogin($this->adminUser);
     $edit = [
       'label' => $this->randomMachineName(16),
@@ -705,7 +704,7 @@ class MenuUiTest extends BrowserTestBase {
   /**
    * Tests that menu items pointing to unpublished nodes are editable.
    */
-  public function testUnpublishedNodeMenuItem(): void {
+  public function testUnpublishedNodeMenuItem() {
     $this->drupalLogin($this->drupalCreateUser([
       'access administration pages',
       'administer blocks',
@@ -727,15 +726,10 @@ class MenuUiTest extends BrowserTestBase {
     $this->drupalLogout();
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/structure/menu/manage/' . $item->getMenuName());
-    $this->assertSession()->linkExists($item->getTitle());
+    $this->assertSession()->pageTextNotContains($item->getTitle());
     // The cache contexts associated with the (in)accessible menu links are
     // bubbled. See DefaultMenuLinkTreeManipulators::menuLinkCheckAccess().
     $this->assertSession()->responseHeaderContains('X-Drupal-Cache-Contexts', 'user.permissions');
-
-    // The menu link admin is able to administer the link but cannot access the
-    // route as is not granted with 'bypass node access' permission.
-    $this->clickLink($item->getTitle());
-    $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
@@ -867,7 +861,7 @@ class MenuUiTest extends BrowserTestBase {
    * @param object $parent_node
    *   Parent menu link content node.
    */
-  public function verifyMenuLink(MenuLinkContent $item, $item_node, ?MenuLinkContent $parent = NULL, $parent_node = NULL) {
+  public function verifyMenuLink(MenuLinkContent $item, $item_node, MenuLinkContent $parent = NULL, $parent_node = NULL) {
     // View home page.
     $this->drupalGet('');
     $this->assertSession()->statusCodeEquals(200);
@@ -905,12 +899,12 @@ class MenuUiTest extends BrowserTestBase {
    *   The menu the menu link will be moved to.
    */
   public function moveMenuLink(MenuLinkContent $item, $parent, $menu_name) {
-    $menu_link_id = $item->id();
+    $mlid = $item->id();
 
     $edit = [
       'menu_parent' => $menu_name . ':' . $parent,
     ];
-    $this->drupalGet("admin/structure/menu/item/{$menu_link_id}/edit");
+    $this->drupalGet("admin/structure/menu/item/{$mlid}/edit");
     $this->submitForm($edit, 'Save');
     $this->assertSession()->statusCodeEquals(200);
   }
@@ -924,13 +918,13 @@ class MenuUiTest extends BrowserTestBase {
   public function modifyMenuLink(MenuLinkContent $item) {
     $item->title->value = $this->randomMachineName(16);
 
-    $menu_link_id = $item->id();
+    $mlid = $item->id();
     $title = $item->getTitle();
 
     // Edit menu link.
     $edit = [];
     $edit['title[0][value]'] = $title;
-    $this->drupalGet("admin/structure/menu/item/{$menu_link_id}/edit");
+    $this->drupalGet("admin/structure/menu/item/{$mlid}/edit");
     $this->submitForm($edit, 'Save');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('The menu link has been saved.');
@@ -985,11 +979,11 @@ class MenuUiTest extends BrowserTestBase {
    *   Menu link.
    */
   public function deleteMenuLink(MenuLinkContent $item) {
-    $menu_link_id = $item->id();
+    $mlid = $item->id();
     $title = $item->getTitle();
 
     // Delete menu link.
-    $this->drupalGet("admin/structure/menu/item/{$menu_link_id}/delete");
+    $this->drupalGet("admin/structure/menu/item/{$mlid}/delete");
     $this->submitForm([], 'Delete');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains("The menu link $title has been deleted.");
@@ -1025,9 +1019,9 @@ class MenuUiTest extends BrowserTestBase {
    *   Menu link.
    */
   public function disableMenuLink(MenuLinkContent $item) {
-    $menu_link_id = $item->id();
+    $mlid = $item->id();
     $edit['enabled[value]'] = FALSE;
-    $this->drupalGet("admin/structure/menu/item/{$menu_link_id}/edit");
+    $this->drupalGet("admin/structure/menu/item/{$mlid}/edit");
     $this->submitForm($edit, 'Save');
 
     // Unlike most other modules, there is no confirmation message displayed.
@@ -1042,9 +1036,9 @@ class MenuUiTest extends BrowserTestBase {
    *   Menu link.
    */
   public function enableMenuLink(MenuLinkContent $item) {
-    $menu_link_id = $item->id();
+    $mlid = $item->id();
     $edit['enabled[value]'] = TRUE;
-    $this->drupalGet("admin/structure/menu/item/{$menu_link_id}/edit");
+    $this->drupalGet("admin/structure/menu/item/{$mlid}/edit");
     $this->submitForm($edit, 'Save');
 
     // Verify in the database.
@@ -1054,23 +1048,23 @@ class MenuUiTest extends BrowserTestBase {
   /**
    * Tests if admin users, other than UID1, can access parents AJAX callback.
    */
-  public function testMenuParentsJsAccess(): void {
+  public function testMenuParentsJsAccess() {
     $this->drupalLogin($this->drupalCreateUser(['administer menu']));
     // Just check access to the callback overall, the POST data is irrelevant.
-    $this->drupalGet('admin/structure/menu/parents', ['query' => [MainContentViewSubscriber::WRAPPER_FORMAT => 'drupal_ajax']], ['X-Requested-With' => 'XMLHttpRequest']);
+    $this->drupalGet('admin/structure/menu/parents', ['query' => [MainContentViewSubscriber::WRAPPER_FORMAT => 'drupal_ajax']], ['X-Requested-With: XMLHttpRequest']);
     $this->assertSession()->statusCodeEquals(200);
 
     // Log in as authenticated user.
     $this->drupalLogin($this->drupalCreateUser());
     // Check that a simple user is not able to access the menu.
-    $this->drupalGet('admin/structure/menu/parents', ['query' => [MainContentViewSubscriber::WRAPPER_FORMAT => 'drupal_ajax']], ['X-Requested-With' => 'XMLHttpRequest']);
+    $this->drupalGet('admin/structure/menu/parents', ['query' => [MainContentViewSubscriber::WRAPPER_FORMAT => 'drupal_ajax']], ['X-Requested-With: XMLHttpRequest']);
     $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
    * Tests the "expand all items" feature.
    */
-  public function testExpandAllItems(): void {
+  public function testExpandAllItems() {
     $this->drupalLogin($this->adminUser);
     $menu = $this->addCustomMenu();
     $node = $this->drupalCreateNode(['type' => 'article']);
@@ -1193,7 +1187,7 @@ class MenuUiTest extends BrowserTestBase {
   /**
    * Tests that menu links with pending revisions can not be re-parented.
    */
-  public function testMenuUiWithPendingRevisions(): void {
+  public function testMenuUiWithPendingRevisions() {
     $this->drupalLogin($this->adminUser);
     $assert_session = $this->assertSession();
 
@@ -1232,49 +1226,6 @@ class MenuUiTest extends BrowserTestBase {
     $this->drupalGet('admin/structure/menu/manage/' . $menu_2->id());
     $this->submitForm([], 'Save');
     $this->assertSession()->elementNotExists('xpath', '//div[contains(@class, "messages--error")]');
-  }
-
-  /**
-   * Tests the user login/logout links.
-   */
-  public function testUserLoginUserLogoutLinks(): void {
-    MenuLinkContent::create([
-      'menu' => 'tools',
-      'link' => [
-        'uri' => 'internal:/user/login',
-      ],
-      'title' => 'Login',
-    ])->save();
-    MenuLinkContent::create([
-      'menu' => 'tools',
-      'link' => [
-        'uri' => 'internal:/user/logout',
-      ],
-      'title' => 'Logout',
-    ])->save();
-
-    $assert = $this->assertSession();
-
-    $block = $this->drupalPlaceBlock('system_menu_block:tools');
-    $this->drupalGet('<front>');
-    $assert->linkExists('Login');
-    $assert->linkNotExists('Logout');
-
-    $this->drupalLogin($this->createUser());
-    $this->drupalGet('<front>');
-    $assert->linkNotExists('Login');
-    $assert->linkExists('Logout');
-
-    // Delete the block, we're now checking the Menu UI form.
-    $block->delete();
-
-    $this->drupalLogin($this->createUser(['administer menu']));
-    $this->drupalGet('admin/structure/menu/manage/tools');
-
-    $assert->linkExists('Logout');
-    // Check that the login link is accessible even the route is not.
-    $this->assertFalse(Url::fromRoute('user.login')->access($this->loggedInUser));
-    $assert->linkExists('Login');
   }
 
 }

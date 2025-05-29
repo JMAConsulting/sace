@@ -46,7 +46,7 @@ class ActiveWorkspaceCheckTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestAccess() {
+  public function providerTestAccess() {
     return [
       [[], FALSE, FALSE],
       [[], TRUE, FALSE],
@@ -61,7 +61,7 @@ class ActiveWorkspaceCheckTest extends UnitTestCase {
    * @covers ::access
    * @dataProvider providerTestAccess
    */
-  public function testAccess($requirements, $has_active_workspace, $access, array $contexts = []): void {
+  public function testAccess($requirements, $has_active_workspace, $access, array $contexts = []) {
     $route = new Route('', [], $requirements);
 
     $workspace_manager = $this->prophesize(WorkspaceManagerInterface::class);

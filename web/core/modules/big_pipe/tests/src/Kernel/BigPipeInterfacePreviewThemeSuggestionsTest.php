@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\big_pipe\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -60,7 +58,7 @@ class BigPipeInterfacePreviewThemeSuggestionsTest extends KernelTestBase {
   /**
    * Tests template suggestions from big_pipe_theme_suggestions_big_pipe_interface_preview().
    */
-  public function testBigPipeThemeHookSuggestions(): void {
+  public function testBigPipeThemeHookSuggestions() {
     $entity = $this->controller->create([
       'id' => 'test_block1',
       'theme' => 'stark',

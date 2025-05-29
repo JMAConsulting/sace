@@ -4,7 +4,6 @@ namespace Drupal\book;
 
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
@@ -71,8 +70,7 @@ class BookBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   /**
    * {@inheritdoc}
    */
-  public function applies(RouteMatchInterface $route_match, ?CacheableMetadata $cacheable_metadata = NULL) {
-    $cacheable_metadata?->addCacheContexts(['route.book_navigation']);
+  public function applies(RouteMatchInterface $route_match) {
     $node = $route_match->getParameter('node');
     return $node instanceof NodeInterface && !empty($node->book);
   }

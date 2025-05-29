@@ -40,7 +40,7 @@ class TypedDataNormalizerTest extends UnitTestCase {
   /**
    * Tests the supportsNormalization() method.
    */
-  public function testSupportsNormalization(): void {
+  public function testSupportsNormalization() {
     $this->assertTrue($this->normalizer->supportsNormalization($this->typedData));
     // Also test that an object not implementing TypedDataInterface fails.
     $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
@@ -49,7 +49,7 @@ class TypedDataNormalizerTest extends UnitTestCase {
   /**
    * Tests the normalize() method.
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $this->typedData->expects($this->once())
       ->method('getValue')
       ->willReturn('test');

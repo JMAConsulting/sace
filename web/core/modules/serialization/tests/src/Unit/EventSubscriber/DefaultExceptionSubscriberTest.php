@@ -23,7 +23,7 @@ class DefaultExceptionSubscriberTest extends UnitTestCase {
   /**
    * @covers ::on4xx
    */
-  public function testOn4xx(): void {
+  public function testOn4xx() {
     $kernel = $this->prophesize(HttpKernelInterface::class);
     $request = Request::create('/test');
     $request->setRequestFormat('json');

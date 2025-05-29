@@ -2,8 +2,6 @@
 
 namespace Drupal\Core\Render\Element;
 
-use Drupal\Core\Render\Attribute\FormElement;
-
 /**
  * Provides a form element for storage of internal information.
  *
@@ -16,11 +14,12 @@ use Drupal\Core\Render\Attribute\FormElement;
  *
  * Usage Example:
  * @code
- * $form['entity_id'] = ['#type' => 'value', '#value' => $entity_id];
+ * $form['entity_id'] = array('#type' => 'value', '#value' => $entity_id);
  * @endcode
+ *
+ * @FormElement("value")
  */
-#[FormElement('value')]
-class Value extends FormElementBase {
+class Value extends FormElement {
 
   /**
    * {@inheritdoc}

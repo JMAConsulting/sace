@@ -24,7 +24,7 @@ class ToolbarStoredStateTest extends WebDriverTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testToolbarStoredState(): void {
+  public function testToolbarStoredState() {
     $admin_user = $this->drupalCreateUser([
       'access toolbar',
       'administer site configuration',
@@ -95,7 +95,6 @@ class ToolbarStoredStateTest extends WebDriverTestBase {
     $this->assertSame($expected, $toolbar_stored_state);
 
     $this->getSession()->resizeWindow(600, 600);
-    $this->getSession()->wait(1000, "JSON.parse(sessionStorage.getItem('Drupal.toolbar.toolbarState')).isFixed == false");
 
     // Update expected state values to reflect the viewport being at a width
     // that is narrow enough that the toolbar isn't fixed.

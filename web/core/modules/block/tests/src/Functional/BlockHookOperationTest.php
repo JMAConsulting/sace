@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\BrowserTestBase;
 class BlockHookOperationTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'entity_test'];
 
@@ -41,7 +41,7 @@ class BlockHookOperationTest extends BrowserTestBase {
   /**
    * Tests the block list to see if the test_operation link is added.
    */
-  public function testBlockOperationAlter(): void {
+  public function testBlockOperationAlter() {
     // Add a test block, any block will do.
     // Set the machine name so the test_operation link can be built later.
     $block_id = $this->randomMachineName(16);

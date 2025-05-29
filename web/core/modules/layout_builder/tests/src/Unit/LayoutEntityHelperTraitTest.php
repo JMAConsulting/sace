@@ -94,7 +94,7 @@ class LayoutEntityHelperTraitTest extends UnitTestCase {
    *
    * @dataProvider providerSectionsWithInlineComponents
    */
-  public function testGetInlineBlockComponents($sections, $expected_components): void {
+  public function testGetInlineBlockComponents($sections, $expected_components) {
     $test_class = new TestClass();
     $this->assertSame($expected_components, $test_class->getInlineBlockComponents($sections));
   }
@@ -104,7 +104,7 @@ class LayoutEntityHelperTraitTest extends UnitTestCase {
    *
    * @dataProvider providerSectionsWithInlineComponents
    */
-  public function testGetInlineBlockRevisionIdsInSections($sections, $components, $expected_revision_ids): void {
+  public function testGetInlineBlockRevisionIdsInSections($sections, $components, $expected_revision_ids) {
     $test_class = new TestClass();
     $this->assertSame($expected_revision_ids, $test_class->getInlineBlockRevisionIdsInSections($sections));
   }

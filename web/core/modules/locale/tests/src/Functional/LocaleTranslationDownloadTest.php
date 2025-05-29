@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Core\StreamWrapper\PublicStream;
@@ -47,7 +45,7 @@ class LocaleTranslationDownloadTest extends LocaleUpdateBase {
   /**
    * Tests translation download from remote sources.
    */
-  public function testUpdateImportSourceRemote(): void {
+  public function testUpdateImportSourceRemote() {
 
     // Provide remote and 'previously' downloaded translation file.
     $this->setTranslationFiles();

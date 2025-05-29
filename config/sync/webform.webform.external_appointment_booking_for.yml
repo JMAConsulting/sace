@@ -295,7 +295,7 @@ elements: |-
     civicrm_1_activity_1_activity_activity_type_id:
       '#type': select
       '#title': 'Activity Type'
-      '#description': 'Select the activity that best aligns with the primary focus of your work/meeting for this session. Additional details may be listed in the outputs/deliverables completed and the Activity Notes fields. Depending on submissions/how it&#39;s being used we may build out more features such as custom fields for recurring content in the Notes field and other improvements to keep improving this form.'
+      '#description': "<p>Select the activity that best aligns with the primary focus of your work/meeting for this session. Additional details may be listed in the outputs/deliverables completed and the Activity Notes fields. Depending on submissions/how it's being used we may build out more features such as custom fields for recurring content in the Notes field and other improvements to keep improving this form.</p>"
       '#options':
         334: '_Cancelled Activity'
         207: 'AD - Best/ Promising Practices Research'
@@ -330,6 +330,7 @@ elements: |-
         237: 'Consultation Received - Systems Navigation'
         89: 'Content Development - Audio & Video'
         238: 'Content Development - Education, Psychoeducation, & Processing Groups/Sessions'
+        339: 'Content Development - General SACE Brand Materials'
         239: 'Content Development - Online Interactive Learning'
         96: 'Content Development - Print & Digital Handouts & Resources'
         93: 'Content Development - Web & Social Content (Page, Post, or Article)'
@@ -411,15 +412,18 @@ elements: |-
         305: 'Program Development - Operations Policies & Practices'
         306: 'Program Development - Research & Development'
         307: 'Reception Coverage'
+        308: 'SIL - Administration'
         102: 'SIL - Primary'
         103: 'SIL - Secondary'
         309: 'SIL - System Maintenance'
         101: 'SIL - Training'
+        336: 'Staff - Administration Forms and Submissions'
         311: 'Staff - Check-In'
         330: 'Staff: Day of Note'
         312: 'Staff - Lunch'
         313: 'Staff - Office Closed'
         314: 'Staff - Personal (after hours)'
+        337: 'Staff - Program Staff Training and Supervision'
         315: 'Staff - Shared Space Maintenance'
         316: 'Staff - Sick'
         317: 'Staff - Team Care & Appreciation Activity'
@@ -429,8 +433,7 @@ elements: |-
         319: 'Staff - Travel'
         320: 'Staff - Vacation'
         322: 'Tech - General Ops Support'
-        321: 'Tech - Set-Up, Development, Maintenance. or Support'
-        308: 'VS - Administration'
+        321: 'Tech - Set-Up, Development, Maintenance, or Support'
         323: 'VS - Volunteer Debrief'
         324: 'VS - Volunteer Interview'
         325: 'VS - Meeting'
@@ -463,29 +466,44 @@ elements: |-
     civicrm_1_activity_1_cg2_custom_332:
       '#type': civicrm_options
       '#title': 'Facilitating Program'
-      '#description': 'If this activity is being undertaken by a specific SACE program or committee, please indicate this here. SACE reports will attribute the activity to the program or committee listed here, and to general SACE work if left blank.'
+      '#description': '<p>If this activity is being undertaken by a specific SACE program or committee, please indicate this here so that SACE reports will reflect the correct attribution. All activities specific to a certain area of SACE should be coded as such; non-specified work will be considered general SACE work if left blank, but only all-staff activities and those that span both departments should be considered "general". Please use "other" for any scheduled activities not attributable to SACE (ie, personal or counted as work of another org).</p>'
       '#title_display': inline
       '#description_display': after
       '#options':
-        PublicEducation: 'Public Education'
-        InstitutionalSupport: 'Institutional Support'
-        DiversityInclusionOutreach: 'Diversity & Inclusion/Outreach'
-        WiseGuyz: WiseGuyz
-        CommunityEngagement: 'Community Engagement'
-        VolunteerServices: 'Volunteer Services'
+        '2SLGBTQ+ Inclusion Committee': '2SLGBTQ+ Inclusion Committee'
+        'Accessibility Inclusion Committee': 'Accessibility Inclusion Committee'
+        Admin: Admin
         CommunityAgencyDevelopment: 'Community & Agency Development'
+        CommunityEngagement: 'Community Engagement'
+        EDIOutreach: EDI/Outreach
+        'General SACE': 'General SACE'
+        'Indigenous Inclusion Committee': 'Indigenous Inclusion Committee'
+        InstitutionalSupport: 'Institutional Support'
+        'Newcomers Inclusion Committee': 'Newcomers Inclusion Committee'
+        'Older Adults Inclusion Committee': 'Older Adults Inclusion Committee'
+        Other: Other
+        PublicEducation: 'Public Education'
+        SIL: SIL
+        VolunteerServices: 'Volunteer Services'
+        WiseGuyz: WiseGuyz
+      '#required': true
       '#wrapper_attributes':
         class:
           - jma-grid-4
       '#form_key': civicrm_1_activity_1_cg2_custom_332
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg58_custom_1265:
       '#type': text_format
       '#title': 'Outputs or Deliverables Completed'
       '#description': |-
-        This field allows us to run reports on all deliverables completed across reporting periods. Please include all *completed* outputs or deliverables here so they can be captured in program reporting. For collaborative work or work that happens over many sessions/weeks/months, please ensure you include what you were working on only the once, when it&#39;s considered ready to share with the world. Decide who from your working group will be responsible for recording it if you have separate activities scheduled.<br />
-        Examples of outputs/deliverables include handouts/articles, new courses/presentations, internal resources like policy, procedures, land acknowledgements, original social content/campaigns, volunteer resources, HR resources... Anything you might report on to funders as part of the activities and accomplishments for your program/committee/area.
+        <p>This field allows us to run reports on all deliverables completed across reporting periods. Please include all *completed* outputs or deliverables here so they can be captured in program reporting. For collaborative work or work that happens over many sessions/weeks/months, please ensure you include what you were working on only the once, when it's considered ready to share with the world. Decide who from your working group will be responsible for recording it if you have separate activities scheduled.<br />
+        Examples of outputs/deliverables include handouts/articles, new courses/presentations, internal resources like policy, procedures, land acknowledgements, original social content/campaigns, volunteer resources, HR resources... Anything you might report on to funders as part of the activities and accomplishments for your program/committee/area.</p>
+      '#allowed_formats':
+        webform_default: webform_default
+      '#hide_help': true
       '#data_type': Memo
       '#form_key': civicrm_1_activity_1_cg58_custom_1265
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -493,6 +511,9 @@ elements: |-
     civicrm_1_activity_1_activity_details:
       '#type': text_format
       '#title': 'Activity Notes'
+      '#allowed_formats':
+        webform_default: webform_default
+      '#hide_help': true
       '#form_key': civicrm_1_activity_1_activity_details
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#extra': {  }
@@ -503,8 +524,8 @@ elements: |-
         2SLGBTQ+: 2SLGBTQ+
         Adults: Adults
         'Child 3-12': 'Child 3-12'
-        FirstNations: 'First Nations, Métis, or Inuit/ Indigenous'
         Guardians: Guardians/Parents
+        FirstNationsMetisInuitIndigenous: 'First Nations, Métis, or Inuit/ Indigenous'
         Men/Boys: 'Men/Boys/Masc/NB (Trans-Inclusive)'
         Newcomer: Newcomer/Non-Status/Refugee/Immigrant
         'People With Disabilities': 'People With Disabilities'
@@ -530,7 +551,6 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_333
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
-      '#default_value': ''
       '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_40:
       '#type': checkboxes
@@ -541,6 +561,7 @@ elements: |-
         FRT: 'First Responders Training (FRT)'
         SexualAssaultConsent: 'Sexual Assault & Consent'
         SexualHarassment: 'Sexual Harassment'
+        GenderStereotypes: 'Gender Stereotypes'
         NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
         TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
         SACEServices: 'SACE Services'
@@ -564,10 +585,11 @@ elements: |-
         'Recognizing & Responding to Sexual Violence': 'Recognizing & Responding to Sexual Violence'
         'SACE Services Tour': 'SACE Services Tour'
         'Sexual Assault & Self-Care': 'Sexual Assault & Self-Care'
+        SexualAssaultConsentNonConsensualPhotosharing: 'Sexual Assault, Consent, and Non-Consensual Photosharing'
         SexualHealth: 'Sexual Health'
         SexualViolence: 'Sexual Violence'
         ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
-        CustomSomethingDifferent: 'Custom / Other'
+        CustomUnsure: 'Custom / Other'
       '#wrapper_attributes':
         class:
           - jma-grid-3
@@ -581,6 +603,7 @@ elements: |-
           SexualAssaultConsent|Sexual Assault & Consent
           SexualHarassment|Sexual Harassment
           NonConsensualPhotoSharing|Non-Consensual Photo Sharing
+          GenderStereotypes|Gender Stereotypes
           TechnologyFacilitatedSexualViolence|Technology-Facilitated Sexual Violence
           SACEServices|SACE Services
           BystanderIntervention|Bystander Intervention
@@ -603,10 +626,11 @@ elements: |-
           Recognizing & Responding to Sexual Violence|Recognizing & Responding to Sexual Violence
           SACE Services Tour|SACE Services Tour
           Sexual Assault & Self-Care|Sexual Assault & Self-Care
+          SexualAssaultConsentNonConsensualPhotosharing|Sexual Assault, Consent, and Non-Consensual Photosharing
           SexualHealth|Sexual Health
           SexualViolence|Sexual Violence
           ViolencePreventionAdvocacy|Violence Prevention and Advocacy
-          CustomSomethingDifferent|Custom / Unsure
+          CustomUnsure|Custom / Unsure
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_40
       '#parent': civicrm_1_activity_1_fieldset_fieldset
@@ -624,53 +648,49 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg2_custom_341:
       '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |-
-          Professionals|Professionals
-          Students|Students
-          Service Providers|Service Providers
-          Educators|Educators
-          Guardians|Guardians
-          Volunteers|Volunteers
-          Older Adults|Older Adults
-          2SLGBTQ+|2SLGBTQ+
-          Indigenous|Indigenous
-          Racialized|Racialized
-          PeopleWithDisabilities|People With Disabilities
-          Newcomers|Newcomers
-          Community Group|Community Group
-          At-risk Youth|At-risk Youth
-          Men/Boys/Masc/NB|Men/Boys/Masc/NB
-          Women/Girls/Femme/NB|Women/Girls/Femme/NB
-          Adults|Adults
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_341
+      '#title': Audience
+      '#civicrm_live_options': 0
       '#options':
-        Professionals: Professionals
         Students: Students
-        'Service Providers': 'Service Providers'
-        Educators: Educators
-        Guardians: Guardians
         Volunteers: Volunteers
-        'Older Adults': 'Older Adults'
         2SLGBTQ+: 2SLGBTQ+
-        Indigenous: Indigenous
-        Racialized: Racialized
         PeopleWithDisabilities: 'People With Disabilities'
-        Newcomers: Newcomers
         'Community Group': 'Community Group'
-        'At-risk Youth': 'At-risk Youth'
         Men/Boys/Masc/NB: Men/Boys/Masc/NB
         Women/Girls/Femme/NB: Women/Girls/Femme/NB
-        Adults: Adults
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': Audience
-      '#civicrm_live_options': 1
+        'Children 3-11': 'Children 3-11'
+        'Deaf&HardofHearing': 'Deaf & Hard of Hearing'
+        EnglishLanguageLearners: 'English Language Learners'
+        GuardiansParents: Guardians/Parents
+        IndigenousFirstNationsMétisInuit: 'Indigenous/First Nations, Métis, or Inuit'
+        NewcomersNon-StatusRefugeeImmigrant: Newcomers/Non-Status/Refugee/Immigrant
+        PeopleExperiencingIncarceration: 'People Experiencing Incarceration'
+        PeopleWithCognitiveDisabilities: 'People With Cognitive Disabilities'
+        ProfessionalsArtsEntertainmentNightlife: 'Professionals - Arts, Entertainment, & Nightlife'
+        ProfessionalsGeneral: 'Professionals - General'
+        ProfessionalsServiceProviders: 'Professionals - Service Providers'
+        ProfessionalsStudentsEducation: 'Professionals/Students - Education'
+        ProfessionalsStudentsHealth: 'Professionals/Students - Health'
+        ProfessionalsStudentsLegal: 'Professionals/Students - Legal'
+        ProfessionalsStudentsSocialServices: 'Professionals/Students - Social Services'
+        RacializedPOC: Racialized/POC
+        Rural: Rural
+        'SACE Clients': 'SACE Clients'
+        SeniorsOlderAdults: 'Seniors/Older Adults'
+        Youth12-18: 'Youth 12-18'
+        Youth18-30: 'Youth 18-30'
+        YouthAtRisk: 'Youth At Risk'
       '#wrapper_attributes':
         class:
           - jma-grid-3
+      '#extra':
+        aslist: 0
+        multiple: 1
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_341
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
   aid:
     '#type': number
     '#title': aid
@@ -688,9 +708,12 @@ elements: |-
         ':input[name="repeat_enabled"]':
           checked: true
     repeat_start_date:
-      '#type': datetime
-      '#title': 'Repeat Start'
-      '#description': '<p>Leave blank to use the original activity date.</p>'
+      '#type': date
+      '#title': 'Repeat Start Date'
+      '#states':
+        required:
+          ':input[name="repeat_enabled"]':
+            checked: true
     flexbox_repeat_interval:
       '#type': webform_flexbox
       '#align_items': center
@@ -861,15 +884,9 @@ elements: |-
       '#type': date
       '#title': 'Exclude Date(s)'
       '#multiple': true
-      '#multiple__item_label': date
-      '#multiple__no_items_message': '<p>No dates excluded.</p>'
-      '#multiple__min_items': 0
-      '#multiple__empty_items': 0
-      '#multiple__sorting': false
-      '#multiple__add_more_input': false
-      '#multiple__add_more_button_label': 'Add excluded date'
+    day_of_month: null
 css: ''
-javascript: ''
+javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-07'));\r\n})(jQuery);"
 settings:
   ajax: false
   ajax_scroll_top: form

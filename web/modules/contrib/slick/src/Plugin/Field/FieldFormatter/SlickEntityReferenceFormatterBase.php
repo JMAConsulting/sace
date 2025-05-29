@@ -2,9 +2,10 @@
 
 namespace Drupal\slick\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\Xss;
 use Drupal\blazy\Field\BlazyEntityReferenceBase;
+use Drupal\Component\Utility\Xss;
 use Drupal\slick\SlickDefault;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for slick entity reference formatters with field details.
@@ -48,6 +49,16 @@ abstract class SlickEntityReferenceFormatterBase extends BlazyEntityReferenceBas
 
   /**
    * {@inheritdoc}
+   *
+   * @todo remove post blazy:2.17, no differences so far.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    return static::injectServices($instance, $container, static::$fieldType);
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public static function defaultSettings() {
     return SlickDefault::extendedSettings() + parent::defaultSettings();
@@ -56,12 +67,7 @@ abstract class SlickEntityReferenceFormatterBase extends BlazyEntityReferenceBas
   /**
    * {@inheritdoc}
    */
-  protected function withElementOverride(array &$build, array $element): void {
-    // If ($build['#vanilla']) {
-    // Build media item including custom highres video thumbnail.
-    // @todo re-check/ refine for Paragraphs, etc.
-    // $this->blazyOembed->build($element);
-    // }
+  protected function withElementThumbnail(array &$build, array $element): void {
     if (!$build['#asnavfor']) {
       return;
     }
@@ -101,6 +107,15 @@ abstract class SlickEntityReferenceFormatterBase extends BlazyEntityReferenceBas
       'thumb_positions' => TRUE,
       'nav'             => TRUE,
     ] + parent::getPluginScopes();
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @todo deprecated in 2.10 and is removed in slick:3.x.
+   */
+  protected function buildElementThumbnail(array &$build, array $element) {
+    $this->withElementThumbnail($build, $element);
   }
 
 }

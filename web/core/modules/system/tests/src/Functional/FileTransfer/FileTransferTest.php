@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\FileTransfer;
 
 use Drupal\Core\FileTransfer\FileTransferException;
@@ -70,13 +68,13 @@ class FileTransferTest extends BrowserTestBase {
         $this->_writeDirectory($base . DIRECTORY_SEPARATOR . $key, $file);
       }
       else {
-        // Just write the filename into the file
+        // just write the filename into the file
         file_put_contents($base . DIRECTORY_SEPARATOR . $file, $file);
       }
     }
   }
 
-  public function testJail(): void {
+  public function testJail() {
     $source = $this->_buildFakeModule();
 
     // This convoluted piece of code is here because our testing framework does

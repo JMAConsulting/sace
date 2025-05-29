@@ -3,7 +3,6 @@
 namespace Drupal\Core\Render\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Attribute\FormElement;
 use Drupal\Core\Render\Element;
 
 /**
@@ -18,36 +17,37 @@ use Drupal\Core\Render\Element;
  *
  * Usage example:
  * @code
- * $form['information'] = [
+ * $form['information'] = array(
  *   '#type' => 'vertical_tabs',
  *   '#default_tab' => 'edit-publication',
- * ];
+ * );
  *
- * $form['author'] = [
+ * $form['author'] = array(
  *   '#type' => 'details',
  *   '#title' => $this->t('Author'),
  *   '#group' => 'information',
- * ];
+ * );
  *
- * $form['author']['name'] = [
+ * $form['author']['name'] = array(
  *   '#type' => 'textfield',
  *   '#title' => $this->t('Name'),
- * ];
+ * );
  *
- * $form['publication'] = [
+ * $form['publication'] = array(
  *   '#type' => 'details',
  *   '#title' => $this->t('Publication'),
  *   '#group' => 'information',
- * ];
+ * );
  *
- * $form['publication']['publisher'] = [
+ * $form['publication']['publisher'] = array(
  *   '#type' => 'textfield',
  *   '#title' => $this->t('Publisher'),
- * ];
+ * );
  * @endcode
+ *
+ * @FormElement("vertical_tabs")
  */
-#[FormElement('vertical_tabs')]
-class VerticalTabs extends RenderElementBase {
+class VerticalTabs extends RenderElement {
 
   /**
    * {@inheritdoc}

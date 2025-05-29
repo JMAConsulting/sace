@@ -97,7 +97,7 @@ class MaximumFileSizeExceededUploadTest extends WebDriverTestBase {
   /**
    * Tests that uploading files exceeding maximum size are handled correctly.
    */
-  public function testUploadFileExceedingMaximumFileSize(): void {
+  public function testUploadFileExceedingMaximumFileSize() {
     $session = $this->getSession();
 
     // Create a test file that exceeds the maximum POST size with 1 kilobyte.

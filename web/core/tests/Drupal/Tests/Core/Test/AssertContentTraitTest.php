@@ -18,7 +18,7 @@ class AssertContentTraitTest extends UnitTestCase {
   /**
    * @covers ::getTextContent
    */
-  public function testGetTextContent(): void {
+  public function testGetTextContent() {
 
     $raw_content = <<<EOT
 

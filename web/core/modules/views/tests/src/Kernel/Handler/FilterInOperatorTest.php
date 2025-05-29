@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -19,9 +17,6 @@ use Drupal\views\Views;
 class FilterInOperatorTest extends ViewsKernelTestBase {
   use StringTranslationTrait;
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['system'];
 
   /**
@@ -47,7 +42,7 @@ class FilterInOperatorTest extends ViewsKernelTestBase {
     return $data;
   }
 
-  public function testFilterInOperatorSimple(): void {
+  public function testFilterInOperatorSimple() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -113,7 +108,7 @@ class FilterInOperatorTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $expected_result, $this->columnMap);
   }
 
-  public function testFilterInOperatorGroupedExposedSimple(): void {
+  public function testFilterInOperatorGroupedExposedSimple() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
 
@@ -139,7 +134,7 @@ class FilterInOperatorTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $expected_result, $this->columnMap);
   }
 
-  public function testFilterNotInOperatorGroupedExposedSimple(): void {
+  public function testFilterNotInOperatorGroupedExposedSimple() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
 
@@ -172,7 +167,7 @@ class FilterInOperatorTest extends ViewsKernelTestBase {
   /**
    * Tests that we can safely change the identifier on a grouped filter.
    */
-  public function testFilterGroupedChangedIdentifier(): void {
+  public function testFilterGroupedChangedIdentifier() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
 
@@ -241,7 +236,7 @@ class FilterInOperatorTest extends ViewsKernelTestBase {
   /**
    * Tests that the InOperator filter can handle TranslatableMarkup.
    */
-  public function testFilterOptionAsMarkup(): void {
+  public function testFilterOptionAsMarkup() {
     $view = $this->prophesize(ViewExecutable::class);
     $display = $this->prophesize(DisplayPluginBase::class);
     $display->getOption('relationships')->willReturn(FALSE);
@@ -257,7 +252,7 @@ class FilterInOperatorTest extends ViewsKernelTestBase {
     $input_options = [
       'foo' => 'bar',
       'baz' => $this->t('qux'),
-      'foobar' => (object) ['option' => ['foobar' => 'dog']],
+      'quux' => (object) ['option' => ['quux' => 'corge']],
     ];
     $reduced_values = $operator->reduceValueOptions($input_options);
 

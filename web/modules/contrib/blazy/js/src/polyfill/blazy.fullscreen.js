@@ -22,7 +22,7 @@
     _doc.exitFullscreen = _doc.mozExitFullscreen || _doc.webkitExitFullscreen || _doc.msExitFullscreen;
   }
 
-  if (!('fullscreenElement' in _doc)) {
+  if (!_doc.fullscreenElement) {
     Object.defineProperty(_doc, 'fullscreenElement', {
       get: function () {
         return _doc.mozFullScreenElement || _doc.msFullscreenElement || _doc.webkitFullscreenElement;

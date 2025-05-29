@@ -41,7 +41,7 @@ class FileCacheTest extends TestCase {
    * @covers ::get
    * @covers ::__construct
    */
-  public function testGet(): void {
+  public function testGet() {
     // Test a cache miss.
     $result = $this->fileCache->get(__DIR__ . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'no-llama-42.yml');
     $this->assertNull($result);
@@ -68,7 +68,7 @@ class FileCacheTest extends TestCase {
   /**
    * @covers ::getMultiple
    */
-  public function testGetMultiple(): void {
+  public function testGetMultiple() {
     // Test a cache miss.
     $result = $this->fileCache->getMultiple([__DIR__ . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'no-llama-42.yml']);
     $this->assertEmpty($result);
@@ -103,7 +103,7 @@ class FileCacheTest extends TestCase {
   /**
    * @covers ::set
    */
-  public function testSet(): void {
+  public function testSet() {
     $filename = __DIR__ . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'llama-23.txt';
     $realpath = realpath($filename);
     $cid = 'prefix:test:' . $realpath;
@@ -124,7 +124,7 @@ class FileCacheTest extends TestCase {
   /**
    * @covers ::delete
    */
-  public function testDelete(): void {
+  public function testDelete() {
     $filename = __DIR__ . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'llama-23.txt';
     $realpath = realpath($filename);
     $cid = 'prefix:test:' . $realpath;

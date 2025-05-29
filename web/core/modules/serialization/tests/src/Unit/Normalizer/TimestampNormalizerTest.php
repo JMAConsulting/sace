@@ -49,7 +49,7 @@ class TimestampNormalizerTest extends UnitTestCase {
   /**
    * @covers ::supportsNormalization
    */
-  public function testSupportsNormalization(): void {
+  public function testSupportsNormalization() {
     $this->assertTrue($this->normalizer->supportsNormalization($this->data->reveal()));
 
     $integer = $this->prophesize(IntegerData::class);
@@ -62,14 +62,14 @@ class TimestampNormalizerTest extends UnitTestCase {
   /**
    * @covers ::supportsDenormalization
    */
-  public function testSupportsDenormalization(): void {
+  public function testSupportsDenormalization() {
     $this->assertTrue($this->normalizer->supportsDenormalization($this->data->reveal(), Timestamp::class));
   }
 
   /**
    * @covers ::normalize
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $random_rfc_3339_string = $this->randomMachineName();
 
     $drupal_date_time = $this->prophesize(TimestampNormalizerTestDrupalDateTime::class);
@@ -91,7 +91,7 @@ class TimestampNormalizerTest extends UnitTestCase {
    * @covers ::denormalize
    * @dataProvider providerTestDenormalizeValidFormats
    */
-  public function testDenormalizeValidFormats($normalized, $expected): void {
+  public function testDenormalizeValidFormats($normalized, $expected) {
     $denormalized = $this->normalizer->denormalize($normalized, Timestamp::class, NULL, []);
     $this->assertSame($expected, $denormalized);
   }
@@ -101,7 +101,7 @@ class TimestampNormalizerTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestDenormalizeValidFormats() {
+  public function providerTestDenormalizeValidFormats() {
     $expected_stamp = 1478422920;
 
     $data = [];
@@ -123,7 +123,7 @@ class TimestampNormalizerTest extends UnitTestCase {
    *
    * @covers ::denormalize
    */
-  public function testDenormalizeException(): void {
+  public function testDenormalizeException() {
     $this->expectException(UnexpectedValueException::class);
     $this->expectExceptionMessage('The specified date "2016/11/06 09:02am GMT" is not in an accepted format: "U" (UNIX timestamp), "Y-m-d\TH:i:sO" (ISO 8601), "Y-m-d\TH:i:sP" (RFC 3339).');
 

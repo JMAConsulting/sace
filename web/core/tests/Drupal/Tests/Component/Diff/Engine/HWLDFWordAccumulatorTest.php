@@ -25,7 +25,7 @@ class HWLDFWordAccumulatorTest extends TestCase {
    *
    * @see Drupal\Component\Diff\Engine\HWLDFWordAccumulator::NBSP
    */
-  public function testGetLinesEmpty(): void {
+  public function testGetLinesEmpty() {
     $acc = new HWLDFWordAccumulator();
     $this->assertEquals(['&#160;'], $acc->getLines());
   }
@@ -36,7 +36,7 @@ class HWLDFWordAccumulatorTest extends TestCase {
    *   - Array of strings for the $words parameter to addWords().
    *   - String tag for the $tag parameter to addWords().
    */
-  public static function provideAddWords() {
+  public function provideAddWords() {
     return [
       [['wordword2'], ['word', 'word2'], 'tag'],
       [['word', 'word2'], ['word', "\nword2"], 'tag'],
@@ -48,7 +48,7 @@ class HWLDFWordAccumulatorTest extends TestCase {
    * @covers ::addWords
    * @dataProvider provideAddWords
    */
-  public function testAddWords($expected, $words, $tag): void {
+  public function testAddWords($expected, $words, $tag) {
     $acc = new HWLDFWordAccumulator();
     $acc->addWords($words, $tag);
     $this->assertEquals($expected, $acc->getLines());

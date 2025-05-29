@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Core\Database\Database;
@@ -45,7 +43,7 @@ class JoinTest extends RelationshipJoinTestBase {
   /**
    * Tests an example join plugin.
    */
-  public function testExamplePlugin(): void {
+  public function testExamplePlugin() {
 
     // Setup a simple join and test the result sql.
     $view = Views::getView('test_view');
@@ -76,7 +74,7 @@ class JoinTest extends RelationshipJoinTestBase {
   /**
    * Tests the join plugin base.
    */
-  public function testBasePlugin(): void {
+  public function testBasePlugin() {
 
     // Setup a simple join and test the result sql.
     $view = Views::getView('test_view');

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -39,7 +37,7 @@ class FilterBooleanOperatorDefaultTest extends ViewsKernelTestBase {
   /**
    * Tests the queryOpBoolean() with default operator.
    */
-  public function testFilterBooleanOperatorDefault(): void {
+  public function testFilterBooleanOperatorDefault() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 

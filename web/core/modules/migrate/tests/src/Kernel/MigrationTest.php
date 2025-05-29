@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -27,7 +25,7 @@ class MigrationTest extends KernelTestBase {
    *
    * @covers ::set
    */
-  public function testSetInvalidation(): void {
+  public function testSetInvalidation() {
     $migration = \Drupal::service('plugin.manager.migration')->createStubMigration([
       'source' => ['plugin' => 'empty'],
       'destination' => ['plugin' => 'entity:entity_view_mode'],

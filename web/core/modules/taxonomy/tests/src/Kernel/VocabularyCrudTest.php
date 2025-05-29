@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel;
 
 use Drupal\field\Entity\FieldConfig;
@@ -44,7 +42,7 @@ class VocabularyCrudTest extends KernelTestBase {
   /**
    * Tests deleting a taxonomy that contains terms.
    */
-  public function testTaxonomyVocabularyDeleteWithTerms(): void {
+  public function testTaxonomyVocabularyDeleteWithTerms() {
     $vocabulary = $this->createVocabulary();
     $query = \Drupal::entityQuery('taxonomy_term')->accessCheck(FALSE)->count();
 
@@ -74,7 +72,7 @@ class VocabularyCrudTest extends KernelTestBase {
   /**
    * Tests for loading multiple vocabularies.
    */
-  public function testTaxonomyVocabularyLoadMultiple(): void {
+  public function testTaxonomyVocabularyLoadMultiple() {
     // Ensure there are no vocabularies.
     $this->assertEmpty(Vocabulary::loadMultiple());
 
@@ -126,7 +124,7 @@ class VocabularyCrudTest extends KernelTestBase {
   /**
    * Tests uninstall and reinstall of the taxonomy module.
    */
-  public function testUninstallReinstall(): void {
+  public function testUninstallReinstall() {
     $vocabulary = $this->createVocabulary();
     // Field storages and fields attached to taxonomy term bundles should be
     // removed when the module is uninstalled.

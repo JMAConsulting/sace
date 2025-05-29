@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Theme;
 
 use Drupal\Tests\BrowserTestBase;
@@ -26,7 +24,7 @@ class TwigEnvironmentTest extends BrowserTestBase {
   /**
    * Tests template class loading with Twig embed.
    */
-  public function testTwigEmbed(): void {
+  public function testTwigEmbed() {
     $assert_session = $this->assertSession();
     // Test the Twig embed tag.
     $this->drupalGet('twig-theme-test/embed-tag');

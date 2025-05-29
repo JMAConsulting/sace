@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\toolbar\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -21,7 +19,9 @@ class ToolbarMenuTranslationTest extends BrowserTestBase {
   protected $adminUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'toolbar',
@@ -56,7 +56,7 @@ class ToolbarMenuTranslationTest extends BrowserTestBase {
   /**
    * Tests that toolbar classes don't change when adding a translation.
    */
-  public function testToolbarClasses(): void {
+  public function testToolbarClasses() {
     $langcode = 'es';
 
     // Add Spanish.

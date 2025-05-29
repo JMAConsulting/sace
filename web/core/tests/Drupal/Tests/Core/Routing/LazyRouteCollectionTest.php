@@ -47,7 +47,7 @@ class LazyRouteCollectionTest extends UnitTestCase {
    * @covers ::getIterator
    * @covers ::all
    */
-  public function testGetIterator(): void {
+  public function testGetIterator() {
     $this->routeProvider->expects($this->exactly(2))
       ->method('getRoutesByNames')
       ->with(NULL)
@@ -60,7 +60,7 @@ class LazyRouteCollectionTest extends UnitTestCase {
   /**
    * @covers ::count
    */
-  public function testCount(): void {
+  public function testCount() {
     $this->routeProvider
       ->method('getRoutesByNames')
       ->with(NULL)
@@ -74,7 +74,7 @@ class LazyRouteCollectionTest extends UnitTestCase {
    *
    * @covers ::get
    */
-  public function testGetName(): void {
+  public function testGetName() {
     // Hit.
     $this->routeProvider
       ->method('getRouteByName')

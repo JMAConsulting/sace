@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Http;
 
 use Drupal\Core\Http\LinkRelationType;
@@ -17,7 +15,7 @@ class LinkRelationsTest extends KernelTestBase {
   /**
    * Tests correct Link Relations are returned from the Link Relation Type Manager.
    */
-  public function testAvailableLinkRelationships(): void {
+  public function testAvailableLinkRelationships() {
     /** @var \Drupal\Core\Http\LinkRelationTypeManager $link_relation_type_manager */
     $link_relation_type_manager = $this->container->get('plugin.manager.link_relation_type');
 

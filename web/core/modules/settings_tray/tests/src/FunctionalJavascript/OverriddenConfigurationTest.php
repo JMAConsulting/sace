@@ -46,7 +46,7 @@ class OverriddenConfigurationTest extends SettingsTrayTestBase {
   /**
    * Tests blocks with overridden related configuration removed when overridden.
    */
-  public function testOverriddenConfigurationRemoved(): void {
+  public function testOverriddenConfigurationRemoved() {
     $web_assert = $this->assertSession();
     $page = $this->getSession()->getPage();
     $this->grantPermissions(Role::load(Role::AUTHENTICATED_ID), ['administer site configuration', 'administer menu']);
@@ -119,7 +119,7 @@ class OverriddenConfigurationTest extends SettingsTrayTestBase {
   /**
    * Tests that blocks with configuration overrides are disabled.
    */
-  public function testOverriddenBlock(): void {
+  public function testOverriddenBlock() {
     $web_assert = $this->assertSession();
     $page = $this->getSession()->getPage();
     $overridden_block = $this->placeBlock('system_powered_by_block', [

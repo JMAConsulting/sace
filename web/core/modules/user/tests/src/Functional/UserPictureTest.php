@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\comment\Tests\CommentTestTrait;
@@ -69,7 +67,7 @@ class UserPictureTest extends BrowserTestBase {
   /**
    * Tests creation, display, and deletion of user pictures.
    */
-  public function testCreateDeletePicture(): void {
+  public function testCreateDeletePicture() {
     $this->drupalLogin($this->webUser);
 
     // Save a new picture.
@@ -92,7 +90,7 @@ class UserPictureTest extends BrowserTestBase {
     // would set the timestamp.
     Database::getConnection()->update('file_managed')
       ->fields([
-        'changed' => \Drupal::time()->getRequestTime() - ($this->config('system.file')->get('temporary_maximum_age') + 1),
+        'changed' => REQUEST_TIME - ($this->config('system.file')->get('temporary_maximum_age') + 1),
       ])
       ->condition('fid', $file->id())
       ->execute();
@@ -108,7 +106,7 @@ class UserPictureTest extends BrowserTestBase {
   /**
    * Tests embedded users on node pages.
    */
-  public function testPictureOnNodeComment(): void {
+  public function testPictureOnNodeComment() {
     $this->drupalLogin($this->webUser);
 
     $this->drupalCreateContentType(['type' => 'article', 'name' => 'Article']);
@@ -177,7 +175,7 @@ class UserPictureTest extends BrowserTestBase {
    *
    * @see user_user_view_alter()
    */
-  public function testUserViewAlter(): void {
+  public function testUserViewAlter() {
     \Drupal::service('module_installer')->install(['image_module_test']);
     // Set dummy_image_formatter to the default view mode of user entity.
     EntityViewDisplay::load('user.user.default')->setComponent('user_picture', [

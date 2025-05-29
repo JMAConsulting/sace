@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel;
 
 use Drupal\comment\Entity\Comment;
@@ -59,7 +57,7 @@ class CommentIntegrationTest extends KernelTestBase {
    * @see comment_entity_view_display_presave()
    * @see CommentDefaultFormatter::calculateDependencies()
    */
-  public function testViewMode(): void {
+  public function testViewMode() {
     $mode = $this->randomMachineName();
     // Create a new comment view mode and a view display entity.
     EntityViewMode::create([
@@ -151,7 +149,7 @@ class CommentIntegrationTest extends KernelTestBase {
   /**
    * Tests the default owner of comment entities.
    */
-  public function testCommentDefaultOwner(): void {
+  public function testCommentDefaultOwner() {
     $comment = Comment::create([
       'comment_type' => 'comment',
     ]);

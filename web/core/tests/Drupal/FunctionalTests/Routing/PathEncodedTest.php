@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Routing;
 
 use Drupal\Core\Url;
@@ -28,7 +26,7 @@ class PathEncodedTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testGetEncoded(): void {
+  public function testGetEncoded() {
     $route_paths = [
       'path_encoded_test.colon' => '/hi/llama:party',
       'path_encoded_test.at_sign' => '/blog/@Dries',
@@ -40,7 +38,7 @@ class PathEncodedTest extends BrowserTestBase {
     }
   }
 
-  public function testAliasToEncoded(): void {
+  public function testAliasToEncoded() {
     $route_paths = [
       'path_encoded_test.colon' => '/hi/llama:party',
       'path_encoded_test.at_sign' => '/blog/@Dries',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -110,7 +108,7 @@ class DisplayModeUpdateTest extends FieldKernelTestBase {
   /**
    * Ensure display modes are updated when fields are created.
    */
-  public function testDisplayModeUpdateAfterFieldCreation(): void {
+  public function testDisplayModeUpdateAfterFieldCreation() {
 
     // Sanity test: field has not been created yet, so should not exist in display.
     $this->assertArrayNotHasKey('field_test', \Drupal::config($this->defaultViewDisplayName)->get('hidden'));

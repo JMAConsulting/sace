@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityUpdater;
@@ -17,14 +15,16 @@ use Drupal\KernelTests\KernelTestBase;
 class ConfigEntityUpdaterTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['config_test', 'system'];
 
   /**
    * @covers ::update
    */
-  public function testUpdate(): void {
+  public function testUpdate() {
     // Create some entities to update.
     $storage = $this->container->get('entity_type.manager')->getStorage('config_test');
     for ($i = 0; $i < 15; $i++) {
@@ -77,7 +77,7 @@ class ConfigEntityUpdaterTest extends KernelTestBase {
   /**
    * @covers ::update
    */
-  public function testUpdateDefaultCallback(): void {
+  public function testUpdateDefaultCallback() {
     // Create some entities to update.
     $storage = $this->container->get('entity_type.manager')->getStorage('config_test');
     for ($i = 0; $i < 15; $i++) {
@@ -117,7 +117,7 @@ class ConfigEntityUpdaterTest extends KernelTestBase {
   /**
    * @covers ::update
    */
-  public function testUpdateException(): void {
+  public function testUpdateException() {
     $this->enableModules(['entity_test']);
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('The provided entity type ID \'entity_test_mul_changed\' is not a configuration entity type');
@@ -129,7 +129,7 @@ class ConfigEntityUpdaterTest extends KernelTestBase {
   /**
    * @covers ::update
    */
-  public function testUpdateOncePerUpdateException(): void {
+  public function testUpdateOncePerUpdateException() {
     $this->expectException(\RuntimeException::class);
     $this->expectExceptionMessage('Updating multiple entity types in the same update function is not supported');
     $updater = $this->container->get('class_resolver')->getInstanceFromDefinition(ConfigEntityUpdater::class);

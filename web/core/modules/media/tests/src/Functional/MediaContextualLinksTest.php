@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Functional;
 
 use Drupal\media\Entity\Media;
@@ -28,7 +26,7 @@ class MediaContextualLinksTest extends MediaFunctionalTestBase {
   /**
    * Tests contextual links.
    */
-  public function testMediaContextualLinks(): void {
+  public function testMediaContextualLinks() {
     \Drupal::configFactory()
       ->getEditable('media.settings')
       ->set('standalone_url', TRUE)

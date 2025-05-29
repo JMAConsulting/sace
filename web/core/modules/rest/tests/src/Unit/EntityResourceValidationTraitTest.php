@@ -21,7 +21,7 @@ class EntityResourceValidationTraitTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidate(): void {
+  public function testValidate() {
     $trait = new EntityResourceValidationTraitTestClass();
 
     $method = new \ReflectionMethod($trait, 'validate');
@@ -39,7 +39,7 @@ class EntityResourceValidationTraitTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testFailedValidate(): void {
+  public function testFailedValidate() {
     $violation1 = $this->prophesize(ConstraintViolationInterface::class);
     $violation1->getPropertyPath()->willReturn('property_path');
     $violation1->getMessage()->willReturn('message');

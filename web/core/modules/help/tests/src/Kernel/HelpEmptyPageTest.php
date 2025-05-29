@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\help\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
@@ -33,7 +31,7 @@ class HelpEmptyPageTest extends KernelTestBase {
   /**
    * Ensures that no URL generator is called on a page without hook_help().
    */
-  public function testEmptyHookHelp(): void {
+  public function testEmptyHookHelp() {
     $all_modules = \Drupal::service('extension.list.module')->getList();
     $all_modules = array_filter($all_modules, function ($module) {
       // Filter contrib, hidden, already enabled modules and modules in the

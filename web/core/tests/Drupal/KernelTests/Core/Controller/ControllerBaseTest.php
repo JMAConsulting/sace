@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Controller;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -18,14 +16,16 @@ use Symfony\Component\DependencyInjection\Exception\AutowiringFailedException;
 class ControllerBaseTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system_test', 'system'];
 
   /**
    * @covers ::create
    */
-  public function testCreate(): void {
+  public function testCreate() {
     /** @var \Drupal\system_test\Controller\SystemTestController $controller */
     $controller = $this->container->get('class_resolver')->getInstanceFromDefinition(SystemTestController::class);
 
@@ -46,7 +46,7 @@ class ControllerBaseTest extends KernelTestBase {
   /**
    * @covers ::create
    */
-  public function testCreateException(): void {
+  public function testCreateException() {
     $this->expectException(AutowiringFailedException::class);
     $this->expectExceptionMessage('Cannot autowire service "Drupal\Core\Lock\LockBackendInterface": argument "$lock" of method "Drupal\system_test\Controller\BrokenSystemTestController::_construct()", you should configure its value explicitly.');
     $this->container->get('class_resolver')->getInstanceFromDefinition(BrokenSystemTestController::class);

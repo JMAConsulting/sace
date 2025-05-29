@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\editor\Kernel;
 
 use Drupal\editor\Entity\Editor;
@@ -23,7 +21,7 @@ class EditorFilterIntegrationTest extends KernelTestBase {
   /**
    * Tests text format removal or disabling.
    */
-  public function testTextFormatIntegration(): void {
+  public function testTextFormatIntegration() {
     // Create an arbitrary text format.
     $format = FilterFormat::create([
       'format' => $this->randomMachineName(),

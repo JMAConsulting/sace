@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -29,7 +27,9 @@ class UserAdminLanguageTest extends BrowserTestBase {
   protected $regularUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['user', 'language', 'language_test', 'user_language_test'];
 
@@ -55,7 +55,7 @@ class UserAdminLanguageTest extends BrowserTestBase {
   /**
    * Tests that admin language is not configurable in single language sites.
    */
-  public function testUserAdminLanguageConfigurationNotAvailableWithOnlyOneLanguage(): void {
+  public function testUserAdminLanguageConfigurationNotAvailableWithOnlyOneLanguage() {
     $this->drupalLogin($this->adminUser);
     $this->setLanguageNegotiation();
     $path = 'user/' . $this->adminUser->id() . '/edit';
@@ -67,7 +67,7 @@ class UserAdminLanguageTest extends BrowserTestBase {
   /**
    * Tests that admin language negotiation is configurable only if enabled.
    */
-  public function testUserAdminLanguageConfigurationAvailableWithAdminLanguageNegotiation(): void {
+  public function testUserAdminLanguageConfigurationAvailableWithAdminLanguageNegotiation() {
     $this->drupalLogin($this->adminUser);
     $this->addCustomLanguage();
     $path = 'user/' . $this->adminUser->id() . '/edit';
@@ -95,7 +95,7 @@ class UserAdminLanguageTest extends BrowserTestBase {
    * have a setting for pages they cannot access, so they should not be able to
    * set a language for those pages.
    */
-  public function testUserAdminLanguageConfigurationAvailableIfAdminLanguageNegotiationIsEnabled(): void {
+  public function testUserAdminLanguageConfigurationAvailableIfAdminLanguageNegotiationIsEnabled() {
     $this->drupalLogin($this->adminUser);
     // Adds a new language, because with only one language, setting won't show.
     $this->addCustomLanguage();
@@ -122,7 +122,7 @@ class UserAdminLanguageTest extends BrowserTestBase {
   /**
    * Tests the actual language negotiation.
    */
-  public function testActualNegotiation(): void {
+  public function testActualNegotiation() {
     $this->drupalLogin($this->adminUser);
     $this->addCustomLanguage();
     $this->setLanguageNegotiation();

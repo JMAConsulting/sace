@@ -40,7 +40,7 @@ class BlockFilterTest extends WebDriverTestBase {
   /**
    * Tests block filter.
    */
-  public function testBlockFilter(): void {
+  public function testBlockFilter() {
     $this->drupalGet('admin/structure/block');
     $assertSession = $this->assertSession();
     $session = $this->getSession();

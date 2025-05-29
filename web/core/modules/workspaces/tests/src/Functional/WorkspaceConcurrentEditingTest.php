@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\workspaces\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -28,7 +26,7 @@ class WorkspaceConcurrentEditingTest extends BrowserTestBase {
   /**
    * Tests editing a node in multiple workspaces.
    */
-  public function testConcurrentEditing(): void {
+  public function testConcurrentEditing() {
     // Create a test node.
     $this->createContentType(['type' => 'test', 'label' => 'Test']);
     $this->setupWorkspaceSwitcherBlock();

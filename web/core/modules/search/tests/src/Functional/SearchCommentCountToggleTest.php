@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Functional;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
@@ -92,7 +90,7 @@ class SearchCommentCountToggleTest extends BrowserTestBase {
   /**
    * Verify that comment count display toggles properly on comment status of node.
    */
-  public function testSearchCommentCountToggle(): void {
+  public function testSearchCommentCountToggle() {
     // Search for the nodes by string in the node body.
     $edit = [
       'keys' => "'SearchCommentToggleTestCase'",

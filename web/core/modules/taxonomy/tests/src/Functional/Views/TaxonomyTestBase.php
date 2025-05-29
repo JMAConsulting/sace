@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Views;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -20,7 +18,9 @@ abstract class TaxonomyTestBase extends ViewTestBase {
   use EntityReferenceFieldCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['taxonomy', 'taxonomy_test_views'];
 

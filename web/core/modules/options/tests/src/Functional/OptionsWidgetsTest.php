@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\options\Functional;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -18,7 +16,9 @@ use Drupal\Tests\field\Functional\FieldTestBase;
 class OptionsWidgetsTest extends FieldTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'node',
@@ -125,7 +125,7 @@ class OptionsWidgetsTest extends FieldTestBase {
   /**
    * Tests the 'options_buttons' widget (single select).
    */
-  public function testRadioButtons(): void {
+  public function testRadioButtons() {
     // Create an instance of the 'single value' field.
     $field = FieldConfig::create([
       'field_storage' => $this->card1,
@@ -183,7 +183,7 @@ class OptionsWidgetsTest extends FieldTestBase {
   /**
    * Tests the 'options_buttons' widget (multiple select).
    */
-  public function testCheckBoxes(): void {
+  public function testCheckBoxes() {
     // Create an instance of the 'multiple values' field.
     $field = FieldConfig::create([
       'field_storage' => $this->card2,
@@ -273,7 +273,7 @@ class OptionsWidgetsTest extends FieldTestBase {
   /**
    * Tests the 'options_select' widget (single select).
    */
-  public function testSelectListSingle(): void {
+  public function testSelectListSingle() {
     // Create an instance of the 'single value' field.
     $field = FieldConfig::create([
       'field_storage' => $this->card1,
@@ -378,7 +378,7 @@ class OptionsWidgetsTest extends FieldTestBase {
   /**
    * Tests the '#required_error' attribute for the select list.
    */
-  public function testSelectListRequiredErrorAttribute(): void {
+  public function testSelectListRequiredErrorAttribute() {
     // Enable form alter hook.
     \Drupal::state()->set('options_test.form_alter_enable', TRUE);
     // Create an instance of the 'single value' field.
@@ -416,7 +416,7 @@ class OptionsWidgetsTest extends FieldTestBase {
   /**
    * Tests the 'options_select' widget (multiple select).
    */
-  public function testSelectListMultiple(): void {
+  public function testSelectListMultiple() {
     // Create an instance of the 'multiple values' field.
     $field = FieldConfig::create([
       'field_storage' => $this->card2,
@@ -541,7 +541,7 @@ class OptionsWidgetsTest extends FieldTestBase {
   /**
    * Tests the 'options_select' widget (float values).
    */
-  public function testSelectListFloat(): void {
+  public function testSelectListFloat() {
 
     // Create an instance of the 'float value' field.
     $field = FieldConfig::create([
@@ -588,7 +588,7 @@ class OptionsWidgetsTest extends FieldTestBase {
   /**
    * Tests the 'options_select' and 'options_button' widget for empty value.
    */
-  public function testEmptyValue(): void {
+  public function testEmptyValue() {
     // Create an instance of the 'single value' field.
     $field = FieldConfig::create([
       'field_storage' => $this->card1,
@@ -640,7 +640,7 @@ class OptionsWidgetsTest extends FieldTestBase {
    *
    * @see options_test_options_list_alter()
    */
-  public function testOptionsListAlter(): void {
+  public function testOptionsListAlter() {
     $field1 = FieldConfig::create([
       'field_storage' => $this->card1,
       'bundle' => 'entity_test',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Kernel;
 
 use Drupal\block_content\BlockContentAccessControlHandler;
@@ -23,7 +21,6 @@ use Drupal\user\Entity\User;
  * @coversDefaultClass \Drupal\block_content\BlockContentAccessControlHandler
  *
  * @group block_content
- * @group #slow
  */
 class BlockContentAccessHandlerTest extends KernelTestBase {
 
@@ -137,7 +134,7 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
    * @phpstan-param class-string<\Drupal\Core\Access\AccessResultInterface>|null $parent_access
    * @phpstan-param class-string<\Drupal\Core\Access\AccessResultInterface> $expected_access
    */
-  public function testAccess(string $operation, bool $published, bool $reusable, array $permissions, bool $isLatest, ?string $parent_access, string $expected_access, ?string $expected_access_message = NULL): void {
+  public function testAccess(string $operation, bool $published, bool $reusable, array $permissions, bool $isLatest, ?string $parent_access, string $expected_access, ?string $expected_access_message = NULL) {
     /** @var \Drupal\Core\Entity\RevisionableStorageInterface $entityStorage */
     $entityStorage = \Drupal::entityTypeManager()->getStorage('block_content');
 
@@ -163,7 +160,8 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
       }
       $this->role->save();
     }
-    $user->addRole($this->role->id())->save();
+    $user->addRole($this->role->id());
+    $user->save();
 
     if ($parent_access !== NULL) {
       $parent_entity = $this->prophesize(AccessibleInterface::class);
@@ -193,7 +191,7 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
   /**
    * Data provider for testAccess().
    */
-  public static function providerTestAccess(): array {
+  public function providerTestAccess(): array {
     $cases = [
       'view:published:reusable' => [
         'view',

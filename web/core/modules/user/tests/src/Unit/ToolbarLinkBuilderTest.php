@@ -21,7 +21,7 @@ class ToolbarLinkBuilderTest extends UnitTestCase {
    *
    * @covers ::renderDisplayName
    */
-  public function testRenderDisplayName(): void {
+  public function testRenderDisplayName() {
     $account = $this->prophesize(AccountProxyInterface::class);
     $display_name = 'Something suspicious that should be #plain_text, not #markup';
     $account->getDisplayName()->willReturn($display_name);

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\Core\Database\Database;
@@ -141,7 +139,7 @@ class NodeRevisionsTest extends NodeTestBase {
   /**
    * Checks node revision related operations.
    */
-  public function testRevisions(): void {
+  public function testRevisions() {
     // Access to the revision page for a node with 1 revision is allowed.
     $node = $this->drupalCreateNode();
     $this->drupalGet("node/" . $node->id() . "/revisions/" . $node->getRevisionId() . "/view");
@@ -203,7 +201,7 @@ class NodeRevisionsTest extends NodeTestBase {
 
     // Set the revision timestamp to an older date to make sure that the
     // confirmation message correctly displays the stored revision date.
-    $old_revision_date = \Drupal::time()->getRequestTime() - 86400;
+    $old_revision_date = REQUEST_TIME - 86400;
     $connection->update('node_revision')
       ->condition('vid', $nodes[2]->getRevisionId())
       ->fields([
@@ -337,7 +335,7 @@ class NodeRevisionsTest extends NodeTestBase {
   /**
    * Checks that revisions are correctly saved without log messages.
    */
-  public function testNodeRevisionWithoutLogMessage(): void {
+  public function testNodeRevisionWithoutLogMessage() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     // Create a node with an initial log message.
     $revision_log = $this->randomMachineName(10);
@@ -384,7 +382,7 @@ class NodeRevisionsTest extends NodeTestBase {
   /**
    * Tests the revision translations are correctly reverted.
    */
-  public function testRevisionTranslationRevert(): void {
+  public function testRevisionTranslationRevert() {
     // Create a node and a few revisions.
     $node = $this->drupalCreateNode(['langcode' => 'en']);
 

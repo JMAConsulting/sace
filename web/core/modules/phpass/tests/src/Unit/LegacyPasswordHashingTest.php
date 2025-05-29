@@ -67,7 +67,7 @@ class LegacyPasswordHashingTest extends UnitTestCase {
    *
    * @covers ::needsRehash
    */
-  public function testPasswordNeedsUpdate(): void {
+  public function testPasswordNeedsUpdate() {
     // The md5 password should be flagged as needing an update.
     $this->assertTrue($this->passwordHasher->needsRehash($this->md5HashedPassword), 'Upgraded md5 password hash needs a new hash.');
   }
@@ -82,7 +82,7 @@ class LegacyPasswordHashingTest extends UnitTestCase {
    * @covers ::generateSalt
    * @covers ::needsRehash
    */
-  public function testPasswordHashing(): void {
+  public function testPasswordHashing() {
     $this->assertSame(PhpassHashedPassword::MIN_HASH_COUNT, $this->passwordHasher->getCountLog2($this->hashedPassword), 'Hashed password has the minimum number of log2 iterations.');
     $this->assertNotEquals($this->hashedPassword, $this->md5HashedPassword, 'Password hashes not the same.');
     $this->assertTrue($this->passwordHasher->check($this->password, $this->md5HashedPassword), 'Password check succeeds.');
@@ -101,7 +101,7 @@ class LegacyPasswordHashingTest extends UnitTestCase {
    * @covers ::check
    * @covers ::needsRehash
    */
-  public function testPasswordRehashing(): void {
+  public function testPasswordRehashing() {
     // Increment the log2 iteration to MIN + 1.
     $password_hasher = new PhpassHashedPassword(PhpassHashedPassword::MIN_HASH_COUNT + 1);
     $this->assertTrue($password_hasher->needsRehash($this->hashedPassword), 'Needs a new hash after incrementing the log2 count.');

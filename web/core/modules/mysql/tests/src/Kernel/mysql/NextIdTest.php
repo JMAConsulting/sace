@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\mysql\Kernel\mysql;
 
 use Drupal\Core\Database\Database;
@@ -48,7 +46,7 @@ class NextIdTest extends DriverSpecificDatabaseTestBase {
    *
    * @see \Drupal\mysql\Driver\Database\mysql\Connection::__destruct()
    */
-  public function testDbNextIdClosedConnection(): void {
+  public function testDbNextIdClosedConnection() {
     $this->expectDeprecation('Drupal\Core\Database\Connection::nextId() is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Modules should use instead the keyvalue storage for the last used id. See https://www.drupal.org/node/3349345');
     $this->expectDeprecation('Drupal\mysql\Driver\Database\mysql\Connection::nextIdDelete() is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Modules should use instead the keyvalue storage for the last used id. See https://www.drupal.org/node/3349345');
 

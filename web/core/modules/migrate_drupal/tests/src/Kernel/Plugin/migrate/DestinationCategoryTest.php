@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\Plugin\migrate;
 
 use Drupal\ban\Plugin\migrate\destination\BlockedIp;
@@ -47,7 +45,7 @@ class DestinationCategoryTest extends MigrateDrupalTestBase {
   /**
    * Tests that all D6 migrations are tagged as either Configuration or Content.
    */
-  public function testD6Categories(): void {
+  public function testD6Categories() {
     $migrations = $this->drupal6Migrations();
     $this->assertArrayHasKey('d6_node:page', $migrations);
     $this->assertCategories($migrations);
@@ -56,7 +54,7 @@ class DestinationCategoryTest extends MigrateDrupalTestBase {
   /**
    * Tests that all D7 migrations are tagged as either Configuration or Content.
    */
-  public function testD7Categories(): void {
+  public function testD7Categories() {
     $migrations = $this->drupal7Migrations();
     $this->assertArrayHasKey('d7_node:page', $migrations);
     $this->assertCategories($migrations);

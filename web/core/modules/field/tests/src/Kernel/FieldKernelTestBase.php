@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -17,7 +15,9 @@ use Drupal\KernelTests\KernelTestBase;
 abstract class FieldKernelTestBase extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'user',

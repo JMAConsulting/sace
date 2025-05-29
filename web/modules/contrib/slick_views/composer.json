@@ -10,6 +10,6 @@
     "source": "https://git.drupalcode.org/project/slick_views"
   },
   "require": {
-    "drupal/slick": "^3.0"
+    "drupal/slick": "^2.10"
   }
 }

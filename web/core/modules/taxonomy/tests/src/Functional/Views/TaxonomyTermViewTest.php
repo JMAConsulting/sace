@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Views;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -19,7 +17,9 @@ use Drupal\views\Views;
 class TaxonomyTermViewTest extends TaxonomyTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['taxonomy', 'views'];
 
@@ -84,7 +84,7 @@ class TaxonomyTermViewTest extends TaxonomyTestBase {
   /**
    * Tests that the taxonomy term view is working properly.
    */
-  public function testTaxonomyTermView(): void {
+  public function testTaxonomyTermView() {
     // Create terms in the vocabulary.
     $term = $this->createTerm();
 

@@ -20,7 +20,7 @@ class EntityConstraintViolationListTest extends UnitTestCase {
   /**
    * @covers ::filterByFields
    */
-  public function testFilterByFields(): void {
+  public function testFilterByFields() {
     $account = $this->prophesize('\Drupal\Core\Session\AccountInterface')->reveal();
     $entity = $this->setupEntity($account);
 
@@ -35,7 +35,7 @@ class EntityConstraintViolationListTest extends UnitTestCase {
   /**
    * @covers ::filterByFields
    */
-  public function testFilterByFieldsWithCompositeConstraints(): void {
+  public function testFilterByFieldsWithCompositeConstraints() {
     $account = $this->prophesize('\Drupal\Core\Session\AccountInterface')->reveal();
     $entity = $this->setupEntity($account);
 
@@ -50,7 +50,7 @@ class EntityConstraintViolationListTest extends UnitTestCase {
   /**
    * @covers ::filterByFieldAccess
    */
-  public function testFilterByFieldAccess(): void {
+  public function testFilterByFieldAccess() {
     $account = $this->prophesize('\Drupal\Core\Session\AccountInterface')->reveal();
     $entity = $this->setupEntity($account);
 
@@ -65,7 +65,7 @@ class EntityConstraintViolationListTest extends UnitTestCase {
   /**
    * @covers ::filterByFieldAccess
    */
-  public function testFilterByFieldAccessWithCompositeConstraint(): void {
+  public function testFilterByFieldAccessWithCompositeConstraint() {
     $account = $this->prophesize('\Drupal\Core\Session\AccountInterface')->reveal();
     $entity = $this->setupEntity($account);
 
@@ -80,7 +80,7 @@ class EntityConstraintViolationListTest extends UnitTestCase {
   /**
    * @covers ::findByCodes
    */
-  public function testFindByCodes(): void {
+  public function testFindByCodes() {
     $account = $this->prophesize('\Drupal\Core\Session\AccountInterface')->reveal();
     $entity = $this->setupEntity($account);
 

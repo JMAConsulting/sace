@@ -44,7 +44,7 @@ class MigrateStubTest extends UnitTestCase {
    *
    * @covers ::createStub
    */
-  public function testCreateStub(): void {
+  public function testCreateStub() {
     $destination_plugin = $this->prophesize(MigrateDestinationInterface::class);
     $destination_plugin->import(Argument::type(Row::class))->willReturn(['id' => 2]);
 
@@ -71,7 +71,7 @@ class MigrateStubTest extends UnitTestCase {
   /**
    * Tests that an error is logged if the plugin manager throws an exception.
    */
-  public function testExceptionOnPluginNotFound(): void {
+  public function testExceptionOnPluginNotFound() {
     $this->migrationPluginManager->createInstances(['test_migration'])->willReturn([]);
     $this->expectException(PluginNotFoundException::class);
     $this->expectExceptionMessage("Plugin ID 'test_migration' was not found.");
@@ -82,7 +82,7 @@ class MigrateStubTest extends UnitTestCase {
   /**
    * Tests that an error is logged on derived migrations.
    */
-  public function testExceptionOnDerivedMigration(): void {
+  public function testExceptionOnDerivedMigration() {
     $this->migrationPluginManager->createInstances(['test_migration'])->willReturn([
       'test_migration:d1' => $this->prophesize(MigrationInterface::class)->reveal(),
       'test_migration:d2' => $this->prophesize(MigrationInterface::class)->reveal(),

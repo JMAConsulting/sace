@@ -47,7 +47,7 @@ class SearchPluginCollectionTest extends UnitTestCase {
   /**
    * Tests the get() method.
    */
-  public function testGet(): void {
+  public function testGet() {
     $plugin = $this->createMock('Drupal\search\Plugin\SearchInterface');
     $this->pluginManager->expects($this->once())
       ->method('createInstance')
@@ -58,7 +58,7 @@ class SearchPluginCollectionTest extends UnitTestCase {
   /**
    * Tests the get() method with a configurable plugin.
    */
-  public function testGetWithConfigurablePlugin(): void {
+  public function testGetWithConfigurablePlugin() {
     $plugin = $this->createMock('Drupal\search\Plugin\ConfigurableSearchPluginInterface');
     $plugin->expects($this->once())
       ->method('setSearchPageId')

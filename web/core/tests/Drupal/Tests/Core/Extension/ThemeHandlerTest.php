@@ -46,7 +46,7 @@ class ThemeHandlerTest extends UnitTestCase {
     $this->configFactory = $this->getConfigFactoryStub([
       'core.extension' => [
         'module' => [],
-        'theme' => ['stark' => 'stark'],
+        'theme' => [],
         'disabled' => [
           'theme' => [],
         ],
@@ -69,10 +69,8 @@ class ThemeHandlerTest extends UnitTestCase {
    * Tests rebuilding the theme data.
    *
    * @see \Drupal\Core\Extension\ThemeHandler::rebuildThemeData()
-   * @group legacy
    */
-  public function testRebuildThemeData(): void {
-    $this->expectDeprecation("\Drupal\Core\Extension\ThemeHandlerInterface::rebuildThemeData() is deprecated in drupal:10.3.0 and is removed from drupal:12.0.0. Use \Drupal::service('extension.list.theme')->reset()->getList() instead. See https://www.drupal.org/node/3413196");
+  public function testRebuildThemeData() {
     $this->themeList->expects($this->once())
       ->method('reset')
       ->willReturnSelf();
@@ -97,7 +95,7 @@ class ThemeHandlerTest extends UnitTestCase {
   /**
    * Tests empty libraries in theme.info.yml file.
    */
-  public function testThemeLibrariesEmpty(): void {
+  public function testThemeLibrariesEmpty() {
     $theme = new Extension($this->root, 'theme', 'core/modules/system/tests/themes/test_theme_libraries_empty', 'test_theme_libraries_empty.info.yml');
     try {
       $this->themeHandler->addTheme($theme);
@@ -106,16 +104,6 @@ class ThemeHandlerTest extends UnitTestCase {
     catch (\Exception $e) {
       $this->fail('Empty libraries key in theme.info.yml causes PHP warning.');
     }
-  }
-
-  /**
-   * Test that a missing theme doesn't break ThemeHandler::listInfo().
-   *
-   * @covers ::listInfo
-   */
-  public function testMissingTheme(): void {
-    $themes = $this->themeHandler->listInfo();
-    $this->assertSame([], $themes);
   }
 
 }

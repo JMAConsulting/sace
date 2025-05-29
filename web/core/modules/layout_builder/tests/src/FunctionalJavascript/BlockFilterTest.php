@@ -12,7 +12,6 @@ use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
  * Tests the JavaScript functionality of the block add filter.
  *
  * @group layout_builder
- * @group legacy
  */
 class BlockFilterTest extends WebDriverTestBase {
 
@@ -24,7 +23,6 @@ class BlockFilterTest extends WebDriverTestBase {
     'node',
     'datetime',
     'layout_builder',
-    'layout_builder_expose_all_field_blocks',
     'user',
   ];
 
@@ -53,7 +51,7 @@ class BlockFilterTest extends WebDriverTestBase {
   /**
    * Tests block filter.
    */
-  public function testBlockFilter(): void {
+  public function testBlockFilter() {
     $assert_session = $this->assertSession();
     $session = $this->getSession();
     $page = $session->getPage();

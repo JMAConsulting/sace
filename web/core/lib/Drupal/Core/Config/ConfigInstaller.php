@@ -63,7 +63,7 @@ class ConfigInstaller implements ConfigInstallerInterface {
   /**
    * The name of the currently active installation profile.
    *
-   * @var string|false|null
+   * @var string
    */
   protected $installProfile;
 
@@ -177,7 +177,7 @@ class ConfigInstaller implements ConfigInstallerInterface {
   /**
    * {@inheritdoc}
    */
-  public function installOptionalConfig(?StorageInterface $storage = NULL, $dependency = []) {
+  public function installOptionalConfig(StorageInterface $storage = NULL, $dependency = []) {
     $profile = $this->drupalGetProfile();
     $enabled_extensions = $this->getEnabledExtensions();
     $existing_config = $this->getActiveStorages()->listAll();

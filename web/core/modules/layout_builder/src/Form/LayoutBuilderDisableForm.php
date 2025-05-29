@@ -4,7 +4,6 @@ namespace Drupal\layout_builder\Form;
 
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\WorkspaceDynamicSafeFormInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\layout_builder\DefaultsSectionStorageInterface;
 use Drupal\layout_builder\LayoutTempstoreRepositoryInterface;
@@ -17,9 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @internal
  *   Form classes are internal.
  */
-class LayoutBuilderDisableForm extends ConfirmFormBase implements WorkspaceDynamicSafeFormInterface {
-
-  use WorkspaceSafeFormTrait;
+class LayoutBuilderDisableForm extends ConfirmFormBase {
 
   /**
    * The layout tempstore repository.
@@ -89,7 +86,7 @@ class LayoutBuilderDisableForm extends ConfirmFormBase implements WorkspaceDynam
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?SectionStorageInterface $section_storage = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, SectionStorageInterface $section_storage = NULL) {
     if (!$section_storage instanceof DefaultsSectionStorageInterface) {
       throw new \InvalidArgumentException(sprintf('The section storage with type "%s" and ID "%s" does not provide defaults', $section_storage->getStorageType(), $section_storage->getStorageId()));
     }

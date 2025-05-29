@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\Core\Link;
@@ -49,7 +47,7 @@ class NodeRevisionsUiTest extends NodeTestBase {
   /**
    * Checks that unchecking 'Create new revision' works when editing a node.
    */
-  public function testNodeFormSaveWithoutRevision(): void {
+  public function testNodeFormSaveWithoutRevision() {
     $this->drupalLogin($this->editor);
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
 
@@ -94,7 +92,7 @@ class NodeRevisionsUiTest extends NodeTestBase {
   /**
    * Checks HTML double escaping of revision logs.
    */
-  public function testNodeRevisionDoubleEscapeFix(): void {
+  public function testNodeRevisionDoubleEscapeFix() {
     $this->drupalLogin($this->editor);
     $nodes = [];
 
@@ -105,7 +103,7 @@ class NodeRevisionsUiTest extends NodeTestBase {
       '#theme' => 'username',
       '#account' => $this->editor,
     ];
-    $editor = \Drupal::service('renderer')->renderInIsolation($username);
+    $editor = \Drupal::service('renderer')->renderPlain($username);
 
     // Get original node.
     $nodes[] = clone $node;
@@ -139,7 +137,7 @@ class NodeRevisionsUiTest extends NodeTestBase {
   /**
    * Checks the Revisions tab.
    */
-  public function testNodeRevisionsTabWithDefaultRevision(): void {
+  public function testNodeRevisionsTabWithDefaultRevision() {
     $this->drupalLogin($this->editor);
 
     // Create the node.

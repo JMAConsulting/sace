@@ -159,7 +159,7 @@
           <div class="clear"></div>
         </div>
       {/if}
-      {if isset($pcpSupporterText) && $pcpSupporterText}
+      {if $pcpSupporterText}
         <div class="crm-public-form-item crm-section pcpSupporterText-section">
           <div class="label">&nbsp;</div>
           <div class="content">{$pcpSupporterText}</div>

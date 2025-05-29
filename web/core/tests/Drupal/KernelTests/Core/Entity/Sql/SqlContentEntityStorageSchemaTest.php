@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity\Sql;
 
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -41,7 +39,7 @@ class SqlContentEntityStorageSchemaTest extends EntityKernelTestBase {
   /**
    * Tests updating a shared table field definition.
    */
-  public function testOnFieldStorageDefinitionUpdateShared(): void {
+  public function testOnFieldStorageDefinitionUpdateShared() {
     // Install the test entity type with an additional field. Use a multi-column
     // field so that field name and column name(s) do not match.
     $field = BaseFieldDefinition::create('shape')

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Migrate\d6;
 
 use Drupal\node\NodeInterface;
@@ -64,7 +62,7 @@ class MigrateNodeRevisionTest extends MigrateNodeTestBase {
   /**
    * Tests node revisions migration from Drupal 6 to 8.
    */
-  public function testNodeRevision(): void {
+  public function testNodeRevision() {
     $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision(2001);
     /** @var \Drupal\node\NodeInterface $node */
     $this->assertSame('1', $node->id());

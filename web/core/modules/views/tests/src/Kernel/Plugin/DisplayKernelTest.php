@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\views\Views;
@@ -22,7 +20,9 @@ use Drupal\views\Plugin\views\row\RowPluginBase;
 class DisplayKernelTest extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'node', 'field', 'user'];
 
@@ -61,7 +61,7 @@ class DisplayKernelTest extends ViewsKernelTestBase {
   /**
    * Tests the default display options.
    */
-  public function testDefaultOptions(): void {
+  public function testDefaultOptions() {
     // Save the view.
     $view = Views::getView('test_display_defaults');
     $view->mergeDefaults();
@@ -89,7 +89,7 @@ class DisplayKernelTest extends ViewsKernelTestBase {
   /**
    * Tests the \Drupal\views\Plugin\views\display\DisplayPluginBase::getPlugin() method.
    */
-  public function testGetPlugin(): void {
+  public function testGetPlugin() {
     $view = Views::getView('test_display_defaults');
     $view->initDisplay();
     $display_handler = $view->display_handler;
@@ -118,7 +118,7 @@ class DisplayKernelTest extends ViewsKernelTestBase {
   /**
    * Tests the ::isIdentifierUnique method.
    */
-  public function testisIdentifierUnique(): void {
+  public function testisIdentifierUnique() {
     $view = Views::getView('test_view');
     $view->initDisplay();
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\DrupalKernel;
 
 use Drupal\Tests\BrowserTestBase;
@@ -26,7 +24,7 @@ class ContainerRebuildWebTest extends BrowserTestBase {
   /**
    * Sets a different deployment identifier.
    */
-  public function testSetContainerRebuildWithDifferentDeploymentIdentifier(): void {
+  public function testSetContainerRebuildWithDifferentDeploymentIdentifier() {
     $assert = $this->assertSession();
 
     // Ensure the parameter is not set.
@@ -43,7 +41,7 @@ class ContainerRebuildWebTest extends BrowserTestBase {
   /**
    * Tests container invalidation.
    */
-  public function testContainerInvalidation(): void {
+  public function testContainerInvalidation() {
     $assert = $this->assertSession();
 
     // Ensure that parameter is not set.

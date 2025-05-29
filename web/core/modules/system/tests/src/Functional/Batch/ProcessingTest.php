@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Batch;
 
 use Drupal\Core\Url;
@@ -11,12 +9,13 @@ use Drupal\Tests\BrowserTestBase;
  * Tests batch processing in form and non-form workflow.
  *
  * @group Batch
- * @group #slow
  */
 class ProcessingTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['batch_test', 'test_page_test'];
 
@@ -28,7 +27,7 @@ class ProcessingTest extends BrowserTestBase {
   /**
    * Tests batches triggered outside of form submission.
    */
-  public function testBatchNoForm(): void {
+  public function testBatchNoForm() {
     // Displaying the page triggers batch 1.
     $this->drupalGet('batch-test/no-form');
     $this->assertBatchMessages($this->_resultMessages('batch_1'));
@@ -39,7 +38,7 @@ class ProcessingTest extends BrowserTestBase {
   /**
    * Tests batches that redirect in the batch finished callback.
    */
-  public function testBatchRedirectFinishedCallback(): void {
+  public function testBatchRedirectFinishedCallback() {
     // Displaying the page triggers batch 1.
     $this->drupalGet('batch-test/finish-redirect');
     $this->assertBatchMessages($this->_resultMessages('batch_1'));
@@ -53,7 +52,7 @@ class ProcessingTest extends BrowserTestBase {
   /**
    * Tests batches defined in a form submit handler.
    */
-  public function testBatchForm(): void {
+  public function testBatchForm() {
     // Batch 0: no operation.
     $edit = ['batch' => 'batch_0'];
     $this->drupalGet('batch-test');
@@ -131,7 +130,7 @@ class ProcessingTest extends BrowserTestBase {
   /**
    * Tests batches defined in a multistep form.
    */
-  public function testBatchFormMultistep(): void {
+  public function testBatchFormMultistep() {
     $this->drupalGet('batch-test/multistep');
     $this->assertSession()->assertNoEscaped('<');
     $this->assertSession()->pageTextContains('step 1');
@@ -161,7 +160,7 @@ class ProcessingTest extends BrowserTestBase {
   /**
    * Tests batches defined in different submit handlers on the same form.
    */
-  public function testBatchFormMultipleBatches(): void {
+  public function testBatchFormMultipleBatches() {
     // Batches 1, 2 and 3 are triggered in sequence by different submit
     // handlers. Each submit handler modify the submitted 'value'.
     $value = rand(0, 255);
@@ -181,7 +180,7 @@ class ProcessingTest extends BrowserTestBase {
    *
    * Same as above, but the form is submitted through drupal_form_execute().
    */
-  public function testBatchFormProgrammatic(): void {
+  public function testBatchFormProgrammatic() {
     // Batches 1, 2 and 3 are triggered in sequence by different submit
     // handlers. Each submit handler modify the submitted 'value'.
     $value = rand(0, 255);
@@ -197,7 +196,7 @@ class ProcessingTest extends BrowserTestBase {
   /**
    * Tests form submission during a batch operation.
    */
-  public function testDrupalFormSubmitInBatch(): void {
+  public function testDrupalFormSubmitInBatch() {
     // Displaying the page triggers a batch that programmatically submits a
     // form.
     $value = rand(0, 255);
@@ -210,7 +209,7 @@ class ProcessingTest extends BrowserTestBase {
    *
    * @see https://www.drupal.org/node/600836
    */
-  public function testBatchLargePercentage(): void {
+  public function testBatchLargePercentage() {
     // Displaying the page triggers batch 5.
     $this->drupalGet('batch-test/large-percentage');
     $this->assertBatchMessages($this->_resultMessages('batch_5'));

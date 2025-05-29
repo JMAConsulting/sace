@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\user\RoleInterface;
@@ -14,7 +12,9 @@ use Drupal\user\RoleInterface;
 class CommentBlockTest extends CommentTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'views'];
 
@@ -43,14 +43,14 @@ class CommentBlockTest extends CommentTestBase {
   /**
    * Tests the recent comments block.
    */
-  public function testRecentCommentBlock(): void {
+  public function testRecentCommentBlock() {
     $this->drupalLogin($this->adminUser);
     $this->drupalPlaceBlock('views_block:comments_recent-block_1');
 
     // Add some test comments, with and without subjects. Because the 10 newest
     // comments should be shown by the block, we create 11 to test that behavior
     // below.
-    $timestamp = \Drupal::time()->getRequestTime();
+    $timestamp = REQUEST_TIME;
     for ($i = 0; $i < 11; ++$i) {
       $subject = ($i % 2) ? $this->randomMachineName() : '';
       $comments[$i] = $this->postComment($this->node, $this->randomMachineName(), $subject);

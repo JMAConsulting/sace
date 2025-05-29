@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Wizard;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -20,7 +18,9 @@ class TaggedWithTest extends WizardTestBase {
   use EntityReferenceFieldCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['taxonomy'];
 
@@ -125,7 +125,7 @@ class TaggedWithTest extends WizardTestBase {
   /**
    * Tests the "tagged with" functionality.
    */
-  public function testTaggedWith(): void {
+  public function testTaggedWith() {
     // In this test we will only create nodes that have an instance of the tag
     // field.
     $node_add_path = 'node/add/' . $this->nodeTypeWithTags->id();
@@ -196,7 +196,7 @@ class TaggedWithTest extends WizardTestBase {
   /**
    * Tests that the "tagged with" form element only shows for node types that support it.
    */
-  public function testTaggedWithByNodeType(): void {
+  public function testTaggedWithByNodeType() {
     // The tagging field is associated with one of our node types only. So the
     // "tagged with" form element on the view wizard should appear on the form
     // by default (when the wizard is configured to display all content) and
@@ -247,7 +247,7 @@ class TaggedWithTest extends WizardTestBase {
   /**
    * Tests that "tagged with" works with views entity reference.
    */
-  public function testTaggedWithByViewReference(): void {
+  public function testTaggedWithByViewReference() {
     Term::create(['name' => 'term1', 'vid' => 'views_testing_tags']);
     $tags_xpath = '//input[@name="show[tagged_with]"]';
 

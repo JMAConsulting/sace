@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\EntityReference;
 
 use Behat\Mink\Element\NodeElement;
@@ -79,7 +77,7 @@ class EntityReferenceAdminTest extends BrowserTestBase {
   /**
    * Tests the Entity Reference Admin UI.
    */
-  public function testFieldAdminHandler(): void {
+  public function testFieldAdminHandler() {
     $bundle_path = 'admin/structure/types/manage/' . $this->type;
     // Create a new view and display it as an entity reference.
     $edit = [
@@ -260,7 +258,7 @@ class EntityReferenceAdminTest extends BrowserTestBase {
   /**
    * Tests the formatters for the Entity References.
    */
-  public function testAvailableFormatters(): void {
+  public function testAvailableFormatters() {
     // Create a new vocabulary.
     Vocabulary::create(['vid' => 'tags', 'name' => 'tags'])->save();
 
@@ -321,7 +319,7 @@ class EntityReferenceAdminTest extends BrowserTestBase {
    * The tested entity reference field has multiple target bundles and is set
    * to auto-create the target entity.
    */
-  public function testMultipleTargetBundles(): void {
+  public function testMultipleTargetBundles() {
     /** @var \Drupal\taxonomy\Entity\Vocabulary[] $vocabularies */
     $vocabularies = [];
     for ($i = 0; $i < 2; $i++) {

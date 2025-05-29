@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Kernel\Migrate\d7;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -45,7 +43,7 @@ class MigrateCustomBlockContentTranslationTest extends MigrateDrupal7TestBase {
   /**
    * Tests the Drupal 7 i18n content block strings to Drupal 8 migration.
    */
-  public function testCustomBlockContentTranslation(): void {
+  public function testCustomBlockContentTranslation() {
     /** @var \Drupal\block_content\Entity\BlockContent $block */
     $block = BlockContent::load(1)->getTranslation('fr');
     $this->assertSame('fr - Mildly amusing limerick of the day', $block->label());

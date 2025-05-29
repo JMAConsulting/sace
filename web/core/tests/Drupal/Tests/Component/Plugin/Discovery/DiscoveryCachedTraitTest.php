@@ -23,7 +23,7 @@ class DiscoveryCachedTraitTest extends TestCase {
    *   - Definitions to be returned by getDefinitions().
    *   - Plugin name to query for.
    */
-  public static function providerGetDefinition() {
+  public function providerGetDefinition() {
     return [
       ['definition', [], ['plugin_name' => 'definition'], 'plugin_name'],
       ['definition', ['plugin_name' => 'definition'], [], 'plugin_name'],
@@ -35,7 +35,7 @@ class DiscoveryCachedTraitTest extends TestCase {
    * @covers ::getDefinition
    * @dataProvider providerGetDefinition
    */
-  public function testGetDefinition($expected, $cached_definitions, $get_definitions, $plugin_id): void {
+  public function testGetDefinition($expected, $cached_definitions, $get_definitions, $plugin_id) {
     $trait = $this->getMockBuilder(DiscoveryCachedTraitMockableClass::class)
       ->onlyMethods(['getDefinitions'])
       ->getMock();

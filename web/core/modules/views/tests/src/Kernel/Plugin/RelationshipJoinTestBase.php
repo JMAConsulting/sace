@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -17,7 +15,9 @@ use Drupal\views\Views;
 abstract class RelationshipJoinTestBase extends PluginKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system', 'user', 'field'];
 

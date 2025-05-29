@@ -152,6 +152,7 @@ class UfSelect extends InOperator implements ContainerFactoryPluginInterface {
     $view = $form_state->get('view');
     // Check for a views contextual filter with term id args in the 'user_team' taxonomy.
     $user_team_target_ids = [];
+if (empty($view->display_handler)) {return;}
     foreach ($view->display_handler->getHandlers('argument') as $handler) {
       if ('taxonomy_term.tid' == $handler->getEntityType() . $handler->getField()) {
         $tids = (!empty($_GET['tid']) ? explode(',', $_GET['tid']) : (!empty($handler->getValue()) ? explode(' ', $handler->getValue()) : []));

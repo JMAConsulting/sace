@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Field;
 
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -17,7 +15,9 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 class FieldSettingsTest extends EntityKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['field', 'field_test'];
 
@@ -25,7 +25,7 @@ class FieldSettingsTest extends EntityKernelTestBase {
    * @covers \Drupal\Core\Field\BaseFieldDefinition::getSettings
    * @covers \Drupal\Core\Field\BaseFieldDefinition::setSettings
    */
-  public function testBaseFieldSettings(): void {
+  public function testBaseFieldSettings() {
     $base_field = BaseFieldDefinition::create('test_field');
 
     // Check that the default settings have been populated.
@@ -49,7 +49,7 @@ class FieldSettingsTest extends EntityKernelTestBase {
   /**
    * Tests the base field settings on a cloned base field definition object.
    */
-  public function testBaseFieldSettingsOnClone(): void {
+  public function testBaseFieldSettingsOnClone() {
     $base_field = BaseFieldDefinition::create('test_field');
 
     // Check that the default settings have been populated.
@@ -78,7 +78,7 @@ class FieldSettingsTest extends EntityKernelTestBase {
    * @covers \Drupal\field\Entity\FieldStorageConfig::getSettings
    * @covers \Drupal\field\Entity\FieldStorageConfig::setSettings
    */
-  public function testConfigurableFieldStorageSettings(): void {
+  public function testConfigurableFieldStorageSettings() {
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'test_field',
       'entity_type' => 'entity_test',
@@ -106,7 +106,7 @@ class FieldSettingsTest extends EntityKernelTestBase {
    * @covers \Drupal\field\Entity\FieldStorageConfig::getSettings
    * @covers \Drupal\field\Entity\FieldStorageConfig::setSettings
    */
-  public function testConfigurableFieldSettings(): void {
+  public function testConfigurableFieldSettings() {
     $field_storage = FieldStorageConfig::create([
       'field_name' => 'test_field',
       'entity_type' => 'entity_test',

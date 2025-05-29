@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Kernel;
 
 use Drupal\Core\Form\FormState;
@@ -25,7 +23,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests that metadata is correctly mapped irrespective of how media is saved.
    */
-  public function testSave(): void {
+  public function testSave() {
     $field_storage = FieldStorageConfig::create([
       'entity_type' => 'media',
       'field_name' => 'field_to_map_to',
@@ -91,7 +89,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests default media name functionality.
    */
-  public function testDefaultName(): void {
+  public function testDefaultName() {
     // Make sure that the default name is set if not provided by the user.
     /** @var \Drupal\media\MediaInterface $media */
     $media = Media::create(['bundle' => $this->testMediaType->id()]);
@@ -135,7 +133,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests metadata mapping functionality.
    */
-  public function testMetadataMapping(): void {
+  public function testMetadataMapping() {
     $field_name = 'field_to_map_to';
     $attribute_name = 'attribute_to_map';
     $storage = FieldStorageConfig::create([
@@ -216,7 +214,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests the getSourceFieldValue() method.
    */
-  public function testGetSourceFieldValue(): void {
+  public function testGetSourceFieldValue() {
     /** @var \Drupal\media\MediaInterface $media */
     $media = Media::create([
       'bundle' => $this->testMediaType->id(),
@@ -234,7 +232,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests the thumbnail functionality.
    */
-  public function testThumbnail(): void {
+  public function testThumbnail() {
     file_put_contents('public://thumbnail1.jpg', '');
     file_put_contents('public://thumbnail2.jpg', '');
 
@@ -384,7 +382,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests the media item constraints functionality.
    */
-  public function testConstraints(): void {
+  public function testConstraints() {
     // Test entity constraints.
     \Drupal::state()->set('media_source_test_entity_constraints', [
       'MediaTestConstraint' => [],
@@ -451,7 +449,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests logic related to the automated source field creation.
    */
-  public function testSourceFieldCreation(): void {
+  public function testSourceFieldCreation() {
     /** @var \Drupal\media\MediaTypeInterface $type */
     $type = MediaType::create([
       'id' => 'test_type',
@@ -536,7 +534,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests configuration form submit handler on the base media source plugin.
    */
-  public function testSourceConfigurationSubmit(): void {
+  public function testSourceConfigurationSubmit() {
     /** @var \Drupal\media\MediaSourceManager $manager */
     $manager = $this->container->get('plugin.manager.media.source');
     $form = [];
@@ -571,7 +569,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests different display options for the source field.
    */
-  public function testDifferentSourceFieldDisplays(): void {
+  public function testDifferentSourceFieldDisplays() {
     $id = 'test_different_displays';
     $field_name = 'field_media_different_display';
 
@@ -592,7 +590,7 @@ class MediaSourceTest extends MediaKernelTestBase {
   /**
    * Tests hidden source field in media type.
    */
-  public function testHiddenSourceField(): void {
+  public function testHiddenSourceField() {
     $id = 'test_hidden_source_field';
     $field_name = 'field_media_hidden';
 

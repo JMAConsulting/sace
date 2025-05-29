@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Kernel;
 
 use Drupal\Core\Access\AccessResult;
@@ -13,7 +11,6 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
  * Tests the media access control handler.
  *
  * @group media
- * @group #slow
  *
  * @coversDefaultClass \Drupal\media\MediaAccessControlHandler
  */
@@ -42,7 +39,7 @@ class MediaAccessControlHandlerTest extends MediaKernelTestBase {
    * @covers ::checkAccess
    * @dataProvider providerAccess
    */
-  public function testAccess(array $permissions, array $entity_values, string $operation, AccessResultInterface $expected_result, array $expected_cache_contexts, array $expected_cache_tags, bool $is_latest_revision): void {
+  public function testAccess(array $permissions, array $entity_values, string $operation, AccessResultInterface $expected_result, array $expected_cache_contexts, array $expected_cache_tags, bool $is_latest_revision) {
     /** @var \Drupal\Core\Entity\RevisionableStorageInterface $entityStorage $entity_storage */
     $entity_storage = $this->container->get('entity_type.manager')->getStorage('media');
 
@@ -91,7 +88,7 @@ class MediaAccessControlHandlerTest extends MediaKernelTestBase {
    * @covers ::checkCreateAccess
    * @dataProvider providerCreateAccess
    */
-  public function testCreateAccess(array $permissions, AccessResultInterface $expected_result, array $expected_cache_contexts, array $expected_cache_tags): void {
+  public function testCreateAccess(array $permissions, AccessResultInterface $expected_result, array $expected_cache_contexts, array $expected_cache_tags) {
     $user = $this->createUser($permissions);
 
     /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
@@ -135,7 +132,7 @@ class MediaAccessControlHandlerTest extends MediaKernelTestBase {
    * @return array
    *   The data sets to test.
    */
-  public static function providerAccess() {
+  public function providerAccess() {
     $test_data = [];
 
     // Check published / unpublished media access for a user owning the media
@@ -627,7 +624,7 @@ class MediaAccessControlHandlerTest extends MediaKernelTestBase {
    * @return array
    *   The data sets to test.
    */
-  public static function providerCreateAccess() {
+  public function providerCreateAccess() {
     $test_data = [];
 
     // Check create access for a user without permissions.

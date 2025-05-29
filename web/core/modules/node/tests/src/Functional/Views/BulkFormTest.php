@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional\Views;
 
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -102,7 +100,7 @@ class BulkFormTest extends NodeTestBase {
   /**
    * Tests the node bulk form.
    */
-  public function testBulkForm(): void {
+  public function testBulkForm() {
     // Unpublish a node using the bulk form.
     $node = reset($this->nodes);
     $this->assertTrue($node->isPublished(), 'Node is initially published');
@@ -223,7 +221,7 @@ class BulkFormTest extends NodeTestBase {
   /**
    * Tests multiple deletion.
    */
-  public function testBulkDeletion(): void {
+  public function testBulkDeletion() {
     // Select a bunch of translated and untranslated nodes and check that
     // nodes and individual translations are properly deleted.
     $edit = [

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -15,9 +13,6 @@ use Drupal\views\Views;
  */
 class FilterNumericTest extends ViewsKernelTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['system'];
 
   /**
@@ -45,7 +40,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     return $data;
   }
 
-  public function testFilterNumericSimple(): void {
+  public function testFilterNumericSimple() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -71,7 +66,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testFilterNumericExposedGroupedSimple(): void {
+  public function testFilterNumericExposedGroupedSimple() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -106,7 +101,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
    *
    * @dataProvider providerTestFilterNumericBetween
    */
-  public function testFilterNumericBetween($operator, $min, $max, array $expected_result): void {
+  public function testFilterNumericBetween($operator, $min, $max, array $expected_result) {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -135,7 +130,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
    *   An array of arrays, each containing the parameters for
    *   self::testFilterNumericBetween().
    */
-  public static function providerTestFilterNumericBetween() {
+  public function providerTestFilterNumericBetween() {
     $all_result = [
       ['name' => 'John', 'age' => 25],
       ['name' => 'George', 'age' => 27],
@@ -195,7 +190,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     ];
   }
 
-  public function testFilterNumericExposedGroupedBetween(): void {
+  public function testFilterNumericExposedGroupedBetween() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -224,7 +219,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testFilterNumericExposedGroupedNotBetween(): void {
+  public function testFilterNumericExposedGroupedNotBetween() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -252,7 +247,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
   /**
    * Tests the numeric filter handler with the 'regular_expression' operator.
    */
-  public function testFilterNumericRegularExpression(): void {
+  public function testFilterNumericRegularExpression() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -283,7 +278,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
   /**
    * Tests the numeric filter with negated 'regular_expression' operator.
    */
-  public function testFilterNumericNotRegularExpression(): void {
+  public function testFilterNumericNotRegularExpression() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -328,7 +323,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
    *
    * The tests are performed with the 'regular_expression' operator.
    */
-  public function testFilterNumericExposedGroupedRegularExpression(): void {
+  public function testFilterNumericExposedGroupedRegularExpression() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -359,7 +354,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
    * Tests the numeric filter handler with the 'not_regular_expression' operator
    * to grouped exposed filters.
    */
-  public function testFilterNumericExposedGroupedNotRegularExpression(): void {
+  public function testFilterNumericExposedGroupedNotRegularExpression() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -388,7 +383,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testFilterNumericEmpty(): void {
+  public function testFilterNumericEmpty() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -447,7 +442,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testFilterNumericExposedGroupedEmpty(): void {
+  public function testFilterNumericExposedGroupedEmpty() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -463,7 +458,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testFilterNumericExposedGroupedNotEmpty(): void {
+  public function testFilterNumericExposedGroupedNotEmpty() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -500,7 +495,7 @@ class FilterNumericTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testAllowEmpty(): void {
+  public function testAllowEmpty() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 

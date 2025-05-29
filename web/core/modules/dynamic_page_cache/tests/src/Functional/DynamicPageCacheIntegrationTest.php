@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\dynamic_page_cache\Functional;
 
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
@@ -48,7 +46,7 @@ class DynamicPageCacheIntegrationTest extends BrowserTestBase {
   /**
    * Tests that Dynamic Page Cache works correctly, and verifies the edge cases.
    */
-  public function testDynamicPageCache(): void {
+  public function testDynamicPageCache() {
     // Controllers returning plain response objects are ignored by Dynamic Page
     // Cache.
     $url = Url::fromUri('route:dynamic_page_cache_test.response');

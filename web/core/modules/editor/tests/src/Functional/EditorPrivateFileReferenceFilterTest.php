@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\editor\Functional;
 
 use Drupal\file\Entity\File;
@@ -18,7 +16,9 @@ use Drupal\user\RoleInterface;
 class EditorPrivateFileReferenceFilterTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'editor_test',
@@ -40,7 +40,7 @@ class EditorPrivateFileReferenceFilterTest extends BrowserTestBase {
   /**
    * Tests the editor file reference filter with private files.
    */
-  public function testEditorPrivateFileReferenceFilter(): void {
+  public function testEditorPrivateFileReferenceFilter() {
     $author = $this->drupalCreateUser();
     $this->drupalLogin($author);
 

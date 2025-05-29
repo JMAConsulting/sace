@@ -87,7 +87,7 @@ class SectionStorageManagerTest extends UnitTestCase {
   /**
    * @covers ::loadEmpty
    */
-  public function testLoadEmpty(): void {
+  public function testLoadEmpty() {
     $result = $this->manager->loadEmpty('the_plugin_id');
     $this->assertInstanceOf(SectionStorageInterface::class, $result);
     $this->assertSame($this->plugin->reveal(), $result);
@@ -96,7 +96,7 @@ class SectionStorageManagerTest extends UnitTestCase {
   /**
    * @covers ::load
    */
-  public function testLoad(): void {
+  public function testLoad() {
     $contexts = [
       'the_context' => $this->prophesize(ContextInterface::class)->reveal(),
     ];
@@ -110,7 +110,7 @@ class SectionStorageManagerTest extends UnitTestCase {
   /**
    * @covers ::load
    */
-  public function testLoadNull(): void {
+  public function testLoadNull() {
     $contexts = [
       'the_context' => $this->prophesize(ContextInterface::class)->reveal(),
     ];
@@ -124,7 +124,7 @@ class SectionStorageManagerTest extends UnitTestCase {
   /**
    * @covers ::findDefinitions
    */
-  public function testFindDefinitions(): void {
+  public function testFindDefinitions() {
     $this->discovery->getDefinitions()->willReturn([
       'plugin1' => (new SectionStorageDefinition())->setClass(SectionStorageInterface::class),
       'plugin2' => (new SectionStorageDefinition(['weight' => -5]))->setClass(SectionStorageInterface::class),
@@ -150,7 +150,7 @@ class SectionStorageManagerTest extends UnitTestCase {
    * @param bool $plugin_is_applicable
    *   The result for the plugin's isApplicable() method to return.
    */
-  public function testFindByContext($plugin_is_applicable): void {
+  public function testFindByContext($plugin_is_applicable) {
     $cacheability = new CacheableMetadata();
     $contexts = [
       'foo' => new Context(new ContextDefinition('foo')),
@@ -192,7 +192,7 @@ class SectionStorageManagerTest extends UnitTestCase {
   /**
    * Provides test data for ::testFindByContext().
    */
-  public static function providerTestFindByContext() {
+  public function providerTestFindByContext() {
     // Data provider values are:
     // - the result for the plugin's isApplicable() method to return.
     $data = [];
@@ -204,7 +204,7 @@ class SectionStorageManagerTest extends UnitTestCase {
   /**
    * @covers ::findByContext
    */
-  public function testFindByContextCacheableSectionStorage(): void {
+  public function testFindByContextCacheableSectionStorage() {
     $cacheability = new CacheableMetadata();
     $contexts = [
       'foo' => new Context(new ContextDefinition('foo')),

@@ -29,7 +29,7 @@ class AccessGroupAndTest extends UnitTestCase {
   /**
    * @covers \Drupal\block_content\Access\AccessGroupAnd
    */
-  public function testGroups(): void {
+  public function testGroups() {
     $allowedAccessible = $this->createAccessibleDouble(AccessResult::allowed());
     $forbiddenAccessible = $this->createAccessibleDouble(AccessResult::forbidden());
     $neutralAccessible = $this->createAccessibleDouble(AccessResult::neutral());

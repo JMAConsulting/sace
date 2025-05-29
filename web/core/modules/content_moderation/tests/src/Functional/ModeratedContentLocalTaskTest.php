@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -52,7 +50,7 @@ class ModeratedContentLocalTaskTest extends BrowserTestBase {
   /**
    * Tests the moderated content local task appears.
    */
-  public function testModeratedContentLocalTask(): void {
+  public function testModeratedContentLocalTask() {
     $this->drupalLogin($this->adminUser);
 
     // Verify the moderated content tab exists.

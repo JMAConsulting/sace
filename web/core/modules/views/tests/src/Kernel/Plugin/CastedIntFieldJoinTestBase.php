@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Core\Database\Database;
@@ -94,7 +92,7 @@ abstract class CastedIntFieldJoinTestBase extends DriverSpecificKernelTestBase {
    * \Drupal\Tests\views\Kernel\Plugin\JoinTest::testBasePlugin() to ensure that
    * no functionality provided by the base join plugin is broken.
    */
-  public function testBuildJoin(): void {
+  public function testBuildJoin() {
     // Setup a simple join and test the result sql.
     $view = Views::getView('test_view');
     $view->initDisplay();

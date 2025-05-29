@@ -53,7 +53,7 @@ class ReadOnlyStorageTest extends UnitTestCase {
    *
    * @dataProvider readMethodsProvider
    */
-  public function testReadOperations($method, $arguments, $fixture): void {
+  public function testReadOperations($method, $arguments, $fixture) {
     $this->setRandomFixtureConfig($fixture);
 
     $expected = call_user_func_array([$this->memory, $method], $arguments);
@@ -67,7 +67,7 @@ class ReadOnlyStorageTest extends UnitTestCase {
    * @return array
    *   The data.
    */
-  public static function readMethodsProvider() {
+  public function readMethodsProvider() {
     $fixture = [
       StorageInterface::DEFAULT_COLLECTION => ['config.a', 'config.b', 'other.a'],
     ];
@@ -93,7 +93,7 @@ class ReadOnlyStorageTest extends UnitTestCase {
    *
    * @dataProvider writeMethodsProvider
    */
-  public function testWriteOperations($method, $arguments, $fixture): void {
+  public function testWriteOperations($method, $arguments, $fixture) {
     $this->setRandomFixtureConfig($fixture);
 
     // Create an independent memory storage as a backup.
@@ -143,7 +143,7 @@ class ReadOnlyStorageTest extends UnitTestCase {
    * @covers ::getCollectionName
    * @covers ::createCollection
    */
-  public function testCollections(): void {
+  public function testCollections() {
     $fixture = [
       StorageInterface::DEFAULT_COLLECTION => [$this->randomMachineName()],
       'A' => [$this->randomMachineName()],
@@ -165,7 +165,7 @@ class ReadOnlyStorageTest extends UnitTestCase {
    * @covers ::encode
    * @covers ::decode
    */
-  public function testEncodeDecode(): void {
+  public function testEncodeDecode() {
     $array = (array) $this->getRandomGenerator()->object();
     $string = $this->getRandomGenerator()->string();
 

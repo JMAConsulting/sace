@@ -5,7 +5,6 @@ namespace Drupal\migrate\Plugin\migrate\process;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\ProcessPluginBase;
@@ -51,8 +50,11 @@ use Drupal\migrate\Row;
  * (user/login) with a query string of "destination=node/1".
  *
  * @see \Drupal\migrate\Plugin\MigrateProcessInterface
+ *
+ * @MigrateProcessPlugin(
+ *   id = "route"
+ * )
  */
-#[MigrateProcess('route')]
 class Route extends ProcessPluginBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -79,14 +81,13 @@ class Route extends ProcessPluginBase implements ContainerFactoryPluginInterface
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, ?MigrationInterface $migration = NULL) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
     return new static(
       $configuration,
       $plugin_id,
       $plugin_definition,
       $migration,
       $container->get('path.validator')
-
     );
   }
 

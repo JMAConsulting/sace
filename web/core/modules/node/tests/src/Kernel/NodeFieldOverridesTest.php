@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel;
 
 use Drupal\user\UserInterface;
@@ -25,7 +23,9 @@ class NodeFieldOverridesTest extends EntityKernelTestBase {
   protected $user;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['user', 'system', 'field', 'node'];
 
@@ -42,7 +42,7 @@ class NodeFieldOverridesTest extends EntityKernelTestBase {
   /**
    * Tests that field overrides work as expected.
    */
-  public function testFieldOverrides(): void {
+  public function testFieldOverrides() {
     if (!NodeType::load('ponies')) {
       NodeType::create(['name' => 'Ponies', 'type' => 'ponies'])->save();
     }

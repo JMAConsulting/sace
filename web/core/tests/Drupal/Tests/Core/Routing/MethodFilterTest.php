@@ -20,7 +20,7 @@ class MethodFilterTest extends UnitTestCase {
   /**
    * @covers ::filter
    */
-  public function testWithAllowedMethod(): void {
+  public function testWithAllowedMethod() {
     $request = Request::create('/test', 'GET');
     $collection = new RouteCollection();
     $collection->add('test_route.get', new Route('/test', [], [], [], '', [], ['GET']));
@@ -35,7 +35,7 @@ class MethodFilterTest extends UnitTestCase {
   /**
    * @covers ::filter
    */
-  public function testWithAllowedMethodAndMultipleMatchingRoutes(): void {
+  public function testWithAllowedMethodAndMultipleMatchingRoutes() {
     $request = Request::create('/test', 'GET');
     $collection = new RouteCollection();
     $collection->add('test_route.get', new Route('/test', [], [], [], '', [], ['GET']));
@@ -53,7 +53,7 @@ class MethodFilterTest extends UnitTestCase {
   /**
    * @covers ::filter
    */
-  public function testMethodNotAllowedException(): void {
+  public function testMethodNotAllowedException() {
     $request = Request::create('/test', 'PATCH');
     $collection = new RouteCollection();
     $collection->add('test_route.get', new Route('/test', [], [], [], '', [], ['GET']));
@@ -67,7 +67,7 @@ class MethodFilterTest extends UnitTestCase {
   /**
    * @covers ::filter
    */
-  public function testMethodNotAllowedExceptionWithMultipleRoutes(): void {
+  public function testMethodNotAllowedExceptionWithMultipleRoutes() {
     $request = Request::create('/test', 'PATCH');
     $collection = new RouteCollection();
     $collection->add('test_route.get', new Route('/test', [], [], [], '', [], ['GET']));
@@ -83,7 +83,7 @@ class MethodFilterTest extends UnitTestCase {
   /**
    * @covers ::filter
    */
-  public function testFilteredMethods(): void {
+  public function testFilteredMethods() {
     $request = Request::create('/test', 'PATCH');
     $collection = new RouteCollection();
     $collection->add('test_route.get', new Route('/test', [], [], [], '', [], ['GET']));
@@ -104,7 +104,7 @@ class MethodFilterTest extends UnitTestCase {
    *
    * @covers ::filter
    */
-  public function testCollectionOrder(): void {
+  public function testCollectionOrder() {
     $request = Request::create('/test', 'GET');
 
     $collection = new RouteCollection();

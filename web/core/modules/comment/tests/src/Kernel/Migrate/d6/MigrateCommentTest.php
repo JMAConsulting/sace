@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Migrate\d6;
 
 use Drupal\comment\Entity\Comment;
@@ -59,7 +57,7 @@ class MigrateCommentTest extends MigrateDrupal6TestBase {
   /**
    * Tests the migrated comments.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $comment = Comment::load(1);
     $this->assertSame('The first comment.', $comment->getSubject());
     $this->assertSame('The first comment body.', $comment->comment_body->value);

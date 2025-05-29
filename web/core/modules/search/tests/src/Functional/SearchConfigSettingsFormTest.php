@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Functional;
 
 use Drupal\Core\Link;
@@ -13,7 +11,6 @@ use Drupal\Tests\BrowserTestBase;
  * Verify the search config settings form.
  *
  * @group search
- * @group #slow
  */
 class SearchConfigSettingsFormTest extends BrowserTestBase {
 
@@ -90,7 +87,7 @@ class SearchConfigSettingsFormTest extends BrowserTestBase {
   /**
    * Verifies the search settings form.
    */
-  public function testSearchSettingsPage(): void {
+  public function testSearchSettingsPage() {
 
     // Test that the settings form displays the correct count of items left to index.
     $this->drupalGet('admin/config/search/pages');
@@ -142,7 +139,7 @@ class SearchConfigSettingsFormTest extends BrowserTestBase {
   /**
    * Verifies plugin-supplied settings form.
    */
-  public function testSearchModuleSettingsPage(): void {
+  public function testSearchModuleSettingsPage() {
     $this->drupalGet('admin/config/search/pages');
     $this->clickLink('Edit', 1);
 
@@ -164,7 +161,7 @@ class SearchConfigSettingsFormTest extends BrowserTestBase {
   /**
    * Verifies that you can disable individual search plugins.
    */
-  public function testSearchModuleDisabling(): void {
+  public function testSearchModuleDisabling() {
     // Array of search plugins to test: 'keys' are the keywords to search for,
     // and 'text' is the text to assert is on the results page.
     $plugin_info = [
@@ -253,7 +250,7 @@ class SearchConfigSettingsFormTest extends BrowserTestBase {
   /**
    * Tests the ordering of search pages on a clean install.
    */
-  public function testDefaultSearchPageOrdering(): void {
+  public function testDefaultSearchPageOrdering() {
     $this->drupalGet('search');
     $elements = $this->xpath('//div[@id="block-local-tasks"]//a');
     $this->assertSame(Url::fromRoute('search.view_node_search')->toString(), $elements[0]->getAttribute('href'));
@@ -264,7 +261,7 @@ class SearchConfigSettingsFormTest extends BrowserTestBase {
   /**
    * Tests multiple search pages of the same type.
    */
-  public function testMultipleSearchPages(): void {
+  public function testMultipleSearchPages() {
     $this->assertDefaultSearch('node_search', 'The default page is set to the installer default.');
     $search_storage = \Drupal::entityTypeManager()->getStorage('search_page');
     $entities = $search_storage->loadMultiple();
@@ -361,7 +358,7 @@ class SearchConfigSettingsFormTest extends BrowserTestBase {
   /**
    * Tests that the enable/disable/default routes are protected from CSRF.
    */
-  public function testRouteProtection(): void {
+  public function testRouteProtection() {
     // Ensure that the enable and disable routes are protected.
     $this->drupalGet('admin/config/search/pages/manage/node_search/enable');
     $this->assertSession()->statusCodeEquals(403);

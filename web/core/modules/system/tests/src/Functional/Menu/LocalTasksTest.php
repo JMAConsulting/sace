@@ -1,15 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Menu;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
-
-// cspell:ignore ragdoll
 
 /**
  * Tests local tasks derived from router and added/altered via hooks.
@@ -18,10 +13,10 @@ use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
  */
 class LocalTasksTest extends BrowserTestBase {
 
-  use TaxonomyTestTrait;
-
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var string[]
    */
   protected static $modules = ['block', 'menu_test', 'entity_test', 'node'];
 
@@ -104,7 +99,7 @@ class LocalTasksTest extends BrowserTestBase {
   /**
    * Tests the plugin based local tasks.
    */
-  public function testPluginLocalTask(): void {
+  public function testPluginLocalTask() {
     // Verify local tasks defined in the hook.
     $this->drupalGet(Url::fromRoute('menu_test.tasks_default'));
     $this->assertLocalTasks([
@@ -134,7 +129,7 @@ class LocalTasksTest extends BrowserTestBase {
 
     // Ensure the view tab is active.
     $this->assertSession()->elementsCount('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]/a', 1);
-    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]/a', 'View');
+    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]/a', 'View(active tab)');
 
     // Verify that local tasks in the second level appear.
     $sub_tasks = [
@@ -148,7 +143,7 @@ class LocalTasksTest extends BrowserTestBase {
     $this->assertLocalTasks($sub_tasks, 1);
 
     $this->assertSession()->elementsCount('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]/a', 1);
-    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]/a', 'Settings');
+    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]/a', 'Settings(active tab)');
 
     $this->drupalGet(Url::fromRoute('menu_test.local_task_test_tasks_settings_sub1'));
     $this->assertLocalTasks($sub_tasks, 1);
@@ -156,8 +151,8 @@ class LocalTasksTest extends BrowserTestBase {
     $xpath = '//ul[contains(@class, "tabs")]//a[contains(@class, "active")]';
     $this->assertSession()->elementsCount('xpath', $xpath, 2);
     $links = $this->xpath($xpath);
-    $this->assertEquals('Settings', $links[0]->getText(), 'The settings tab is active.');
-    $this->assertEquals('Dynamic title for TestTasksSettingsSub1', $links[1]->getText(), 'The sub1 tab is active.');
+    $this->assertEquals('Settings(active tab)', $links[0]->getText(), 'The settings tab is active.');
+    $this->assertEquals('Dynamic title for TestTasksSettingsSub1(active tab)', $links[1]->getText(), 'The sub1 tab is active.');
 
     $this->assertSession()->responseHeaderContains('X-Drupal-Cache-Tags', 'kittens:ragdoll');
     $this->assertSession()->responseHeaderContains('X-Drupal-Cache-Tags', 'kittens:dwarf-cat');
@@ -167,8 +162,8 @@ class LocalTasksTest extends BrowserTestBase {
 
     $result = $this->xpath('//ul[contains(@class, "tabs")]//li[contains(@class, "active")]');
     $this->assertCount(2, $result, 'There are tabs active on both levels.');
-    $this->assertEquals('Settings', $result[0]->getText(), 'The settings tab is active.');
-    $this->assertEquals('Derive 1', $result[1]->getText(), 'The derive1 tab is active.');
+    $this->assertEquals('Settings(active tab)', $result[0]->getText(), 'The settings tab is active.');
+    $this->assertEquals('Derive 1(active tab)', $result[1]->getText(), 'The derive1 tab is active.');
 
     // Ensures that the local tasks contains the proper 'provider key'
     $definitions = $this->container->get('plugin.manager.menu.local_task')->getDefinitions();
@@ -194,7 +189,7 @@ class LocalTasksTest extends BrowserTestBase {
     $this->assertLocalTasks($tasks, 0);
 
     $this->assertSession()->elementsCount('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]', 1);
-    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]', 'upcasting sub1');
+    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]', 'upcasting sub1(active tab)');
 
     $this->drupalGet(Url::fromRoute('menu_test.local_task_test_upcasting_sub2', ['entity_test' => '1']));
 
@@ -205,13 +200,13 @@ class LocalTasksTest extends BrowserTestBase {
     $this->assertLocalTasks($tasks, 0);
 
     $this->assertSession()->elementsCount('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]', 1);
-    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]', 'upcasting sub2');
+    $this->assertSession()->elementTextEquals('xpath', '//ul[contains(@class, "tabs")]//li[contains(@class, "active")]', 'upcasting sub2(active tab)');
   }
 
   /**
    * Tests that local task blocks are configurable to show a specific level.
    */
-  public function testLocalTaskBlock(): void {
+  public function testLocalTaskBlock() {
     // Remove the default block and create a new one.
     $this->sut->delete();
 
@@ -260,17 +255,12 @@ class LocalTasksTest extends BrowserTestBase {
   /**
    * Tests that local tasks blocks cache is invalidated correctly.
    */
-  public function testLocalTaskBlockCache(): void {
-    $this->drupalLogin($this->drupalCreateUser([
-      'administer content types',
-      'administer permissions',
-      'administer account settings',
-    ]));
+  public function testLocalTaskBlockCache() {
+    $this->drupalLogin($this->rootUser);
     $this->drupalCreateContentType(['type' => 'page']);
 
     // Only the Edit task. The block avoids showing a single tab.
     $this->drupalGet('/admin/config/people/accounts');
-    $this->assertSession()->statusCodeEquals(200);
     $this->assertNoLocalTasks();
 
     // Only the Edit and Manage permission tabs.
@@ -282,17 +272,6 @@ class LocalTasksTest extends BrowserTestBase {
 
     // Field UI adds the usual Manage fields etc tabs.
     \Drupal::service('module_installer')->install(['field_ui']);
-
-    $this->drupalLogin($this->drupalCreateUser([
-      'administer content types',
-      'administer permissions',
-      'administer account settings',
-      'administer display modes',
-      'administer node display',
-      'administer node fields',
-      'administer node form display',
-    ]));
-
     $this->drupalGet('/admin/structure/types/manage/page');
     $this->assertLocalTasks([
       ['entity.node_type.edit_form', ['node_type' => 'page']],
@@ -301,70 +280,6 @@ class LocalTasksTest extends BrowserTestBase {
       ['entity.entity_view_display.node.default', ['node_type' => 'page']],
       ['entity.node_type.entity_permissions_form', ['node_type' => 'page']],
     ]);
-  }
-
-  /**
-   * Tests local task block URLs for entities with path aliases.
-   */
-  public function testLocalTaskBlockUrl(): void {
-    // Install the necessary modules for the test.
-    \Drupal::service('module_installer')->install(['path', 'taxonomy']);
-    $this->drupalCreateContentType(['type' => 'article']);
-    $vocab = $this->createVocabulary(['vid' => 'tags']);
-
-    $web_user = $this->drupalCreateUser([
-      'create article content',
-      'edit own article content',
-      'create url aliases',
-      'create terms in tags',
-      'edit terms in tags',
-    ]);
-
-    // Create node and taxonomy term entities with path aliases.
-    $entities = [
-      'node' => $this->drupalCreateNode([
-        'type' => 'article',
-        'path' => [
-          'alias' => '/original-node-alias',
-        ],
-        'uid' => $web_user->id(),
-      ]),
-      'term' => $this->createTerm($vocab, [
-        'path' => [
-          'alias' => '/original-term-alias',
-        ],
-        'uid' => $web_user->id(),
-      ]),
-    ];
-
-    $this->drupalLogin($web_user);
-    // Test the local task block URLs for both node and term entities.
-    foreach ($entities as $entity_type => $entity) {
-      $this->drupalGet($entity->toUrl());
-      $this->assertSameLocalTaskUrl('/original-' . $entity_type . '-alias');
-
-      $this->drupalGet($entity->toUrl('edit-form'));
-      $new_alias = '/original-' . $entity_type . '-alias-updated';
-      $edit = ['path[0][alias]' => $new_alias];
-      $this->submitForm($edit, 'Save');
-
-      $this->assertSameLocalTaskUrl($new_alias);
-      $this->drupalGet($entity->toUrl('edit-form'));
-      $this->assertSameLocalTaskUrl($new_alias);
-    }
-  }
-
-  /**
-   * Asserts that the local task URL matches the expected alias.
-   *
-   * @param string $alias
-   *   The expected path alias.
-   */
-  protected function assertSameLocalTaskUrl(string $alias): void {
-    // Assert that the href attribute of the 'View' link contains the expected
-    // alias.
-    $link = $this->assertSession()->elementExists('xpath', '//a[text()="View"]');
-    $this->assertStringContainsString($alias, $link->getAttribute('href'));
   }
 
 }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -132,7 +130,7 @@ class DisplayApiTest extends FieldKernelTestBase {
   /**
    * Tests the FieldItemListInterface::view() method.
    */
-  public function testFieldItemListView(): void {
+  public function testFieldItemListView() {
     $items = $this->entity->get($this->fieldName);
 
     \Drupal::service('theme_installer')->install(['stark']);
@@ -231,7 +229,7 @@ class DisplayApiTest extends FieldKernelTestBase {
   /**
    * Tests the FieldItemInterface::view() method.
    */
-  public function testFieldItemView(): void {
+  public function testFieldItemView() {
     // No display settings: check that default display settings are used.
     $settings = \Drupal::service('plugin.manager.field.formatter')->getDefaultSettings('field_test_default');
     $setting = $settings['test_formatter_setting'];
@@ -295,7 +293,7 @@ class DisplayApiTest extends FieldKernelTestBase {
   /**
    * Tests that the prepareView() formatter method still fires for empty values.
    */
-  public function testFieldEmpty(): void {
+  public function testFieldEmpty() {
     // Uses \Drupal\field_test\Plugin\Field\FieldFormatter\TestFieldEmptyFormatter.
     $display = [
       'label' => 'hidden',

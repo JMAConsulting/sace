@@ -35,6 +35,7 @@
   cursor: pointer;
   transition: var(--details-summary-transition);
   word-wrap: break-word;
+  -webkit-hyphens: auto;
   hyphens: auto;
   color: inherit;
   background-color: var(--color--gray-100);

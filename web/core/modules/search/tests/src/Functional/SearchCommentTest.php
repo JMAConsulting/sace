@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Functional;
 
 use Behat\Mink\Exception\ResponseTextException;
@@ -98,7 +96,7 @@ class SearchCommentTest extends BrowserTestBase {
   /**
    * Verify that comments are rendered using proper format in search results.
    */
-  public function testSearchResultsComment(): void {
+  public function testSearchResultsComment() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     // Create basic_html format that escapes all HTML.
     $basic_html_format = FilterFormat::create([
@@ -240,7 +238,7 @@ class SearchCommentTest extends BrowserTestBase {
   /**
    * Verify access rules for comment indexing with different permissions.
    */
-  public function testSearchResultsCommentAccess(): void {
+  public function testSearchResultsCommentAccess() {
     $comment_body = 'Test comment body';
     $this->commentSubject = 'Test comment subject';
     $roles = $this->adminUser->getRoles(TRUE);
@@ -344,7 +342,7 @@ class SearchCommentTest extends BrowserTestBase {
   /**
    * Verify that 'add new comment' does not appear in search results or index.
    */
-  public function testAddNewComment(): void {
+  public function testAddNewComment() {
     // Create a node with a short body.
     $settings = [
       'type' => 'article',

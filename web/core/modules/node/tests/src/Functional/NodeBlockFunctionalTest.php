@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\block\Entity\Block;
@@ -40,7 +38,9 @@ class NodeBlockFunctionalTest extends NodeTestBase {
   protected $webUser;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['block', 'views', 'node_block_test'];
 
@@ -67,7 +67,7 @@ class NodeBlockFunctionalTest extends NodeTestBase {
   /**
    * Tests the recent comments block.
    */
-  public function testRecentNodeBlock(): void {
+  public function testRecentNodeBlock() {
     $this->drupalLogin($this->adminUser);
 
     // Disallow anonymous users to view content.

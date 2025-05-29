@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\KeyValueStore;
 
 use Drupal\Core\Entity\EntityMalformedException;
@@ -17,7 +15,9 @@ use Drupal\entity_test\Entity\EntityTestLabel;
 class KeyValueContentEntityStorageTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['user', 'entity_test', 'keyvalue_test'];
 
@@ -34,7 +34,7 @@ class KeyValueContentEntityStorageTest extends KernelTestBase {
    *
    * @covers \Drupal\Core\Entity\KeyValueStore\KeyValueEntityStorage::hasData
    */
-  public function testCRUD(): void {
+  public function testCRUD() {
     $default_langcode = \Drupal::languageManager()->getDefaultLanguage()->getId();
 
     $storage = \Drupal::entityTypeManager()->getStorage('entity_test_label');
@@ -168,7 +168,7 @@ class KeyValueContentEntityStorageTest extends KernelTestBase {
   /**
    * Tests uninstallation of a module that does not use the SQL entity storage.
    */
-  public function testUninstall(): void {
+  public function testUninstall() {
     $uninstall_validator_reasons = \Drupal::service('content_uninstall_validator')->validate('keyvalue_test');
     $this->assertEmpty($uninstall_validator_reasons);
   }

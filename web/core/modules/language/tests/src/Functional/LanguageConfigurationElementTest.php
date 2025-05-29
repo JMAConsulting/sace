@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\language\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class LanguageConfigurationElementTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'taxonomy',
@@ -49,7 +49,7 @@ class LanguageConfigurationElementTest extends BrowserTestBase {
   /**
    * Tests the language settings have been saved.
    */
-  public function testLanguageConfigurationElement(): void {
+  public function testLanguageConfigurationElement() {
     $this->drupalGet('language-tests/language_configuration_element');
     $edit['lang_configuration[langcode]'] = 'current_interface';
     $edit['lang_configuration[language_alterable]'] = FALSE;
@@ -97,7 +97,7 @@ class LanguageConfigurationElementTest extends BrowserTestBase {
   /**
    * Tests that the language_get_default_langcode() returns the correct values.
    */
-  public function testDefaultLangcode(): void {
+  public function testDefaultLangcode() {
     // Add some custom languages.
     foreach (['aa', 'bb', 'cc'] as $language_code) {
       ConfigurableLanguage::create([
@@ -105,10 +105,6 @@ class LanguageConfigurationElementTest extends BrowserTestBase {
         'label' => $this->randomMachineName(),
       ])->save();
     }
-
-    // Ensure the bundles under test exist, to avoid config validation errors.
-    entity_test_create_bundle('custom_bundle');
-    entity_test_create_bundle('some_bundle');
 
     // Fixed language.
     ContentLanguageSettings::loadByEntityTypeBundle('entity_test', 'custom_bundle')
@@ -173,7 +169,7 @@ class LanguageConfigurationElementTest extends BrowserTestBase {
   /**
    * Tests that the configuration is retained when the node type is updated.
    */
-  public function testNodeTypeUpdate(): void {
+  public function testNodeTypeUpdate() {
     // Create the article content type first if the profile used is not the
     // standard one.
     if ($this->profile != 'standard') {
@@ -208,7 +204,7 @@ class LanguageConfigurationElementTest extends BrowserTestBase {
   /**
    * Tests the language settings are deleted on bundle delete.
    */
-  public function testNodeTypeDelete(): void {
+  public function testNodeTypeDelete() {
     // Create the article content type first if the profile used is not the
     // standard one.
     if ($this->profile != 'standard') {
@@ -245,7 +241,7 @@ class LanguageConfigurationElementTest extends BrowserTestBase {
   /**
    * Tests that the configuration is retained when a vocabulary is updated.
    */
-  public function testTaxonomyVocabularyUpdate(): void {
+  public function testTaxonomyVocabularyUpdate() {
     $vocabulary = Vocabulary::create([
       'name' => 'Country',
       'vid' => 'country',

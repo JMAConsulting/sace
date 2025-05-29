@@ -2,7 +2,6 @@
 
 namespace Drupal\Core\Render\Element;
 
-use Drupal\Core\Render\Attribute\FormElement;
 use Drupal\Core\Render\Element;
 
 /**
@@ -18,13 +17,14 @@ use Drupal\Core\Render\Element;
  *
  * Usage example:
  * @code
- * $form['entity_id'] = ['#type' => 'hidden', '#value' => $entity_id];
+ * $form['entity_id'] = array('#type' => 'hidden', '#value' => $entity_id);
  * @endcode
  *
  * @see \Drupal\Core\Render\Element\Value
+ *
+ * @FormElement("hidden")
  */
-#[FormElement('hidden')]
-class Hidden extends FormElementBase {
+class Hidden extends FormElement {
 
   /**
    * {@inheritdoc}

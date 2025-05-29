@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Component\Render;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -44,7 +42,7 @@ class FormattableMarkupKernelTest extends KernelTestBase {
    *
    * @dataProvider providerTestFormattableMarkupUri
    */
-  public function testFormattableMarkupUri($string, $uri, $options, $expected): void {
+  public function testFormattableMarkupUri($string, $uri, $options, $expected) {
     $args = self::getFormattableMarkupUriArgs($uri, $options);
     $this->assertSame($expected, (string) new FormattableMarkup($string, $args));
   }
@@ -52,7 +50,7 @@ class FormattableMarkupKernelTest extends KernelTestBase {
   /**
    * @return array
    */
-  public static function providerTestFormattableMarkupUri() {
+  public function providerTestFormattableMarkupUri() {
     $data = [];
     $data['routed-url'] = [
       'Hey giraffe <a href=":url">MUUUH</a>',
@@ -103,7 +101,7 @@ class FormattableMarkupKernelTest extends KernelTestBase {
   /**
    * @dataProvider providerTestFormattableMarkupUriWithException
    */
-  public function testFormattableMarkupUriWithExceptionUri($string, $uri): void {
+  public function testFormattableMarkupUriWithExceptionUri($string, $uri) {
     // Should throw an \InvalidArgumentException, due to Uri::toString().
     $this->expectException(\InvalidArgumentException::class);
     $args = self::getFormattableMarkupUriArgs($uri);
@@ -114,7 +112,7 @@ class FormattableMarkupKernelTest extends KernelTestBase {
   /**
    * @return array
    */
-  public static function providerTestFormattableMarkupUriWithException() {
+  public function providerTestFormattableMarkupUriWithException() {
     $data = [];
     $data['js-protocol'] = [
       'Hey giraffe <a href=":url">MUUUH</a>',

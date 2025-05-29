@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel;
 
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\File\Exception\FileExistsException;
 use Drupal\Core\File\Exception\InvalidStreamWrapperException;
-use Drupal\Core\File\FileExists;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileRepository;
@@ -49,7 +47,7 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::writeData
    */
-  public function testWithFilename(): void {
+  public function testWithFilename() {
     $contents = $this->randomMachineName();
 
     // Using filename with non-latin characters.
@@ -79,7 +77,7 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::writeData
    */
-  public function testExistingRename(): void {
+  public function testExistingRename() {
     // Setup a file to overwrite.
     $existing = $this->createFile();
     $contents = $this->randomMachineName();
@@ -111,12 +109,12 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::writeData
    */
-  public function testExistingReplace(): void {
+  public function testExistingReplace() {
     // Setup a file to overwrite.
     $existing = $this->createFile();
     $contents = $this->randomMachineName();
 
-    $result = $this->fileRepository->writeData($contents, $existing->getFileUri(), FileExists::Replace);
+    $result = $this->fileRepository->writeData($contents, $existing->getFileUri(), FileSystemInterface::EXISTS_REPLACE);
     $this->assertNotFalse($result, 'File saved successfully.');
 
     $stream_wrapper_manager = \Drupal::service('stream_wrapper_manager');
@@ -142,17 +140,18 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::writeData
    */
-  public function testExistingError(): void {
+  public function testExistingError() {
     $contents = $this->randomMachineName();
     $existing = $this->createFile(NULL, $contents);
 
     // Check the overwrite error.
     try {
-      $this->fileRepository->writeData('asdf', $existing->getFileUri(), FileExists::Error);
+      $this->fileRepository->writeData('asdf', $existing->getFileUri(), FileSystemInterface::EXISTS_ERROR);
       $this->fail('expected FileExistsException');
     }
     // FileExistsException is a subclass of FileException.
     catch (FileExistsException $e) {
+      // expected exception.
       $this->assertStringContainsString("could not be copied because a file by that name already exists in the destination directory", $e->getMessage());
     }
     $this->assertEquals($contents, file_get_contents($existing->getFileUri()), 'Contents of existing file were unchanged.');
@@ -169,7 +168,7 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::writeData
    */
-  public function testInvalidStreamWrapper(): void {
+  public function testInvalidStreamWrapper() {
     $this->expectException(InvalidStreamWrapperException::class);
     $this->expectExceptionMessage('Invalid stream wrapper: foo://');
     $this->fileRepository->writeData('asdf', 'foo://');
@@ -180,7 +179,7 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::writeData
    */
-  public function testEntityStorageException(): void {
+  public function testEntityStorageException() {
     /** @var \Drupal\Core\Entity\EntityTypeManager $entityTypeManager */
     $entityTypeManager = $this->prophesize(EntityTypeManager::class);
     $entityTypeManager->getStorage('file')
@@ -197,7 +196,7 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
 
     $this->expectException(EntityStorageException::class);
     $target = $this->createFile();
-    $fileRepository->writeData('asdf', $target->getFileUri(), FileExists::Replace);
+    $fileRepository->writeData('asdf', $target->getFileUri(), FileSystemInterface::EXISTS_REPLACE);
   }
 
   /**
@@ -205,7 +204,7 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::loadByUri
    */
-  public function testLoadByUri(): void {
+  public function testLoadByUri() {
     $source = $this->createFile();
     $result = $this->fileRepository->loadByUri($source->getFileUri());
     $this->assertSameFile($source, $result);
@@ -216,7 +215,7 @@ class FileRepositoryTest extends FileManagedUnitTestBase {
    *
    * @covers ::loadByUri
    */
-  public function testLoadByUriCaseSensitive(): void {
+  public function testLoadByUriCaseSensitive() {
     $source = $this->createFile('FooBar.txt');
     $result = $this->fileRepository->loadByUri('public://FooBar.txt');
     $this->assertSameFile($source, $result);

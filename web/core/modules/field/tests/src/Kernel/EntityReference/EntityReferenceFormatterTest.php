@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\EntityReference;
 
 use Drupal\Core\Cache\Cache;
@@ -129,7 +127,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Assert inaccessible items don't change the data of the fields.
    */
-  public function testAccess(): void {
+  public function testAccess() {
     // Revoke the 'view test entity' permission for this test.
     Role::load(RoleInterface::ANONYMOUS_ID)
       ->revokePermission('view test entity')
@@ -171,7 +169,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the merging of cache metadata.
    */
-  public function testCustomCacheTagFormatter(): void {
+  public function testCustomCacheTagFormatter() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $formatter = 'entity_reference_custom_cache_tag';
@@ -184,7 +182,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the ID formatter.
    */
-  public function testIdFormatter(): void {
+  public function testIdFormatter() {
     $formatter = 'entity_reference_entity_id';
     $build = $this->buildRenderArray([$this->referencedEntity, $this->unsavedReferencedEntity], $formatter);
 
@@ -196,7 +194,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the entity formatter.
    */
-  public function testEntityFormatter(): void {
+  public function testEntityFormatter() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $formatter = 'entity_reference_entity_view';
@@ -236,7 +234,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the recursive rendering protection of the entity formatter.
    */
-  public function testEntityFormatterRecursiveRendering(): void {
+  public function testEntityFormatterRecursiveRendering() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $formatter = 'entity_reference_entity_view';
@@ -300,7 +298,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Renders the same entity referenced from different places.
    */
-  public function testEntityReferenceRecursiveProtectionWithManyRenderedEntities(): void {
+  public function testEntityReferenceRecursiveProtectionWithManyRenderedEntities() {
     $formatter = 'entity_reference_entity_view';
     $view_builder = $this->entityTypeManager->getViewBuilder($this->entityType);
 
@@ -343,7 +341,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the label formatter.
    */
-  public function testLabelFormatter(): void {
+  public function testLabelFormatter() {
     $this->installEntitySchema('entity_test_label');
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');

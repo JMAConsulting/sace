@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -17,14 +15,16 @@ use Drupal\migrate\Plugin\MigrateIdMapInterface;
 class MigrateSkipRowTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['migrate', 'migrate_prepare_row_test'];
 
   /**
    * Tests migration interruptions.
    */
-  public function testPrepareRowSkip(): void {
+  public function testPrepareRowSkip() {
     // Run a simple little migration with two data rows which should be skipped
     // in different ways.
     $definition = [

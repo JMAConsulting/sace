@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\mysql\Kernel\mysql;
 
 use Drupal\Core\Database\DatabaseExceptionWrapper;
@@ -24,7 +22,7 @@ class DatabaseExceptionWrapperTest extends DriverSpecificKernelTestBase {
    * connection not to emulate statement preparation. Still, this is only valid
    * for the MySql driver.
    */
-  public function testPrepareStatementFailOnPreparation(): void {
+  public function testPrepareStatementFailOnPreparation() {
     $connection_info = Database::getConnectionInfo('default');
     $connection_info['default']['pdo'][\PDO::ATTR_EMULATE_PREPARES] = FALSE;
     Database::addConnectionInfo('default', 'foo', $connection_info['default']);
@@ -36,7 +34,7 @@ class DatabaseExceptionWrapperTest extends DriverSpecificKernelTestBase {
   /**
    * Tests Connection::prepareStatement exception on execution.
    */
-  public function testPrepareStatementFailOnExecution(): void {
+  public function testPrepareStatementFailOnExecution() {
     $this->expectException(\PDOException::class);
     $stmt = $this->connection->prepareStatement('bananas', []);
     $stmt->execute();

@@ -18,7 +18,7 @@ class BreadcrumbTest extends UnitTestCase {
   /**
    * @covers ::setLinks
    */
-  public function testSetLinks(): void {
+  public function testSetLinks() {
     $breadcrumb = new Breadcrumb();
     $breadcrumb->setLinks([new Link('Home', Url::fromRoute('<front>'))]);
     $this->expectException(\LogicException::class);

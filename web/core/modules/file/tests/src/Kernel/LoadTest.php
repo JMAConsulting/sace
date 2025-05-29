@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Kernel;
 
 use Drupal\file\Entity\File;
@@ -17,7 +15,7 @@ class LoadTest extends FileManagedUnitTestBase {
   /**
    * Try to load a non-existent file by fid.
    */
-  public function testLoadMissingFid(): void {
+  public function testLoadMissingFid() {
     $this->assertNull(File::load(-1), 'Try to load an invalid fid fails.');
     $this->assertFileHooksCalled([]);
   }
@@ -25,7 +23,7 @@ class LoadTest extends FileManagedUnitTestBase {
   /**
    * Try to load a non-existent file by URI.
    */
-  public function testLoadMissingFilepath(): void {
+  public function testLoadMissingFilepath() {
     $files = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['uri' => 'foobar://misc/druplicon.png']);
     $this->assertFalse(reset($files), "Try to load a file that doesn't exist in the database fails.");
     $this->assertFileHooksCalled([]);
@@ -34,7 +32,7 @@ class LoadTest extends FileManagedUnitTestBase {
   /**
    * Try to load a non-existent file by status.
    */
-  public function testLoadInvalidStatus(): void {
+  public function testLoadInvalidStatus() {
     $files = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['status' => -99]);
     $this->assertFalse(reset($files), 'Trying to load a file with an invalid status fails.');
     $this->assertFileHooksCalled([]);
@@ -43,7 +41,7 @@ class LoadTest extends FileManagedUnitTestBase {
   /**
    * Load a single file and ensure that the correct values are returned.
    */
-  public function testSingleValues(): void {
+  public function testSingleValues() {
     // Create a new file entity from scratch so we know the values.
     $file = $this->createFile('druplicon.txt', NULL, 'public');
     $by_fid_file = File::load($file->id());
@@ -60,7 +58,7 @@ class LoadTest extends FileManagedUnitTestBase {
   /**
    * This will test loading file data from the database.
    */
-  public function testMultiple(): void {
+  public function testMultiple() {
     // Create a new file entity.
     $file = $this->createFile('druplicon.txt', NULL, 'public');
 
@@ -86,7 +84,7 @@ class LoadTest extends FileManagedUnitTestBase {
   /**
    * Loads a single file and ensure that the correct values are returned.
    */
-  public function testUuidValues(): void {
+  public function testUuidValues() {
     // Create a new file entity from scratch so we know the values.
     $file = $this->createFile('druplicon.txt', NULL, 'public');
     $file->save();

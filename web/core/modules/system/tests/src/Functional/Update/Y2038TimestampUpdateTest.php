@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -92,7 +90,7 @@ class Y2038TimestampUpdateTest extends UpdatePathTestBase {
   /**
    * Tests update of time fields.
    */
-  public function testUpdate(): void {
+  public function testUpdate() {
     if (\Drupal::service('database')->databaseType() == 'sqlite') {
       $this->markTestSkipped("This test does not support the SQLite database driver.");
     }

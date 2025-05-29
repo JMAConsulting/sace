@@ -69,7 +69,7 @@ class ViewsDataHelper {
         foreach ($table_data as $field => $info) {
           // Collect table data from this table
           if ($field == 'table') {
-            // Calculate what tables this table can join to.
+            // calculate what tables this table can join to.
             if (!empty($info['join'])) {
               $bases = array_keys($info['join']);
             }

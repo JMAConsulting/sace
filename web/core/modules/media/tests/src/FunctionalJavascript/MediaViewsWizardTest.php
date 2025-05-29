@@ -24,7 +24,7 @@ class MediaViewsWizardTest extends MediaJavascriptTestBase {
   /**
    * Tests adding a view of media.
    */
-  public function testMediaWizard(): void {
+  public function testMediaWizard() {
     $session = $this->getSession();
     $page = $session->getPage();
     $assert_session = $this->assertSession();
@@ -60,7 +60,7 @@ class MediaViewsWizardTest extends MediaJavascriptTestBase {
   /**
    * Tests adding a view of media revisions.
    */
-  public function testMediaRevisionWizard(): void {
+  public function testMediaRevisionWizard() {
     $session = $this->getSession();
     $page = $session->getPage();
     $assert_session = $this->assertSession();

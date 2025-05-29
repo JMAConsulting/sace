@@ -1,14 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional;
 
 use Drupal\file\Entity\File;
-use Drupal\node\Entity\Node;
 use Drupal\Tests\content_translation\Traits\ContentTranslationTestTrait;
-
-// cspell:ignore Scarlett Johansson
 
 /**
  * Uploads files to translated nodes.
@@ -83,7 +78,7 @@ class FileOnTranslatedEntityTest extends FileFieldTestBase {
   /**
    * Tests synced file fields on translated nodes.
    */
-  public function testSyncedFiles(): void {
+  public function testSyncedFiles() {
     // Verify that the file field on the "Basic page" node type is translatable.
     $definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('node', 'page');
     $this->assertTrue($definitions[$this->fieldName]->isTranslatable(), 'Node file field is translatable.');
@@ -214,9 +209,16 @@ class FileOnTranslatedEntityTest extends FileFieldTestBase {
   /**
    * Tests if file field tracks file usages correctly on translated nodes.
    */
-  public function testFileUsage(): void {
+  public function testFileUsage() {
     /** @var \Drupal\file\FileUsage\FileUsageInterface $file_usage */
     $file_usage = \Drupal::service('file.usage');
+
+    // Enable language selector on the page edit form.
+    $edit = [
+      'language_configuration[language_alterable]' => 1,
+    ];
+    $this->drupalGet('admin/structure/types/manage/page');
+    $this->submitForm($edit, 'Save');
 
     // Create a node and upload a file.
     $node = $this->drupalCreateNode(['type' => 'page']);
@@ -232,9 +234,11 @@ class FileOnTranslatedEntityTest extends FileFieldTestBase {
 
     // Check if the file usage is tracked correctly when changing the original
     // language of an entity.
-    $node = Node::load($node->id());
-    $node->set('langcode', 'fr');
-    $node->save();
+    $edit = [
+      'langcode[0][value]' => 'fr',
+    ];
+    $this->drupalGet('node/' . $node->id() . '/edit');
+    $this->submitForm($edit, 'Save');
     $this->assertEquals($file_usage->listUsage($file), ['file' => ['node' => [$node->id() => '1']]]);
   }
 

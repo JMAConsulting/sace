@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\node\NodeInterface;
@@ -14,7 +12,9 @@ use Drupal\node\NodeInterface;
 class NodeLinksTest extends NodeTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['views'];
 
@@ -26,7 +26,7 @@ class NodeLinksTest extends NodeTestBase {
   /**
    * Tests that the links can be hidden in the view display settings.
    */
-  public function testHideLinks(): void {
+  public function testHideLinks() {
     $node = $this->drupalCreateNode([
       'type' => 'article',
       'promote' => NodeInterface::PROMOTED,

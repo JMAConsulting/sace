@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\options\Functional;
 
 /**
@@ -19,7 +17,7 @@ class OptionsSelectDynamicValuesTest extends OptionsDynamicValuesTestBase {
   /**
    * Tests the 'options_select' widget (single select).
    */
-  public function testSelectListDynamic(): void {
+  public function testSelectListDynamic() {
     // Create an entity.
     $this->entity->save();
 

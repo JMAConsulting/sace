@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\forum\Kernel\Migrate\d7;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -25,7 +23,7 @@ class MigrateLanguageContentTaxonomyVocabularySettingsTest extends CoreTest {
   /**
    * Tests migration of 18ntaxonomy vocabulary settings.
    */
-  public function testLanguageContentTaxonomy(): void {
+  public function testLanguageContentTaxonomy() {
     $this->assertLanguageContentSettings('taxonomy_term', 'forums', LanguageInterface::LANGCODE_NOT_SPECIFIED, FALSE, ['enabled' => FALSE]);
   }
 

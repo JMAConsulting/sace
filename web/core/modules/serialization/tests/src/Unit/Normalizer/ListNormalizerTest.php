@@ -79,7 +79,7 @@ class ListNormalizerTest extends UnitTestCase {
   /**
    * Tests the supportsNormalization() method.
    */
-  public function testSupportsNormalization(): void {
+  public function testSupportsNormalization() {
     $this->assertTrue($this->normalizer->supportsNormalization($this->list));
     $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
   }
@@ -87,7 +87,7 @@ class ListNormalizerTest extends UnitTestCase {
   /**
    * Tests the normalize() method.
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $serializer = $this->prophesize(Serializer::class);
     $serializer->normalize($this->typedData, 'json', ['mu' => 'nu'])
       ->shouldBeCalledTimes(3)

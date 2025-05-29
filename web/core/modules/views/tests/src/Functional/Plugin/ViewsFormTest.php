@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Plugin;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\views\Functional\ViewTestBase;
 class ViewsFormTest extends ViewTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['action_bulk_test'];
 
@@ -26,7 +26,7 @@ class ViewsFormTest extends ViewTestBase {
   /**
    * Tests the Views form wrapper.
    */
-  public function testFormWrapper(): void {
+  public function testFormWrapper() {
     $this->drupalGet('test_bulk_form');
     // Ensure we have the form tag on the page.
     $xpath = $this->cssSelect('.views-form form');

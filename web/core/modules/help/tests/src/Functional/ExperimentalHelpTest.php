@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\help\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,7 @@ use Drupal\Tests\BrowserTestBase;
 class ExperimentalHelpTest extends BrowserTestBase {
 
   /**
-   * Modules to install.
+   * Modules to enable.
    *
    * The experimental_module_test module implements hook_help() and is in the
    * Core (Experimental) package.
@@ -50,7 +48,7 @@ class ExperimentalHelpTest extends BrowserTestBase {
   /**
    * Verifies that a warning message is displayed for experimental modules.
    */
-  public function testExperimentalHelp(): void {
+  public function testExperimentalHelp() {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/help/experimental_module_test');
     $this->assertSession()->statusMessageContains('This module is experimental.', 'warning');

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional;
 
 use Drupal\Core\Database\Database;
@@ -48,7 +46,7 @@ class DownloadTest extends FileManagedTestBase {
   /**
    * Tests the public file transfer system.
    */
-  public function testPublicFileTransfer(): void {
+  public function testPublicFileTransfer() {
     // Test generating a URL to a created file.
     $file = $this->createFile();
     $url = $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri());
@@ -72,7 +70,7 @@ class DownloadTest extends FileManagedTestBase {
   /**
    * Tests the private file transfer system.
    */
-  public function testPrivateFileTransferWithoutPageCache(): void {
+  public function testPrivateFileTransferWithoutPageCache() {
     $this->doPrivateFileTransferTest();
   }
 
@@ -148,7 +146,7 @@ class DownloadTest extends FileManagedTestBase {
   /**
    * Test FileUrlGeneratorInterface::generateString()
    */
-  public function testFileCreateUrl(): void {
+  public function testFileCreateUrl() {
     // "Special" ASCII characters.
     $basename = " -._~!$'\"()*@[]?&+%#,;=:\n\x00" .
       // Characters that look like a percent-escaped string.

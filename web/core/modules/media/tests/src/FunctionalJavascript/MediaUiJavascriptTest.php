@@ -17,7 +17,9 @@ use Drupal\media\MediaSourceInterface;
 class MediaUiJavascriptTest extends MediaJavascriptTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -48,7 +50,7 @@ class MediaUiJavascriptTest extends MediaJavascriptTestBase {
   /**
    * Tests a media type administration.
    */
-  public function testMediaTypes(): void {
+  public function testMediaTypes() {
     $session = $this->getSession();
     $page = $session->getPage();
     $assert_session = $this->assertSession();

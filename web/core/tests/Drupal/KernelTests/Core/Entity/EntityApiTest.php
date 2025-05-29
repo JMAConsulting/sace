@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Database\Database;
@@ -33,7 +31,7 @@ class EntityApiTest extends EntityKernelTestBase {
   /**
    * Tests basic CRUD functionality of the Entity API.
    */
-  public function testCRUD(): void {
+  public function testCRUD() {
     // All entity variations have to have the same results.
     foreach (entity_test_entity_types() as $entity_type) {
       $this->assertCRUD($entity_type, $this->createUser());
@@ -147,7 +145,7 @@ class EntityApiTest extends EntityKernelTestBase {
    *
    * Entities should be returned in the same order as the passed IDs.
    */
-  public function testLoadMultiple(): void {
+  public function testLoadMultiple() {
     // Entity load.
     $storage = $this->container->get('entity_type.manager')->getStorage('entity_test');
 
@@ -204,7 +202,7 @@ class EntityApiTest extends EntityKernelTestBase {
   /**
    * Tests that exceptions are thrown when saving or deleting an entity.
    */
-  public function testEntityStorageExceptionHandling(): void {
+  public function testEntityStorageExceptionHandling() {
     $entity = EntityTest::create(['name' => 'test']);
     try {
       $GLOBALS['entity_test_throw_exception'] = TRUE;
@@ -249,7 +247,7 @@ class EntityApiTest extends EntityKernelTestBase {
   /**
    * Tests that resaving a revision with a different revision ID throws an exception.
    */
-  public function testUpdateWithRevisionId(): void {
+  public function testUpdateWithRevisionId() {
     $storage = \Drupal::entityTypeManager()->getStorage('entity_test_mulrev');
 
     // Create a new entity.
@@ -267,7 +265,7 @@ class EntityApiTest extends EntityKernelTestBase {
   /**
    * Tests that resaving an entity with a different entity ID throws an exception.
    */
-  public function testUpdateWithId(): void {
+  public function testUpdateWithId() {
     $storage = \Drupal::entityTypeManager()->getStorage('entity_test_mulrev');
 
     // Create a new entity.

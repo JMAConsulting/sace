@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Views;
 
 use Drupal\Core\Form\FormState;
@@ -55,7 +53,7 @@ class ArgumentValidateTest extends ViewsKernelTestBase {
   /**
    * Tests the User (ID) argument validator.
    */
-  public function testArgumentValidateUserUid(): void {
+  public function testArgumentValidateUserUid() {
     $view = Views::getView('test_view_argument_validate_user');
     $this->executeView($view);
 
@@ -75,7 +73,7 @@ class ArgumentValidateTest extends ViewsKernelTestBase {
   /**
    * Tests the UserName argument validator.
    */
-  public function testArgumentValidateUserName(): void {
+  public function testArgumentValidateUserName() {
     $view = Views::getView('test_view_argument_validate_username');
     $this->executeView($view);
 

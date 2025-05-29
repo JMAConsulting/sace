@@ -7,7 +7,7 @@
  | and copyright information, see https://civicrm.org/licensing       |
  +--------------------------------------------------------------------+
 *}
-{if isset($products) && $products}
+{if $products}
   <div id="premiums" class="premiums-group">
     {if $context EQ "makeContribution"}
       <fieldset class="crm-group premiums_select-group">

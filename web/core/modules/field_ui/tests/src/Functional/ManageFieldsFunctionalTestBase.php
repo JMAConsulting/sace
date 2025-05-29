@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field_ui\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -20,7 +18,9 @@ class ManageFieldsFunctionalTestBase extends BrowserTestBase {
   use EntityReferenceFieldCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'node',

@@ -39,7 +39,6 @@ class ViewUI implements ViewEntityInterface {
    *
    * @var array
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public $changed_display;
 
   /**
@@ -47,7 +46,6 @@ class ViewUI implements ViewEntityInterface {
    *
    * @var float
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public $render_time;
 
   /**
@@ -72,7 +70,6 @@ class ViewUI implements ViewEntityInterface {
    *
    * @var array
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public $temporary_options;
 
   /**
@@ -87,7 +84,6 @@ class ViewUI implements ViewEntityInterface {
    *
    * @var bool
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public $live_preview;
 
   public $renderPreview = FALSE;
@@ -286,8 +282,8 @@ class ViewUI implements ViewEntityInterface {
    * This will also provide a hidden op operator because the forms plugin
    * doesn't seem to properly provide which button was clicked.
    *
-   * @todo Is the hidden op operator still here somewhere, or is that part of
-   *   the docblock outdated?
+   * TODO: Is the hidden op operator still here somewhere, or is that part of the
+   * docblock outdated?
    */
   public function getStandardButtons(&$form, FormStateInterface $form_state, $form_id, $name = NULL) {
     $form['actions'] = [
@@ -471,7 +467,7 @@ class ViewUI implements ViewEntityInterface {
         }
         $id = $this->getExecutable()->addHandler($display_id, $type, $table, $field);
 
-        // Check to see if we have group by settings
+        // check to see if we have group by settings
         $key = $type;
         // Footer,header and empty text have a different internal handler type(area).
         if (isset($types[$type]['type'])) {
@@ -486,7 +482,7 @@ class ViewUI implements ViewEntityInterface {
           $this->addFormToStack('handler-group', $display_id, $type, $id);
         }
 
-        // Check to see if this type has settings, if so add the settings form first
+        // check to see if this type has settings, if so add the settings form first
         if ($handler && $handler->hasExtraOptions()) {
           $this->addFormToStack('handler-extra', $display_id, $type, $id);
         }
@@ -596,7 +592,6 @@ class ViewUI implements ViewEntityInterface {
       foreach ($args as $key => $arg) {
         $request->attributes->set('arg_' . $key, $arg);
       }
-      $request->setSession($request_stack->getSession());
       $request_stack->push($request);
 
       // Suppress contextual links of entities within the result set during a
@@ -982,7 +977,7 @@ class ViewUI implements ViewEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public static function loadMultiple(?array $ids = NULL) {
+  public static function loadMultiple(array $ids = NULL) {
     return View::loadMultiple($ids);
   }
 
@@ -1052,7 +1047,7 @@ class ViewUI implements ViewEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function access($operation = 'view', ?AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($operation = 'view', AccountInterface $account = NULL, $return_as_object = FALSE) {
     return $this->storage->access($operation, $account, $return_as_object);
   }
 

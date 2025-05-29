@@ -1,10 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\image\Functional;
 
-use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\image\Entity\ImageStyle;
@@ -25,7 +22,9 @@ class ImageStylesPathAndUrlTest extends BrowserTestBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['image', 'image_module_test', 'language'];
 
@@ -60,7 +59,7 @@ class ImageStylesPathAndUrlTest extends BrowserTestBase {
   /**
    * Tests \Drupal\image\ImageStyleInterface::buildUri().
    */
-  public function testImageStylePath(): void {
+  public function testImageStylePath() {
     $scheme = 'public';
     $actual = $this->style->buildUri("$scheme://foo/bar.gif");
     $expected = "$scheme://styles/" . $this->style->id() . "/$scheme/foo/bar.gif";
@@ -74,49 +73,49 @@ class ImageStylesPathAndUrlTest extends BrowserTestBase {
   /**
    * Tests an image style URL using the "public://" scheme.
    */
-  public function testImageStyleUrlAndPathPublic(): void {
+  public function testImageStyleUrlAndPathPublic() {
     $this->doImageStyleUrlAndPathTests('public');
   }
 
   /**
    * Tests an image style URL using the "private://" scheme.
    */
-  public function testImageStyleUrlAndPathPrivate(): void {
+  public function testImageStyleUrlAndPathPrivate() {
     $this->doImageStyleUrlAndPathTests('private');
   }
 
   /**
    * Tests an image style URL with the "public://" scheme and unclean URLs.
    */
-  public function testImageStyleUrlAndPathPublicUnclean(): void {
+  public function testImageStyleUrlAndPathPublicUnclean() {
     $this->doImageStyleUrlAndPathTests('public', FALSE);
   }
 
   /**
    * Tests an image style URL with the "private://" schema and unclean URLs.
    */
-  public function testImageStyleUrlAndPathPrivateUnclean(): void {
+  public function testImageStyleUrlAndPathPrivateUnclean() {
     $this->doImageStyleUrlAndPathTests('private', FALSE);
   }
 
   /**
    * Tests an image style URL with the "public://" schema and language prefix.
    */
-  public function testImageStyleUrlAndPathPublicLanguage(): void {
+  public function testImageStyleUrlAndPathPublicLanguage() {
     $this->doImageStyleUrlAndPathTests('public', TRUE, TRUE, 'fr');
   }
 
   /**
    * Tests an image style URL with the "private://" schema and language prefix.
    */
-  public function testImageStyleUrlAndPathPrivateLanguage(): void {
+  public function testImageStyleUrlAndPathPrivateLanguage() {
     $this->doImageStyleUrlAndPathTests('private', TRUE, TRUE, 'fr');
   }
 
   /**
    * Tests an image style URL with a file URL that has an extra slash in it.
    */
-  public function testImageStyleUrlExtraSlash(): void {
+  public function testImageStyleUrlExtraSlash() {
     $this->doImageStyleUrlAndPathTests('public', TRUE, TRUE);
   }
 
@@ -139,7 +138,7 @@ class ImageStylesPathAndUrlTest extends BrowserTestBase {
   /**
    * Tests that an invalid source image returns a 404.
    */
-  public function testImageStyleUrlForMissingSourceImage(): void {
+  public function testImageStyleUrlForMissingSourceImage() {
     $non_existent_uri = 'public://foo.png';
     $generated_url = $this->style->buildUrl($non_existent_uri);
     $this->drupalGet($generated_url);
@@ -173,10 +172,10 @@ class ImageStylesPathAndUrlTest extends BrowserTestBase {
     $file = array_shift($files);
     /** @var \Drupal\Core\File\FileSystemInterface $file_system */
     $file_system = \Drupal::service('file_system');
-    $original_uri = $file_system->copy($file->uri, $scheme . '://', FileExists::Rename);
+    $original_uri = $file_system->copy($file->uri, $scheme . '://', FileSystemInterface::EXISTS_RENAME);
     // Let the image_module_test module know about this file, so it can claim
     // ownership in hook_file_download().
-    \Drupal::keyValue('image')->set('test_file_download', $original_uri);
+    \Drupal::state()->set('image.test_file_download', $original_uri);
     $this->assertNotFalse($original_uri, 'Created the generated image file.');
 
     // Get the URL of a file that has not been generated and try to create it.
@@ -251,14 +250,14 @@ class ImageStylesPathAndUrlTest extends BrowserTestBase {
 
       // Make sure that access is denied for existing style files if we do not
       // have access.
-      \Drupal::keyValue('image')->delete('test_file_download');
+      \Drupal::state()->delete('image.test_file_download');
       $this->drupalGet($generate_url);
       $this->assertSession()->statusCodeEquals(403);
 
       // Repeat this with a different file that we do not have access to and
       // make sure that access is denied.
       $file_no_access = array_shift($files);
-      $original_uri_no_access = $file_system->copy($file_no_access->uri, $scheme . '://', FileExists::Rename);
+      $original_uri_no_access = $file_system->copy($file_no_access->uri, $scheme . '://', FileSystemInterface::EXISTS_RENAME);
       $generated_uri_no_access = $scheme . '://styles/' . $this->style->id() . '/' . $scheme . '/' . $file_system->basename($original_uri_no_access);
       $this->assertFileDoesNotExist($generated_uri_no_access);
       $generate_url_no_access = $this->style->buildUrl($original_uri_no_access);
@@ -298,10 +297,10 @@ class ImageStylesPathAndUrlTest extends BrowserTestBase {
     // Create another working copy of the file.
     $files = $this->drupalGetTestFiles('image');
     $file = array_shift($files);
-    $original_uri = $file_system->copy($file->uri, $scheme . '://', FileExists::Rename);
+    $original_uri = $file_system->copy($file->uri, $scheme . '://', FileSystemInterface::EXISTS_RENAME);
     // Let the image_module_test module know about this file, so it can claim
     // ownership in hook_file_download().
-    \Drupal::keyValue('image')->set('test_file_download', $original_uri);
+    \Drupal::state()->set('image.test_file_download', $original_uri);
 
     // Suppress the security token in the URL, then get the URL of a file that
     // has not been created and try to create it. Check that the security token

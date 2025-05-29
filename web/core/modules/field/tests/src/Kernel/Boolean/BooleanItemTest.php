@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\Boolean;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -48,7 +46,7 @@ class BooleanItemTest extends FieldKernelTestBase {
   /**
    * Tests using entity fields of the boolean field type.
    */
-  public function testBooleanItem(): void {
+  public function testBooleanItem() {
     // Verify entity creation.
     $entity = EntityTest::create();
     $value = '1';

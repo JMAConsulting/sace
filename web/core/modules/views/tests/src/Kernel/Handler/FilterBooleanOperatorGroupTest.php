@@ -20,7 +20,9 @@ use Drupal\views\Views;
 class FilterBooleanOperatorGroupTest extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * The modules to enable for this test.
+   *
+   * @var array
    */
   protected static $modules = [
     'system',

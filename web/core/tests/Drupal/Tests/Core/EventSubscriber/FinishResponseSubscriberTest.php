@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\Core\EventSubscriber;
 
-use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\EventSubscriber\FinishResponseSubscriber;
 use Drupal\Core\Language\Language;
@@ -59,13 +58,6 @@ class FinishResponseSubscriberTest extends UnitTestCase {
    */
   protected $cacheContextsManager;
 
-  /**
-   * The mock time service.
-   *
-   * @var \Drupal\Component\Datetime\TimeInterface|\PHPUnit\Framework\MockObject\MockObject
-   */
-  protected $time;
-
   protected function setUp(): void {
     parent::setUp();
 
@@ -74,7 +66,6 @@ class FinishResponseSubscriberTest extends UnitTestCase {
     $this->requestPolicy = $this->createMock(RequestPolicyInterface::class);
     $this->responsePolicy = $this->createMock(ResponsePolicyInterface::class);
     $this->cacheContextsManager = $this->createMock(CacheContextsManager::class);
-    $this->time = $this->createMock(TimeInterface::class);
   }
 
   /**
@@ -82,14 +73,13 @@ class FinishResponseSubscriberTest extends UnitTestCase {
    *
    * @covers ::onRespond
    */
-  public function testDefaultHeaders(): void {
+  public function testDefaultHeaders() {
     $finishSubscriber = new FinishResponseSubscriber(
       $this->languageManager,
       $this->getConfigFactoryStub(),
       $this->requestPolicy,
       $this->responsePolicy,
       $this->cacheContextsManager,
-      $this->time,
       FALSE
     );
 
@@ -113,14 +103,13 @@ class FinishResponseSubscriberTest extends UnitTestCase {
    *
    * @covers ::onRespond
    */
-  public function testExistingHeaders(): void {
+  public function testExistingHeaders() {
     $finishSubscriber = new FinishResponseSubscriber(
       $this->languageManager,
       $this->getConfigFactoryStub(),
       $this->requestPolicy,
       $this->responsePolicy,
       $this->cacheContextsManager,
-      $this->time,
       FALSE
     );
 

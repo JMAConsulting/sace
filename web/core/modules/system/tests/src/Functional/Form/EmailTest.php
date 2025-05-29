@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Form;
 
 use Drupal\Component\Serialization\Json;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class EmailTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['form_test'];
 
@@ -27,7 +27,7 @@ class EmailTest extends BrowserTestBase {
   /**
    * Tests that #type 'email' fields are properly validated.
    */
-  public function testFormEmail(): void {
+  public function testFormEmail() {
     $edit = [];
     $edit['email'] = 'invalid';
     $edit['email_required'] = ' ';

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\sqlite\Kernel\sqlite;
 
 use Drupal\Core\Database\Driver\sqlite\Connection;
@@ -26,7 +24,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Install\Tasks
    */
-  public function testDeprecationInstallTasks(): void {
+  public function testDeprecationInstallTasks() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Install\Tasks is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $tasks = new Tasks();
     $this->assertInstanceOf(Tasks::class, $tasks);
@@ -35,7 +33,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Connection
    */
-  public function testDeprecationConnection(): void {
+  public function testDeprecationConnection() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Connection is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $connection = new Connection($this->createMock(StubPDO::class), []);
     $this->assertInstanceOf(Connection::class, $connection);
@@ -44,7 +42,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Insert
    */
-  public function testDeprecationInsert(): void {
+  public function testDeprecationInsert() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Insert is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $insert = new Insert($this->connection, 'test');
     $this->assertInstanceOf(Insert::class, $insert);
@@ -53,7 +51,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Schema
    */
-  public function testDeprecationSchema(): void {
+  public function testDeprecationSchema() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Schema is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $schema = new Schema($this->connection);
     $this->assertInstanceOf(Schema::class, $schema);
@@ -62,7 +60,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Select
    */
-  public function testDeprecationSelect(): void {
+  public function testDeprecationSelect() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Select is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $select = new Select($this->connection, 'test');
     $this->assertInstanceOf(Select::class, $select);
@@ -71,7 +69,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Statement
    */
-  public function testDeprecationStatement(): void {
+  public function testDeprecationStatement() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Statement is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $statement = new Statement($this->createMock(StubPDO::class), $this->connection, '', []);
     $this->assertInstanceOf(Statement::class, $statement);
@@ -80,7 +78,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Truncate
    */
-  public function testDeprecationTruncate(): void {
+  public function testDeprecationTruncate() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Truncate is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $truncate = new Truncate($this->connection, 'test');
     $this->assertInstanceOf(Truncate::class, $truncate);
@@ -89,7 +87,7 @@ class SqliteDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\sqlite\Upsert
    */
-  public function testDeprecationUpsert(): void {
+  public function testDeprecationUpsert() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\sqlite\Upsert is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The SQLite database driver has been moved to the sqlite module. See https://www.drupal.org/node/3129492');
     $upsert = new Upsert($this->connection, 'test');
     $this->assertInstanceOf(Upsert::class, $upsert);

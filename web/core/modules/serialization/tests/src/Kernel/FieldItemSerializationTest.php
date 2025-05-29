@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\serialization\Kernel;
 
 use Drupal\entity_test\Entity\EntityTestMulRev;
@@ -124,7 +122,7 @@ class FieldItemSerializationTest extends NormalizerTestBase {
   /**
    * Tests normalizing and denormalizing an entity with field item normalizer.
    */
-  public function testFieldNormalizeDenormalize(): void {
+  public function testFieldNormalizeDenormalize() {
     $normalized = $this->serializer->normalize($this->entity, 'json');
 
     $expected_field_value = $this->entity->field_test_text[0]->getValue()['value'] . '::silly_suffix';
@@ -148,7 +146,7 @@ class FieldItemSerializationTest extends NormalizerTestBase {
   /**
    * Tests denormalizing using a scalar field value.
    */
-  public function testFieldDenormalizeWithScalarValue(): void {
+  public function testFieldDenormalizeWithScalarValue() {
     $this->expectException(UnexpectedValueException::class);
     $this->expectExceptionMessage('Field values for "uuid" must use an array structure');
 
@@ -170,7 +168,7 @@ class FieldItemSerializationTest extends NormalizerTestBase {
    *
    * @dataProvider providerTestCustomBooleanNormalization
    */
-  public function testCustomBooleanNormalization(array $test_modules, $format): void {
+  public function testCustomBooleanNormalization(array $test_modules, $format) {
     // Asserts the entity contains the value we set.
     $this->assertFalse($this->entity->field_test_boolean->value);
 
@@ -215,7 +213,7 @@ class FieldItemSerializationTest extends NormalizerTestBase {
    * @return array
    *   Test cases.
    */
-  public static function providerTestCustomBooleanNormalization() {
+  public function providerTestCustomBooleanNormalization() {
     return [
       'Format-agnostic @FieldType-level normalizers SHOULD be able to affect the format-agnostic normalization' => [
         ['test_fieldtype_boolean_emoji_normalizer'],

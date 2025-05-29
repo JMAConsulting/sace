@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\comment\Tests\CommentTestTrait;
@@ -195,7 +193,7 @@ class PagePreviewTest extends NodeTestBase {
   /**
    * Checks the node preview functionality.
    */
-  public function testPagePreview(): void {
+  public function testPagePreview() {
     $title_key = 'title[0][value]';
     $body_key = 'body[0][value]';
     $term_key = $this->fieldName . '[target_id]';
@@ -449,7 +447,7 @@ class PagePreviewTest extends NodeTestBase {
   /**
    * Checks the node preview functionality, when using revisions.
    */
-  public function testPagePreviewWithRevisions(): void {
+  public function testPagePreviewWithRevisions() {
     $title_key = 'title[0][value]';
     $body_key = 'body[0][value]';
     $term_key = $this->fieldName . '[target_id]';
@@ -505,7 +503,7 @@ class PagePreviewTest extends NodeTestBase {
   /**
    * Checks the node preview accessible for simultaneous node editing.
    */
-  public function testSimultaneousPreview(): void {
+  public function testSimultaneousPreview() {
     $title_key = 'title[0][value]';
     $node = $this->drupalCreateNode([]);
 
@@ -529,7 +527,7 @@ class PagePreviewTest extends NodeTestBase {
   /**
    * Tests node preview with dynamic_page_cache and anonymous users.
    */
-  public function testPagePreviewCache(): void {
+  public function testPagePreviewCache() {
     \Drupal::service('module_installer')->uninstall(['node_test']);
     $this->drupalLogout();
     $title_key = 'title[0][value]';

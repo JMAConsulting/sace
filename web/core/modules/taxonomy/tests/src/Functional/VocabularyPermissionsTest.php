@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional;
 
 use Drupal\Component\Utility\Unicode;
@@ -14,7 +12,9 @@ use Drupal\Component\Utility\Unicode;
 class VocabularyPermissionsTest extends TaxonomyTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['help'];
 
@@ -37,7 +37,7 @@ class VocabularyPermissionsTest extends TaxonomyTestBase {
   /**
    * Create, edit and delete a vocabulary via the user interface.
    */
-  public function testVocabularyPermissionsVocabulary(): void {
+  public function testVocabularyPermissionsVocabulary() {
     // VocabularyTest.php already tests for user with "administer taxonomy"
     // permission.
 
@@ -65,7 +65,7 @@ class VocabularyPermissionsTest extends TaxonomyTestBase {
   /**
    * Tests the vocabulary overview permission.
    */
-  public function testTaxonomyVocabularyOverviewPermissions(): void {
+  public function testTaxonomyVocabularyOverviewPermissions() {
     // Create two vocabularies, one with two terms, the other without any term.
     /** @var \Drupal\taxonomy\Entity\Vocabulary $vocabulary1 , $vocabulary2 */
     $vocabulary1 = $this->createVocabulary();
@@ -245,7 +245,7 @@ class VocabularyPermissionsTest extends TaxonomyTestBase {
   /**
    * Create, edit and delete a taxonomy term via the user interface.
    */
-  public function testVocabularyPermissionsTaxonomyTerm(): void {
+  public function testVocabularyPermissionsTaxonomyTerm() {
     // Vocabulary used for creating, removing and editing terms.
     $vocabulary = $this->createVocabulary();
 

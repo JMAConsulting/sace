@@ -4,7 +4,6 @@ namespace Drupal\field\Plugin\migrate\process;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\migrate\Attribute\MigrateProcess;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\migrate\process\StaticMap;
@@ -12,7 +11,11 @@ use Drupal\migrate\Row;
 use Drupal\migrate_drupal\Plugin\MigrateFieldPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-#[MigrateProcess('field_type')]
+/**
+ * @MigrateProcessPlugin(
+ *   id = "field_type"
+ * )
+ */
 class FieldType extends StaticMap implements ContainerFactoryPluginInterface {
 
   /**
@@ -43,7 +46,7 @@ class FieldType extends StaticMap implements ContainerFactoryPluginInterface {
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    *   The migration being run.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrateFieldPluginManagerInterface $field_plugin_manager, ?MigrationInterface $migration = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrateFieldPluginManagerInterface $field_plugin_manager, MigrationInterface $migration = NULL) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->fieldPluginManager = $field_plugin_manager;
     $this->migration = $migration;
@@ -52,7 +55,7 @@ class FieldType extends StaticMap implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, ?MigrationInterface $migration = NULL) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
     return new static(
       $configuration,
       $plugin_id,

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Module;
 
 /**
@@ -19,7 +17,7 @@ class VersionTest extends ModuleTestBase {
   /**
    * Tests version dependencies.
    */
-  public function testModuleVersions(): void {
+  public function testModuleVersions() {
     $dependencies = [
       // Alternating between being compatible and incompatible with 8.x-2.4-beta3.
       // The first is always a compatible.

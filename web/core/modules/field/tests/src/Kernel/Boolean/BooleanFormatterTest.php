@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Kernel\Boolean;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -19,7 +17,9 @@ use Drupal\KernelTests\KernelTestBase;
 class BooleanFormatterTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'field',
@@ -105,7 +105,7 @@ class BooleanFormatterTest extends KernelTestBase {
   /**
    * Tests boolean formatter output.
    */
-  public function testBooleanFormatter(): void {
+  public function testBooleanFormatter() {
     $data = [];
     $data[] = [0, [], 'Off'];
     $data[] = [1, [], 'On'];

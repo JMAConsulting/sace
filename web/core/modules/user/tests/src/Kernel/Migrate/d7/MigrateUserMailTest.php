@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
@@ -25,7 +23,7 @@ class MigrateUserMailTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migration.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $config = $this->config('user.mail');
     $this->assertSame('Your account is approved!', $config->get('status_activated.subject'));
     $this->assertSame('Your account was activated, and there was much rejoicing.', $config->get('status_activated.body'));

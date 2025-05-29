@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Component\Gettext\PoItem;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class LocaleJavascriptTranslationTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['locale', 'locale_test'];
 
@@ -27,7 +27,7 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testFileParsing(): void {
+  public function testFileParsing() {
 
     // This test is for ensuring that the regular expression in
     // _locale_parse_js_file() finds translatable source strings in all valid
@@ -110,7 +110,7 @@ class LocaleJavascriptTranslationTest extends BrowserTestBase {
   /**
    * Assert translations JS is added before drupal.js, because it depends on it.
    */
-  public function testLocaleTranslationJsDependencies(): void {
+  public function testLocaleTranslationJsDependencies() {
     // User to add and remove language.
     $admin_user = $this->drupalCreateUser([
       'administer languages',

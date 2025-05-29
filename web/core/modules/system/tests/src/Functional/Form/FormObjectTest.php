@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Form;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\BrowserTestBase;
 class FormObjectTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['form_test'];
 
@@ -28,7 +28,7 @@ class FormObjectTest extends BrowserTestBase {
    *
    * @see \Drupal\form_test\EventSubscriber\FormTestEventSubscriber::onKernelRequest()
    */
-  public function testObjectFormCallback(): void {
+  public function testObjectFormCallback() {
     $config_factory = $this->container->get('config.factory');
 
     $this->drupalGet('form-test/object-builder');

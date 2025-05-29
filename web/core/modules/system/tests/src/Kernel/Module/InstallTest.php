@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Module;
 
 use Drupal\Core\Extension\ExtensionNameLengthException;
@@ -125,7 +123,7 @@ class InstallTest extends KernelTestBase {
   /**
    * Tests installing a module with the same name as an enabled theme.
    */
-  public function testInstallModuleSameNameAsTheme(): void {
+  public function testInstallModuleSameNameAsTheme() {
     $name = 'name_collision_test';
 
     // Install and uninstall the module.

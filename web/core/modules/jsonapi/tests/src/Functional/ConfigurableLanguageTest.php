@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\jsonapi\Functional;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
@@ -113,7 +112,7 @@ class ConfigurableLanguageTest extends ConfigEntityResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getExpectedCacheContexts(?array $sparse_fieldset = NULL) {
+  protected function getExpectedCacheContexts(array $sparse_fieldset = NULL) {
     return Cache::mergeContexts(parent::getExpectedCacheContexts(), ['languages:language_interface']);
   }
 
@@ -122,7 +121,7 @@ class ConfigurableLanguageTest extends ConfigEntityResourceTestBase {
    *
    * @see https://www.drupal.org/project/drupal/issues/2915539
    */
-  public function testGetIndividualDefaultConfig(): void {
+  public function testGetIndividualDefaultConfig() {
     // @todo Remove line below in favor of commented line in https://www.drupal.org/project/drupal/issues/2878463.
     $url = Url::fromRoute('jsonapi.configurable_language--configurable_language.individual', ['entity' => ConfigurableLanguage::load('en')->uuid()]);
     /* $url = ConfigurableLanguage::load('en')->toUrl('jsonapi'); */
@@ -133,7 +132,7 @@ class ConfigurableLanguageTest extends ConfigEntityResourceTestBase {
     $this->setUpAuthorization('GET');
     $response = $this->request('GET', $url, $request_options);
 
-    $normalization = $this->getDocumentFromResponse($response);
+    $normalization = Json::decode((string) $response->getBody());
     $this->assertArrayNotHasKey('_core', $normalization['data']['attributes']);
   }
 

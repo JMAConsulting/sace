@@ -47,7 +47,7 @@ class EntityCreateAccessCheckTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestAccess() {
+  public function providerTestAccess() {
     $no_access = FALSE;
     $access = TRUE;
 
@@ -70,7 +70,7 @@ class EntityCreateAccessCheckTest extends UnitTestCase {
    *
    * @dataProvider providerTestAccess
    */
-  public function testAccess($entity_bundle, $requirement, $access, $expected, $expect_permission_context = TRUE): void {
+  public function testAccess($entity_bundle, $requirement, $access, $expected, $expect_permission_context = TRUE) {
 
     // Set up the access result objects for allowing or denying access.
     $access_result = $access ? AccessResult::allowed()->cachePerPermissions() : AccessResult::neutral()->cachePerPermissions();

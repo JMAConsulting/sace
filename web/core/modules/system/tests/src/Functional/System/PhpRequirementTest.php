@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Core\Utility\PhpRequirements;
@@ -49,7 +47,7 @@ class PhpRequirementTest extends BrowserTestBase {
   /**
    * Tests status report messages regarding the PHP version.
    */
-  public function testStatusPage(): void {
+  public function testStatusPage() {
     $minimum_php_version = PhpRequirements::getMinimumSupportedPhp();
     // Go to Administration.
     $this->drupalGet('admin/reports/status');

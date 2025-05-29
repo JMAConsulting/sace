@@ -20,7 +20,7 @@ class ChainedPlaceholderStrategyTest extends UnitTestCase {
    *
    * @dataProvider providerProcessPlaceholders
    */
-  public function testProcessPlaceholders($strategies, $placeholders, $result): void {
+  public function testProcessPlaceholders($strategies, $placeholders, $result) {
     $chained_placeholder_strategy = new ChainedPlaceholderStrategy();
 
     foreach ($strategies as $strategy) {
@@ -125,7 +125,7 @@ class ChainedPlaceholderStrategyTest extends UnitTestCase {
   /**
    * @covers ::processPlaceholders
    */
-  public function testProcessPlaceholdersNoStrategies(): void {
+  public function testProcessPlaceholdersNoStrategies() {
     // Placeholders but no strategies defined.
     $placeholders = [
       'assert-me' => ['#markup' => 'I-am-a-llama-that-will-lead-to-an-assertion-by-the-chained-placeholder-strategy.'],
@@ -140,7 +140,7 @@ class ChainedPlaceholderStrategyTest extends UnitTestCase {
   /**
    * @covers ::processPlaceholders
    */
-  public function testProcessPlaceholdersWithRoguePlaceholderStrategy(): void {
+  public function testProcessPlaceholdersWithRoguePlaceholderStrategy() {
     // Placeholders but no strategies defined.
     $placeholders = [
       'assert-me' => ['#markup' => 'llama'],

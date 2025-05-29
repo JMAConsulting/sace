@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Form;
 
 use Drupal\Core\Form\FormInterface;
@@ -68,7 +66,7 @@ class TriggeringElementProgrammedTest extends KernelTestBase implements FormInte
   /**
    * Tests that #limit_validation_errors of the only submit button takes effect.
    */
-  public function testLimitValidationErrors(): void {
+  public function testLimitValidationErrors() {
     // Programmatically submit the form.
     $form_state = new FormState();
     $form_state->setValue('section', 'one');

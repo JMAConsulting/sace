@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\editor\Kernel;
 
 use Drupal\editor\Entity\Editor;
@@ -22,7 +20,9 @@ use Drupal\filter\Entity\FilterFormat;
 class EditorFileUsageTest extends EntityKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['editor', 'editor_test', 'node', 'file'];
 
@@ -78,7 +78,7 @@ class EditorFileUsageTest extends EntityKernelTestBase {
   /**
    * Tests file save operations when node with referenced files is saved.
    */
-  public function testFileSaveOperations(): void {
+  public function testFileSaveOperations() {
     $permanent_image = File::create([
       'uri' => 'core/misc/druplicon.png',
       'status' => 1,
@@ -117,7 +117,7 @@ class EditorFileUsageTest extends EntityKernelTestBase {
   /**
    * Tests the configurable text editor manager.
    */
-  public function testEditorEntityHooks(): void {
+  public function testEditorEntityHooks() {
     $image_paths = [
       0 => 'core/misc/druplicon.png',
       1 => 'core/misc/tree.png',

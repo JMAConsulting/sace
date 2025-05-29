@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Archiver;
 
 use Drupal\Core\Archiver\Zip;
@@ -19,7 +17,7 @@ class ZipTest extends ArchiverTestBase {
   /**
    * Tests that the Zip archive is created if it does not exist.
    */
-  public function testCreateArchive(): void {
+  public function testCreateArchive() {
     $textFile = current($this->getTestFiles('text'));
     $archiveFilename = $this->fileSystem->realpath('public://' . $this->randomMachineName() . '.zip');
     $zip = new Zip($archiveFilename, [
@@ -35,7 +33,7 @@ class ZipTest extends ArchiverTestBase {
   /**
    * Tests that the Zip archiver is created and overwritten.
    */
-  public function testOverwriteArchive(): void {
+  public function testOverwriteArchive() {
     // Create an archive similarly to how it's done in ::testCreateArchive.
     $files = $this->getTestFiles('text');
     $textFile = current($files);

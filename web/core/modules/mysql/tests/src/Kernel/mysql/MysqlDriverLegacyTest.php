@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\mysql\Kernel\mysql;
 
 use Drupal\Core\Database\Driver\mysql\Connection;
@@ -24,7 +22,7 @@ class MysqlDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\mysql\Install\Tasks
    */
-  public function testDeprecationInstallTasks(): void {
+  public function testDeprecationInstallTasks() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\mysql\Install\Tasks is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The MySQL database driver has been moved to the mysql module. See https://www.drupal.org/node/3129492');
     $tasks = new Tasks();
     $this->assertInstanceOf(Tasks::class, $tasks);
@@ -33,7 +31,7 @@ class MysqlDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\mysql\Connection
    */
-  public function testDeprecationConnection(): void {
+  public function testDeprecationConnection() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\mysql\Connection is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The MySQL database driver has been moved to the mysql module. See https://www.drupal.org/node/3129492');
     // @todo https://www.drupal.org/project/drupal/issues/3251084 Remove setting
     // the $options parameter.
@@ -45,7 +43,7 @@ class MysqlDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\mysql\ExceptionHandler
    */
-  public function testDeprecationExceptionHandler(): void {
+  public function testDeprecationExceptionHandler() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\mysql\ExceptionHandler is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The MySQL database driver has been moved to the mysql module. See https://www.drupal.org/node/3129492');
     $handler = new ExceptionHandler();
     $this->assertInstanceOf(ExceptionHandler::class, $handler);
@@ -54,7 +52,7 @@ class MysqlDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\mysql\Insert
    */
-  public function testDeprecationInsert(): void {
+  public function testDeprecationInsert() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\mysql\Insert is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The MySQL database driver has been moved to the mysql module. See https://www.drupal.org/node/3129492');
     $insert = new Insert($this->connection, 'test');
     $this->assertInstanceOf(Insert::class, $insert);
@@ -63,7 +61,7 @@ class MysqlDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\mysql\Schema
    */
-  public function testDeprecationSchema(): void {
+  public function testDeprecationSchema() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\mysql\Schema is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The MySQL database driver has been moved to the mysql module. See https://www.drupal.org/node/3129492');
     $schema = new Schema($this->connection);
     $this->assertInstanceOf(Schema::class, $schema);
@@ -72,7 +70,7 @@ class MysqlDriverLegacyTest extends DriverSpecificDatabaseTestBase {
   /**
    * @covers Drupal\Core\Database\Driver\mysql\Upsert
    */
-  public function testDeprecationUpsert(): void {
+  public function testDeprecationUpsert() {
     $this->expectDeprecation('\Drupal\Core\Database\Driver\mysql\Upsert is deprecated in drupal:9.4.0 and is removed from drupal:11.0.0. The MySQL database driver has been moved to the mysql module. See https://www.drupal.org/node/3129492');
     $upsert = new Upsert($this->connection, 'test');
     $this->assertInstanceOf(Upsert::class, $upsert);

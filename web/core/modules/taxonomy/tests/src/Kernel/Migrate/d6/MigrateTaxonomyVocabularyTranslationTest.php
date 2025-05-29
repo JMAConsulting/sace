@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Migrate\d6;
 
 use Drupal\Tests\migrate_drupal\Kernel\d6\MigrateDrupal6TestBase;
@@ -37,7 +35,7 @@ class MigrateTaxonomyVocabularyTranslationTest extends MigrateDrupal6TestBase {
   /**
    * Tests the Drupal 6 i18n taxonomy vocabularies to Drupal 8 migration.
    */
-  public function testTaxonomyVocabularyTranslation(): void {
+  public function testTaxonomyVocabularyTranslation() {
     $language_manager = \Drupal::service('language_manager');
     $config = $language_manager->getLanguageConfigOverride('zu', 'taxonomy.vocabulary.vocabulary_1_i_0_');
     $this->assertSame('zu - vocabulary 1 (i=0)', $config->get('name'));

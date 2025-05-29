@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\contact\Kernel;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
@@ -15,7 +13,9 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 class MessageEntityTest extends EntityKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'system',
@@ -36,7 +36,7 @@ class MessageEntityTest extends EntityKernelTestBase {
   /**
    * Tests some of the methods.
    */
-  public function testMessageMethods(): void {
+  public function testMessageMethods() {
     $message_storage = $this->container->get('entity_type.manager')->getStorage('contact_message');
     $message = $message_storage->create(['contact_form' => 'feedback']);
 

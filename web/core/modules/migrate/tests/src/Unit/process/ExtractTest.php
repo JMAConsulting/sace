@@ -25,7 +25,7 @@ class ExtractTest extends MigrateProcessTestCase {
   /**
    * Tests successful extraction.
    */
-  public function testExtract(): void {
+  public function testExtract() {
     $value = $this->plugin->transform(['foo' => 'bar'], $this->migrateExecutable, $this->row, 'destination_property');
     $this->assertSame('bar', $value);
   }
@@ -35,7 +35,7 @@ class ExtractTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerTestExtractInvalid
    */
-  public function testExtractInvalid($value): void {
+  public function testExtractInvalid($value) {
     $this->expectException(MigrateException::class);
     $type = gettype($value);
     $this->expectExceptionMessage(sprintf("Input should be an array, instead it was of type '%s'", $type));
@@ -45,7 +45,7 @@ class ExtractTest extends MigrateProcessTestCase {
   /**
    * Tests unsuccessful extraction.
    */
-  public function testExtractFail(): void {
+  public function testExtractFail() {
     $this->expectException(MigrateException::class);
     $this->expectExceptionMessage("Array index missing, extraction failed for 'array(\n  'bar' => 'foo',\n)'. Consider adding a `default` key to the configuration.");
     $this->plugin->transform(['bar' => 'foo'], $this->migrateExecutable, $this->row, 'destination_property');
@@ -54,7 +54,7 @@ class ExtractTest extends MigrateProcessTestCase {
   /**
    * Tests unsuccessful extraction.
    */
-  public function testExtractFailDefault(): void {
+  public function testExtractFailDefault() {
     $plugin = new Extract(['index' => ['foo'], 'default' => 'test'], 'map', []);
     $value = $plugin->transform(['bar' => 'foo'], $this->migrateExecutable, $this->row, 'destination_property');
     $this->assertSame('test', $value, '');
@@ -74,7 +74,7 @@ class ExtractTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerExtractDefault
    */
-  public function testExtractDefault(array $value, array $configuration, $expected): void {
+  public function testExtractDefault(array $value, array $configuration, $expected) {
     $this->plugin = new Extract($configuration, 'map', []);
 
     $value = $this->plugin->transform($value, $this->migrateExecutable, $this->row, 'destination_property');
@@ -84,7 +84,7 @@ class ExtractTest extends MigrateProcessTestCase {
   /**
    * Data provider for testExtractDefault.
    */
-  public static function providerExtractDefault() {
+  public function providerExtractDefault() {
     return [
       [
         ['foo' => 'bar'],
@@ -140,7 +140,7 @@ class ExtractTest extends MigrateProcessTestCase {
   /**
    * Provides data for the testExtractInvalid.
    */
-  public static function providerTestExtractInvalid() {
+  public function providerTestExtractInvalid() {
     $xml_str = <<<XML
     <xml version='1.0'?>
       <authors>

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\help\Kernel;
 
 use Drupal\Core\Access\AccessibleInterface;
@@ -25,7 +23,7 @@ class HelpSearchPluginTest extends KernelTestBase {
   /**
    * Tests search plugin annotation and interfaces.
    */
-  public function testAnnotation(): void {
+  public function testAnnotation() {
     /** @var \Drupal\search\SearchPluginManager $manager */
     $manager = \Drupal::service('plugin.manager.search');
     /** @var \Drupal\help\Plugin\Search\HelpSearch $plugin */

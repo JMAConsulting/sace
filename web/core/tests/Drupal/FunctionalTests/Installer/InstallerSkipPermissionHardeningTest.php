@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 /**
@@ -40,7 +38,7 @@ class InstallerSkipPermissionHardeningTest extends InstallerTestBase {
   /**
    * Verifies the expected behaviors of the installation result.
    */
-  public function testInstalled(): void {
+  public function testInstalled() {
     $this->assertSession()->addressEquals('user/1');
     $this->assertSession()->statusCodeEquals(200);
   }

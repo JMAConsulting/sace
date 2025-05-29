@@ -28,7 +28,7 @@ class ArrayBuildTest extends MigrateProcessTestCase {
   /**
    * Tests successful transformation.
    */
-  public function testTransform(): void {
+  public function testTransform() {
     $source = [
       ['foo' => 'Foo', 'bar' => 'Bar'],
       ['foo' => 'foo bar', 'bar' => 'bar foo'],
@@ -44,7 +44,7 @@ class ArrayBuildTest extends MigrateProcessTestCase {
   /**
    * Tests non-existent key for the key configuration.
    */
-  public function testNonExistentKey(): void {
+  public function testNonExistentKey() {
     $source = [
       ['bar' => 'foo'],
     ];
@@ -56,7 +56,7 @@ class ArrayBuildTest extends MigrateProcessTestCase {
   /**
    * Tests non-existent key for the value configuration.
    */
-  public function testNonExistentValue(): void {
+  public function testNonExistentValue() {
     $source = [
       ['foo' => 'bar'],
     ];
@@ -68,7 +68,7 @@ class ArrayBuildTest extends MigrateProcessTestCase {
   /**
    * Tests one-dimensional array input.
    */
-  public function testOneDimensionalArrayInput(): void {
+  public function testOneDimensionalArrayInput() {
     $source = ['foo' => 'bar'];
     $this->expectException(MigrateException::class);
     $this->expectExceptionMessage('The input should be an array of arrays');
@@ -78,7 +78,7 @@ class ArrayBuildTest extends MigrateProcessTestCase {
   /**
    * Tests string input.
    */
-  public function testStringInput(): void {
+  public function testStringInput() {
     $source = 'foo';
     $this->expectException(MigrateException::class);
     $this->expectExceptionMessage('The input should be an array of arrays');

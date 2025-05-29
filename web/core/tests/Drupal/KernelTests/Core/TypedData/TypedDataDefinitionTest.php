@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\TypedData;
 
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
@@ -40,7 +38,7 @@ class TypedDataDefinitionTest extends KernelTestBase {
   /**
    * Tests deriving metadata about list items.
    */
-  public function testLists(): void {
+  public function testLists() {
     $list_definition = ListDataDefinition::create('string');
     $this->assertInstanceOf(ListDataDefinitionInterface::class, $list_definition);
     $item_definition = $list_definition->getItemDefinition();
@@ -63,7 +61,7 @@ class TypedDataDefinitionTest extends KernelTestBase {
   /**
    * Tests deriving metadata about maps.
    */
-  public function testMaps(): void {
+  public function testMaps() {
     $map_definition = MapDataDefinition::create()
       ->setPropertyDefinition('one', DataDefinition::create('string'))
       ->setPropertyDefinition('two', DataDefinition::create('string'))
@@ -89,7 +87,7 @@ class TypedDataDefinitionTest extends KernelTestBase {
   /**
    * Tests deriving metadata from data references.
    */
-  public function testDataReferences(): void {
+  public function testDataReferences() {
     $language_reference_definition = DataReferenceDefinition::create('language');
     $this->assertInstanceOf(DataReferenceDefinitionInterface::class, $language_reference_definition);
 
@@ -105,7 +103,7 @@ class TypedDataDefinitionTest extends KernelTestBase {
   /**
    * Tests getString() throws exception when getType() is not implemented.
    */
-  public function testNotImplementedGetType(): void {
+  public function testNotImplementedGetType() {
     $language_reference_definition = DataReferenceDefinition::create('language');
     $language_reference = $this->typedDataManager->create($language_reference_definition);
     $this->assertInstanceOf(DataReferenceInterface::class, $language_reference);

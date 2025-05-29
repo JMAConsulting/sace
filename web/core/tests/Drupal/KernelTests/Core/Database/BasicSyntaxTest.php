@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 /**
@@ -18,7 +16,7 @@ class BasicSyntaxTest extends DatabaseTestBase {
   /**
    * Tests string concatenation.
    */
-  public function testConcatLiterals(): void {
+  public function testConcatLiterals() {
     $result = $this->connection->query('SELECT CONCAT(:a1, CONCAT(:a2, CONCAT(:a3, CONCAT(:a4, :a5))))', [
       ':a1' => 'This',
       ':a2' => ' ',
@@ -37,7 +35,7 @@ class BasicSyntaxTest extends DatabaseTestBase {
    * since its type 'varchar_ascii' may lead to using field-level collations not
    * compatible with the other fields.
    */
-  public function testConcatFields(): void {
+  public function testConcatFields() {
     $result = $this->connection->query(
       'SELECT CONCAT(:a1, CONCAT([job], CONCAT(:a2, CONCAT([age], :a3)))) FROM {test} WHERE [age] = :age', [
         ':a1' => 'The age of ',
@@ -52,7 +50,7 @@ class BasicSyntaxTest extends DatabaseTestBase {
   /**
    * Tests string concatenation with separator.
    */
-  public function testConcatWsLiterals(): void {
+  public function testConcatWsLiterals() {
     $result = $this->connection->query("SELECT CONCAT_WS(', ', :a1, NULL, :a2, :a3, :a4)", [
       ':a1' => 'Hello',
       ':a2' => NULL,
@@ -65,7 +63,7 @@ class BasicSyntaxTest extends DatabaseTestBase {
   /**
    * Tests string concatenation with separator, with field values.
    */
-  public function testConcatWsFields(): void {
+  public function testConcatWsFields() {
     $result = $this->connection->query("SELECT CONCAT_WS('-', :a1, [name], :a2, [age]) FROM {test} WHERE [age] = :age", [
       ':a1' => 'name',
       ':a2' => 'age',
@@ -77,7 +75,7 @@ class BasicSyntaxTest extends DatabaseTestBase {
   /**
    * Tests escaping of LIKE wildcards.
    */
-  public function testLikeEscape(): void {
+  public function testLikeEscape() {
     $this->connection->insert('test')
       ->fields([
         'name' => 'Ring_',
@@ -103,7 +101,7 @@ class BasicSyntaxTest extends DatabaseTestBase {
   /**
    * Tests a LIKE query containing a backslash.
    */
-  public function testLikeBackslash(): void {
+  public function testLikeBackslash() {
     $this->connection->insert('test')
       ->fields(['name'])
       ->values([
@@ -134,7 +132,7 @@ class BasicSyntaxTest extends DatabaseTestBase {
   /**
    * Tests \Drupal\Core\Database\Connection::getFullQualifiedTableName().
    */
-  public function testGetFullQualifiedTableName(): void {
+  public function testGetFullQualifiedTableName() {
     $database = \Drupal::database();
     $num_matches = $database->select($database->getFullQualifiedTableName('test'), 't')
       ->countQuery()

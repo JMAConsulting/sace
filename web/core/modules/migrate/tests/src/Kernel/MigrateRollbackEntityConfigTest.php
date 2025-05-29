@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel;
 
 use Drupal\migrate\MigrateExecutable;
@@ -15,7 +13,9 @@ use Drupal\taxonomy\Entity\Vocabulary;
 class MigrateRollbackEntityConfigTest extends MigrateTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'field',
@@ -40,7 +40,7 @@ class MigrateRollbackEntityConfigTest extends MigrateTestBase {
   /**
    * Tests rolling back configuration entity translations.
    */
-  public function testConfigEntityRollback(): void {
+  public function testConfigEntityRollback() {
     // We use vocabularies to demonstrate importing and rolling back
     // configuration entities with translations. First, import vocabularies.
     $vocabulary_data_rows = [

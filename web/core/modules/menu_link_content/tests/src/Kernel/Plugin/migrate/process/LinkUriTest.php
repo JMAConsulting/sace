@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_link_content\Kernel\Plugin\migrate\process;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -24,7 +22,9 @@ class LinkUriTest extends KernelTestBase {
   use UserCreationTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'user'];
 
@@ -49,7 +49,7 @@ class LinkUriTest extends KernelTestBase {
    *
    * @covers ::transform
    */
-  public function testRouted($value, $expected): void {
+  public function testRouted($value, $expected) {
     $actual = $this->doTransform($value);
     $this->assertSame($expected, $actual);
   }
@@ -62,7 +62,7 @@ class LinkUriTest extends KernelTestBase {
    *   - The value array to pass to LinkUri::transform().
    *   - The expected path returned by LinkUri::transform().
    */
-  public static function providerTestRouted() {
+  public function providerTestRouted() {
     $tests = [];
 
     $value = 'http://example.com';
@@ -90,7 +90,7 @@ class LinkUriTest extends KernelTestBase {
    *
    * @dataProvider providerTestNotRouted
    */
-  public function testNotRouted($value, $exception_message): void {
+  public function testNotRouted($value, $exception_message) {
     $this->expectException(MigrateException::class);
     $this->expectExceptionMessage($exception_message);
     $this->doTransform($value);
@@ -105,7 +105,7 @@ class LinkUriTest extends KernelTestBase {
    *   - The expected path returned by LinkUri::transform().
    *   - (optional) A URL object that the path validator prophecy will return.
    */
-  public static function providerTestNotRouted() {
+  public function providerTestNotRouted() {
     $tests = [];
 
     $message = 'The path "%s" failed validation.';
@@ -135,7 +135,7 @@ class LinkUriTest extends KernelTestBase {
    *
    * @covers ::transform
    */
-  public function testDisablingRouteValidation($value, $expected): void {
+  public function testDisablingRouteValidation($value, $expected) {
     // Create a node so we have a valid route.
     Node::create([
       'nid' => 1,
@@ -155,7 +155,7 @@ class LinkUriTest extends KernelTestBase {
    *   - The value array to pass to LinkUri::transform().
    *   - The expected path returned by LinkUri::transform().
    */
-  public static function providerTestDisablingRouteValidation() {
+  public function providerTestDisablingRouteValidation() {
     $tests = [];
 
     $value = 'node/1';

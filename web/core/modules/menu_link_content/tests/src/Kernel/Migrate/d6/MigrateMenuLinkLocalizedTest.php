@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_link_content\Kernel\Migrate\d6;
 
 use Drupal\Tests\menu_link_content\Kernel\Migrate\MigrateMenuLinkTestTrait;
@@ -49,7 +47,7 @@ class MigrateMenuLinkLocalizedTest extends MigrateNodeTestBase {
   /**
    * Tests migration of menu link localized translations.
    */
-  public function testMenuLinkLocalized(): void {
+  public function testMenuLinkLocalized() {
     // A localized menu link.
     $this->assertEntity('463', 'fr', 'fr - Test 1', 'secondary-links', 'fr - Test menu link 1', TRUE, FALSE, [
       'attributes' => ['title' => 'fr - Test menu link 1'],

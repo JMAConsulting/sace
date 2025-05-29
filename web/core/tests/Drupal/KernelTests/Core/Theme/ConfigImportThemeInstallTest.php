@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\Core\Config\ConfigImporterException;
@@ -15,7 +13,9 @@ use Drupal\KernelTests\KernelTestBase;
 class ConfigImportThemeInstallTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system'];
 
@@ -30,7 +30,7 @@ class ConfigImportThemeInstallTest extends KernelTestBase {
   /**
    * Tests config imports that install and uninstall a theme with dependencies.
    */
-  public function testConfigImportWithThemeWithModuleDependencies(): void {
+  public function testConfigImportWithThemeWithModuleDependencies() {
     $this->container->get('module_installer')->install(['test_module_required_by_theme', 'test_another_module_required_by_theme']);
     $this->container->get('theme_installer')->install(['test_theme_depending_on_modules']);
     $this->assertTrue($this->container->get('theme_handler')->themeExists('test_theme_depending_on_modules'), 'test_theme_depending_on_modules theme installed');

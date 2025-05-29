@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Theme;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,7 @@ use Drupal\Tests\BrowserTestBase;
 class ClaroTest extends BrowserTestBase {
 
   /**
-   * Modules to install.
+   * Modules to enable.
    *
    * Install the shortcut module so that claro.settings has its schema checked.
    * There's currently no way for Claro to provide a default and have valid
@@ -36,7 +34,7 @@ class ClaroTest extends BrowserTestBase {
    *
    * @see claro.info.yml
    */
-  public function testRegressionMissingElementsCss(): void {
+  public function testRegressionMissingElementsCss() {
     $this->drupalGet('');
     $this->assertSession()->statusCodeEquals(200);
     // This can be any CSS file from the global library.
@@ -46,11 +44,8 @@ class ClaroTest extends BrowserTestBase {
   /**
    * Tests Claro's configuration schema.
    */
-  public function testConfigSchema(): void {
-    $permissions = [
-      'administer modules',
-    ];
-    $this->drupalLogin($this->drupalCreateUser($permissions));
+  public function testConfigSchema() {
+    $this->drupalLogin($this->rootUser);
     $this->drupalGet('admin/modules');
     $this->assertSession()->elementNotExists('css', '#block-claro-help');
 
@@ -66,7 +61,7 @@ class ClaroTest extends BrowserTestBase {
   /**
    * Tests that the Claro theme can be uninstalled.
    */
-  public function testIsUninstallable(): void {
+  public function testIsUninstallable() {
     $this->drupalLogin($this->drupalCreateUser(['access administration pages', 'administer themes']));
 
     $this->drupalGet('admin/appearance');

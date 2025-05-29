@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\history\Kernel\Views;
 
 use Drupal\Core\Database\Database;
@@ -20,7 +18,9 @@ use Drupal\views\Views;
 class HistoryTimestampTest extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['history', 'node'];
 
@@ -49,7 +49,7 @@ class HistoryTimestampTest extends ViewsKernelTestBase {
   /**
    * Tests the handlers.
    */
-  public function testHandlers(): void {
+  public function testHandlers() {
     $nodes = [];
     $node = Node::create([
       'title' => 'n1',
@@ -69,19 +69,18 @@ class HistoryTimestampTest extends ViewsKernelTestBase {
     \Drupal::currentUser()->setAccount($account);
 
     $connection = Database::getConnection();
-    $requestTime = \Drupal::time()->getRequestTime();
     $connection->insert('history')
       ->fields([
         'uid' => $account->id(),
         'nid' => $nodes[0]->id(),
-        'timestamp' => $requestTime - 100,
+        'timestamp' => REQUEST_TIME - 100,
       ])->execute();
 
     $connection->insert('history')
       ->fields([
         'uid' => $account->id(),
         'nid' => $nodes[1]->id(),
-        'timestamp' => $requestTime + 100,
+        'timestamp' => REQUEST_TIME + 100,
       ])->execute();
 
     $column_map = [

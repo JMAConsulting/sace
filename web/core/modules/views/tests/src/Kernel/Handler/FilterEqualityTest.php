@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -14,9 +12,6 @@ use Drupal\views\Views;
  */
 class FilterEqualityTest extends ViewsKernelTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['system'];
 
   /**
@@ -41,7 +36,7 @@ class FilterEqualityTest extends ViewsKernelTestBase {
     return $data;
   }
 
-  public function testEqual(): void {
+  public function testEqual() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -66,7 +61,7 @@ class FilterEqualityTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testEqualGroupedExposed(): void {
+  public function testEqualGroupedExposed() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');
@@ -86,7 +81,7 @@ class FilterEqualityTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testNotEqual(): void {
+  public function testNotEqual() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -120,7 +115,7 @@ class FilterEqualityTest extends ViewsKernelTestBase {
     $this->assertIdenticalResultset($view, $resultset, $this->columnMap);
   }
 
-  public function testEqualGroupedNotExposed(): void {
+  public function testEqualGroupedNotExposed() {
     $filters = $this->getGroupedExposedFilters();
     $view = Views::getView('test_view');
     $view->newDisplay('page', 'Page', 'page_1');

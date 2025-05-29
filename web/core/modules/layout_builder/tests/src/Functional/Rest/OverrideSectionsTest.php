@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Functional\Rest;
 
 use Drupal\Core\Url;
@@ -40,7 +38,7 @@ class OverrideSectionsTest extends LayoutRestTestBase {
   /**
    * Tests that the layout override field is not normalized.
    */
-  public function testOverrideField(): void {
+  public function testOverrideField() {
     $this->assertCount(1, $this->node->get(OverridesSectionStorage::FIELD_NAME));
 
     // Make a GET request and ensure override field is not included.

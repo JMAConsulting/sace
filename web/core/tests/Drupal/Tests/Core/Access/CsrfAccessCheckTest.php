@@ -55,7 +55,7 @@ class CsrfAccessCheckTest extends UnitTestCase {
   /**
    * Tests the access() method with a valid token.
    */
-  public function testAccessTokenPass(): void {
+  public function testAccessTokenPass() {
     $this->csrfToken->expects($this->once())
       ->method('validate')
       ->with('test_query', 'test-path/42')
@@ -74,7 +74,7 @@ class CsrfAccessCheckTest extends UnitTestCase {
   /**
    * @covers ::access
    */
-  public function testCsrfTokenInvalid(): void {
+  public function testCsrfTokenInvalid() {
     $this->csrfToken->expects($this->once())
       ->method('validate')
       ->with('test_query', 'test-path')
@@ -93,7 +93,7 @@ class CsrfAccessCheckTest extends UnitTestCase {
   /**
    * @covers ::access
    */
-  public function testCsrfTokenMissing(): void {
+  public function testCsrfTokenMissing() {
     $this->csrfToken->expects($this->once())
       ->method('validate')
       ->with('', 'test-path')

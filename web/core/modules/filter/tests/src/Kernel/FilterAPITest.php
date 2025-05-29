@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\filter\Kernel;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -21,9 +19,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class FilterAPITest extends EntityKernelTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['system', 'filter', 'filter_test', 'user'];
 
   /**
@@ -38,7 +33,7 @@ class FilterAPITest extends EntityKernelTestBase {
   /**
    * Tests that the filter order is respected.
    */
-  public function testCheckMarkupFilterOrder(): void {
+  public function testCheckMarkupFilterOrder() {
     // Create crazy HTML format.
     $crazy_format = FilterFormat::create([
       'format' => 'crazy',
@@ -69,7 +64,7 @@ class FilterAPITest extends EntityKernelTestBase {
   /**
    * Tests the ability to apply only a subset of filters.
    */
-  public function testCheckMarkupFilterSubset(): void {
+  public function testCheckMarkupFilterSubset() {
     $text = "Text with <marquee>evil content and</marquee> a URL: https://www.drupal.org!";
     $expected_filtered_text = "Text with evil content and a URL: <a href=\"https://www.drupal.org\">https://www.drupal.org</a>!";
     $expected_filter_text_without_html_generators = "Text with evil content and a URL: https://www.drupal.org!";
@@ -92,7 +87,7 @@ class FilterAPITest extends EntityKernelTestBase {
    * @covers \Drupal\filter\Entity\FilterFormat::getHtmlRestrictions
    * @covers \Drupal\filter\Entity\FilterFormat::getFilterTypes
    */
-  public function testFilterFormatAPI(): void {
+  public function testFilterFormatAPI() {
     // Test on filtered_html.
     $filtered_html_format = FilterFormat::load('filtered_html');
     $this->assertSame(
@@ -250,7 +245,7 @@ class FilterAPITest extends EntityKernelTestBase {
    * #lazy_builder callbacks.
    * This test focuses solely on those advanced features.
    */
-  public function testProcessedTextElement(): void {
+  public function testProcessedTextElement() {
     FilterFormat::create([
       'format' => 'element_test',
       'name' => 'processed_text element test format',
@@ -321,14 +316,14 @@ class FilterAPITest extends EntityKernelTestBase {
       'user.permissions',
     ];
     $this->assertEqualsCanonicalizing($expected_cache_contexts, $build['#cache']['contexts'], 'Expected cache contexts present.');
-    $expected_markup = '<p>Hello, world!</p><p>This is a dynamic llama.</p><p>This is a static llama.</p>';
+    $expected_markup = '<p>Hello, world!</p><p>This is a dynamic llama.</p>';
     $this->assertSame($expected_markup, (string) $build['#markup'], 'Expected #lazy_builder callback has been applied.');
   }
 
   /**
    * Tests the function of the typed data type.
    */
-  public function testTypedDataAPI(): void {
+  public function testTypedDataAPI() {
     $definition = DataDefinition::create('filter_format');
     $data = \Drupal::typedDataManager()->create($definition);
 
@@ -399,7 +394,7 @@ class FilterAPITest extends EntityKernelTestBase {
   /**
    * Tests that FilterFormat::preSave() only saves customized plugins.
    */
-  public function testFilterFormatPreSave(): void {
+  public function testFilterFormatPreSave() {
     /** @var \Drupal\filter\FilterFormatInterface $crazy_format */
     $crazy_format = FilterFormat::create([
       'format' => 'crazy',
@@ -472,7 +467,7 @@ class FilterAPITest extends EntityKernelTestBase {
    * @see \Drupal\filter\Entity\FilterFormat::onDependencyRemoval()
    * @see filter_system_info_alter()
    */
-  public function testDependencyRemoval(): void {
+  public function testDependencyRemoval() {
     $this->installSchema('user', ['users_data']);
     $filter_format = FilterFormat::load('filtered_html');
 
@@ -515,7 +510,7 @@ class FilterAPITest extends EntityKernelTestBase {
   /**
    * Tests that format entities are serialized without their plugin collection.
    */
-  public function testSleep(): void {
+  public function testSleep() {
     $filter_format = FilterFormat::load('filtered_html');
 
     $this->assertNull($filter_format->get('filterCollection'));

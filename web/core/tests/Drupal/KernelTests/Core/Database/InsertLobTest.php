@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Database;
 
 /**
@@ -14,7 +12,7 @@ class InsertLobTest extends DatabaseTestBase {
   /**
    * Tests that we can insert a single blob field successfully.
    */
-  public function testInsertOneBlob(): void {
+  public function testInsertOneBlob() {
     $data = "This is\000a test.";
     $this->assertSame(15, strlen($data), 'Test data contains a NULL.');
     $id = $this->connection->insert('test_one_blob')
@@ -27,7 +25,7 @@ class InsertLobTest extends DatabaseTestBase {
   /**
    * Tests that we can insert a null into blob field.
    */
-  public function testInsertNullBlob(): void {
+  public function testInsertNullBlob() {
     $id = $this->connection->insert('test_one_blob')
       ->fields(['blob1' => NULL])
       ->execute();
@@ -38,7 +36,7 @@ class InsertLobTest extends DatabaseTestBase {
   /**
    * Tests that we can insert multiple blob fields in the same query.
    */
-  public function testInsertMultipleBlob(): void {
+  public function testInsertMultipleBlob() {
     $id = $this->connection->insert('test_two_blobs')
       ->fields([
         'blob1' => 'This is',

@@ -17,7 +17,7 @@ class HtmlTagTest extends RendererTestBase {
   /**
    * @covers ::getInfo
    */
-  public function testGetInfo(): void {
+  public function testGetInfo() {
     $htmlTag = new HtmlTag([], 'test', 'test');
     $info = $htmlTag->getInfo();
     $this->assertArrayHasKey('#pre_render', $info);
@@ -29,7 +29,7 @@ class HtmlTagTest extends RendererTestBase {
    * @covers ::preRenderHtmlTag
    * @dataProvider providerPreRenderHtmlTag
    */
-  public function testPreRenderHtmlTag($element, $expected): void {
+  public function testPreRenderHtmlTag($element, $expected) {
     $result = HtmlTag::preRenderHtmlTag($element);
     foreach ($result as &$child) {
       if (is_array($child) && isset($child['#tag'])) {
@@ -42,7 +42,7 @@ class HtmlTagTest extends RendererTestBase {
   /**
    * Data provider for preRenderHtmlTag test.
    */
-  public static function providerPreRenderHtmlTag() {
+  public function providerPreRenderHtmlTag() {
     $tags = [];
 
     // Value prefix/suffix.

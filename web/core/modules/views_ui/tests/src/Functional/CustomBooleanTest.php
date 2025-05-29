@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views_ui\Functional;
 
 use Drupal\views\Views;
@@ -48,7 +46,7 @@ class CustomBooleanTest extends UITestBase {
   /**
    * Tests the setting and output of custom labels for boolean values.
    */
-  public function testCustomOption(): void {
+  public function testCustomOption() {
     // Add the boolean field handler to the test view.
     $view = Views::getView('test_view');
     $view->setDisplay();
@@ -113,7 +111,7 @@ class CustomBooleanTest extends UITestBase {
   /**
    * Tests the setting and output of custom labels for boolean values.
    */
-  public function testCustomOptionTemplate(): void {
+  public function testCustomOptionTemplate() {
     // Install theme to test with template system.
     \Drupal::service('theme_installer')->install(['views_test_theme']);
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal_ui\Functional\d7;
 
 use Drupal\Core\Database\Database;
@@ -94,7 +92,7 @@ class FilePathTest extends MigrateUpgradeTestBase {
    *
    * @dataProvider providerTestFilePath
    */
-  public function testFilePath(string $file_private_path, string $file_public_path, string $file_temporary_path, string $private, string $public, string $temporary): void {
+  public function testFilePath(string $file_private_path, string $file_public_path, string $file_temporary_path, string $private, string $public, string $temporary) {
     $this->sourceFileScheme['private'] = $file_private_path;
     $this->sourceFileScheme['public'] = $file_public_path;
     $this->sourceFileScheme['temporary'] = $file_temporary_path;
@@ -167,7 +165,7 @@ class FilePathTest extends MigrateUpgradeTestBase {
    * @return string[][]
    *   An array of test data.
    */
-  public static function providerTestFilePath() {
+  public function providerTestFilePath() {
     return [
       'All source base paths are at temporary' => [
         'sites/default/private',

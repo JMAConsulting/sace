@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel\Migrate\d7;
 
 use Drupal\field\Entity\FieldConfig;
@@ -18,7 +16,9 @@ use Drupal\node\NodeTypeInterface;
 class MigrateNodeTypeTest extends MigrateDrupal7TestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['node', 'text', 'menu_ui'];
 
@@ -80,7 +80,7 @@ class MigrateNodeTypeTest extends MigrateDrupal7TestBase {
   /**
    * Tests Drupal 7 node type to Drupal 8 migration.
    */
-  public function testNodeType(): void {
+  public function testNodeType() {
     $expected_available_menus = ['main'];
     $expected_parent = 'main:';
 

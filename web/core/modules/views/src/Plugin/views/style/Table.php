@@ -6,22 +6,21 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\views\Attribute\ViewsStyle;
 use Drupal\views\Plugin\views\wizard\WizardInterface;
 
 /**
  * Style plugin to render each item as a row in a table.
  *
  * @ingroup views_style_plugins
+ *
+ * @ViewsStyle(
+ *   id = "table",
+ *   title = @Translation("Table"),
+ *   help = @Translation("Displays rows in a table."),
+ *   theme = "views_view_table",
+ *   display_types = {"normal"}
+ * )
  */
-#[ViewsStyle(
-  id: "table",
-  title: new TranslatableMarkup("Table"),
-  help: new TranslatableMarkup("Displays rows in a table."),
-  theme: "views_view_table",
-  display_types: ["normal"],
-)]
 class Table extends StylePluginBase implements CacheableDependencyInterface {
 
   /**
@@ -104,7 +103,7 @@ class Table extends StylePluginBase implements CacheableDependencyInterface {
     $query = $this->view->getRequest()->query;
     $order = $query->get('order');
     if (!isset($order)) {
-      // Check for a 'default' clickSort. If there isn't one, exit gracefully.
+      // check for a 'default' clickSort. If there isn't one, exit gracefully.
       if (empty($this->options['default'])) {
         return;
       }
@@ -218,7 +217,7 @@ class Table extends StylePluginBase implements CacheableDependencyInterface {
 
     $form['sticky'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable Drupal style "sticky" table headers'),
+      '#title' => $this->t('Enable Drupal style "sticky" table headers (JavaScript)'),
       '#default_value' => !empty($this->options['sticky']),
       '#description' => $this->t('(Sticky header effects will not be active for preview below, only on live output.)'),
     ];
@@ -319,7 +318,7 @@ class Table extends StylePluginBase implements CacheableDependencyInterface {
           '#return_value' => $field,
           '#parents' => ['style_options', 'default'],
           '#id' => $radio_id,
-          // Because 'radio' doesn't fully support '#id' =(
+          // because 'radio' doesn't fully support '#id' =(
           '#attributes' => ['id' => $radio_id],
           '#default_value' => $default,
           '#states' => [
@@ -382,7 +381,7 @@ class Table extends StylePluginBase implements CacheableDependencyInterface {
         ],
       ];
 
-      // Markup for the field name
+      // markup for the field name
       $form['info'][$field]['name'] = [
         '#markup' => $field_names[$field],
       ];

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -41,7 +39,7 @@ class FieldGroupRowsTest extends ViewsKernelTestBase {
   /**
    * Testing the "Grouped rows" functionality.
    */
-  public function testGroupRows(): void {
+  public function testGroupRows() {
     $this->installConfig(['filter']);
     $this->installEntitySchema('node');
     $this->installEntitySchema('user');

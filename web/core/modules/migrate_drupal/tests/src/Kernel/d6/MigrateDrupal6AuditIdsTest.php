@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\d6;
 
 use Drupal\KernelTests\FileSystemModuleDiscoveryDataProviderTrait;
@@ -62,7 +60,7 @@ class MigrateDrupal6AuditIdsTest extends MigrateDrupal6TestBase {
   /**
    * Tests multiple migrations to the same destination with no ID conflicts.
    */
-  public function testMultipleMigrationWithoutIdConflicts(): void {
+  public function testMultipleMigrationWithoutIdConflicts() {
     // Create a node of type page.
     $node = Node::create(['type' => 'page', 'title' => 'foo']);
     $node->moderation_state->value = 'published';
@@ -100,7 +98,7 @@ class MigrateDrupal6AuditIdsTest extends MigrateDrupal6TestBase {
   /**
    * Tests all migrations with no ID conflicts.
    */
-  public function testAllMigrationsWithNoIdConflicts(): void {
+  public function testAllMigrationsWithNoIdConflicts() {
     $migrations = $this->container
       ->get('plugin.manager.migration')
       ->createInstancesByTag('Drupal 6');
@@ -118,7 +116,7 @@ class MigrateDrupal6AuditIdsTest extends MigrateDrupal6TestBase {
   /**
    * Tests all migrations with ID conflicts.
    */
-  public function testAllMigrationsWithIdConflicts(): void {
+  public function testAllMigrationsWithIdConflicts() {
     // Get all Drupal 6 migrations.
     $migrations = $this->container
       ->get('plugin.manager.migration')
@@ -155,7 +153,7 @@ class MigrateDrupal6AuditIdsTest extends MigrateDrupal6TestBase {
   /**
    * Tests draft revisions ID conflicts.
    */
-  public function testDraftRevisionIdConflicts(): void {
+  public function testDraftRevisionIdConflicts() {
     // Create a published node of type page.
     $node = Node::create(['type' => 'page', 'title' => 'foo']);
     $node->moderation_state->value = 'published';
@@ -189,7 +187,7 @@ class MigrateDrupal6AuditIdsTest extends MigrateDrupal6TestBase {
   /**
    * Tests ID conflicts for inaccessible nodes.
    */
-  public function testNodeGrantsIdConflicts(): void {
+  public function testNodeGrantsIdConflicts() {
     // Enable the node_test module to restrict access to page nodes.
     $this->enableModules(['node_test']);
 

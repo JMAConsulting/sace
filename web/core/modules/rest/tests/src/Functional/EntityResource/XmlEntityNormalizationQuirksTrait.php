@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\rest\Functional\EntityResource;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -24,17 +22,6 @@ use Drupal\user\StatusItem;
 trait XmlEntityNormalizationQuirksTrait {
 
   use XmlNormalizationQuirksTrait;
-
-  /**
-   * Marks some tests as skipped because XML cannot be deserialized.
-   *
-   * @before
-   */
-  public function xmlEntityNormalizationQuirksTraitSkipTests(): void {
-    if (in_array($this->name(), ['testPatch', 'testPost'], TRUE)) {
-      $this->markTestSkipped('Deserialization of the XML format is not supported.');
-    }
-  }
 
   /**
    * {@inheritdoc}
@@ -157,6 +144,22 @@ trait XmlEntityNormalizationQuirksTrait {
     }
 
     return $normalization;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testPost() {
+    // Deserialization of the XML format is not supported.
+    $this->markTestSkipped();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function testPatch() {
+    // Deserialization of the XML format is not supported.
+    $this->markTestSkipped();
   }
 
 }

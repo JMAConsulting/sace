@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\book\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -11,7 +9,6 @@ use Drupal\Tests\content_moderation\Traits\ContentModerationTestTrait;
  * Tests Book and Content Moderation integration.
  *
  * @group book
- * @group legacy
  */
 class BookContentModerationTest extends BrowserTestBase {
 
@@ -64,7 +61,7 @@ class BookContentModerationTest extends BrowserTestBase {
   /**
    * Tests that book drafts can not modify the book outline.
    */
-  public function testBookWithPendingRevisions(): void {
+  public function testBookWithPendingRevisions() {
     // Create two books.
     $book_1_nodes = $this->createBook(['moderation_state[0][state]' => 'published']);
     $book_1 = $this->book;

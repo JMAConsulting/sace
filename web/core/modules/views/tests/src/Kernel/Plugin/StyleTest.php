@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Component\Utility\Html;
@@ -29,7 +27,7 @@ class StyleTest extends ViewsKernelTestBase {
   /**
    * Tests the general rendering of styles.
    */
-  public function testStyle(): void {
+  public function testStyle() {
     $renderer = $this->container->get('renderer');
 
     // This run use the test row plugin and render with it.
@@ -78,7 +76,7 @@ class StyleTest extends ViewsKernelTestBase {
   /**
    * Tests the grouping features of styles.
    */
-  public function testGrouping(): void {
+  public function testGrouping() {
     $this->doTestGrouping(FALSE);
     $this->doTestGrouping(TRUE);
   }
@@ -278,7 +276,7 @@ class StyleTest extends ViewsKernelTestBase {
   /**
    * Tests custom CSS row classes.
    */
-  public function testCustomRowClasses(): void {
+  public function testCustomRowClasses() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 

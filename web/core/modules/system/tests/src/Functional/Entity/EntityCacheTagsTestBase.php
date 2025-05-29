@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Entity;
 
 use Drupal\Core\Cache\Cache;
@@ -24,7 +22,9 @@ use Drupal\user\RoleInterface;
 abstract class EntityCacheTagsTestBase extends PageCacheTagsTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['entity_test', 'field_test'];
 
@@ -307,7 +307,7 @@ abstract class EntityCacheTagsTestBase extends PageCacheTagsTestBase {
    * - referencing entity type view cache tag: "<referencing entity type>_view"
    * - referencing entity type cache tag: "<referencing entity type>:<referencing entity ID>"
    */
-  public function testReferencedEntity(): void {
+  public function testReferencedEntity() {
     $entity_type = $this->entity->getEntityTypeId();
     $referencing_entity_url = $this->referencingEntity->toUrl('canonical');
     $non_referencing_entity_url = $this->nonReferencingEntity->toUrl('canonical');

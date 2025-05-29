@@ -1,14 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Functional;
 
 use Drupal\block_content\BlockContentInterface;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Database\Database;
-
-// cspell:ignore testblock
 
 /**
  * Create a block and test saving it.
@@ -18,7 +14,7 @@ use Drupal\Core\Database\Database;
 class BlockContentCreationTest extends BlockContentTestBase {
 
   /**
-   * Modules to install.
+   * Modules to enable.
    *
    * Enable dummy module that implements hook_block_insert() for exceptions and
    * field_ui to edit display settings.
@@ -55,7 +51,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
   /**
    * Creates a "Basic block" block and verifies its consistency in the database.
    */
-  public function testBlockContentCreation(): void {
+  public function testBlockContentCreation() {
     $this->drupalLogin($this->adminUser);
 
     // Create a block.
@@ -79,7 +75,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
   /**
    * Creates a "Basic page" block with multiple view modes.
    */
-  public function testBlockContentCreationMultipleViewModes(): void {
+  public function testBlockContentCreationMultipleViewModes() {
     // Add a new view mode and verify if it is selected as expected.
     $this->drupalLogin($this->drupalCreateUser(['administer display modes']));
     $this->drupalGet('admin/structure/display-modes/view/add/block_content');
@@ -142,7 +138,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
   /**
    * Tests the redirect workflow of creating a block_content and block.
    */
-  public function testBlockContentFormSubmitHandlers(): void {
+  public function testBlockContentFormSubmitHandlers() {
     $this->drupalLogin($this->adminUser);
 
     // Create a block and place in block layout.
@@ -195,7 +191,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
    * Creates a content block from defaults and ensures that the 'basic block'
    * type is being used.
    */
-  public function testDefaultBlockContentCreation(): void {
+  public function testDefaultBlockContentCreation() {
     $edit = [];
     $edit['info[0][value]'] = $this->randomMachineName(8);
     $edit['body[0][value]'] = $this->randomMachineName(16);
@@ -214,7 +210,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
   /**
    * Verifies that a transaction rolls back the failed creation.
    */
-  public function testFailedBlockCreation(): void {
+  public function testFailedBlockCreation() {
     // Create a block.
     try {
       $this->createBlockContent('fail_creation');
@@ -238,7 +234,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
   /**
    * Tests deleting a block.
    */
-  public function testBlockDelete(): void {
+  public function testBlockDelete() {
     // Create a block.
     $edit = [];
     $edit['info[0][value]'] = $this->randomMachineName(8);
@@ -301,7 +297,7 @@ class BlockContentCreationTest extends BlockContentTestBase {
   /**
    * Tests placed content blocks create a dependency in the block placement.
    */
-  public function testConfigDependencies(): void {
+  public function testConfigDependencies() {
     $block = $this->createBlockContent();
     // Place the block.
     $block_placement_id = mb_strtolower($block->label());

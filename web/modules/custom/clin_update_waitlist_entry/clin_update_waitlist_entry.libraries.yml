@@ -1,7 +1,0 @@
-modalwindow:
-  version: 1
-  js:
-    js/modalwindow.js: {}
-  dependencies:
-    - core/jquery
-    - fullcalendar_view/libraries.jsframe

@@ -9,8 +9,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Image\ImageFactory;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\media\Attribute\MediaSource;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaTypeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,15 +17,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Image entity media source.
  *
  * @see \Drupal\Core\Image\ImageInterface
+ *
+ * @MediaSource(
+ *   id = "image",
+ *   label = @Translation("Image"),
+ *   description = @Translation("Use local images for reusable media."),
+ *   allowed_field_types = {"image"},
+ *   default_thumbnail_filename = "no-thumbnail.png",
+ *   thumbnail_alt_metadata_attribute = "thumbnail_alt_value"
+ * )
  */
-#[MediaSource(
-  id: "image",
-  label: new TranslatableMarkup("Image"),
-  description: new TranslatableMarkup("Use local images for reusable media."),
-  allowed_field_types: ["image"],
-  default_thumbnail_filename: "no-thumbnail.png",
-  thumbnail_alt_metadata_attribute: "thumbnail_alt_value"
-)]
 class Image extends File {
 
   /**
@@ -64,7 +63,7 @@ class Image extends File {
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -144,7 +143,7 @@ class Image extends File {
         return $uri;
 
       case 'thumbnail_alt_value':
-        return $media->get($this->configuration['source_field'])->alt ?? parent::getMetadata($media, $name);
+        return $media->get($this->configuration['source_field'])->alt ?: parent::getMetadata($media, $name);
     }
 
     return parent::getMetadata($media, $name);

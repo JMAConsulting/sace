@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Functional\Views;
 
 use Drupal\Component\Utility\Html;
@@ -27,7 +25,7 @@ class HandlerFieldRoleTest extends UserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  public function testRole(): void {
+  public function testRole() {
     // Create a couple of roles for the view.
     $role_name_a = 'a' . $this->randomMachineName(8);
     $this->drupalCreateRole(['access content'], $role_name_a, '<em>' . $role_name_a . '</em>', 9);
@@ -40,7 +38,9 @@ class HandlerFieldRoleTest extends UserTestBase {
 
     // Add roles to user 1.
     $user = User::load(1);
-    $user->addRole($role_name_a)->addRole($role_name_b)->save();
+    $user->addRole($role_name_a);
+    $user->addRole($role_name_b);
+    $user->save();
 
     $this->drupalLogin($this->createUser(['access user profiles']));
     $this->drupalGet('/test-views-handler-field-role');

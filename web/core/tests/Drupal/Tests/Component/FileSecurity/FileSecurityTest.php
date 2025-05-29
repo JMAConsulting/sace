@@ -19,7 +19,7 @@ class FileSecurityTest extends TestCase {
   /**
    * @covers ::writeHtaccess
    */
-  public function testWriteHtaccessPrivate(): void {
+  public function testWriteHtaccessPrivate() {
     vfsStream::setup('root');
     FileSecurity::writeHtaccess(vfsStream::url('root'));
     $htaccess_file = vfsStream::url('root') . '/.htaccess';
@@ -32,7 +32,7 @@ class FileSecurityTest extends TestCase {
   /**
    * @covers ::writeHtaccess
    */
-  public function testWriteHtaccessPublic(): void {
+  public function testWriteHtaccessPublic() {
     vfsStream::setup('root');
     $this->assertTrue(FileSecurity::writeHtaccess(vfsStream::url('root'), FALSE));
     $htaccess_file = vfsStream::url('root') . '/.htaccess';
@@ -45,7 +45,7 @@ class FileSecurityTest extends TestCase {
   /**
    * @covers ::writeHtaccess
    */
-  public function testWriteHtaccessForceOverwrite(): void {
+  public function testWriteHtaccessForceOverwrite() {
     vfsStream::setup('root');
     $htaccess_file = vfsStream::url('root') . '/.htaccess';
     file_put_contents($htaccess_file, "foo");
@@ -58,7 +58,7 @@ class FileSecurityTest extends TestCase {
   /**
    * @covers ::writeHtaccess
    */
-  public function testWriteHtaccessFailure(): void {
+  public function testWriteHtaccessFailure() {
     vfsStream::setup('root');
     $this->assertFalse(FileSecurity::writeHtaccess(vfsStream::url('root') . '/foo'));
   }
@@ -66,7 +66,7 @@ class FileSecurityTest extends TestCase {
   /**
    * @covers ::writeWebConfig
    */
-  public function testWriteWebConfig(): void {
+  public function testWriteWebConfig() {
     vfsStream::setup('root');
     $this->assertTrue(FileSecurity::writeWebConfig(vfsStream::url('root')));
     $web_config_file = vfsStream::url('root') . '/web.config';
@@ -77,7 +77,7 @@ class FileSecurityTest extends TestCase {
   /**
    * @covers ::writeWebConfig
    */
-  public function testWriteWebConfigForceOverwrite(): void {
+  public function testWriteWebConfigForceOverwrite() {
     vfsStream::setup('root');
     $web_config_file = vfsStream::url('root') . '/web.config';
     file_put_contents($web_config_file, "foo");
@@ -90,7 +90,7 @@ class FileSecurityTest extends TestCase {
   /**
    * @covers ::writeWebConfig
    */
-  public function testWriteWebConfigFailure(): void {
+  public function testWriteWebConfigFailure() {
     vfsStream::setup('root');
     $this->assertFalse(FileSecurity::writeWebConfig(vfsStream::url('root') . '/foo'));
   }

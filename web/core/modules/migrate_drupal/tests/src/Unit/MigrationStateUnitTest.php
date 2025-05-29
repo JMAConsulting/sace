@@ -38,7 +38,7 @@ class MigrationStateUnitTest extends UnitTestCase {
    * @covers ::getSourceState
    * @covers ::getDestinationsForSource
    */
-  public function testGetUpgradeStates($modules_to_enable, $files, $field_plugins, $migrations, $source_system_data, $expected_7, $expected_6): void {
+  public function testGetUpgradeStates($modules_to_enable, $files, $field_plugins, $migrations, $source_system_data, $expected_7, $expected_6) {
     $fieldPluginManager = $this->prophesize(MigrateFieldPluginManagerInterface::class);
     $fieldPluginManager->getDefinitions()->willReturn($field_plugins);
     $moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
@@ -91,7 +91,7 @@ class MigrationStateUnitTest extends UnitTestCase {
   /**
    * Data provider for testGetUpgradeStates.
    */
-  public static function providerGetUpgradeStates() {
+  public function providerGetUpgradeStates() {
 
     // Tests multiple scenarios:
     // Not enabled and not declared.

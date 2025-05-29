@@ -35,7 +35,7 @@ class RouteProcessorManagerTest extends UnitTestCase {
   /**
    * Tests the Route process manager functionality.
    */
-  public function testRouteProcessorManager(): void {
+  public function testRouteProcessorManager() {
     $route = new Route('');
     $parameters = ['test' => 'test'];
     $route_name = 'test_name';

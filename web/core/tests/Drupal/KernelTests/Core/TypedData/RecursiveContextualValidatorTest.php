@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\TypedData;
 
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
@@ -35,7 +33,7 @@ class RecursiveContextualValidatorTest extends KernelTestBase {
   /**
    * Tests recursive validation against given constraints against an entity.
    */
-  public function testRecursiveValidate(): void {
+  public function testRecursiveValidate() {
     $entity = EntityTest::create();
     $adapter = EntityAdapter::createFromEntity($entity);
     // This would trigger the ValidReferenceConstraint due to EntityTest
@@ -47,7 +45,7 @@ class RecursiveContextualValidatorTest extends KernelTestBase {
   /**
    * Tests recursive propagation of violations.
    */
-  public function testRecursiveViolationPropagation(): void {
+  public function testRecursiveViolationPropagation() {
     // We create an entity reference field with a constraint which will
     // trigger the validation of the referenced entities. Then we add a
     // required field and populate it only on the parent entity, so that

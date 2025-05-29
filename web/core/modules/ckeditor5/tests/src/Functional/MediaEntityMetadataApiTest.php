@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\ckeditor5\Functional;
 
 use Drupal\ckeditor5\Plugin\Editor\CKEditor5;
@@ -212,7 +210,7 @@ class MediaEntityMetadataApiTest extends BrowserTestBase {
   /**
    * Tests the media entity metadata API.
    */
-  public function testApi(): void {
+  public function testApi() {
     $path = '/ckeditor5/filtered_html/media-entity-metadata';
     $token = $this->container->get('csrf_token')->get(ltrim($path, '/'));
     $uuid = $this->mediaImage->uuid();

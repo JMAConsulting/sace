@@ -25,7 +25,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetRedirect
    */
-  public function testGetRedirect($form_state_additions, $expected): void {
+  public function testGetRedirect($form_state_additions, $expected) {
     $form_state = (new FormState())->setFormState($form_state_additions);
     $redirect = $form_state->getRedirect();
     $this->assertEquals($expected, $redirect);
@@ -37,7 +37,7 @@ class FormStateTest extends UnitTestCase {
    * @return array
    *   Returns some test data.
    */
-  public static function providerTestGetRedirect() {
+  public function providerTestGetRedirect() {
     $data = [];
     $data[] = [[], NULL];
 
@@ -58,7 +58,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @covers ::setError
    */
-  public function testSetError(): void {
+  public function testSetError() {
     $form_state = new FormState();
     $element['#parents'] = ['foo', 'bar'];
     $form_state->setError($element, 'Fail');
@@ -72,7 +72,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetError
    */
-  public function testGetError($errors, $parents, $error = NULL): void {
+  public function testGetError($errors, $parents, $error = NULL) {
     $element['#parents'] = $parents;
     $form_state = (new FormState())->setFormState([
       'errors' => $errors,
@@ -80,7 +80,7 @@ class FormStateTest extends UnitTestCase {
     $this->assertSame($error, $form_state->getError($element));
   }
 
-  public static function providerTestGetError() {
+  public function providerTestGetError() {
     return [
       [[], ['foo']],
       [['foo][bar' => 'Fail'], []],
@@ -100,7 +100,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestSetErrorByName
    */
-  public function testSetErrorByName($limit_validation_errors, $expected_errors): void {
+  public function testSetErrorByName($limit_validation_errors, $expected_errors) {
     $form_state = new FormState();
     $form_state->setLimitValidationErrors($limit_validation_errors);
     $form_state->clearErrors();
@@ -113,7 +113,7 @@ class FormStateTest extends UnitTestCase {
     $this->assertSame($expected_errors, $form_state->getErrors());
   }
 
-  public static function providerTestSetErrorByName() {
+  public function providerTestSetErrorByName() {
     return [
       // Only validate the 'options' element.
       [[['options']], ['options' => '']],
@@ -130,7 +130,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @covers ::setErrorByName
    */
-  public function testFormErrorsDuringSubmission(): void {
+  public function testFormErrorsDuringSubmission() {
     $form_state = new FormState();
     $form_state->setValidationComplete();
     $this->expectException(\LogicException::class);
@@ -141,7 +141,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::prepareCallback
    */
-  public function testPrepareCallbackValidMethod(): void {
+  public function testPrepareCallbackValidMethod() {
     $form_state = new FormState();
     $form_state->setFormObject(new PrepareCallbackTestForm());
     $processed_callback = $form_state->prepareCallback('::buildForm');
@@ -151,7 +151,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::prepareCallback
    */
-  public function testPrepareCallbackInValidMethod(): void {
+  public function testPrepareCallbackInValidMethod() {
     $form_state = new FormState();
     $form_state->setFormObject(new PrepareCallbackTestForm());
     $processed_callback = $form_state->prepareCallback('not_a_method');
@@ -162,7 +162,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::prepareCallback
    */
-  public function testPrepareCallbackArray(): void {
+  public function testPrepareCallbackArray() {
     $form_state = new FormState();
     $form_state->setFormObject(new PrepareCallbackTestForm());
     $callback = [$form_state->getFormObject(), 'buildForm'];
@@ -173,7 +173,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::loadInclude
    */
-  public function testLoadInclude(): void {
+  public function testLoadInclude() {
     $type = 'some_type';
     $module = 'some_module';
     $name = 'some_name';
@@ -190,7 +190,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::loadInclude
    */
-  public function testLoadIncludeNoName(): void {
+  public function testLoadIncludeNoName() {
     $type = 'some_type';
     $module = 'some_module';
     $form_state = $this->getMockBuilder('Drupal\Core\Form\FormState')
@@ -206,7 +206,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::loadInclude
    */
-  public function testLoadIncludeNotFound(): void {
+  public function testLoadIncludeNotFound() {
     $type = 'some_type';
     $module = 'some_module';
     $form_state = $this->getMockBuilder('Drupal\Core\Form\FormState')
@@ -222,7 +222,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::loadInclude
    */
-  public function testLoadIncludeAlreadyLoaded(): void {
+  public function testLoadIncludeAlreadyLoaded() {
     $type = 'some_type';
     $module = 'some_module';
     $name = 'some_name';
@@ -248,7 +248,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestIsCached
    */
-  public function testIsCached($cache_key, $no_cache_key, $expected): void {
+  public function testIsCached($cache_key, $no_cache_key, $expected) {
     $form_state = (new FormState())->setFormState([
       'cache' => $cache_key,
       'no_cache' => $no_cache_key,
@@ -264,7 +264,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * Provides test data for testIsCached().
    */
-  public static function providerTestIsCached() {
+  public function providerTestIsCached() {
     $data = [];
     $data[] = [
       TRUE,
@@ -302,7 +302,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::setCached
    */
-  public function testSetCachedPost(): void {
+  public function testSetCachedPost() {
     $form_state = new FormState();
     $form_state->setRequestMethod('POST');
     $form_state->setCached();
@@ -312,7 +312,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::setCached
    */
-  public function testSetCachedGet(): void {
+  public function testSetCachedGet() {
     $form_state = new FormState();
     $form_state->setRequestMethod('GET');
     $this->expectException(\LogicException::class);
@@ -326,7 +326,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @dataProvider providerTestIsMethodType
    */
-  public function testIsMethodType($set_method_type, $input, $expected): void {
+  public function testIsMethodType($set_method_type, $input, $expected) {
     $form_state = (new FormState())
       ->setMethod($set_method_type);
     $this->assertSame($expected, $form_state->isMethodType($input));
@@ -335,7 +335,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * Provides test data for testIsMethodType().
    */
-  public static function providerTestIsMethodType() {
+  public function providerTestIsMethodType() {
     $data = [];
     $data[] = [
       'get',
@@ -365,7 +365,7 @@ class FormStateTest extends UnitTestCase {
    * @covers ::hasTemporaryValue
    * @covers ::setTemporaryValue
    */
-  public function testTemporaryValue(): void {
+  public function testTemporaryValue() {
     $form_state = new FormState();
     $this->assertFalse($form_state->hasTemporaryValue('rainbow_sparkles'));
     $form_state->setTemporaryValue('rainbow_sparkles', 'yes');
@@ -379,7 +379,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::getCleanValueKeys
    */
-  public function testGetCleanValueKeys(): void {
+  public function testGetCleanValueKeys() {
     $form_state = new FormState();
     $this->assertSame($form_state->getCleanValueKeys(), ['form_id', 'form_token', 'form_build_id', 'op']);
   }
@@ -387,7 +387,7 @@ class FormStateTest extends UnitTestCase {
   /**
    * @covers ::setCleanValueKeys
    */
-  public function testSetCleanValueKeys(): void {
+  public function testSetCleanValueKeys() {
     $form_state = new FormState();
     $form_state->setCleanValueKeys(['key1', 'key2']);
     $this->assertSame($form_state->getCleanValueKeys(), ['key1', 'key2']);
@@ -409,7 +409,7 @@ class FormStateTest extends UnitTestCase {
    *
    * @covers ::cleanValues
    */
-  public function testCleanValues($form_state): void {
+  public function testCleanValues($form_state) {
     $form_state->setValue('value_to_keep', 'magic_ponies');
     $this->assertSame($form_state->cleanValues()->getValues(), ['value_to_keep' => 'magic_ponies']);
   }
@@ -418,7 +418,7 @@ class FormStateTest extends UnitTestCase {
    * @covers ::setValues
    * @covers ::getValues
    */
-  public function testGetValues(): void {
+  public function testGetValues() {
     $values = [
       'foo' => 'bar',
     ];

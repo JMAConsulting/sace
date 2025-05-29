@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Kernel;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
@@ -71,7 +69,7 @@ class NodeViewBuilderTest extends EntityKernelTestBase {
    * @covers ::renderLinks
    * @covers ::buildLinks
    */
-  public function testPendingRevisionLinks(): void {
+  public function testPendingRevisionLinks() {
     $account = User::create([
       'name' => $this->randomString(),
     ]);
@@ -92,11 +90,11 @@ class NodeViewBuilderTest extends EntityKernelTestBase {
     $pending_revision->save();
 
     $build = $this->viewBuilder->view($node, 'teaser');
-    $output = (string) $this->renderer->renderInIsolation($build);
+    $output = (string) $this->renderer->renderPlain($build);
     $this->assertStringContainsString("title=\"$title\"", $output);
 
     $build = $this->viewBuilder->view($pending_revision, 'teaser');
-    $output = (string) $this->renderer->renderInIsolation($build);
+    $output = (string) $this->renderer->renderPlain($build);
     $this->assertStringContainsString("title=\"$draft_title\"", $output);
   }
 

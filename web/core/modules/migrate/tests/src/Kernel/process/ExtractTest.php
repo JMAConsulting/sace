@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel\process;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -63,7 +61,7 @@ class ExtractTest extends KernelTestBase {
    * @param array $expected_data
    *   The expected results.
    */
-  public function testMultipleValueExplode(array $source_data, array $expected_data): void {
+  public function testMultipleValueExplode(array $source_data, array $expected_data) {
     $definition = $this->getDefinition();
     $definition['source']['data_rows'] = [$source_data];
 
@@ -82,7 +80,7 @@ class ExtractTest extends KernelTestBase {
   /**
    * Provides multiple source data for "extract" process plugin test.
    */
-  public static function multipleValueProviderSource() {
+  public function multipleValueProviderSource() {
     $tests = [
       [
         'source_data' => [

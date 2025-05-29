@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\Core\Config\InstallStorage;
@@ -16,7 +14,9 @@ use Drupal\KernelTests\KernelTestBase;
 class ThemeSettingsTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['system'];
 
@@ -44,7 +44,7 @@ class ThemeSettingsTest extends KernelTestBase {
   /**
    * Tests that $theme.settings are imported and used as default theme settings.
    */
-  public function testDefaultConfig(): void {
+  public function testDefaultConfig() {
     $name = 'test_basetheme';
     $path = $this->availableThemes[$name]->getPath();
     $this->assertFileExists("$path/" . InstallStorage::CONFIG_INSTALL_DIRECTORY . "/$name.settings.yml");
@@ -55,7 +55,7 @@ class ThemeSettingsTest extends KernelTestBase {
   /**
    * Tests that the $theme.settings default config file is optional.
    */
-  public function testNoDefaultConfig(): void {
+  public function testNoDefaultConfig() {
     $name = 'stark';
     $path = $this->availableThemes[$name]->getPath();
     $this->assertFileDoesNotExist("$path/" . InstallStorage::CONFIG_INSTALL_DIRECTORY . "/$name.settings.yml");
@@ -66,7 +66,7 @@ class ThemeSettingsTest extends KernelTestBase {
   /**
    * Tests that the default logo config can be overridden.
    */
-  public function testLogoConfig(): void {
+  public function testLogoConfig() {
     /** @var \Drupal\Core\Extension\ThemeInstallerInterface $theme_installer */
     $theme_installer = $this->container->get('theme_installer');
     $theme_installer->install(['stark']);

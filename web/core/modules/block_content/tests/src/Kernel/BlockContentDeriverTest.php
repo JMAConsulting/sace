@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Kernel;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -63,7 +61,7 @@ class BlockContentDeriverTest extends KernelTestBase {
   /**
    * Tests that only reusable blocks are derived.
    */
-  public function testReusableBlocksOnlyAreDerived(): void {
+  public function testReusableBlocksOnlyAreDerived() {
     // Create a block content type.
     $block_content_type = BlockContentType::create([
       'id' => 'spiffy',

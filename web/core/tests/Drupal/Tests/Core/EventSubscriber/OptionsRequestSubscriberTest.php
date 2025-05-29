@@ -22,7 +22,7 @@ class OptionsRequestSubscriberTest extends UnitTestCase {
   /**
    * @covers ::onRequest
    */
-  public function testWithNonOptionRequest(): void {
+  public function testWithNonOptionRequest() {
     $kernel = $this->prophesize(HttpKernelInterface::class);
     $request = Request::create('/example', 'GET');
 
@@ -39,7 +39,7 @@ class OptionsRequestSubscriberTest extends UnitTestCase {
   /**
    * @covers ::onRequest
    */
-  public function testWithoutMatchingRoutes(): void {
+  public function testWithoutMatchingRoutes() {
     $kernel = $this->prophesize(HttpKernelInterface::class);
     $request = Request::create('/example', 'OPTIONS');
 
@@ -57,7 +57,7 @@ class OptionsRequestSubscriberTest extends UnitTestCase {
    * @covers ::onRequest
    * @dataProvider providerTestOnRequestWithOptionsRequest
    */
-  public function testWithOptionsRequest(RouteCollection $collection, $expected_header): void {
+  public function testWithOptionsRequest(RouteCollection $collection, $expected_header) {
     $kernel = $this->prophesize(HttpKernelInterface::class);
     $request = Request::create('/example', 'OPTIONS');
 
@@ -74,7 +74,7 @@ class OptionsRequestSubscriberTest extends UnitTestCase {
     $this->assertEquals($expected_header, $response->headers->get('Allow'));
   }
 
-  public static function providerTestOnRequestWithOptionsRequest() {
+  public function providerTestOnRequestWithOptionsRequest() {
     $data = [];
 
     foreach (['GET', 'POST', 'PATCH', 'PUT', 'DELETE'] as $method) {

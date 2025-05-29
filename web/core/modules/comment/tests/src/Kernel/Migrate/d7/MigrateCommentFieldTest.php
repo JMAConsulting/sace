@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Migrate\d7;
 
 use Drupal\field\Entity\FieldStorageConfig;
@@ -48,7 +46,7 @@ class MigrateCommentFieldTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migrated comment fields.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $this->assertEntity('comment_node_page');
     $this->assertEntity('comment_node_article');
     $this->assertEntity('comment_node_blog');

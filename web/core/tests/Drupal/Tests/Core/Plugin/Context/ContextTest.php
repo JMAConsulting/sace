@@ -50,7 +50,7 @@ class ContextTest extends UnitTestCase {
   /**
    * @covers ::getContextValue
    */
-  public function testDefaultValue(): void {
+  public function testDefaultValue() {
     $this->setUpDefaultValue('test');
 
     $context = new Context($this->contextDefinition);
@@ -61,7 +61,7 @@ class ContextTest extends UnitTestCase {
   /**
    * @covers ::getContextData
    */
-  public function testDefaultDataValue(): void {
+  public function testDefaultDataValue() {
     $this->setUpDefaultValue('test');
 
     $context = new Context($this->contextDefinition);
@@ -72,7 +72,7 @@ class ContextTest extends UnitTestCase {
   /**
    * @covers ::getContextData
    */
-  public function testNullDataValue(): void {
+  public function testNullDataValue() {
     $this->setUpDefaultValue(NULL);
 
     $context = new Context($this->contextDefinition);
@@ -83,7 +83,7 @@ class ContextTest extends UnitTestCase {
   /**
    * @covers ::setContextValue
    */
-  public function testSetContextValueTypedData(): void {
+  public function testSetContextValueTypedData() {
 
     $this->contextDefinition = $this->createMock('Drupal\Core\Plugin\Context\ContextDefinitionInterface');
 
@@ -95,7 +95,7 @@ class ContextTest extends UnitTestCase {
   /**
    * @covers ::setContextValue
    */
-  public function testSetContextValueCacheableDependency(): void {
+  public function testSetContextValueCacheableDependency() {
     $container = new Container();
     $cache_context_manager = $this->getMockBuilder('Drupal\Core\Cache\Context\CacheContextsManager')
       ->disableOriginalConstructor()

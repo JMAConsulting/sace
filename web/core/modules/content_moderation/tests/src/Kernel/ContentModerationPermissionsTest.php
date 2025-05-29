@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\content_moderation\Kernel;
 
 use Drupal\content_moderation\Permissions;
@@ -16,7 +14,9 @@ use Drupal\workflows\Entity\Workflow;
 class ContentModerationPermissionsTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'workflows',
@@ -37,7 +37,7 @@ class ContentModerationPermissionsTest extends KernelTestBase {
    *
    * @dataProvider permissionsTestCases
    */
-  public function testPermissions($workflow, $permissions): void {
+  public function testPermissions($workflow, $permissions) {
     Workflow::create($workflow)->save();
     $this->assertEquals($permissions, (new Permissions())->transitionPermissions());
   }
@@ -48,7 +48,7 @@ class ContentModerationPermissionsTest extends KernelTestBase {
    * @return array
    *   Content moderation permissions based test cases.
    */
-  public static function permissionsTestCases() {
+  public function permissionsTestCases() {
     return [
       'Simple Content Moderation Workflow' => [
         [

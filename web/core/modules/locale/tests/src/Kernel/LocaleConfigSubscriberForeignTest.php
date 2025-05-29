@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
@@ -12,7 +10,6 @@ use Drupal\language\Entity\ConfigurableLanguage;
  * Tests default configuration handling with a foreign default language.
  *
  * @group locale
- * @group #slow
  */
 class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
 
@@ -47,7 +44,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests that the language of default configuration was updated.
    */
-  public function testDefaultConfigLanguage(): void {
+  public function testDefaultConfigLanguage() {
     $this->assertEquals('hu', $this->configFactory->getEditable('locale_test.no_translation')->get('langcode'));
     $this->assertEquals('hu', $this->configFactory->getEditable('locale_test.translation')->get('langcode'));
     $this->assertEquals('Hungarian test', $this->configFactory->getEditable('locale_test.translation')->get('test'));
@@ -56,7 +53,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests creating translations of shipped configuration.
    */
-  public function testCreateActiveTranslation(): void {
+  public function testCreateActiveTranslation() {
     $config_name = 'locale_test.no_translation';
     $this->saveLanguageActive($config_name, 'test', 'Test (Hungarian)', 'hu');
     $this->assertTranslation($config_name, 'Test (Hungarian)', 'hu');
@@ -65,7 +62,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests importing community translations of shipped configuration.
    */
-  public function testLocaleCreateActiveTranslation(): void {
+  public function testLocaleCreateActiveTranslation() {
     $config_name = 'locale_test.no_translation';
     $this->saveLocaleTranslationData($config_name, 'test', 'Test', 'Test (Hungarian)', 'hu', TRUE);
     $this->assertTranslation($config_name, 'Test (Hungarian)', 'hu', FALSE);
@@ -74,7 +71,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests updating translations of shipped configuration.
    */
-  public function testUpdateActiveTranslation(): void {
+  public function testUpdateActiveTranslation() {
     $config_name = 'locale_test.translation';
     $this->saveLanguageActive($config_name, 'test', 'Updated Hungarian test', 'hu');
     $this->assertTranslation($config_name, 'Updated Hungarian test', 'hu');
@@ -83,7 +80,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests updating community translations of shipped configuration.
    */
-  public function testLocaleUpdateActiveTranslation(): void {
+  public function testLocaleUpdateActiveTranslation() {
     $config_name = 'locale_test.translation';
     $this->saveLocaleTranslationData($config_name, 'test', 'English test', 'Updated Hungarian test', 'hu', TRUE);
     $this->assertTranslation($config_name, 'Updated Hungarian test', 'hu', FALSE);
@@ -92,7 +89,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests deleting a translation override.
    */
-  public function testDeleteTranslation(): void {
+  public function testDeleteTranslation() {
     $config_name = 'locale_test.translation';
     $this->deleteLanguageOverride($config_name, 'test', 'English test', 'de');
     // The German translation in this case will be forced to the Hungarian
@@ -103,7 +100,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests deleting translations of shipped configuration.
    */
-  public function testDeleteActiveTranslation(): void {
+  public function testDeleteActiveTranslation() {
     $config_name = 'locale_test.translation';
     $this->configFactory->getEditable($config_name)->delete();
     // Deleting active configuration should not change the locale translation.
@@ -113,7 +110,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests deleting community translations of shipped configuration.
    */
-  public function testLocaleDeleteActiveTranslation(): void {
+  public function testLocaleDeleteActiveTranslation() {
     $config_name = 'locale_test.translation';
     $this->deleteLocaleTranslationData($config_name, 'test', 'English test', 'hu');
     // Deleting the locale translation should not change active config.
@@ -123,7 +120,7 @@ class LocaleConfigSubscriberForeignTest extends LocaleConfigSubscriberTest {
   /**
    * Tests that adding English creates a translation override.
    */
-  public function testEnglish(): void {
+  public function testEnglish() {
     $config_name = 'locale_test.translation';
     ConfigurableLanguage::createFromLangcode('en')->save();
     // Adding a language on the UI would normally call updateConfigTranslations.

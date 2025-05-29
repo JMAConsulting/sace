@@ -3,15 +3,15 @@
 namespace Drupal\views\Plugin\views\filter;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\Attribute\ViewsFilter;
 
 /**
  * Simple filter to handle greater than/less than filters.
  *
  * @ingroup views_filter_handlers
+ *
+ * @ViewsFilter("numeric")
  */
-#[ViewsFilter("numeric")]
-class NumericFilter extends FilterPluginBase implements FilterOperatorsInterface {
+class NumericFilter extends FilterPluginBase {
 
   protected $alwaysMultiple = TRUE;
 
@@ -89,9 +89,6 @@ class NumericFilter extends FilterPluginBase implements FilterOperatorsInterface
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function operators() {
     $operators = [
       '<' => [
@@ -156,7 +153,7 @@ class NumericFilter extends FilterPluginBase implements FilterOperatorsInterface
       ],
     ];
 
-    // If the definition allows for the empty operator, add it.
+    // if the definition allows for the empty operator, add it.
     if (!empty($this->definition['allow empty'])) {
       $operators += [
         'empty' => [
@@ -219,7 +216,7 @@ class NumericFilter extends FilterPluginBase implements FilterOperatorsInterface
       $identifier = $this->options['expose']['identifier'];
 
       if (empty($this->options['expose']['use_operator']) || empty($this->options['expose']['operator_id'])) {
-        // Exposed and locked.
+        // exposed and locked.
         $which = in_array($this->operator, $this->operatorValues(2)) ? 'minmax' : 'value';
       }
       else {

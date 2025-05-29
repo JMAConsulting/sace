@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Form;
 
 use Drupal\Core\Url;
@@ -15,7 +13,9 @@ use Drupal\Tests\BrowserTestBase;
 class RedirectTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['form_test', 'block'];
 
@@ -27,7 +27,7 @@ class RedirectTest extends BrowserTestBase {
   /**
    * Tests form redirection.
    */
-  public function testRedirect(): void {
+  public function testRedirect() {
     $path = 'form-test/redirect';
     $options = ['query' => ['foo' => 'bar']];
     $options['absolute'] = TRUE;
@@ -111,7 +111,7 @@ class RedirectTest extends BrowserTestBase {
   /**
    * Tests form redirection from 404/403 pages with the Block form.
    */
-  public function testRedirectFromErrorPages(): void {
+  public function testRedirectFromErrorPages() {
     // Make sure the block containing the redirect form is placed.
     $this->drupalPlaceBlock('redirect_form_block');
 

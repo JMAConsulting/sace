@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\inline_form_errors\Functional;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -91,7 +89,7 @@ class FormErrorHandlerFileUploadTest extends BrowserTestBase {
   /**
    * Tests that the required field error is displayed as inline error message.
    */
-  public function testFileUploadErrors(): void {
+  public function testFileUploadErrors() {
     $this->drupalGet('node/add/page');
     $edit = [
       'edit-title-0-value' => $this->randomString(),

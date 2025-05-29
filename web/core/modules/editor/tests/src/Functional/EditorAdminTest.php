@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\editor\Functional;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -18,7 +16,9 @@ use Drupal\Tests\BrowserTestBase;
 class EditorAdminTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['filter', 'editor'];
 
@@ -56,7 +56,7 @@ class EditorAdminTest extends BrowserTestBase {
   /**
    * Tests an existing format without any editors available.
    */
-  public function testNoEditorAvailable(): void {
+  public function testNoEditorAvailable() {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/config/content/formats/manage/filtered_html');
 
@@ -80,7 +80,7 @@ class EditorAdminTest extends BrowserTestBase {
   /**
    * Tests adding a text editor to an existing text format.
    */
-  public function testAddEditorToExistingFormat(): void {
+  public function testAddEditorToExistingFormat() {
     $this->enableUnicornEditor();
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/config/content/formats/manage/filtered_html');
@@ -101,7 +101,7 @@ class EditorAdminTest extends BrowserTestBase {
   /**
    * Tests adding a text editor to a new text format.
    */
-  public function testAddEditorToNewFormat(): void {
+  public function testAddEditorToNewFormat() {
     $this->addEditorToNewFormat('monoceros', 'Monoceros');
     $this->verifyUnicornEditorConfiguration('monoceros');
   }
@@ -109,7 +109,7 @@ class EditorAdminTest extends BrowserTestBase {
   /**
    * Tests format disabling.
    */
-  public function testDisableFormatWithEditor(): void {
+  public function testDisableFormatWithEditor() {
     $formats = ['monoceros' => 'Monoceros', 'tattoo' => 'Tattoo'];
 
     // Install the node module.
@@ -159,7 +159,7 @@ class EditorAdminTest extends BrowserTestBase {
   /**
    * Tests switching text editor to none does not throw a TypeError.
    */
-  public function testSwitchEditorToNone(): void {
+  public function testSwitchEditorToNone() {
     $this->enableUnicornEditor();
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/config/content/formats/manage/filtered_html');

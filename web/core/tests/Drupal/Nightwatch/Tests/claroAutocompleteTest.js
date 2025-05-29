@@ -1,5 +1,3 @@
-// cspell:ignore is-autocompleting
-
 module.exports = {
   '@tags': ['core'],
 
@@ -30,8 +28,7 @@ module.exports = {
       .waitForElementVisible('body', 1000);
 
     // Tests that entering a character from the
-    // data-autocomplete-first-character-blacklist doesn't start the
-    // autocomplete process.
+    // data-autocomplete-first-character-blacklist doesn't start autocompleting.
     browser
       .setValue('[name="autocomplete_4"]', '/')
       .pause(1000)

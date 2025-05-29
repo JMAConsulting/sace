@@ -46,7 +46,7 @@ class NumberFieldTest extends WebDriverTestBase {
   /**
    * Tests default formatter behavior.
    */
-  public function testNumberFormatter(): void {
+  public function testNumberFormatter() {
     $type = $this->randomMachineName();
     $float_field = $this->randomMachineName();
     $integer_field = $this->randomMachineName();

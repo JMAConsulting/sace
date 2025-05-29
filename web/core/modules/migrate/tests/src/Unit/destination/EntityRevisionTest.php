@@ -74,7 +74,7 @@ class EntityRevisionTest extends UnitTestCase {
    *
    * @covers ::getEntity
    */
-  public function testGetEntityDestinationValues(): void {
+  public function testGetEntityDestinationValues() {
     $destination = $this->getEntityRevisionDestination([]);
     // Return a dummy because we don't care what gets called.
     $entity = $this->prophesize('\Drupal\Core\Entity\RevisionableInterface');
@@ -92,7 +92,7 @@ class EntityRevisionTest extends UnitTestCase {
    *
    * @covers ::getEntity
    */
-  public function testGetEntityUpdateRevision(): void {
+  public function testGetEntityUpdateRevision() {
     $destination = $this->getEntityRevisionDestination([]);
     $entity = $this->prophesize('\Drupal\Core\Entity\RevisionableInterface');
 
@@ -119,7 +119,7 @@ class EntityRevisionTest extends UnitTestCase {
    *
    * @covers ::getEntity
    */
-  public function testGetEntityNewRevision(): void {
+  public function testGetEntityNewRevision() {
     $destination = $this->getEntityRevisionDestination([]);
     $entity = $this->prophesize('\Drupal\Core\Entity\RevisionableInterface');
 
@@ -149,7 +149,7 @@ class EntityRevisionTest extends UnitTestCase {
    *
    * @covers ::getEntity
    */
-  public function testGetEntityLoadFailure(): void {
+  public function testGetEntityLoadFailure() {
     $destination = $this->getEntityRevisionDestination([]);
 
     $entity_type = $this->prophesize('\Drupal\Core\Entity\EntityTypeInterface');
@@ -172,7 +172,7 @@ class EntityRevisionTest extends UnitTestCase {
    *
    * @covers ::save
    */
-  public function testSave(): void {
+  public function testSave() {
     $entity = $this->prophesize('\Drupal\Core\Entity\ContentEntityInterface');
     $entity->save()
       ->shouldBeCalled();

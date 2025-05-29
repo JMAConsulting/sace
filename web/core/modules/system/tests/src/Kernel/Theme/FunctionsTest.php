@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Theme;
 
 use Drupal\Component\Serialization\Json;
@@ -20,7 +18,9 @@ use Drupal\KernelTests\KernelTestBase;
 class FunctionsTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['router_test', 'system'];
 
@@ -38,7 +38,7 @@ class FunctionsTest extends KernelTestBase {
   /**
    * Tests item-list.html.twig.
    */
-  public function testItemList(): void {
+  public function testItemList() {
     // Verify that empty items produce no output.
     $variables = [];
     $expected = '';
@@ -178,7 +178,7 @@ class FunctionsTest extends KernelTestBase {
   /**
    * Tests links.html.twig.
    */
-  public function testLinks(): void {
+  public function testLinks() {
     // Turn off the query for the
     // \Drupal\Core\Utility\LinkGeneratorInterface::generate() method to compare
     // the active link correctly.
@@ -299,7 +299,7 @@ class FunctionsTest extends KernelTestBase {
   /**
    * Tests links.html.twig using links with indexed keys.
    */
-  public function testIndexedKeyedLinks(): void {
+  public function testIndexedKeyedLinks() {
     // Turn off the query for the
     // \Drupal\Core\Utility\LinkGeneratorInterface::generate() method to compare
     // the active link correctly.
@@ -422,7 +422,7 @@ class FunctionsTest extends KernelTestBase {
    *
    * @see \Drupal\Core\Render\Element\Link::preRenderLinks()
    */
-  public function testDrupalPreRenderLinks(): void {
+  public function testDrupalPreRenderLinks() {
     // Define the base array to be rendered, containing a variety of different
     // kinds of links.
     $base_array = [
@@ -517,7 +517,7 @@ class FunctionsTest extends KernelTestBase {
   /**
    * Tests theme_image().
    */
-  public function testImage(): void {
+  public function testImage() {
     // Test that data URIs work with theme_image().
     $variables = [];
     $variables['uri'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\help\Functional;
 
 use Drupal\Tests\Traits\Core\CronRunTrait;
@@ -97,7 +95,7 @@ class HelpTopicSearchTest extends HelpTopicTranslatedTestBase {
   /**
    * Tests help topic search.
    */
-  public function testHelpSearch(): void {
+  public function testHelpSearch() {
     $german = \Drupal::languageManager()->getLanguage('de');
     $session = $this->assertSession();
 
@@ -254,14 +252,11 @@ class HelpTopicSearchTest extends HelpTopicTranslatedTestBase {
   /**
    * Tests uninstalling the help_topics module.
    */
-  public function testUninstall(): void {
+  public function testUninstall() {
     \Drupal::service('module_installer')->uninstall(['help_topics_test']);
     // Ensure we can uninstall help_topics and use the help system without
     // breaking.
-    $this->drupalLogin($this->createUser([
-      'administer modules',
-      'access help pages',
-    ]));
+    $this->drupalLogin($this->rootUser);
     $edit = [];
     $edit['uninstall[help]'] = TRUE;
     $this->drupalGet('admin/modules/uninstall');
@@ -275,13 +270,10 @@ class HelpTopicSearchTest extends HelpTopicTranslatedTestBase {
   /**
    * Tests uninstalling the search module.
    */
-  public function testUninstallSearch(): void {
+  public function testUninstallSearch() {
     // Ensure we can uninstall search and use the help system without
     // breaking.
-    $this->drupalLogin($this->createUser([
-      'administer modules',
-      'access help pages',
-    ]));
+    $this->drupalLogin($this->rootUser);
     $edit = [];
     $edit['uninstall[search]'] = TRUE;
     $this->drupalGet('admin/modules/uninstall');

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel;
 
 use Drupal\Core\Database\Database;
@@ -29,7 +27,7 @@ class UserDeleteTest extends KernelTestBase {
   /**
    * Tests deleting multiple users.
    */
-  public function testUserDeleteMultiple(): void {
+  public function testUserDeleteMultiple() {
     $this->installSchema('user', ['users_data']);
     $this->installEntitySchema('user');
 

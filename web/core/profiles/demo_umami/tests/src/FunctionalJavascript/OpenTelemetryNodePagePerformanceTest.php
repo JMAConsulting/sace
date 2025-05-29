@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\demo_umami\FunctionalJavascript;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\FunctionalJavascriptTests\PerformanceTestBase;
 
 /**
@@ -12,7 +11,6 @@ use Drupal\FunctionalJavascriptTests\PerformanceTestBase;
  *
  * @group OpenTelemetry
  * @group #slow
- * @requires extension apcu
  */
 class OpenTelemetryNodePagePerformanceTest extends PerformanceTestBase {
 
@@ -22,26 +20,16 @@ class OpenTelemetryNodePagePerformanceTest extends PerformanceTestBase {
   protected $profile = 'demo_umami';
 
   /**
-   * Test canonical node page performance with various cache permutations.
-   */
-  public function testNodePage(): void {
-    $this->testNodePageColdCache();
-    $this->testNodePageCoolCache();
-    $this->testNodePageWarmCache();
-    $this->testNodePageHotCache();
-  }
-
-  /**
    * Logs node page tracing data with a cold cache.
    */
-  protected function testNodePageColdCache(): void {
-    // @todo Chromedriver doesn't collect tracing performance logs for the very
-    //   first request in a test, so warm it up.
-    //   https://www.drupal.org/project/drupal/issues/3379750
+  public function testNodePageColdCache() {
+    // @todo: Chromedriver doesn't collect tracing performance logs for the very
+    // first request in a test, so warm it up.
+    // See https://www.drupal.org/project/drupal/issues/3379750
     $this->drupalGet('user/login');
     $this->rebuildAll();
     $this->collectPerformanceData(function () {
-      $this->drupalGet('node/1');
+      $this->drupalGet('/node/1');
     }, 'umamiNodePageColdCache');
     $this->assertSession()->pageTextContains('quiche');
   }
@@ -51,22 +39,15 @@ class OpenTelemetryNodePagePerformanceTest extends PerformanceTestBase {
    *
    * Hot here means that all possible caches are warmed.
    */
-  protected function testNodePageHotCache(): void {
+  public function testNodePageHotCache() {
     // Request the page twice so that asset aggregates are definitely cached in
     // the browser cache.
     $this->drupalGet('node/1');
     $this->drupalGet('node/1');
-
-    $performance_data = $this->collectPerformanceData(function () {
-      $this->drupalGet('node/1');
+    $this->collectPerformanceData(function () {
+      $this->drupalGet('/node/1');
     }, 'umamiNodePageHotCache');
     $this->assertSession()->pageTextContains('quiche');
-    $this->assertSame($performance_data->getQueryCount(), 0);
-    $this->assertSame($performance_data->getCacheGetCount(), 1);
-    $this->assertSame($performance_data->getCacheSetCount(), 0);
-    $this->assertSame($performance_data->getCacheDeleteCount(), 0);
-    $this->assertSame(0, $performance_data->getCacheTagChecksumCount());
-    $this->assertSame(1, $performance_data->getCacheTagIsValidCount());
   }
 
   /**
@@ -75,14 +56,14 @@ class OpenTelemetryNodePagePerformanceTest extends PerformanceTestBase {
    * Cool here means that 'global' site caches are warm but anything
    * specific to the route or path is cold.
    */
-  protected function testNodePageCoolCache(): void {
+  public function testNodePageCoolCache() {
     // First of all visit the node page to ensure the image style exists.
     $this->drupalGet('node/1');
-    $this->clearCaches();
+    $this->rebuildAll();
     // Now visit a non-node page to warm non-route-specific caches.
-    $this->drupalGet('user/login');
+    $this->drupalGet('/user/login');
     $this->collectPerformanceData(function () {
-      $this->drupalGet('node/1');
+      $this->drupalGet('/node/1');
     }, 'umamiNodePageCoolCache');
     $this->assertSession()->pageTextContains('quiche');
   }
@@ -93,25 +74,16 @@ class OpenTelemetryNodePagePerformanceTest extends PerformanceTestBase {
    * Warm here means that 'global' site caches and route-specific caches are
    * warm but caches specific to this particular node/path are not.
    */
-  protected function testNodePageWarmCache(): void {
+  public function testNodePageWarmCache() {
     // First of all visit the node page to ensure the image style exists.
     $this->drupalGet('node/1');
-    $this->clearCaches();
+    $this->rebuildAll();
     // Now visit a different node page to warm non-path-specific caches.
-    $this->drupalGet('node/2');
+    $this->drupalGet('/node/2');
     $this->collectPerformanceData(function () {
-      $this->drupalGet('node/1');
+      $this->drupalGet('/node/1');
     }, 'umamiNodePageWarmCache');
     $this->assertSession()->pageTextContains('quiche');
-  }
-
-  /**
-   * Clear caches.
-   */
-  protected function clearCaches(): void {
-    foreach (Cache::getBins() as $bin) {
-      $bin->deleteAll();
-    }
   }
 
 }

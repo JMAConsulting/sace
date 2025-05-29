@@ -25,7 +25,7 @@ class ConcatTest extends MigrateProcessTestCase {
   /**
    * Tests concat works without a delimiter.
    */
-  public function testConcatWithoutDelimiter(): void {
+  public function testConcatWithoutDelimiter() {
     $value = $this->plugin->transform(['foo', 'bar'], $this->migrateExecutable, $this->row, 'destination_property');
     $this->assertSame('foobar', $value);
   }
@@ -33,7 +33,7 @@ class ConcatTest extends MigrateProcessTestCase {
   /**
    * Tests concat fails properly on non-arrays.
    */
-  public function testConcatWithNonArray(): void {
+  public function testConcatWithNonArray() {
     $this->expectException(MigrateException::class);
     $this->plugin->transform('foo', $this->migrateExecutable, $this->row, 'destination_property');
   }
@@ -41,7 +41,7 @@ class ConcatTest extends MigrateProcessTestCase {
   /**
    * Tests concat works without a delimiter.
    */
-  public function testConcatWithDelimiter(): void {
+  public function testConcatWithDelimiter() {
     $this->plugin->setDelimiter('_');
     $value = $this->plugin->transform(['foo', 'bar'], $this->migrateExecutable, $this->row, 'destination_property');
     $this->assertSame('foo_bar', $value);

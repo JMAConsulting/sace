@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional\Views;
 
 use Drupal\views\Views;
@@ -29,7 +27,7 @@ class TaxonomyFieldAllTermsTest extends TaxonomyTestBase {
   /**
    * Tests the "all terms" field handler.
    */
-  public function testViewsHandlerAllTermsField(): void {
+  public function testViewsHandlerAllTermsField() {
     $this->term1->setName('<em>Markup</em>')->save();
     $view = Views::getView('taxonomy_all_terms_test');
     $this->executeView($view);
@@ -54,7 +52,7 @@ class TaxonomyFieldAllTermsTest extends TaxonomyTestBase {
   /**
    * Tests token replacement in the "all terms" field handler.
    */
-  public function testViewsHandlerAllTermsWithTokens(): void {
+  public function testViewsHandlerAllTermsWithTokens() {
     $view = Views::getView('taxonomy_all_terms_test');
     $this->drupalGet('taxonomy_all_terms_token_test');
 

@@ -57,7 +57,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
   /**
    * @covers ::supportsNormalization
    */
-  public function testSupportsNormalization(): void {
+  public function testSupportsNormalization() {
     $this->assertTrue($this->normalizer->supportsNormalization($this->data->reveal()));
 
     $datetimeiso8601 = $this->prophesize(DateTimeIso8601::class);
@@ -70,14 +70,14 @@ class DateTimeNormalizerTest extends UnitTestCase {
   /**
    * @covers ::supportsDenormalization
    */
-  public function testSupportsDenormalization(): void {
+  public function testSupportsDenormalization() {
     $this->assertTrue($this->normalizer->supportsDenormalization($this->data->reveal(), DateTimeInterface::class));
   }
 
   /**
    * @covers ::normalize
    */
-  public function testNormalize(): void {
+  public function testNormalize() {
     $random_rfc_3339_string = $this->randomMachineName();
 
     $drupal_date_time = $this->prophesize(DateTimeNormalizerTestDrupalDateTime::class);
@@ -96,7 +96,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
   /**
    * @covers ::normalize
    */
-  public function testNormalizeWhenNull(): void {
+  public function testNormalizeWhenNull() {
     $this->data->getDateTime()
       ->willReturn(NULL);
 
@@ -110,7 +110,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
    * @covers ::denormalize
    * @dataProvider providerTestDenormalizeValidFormats
    */
-  public function testDenormalizeValidFormats($normalized, $expected): void {
+  public function testDenormalizeValidFormats($normalized, $expected) {
     $denormalized = $this->normalizer->denormalize($normalized, DateTimeInterface::class, NULL, []);
     $this->assertSame(0, $denormalized->getTimestamp() - $expected->getTimestamp());
     $this->assertEquals($expected, $denormalized);
@@ -121,7 +121,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestDenormalizeValidFormats() {
+  public function providerTestDenormalizeValidFormats() {
     $data = [];
 
     $data['RFC3339'] = ['2016-11-06T09:02:00+00:00', new \DateTimeImmutable('2016-11-06T09:02:00+00:00')];
@@ -141,7 +141,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
    * @covers ::denormalize
    * @dataProvider providerTestDenormalizeUserFormats
    */
-  public function testDenormalizeUserFormats($normalized, $format, $expected): void {
+  public function testDenormalizeUserFormats($normalized, $format, $expected) {
     $denormalized = $this->normalizer->denormalize($normalized, DateTimeInterface::class, NULL, ['datetime_allowed_formats' => [$format]]);
     $this->assertSame(0, $denormalized->getTimestamp() - $expected->getTimestamp());
     $this->assertEquals($expected, $denormalized);
@@ -152,7 +152,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestDenormalizeUserFormats() {
+  public function providerTestDenormalizeUserFormats() {
     $data = [];
 
     $data['Y/m/d H:i:s P'] = ['2016/11/06 09:02:00 +00:00', 'Y/m/d H:i:s P', new \DateTimeImmutable('2016-11-06T09:02:00+00:00')];
@@ -167,7 +167,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
    *
    * @covers ::denormalize
    */
-  public function testDenormalizeException(): void {
+  public function testDenormalizeException() {
     $this->expectException(UnexpectedValueException::class);
     $this->expectExceptionMessage('The specified date "2016/11/06 09:02am GMT" is not in an accepted format: "Y-m-d\TH:i:sP" (RFC 3339), "Y-m-d\TH:i:sO" (ISO 8601).');
 

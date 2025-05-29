@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Installer;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -15,7 +13,9 @@ use Drupal\module_test\PluginManagerCacheClearer;
 class UninstallKernelTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'system',
@@ -41,7 +41,7 @@ class UninstallKernelTest extends KernelTestBase {
   /**
    * Tests uninstalling media and file modules.
    */
-  public function testUninstallMedia(): void {
+  public function testUninstallMedia() {
     // Media creates a file field that is removed on uninstall, ensure that it
     // is fully deleted (as it is empty) and that file then can be uninstalled
     // as well.
@@ -52,7 +52,7 @@ class UninstallKernelTest extends KernelTestBase {
   /**
    * Tests uninstalling a module with a plugin cache clearer service.
    */
-  public function testUninstallPluginCacheClear(): void {
+  public function testUninstallPluginCacheClear() {
     \Drupal::service('module_installer')->install(['module_test']);
     $this->assertFalse($this->container->get('state')->get(PluginManagerCacheClearer::class));
     \Drupal::service('module_installer')->install(['dblog']);

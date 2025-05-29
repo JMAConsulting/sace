@@ -19,7 +19,7 @@ class FileUriTest extends MigrateTestCase {
     'id' => 'test',
   ];
 
-  public function testPublic(): void {
+  public function testPublic() {
     $value = [
       'sites/default/files/foo.jpg',
       'sites/default/files',
@@ -29,7 +29,7 @@ class FileUriTest extends MigrateTestCase {
     $this->assertEquals('public://foo.jpg', $this->doTransform($value));
   }
 
-  public function testPublicUnknownBasePath(): void {
+  public function testPublicUnknownBasePath() {
     $value = [
       '/path/to/public/files/foo.jpg',
       'sites/default/files',
@@ -39,7 +39,7 @@ class FileUriTest extends MigrateTestCase {
     $this->assertEquals('public://path/to/public/files/foo.jpg', $this->doTransform($value));
   }
 
-  public function testPrivate(): void {
+  public function testPrivate() {
     $value = [
       'sites/default/files/baz.gif',
       'sites/default/files',
@@ -49,7 +49,7 @@ class FileUriTest extends MigrateTestCase {
     $this->assertEquals('private://baz.gif', $this->doTransform($value));
   }
 
-  public function testPrivateUnknownBasePath(): void {
+  public function testPrivateUnknownBasePath() {
     $value = [
       '/path/to/private/files/baz.gif',
       'sites/default/files',
@@ -59,7 +59,7 @@ class FileUriTest extends MigrateTestCase {
     $this->assertEquals('private://path/to/private/files/baz.gif', $this->doTransform($value));
   }
 
-  public function testTemporary(): void {
+  public function testTemporary() {
     $value = [
       '/tmp/bar.png',
       'sites/default/files',

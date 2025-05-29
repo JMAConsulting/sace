@@ -20,7 +20,7 @@ class FieldLinkTest extends UnitTestCase {
    *
    * @dataProvider canonicalizeUriDataProvider
    */
-  public function testCanonicalizeUri($url, $expected, $configuration = []): void {
+  public function testCanonicalizeUri($url, $expected, $configuration = []) {
     $link_plugin = new FieldLink($configuration, '', [], $this->createMock(MigrationInterface::class));
     $transformed = $link_plugin->transform([
       'url' => $url,
@@ -33,7 +33,7 @@ class FieldLinkTest extends UnitTestCase {
   /**
    * Data provider for testCanonicalizeUri.
    */
-  public static function canonicalizeUriDataProvider() {
+  public function canonicalizeUriDataProvider() {
     return [
       'Simple front-page' => [
         '<front>',
@@ -110,7 +110,7 @@ class FieldLinkTest extends UnitTestCase {
   /**
    * Tests the attributes that are deeply serialized are discarded.
    */
-  public function testCanonicalizeUriSerialized(): void {
+  public function testCanonicalizeUriSerialized() {
     $link_plugin = new FieldLink([], '', [], $this->createMock(MigrationInterface::class));
     $migrate_executable = $this->createMock(MigrateExecutableInterface::class);
     $row = new Row();

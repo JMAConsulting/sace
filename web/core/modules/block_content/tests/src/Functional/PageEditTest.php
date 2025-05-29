@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Functional;
 
 use Drupal\block_content\Entity\BlockContent;
@@ -34,7 +32,7 @@ class PageEditTest extends BlockContentTestBase {
   /**
    * Checks block edit functionality.
    */
-  public function testPageEdit(): void {
+  public function testPageEdit() {
     $this->drupalLogin($this->adminUser);
 
     $title_key = 'info[0][value]';

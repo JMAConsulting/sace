@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
-use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\locale\Locale;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
 
 /**
  * Tests translation update's effects on configuration translations.
@@ -15,7 +14,9 @@ use Drupal\Tests\BrowserTestBase;
 class LocaleConfigTranslationImportTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['language', 'locale_test_translate'];
 
@@ -34,7 +35,7 @@ class LocaleConfigTranslationImportTest extends BrowserTestBase {
   /**
    * Tests update changes configuration translations if enabled after language.
    */
-  public function testConfigTranslationImport(): void {
+  public function testConfigTranslationImport() {
     $admin_user = $this->drupalCreateUser([
       'administer modules',
       'administer site configuration',
@@ -118,7 +119,7 @@ class LocaleConfigTranslationImportTest extends BrowserTestBase {
   /**
    * Tests update changes configuration translations if enabled after language.
    */
-  public function testConfigTranslationModuleInstall(): void {
+  public function testConfigTranslationModuleInstall() {
 
     // Enable locale, block and config_translation modules.
     $this->container->get('module_installer')->install(['block', 'config_translation']);
@@ -175,7 +176,7 @@ class LocaleConfigTranslationImportTest extends BrowserTestBase {
     // Install any module.
     $this->drupalGet('admin/modules');
     $this->submitForm(['modules[dblog][enable]' => 'dblog'], 'Install');
-    $this->assertSession()->pageTextContains('Module Database Logging has been installed.');
+    $this->assertSession()->pageTextContains('Module Database Logging has been enabled.');
 
     // Get the front page and ensure that the translated configuration still
     // appears.
@@ -195,7 +196,7 @@ class LocaleConfigTranslationImportTest extends BrowserTestBase {
   /**
    * Tests removing a string from Locale deletes configuration translations.
    */
-  public function testLocaleRemovalAndConfigOverrideDelete(): void {
+  public function testLocaleRemovalAndConfigOverrideDelete() {
     // Enable the locale module.
     $this->container->get('module_installer')->install(['locale']);
     $this->resetAll();
@@ -230,7 +231,7 @@ class LocaleConfigTranslationImportTest extends BrowserTestBase {
     $string = $locale_storage->findString(['source' => 'Locale can translate']);
     \Drupal::service('locale.storage')->delete($string);
     // Force a rebuild of config translations.
-    $count = \Drupal::service('locale.config_manager')->updateConfigTranslations(['locale_test_translate.settings'], ['af']);
+    $count = Locale::config()->updateConfigTranslations(['locale_test_translate.settings'], ['af']);
     $this->assertEquals(1, $count, 'Correct count of updated translations');
 
     $override = \Drupal::languageManager()->getLanguageConfigOverride('af', 'locale_test_translate.settings');
@@ -241,7 +242,7 @@ class LocaleConfigTranslationImportTest extends BrowserTestBase {
   /**
    * Tests removing a string from Locale changes configuration translations.
    */
-  public function testLocaleRemovalAndConfigOverridePreserve(): void {
+  public function testLocaleRemovalAndConfigOverridePreserve() {
     // Enable the locale module.
     $this->container->get('module_installer')->install(['locale']);
     $this->resetAll();
@@ -307,7 +308,7 @@ class LocaleConfigTranslationImportTest extends BrowserTestBase {
   /**
    * Tests setting a non-English language as default and importing configuration.
    */
-  public function testConfigTranslationWithNonEnglishLanguageDefault(): void {
+  public function testConfigTranslationWithNonEnglishLanguageDefault() {
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
     $module_installer = $this->container->get('module_installer');
     ConfigurableLanguage::createFromLangcode('af')->save();

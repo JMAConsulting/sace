@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\jsonapi\Functional;
 
 use Drupal\Component\Serialization\Json;
@@ -432,7 +430,7 @@ trait ResourceResponseTestTrait {
    *
    * @see \GuzzleHttp\ClientInterface::request()
    */
-  protected function getRelatedResponses(array $relationship_field_names, array $request_options, ?EntityInterface $entity = NULL) {
+  protected function getRelatedResponses(array $relationship_field_names, array $request_options, EntityInterface $entity = NULL) {
     $entity = $entity ?: $this->entity;
     $links = array_map(function ($relationship_field_name) use ($entity) {
       return static::getRelatedLink(static::toResourceIdentifier($entity), $relationship_field_name);
@@ -525,7 +523,7 @@ trait ResourceResponseTestTrait {
       'jsonapi' => static::$jsonApiMember,
       'errors' => [$error],
     ], 403))
-      ->addCacheableDependency((new CacheableMetadata())->addCacheTags(['4xx-response', 'http_response'])->addCacheContexts(['url.query_args', 'url.site']))
+      ->addCacheableDependency((new CacheableMetadata())->addCacheTags(['4xx-response', 'http_response'])->addCacheContexts(['url.site']))
       ->addCacheableDependency($access);
   }
 
@@ -545,7 +543,8 @@ trait ResourceResponseTestTrait {
     // If the entity type is revisionable, add a resource version cache context.
     $cache_contexts = Cache::mergeContexts([
       // Cache contexts for JSON:API URL query parameters.
-      'url.query_args',
+      'url.query_args:fields',
+      'url.query_args:include',
       // Drupal defaults.
       'url.site',
     ], $this->entity->getEntityType()->isRevisionable() ? ['url.query_args:resourceVersion'] : []);

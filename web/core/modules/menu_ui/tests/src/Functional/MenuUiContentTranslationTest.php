@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\menu_ui\Functional;
 
 use Drupal\Core\Language\LanguageInterface;
@@ -23,7 +21,9 @@ class MenuUiContentTranslationTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * {@inheritdoc}
+   * Modules to install.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -101,7 +101,7 @@ class MenuUiContentTranslationTest extends BrowserTestBase {
    * @return array
    *   Data sets to test keyed by data set label.
    */
-  public static function provideChangeContentToPseudoLanguageData() {
+  public function provideChangeContentToPseudoLanguageData() {
     return [
       'und' => ['langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED],
       'zxx' => ['langcode' => LanguageInterface::LANGCODE_NOT_APPLICABLE],
@@ -118,7 +118,7 @@ class MenuUiContentTranslationTest extends BrowserTestBase {
    *
    * @dataProvider provideChangeContentToPseudoLanguageData
    */
-  public function testChangeContentToPseudoLanguage($langcode): void {
+  public function testChangeContentToPseudoLanguage($langcode) {
     $node_title = 'Test node';
     $menu_link_title_en = 'Test menu link EN';
     $menu_link_title_pseudo = 'Test menu link PSEUDO';

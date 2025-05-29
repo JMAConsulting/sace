@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -46,7 +44,9 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'block',
@@ -79,7 +79,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests the basic translation UI.
    */
-  public function testTranslationUI(): void {
+  public function testTranslationUI() {
     parent::testTranslationUI();
     $this->doUninstallTest();
   }
@@ -87,7 +87,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests changing the published status on a node without fields.
    */
-  public function testPublishedStatusNoFields(): void {
+  public function testPublishedStatusNoFields() {
     // Test changing the published status of an article without fields.
     $this->drupalLogin($this->administrator);
     // Delete all fields.
@@ -209,7 +209,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
       $user = $this->drupalCreateUser();
       $values[$langcode] = [
         'uid' => $user->id(),
-        'created' => \Drupal::time()->getRequestTime() - mt_rand(0, 1000),
+        'created' => REQUEST_TIME - mt_rand(0, 1000),
         'sticky' => (bool) mt_rand(0, 1),
         'promote' => (bool) mt_rand(0, 1),
       ];
@@ -243,7 +243,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests that translation page inherits admin status of edit page.
    */
-  public function testTranslationLinkTheme(): void {
+  public function testTranslationLinkTheme() {
     $this->drupalLogin($this->administrator);
     $article = $this->drupalCreateNode(['type' => 'article', 'langcode' => $this->langcodes[0]]);
 
@@ -273,7 +273,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests that no metadata is stored for a disabled bundle.
    */
-  public function testDisabledBundle(): void {
+  public function testDisabledBundle() {
     // Create a bundle that does not have translation enabled.
     $disabledBundle = $this->randomMachineName();
     $this->drupalCreateContentType(['type' => $disabledBundle, 'name' => $disabledBundle]);
@@ -302,7 +302,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests that translations are rendered properly.
    */
-  public function testTranslationRendering(): void {
+  public function testTranslationRendering() {
     // Add a comment field to the article content type.
     \Drupal::service('module_installer')->install(['comment']);
     $this->addDefaultCommentField('node', 'article');
@@ -505,7 +505,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests that revision translations are rendered properly.
    */
-  public function testRevisionTranslationRendering(): void {
+  public function testRevisionTranslationRendering() {
     $storage = \Drupal::entityTypeManager()->getStorage('node');
 
     // Create a node.
@@ -554,7 +554,7 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
   /**
    * Tests title is not escaped (but XSS-filtered) for details form element.
    */
-  public function testDetailsTitleIsNotEscaped(): void {
+  public function testDetailsTitleIsNotEscaped() {
     // Create an image field.
     \Drupal::service('module_installer')->install(['image']);
     FieldStorageConfig::create([
@@ -599,9 +599,10 @@ class NodeTranslationUITest extends ContentTranslationUITestBase {
    * When language neutral content is displayed on interface language, it should
    * consider the interface language for creating the content link.
    */
-  public function testUrlPrefixOnLanguageNeutralContent(): void {
+  public function testUrlPrefixOnLanguageNeutralContent() {
     $this->drupalLogin($this->administrator);
     $neutral_langcodes = [
+      LanguageInterface::LANGCODE_NOT_APPLICABLE,
       LanguageInterface::LANGCODE_NOT_SPECIFIED,
     ];
     foreach ($neutral_langcodes as $langcode) {

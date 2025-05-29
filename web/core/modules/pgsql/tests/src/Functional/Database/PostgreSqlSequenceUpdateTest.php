@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\pgsql\Functional\Database;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -50,7 +48,7 @@ class PostgreSqlSequenceUpdateTest extends UpdatePathTestBase {
   /**
    * Asserts that a newly created sequence has the correct ownership.
    */
-  public function testPostgreSqlSequenceUpdate(): void {
+  public function testPostgreSqlSequenceUpdate() {
     $this->assertFalse($this->getSequenceOwner('pgsql_sequence_test', 'sequence_field'));
 
     // Run the updates.

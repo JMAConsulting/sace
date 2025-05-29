@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Extension;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -21,7 +19,7 @@ class ModuleHandlerDeprecatedHookUnimplementedTest extends KernelTestBase {
    * @covers ::invokeAllDeprecated
    * @covers ::invokeDeprecated
    */
-  public function testUnimplementedHooks(): void {
+  public function testUnimplementedHooks() {
     $unimplemented_hook_name = 'unimplemented_hook_name';
 
     /** @var \Drupal\Core\Extension\ModuleHandlerInterface $module_handler */

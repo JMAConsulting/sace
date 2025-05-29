@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Form;
 
 use Drupal\Core\Form\FormState;
@@ -15,14 +13,16 @@ use Drupal\KernelTests\KernelTestBase;
 class ProgrammaticTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['form_test'];
 
   /**
    * Tests the programmatic form submission workflow.
    */
-  public function testSubmissionWorkflow(): void {
+  public function testSubmissionWorkflow() {
     // Backup the current batch status and reset it to avoid conflicts while
     // processing the dummy form submit handler.
     $current_batch = $batch =& batch_get();
@@ -89,7 +89,7 @@ class ProgrammaticTest extends KernelTestBase {
   /**
    * Tests the programmed_bypass_access_check flag.
    */
-  public function testProgrammaticAccessBypass(): void {
+  public function testProgrammaticAccessBypass() {
     $form_state = (new FormState())->setValues([
       'textfield' => 'dummy value',
       'field_restricted' => 'dummy value',

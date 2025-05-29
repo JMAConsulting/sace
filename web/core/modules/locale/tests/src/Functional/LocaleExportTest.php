@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
-use Drupal\Core\File\FileExists;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Tests\BrowserTestBase;
 
 // cspell:ignore janvier lundi
@@ -17,7 +15,9 @@ use Drupal\Tests\BrowserTestBase;
 class LocaleExportTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['locale'];
 
@@ -45,14 +45,14 @@ class LocaleExportTest extends BrowserTestBase {
     $this->drupalLogin($this->adminUser);
 
     // Copy test po files to the translations directory.
-    \Drupal::service('file_system')->copy(__DIR__ . '/../../../tests/test.de.po', 'translations://', FileExists::Replace);
-    \Drupal::service('file_system')->copy(__DIR__ . '/../../../tests/test.xx.po', 'translations://', FileExists::Replace);
+    \Drupal::service('file_system')->copy(__DIR__ . '/../../../tests/test.de.po', 'translations://', FileSystemInterface::EXISTS_REPLACE);
+    \Drupal::service('file_system')->copy(__DIR__ . '/../../../tests/test.xx.po', 'translations://', FileSystemInterface::EXISTS_REPLACE);
   }
 
   /**
    * Tests exportation of translations.
    */
-  public function testExportTranslation(): void {
+  public function testExportTranslation() {
     $file_system = \Drupal::service('file_system');
     // First import some known translations.
     // This will also automatically add the 'fr' language.
@@ -128,7 +128,7 @@ class LocaleExportTest extends BrowserTestBase {
   /**
    * Tests exportation of translation template file.
    */
-  public function testExportTranslationTemplateFile(): void {
+  public function testExportTranslationTemplateFile() {
     // Load an admin page with JavaScript so _drupal_add_library() fires at
     // least once and _locale_parse_js_file() gets to run at least once so that
     // the locales_source table gets populated with something.

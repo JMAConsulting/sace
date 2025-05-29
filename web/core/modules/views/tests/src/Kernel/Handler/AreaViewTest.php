@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -16,7 +14,9 @@ use Drupal\views\Views;
 class AreaViewTest extends ViewsKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['user'];
 
@@ -30,7 +30,7 @@ class AreaViewTest extends ViewsKernelTestBase {
   /**
    * Tests the view area handler.
    */
-  public function testViewArea(): void {
+  public function testViewArea() {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $view = Views::getView('test_area_view');

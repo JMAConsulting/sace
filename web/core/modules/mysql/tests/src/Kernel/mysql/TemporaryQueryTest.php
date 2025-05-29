@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\mysql\Kernel\mysql;
 
 use Drupal\KernelTests\Core\Database\TemporaryQueryTestBase;
@@ -16,7 +14,7 @@ class TemporaryQueryTest extends TemporaryQueryTestBase {
   /**
    * Confirms that temporary tables work.
    */
-  public function testTemporaryQuery(): void {
+  public function testTemporaryQuery() {
     parent::testTemporaryQuery();
 
     $connection = $this->getConnection();

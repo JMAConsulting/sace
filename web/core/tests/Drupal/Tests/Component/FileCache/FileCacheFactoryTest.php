@@ -38,7 +38,7 @@ class FileCacheFactoryTest extends TestCase {
   /**
    * @covers ::get
    */
-  public function testGet(): void {
+  public function testGet() {
     $file_cache = FileCacheFactory::get('test_foo_settings', []);
 
     // Ensure the right backend and configuration is used.
@@ -59,7 +59,7 @@ class FileCacheFactoryTest extends TestCase {
   /**
    * @covers ::get
    */
-  public function testGetNoPrefix(): void {
+  public function testGetNoPrefix() {
     FileCacheFactory::setPrefix(NULL);
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Required prefix configuration is missing');
@@ -69,7 +69,7 @@ class FileCacheFactoryTest extends TestCase {
   /**
    * @covers ::get
    */
-  public function testGetDisabledFileCache(): void {
+  public function testGetDisabledFileCache() {
     // Ensure the returned FileCache is an instance of FileCache::class.
     $file_cache = FileCacheFactory::get('test_foo_settings', []);
     $this->assertInstanceOf(FileCache::class, $file_cache);
@@ -88,7 +88,7 @@ class FileCacheFactoryTest extends TestCase {
    *
    * @dataProvider configurationDataProvider
    */
-  public function testGetConfigurationOverrides($configuration, $arguments, $class): void {
+  public function testGetConfigurationOverrides($configuration, $arguments, $class) {
     FileCacheFactory::setConfiguration($configuration);
 
     $file_cache = FileCacheFactory::get('test_foo_settings', $arguments);
@@ -98,8 +98,14 @@ class FileCacheFactoryTest extends TestCase {
   /**
    * Data provider for testGetConfigurationOverrides().
    */
-  public static function configurationDataProvider() {
+  public function configurationDataProvider() {
     $data = [];
+
+    // Get a unique FileCache class.
+    $file_cache = $this->getMockBuilder(FileCache::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+    $class = get_class($file_cache);
 
     // Test fallback configuration.
     $data['fallback-configuration'] = [
@@ -110,33 +116,33 @@ class FileCacheFactoryTest extends TestCase {
 
     // Test default configuration.
     $data['default-configuration'] = [
-      ['default' => ['class' => CustomFileCache::class]],
+      ['default' => ['class' => $class]],
       [],
-      CustomFileCache::class,
+      $class,
     ];
 
     // Test specific per collection setting.
     $data['collection-setting'] = [
-      ['test_foo_settings' => ['class' => CustomFileCache::class]],
+      ['test_foo_settings' => ['class' => $class]],
       [],
-      CustomFileCache::class,
+      $class,
     ];
 
     // Test default configuration plus specific per collection setting.
     $data['default-plus-collection-setting'] = [
       [
         'default' => ['class' => '\stdClass'],
-        'test_foo_settings' => ['class' => CustomFileCache::class],
+        'test_foo_settings' => ['class' => $class],
       ],
       [],
-      CustomFileCache::class,
+      $class,
     ];
 
     // Test default configuration plus class specific override.
     $data['default-plus-class-override'] = [
       ['default' => ['class' => '\stdClass']],
-      ['class' => CustomFileCache::class],
-      CustomFileCache::class,
+      ['class' => $class],
+      $class,
     ];
 
     // Test default configuration plus class specific override plus specific
@@ -144,10 +150,10 @@ class FileCacheFactoryTest extends TestCase {
     $data['default-plus-class-plus-collection-setting'] = [
       [
         'default' => ['class' => '\stdClass'],
-        'test_foo_settings' => ['class' => CustomFileCache::class],
+        'test_foo_settings' => ['class' => $class],
       ],
       ['class' => '\stdClass'],
-      CustomFileCache::class,
+      $class,
     ];
 
     return $data;
@@ -157,7 +163,7 @@ class FileCacheFactoryTest extends TestCase {
    * @covers ::getConfiguration
    * @covers ::setConfiguration
    */
-  public function testGetSetConfiguration(): void {
+  public function testGetSetConfiguration() {
     $configuration = FileCacheFactory::getConfiguration();
     $configuration['test_foo_bar'] = ['bar' => 'llama'];
     FileCacheFactory::setConfiguration($configuration);
@@ -169,7 +175,7 @@ class FileCacheFactoryTest extends TestCase {
    * @covers ::getPrefix
    * @covers ::setPrefix
    */
-  public function testGetSetPrefix(): void {
+  public function testGetSetPrefix() {
     // Random generator.
     $random = new Random();
 
@@ -179,5 +185,3 @@ class FileCacheFactoryTest extends TestCase {
   }
 
 }
-
-class CustomFileCache extends FileCache {}

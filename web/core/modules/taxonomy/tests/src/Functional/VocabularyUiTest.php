@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Functional;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -41,7 +39,7 @@ class VocabularyUiTest extends TaxonomyTestBase {
   /**
    * Create, edit and delete a vocabulary via the user interface.
    */
-  public function testVocabularyInterface(): void {
+  public function testVocabularyInterface() {
     // Visit the main taxonomy administration page.
     $this->drupalGet('admin/structure/taxonomy');
 
@@ -111,7 +109,7 @@ class VocabularyUiTest extends TaxonomyTestBase {
   /**
    * Changing weights on the vocabulary overview with two or more vocabularies.
    */
-  public function testTaxonomyAdminChangingWeights(): void {
+  public function testTaxonomyAdminChangingWeights() {
     // Create some vocabularies.
     for ($i = 0; $i < 10; $i++) {
       $this->createVocabulary();
@@ -141,7 +139,7 @@ class VocabularyUiTest extends TaxonomyTestBase {
   /**
    * Tests the vocabulary overview with no vocabularies.
    */
-  public function testTaxonomyAdminNoVocabularies(): void {
+  public function testTaxonomyAdminNoVocabularies() {
     // Delete all vocabularies.
     $vocabularies = Vocabulary::loadMultiple();
     foreach ($vocabularies as $key => $vocabulary) {
@@ -157,7 +155,7 @@ class VocabularyUiTest extends TaxonomyTestBase {
   /**
    * Deleting a vocabulary.
    */
-  public function testTaxonomyAdminDeletingVocabulary(): void {
+  public function testTaxonomyAdminDeletingVocabulary() {
     // Create a vocabulary.
     $vid = $this->randomMachineName();
     $edit = [

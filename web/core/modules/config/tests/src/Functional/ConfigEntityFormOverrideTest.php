@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\config\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -26,7 +24,7 @@ class ConfigEntityFormOverrideTest extends BrowserTestBase {
   /**
    * Tests that overrides do not affect forms or listing screens.
    */
-  public function testFormsWithOverrides(): void {
+  public function testFormsWithOverrides() {
     $this->drupalLogin($this->drupalCreateUser([
       'administer site configuration',
     ]));

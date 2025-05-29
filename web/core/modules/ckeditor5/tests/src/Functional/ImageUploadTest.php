@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\ckeditor5\Functional;
 
 use Drupal\Core\Url;
@@ -60,7 +58,7 @@ class ImageUploadTest extends BrowserTestBase {
   /**
    * Tests using the file upload route with a disallowed extension.
    */
-  public function testUploadFileExtension(): void {
+  public function testUploadFileExtension() {
     $this->createBasicFormat();
     $this->createEditorWithUpload([
       'status' => TRUE,
@@ -86,7 +84,7 @@ class ImageUploadTest extends BrowserTestBase {
   /**
    * Tests using the file upload route with a file size larger than allowed.
    */
-  public function testFileUploadLargerFileSize(): void {
+  public function testFileUploadLargerFileSize() {
     $this->createBasicFormat();
     $this->createEditorWithUpload([
       'status' => TRUE,
@@ -120,7 +118,7 @@ class ImageUploadTest extends BrowserTestBase {
    *
    * @see https://www.drupal.org/project/drupal/issues/3184974
    */
-  public function testLockAfterFailedValidation(): void {
+  public function testLockAfterFailedValidation() {
     $this->createBasicFormat();
     $this->createEditorWithUpload([
       'status' => TRUE,

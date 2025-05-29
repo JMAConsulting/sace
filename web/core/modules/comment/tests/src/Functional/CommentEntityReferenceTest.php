@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\comment\Entity\Comment;
@@ -83,7 +81,7 @@ class CommentEntityReferenceTest extends CommentTestBase {
   /**
    * Tests that comments are correctly saved as entity references.
    */
-  public function testCommentAsEntityReference(): void {
+  public function testCommentAsEntityReference() {
     // Load the node and save it.
     $edit = [
       'entity_reference_comment' => $this->comment->id(),
@@ -100,7 +98,7 @@ class CommentEntityReferenceTest extends CommentTestBase {
   /**
    * Tests that comments of unpublished are not shown.
    */
-  public function testCommentOfUnpublishedNodeBypassAccess(): void {
+  public function testCommentOfUnpublishedNodeBypassAccess() {
     // Unpublish the node that has the comment.
     $this->node->setUnpublished()->save();
 

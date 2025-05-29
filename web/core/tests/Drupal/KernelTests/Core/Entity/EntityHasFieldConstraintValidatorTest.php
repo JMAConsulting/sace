@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\field\Entity\FieldConfig;
@@ -28,7 +26,7 @@ class EntityHasFieldConstraintValidatorTest extends EntityKernelTestBase {
     $this->createUser();
   }
 
-  public function testValidation(): void {
+  public function testValidation() {
     $this->state->set('entity_test_constraints.build', [
       'EntityHasField' => 'body',
     ]);

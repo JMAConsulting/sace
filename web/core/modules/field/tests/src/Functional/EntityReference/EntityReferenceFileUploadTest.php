@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field\Functional\EntityReference;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -19,9 +17,6 @@ class EntityReferenceFileUploadTest extends BrowserTestBase {
 
   use TestFileCreationTrait;
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['node', 'file'];
 
   /**
@@ -128,7 +123,7 @@ class EntityReferenceFileUploadTest extends BrowserTestBase {
   /**
    * Tests that the autocomplete input element does not cause ajax fatal.
    */
-  public function testFileUpload(): void {
+  public function testFileUpload() {
     $user1 = $this->drupalCreateUser([
       'access content',
       "create $this->referencingType content",

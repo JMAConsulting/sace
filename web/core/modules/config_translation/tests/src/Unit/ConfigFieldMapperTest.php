@@ -87,7 +87,7 @@ class ConfigFieldMapperTest extends UnitTestCase {
    *
    * @covers ::setEntity
    */
-  public function testSetEntity(): void {
+  public function testSetEntity() {
     $entity_type = $this->createMock('Drupal\Core\Config\Entity\ConfigEntityTypeInterface');
     $entity_type
       ->expects($this->any())

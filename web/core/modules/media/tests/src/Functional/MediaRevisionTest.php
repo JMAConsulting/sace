@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\media\Functional;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -15,7 +13,6 @@ use Drupal\user\RoleInterface;
  * Tests the revisions of media entities.
  *
  * @group media
- * @group #slow
  */
 class MediaRevisionTest extends MediaFunctionalTestBase {
 
@@ -54,7 +51,7 @@ class MediaRevisionTest extends MediaFunctionalTestBase {
   /**
    * Checks media revision operations.
    */
-  public function testRevisions(): void {
+  public function testRevisions() {
     $assert = $this->assertSession();
 
     $media = $this->createMedia('Sample media');
@@ -105,7 +102,7 @@ class MediaRevisionTest extends MediaFunctionalTestBase {
   /**
    * Tests creating revisions of a File media item.
    */
-  public function testFileMediaRevision(): void {
+  public function testFileMediaRevision() {
     $assert = $this->assertSession();
 
     $uri = 'temporary://foo.txt';
@@ -147,7 +144,7 @@ class MediaRevisionTest extends MediaFunctionalTestBase {
   /**
    * Tests creating revisions of an Image media item.
    */
-  public function testImageMediaRevision(): void {
+  public function testImageMediaRevision() {
     $assert = $this->assertSession();
 
     $this->createMediaType('image', ['id' => 'image', 'new_revision' => TRUE]);

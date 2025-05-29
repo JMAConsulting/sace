@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -30,7 +28,7 @@ class TermEntityQueryTest extends KernelTestBase {
   /**
    * Tests that a basic taxonomy entity query works.
    */
-  public function testTermEntityQuery(): void {
+  public function testTermEntityQuery() {
     $this->installEntitySchema('taxonomy_term');
     $vocabulary = $this->createVocabulary();
 

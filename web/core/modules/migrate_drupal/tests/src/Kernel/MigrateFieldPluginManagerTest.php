@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
@@ -51,7 +49,7 @@ class MigrateFieldPluginManagerTest extends MigrateDrupalTestBase {
    *
    * @covers ::getPluginIdFromFieldType
    */
-  public function testPluginSelection(): void {
+  public function testPluginSelection() {
     $this->assertSame('link', $this->pluginManager->getPluginIdFromFieldType('link', ['core' => 6]));
     $this->assertSame('link_field', $this->pluginManager->getPluginIdFromFieldType('link_field', ['core' => 7]));
     $this->assertSame('image', $this->pluginManager->getPluginIdFromFieldType('image', ['core' => 7]));
@@ -73,7 +71,7 @@ class MigrateFieldPluginManagerTest extends MigrateDrupalTestBase {
    * @covers ::getPluginIdFromFieldType
    * @dataProvider nonExistentPluginExceptionsData
    */
-  public function testNonExistentPluginExceptions($core, $field_type): void {
+  public function testNonExistentPluginExceptions($core, $field_type) {
     $this->expectException(PluginNotFoundException::class);
     $this->expectExceptionMessage(sprintf("Plugin ID '%s' was not found.", $field_type));
     $this->pluginManager->getPluginIdFromFieldType($field_type, ['core' => $core]);
@@ -85,7 +83,7 @@ class MigrateFieldPluginManagerTest extends MigrateDrupalTestBase {
    * @return array
    *   The data.
    */
-  public static function nonExistentPluginExceptionsData() {
+  public function nonExistentPluginExceptionsData() {
     return [
       'D7 Filefield' => [
         'core' => 7,
@@ -109,7 +107,7 @@ class MigrateFieldPluginManagerTest extends MigrateDrupalTestBase {
   /**
    * Tests that plugins with no explicit weight are given a weight of 0.
    */
-  public function testDefaultWeight(): void {
+  public function testDefaultWeight() {
     $definitions = $this->pluginManager->getDefinitions();
     $deprecated_plugins = [
       'date',

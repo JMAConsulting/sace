@@ -2,29 +2,28 @@
 
 namespace Drupal\Core\Render\Element;
 
-use Drupal\Core\Render\Attribute\RenderElement;
-
 /**
  * Provides a render element for a group of form elements.
  *
  * Usage example:
  * @code
- * $form['author'] = [
+ * $form['author'] = array(
  *   '#type' => 'fieldset',
  *   '#title' => $this->t('Author'),
- * ];
+ * );
  *
- * $form['author']['name'] = [
+ * $form['author']['name'] = array(
  *   '#type' => 'textfield',
  *   '#title' => $this->t('Name'),
- * ];
+ * );
  * @endcode
  *
  * @see \Drupal\Core\Render\Element\Fieldgroup
  * @see \Drupal\Core\Render\Element\Details
+ *
+ * @RenderElement("fieldset")
  */
-#[RenderElement('fieldset')]
-class Fieldset extends RenderElementBase {
+class Fieldset extends RenderElement {
 
   /**
    * {@inheritdoc}

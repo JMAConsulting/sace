@@ -14,7 +14,7 @@ use Drupal\Core\Config\Entity\ConfigEntityDependency;
  */
 class ConfigEntityDependencyTest extends UnitTestCase {
 
-  public function testEmptyDependencies(): void {
+  public function testEmptyDependencies() {
     $dep = new ConfigEntityDependency('config_test.dynamic.entity_id', []);
 
     $this->assertEquals('config_test.dynamic.entity_id', $dep->getConfigDependencyName());
@@ -25,7 +25,7 @@ class ConfigEntityDependencyTest extends UnitTestCase {
     $this->assertFalse($dep->hasDependency('module', 'views'));
   }
 
-  public function testWithDependencies(): void {
+  public function testWithDependencies() {
     $values = [
       'uuid' => '60db47f4-54fb-4c86-a439-5769fbda4bd1',
       'dependencies' => [

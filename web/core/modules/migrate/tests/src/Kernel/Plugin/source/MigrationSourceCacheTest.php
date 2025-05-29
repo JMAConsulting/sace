@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel\Plugin\source;
 
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
@@ -35,9 +33,9 @@ class MigrationSourceCacheTest extends MigrateTestBase {
   }
 
   /**
-   * Tests that counts for the same plugin ID are not crossed.
+   * Tests that counts for the same plugin_id are not crossed.
    */
-  public function testCacheCountsNotContaminated(): void {
+  public function testCacheCountsNotContaminated() {
     $migration_1_definition = [
       'source' => [
         'plugin' => 'cacheable_embedded_data',
@@ -91,7 +89,7 @@ class MigrationSourceCacheTest extends MigrateTestBase {
   /**
    * Test that values are pulled from the cache when appropriate.
    */
-  public function testCacheCountsUsed(): void {
+  public function testCacheCountsUsed() {
     $migration_definition = [
       'source' => [
         'plugin' => 'cacheable_embedded_data',

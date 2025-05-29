@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Update;
 
 use Drupal\FunctionalTests\Update\UpdatePathTestBase;
@@ -44,7 +42,7 @@ class ViewsAddMissingLabelsUpdateTest extends UpdatePathTestBase {
   /**
    * Tests the upgrade path for adding missing labels.
    */
-  public function testViewsPostUpdateFixRevisionId(): void {
+  public function testViewsPostUpdateFixRevisionId() {
     $view = View::load('test_fix_revision_id_update');
     $data = $view->toArray();
     $this->assertEmpty($data['label']);

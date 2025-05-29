@@ -36,7 +36,7 @@ class DisplayVariantTest extends UnitTestCase {
    *
    * @covers ::label
    */
-  public function testLabel(): void {
+  public function testLabel() {
     $display_variant = $this->setUpDisplayVariant(['label' => 'foo']);
     $this->assertSame('foo', $display_variant->label());
   }
@@ -46,7 +46,7 @@ class DisplayVariantTest extends UnitTestCase {
    *
    * @covers ::label
    */
-  public function testLabelDefault(): void {
+  public function testLabelDefault() {
     $display_variant = $this->setUpDisplayVariant();
     $this->assertSame('', $display_variant->label());
   }
@@ -56,7 +56,7 @@ class DisplayVariantTest extends UnitTestCase {
    *
    * @covers ::getWeight
    */
-  public function testGetWeight(): void {
+  public function testGetWeight() {
     $display_variant = $this->setUpDisplayVariant(['weight' => 5]);
     $this->assertSame(5, $display_variant->getWeight());
   }
@@ -66,7 +66,7 @@ class DisplayVariantTest extends UnitTestCase {
    *
    * @covers ::getWeight
    */
-  public function testGetWeightDefault(): void {
+  public function testGetWeightDefault() {
     $display_variant = $this->setUpDisplayVariant();
     $this->assertSame(0, $display_variant->getWeight());
   }
@@ -78,7 +78,7 @@ class DisplayVariantTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetConfiguration
    */
-  public function testGetConfiguration($configuration, $expected): void {
+  public function testGetConfiguration($configuration, $expected) {
     $display_variant = $this->setUpDisplayVariant($configuration);
 
     $this->assertSame($expected, $display_variant->getConfiguration());
@@ -87,7 +87,7 @@ class DisplayVariantTest extends UnitTestCase {
   /**
    * Provides test data for testGetConfiguration().
    */
-  public static function providerTestGetConfiguration() {
+  public function providerTestGetConfiguration() {
     $data = [];
     $data[] = [
       [],
@@ -124,7 +124,7 @@ class DisplayVariantTest extends UnitTestCase {
    *
    * @covers ::access
    */
-  public function testAccess(): void {
+  public function testAccess() {
     $display_variant = $this->setUpDisplayVariant();
     $this->assertTrue($display_variant->access());
   }
@@ -134,7 +134,7 @@ class DisplayVariantTest extends UnitTestCase {
    *
    * @covers ::submitConfigurationForm
    */
-  public function testSubmitConfigurationForm(): void {
+  public function testSubmitConfigurationForm() {
     $display_variant = $this->setUpDisplayVariant();
     $this->assertSame('', $display_variant->label());
 

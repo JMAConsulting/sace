@@ -2,7 +2,6 @@
 
 namespace Drupal\views\Plugin\views\relationship;
 
-use Drupal\views\Attribute\ViewsRelationship;
 use Drupal\views\Plugin\ViewsHandlerManager;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -11,8 +10,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * A relationship handlers which reverse entity references.
  *
  * @ingroup views_relationship_handlers
+ *
+ * @ViewsRelationship("entity_reverse")
  */
-#[ViewsRelationship("entity_reverse")]
 class EntityReverse extends RelationshipPluginBase {
 
   /**
@@ -23,7 +23,6 @@ class EntityReverse extends RelationshipPluginBase {
   /**
    * The alias for the left table.
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public string $first_alias;
 
   /**
@@ -32,7 +31,7 @@ class EntityReverse extends RelationshipPluginBase {
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\views\Plugin\ViewsHandlerManager $join_manager
@@ -101,7 +100,7 @@ class EntityReverse extends RelationshipPluginBase {
     $second_join = $this->joinManager->createInstance('standard', $second);
     $second_join->adjusted = TRUE;
 
-    // Use a short alias for this:
+    // use a short alias for this:
     $alias = $this->definition['field_name'] . '_' . $this->table;
 
     $this->alias = $this->query->addRelationship($alias, $second_join, $this->definition['base'], $this->relationship);

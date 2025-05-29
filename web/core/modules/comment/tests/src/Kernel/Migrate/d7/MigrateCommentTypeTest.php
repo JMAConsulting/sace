@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel\Migrate\d7;
 
 use Drupal\comment\Entity\CommentType;
@@ -40,7 +38,7 @@ class MigrateCommentTypeTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migrated comment types.
    */
-  public function testMigration(): void {
+  public function testMigration() {
     $this->migrateCommentTypes();
 
     $comment_fields = [
@@ -80,7 +78,7 @@ class MigrateCommentTypeTest extends MigrateDrupal7TestBase {
    *
    * @dataProvider providerTestNoCommentTypeMigration
    */
-  public function testNoCommentTypeMigration(array $disabled_source_modules, array $expected_messages): void {
+  public function testNoCommentTypeMigration(array $disabled_source_modules, array $expected_messages) {
     if (!empty($disabled_source_modules)) {
       $this->sourceDatabase->update('system')
         ->condition('name', $disabled_source_modules, 'IN')
@@ -121,27 +119,27 @@ class MigrateCommentTypeTest extends MigrateDrupal7TestBase {
   /**
    * Provides test cases for ::testNoCommentTypeMigration().
    */
-  public static function providerTestNoCommentTypeMigration() {
+  public function providerTestNoCommentTypeMigration() {
     return [
       'Node module is disabled in source' => [
-        'disabled_source_modules' => ['node'],
-        'expected_messages' => [
+        'Disabled source modules' => ['node'],
+        'Expected messages' => [
           'error' => [
             'Migration d7_comment_type did not meet the requirements. The node module is not enabled in the source site.',
           ],
         ],
       ],
       'Comment module is disabled in source' => [
-        'disabled_source_modules' => ['comment'],
-        'expected_messages' => [
+        'Disabled source modules' => ['comment'],
+        'Expected messages' => [
           'error' => [
             'Migration d7_comment_type did not meet the requirements. The module comment is not enabled in the source site.',
           ],
         ],
       ],
       'Node and comment modules are disabled in source' => [
-        'disabled_source_modules' => ['comment', 'node'],
-        'expected_messages' => [
+        'Disabled source modules' => ['comment', 'node'],
+        'Expected messages' => [
           'error' => [
             'Migration d7_comment_type did not meet the requirements. The module comment is not enabled in the source site.',
           ],

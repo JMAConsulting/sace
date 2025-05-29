@@ -24,9 +24,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  * Field handlers handle both querying and display of fields in views.
  *
  * Field handler plugins extend
- * \Drupal\views\Plugin\views\field\FieldPluginBase. They must be attributed
- * with \Drupal\views\Attribute\ViewsField attribute, and they must be in
- * namespace directory Plugin\views\field.
+ * \Drupal\views\Plugin\views\field\FieldPluginBase. They must be
+ * annotated with \Drupal\views\Annotation\ViewsField annotation, and they
+ * must be in namespace directory Plugin\views\field.
  *
  * The following items can go into a hook_views_data() implementation in a
  * field section to affect how the field handler will behave:
@@ -34,9 +34,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  *   The array is in one of these forms:
  *   @code
  *   // Simple form, for fields within the same table.
- *   ['identifier' => fieldname]
+ *   array('identifier' => fieldname)
  *   // Form for fields in a different table.
- *   ['identifier' => ['table' => tablename, 'field' => fieldname]]
+ *   array('identifier' => array('table' => tablename, 'field' => fieldname))
  *   @endcode
  *   As many fields as are necessary may be in this array.
  * - click sortable: If TRUE (default), this field may be click sorted.
@@ -74,7 +74,6 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
   /**
    * @var string
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public $field_alias = 'unknown';
   public $aliases = [];
 
@@ -83,7 +82,6 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
    *
    * @var mixed
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public $original_value = NULL;
 
   /**
@@ -93,7 +91,6 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
    *
    * @var array
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public $additional_fields = [];
 
   /**
@@ -113,19 +110,16 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
   /**
    * The last rendered value.
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public string|MarkupInterface|NULL $last_render;
 
   /**
    * The last rendered text.
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public string|MarkupInterface|NULL $last_render_text;
 
   /**
    * The last rendered tokens.
    */
-  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
   public array $last_tokens;
 
   /**
@@ -138,7 +132,7 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
   /**
    * {@inheritdoc}
    */
-  public function init(ViewExecutable $view, DisplayPluginBase $display, ?array &$options = NULL) {
+  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
 
     $this->additional_fields = [];
@@ -181,11 +175,11 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
    *   field alias used. The value is either a string in which case it's
    *   assumed to be a field on this handler's table; or it's an array in the
    *   form of
-   *   @code ['table' => $tablename, 'field' => $fieldname] @endcode
+   *   @code array('table' => $tablename, 'field' => $fieldname) @endcode
    */
   protected function addAdditionalFields($fields = NULL) {
     if (!isset($fields)) {
-      // Notice check
+      // notice check
       if (empty($this->additional_fields)) {
         return;
       }
@@ -1702,28 +1696,28 @@ abstract class FieldPluginBase extends HandlerBase implements FieldHandlerInterf
    * Recursive function to add replacements for nested query string parameters.
    *
    * E.g. if you pass in the following array:
-   *   [
-   *     'foo' => [
+   *   array(
+   *     'foo' => array(
    *       'a' => 'value',
    *       'b' => 'value',
    *       'c.d' => 'invalid value',
    *       '&invalid' => 'invalid value',
-   *   ],
-   *     'bar' => [
+   *     ),
+   *     'bar' => array(
    *       'a' => 'value',
-   *       'b' => [
-   *         'c' => value,
-   *       ],
-   *     ],
-   *   ];
+   *       'b' => array(
+   *         'c' => 'value',
+   *       ),
+   *     ),
+   *   );
    *
    * Would yield the following array of tokens:
-   *   [
+   *   array(
    *     '{{ arguments.foo.a }}' => 'value',
    *     '{{ arguments.foo.b }}' => 'value',
    *     '{{ arguments.bar.a }}' => 'value',
    *     '{{ arguments.bar.b.c }}' => 'value',
-   *   ];
+   *   );
    *
    * @param $array
    *   An array of values.

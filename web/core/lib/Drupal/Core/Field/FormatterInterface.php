@@ -34,7 +34,7 @@ interface FormatterInterface extends PluginSettingsInterface {
    * If an empty result is returned, a UI can still be provided to display
    * a settings form in case the formatter has configurable settings.
    *
-   * @return array<string|\Stringable>
+   * @return string[]
    *   A short summary of the formatter settings.
    */
   public function settingsSummary();

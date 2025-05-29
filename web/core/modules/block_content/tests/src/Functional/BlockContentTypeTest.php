@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\block_content\Functional;
 
 use Drupal\block_content\Entity\BlockContentType;
@@ -18,7 +16,9 @@ class BlockContentTypeTest extends BlockContentTestBase {
 
   use AssertBreadcrumbTrait;
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['field_ui'];
 
@@ -60,7 +60,7 @@ class BlockContentTypeTest extends BlockContentTestBase {
   /**
    * Tests the order of the block content types on the add page.
    */
-  public function testBlockContentAddPageOrder(): void {
+  public function testBlockContentAddPageOrder() {
     $this->createBlockContentType(['id' => 'bundle_1', 'label' => 'Bundle 1']);
     $this->createBlockContentType(['id' => 'bundle_2', 'label' => 'Aaa Bundle 2']);
     $this->drupalLogin($this->adminUser);
@@ -71,7 +71,7 @@ class BlockContentTypeTest extends BlockContentTestBase {
   /**
    * Tests creating a block type programmatically and via a form.
    */
-  public function testBlockContentTypeCreation(): void {
+  public function testBlockContentTypeCreation() {
     // Log in a test user.
     $this->drupalLogin($this->adminUser);
 
@@ -120,7 +120,7 @@ class BlockContentTypeTest extends BlockContentTestBase {
   /**
    * Tests editing a block type using the UI.
    */
-  public function testBlockContentTypeEditing(): void {
+  public function testBlockContentTypeEditing() {
     $this->drupalPlaceBlock('system_breadcrumb_block');
     // Now create an initial block-type.
     $this->createBlockContentType('basic', TRUE);
@@ -172,7 +172,7 @@ class BlockContentTypeTest extends BlockContentTestBase {
   /**
    * Tests deleting a block type that still has content.
    */
-  public function testBlockContentTypeDeletion(): void {
+  public function testBlockContentTypeDeletion() {
     // Now create an initial block-type.
     $this->createBlockContentType('basic', TRUE);
 
@@ -199,7 +199,7 @@ class BlockContentTypeTest extends BlockContentTestBase {
   /**
    * Tests that redirects work as expected when multiple block types exist.
    */
-  public function testsBlockContentAddTypes(): void {
+  public function testsBlockContentAddTypes() {
     // Now create an initial block-type.
     $this->createBlockContentType('basic', TRUE);
 

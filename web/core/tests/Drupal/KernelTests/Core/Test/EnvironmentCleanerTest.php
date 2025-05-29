@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Test;
 
 use Drupal\Core\Database\Connection;
@@ -20,7 +18,7 @@ class EnvironmentCleanerTest extends KernelTestBase {
   /**
    * @covers ::doCleanTemporaryDirectories
    */
-  public function testDoCleanTemporaryDirectories(): void {
+  public function testDoCleanTemporaryDirectories() {
     vfsStream::setup('cleanup_test', NULL, [
       'sites' => [
         'simpletest' => [

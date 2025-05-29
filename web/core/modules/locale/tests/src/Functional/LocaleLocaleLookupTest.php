@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\locale\Functional;
 
 use Drupal\Component\Gettext\PoItem;
@@ -19,10 +17,11 @@ class LocaleLocaleLookupTest extends BrowserTestBase {
   use WaitTerminateTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['locale', 'locale_test'];
-
 
   /**
    * {@inheritdoc}
@@ -44,15 +43,13 @@ class LocaleLocaleLookupTest extends BrowserTestBase {
     ConfigurableLanguage::createFromLangcode('fr')->save();
     $this->config('system.site')->set('default_langcode', 'fr')->save();
 
-    $this->drupalLogin($this->drupalCreateUser([
-      'administer modules',
-    ]));
+    $this->drupalLogin($this->rootUser);
   }
 
   /**
    * Tests that there are no circular dependencies.
    */
-  public function testCircularDependency(): void {
+  public function testCircularDependency() {
     // Ensure that we can enable early_translation_test on a non-english site.
     $this->drupalGet('admin/modules');
     $this->submitForm(['modules[early_translation_test][enable]' => TRUE], 'Install');
@@ -62,7 +59,7 @@ class LocaleLocaleLookupTest extends BrowserTestBase {
   /**
    * Tests language fallback defaults.
    */
-  public function testLanguageFallbackDefaults(): void {
+  public function testLanguageFallbackDefaults() {
     $this->drupalGet('');
     // Ensure state of fallback languages persisted by
     // locale_test_language_fallback_candidates_locale_lookup_alter() is empty.
@@ -78,7 +75,7 @@ class LocaleLocaleLookupTest extends BrowserTestBase {
    *
    * @dataProvider providerTestFixOldPluralStyle
    */
-  public function testFixOldPluralStyle($translation_value, $expected): void {
+  public function testFixOldPluralStyle($translation_value, $expected) {
     $string_storage = \Drupal::service('locale.storage');
     $string = $string_storage->findString(['source' => 'Member for', 'context' => '']);
     $lid = $string->getId();
@@ -107,7 +104,7 @@ class LocaleLocaleLookupTest extends BrowserTestBase {
    *     - translation value
    *     - expected result
    */
-  public static function providerTestFixOldPluralStyle() {
+  public function providerTestFixOldPluralStyle() {
     return [
       'non-plural translation' => ['@count[2] non-plural test', '@count[2] non-plural test'],
       'plural translation' => ['@count[2] plural test' . PoItem::DELIMITER, '@count plural test'],

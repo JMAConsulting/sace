@@ -112,7 +112,7 @@ class InstallTasksTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerNameAndMinimumVersion(): array {
+  public function providerNameAndMinimumVersion(): array {
     return [
       [
         TRUE,
@@ -130,7 +130,7 @@ class InstallTasksTest extends UnitTestCase {
   /**
    * @covers ::name
    */
-  public function testNameWithNoConnection(): void {
+  public function testNameWithNoConnection() {
     $tasks = $this->createTasksNoConnection();
     $this->assertSame('MySQL, MariaDB, Percona Server, or equivalent', $tasks->name());
   }

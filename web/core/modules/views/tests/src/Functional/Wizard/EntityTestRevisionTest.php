@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Functional\Wizard;
 
 /**
@@ -24,7 +22,7 @@ class EntityTestRevisionTest extends WizardTestBase {
   /**
    * Tests creating a view of revisions where the type is not on the base table.
    */
-  public function testRevisionsViewWithNoTypeOnBaseTable(): void {
+  public function testRevisionsViewWithNoTypeOnBaseTable() {
     $type = [
       'show[wizard_key]' => 'standard:entity_test_rev_revision',
     ];

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\file\Functional;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -27,7 +25,7 @@ class FileFieldValidateTest extends FileFieldTestBase {
   /**
    * Tests the required property on file fields.
    */
-  public function testRequired(): void {
+  public function testRequired() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $type_name = 'article';
     $field_name = $this->randomMachineName();
@@ -77,7 +75,7 @@ class FileFieldValidateTest extends FileFieldTestBase {
   /**
    * Tests the max file size validator.
    */
-  public function testFileMaxSize(): void {
+  public function testFileMaxSize() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $type_name = 'article';
     $field_name = $this->randomMachineName();
@@ -129,7 +127,7 @@ class FileFieldValidateTest extends FileFieldTestBase {
   /**
    * Tests file extension checking.
    */
-  public function testFileExtension(): void {
+  public function testFileExtension() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $type_name = 'article';
     $field_name = $this->randomMachineName();
@@ -171,7 +169,7 @@ class FileFieldValidateTest extends FileFieldTestBase {
   /**
    * Checks that a file can always be removed if it does not pass validation.
    */
-  public function testFileRemoval(): void {
+  public function testFileRemoval() {
     $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $type_name = 'article';
     $field_name = 'file_test';

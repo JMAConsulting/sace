@@ -68,13 +68,13 @@ class SqlBaseTest extends UnitTestCase {
    *
    * @see \Drupal\views\Plugin\views\pager\SqlBase::query()
    */
-  public function testQuery(): void {
+  public function testQuery() {
     $request = new Request([
       'items_per_page' => 'All',
     ]);
     $this->view->expects($this->any())
       ->method('getRequest')
-      ->willReturn($request);
+      ->will($this->returnValue($request));
 
     $options = [];
     $this->pager->init($this->view, $this->display, $options);

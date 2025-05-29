@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\DrupalKernel;
 
 use Drupal\Core\Site\Settings;
@@ -17,7 +15,7 @@ class DrupalKernelSiteTest extends KernelTestBase {
   /**
    * Tests services.yml in site directory.
    */
-  public function testServicesYml(): void {
+  public function testServicesYml() {
     $container_yamls = Settings::get('container_yamls');
     $container_yamls[] = $this->siteDirectory . '/services.yml';
     $this->setSetting('container_yamls', $container_yamls);
@@ -30,11 +28,6 @@ class DrupalKernelSiteTest extends KernelTestBase {
     $class = __CLASS__;
     $doc = <<<EOD
 services:
-  _defaults:
-    autowire: true
-  Symfony\Component\HttpFoundation\RequestStack: ~
-  Drupal\Component\Datetime\TimeInterface:
-    class: Drupal\Component\Datetime\Time
   # Add a new service.
   site.service.yml:
     class: $class

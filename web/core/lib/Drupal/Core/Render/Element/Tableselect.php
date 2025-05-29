@@ -3,7 +3,6 @@
 namespace Drupal\Core\Render\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Attribute\FormElement;
 use Drupal\Core\Render\Element;
 use Drupal\Component\Utility\Html as HtmlUtility;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -39,19 +38,20 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  *   3 => ['color' => 'Blue', 'shape' => 'Hexagon', '#disabled' => TRUE],
  * ];
  *
- * $form['table'] = [
+ * $form['table'] = array(
  *   '#type' => 'tableselect',
  *   '#header' => $header,
  *   '#options' => $options,
  *   '#empty' => $this->t('No shapes found'),
- * ];
+ * );
  * @endcode
  *
  * See https://www.drupal.org/node/945102 for a full explanation.
  *
  * @see \Drupal\Core\Render\Element\Table
+ *
+ * @FormElement("tableselect")
  */
-#[FormElement('tableselect')]
 class Tableselect extends Table {
 
   /**
@@ -118,31 +118,31 @@ class Tableselect extends Table {
    *   table row's HTML attributes; see table.html.twig. An example of per-row
    *   options:
    *   @code
-   *     $options = [
-   *       [
+   *     $options = array(
+   *       array(
    *         'title' => $this->t('How to Learn Drupal'),
    *         'content_type' => $this->t('Article'),
    *         'status' => 'published',
-   *         '#attributes' => ['class' => ['article-row']],
-   *       ],
-   *       [
+   *         '#attributes' => array('class' => array('article-row')),
+   *       ),
+   *       array(
    *         'title' => $this->t('Privacy Policy'),
    *         'content_type' => $this->t('Page'),
    *         'status' => 'published',
-   *         '#attributes' => ['class' => ['page-row']],
-   *       ],
-   *     ];
-   *     $header = [
+   *         '#attributes' => array('class' => array('page-row')),
+   *       ),
+   *     );
+   *     $header = array(
    *       'title' => $this->t('Title'),
    *       'content_type' => $this->t('Content type'),
    *       'status' => $this->t('Status'),
-   *     ];
-   *     $form['table'] = [
+   *     );
+   *     $form['table'] = array(
    *       '#type' => 'tableselect',
    *       '#header' => $header,
    *       '#options' => $options,
    *       '#empty' => $this->t('No content available.'),
-   *     ];
+   *     );
    *   @endcode
    *
    * @return array

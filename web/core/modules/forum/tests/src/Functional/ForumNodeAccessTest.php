@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\forum\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -11,7 +9,6 @@ use Drupal\node\Entity\NodeType;
  * Tests forum block view for private node access.
  *
  * @group forum
- * @group legacy
  */
 class ForumNodeAccessTest extends BrowserTestBase {
 
@@ -50,7 +47,7 @@ class ForumNodeAccessTest extends BrowserTestBase {
    * Adds both active forum topics and new forum topics blocks to the sidebar.
    * Tests to ensure private node/public node access is respected on blocks.
    */
-  public function testForumNodeAccess(): void {
+  public function testForumNodeAccess() {
     // Create some users.
     $access_user = $this->drupalCreateUser(['node test view']);
     $no_access_user = $this->drupalCreateUser();

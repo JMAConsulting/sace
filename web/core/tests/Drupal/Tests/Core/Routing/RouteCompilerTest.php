@@ -25,7 +25,7 @@ class RouteCompilerTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetFit
    */
-  public function testGetFit($path, $expected): void {
+  public function testGetFit($path, $expected) {
     $route_compiler = new RouteCompiler();
     $result = $route_compiler->getFit($path);
     $this->assertSame($expected, $result);
@@ -39,7 +39,7 @@ class RouteCompilerTest extends UnitTestCase {
    *   be calculated as the first value and the expected fit as the second
    *   value.
    */
-  public static function providerTestGetFit() {
+  public function providerTestGetFit() {
     return [
       ['test', 1],
       ['/estWithLeadingSlash', 1],
@@ -54,7 +54,7 @@ class RouteCompilerTest extends UnitTestCase {
   /**
    * Confirms that a route compiles properly with the necessary data.
    */
-  public function testCompilation(): void {
+  public function testCompilation() {
     $route = new Route('/test/{something}/more');
     $route->setOption('compiler_class', RouteCompiler::class);
     $compiled = $route->compile();
@@ -66,7 +66,7 @@ class RouteCompilerTest extends UnitTestCase {
   /**
    * Confirms that a compiled route with default values has the correct outline.
    */
-  public function testCompilationDefaultValue(): void {
+  public function testCompilationDefaultValue() {
     // Because "here" has a default value, it should not factor into the outline
     // or the fitness.
     $route = new Route('/test/{something}/more/{here}', [

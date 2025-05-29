@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Config;
 
 use Drupal\entity_test\Entity\EntityTest;
@@ -17,7 +15,7 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 class ConfigDependencyTest extends EntityKernelTestBase {
 
   /**
-   * Modules to install.
+   * Modules to enable.
    *
    * The entity_test module is enabled to provide content entity types.
    *
@@ -28,7 +26,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
   /**
    * Tests that calculating dependencies for system module.
    */
-  public function testNonEntity(): void {
+  public function testNonEntity() {
     $this->installConfig(['system']);
     $config_manager = \Drupal::service('config.manager');
     $dependents = $config_manager->findConfigEntityDependencies('module', ['system']);
@@ -42,7 +40,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
   /**
    * Tests creating dependencies on configuration entities.
    */
-  public function testDependencyManagement(): void {
+  public function testDependencyManagement() {
     /** @var \Drupal\Core\Config\ConfigManagerInterface $config_manager */
     $config_manager = \Drupal::service('config.manager');
     $storage = $this->container->get('entity_type.manager')->getStorage('config_test');
@@ -190,7 +188,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
   /**
    * Tests ConfigManager::uninstall() and config entity dependency management.
    */
-  public function testConfigEntityUninstall(): void {
+  public function testConfigEntityUninstall() {
     /** @var \Drupal\Core\Config\ConfigManagerInterface $config_manager */
     $config_manager = \Drupal::service('config.manager');
     /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $storage */
@@ -229,7 +227,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
   /**
    * Data provider for self::testConfigEntityUninstallComplex().
    */
-  public static function providerConfigEntityUninstallComplex() {
+  public function providerConfigEntityUninstallComplex() {
     // Ensure that alphabetical order has no influence on dependency fixing and
     // removal.
     return [
@@ -250,7 +248,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
    *
    * @dataProvider providerConfigEntityUninstallComplex
    */
-  public function testConfigEntityUninstallComplex(array $entity_id_suffixes): void {
+  public function testConfigEntityUninstallComplex(array $entity_id_suffixes) {
     /** @var \Drupal\Core\Config\ConfigManagerInterface $config_manager */
     $config_manager = \Drupal::service('config.manager');
     /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $storage */
@@ -375,7 +373,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
    * @covers ::uninstall
    * @covers ::getConfigEntitiesToChangeOnDependencyRemoval
    */
-  public function testConfigEntityUninstallThirdParty(): void {
+  public function testConfigEntityUninstallThirdParty() {
     /** @var \Drupal\Core\Config\ConfigManagerInterface $config_manager */
     $config_manager = \Drupal::service('config.manager');
     /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $storage */
@@ -490,7 +488,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
   /**
    * Tests deleting a configuration entity and dependency management.
    */
-  public function testConfigEntityDelete(): void {
+  public function testConfigEntityDelete() {
     /** @var \Drupal\Core\Config\ConfigManagerInterface $config_manager */
     $config_manager = \Drupal::service('config.manager');
     /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $storage */
@@ -597,7 +595,7 @@ class ConfigDependencyTest extends EntityKernelTestBase {
    *
    * @see \Drupal\Core\Config\ConfigManager::getConfigEntitiesToChangeOnDependencyRemoval()
    */
-  public function testContentEntityDelete(): void {
+  public function testContentEntityDelete() {
     $this->installEntitySchema('entity_test');
     /** @var \Drupal\Core\Config\ConfigManagerInterface $config_manager */
     $config_manager = \Drupal::service('config.manager');

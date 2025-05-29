@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\jsonapi\Functional;
 
 use Drupal\Component\Serialization\Json;
@@ -91,7 +89,7 @@ class InternalEntitiesTest extends BrowserTestBase {
   /**
    * Ensures that internal resources types aren't present in the entry point.
    */
-  public function testEntryPoint(): void {
+  public function testEntryPoint() {
     $document = $this->jsonapiGet('/jsonapi');
     $this->assertArrayNotHasKey(
       "{$this->internalEntity->getEntityTypeId()}--{$this->internalEntity->bundle()}",
@@ -103,7 +101,7 @@ class InternalEntitiesTest extends BrowserTestBase {
   /**
    * Ensures that internal resources types aren't present in the routes.
    */
-  public function testRoutes(): void {
+  public function testRoutes() {
     // This cannot be in a data provider because it needs values created by the
     // setUp method.
     $paths = [
@@ -121,7 +119,7 @@ class InternalEntitiesTest extends BrowserTestBase {
   /**
    * Asserts that internal entities are not included in compound documents.
    */
-  public function testIncludes(): void {
+  public function testIncludes() {
     $document = $this->getIndividual($this->referencingEntity, [
       'query' => ['include' => 'field_internal'],
     ]);
@@ -135,7 +133,7 @@ class InternalEntitiesTest extends BrowserTestBase {
   /**
    * Asserts that links to internal relationships aren't generated.
    */
-  public function testLinks(): void {
+  public function testLinks() {
     $document = $this->getIndividual($this->referencingEntity);
     $this->assertArrayNotHasKey(
       'related',

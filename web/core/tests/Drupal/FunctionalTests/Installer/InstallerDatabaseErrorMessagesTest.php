@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\FunctionalTests\Installer;
 
 use Drupal\Core\Database\Database;
@@ -50,7 +48,7 @@ class InstallerDatabaseErrorMessagesTest extends InstallerTestBase {
   /**
    * Verifies that the error message in the settings step is correct.
    */
-  public function testSetUpSettingsErrorMessage(): void {
+  public function testSetUpSettingsErrorMessage() {
     $this->assertSession()->responseContains('<ul><li>Failed to <strong>CREATE</strong> a test table');
   }
 

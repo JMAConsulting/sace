@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\File;
 
 /**
@@ -12,7 +10,9 @@ namespace Drupal\KernelTests\Core\File;
 class RemoteFileMoveTest extends FileMoveTest {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['file_test'];
 

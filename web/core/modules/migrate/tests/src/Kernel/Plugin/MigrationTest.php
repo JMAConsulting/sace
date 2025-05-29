@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate\Kernel\Plugin;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -26,7 +24,7 @@ class MigrationTest extends KernelTestBase {
    *
    * @covers ::getProcessPlugins
    */
-  public function testGetProcessPlugins(): void {
+  public function testGetProcessPlugins() {
     $migration = \Drupal::service('plugin.manager.migration')->createStubMigration([]);
     $this->assertEquals([], $migration->getProcessPlugins([]));
   }
@@ -36,7 +34,7 @@ class MigrationTest extends KernelTestBase {
    *
    * @covers ::getProcessPlugins
    */
-  public function testGetProcessPluginsException(): void {
+  public function testGetProcessPluginsException() {
     $migration = \Drupal::service('plugin.manager.migration')->createStubMigration([]);
     $this->expectException(MigrateException::class);
     $this->expectExceptionMessage('Invalid process configuration for foobar');
@@ -53,13 +51,15 @@ class MigrationTest extends KernelTestBase {
    *
    * @dataProvider getProcessPluginsExceptionMessageProvider
    */
-  public function testGetProcessPluginsExceptionMessage(array $process): void {
+  public function testGetProcessPluginsExceptionMessage(array $process) {
     // Test with an invalid process pipeline.
     $plugin_definition = [
       'id' => 'foo',
       'process' => $process,
     ];
-    $destination = array_key_first(($process));
+
+    reset($process);
+    $destination = key(($process));
 
     $migration = \Drupal::service('plugin.manager.migration')
       ->createStubMigration($plugin_definition);
@@ -71,11 +71,33 @@ class MigrationTest extends KernelTestBase {
   /**
    * Provides data for testing invalid process pipeline.
    */
-  public static function getProcessPluginsExceptionMessageProvider(): \Generator {
-    yield 'null' => ['process' => ['dest' => NULL]];
-    yield 'boolean' => ['process' => ['dest' => TRUE]];
-    yield 'integer' => ['process' => ['dest' => 2370]];
-    yield 'float' => ['process' => ['dest' => 1.61]];
+  public function getProcessPluginsExceptionMessageProvider() {
+    return [
+      [
+        'Null' =>
+          [
+            'dest' => NULL,
+          ],
+      ],
+      [
+        'boolean' =>
+          [
+            'dest' => TRUE,
+          ],
+      ],
+      [
+        'integer' =>
+          [
+            'dest' => 2370,
+          ],
+      ],
+      [
+        'float' =>
+          [
+            'dest' => 1.61,
+          ],
+      ],
+    ];
   }
 
   /**
@@ -83,7 +105,7 @@ class MigrationTest extends KernelTestBase {
    *
    * @covers ::getMigrationDependencies
    */
-  public function testGetMigrationDependencies(): void {
+  public function testGetMigrationDependencies() {
     $plugin_manager = \Drupal::service('plugin.manager.migration');
     $plugin_definition = [
       'id' => 'foo',
@@ -140,7 +162,7 @@ class MigrationTest extends KernelTestBase {
    *
    * @covers ::getDestinationIds
    */
-  public function testGetDestinationIds(): void {
+  public function testGetDestinationIds() {
     $migration = \Drupal::service('plugin.manager.migration')->createStubMigration(['destinationIds' => ['foo' => 'bar']]);
     $destination_ids = $migration->getDestinationIds();
     $this->assertNotEmpty($destination_ids, 'Destination ids are not empty');
@@ -155,7 +177,7 @@ class MigrationTest extends KernelTestBase {
    *
    * @group legacy
    */
-  public function testGetTrackLastImported(): void {
+  public function testGetTrackLastImported() {
     $this->expectDeprecation('Drupal\migrate\Plugin\Migration::setTrackLastImported() is deprecated in drupal:10.1.0 and is removed from drupal:11.0.0. There is no replacement. See https://www.drupal.org/node/3282894');
     $this->expectDeprecation('Drupal\migrate\Plugin\Migration::getTrackLastImported() is deprecated in drupal:10.1.0 and is removed from drupal:11.0.0. There is no replacement. See https://www.drupal.org/node/3282894');
     $this->expectDeprecation('Drupal\migrate\Plugin\Migration::isTrackLastImported() is deprecated in drupal:10.1.0 and is removed from drupal:11.0.0. There is no replacement. See https://www.drupal.org/node/3282894');
@@ -170,7 +192,7 @@ class MigrationTest extends KernelTestBase {
    *
    * @covers ::getDestinationPlugin
    */
-  public function testGetDestinationPlugin(): void {
+  public function testGetDestinationPlugin() {
     $migration = \Drupal::service('plugin.manager.migration')->createStubMigration(['destination' => ['no_stub' => TRUE]]);
     $this->expectException(MigrateSkipRowException::class);
     $this->expectExceptionMessage("Stub requested but not made because no_stub configuration is set.");

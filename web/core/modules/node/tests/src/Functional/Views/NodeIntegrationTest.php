@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\node\Functional\Views;
 
 /**
@@ -26,7 +24,7 @@ class NodeIntegrationTest extends NodeTestBase {
   /**
    * Tests basic node view with a node type argument.
    */
-  public function testNodeViewTypeArgument(): void {
+  public function testNodeViewTypeArgument() {
     // Create two content types with three nodes each.
     $types = [];
     $all_nids = [];
@@ -36,7 +34,7 @@ class NodeIntegrationTest extends NodeTestBase {
 
       for ($j = 0; $j < 5; $j++) {
         // Ensure the right order of the nodes.
-        $node = $this->drupalCreateNode(['type' => $type->id(), 'created' => \Drupal::time()->getRequestTime() - ($i * 5 + $j)]);
+        $node = $this->drupalCreateNode(['type' => $type->id(), 'created' => REQUEST_TIME - ($i * 5 + $j)]);
         $nodes[$type->id()][$node->id()] = $node;
         $all_nids[] = $node->id();
       }

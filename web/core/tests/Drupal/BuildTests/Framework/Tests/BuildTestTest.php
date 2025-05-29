@@ -18,7 +18,7 @@ class BuildTestTest extends BuildTestBase {
   /**
    * Ensure that workspaces work.
    */
-  public function testWorkspace(): void {
+  public function testWorkspace() {
     $test_directory = 'test_directory';
 
     // Execute an empty command through the shell to build out a working
@@ -36,7 +36,7 @@ class BuildTestTest extends BuildTestBase {
   /**
    * @covers ::copyCodebase
    */
-  public function testCopyCodebase(): void {
+  public function testCopyCodebase() {
     $test_directory = 'copied_codebase';
     $this->copyCodebase(NULL, $test_directory);
     $full_path = $this->getWorkspaceDirectory() . '/' . $test_directory;
@@ -58,7 +58,7 @@ class BuildTestTest extends BuildTestBase {
    *
    * @covers ::copyCodebase
    */
-  public function testCopyCodebaseExclude(): void {
+  public function testCopyCodebaseExclude() {
     // Create a virtual file system containing items that should be
     // excluded. Exception being modules directory.
     vfsStream::setup('drupal', NULL, [
@@ -130,7 +130,7 @@ class BuildTestTest extends BuildTestBase {
    *
    * @covers ::copyCodebase
    */
-  public function testCopyCodebaseDocRoot(): void {
+  public function testCopyCodebaseDocRoot() {
     // Create a virtual file system containing items that should be
     // excluded. Exception being modules directory.
     vfsStream::setup('drupal', NULL, [
@@ -206,7 +206,7 @@ class BuildTestTest extends BuildTestBase {
   /**
    * @covers ::findAvailablePort
    */
-  public function testPortMany(): void {
+  public function testPortMany() {
     $iterator = (new Finder())->in($this->getDrupalRoot())
       ->ignoreDotFiles(FALSE)
       ->exclude(['sites/simpletest'])
@@ -234,7 +234,7 @@ class BuildTestTest extends BuildTestBase {
   /**
    * @covers ::standUpServer
    */
-  public function testStandUpServer(): void {
+  public function testStandUpServer() {
     // Stand up a server with working directory 'first'.
     $this->standUpServer('first');
 

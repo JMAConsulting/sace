@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\workflows\Functional;
 
 use Drupal\Core\Url;
@@ -12,12 +10,13 @@ use Drupal\workflows\Entity\Workflow;
  * Tests workflow creation UI.
  *
  * @group workflows
- * @group #slow
  */
 class WorkflowUiTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['workflows', 'workflow_type_test', 'block'];
 
@@ -38,7 +37,7 @@ class WorkflowUiTest extends BrowserTestBase {
   /**
    * Tests route access/permissions.
    */
-  public function testAccess(): void {
+  public function testAccess() {
     // Create a minimal workflow for testing.
     $workflow = Workflow::create(['id' => 'test', 'type' => 'workflow_type_test', 'label' => 'Test']);
     $workflow
@@ -89,7 +88,7 @@ class WorkflowUiTest extends BrowserTestBase {
   /**
    * Tests the machine name validation of the state add form.
    */
-  public function testStateMachineNameValidation(): void {
+  public function testStateMachineNameValidation() {
     Workflow::create([
       'id' => 'test_workflow',
       'label' => 'Test workflow',
@@ -117,7 +116,7 @@ class WorkflowUiTest extends BrowserTestBase {
   /**
    * Tests the creation of a workflow through the UI.
    */
-  public function testWorkflowCreation(): void {
+  public function testWorkflowCreation() {
     $workflow_storage = $this->container->get('entity_type.manager')->getStorage('workflow');
     /** @var \Drupal\workflows\WorkflowInterface $workflow */
     $this->drupalLogin($this->createUser(['access administration pages', 'administer workflows']));
@@ -289,7 +288,7 @@ class WorkflowUiTest extends BrowserTestBase {
   /**
    * Tests the workflow configuration form.
    */
-  public function testWorkflowConfigurationForm(): void {
+  public function testWorkflowConfigurationForm() {
     $workflow = Workflow::create(['id' => 'test', 'type' => 'workflow_type_complex_test', 'label' => 'Test']);
     $workflow
       ->getTypePlugin()
@@ -312,7 +311,7 @@ class WorkflowUiTest extends BrowserTestBase {
   /**
    * Tests a workflow, state, and transition can have a numeric ID and label.
    */
-  public function testNumericIds(): void {
+  public function testNumericIds() {
     $this->drupalLogin($this->createUser(['administer workflows']));
     $this->drupalGet('admin/config/workflow/workflows');
     $this->clickLink('Add workflow');
@@ -341,7 +340,7 @@ class WorkflowUiTest extends BrowserTestBase {
   /**
    * Tests the sorting of states and transitions by weight and label.
    */
-  public function testSorting(): void {
+  public function testSorting() {
     $workflow = Workflow::create(['id' => 'test', 'type' => 'workflow_type_complex_test', 'label' => 'Test']);
     $workflow
       ->getTypePlugin()

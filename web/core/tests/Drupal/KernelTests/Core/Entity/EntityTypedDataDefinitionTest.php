@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
@@ -15,8 +13,8 @@ use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataReferenceDefinition;
 use Drupal\Core\TypedData\DataReferenceDefinitionInterface;
 use Drupal\Core\TypedData\ListDataDefinitionInterface;
-use Drupal\entity_test\Entity\EntityTestBundle;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\node\Entity\NodeType;
 
 /**
  * Tests deriving metadata of entity and field data types.
@@ -33,16 +31,17 @@ class EntityTypedDataDefinitionTest extends KernelTestBase {
   protected $typedDataManager;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
-  protected static $modules = ['system', 'filter', 'text', 'entity_test', 'user'];
+  protected static $modules = ['system', 'filter', 'text', 'node', 'user'];
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installEntitySchema('entity_test');
 
     $this->typedDataManager = $this->container->get('typed_data_manager');
   }
@@ -50,7 +49,7 @@ class EntityTypedDataDefinitionTest extends KernelTestBase {
   /**
    * Tests deriving metadata about fields.
    */
-  public function testFields(): void {
+  public function testFields() {
     $field_definition = BaseFieldDefinition::create('integer');
     // Fields are lists of complex data.
     $this->assertInstanceOf(ListDataDefinitionInterface::class, $field_definition);
@@ -89,33 +88,31 @@ class EntityTypedDataDefinitionTest extends KernelTestBase {
   /**
    * Tests deriving metadata about entities.
    */
-  public function testEntities(): void {
-    $this->installEntitySchema('entity_test_with_bundle');
-    EntityTestBundle::create([
-      'id' => 'article',
-      'label' => 'Article',
+  public function testEntities() {
+    NodeType::create([
+      'type' => 'article',
+      'name' => 'Article',
     ])->save();
 
-    $entity_definition = EntityDataDefinition::create('entity_test_with_bundle');
-    $bundle_definition = EntityDataDefinition::create('entity_test_with_bundle', 'article');
-
+    $entity_definition = EntityDataDefinition::create('node');
+    $bundle_definition = EntityDataDefinition::create('node', 'article');
     // Entities are complex data.
     $this->assertNotInstanceOf(ListDataDefinitionInterface::class, $entity_definition);
     $this->assertInstanceOf(ComplexDataDefinitionInterface::class, $entity_definition);
 
     // Entity definitions should inherit their labels from the entity type.
-    $this->assertEquals('Test entity with bundle', $entity_definition->getLabel());
+    $this->assertEquals('Content', $entity_definition->getLabel());
     $this->assertEquals('Article', $bundle_definition->getLabel());
 
     $field_definitions = $entity_definition->getPropertyDefinitions();
     // Comparison should ignore the internal static cache, so compare the
     // serialized objects instead.
-    $this->assertEquals(serialize(\Drupal::service('entity_field.manager')->getBaseFieldDefinitions('entity_test_with_bundle')), serialize($field_definitions));
-    $this->assertEquals('field_item:string', $entity_definition->getPropertyDefinition('name')->getItemDefinition()->getDataType());
+    $this->assertEquals(serialize(\Drupal::service('entity_field.manager')->getBaseFieldDefinitions('node')), serialize($field_definitions));
+    $this->assertEquals('field_item:string', $entity_definition->getPropertyDefinition('title')->getItemDefinition()->getDataType());
     $this->assertNull($entity_definition->getMainPropertyName());
     $this->assertNull($entity_definition->getPropertyDefinition('invalid'));
 
-    $entity_definition2 = $this->typedDataManager->createDataDefinition('entity:entity_test_with_bundle');
+    $entity_definition2 = $this->typedDataManager->createDataDefinition('entity:node');
     $this->assertNotInstanceOf(ListDataDefinitionInterface::class, $entity_definition2);
     $this->assertInstanceOf(ComplexDataDefinitionInterface::class, $entity_definition2);
     $this->assertEquals(serialize($entity_definition), serialize($entity_definition2));
@@ -123,17 +120,17 @@ class EntityTypedDataDefinitionTest extends KernelTestBase {
     // Test that the definition factory creates the right definitions for all
     // entity data types variants.
     $this->assertEquals(serialize(EntityDataDefinition::create()), serialize($this->typedDataManager->createDataDefinition('entity')));
-    $this->assertEquals(serialize(EntityDataDefinition::create('entity_test_with_bundle')), serialize($this->typedDataManager->createDataDefinition('entity:entity_test_with_bundle')));
+    $this->assertEquals(serialize(EntityDataDefinition::create('node')), serialize($this->typedDataManager->createDataDefinition('entity:node')));
 
     // Config entities don't support typed data.
-    $entity_definition = EntityDataDefinition::create('entity_test_bundle');
+    $entity_definition = EntityDataDefinition::create('node_type');
     $this->assertEquals([], $entity_definition->getPropertyDefinitions());
   }
 
   /**
    * Tests deriving metadata from entity references.
    */
-  public function testEntityReferences(): void {
+  public function testEntityReferences() {
     $reference_definition = DataReferenceDefinition::create('entity');
     $this->assertInstanceOf(DataReferenceDefinitionInterface::class, $reference_definition);
 
@@ -152,7 +149,7 @@ class EntityTypedDataDefinitionTest extends KernelTestBase {
    *
    * @dataProvider entityDefinitionIsInternalProvider
    */
-  public function testEntityDefinitionIsInternal($internal, $expected): void {
+  public function testEntityDefinitionIsInternal($internal, $expected) {
     $entity_type_id = $this->randomMachineName();
 
     $entity_type = $this->prophesize(EntityTypeInterface::class);
@@ -174,7 +171,7 @@ class EntityTypedDataDefinitionTest extends KernelTestBase {
   /**
    * Provides test cases for testEntityDefinitionIsInternal.
    */
-  public static function entityDefinitionIsInternalProvider() {
+  public function entityDefinitionIsInternalProvider() {
     return [
       'internal' => [TRUE, TRUE],
       'external' => [FALSE, FALSE],

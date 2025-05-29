@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Kernel\Migrate\d6;
 
 use Drupal\Tests\migrate_drupal\Kernel\d6\MigrateDrupal6TestBase;
@@ -24,23 +22,23 @@ class MigrateSystemConfigurationTest extends MigrateDrupal6TestBase {
         'requirements_warning' => 172800,
         'requirements_error' => 1209600,
       ],
-      // Logging is not handled by the migration.
-      'logging' => TRUE,
+      // logging is not handled by the migration.
+      'logging' => 1,
     ],
     'system.date' => [
       'first_day' => 4,
-      // Country is not handled by the migration.
+      // country is not handled by the migration.
       'country' => [
-        'default' => NULL,
+        'default' => '',
       ],
-      // Timezone is not handled by the migration.
+      // timezone is not handled by the migration.
       'timezone' => [
         'default' => 'Europe/Paris',
         'user' => [
           'configurable' => FALSE,
-          // Default is not handled by the migration.
+          // default is not handled by the migration.
           'default' => 0,
-          // Warn is not handled by the migration.
+          // warn is not handled by the migration.
           'warn' => FALSE,
         ],
       ],
@@ -62,7 +60,7 @@ class MigrateSystemConfigurationTest extends MigrateDrupal6TestBase {
       'error_level' => 'some',
     ],
     'system.maintenance' => [
-      // Langcode is not handled by the migration.
+      // langcode is not handled by the migration.
       'langcode' => 'en',
       'message' => 'Drupal is currently under maintenance. We should be back shortly. Thank you for your patience.',
     ],
@@ -74,7 +72,7 @@ class MigrateSystemConfigurationTest extends MigrateDrupal6TestBase {
       ],
       'css' => [
         'preprocess' => FALSE,
-        // Gzip is not handled by the migration.
+        // gzip is not handled by the migration.
         'gzip' => TRUE,
       ],
       // fast_404 is not handled by the migration.
@@ -86,7 +84,7 @@ class MigrateSystemConfigurationTest extends MigrateDrupal6TestBase {
       ],
       'js' => [
         'preprocess' => FALSE,
-        // Gzip is not handled by the migration.
+        // gzip is not handled by the migration.
         'gzip' => TRUE,
       ],
     ],
@@ -96,9 +94,9 @@ class MigrateSystemConfigurationTest extends MigrateDrupal6TestBase {
       ],
     ],
     'system.site' => [
-      // Neither langcode nor default_langcode are not handled by the migration.
+      // langcode and default_langcode are not handled by the migration.
       'langcode' => 'en',
-      // UUID is not handled by the migration.
+      // uuid is not handled by the migration.
       'uuid' => '',
       'name' => 'site_name',
       'mail' => 'site_mail@example.com',
@@ -111,7 +109,6 @@ class MigrateSystemConfigurationTest extends MigrateDrupal6TestBase {
       'admin_compact_mode' => FALSE,
       'weight_select_max' => 100,
       'default_langcode' => 'en',
-      'mail_notification' => NULL,
     ],
   ];
 
@@ -145,7 +142,7 @@ class MigrateSystemConfigurationTest extends MigrateDrupal6TestBase {
   /**
    * Tests that all expected configuration gets migrated.
    */
-  public function testConfigurationMigration(): void {
+  public function testConfigurationMigration() {
     foreach ($this->expectedConfig as $config_id => $values) {
       $actual = \Drupal::config($config_id)->get();
       unset($actual['_core']);

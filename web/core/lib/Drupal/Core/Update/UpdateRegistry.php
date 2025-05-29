@@ -6,11 +6,8 @@ use Drupal\Core\Config\ConfigCrudEvent;
 use Drupal\Core\Config\ConfigEvents;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ExtensionDiscovery;
-use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\KeyValueStore\KeyValueStoreInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-// cspell:ignore updatetype
 
 /**
  * Provides all and missing update implementations.
@@ -57,6 +54,13 @@ class UpdateRegistry implements EventSubscriberInterface {
   protected $keyValue;
 
   /**
+   * Should we respect update functions in tests.
+   *
+   * @var bool|null
+   */
+  protected $includeTests = NULL;
+
+  /**
    * The site path.
    *
    * @var string
@@ -80,36 +84,19 @@ class UpdateRegistry implements EventSubscriberInterface {
    *   The app root.
    * @param string $site_path
    *   The site path.
-   * @param array $module_list
-   *   An associative array whose keys are the names of installed modules.
+   * @param string[] $enabled_extensions
+   *   A list of enabled extensions.
    * @param \Drupal\Core\KeyValueStore\KeyValueStoreInterface $key_value
    *   The key value store.
-   * @param \Drupal\Core\Extension\ThemeHandlerInterface|bool|null $theme_handler
-   *   The theme handler.
-   * @param string $update_type
-   *   The used update name.
+   * @param bool|null $include_tests
+   *   (optional) A flag whether to include tests in the scanning of extensions.
    */
-  public function __construct(
-    $root,
-    $site_path,
-    $module_list,
-    KeyValueStoreInterface $key_value,
-    ThemeHandlerInterface|bool|null $theme_handler = NULL,
-    string $update_type = 'post_update',
-  ) {
+  public function __construct($root, $site_path, array $enabled_extensions, KeyValueStoreInterface $key_value, $include_tests = NULL) {
     $this->root = $root;
     $this->sitePath = $site_path;
-    if ($module_list !== [] && array_is_list($module_list)) {
-      @trigger_error('Calling ' . __METHOD__ . '() with the $enabled_extensions argument is deprecated in drupal:10.3.0 and is removed from drupal:11.0.0. Use an associative array whose keys are the names of installed modules instead. See https://www.drupal.org/node/3423659', E_USER_DEPRECATED);
-      $module_list = \Drupal::service('module_handler')->getModuleList();
-    }
-    if ($theme_handler === NULL || is_bool($theme_handler)) {
-      @trigger_error('Calling ' . __METHOD__ . '() with the $include_tests argument is deprecated in drupal:10.3.0 and is removed from drupal:11.0.0. See https://www.drupal.org/node/3423659', E_USER_DEPRECATED);
-      $theme_handler = \Drupal::service('theme_handler');
-    }
-    $this->enabledExtensions = array_merge(array_keys($module_list), array_keys($theme_handler->listInfo()));
+    $this->enabledExtensions = $enabled_extensions;
     $this->keyValue = $key_value;
-    $this->updateType = $update_type;
+    $this->includeTests = $include_tests;
   }
 
   /**
@@ -131,7 +118,7 @@ class UpdateRegistry implements EventSubscriberInterface {
    * Gets all available update functions.
    *
    * @return callable[]
-   *   An alphabetical list of available update functions.
+   *   A list of update functions.
    */
   protected function getAvailableUpdateFunctions() {
     $regexp = '/^(?<extension>.+)_' . $this->updateType . '_(?<name>.+)$/';
@@ -163,7 +150,7 @@ class UpdateRegistry implements EventSubscriberInterface {
    * Find all update functions that haven't been executed.
    *
    * @return callable[]
-   *   An alphabetical list of update functions that have not been executed.
+   *   A list of update functions.
    */
   public function getPendingUpdateFunctions() {
     // We need a) the list of active extensions (we get that from the config
@@ -289,7 +276,7 @@ class UpdateRegistry implements EventSubscriberInterface {
    *   (optional) Limits the extension update files loaded to the provided
    *   extension.
    */
-  protected function scanExtensionsAndLoadUpdateFiles(?string $extension = NULL) {
+  protected function scanExtensionsAndLoadUpdateFiles(string $extension = NULL) {
     if ($extension !== NULL && isset(self::$loadedFiles[$this->root][$this->sitePath][$extension][$this->updateType])) {
       // We've already checked for this file and, if it exists, loaded it.
       return;

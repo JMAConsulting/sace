@@ -43,11 +43,6 @@ class BlazyMediaFormatter extends BlazyMediaFormatterBase {
   /**
    * {@inheritdoc}
    */
-  protected static $byDelta = TRUE;
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getPluginScopes(): array {
     $multiple = $this->isMultiple();
 

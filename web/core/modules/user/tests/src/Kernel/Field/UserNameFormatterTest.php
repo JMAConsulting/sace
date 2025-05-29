@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\user\Kernel\Field;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -17,7 +15,9 @@ use Drupal\user\Entity\User;
 class UserNameFormatterTest extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['field', 'user', 'system'];
 
@@ -70,7 +70,7 @@ class UserNameFormatterTest extends KernelTestBase {
   /**
    * Tests the formatter output.
    */
-  public function testFormatter(): void {
+  public function testFormatter() {
     $user = User::create([
       'name' => 'test name',
     ]);

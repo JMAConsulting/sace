@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Plugin\Context\Context;
+use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -78,7 +79,7 @@ class EntityRepositoryTest extends KernelTestBase {
    * @covers ::getActive
    * @covers ::getActiveMultiple
    */
-  public function testGetActive(): void {
+  public function testGetActive() {
     $en_contexts = $this->getLanguageContexts('en');
 
     // Check that when the entity does not exist NULL is returned.
@@ -211,7 +212,7 @@ class EntityRepositoryTest extends KernelTestBase {
    * @covers ::getCanonical
    * @covers ::getCanonicalMultiple
    */
-  public function testGetCanonical(): void {
+  public function testGetCanonical() {
     // Check that when the entity does not exist NULL is returned.
     $entity_type_id = 'entity_test_mul';
     $canonical = $this->entityRepository->getActive($entity_type_id, -1);
@@ -317,7 +318,11 @@ class EntityRepositoryTest extends KernelTestBase {
    *   An array of contexts.
    */
   protected function getLanguageContexts($langcode) {
-    return ['langcode' => $langcode];
+    $prefix = '@language.current_language_context:';
+    return [
+      $prefix . LanguageInterface::TYPE_INTERFACE => new Context(new ContextDefinition('language'), $langcode),
+      $prefix . LanguageInterface::TYPE_CONTENT => new Context(new ContextDefinition('language'), $langcode),
+    ];
   }
 
 }

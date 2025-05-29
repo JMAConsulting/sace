@@ -96,7 +96,7 @@ class UserAuthTest extends UnitTestCase {
    *
    * @dataProvider providerTestAuthenticateWithMissingCredentials
    */
-  public function testAuthenticateWithMissingCredentials($username, $password): void {
+  public function testAuthenticateWithMissingCredentials($username, $password) {
     $this->userStorage->expects($this->never())
       ->method('loadByProperties');
 
@@ -108,7 +108,7 @@ class UserAuthTest extends UnitTestCase {
    *
    * @return array
    */
-  public static function providerTestAuthenticateWithMissingCredentials() {
+  public function providerTestAuthenticateWithMissingCredentials() {
     return [
       [NULL, NULL],
       [NULL, ''],
@@ -122,7 +122,7 @@ class UserAuthTest extends UnitTestCase {
    *
    * @covers ::authenticate
    */
-  public function testAuthenticateWithNoAccountReturned(): void {
+  public function testAuthenticateWithNoAccountReturned() {
     $this->userStorage->expects($this->once())
       ->method('loadByProperties')
       ->with(['name' => $this->username])
@@ -136,7 +136,7 @@ class UserAuthTest extends UnitTestCase {
    *
    * @covers ::authenticate
    */
-  public function testAuthenticateWithIncorrectPassword(): void {
+  public function testAuthenticateWithIncorrectPassword() {
     $this->userStorage->expects($this->once())
       ->method('loadByProperties')
       ->with(['name' => $this->username])
@@ -155,7 +155,7 @@ class UserAuthTest extends UnitTestCase {
    *
    * @covers ::authenticate
    */
-  public function testAuthenticateWithCorrectPassword(): void {
+  public function testAuthenticateWithCorrectPassword() {
     $this->testUser->expects($this->once())
       ->method('id')
       ->willReturn(1);
@@ -182,7 +182,7 @@ class UserAuthTest extends UnitTestCase {
    *
    * @covers ::authenticate
    */
-  public function testAuthenticateWithZeroPassword(): void {
+  public function testAuthenticateWithZeroPassword() {
     $this->testUser->expects($this->once())
       ->method('id')
       ->willReturn(2);
@@ -205,7 +205,7 @@ class UserAuthTest extends UnitTestCase {
    *
    * @covers ::authenticate
    */
-  public function testAuthenticateWithCorrectPasswordAndNewPasswordHash(): void {
+  public function testAuthenticateWithCorrectPasswordAndNewPasswordHash() {
     $this->testUser->expects($this->once())
       ->method('id')
       ->willReturn(1);

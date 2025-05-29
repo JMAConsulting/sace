@@ -25,7 +25,7 @@ class WorkflowStateTransitionOperationsAccessCheckTest extends UnitTestCase {
    * @covers ::access
    * @dataProvider accessTestCases
    */
-  public function testAccess($route_requirement, $resulting_entity_access_check, $route_parameters = []): void {
+  public function testAccess($route_requirement, $resulting_entity_access_check, $route_parameters = []) {
     $workflow_entity_access_result = AccessResult::allowed();
     $workflow = $this->prophesize(WorkflowInterface::class);
     $workflow->access($resulting_entity_access_check, Argument::type(AccountInterface::class), TRUE)
@@ -50,7 +50,7 @@ class WorkflowStateTransitionOperationsAccessCheckTest extends UnitTestCase {
   /**
    * Test cases for ::testAccess.
    */
-  public static function accessTestCases() {
+  public function accessTestCases() {
     return [
       'Transition add' => [
         'add-transition',
@@ -94,7 +94,7 @@ class WorkflowStateTransitionOperationsAccessCheckTest extends UnitTestCase {
   /**
    * @covers ::access
    */
-  public function testMissingRouteParams(): void {
+  public function testMissingRouteParams() {
     $workflow = $this->prophesize(WorkflowInterface::class);
     $workflow->access()->shouldNotBeCalled();
 
@@ -126,7 +126,7 @@ class WorkflowStateTransitionOperationsAccessCheckTest extends UnitTestCase {
    * @covers ::access
    * @dataProvider invalidOperationNameTestCases
    */
-  public function testInvalidOperationName($operation_name): void {
+  public function testInvalidOperationName($operation_name) {
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage("Invalid _workflow_access operation '$operation_name' specified for route 'Foo Route'.");
     $route = new Route('', [], [
@@ -140,7 +140,7 @@ class WorkflowStateTransitionOperationsAccessCheckTest extends UnitTestCase {
   /**
    * Test cases for ::testInvalidOperationName.
    */
-  public static function invalidOperationNameTestCases() {
+  public function invalidOperationNameTestCases() {
     return [
       ['invalid-op'],
       ['foo-add-transition'],

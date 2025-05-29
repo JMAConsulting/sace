@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\layout_builder\Kernel;
 
 use Drupal\Core\Config\Schema\SchemaIncompleteException;
@@ -38,7 +36,7 @@ class LayoutBuilderEntityViewDisplayTest extends SectionListTestBase {
   /**
    * Tests that configuration schema enforces valid values.
    */
-  public function testInvalidConfiguration(): void {
+  public function testInvalidConfiguration() {
     $this->expectException(SchemaIncompleteException::class);
     $this->sectionList->getSection(0)->getComponent('10000000-0000-1000-a000-000000000000')->setConfiguration(['id' => 'foo', 'bar' => 'baz']);
     $this->sectionList->save();
@@ -47,7 +45,7 @@ class LayoutBuilderEntityViewDisplayTest extends SectionListTestBase {
   /**
    * @dataProvider providerTestIsLayoutBuilderEnabled
    */
-  public function testIsLayoutBuilderEnabled($expected, $view_mode, $enabled): void {
+  public function testIsLayoutBuilderEnabled($expected, $view_mode, $enabled) {
     $display = LayoutBuilderEntityViewDisplay::create([
       'targetEntityType' => 'entity_test',
       'bundle' => 'entity_test',
@@ -66,7 +64,7 @@ class LayoutBuilderEntityViewDisplayTest extends SectionListTestBase {
   /**
    * Provides test data for ::testIsLayoutBuilderEnabled().
    */
-  public static function providerTestIsLayoutBuilderEnabled() {
+  public function providerTestIsLayoutBuilderEnabled() {
     $data = [];
     $data['default enabled'] = [TRUE, 'default', TRUE];
     $data['default disabled'] = [FALSE, 'default', FALSE];
@@ -80,7 +78,7 @@ class LayoutBuilderEntityViewDisplayTest extends SectionListTestBase {
   /**
    * Tests that setting overridable enables Layout Builder only when TRUE.
    */
-  public function testSetOverridable(): void {
+  public function testSetOverridable() {
     // Disable Layout Builder.
     $this->sectionList->disableLayoutBuilder();
 

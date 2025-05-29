@@ -39,7 +39,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
    *
    * @see \Drupal\Component\Plugin\Discovery\DerivativeDiscoveryDecorator::getDerivativeFetcher()
    */
-  public function testGetDerivativeFetcher(): void {
+  public function testGetDerivativeFetcher() {
     $definitions = [];
     $definitions['non_container_aware_discovery'] = [
       'id' => 'non_container_aware_discovery',
@@ -65,7 +65,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
   /**
    * Tests the getDerivativeFetcher method with objects instead of arrays.
    */
-  public function testGetDerivativeFetcherWithAnnotationObjects(): void {
+  public function testGetDerivativeFetcherWithAnnotationObjects() {
     $definitions = [];
     $definitions['non_container_aware_discovery'] = (object) [
       'id' => 'non_container_aware_discovery',
@@ -95,7 +95,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
    *
    * @covers ::getDeriverClass
    */
-  public function testGetDeriverClassWithClassedDefinitions(): void {
+  public function testGetDeriverClassWithClassedDefinitions() {
     $definitions = [];
     $definition = $this->prophesize(DerivablePluginDefinitionInterface::class);
     $definition->id()->willReturn('non_container_aware_discovery');
@@ -117,7 +117,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
   /**
    * @covers ::getDeriverClass
    */
-  public function testGetDeriverClassWithInvalidClassedDefinitions(): void {
+  public function testGetDeriverClassWithInvalidClassedDefinitions() {
     $definition = $this->prophesize(DerivablePluginDefinitionInterface::class);
     $definition->id()->willReturn('non_existent_discovery');
     $definition->getDeriver()->willReturn('\Drupal\system\Tests\Plugin\NonExistentDeriver');
@@ -140,7 +140,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
    *
    * @see \Drupal\Component\Plugin\Discovery\DerivativeDiscoveryDecorator::getDeriver().\
    */
-  public function testNonExistentDerivativeFetcher(): void {
+  public function testNonExistentDerivativeFetcher() {
     $definitions = [];
     // Do this with a class that doesn't exist.
     $definitions['non_existent_discovery'] = [
@@ -162,7 +162,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
    *
    * @see \Drupal\Component\Plugin\Discovery\DerivativeDiscoveryDecorator::getDeriver().\
    */
-  public function testInvalidDerivativeFetcher(): void {
+  public function testInvalidDerivativeFetcher() {
     $definitions = [];
     // Do this with a class that doesn't implement the interface.
     $definitions['invalid_discovery'] = [
@@ -182,7 +182,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
   /**
    * Tests derivative definitions when a definition already exists.
    */
-  public function testExistingDerivative(): void {
+  public function testExistingDerivative() {
     $definitions = [];
     $definitions['non_container_aware_discovery'] = [
       'id' => 'non_container_aware_discovery',
@@ -222,7 +222,7 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
   /**
    * Tests a single definition when a derivative already exists.
    */
-  public function testSingleExistingDerivative(): void {
+  public function testSingleExistingDerivative() {
     $base_definition = [
       'id' => 'non_container_aware_discovery',
       'deriver' => '\Drupal\Tests\Core\Plugin\Discovery\TestDerivativeDiscovery',
@@ -243,15 +243,12 @@ class DerivativeDiscoveryDecoratorTest extends UnitTestCase {
       'null_value' => NULL,
     ];
 
-    $ids = [
-      $derivative_definition['id'],
-      $base_definition['id'],
-    ];
-    $this->discoveryMain->expects($this->exactly(count($ids)))
+    $this->discoveryMain->expects($this->exactly(2))
       ->method('getDefinition')
-      ->with($this->callback(function (string $id) use (&$ids): bool {
-        return array_shift($ids) === $id;
-      }))
+      ->withConsecutive(
+        ['non_container_aware_discovery:test_discovery_1'],
+        ['non_container_aware_discovery'],
+      )
       ->willReturnOnConsecutiveCalls(
         $derivative_definition,
         $base_definition,

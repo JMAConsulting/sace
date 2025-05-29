@@ -16,7 +16,7 @@ class InOperatorTest extends UnitTestCase {
   /**
    * @covers ::validate
    */
-  public function testValidate(): void {
+  public function testValidate() {
     $definition = [
       'title' => 'Is InOperator Test',
       'group' => 'Test',

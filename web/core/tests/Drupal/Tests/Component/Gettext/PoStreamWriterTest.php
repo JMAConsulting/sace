@@ -53,7 +53,7 @@ class PoStreamWriterTest extends TestCase {
   /**
    * @covers ::getURI
    */
-  public function testGetUriException(): void {
+  public function testGetUriException() {
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('No URI set.');
 
@@ -64,7 +64,7 @@ class PoStreamWriterTest extends TestCase {
    * @covers ::writeItem
    * @dataProvider providerWriteData
    */
-  public function testWriteItem($poContent, $expected, $long): void {
+  public function testWriteItem($poContent, $expected, $long) {
     if ($long) {
       $this->expectException(\Exception::class);
       $this->expectExceptionMessage('Unable to write data:');
@@ -90,7 +90,7 @@ class PoStreamWriterTest extends TestCase {
    *   - Written content.
    *   - Content longer than 10 bytes.
    */
-  public static function providerWriteData() {
+  public function providerWriteData() {
     // cSpell:disable
     return [
       ['', '', FALSE],
@@ -107,7 +107,7 @@ class PoStreamWriterTest extends TestCase {
   /**
    * @covers ::close
    */
-  public function testCloseException(): void {
+  public function testCloseException() {
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('Cannot close stream that is not open.');
 

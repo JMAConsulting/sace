@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\link\Functional\Views;
 
 use Drupal\field\Entity\FieldConfig;
@@ -16,7 +14,9 @@ use Drupal\Tests\views\Functional\ViewTestBase;
 class LinkViewsTokensTest extends ViewTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['link_test_views'];
 
@@ -67,7 +67,7 @@ class LinkViewsTokensTest extends ViewTestBase {
 
   }
 
-  public function testLinkViewsTokens(): void {
+  public function testLinkViewsTokens() {
     // Array of URI's to test.
     $uris = [
       'http://www.example.com' => 'example.com',

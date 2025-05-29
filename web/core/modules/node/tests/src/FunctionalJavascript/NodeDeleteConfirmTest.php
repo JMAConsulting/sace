@@ -45,7 +45,7 @@ class NodeDeleteConfirmTest extends WebDriverTestBase {
   /**
    * Tests that the node delete operation opens in a modal.
    */
-  public function testNodeDelete(): void {
+  public function testNodeDelete() {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 
@@ -92,7 +92,7 @@ class NodeDeleteConfirmTest extends WebDriverTestBase {
   /**
    * Tests that the node type delete operation opens in a modal.
    */
-  public function testNodeTypeDelete(): void {
+  public function testNodeTypeDelete() {
     $page = $this->getSession()->getPage();
 
     // Delete node type using link on the content type list.

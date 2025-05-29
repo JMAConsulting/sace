@@ -40,7 +40,7 @@ class ParamConversionEnhancerTest extends UnitTestCase {
   /**
    * @covers ::enhance
    */
-  public function testEnhance(): void {
+  public function testEnhance() {
     $route = new Route('/test/{id}/{literal}/{null}');
 
     $raw_variables = [
@@ -75,7 +75,7 @@ class ParamConversionEnhancerTest extends UnitTestCase {
   /**
    * @covers ::copyRawVariables
    */
-  public function testCopyRawVariables(): void {
+  public function testCopyRawVariables() {
     $route = new Route('/test/{id}');
     $route->setDefault('node_type', 'page');
     $defaults = [

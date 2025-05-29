@@ -1,10 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views_ui\Functional;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\views\Entity\View;
 use Drupal\views\Views;
 
@@ -24,7 +21,9 @@ class DisplayTest extends UITestBase {
   public static $testViews = ['test_display'];
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['contextual'];
 
@@ -36,7 +35,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests adding a display.
    */
-  public function testAddDisplay(): void {
+  public function testAddDisplay() {
     $view = $this->randomView();
     $this->assertSession()->elementNotExists('xpath', '//li[@data-drupal-selector="edit-displays-top-tabs-block-1"]');
     $this->assertSession()->elementNotExists('xpath', '//li[@data-drupal-selector="edit-displays-top-tabs-block-2"]');
@@ -51,7 +50,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests reordering of displays.
    */
-  public function testReorderDisplay(): void {
+  public function testReorderDisplay() {
     $view = [
       'block[create]' => TRUE,
     ];
@@ -86,7 +85,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests disabling of a display.
    */
-  public function testDisableDisplay(): void {
+  public function testDisableDisplay() {
     $view = $this->randomView();
     $path_prefix = 'admin/structure/views/view/' . $view['id'] . '/edit';
 
@@ -113,7 +112,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests views_ui_views_plugins_display_alter is altering plugin definitions.
    */
-  public function testDisplayPluginsAlter(): void {
+  public function testDisplayPluginsAlter() {
     $definitions = Views::pluginManager('display')->getDefinitions();
 
     $expected = [
@@ -130,7 +129,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests display areas.
    */
-  public function testDisplayAreas(): void {
+  public function testDisplayAreas() {
     // Show the advanced column.
     $this->config('views.settings')->set('ui.show.advanced_column', TRUE)->save();
 
@@ -156,7 +155,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests the link-display setting.
    */
-  public function testLinkDisplay(): void {
+  public function testLinkDisplay() {
     // Test setting the link display in the UI form.
     $path = 'admin/structure/views/view/test_display/edit/block_1';
     $link_display_path = 'admin/structure/views/nojs/display/test_display/block_1/link_display';
@@ -197,7 +196,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests that the view status is correctly reflected on the edit form.
    */
-  public function testViewStatus(): void {
+  public function testViewStatus() {
     $view = $this->randomView();
     $id = $view['id'];
 
@@ -216,7 +215,7 @@ class DisplayTest extends UITestBase {
   /**
    * Ensures that no XSS is possible for buttons.
    */
-  public function testDisplayTitleInButtonsXss(): void {
+  public function testDisplayTitleInButtonsXss() {
     $xss_markup = '"><script>alert(123)</script>';
     $view = $this->randomView();
     $view = View::load($view['id']);
@@ -228,7 +227,7 @@ class DisplayTest extends UITestBase {
       $view->save();
 
       $this->drupalGet("admin/structure/views/view/{$view->id()}");
-      $escaped = Unicode::truncate($input, 25, FALSE, TRUE);
+      $escaped = views_ui_truncate($input, 25);
       $this->assertSession()->assertEscaped($escaped);
       $this->assertSession()->responseNotContains($xss_markup);
 
@@ -245,7 +244,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests the action links on the edit display UI.
    */
-  public function testActionLinks(): void {
+  public function testActionLinks() {
     // Change the display title of a display so it contains characters that will
     // be escaped when rendered.
     $display_title = "'<test>'";
@@ -277,7 +276,7 @@ class DisplayTest extends UITestBase {
   /**
    * Tests that the override option is hidden when it's not needed.
    */
-  public function testHideDisplayOverride(): void {
+  public function testHideDisplayOverride() {
     // Test that the override option appears with two displays.
     $this->drupalGet('admin/structure/views/nojs/handler/test_display/page_1/field/title');
     $this->assertSession()->pageTextContains('All displays');

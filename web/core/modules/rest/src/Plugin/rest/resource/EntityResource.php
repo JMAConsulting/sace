@@ -14,9 +14,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Routing\AccessAwareRouterInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\rest\Attribute\RestResource;
-use Drupal\rest\Plugin\Deriver\EntityDeriver;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
 use Psr\Log\LoggerInterface;
@@ -32,17 +29,18 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  * Represents entities as resources.
  *
  * @see \Drupal\rest\Plugin\Deriver\EntityDeriver
+ *
+ * @RestResource(
+ *   id = "entity",
+ *   label = @Translation("Entity"),
+ *   serialization_class = "Drupal\Core\Entity\Entity",
+ *   deriver = "Drupal\rest\Plugin\Deriver\EntityDeriver",
+ *   uri_paths = {
+ *     "canonical" = "/entity/{entity_type}/{entity}",
+ *     "create" = "/entity/{entity_type}"
+ *   }
+ * )
  */
-#[RestResource(
-  id: "entity",
-  label: new TranslatableMarkup("Entity"),
-  serialization_class: "Drupal\Core\Entity\Entity",
-  deriver: EntityDeriver::class,
-  uri_paths: [
-    "canonical" => "/entity/{entity_type}/{entity}",
-    "create" => "/entity/{entity_type}",
-  ],
-)]
 class EntityResource extends ResourceBase implements DependentPluginInterface {
 
   use EntityResourceValidationTrait;
@@ -75,7 +73,7 @@ class EntityResource extends ResourceBase implements DependentPluginInterface {
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -159,7 +157,7 @@ class EntityResource extends ResourceBase implements DependentPluginInterface {
    *
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
-  public function post(?EntityInterface $entity = NULL) {
+  public function post(EntityInterface $entity = NULL) {
     if ($entity == NULL) {
       throw new BadRequestHttpException('No entity content received.');
     }
@@ -216,7 +214,7 @@ class EntityResource extends ResourceBase implements DependentPluginInterface {
    *
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
-  public function patch(EntityInterface $original_entity, ?EntityInterface $entity = NULL) {
+  public function patch(EntityInterface $original_entity, EntityInterface $entity = NULL) {
     if ($entity == NULL) {
       throw new BadRequestHttpException('No entity content received.');
     }

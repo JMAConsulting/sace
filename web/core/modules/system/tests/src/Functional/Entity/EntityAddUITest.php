@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Entity;
 
 use Drupal\entity_test\Entity\EntityTestBundle;
@@ -29,7 +27,7 @@ class EntityAddUITest extends BrowserTestBase {
   /**
    * Tests the add page for an entity type using bundle entities.
    */
-  public function testAddPageWithBundleEntities(): void {
+  public function testAddPageWithBundleEntities() {
     $admin_user = $this->drupalCreateUser([
       'administer entity_test_with_bundle content',
     ]);
@@ -136,20 +134,14 @@ class EntityAddUITest extends BrowserTestBase {
   /**
    * Tests the add page for an entity type not using bundle entities.
    */
-  public function testAddPageWithoutBundleEntities(): void {
+  public function testAddPageWithoutBundleEntities() {
     $admin_user = $this->drupalCreateUser([
       'administer entity_test content',
     ]);
     $this->drupalLogin($admin_user);
 
     entity_test_create_bundle('test', 'Test label', 'entity_test_mul');
-    // Delete the default bundle, so that we can rely on our own. The form
-    // display has to be deleted first to prevent schema errors when fields
-    // attached to the deleted bundle are themselves deleted, which triggers
-    // an update of the form display.
-    $this->container->get('entity_display.repository')
-      ->getFormDisplay('entity_test_mul', 'entity_test_mul')
-      ->delete();
+    // Delete the default bundle, so that we can rely on our own.
     entity_test_delete_bundle('entity_test_mul', 'entity_test_mul');
 
     // One bundle exists, confirm redirection to the add-form.

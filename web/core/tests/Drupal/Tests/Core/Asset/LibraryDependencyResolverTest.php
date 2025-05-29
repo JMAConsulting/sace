@@ -73,7 +73,7 @@ class LibraryDependencyResolverTest extends UnitTestCase {
   /**
    * Provides test data for ::testGetLibrariesWithDependencies().
    */
-  public static function providerTestGetLibrariesWithDependencies() {
+  public function providerTestGetLibrariesWithDependencies() {
     return [
       // Empty list of libraries.
       [[], []],
@@ -118,14 +118,14 @@ class LibraryDependencyResolverTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetLibrariesWithDependencies
    */
-  public function testGetLibrariesWithDependencies(array $libraries, array $expected): void {
+  public function testGetLibrariesWithDependencies(array $libraries, array $expected) {
     $this->assertEquals($expected, $this->libraryDependencyResolver->getLibrariesWithDependencies($libraries));
   }
 
   /**
    * Provides test data for ::testGetMinimalRepresentativeSubset().
    */
-  public static function providerTestGetMinimalRepresentativeSubset() {
+  public function providerTestGetMinimalRepresentativeSubset() {
     return [
       // Empty list of libraries.
       [[], []],
@@ -172,14 +172,14 @@ class LibraryDependencyResolverTest extends UnitTestCase {
    *
    * @dataProvider providerTestGetMinimalRepresentativeSubset
    */
-  public function testGetMinimalRepresentativeSubset(array $libraries, array $expected): void {
+  public function testGetMinimalRepresentativeSubset(array $libraries, array $expected) {
     $this->assertEquals($expected, $this->libraryDependencyResolver->getMinimalRepresentativeSubset($libraries));
   }
 
   /**
    * @covers ::getMinimalRepresentativeSubset
    */
-  public function testGetMinimalRepresentativeSubsetInvalidInput(): void {
+  public function testGetMinimalRepresentativeSubsetInvalidInput() {
     $this->expectException(\AssertionError::class);
     $this->expectExceptionMessage('$libraries can\'t contain duplicate items.');
     $this->libraryDependencyResolver->getMinimalRepresentativeSubset(['test/no_deps_a', 'test/no_deps_a']);

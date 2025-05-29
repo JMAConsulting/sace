@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Theme;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -16,7 +14,7 @@ class MaintenanceThemeTest extends KernelTestBase {
   /**
    * Tests that the maintenance theme initializes the theme and its base themes.
    */
-  public function testMaintenanceTheme(): void {
+  public function testMaintenanceTheme() {
     $this->setSetting('maintenance_theme', 'test_subtheme');
     // Get the maintenance theme loaded.
     drupal_maintenance_theme();

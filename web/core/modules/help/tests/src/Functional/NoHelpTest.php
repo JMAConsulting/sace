@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\help\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,7 @@ use Drupal\Tests\BrowserTestBase;
 class NoHelpTest extends BrowserTestBase {
 
   /**
-   * Modules to install.
+   * Modules to enable.
    *
    * Use one of the test modules that do not implement hook_help().
    *
@@ -43,7 +41,7 @@ class NoHelpTest extends BrowserTestBase {
   /**
    * Ensures modules not implementing help do not appear on admin/help.
    */
-  public function testMainPageNoHelp(): void {
+  public function testMainPageNoHelp() {
     $this->drupalLogin($this->adminUser);
 
     $this->drupalGet('admin/help');
@@ -52,7 +50,7 @@ class NoHelpTest extends BrowserTestBase {
     $this->assertFalse(\Drupal::moduleHandler()->hasImplementations('help', 'menu_test'), 'The menu_test module does not implement hook_help');
     // Make sure the test module menu_test does not display a help link on
     // admin/help.
-    $this->assertSession()->pageTextNotContains(\Drupal::service('extension.list.module')->getName('menu_test'));
+    $this->assertSession()->pageTextNotContains(\Drupal::moduleHandler()->getName('menu_test'));
 
     // Ensure that the module overview help page for a module that does not
     // implement hook_help() results in a 404.

@@ -1,7 +1,0 @@
-clin_intake_adult_data:
-  version: 1
-  js:
-    js/clin_intake_adult_data.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupalSettings

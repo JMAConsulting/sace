@@ -46,7 +46,7 @@ class FileStorageTest extends PhpStorageTestBase {
    * @covers ::exists
    * @covers ::delete
    */
-  public function testCRUD(): void {
+  public function testCRUD() {
     $php = new FileStorage($this->standardSettings);
     $this->assertCRUD($php);
   }
@@ -55,7 +55,7 @@ class FileStorageTest extends PhpStorageTestBase {
    * @covers ::writeable
    * @group legacy
    */
-  public function testWritable(): void {
+  public function testWritable() {
     $this->expectDeprecation('Drupal\Component\PhpStorage\FileStorage::writeable() is deprecated in drupal:10.1.0 and will be removed from drupal:11.0.0. There is no replacement. See https://www.drupal.org/node/3155413');
     $php = new FileStorage($this->standardSettings);
     $this->assertTrue($php->writeable());
@@ -64,7 +64,7 @@ class FileStorageTest extends PhpStorageTestBase {
   /**
    * @covers ::deleteAll
    */
-  public function testDeleteAll(): void {
+  public function testDeleteAll() {
     // Random generator.
     $random_generator = new Random();
 
@@ -99,28 +99,16 @@ class FileStorageTest extends PhpStorageTestBase {
   /**
    * @covers ::createDirectory
    */
-  public function testCreateDirectoryFailWarning(): void {
+  public function testCreateDirectoryFailWarning() {
     $directory = new vfsStreamDirectory('permissionDenied', 0200);
     $storage = new FileStorage([
       'directory' => $directory->url(),
       'bin' => 'test',
     ]);
     $code = "<?php\n echo 'here';";
-
-    // PHPUnit 10 cannot expect warnings, so we have to catch them ourselves.
-    $messages = [];
-    set_error_handler(function (int $errno, string $errstr) use (&$messages): void {
-      $messages[] = [$errno, $errstr];
-    });
-
+    $this->expectWarning();
+    $this->expectWarningMessage('mkdir(): Permission Denied');
     $storage->save('subdirectory/foo.php', $code);
-
-    restore_error_handler();
-    $this->assertCount(2, $messages);
-    $this->assertSame(E_USER_WARNING, $messages[0][0]);
-    $this->assertSame('mkdir(): Permission Denied', $messages[0][1]);
-    $this->assertSame(E_WARNING, $messages[1][0]);
-    $this->assertStringStartsWith('file_put_contents(vfs://permissionDenied/test/subdirectory/foo.php)', $messages[1][1]);
   }
 
 }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Kernel;
 
 use Drupal\comment\Entity\CommentType;
@@ -60,7 +58,7 @@ class CommentBundlesTest extends KernelTestBase {
   /**
    * Tests that the entity_id field is set correctly for each comment bundle.
    */
-  public function testEntityIdField(): void {
+  public function testEntityIdField() {
     $field_definitions = [];
 
     foreach (array_keys($this->targetEntityTypes) as $id) {

@@ -98,7 +98,7 @@ class ImageStyleTest extends UnitTestCase {
   /**
    * @covers ::getDerivativeExtension
    */
-  public function testGetDerivativeExtension(): void {
+  public function testGetDerivativeExtension() {
     $image_effect_id = $this->randomMachineName();
     $logger = $this->getMockBuilder('\Psr\Log\LoggerInterface')->getMock();
     $image_effect = $this->getMockBuilder('\Drupal\image\ImageEffectBase')
@@ -120,7 +120,7 @@ class ImageStyleTest extends UnitTestCase {
   /**
    * @covers ::buildUri
    */
-  public function testBuildUri(): void {
+  public function testBuildUri() {
     // Image style that changes the extension.
     $image_effect_id = $this->randomMachineName();
     $logger = $this->getMockBuilder('\Psr\Log\LoggerInterface')->getMock();
@@ -141,7 +141,7 @@ class ImageStyleTest extends UnitTestCase {
       ->getMock();
     $image_effect->expects($this->any())
       ->method('getDerivativeExtension')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $image_style = $this->getImageStyleMock($image_effect_id, $image_effect);
     $this->assertEquals($image_style->buildUri('public://test.jpeg'), 'public://styles/' . $image_style->id() . '/public/test.jpeg');
@@ -150,7 +150,7 @@ class ImageStyleTest extends UnitTestCase {
   /**
    * @covers ::getPathToken
    */
-  public function testGetPathToken(): void {
+  public function testGetPathToken() {
     $logger = $this->getMockBuilder('\Psr\Log\LoggerInterface')->getMock();
     $private_key = $this->randomMachineName();
     $hash_salt = $this->randomMachineName();
@@ -184,7 +184,7 @@ class ImageStyleTest extends UnitTestCase {
       ->getMock();
     $image_effect->expects($this->any())
       ->method('getDerivativeExtension')
-      ->willReturnArgument(0);
+      ->will($this->returnArgument(0));
 
     $image_style = $this->getImageStyleMock($image_effect_id, $image_effect, ['getPrivateKey', 'getHashSalt']);
     $image_style->expects($this->any())
@@ -202,7 +202,7 @@ class ImageStyleTest extends UnitTestCase {
   /**
    * @covers ::flush
    */
-  public function testFlush(): void {
+  public function testFlush() {
     $cache_tag_invalidator = $this->createMock('\Drupal\Core\Cache\CacheTagsInvalidator');
     $file_system = $this->createMock('\Drupal\Core\File\FileSystemInterface');
     $module_handler = $this->createMock('\Drupal\Core\Extension\ModuleHandlerInterface');

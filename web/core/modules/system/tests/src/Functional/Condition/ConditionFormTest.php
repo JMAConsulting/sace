@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Condition;
 
 use Drupal\node\Entity\Node;
@@ -18,9 +16,6 @@ use Drupal\Tests\BrowserTestBase;
  */
 class ConditionFormTest extends BrowserTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['node', 'condition_test'];
 
   /**
@@ -31,7 +26,7 @@ class ConditionFormTest extends BrowserTestBase {
   /**
    * Submit the condition_node_type_test_form to test condition forms.
    */
-  public function testConfigForm(): void {
+  public function testConfigForm() {
     $this->drupalCreateContentType(['type' => 'page', 'name' => 'Page']);
     $this->drupalCreateContentType(['type' => 'article', 'name' => 'Article']);
 

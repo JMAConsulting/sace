@@ -30,7 +30,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Tests adding and editing of inline blocks.
    */
-  public function testInlineBlocks(): void {
+  public function testInlineBlocks() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
@@ -115,7 +115,7 @@ class InlineBlockTest extends InlineBlockTestBase {
    *
    * @dataProvider layoutNoSaveProvider
    */
-  public function testNoLayoutSave($operation, $no_save_button_text, $confirm_button_text): void {
+  public function testNoLayoutSave($operation, $no_save_button_text, $confirm_button_text) {
     $this->drupalLogin($this->drupalCreateUser([
       'access contextual links',
       'configure any layout',
@@ -186,7 +186,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Provides test data for ::testNoLayoutSave().
    */
-  public static function layoutNoSaveProvider() {
+  public function layoutNoSaveProvider() {
     return [
       'discard_changes' => [
         'discard_changes',
@@ -204,7 +204,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Tests entity blocks revisioning.
    */
-  public function testInlineBlocksRevisioning(): void {
+  public function testInlineBlocksRevisioning() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
@@ -271,7 +271,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Tests entity blocks revisioning.
    */
-  public function testInlineBlocksRevisioningIntegrity(): void {
+  public function testInlineBlocksRevisioningIntegrity() {
     $this->drupalLogin($this->drupalCreateUser([
       'access contextual links',
       'configure any layout',
@@ -359,7 +359,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Tests that entity blocks deleted correctly.
    */
-  public function testDeletion(): void {
+  public function testDeletion() {
     /** @var \Drupal\Core\Cron $cron */
     $cron = \Drupal::service('cron');
     /** @var \Drupal\layout_builder\InlineBlockUsageInterface $usage */
@@ -488,7 +488,7 @@ class InlineBlockTest extends InlineBlockTestBase {
    *
    * @see layout_builder_block_content_access()
    */
-  public function testAccess(): void {
+  public function testAccess() {
     $this->drupalLogin($this->drupalCreateUser([
       'access contextual links',
       'configure any layout',
@@ -532,7 +532,7 @@ class InlineBlockTest extends InlineBlockTestBase {
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAddWorkFlow(): void {
+  public function testAddWorkFlow() {
     $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
     $type_storage = $this->container->get('entity_type.manager')->getStorage('block_content_type');
@@ -597,7 +597,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Tests the 'create and edit content blocks' permission to add a new block.
    */
-  public function testAddInlineBlocksPermission(): void {
+  public function testAddInlineBlocksPermission() {
     LayoutBuilderEntityViewDisplay::load('node.bundle_with_section_field.default')
       ->enableLayoutBuilder()
       ->setOverridable()
@@ -631,7 +631,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Tests 'create and edit custom blocks' permission to edit an existing block.
    */
-  public function testEditInlineBlocksPermission(): void {
+  public function testEditInlineBlocksPermission() {
 
     LayoutBuilderEntityViewDisplay::load('node.bundle_with_section_field.default')
       ->enableLayoutBuilder()
@@ -675,7 +675,7 @@ class InlineBlockTest extends InlineBlockTestBase {
   /**
    * Test editing inline blocks when the parent has been reverted.
    */
-  public function testInlineBlockParentRevert(): void {
+  public function testInlineBlockParentRevert() {
     $this->drupalLogin($this->drupalCreateUser([
       'access contextual links',
       'configure any layout',

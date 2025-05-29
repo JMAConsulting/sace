@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\Common;
 
 use Drupal\Core\Url;
@@ -14,9 +12,6 @@ use Drupal\Tests\BrowserTestBase;
  */
 class UrlTest extends BrowserTestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['common_test'];
 
   /**
@@ -27,7 +22,7 @@ class UrlTest extends BrowserTestBase {
   /**
    * Tests the active class in links.
    */
-  public function testActiveLinkAttributes(): void {
+  public function testActiveLinkAttributes() {
     $options_no_query = [];
     $options_query = [
       'query' => [

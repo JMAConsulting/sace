@@ -1,15 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\KernelTests\KernelTestBase;
-
-// cspell:ignore pastafazoul
 
 /**
  * @coversDefaultClass \Drupal\Core\Entity\EntityDisplayRepository
@@ -61,7 +57,7 @@ class EntityDisplayRepositoryTest extends KernelTestBase {
   /**
    * @covers ::getViewDisplay
    */
-  public function testViewDisplay(): void {
+  public function testViewDisplay() {
     $display = $this->displayRepository->getViewDisplay('user', 'user');
     $this->assertInstanceOf(EntityViewDisplayInterface::class, $display);
     $this->assertTrue($display->isNew(), 'Default view display was created on demand.');
@@ -83,7 +79,7 @@ class EntityDisplayRepositoryTest extends KernelTestBase {
   /**
    * @covers ::getFormDisplay
    */
-  public function testFormDisplay(): void {
+  public function testFormDisplay() {
     $display = $this->displayRepository->getFormDisplay('user', 'user');
     $this->assertInstanceOf(EntityFormDisplayInterface::class, $display);
     $this->assertTrue($display->isNew(), 'Default form display was created on demand.');

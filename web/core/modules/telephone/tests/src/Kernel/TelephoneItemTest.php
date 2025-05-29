@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\telephone\Kernel;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -19,7 +17,9 @@ use Drupal\field\Entity\FieldStorageConfig;
 class TelephoneItemTest extends FieldKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['telephone'];
 
@@ -46,7 +46,7 @@ class TelephoneItemTest extends FieldKernelTestBase {
   /**
    * Tests using entity fields of the telephone field type.
    */
-  public function testTestItem(): void {
+  public function testTestItem() {
     // Verify entity creation.
     $entity = EntityTest::create();
     $value = '+0123456789';

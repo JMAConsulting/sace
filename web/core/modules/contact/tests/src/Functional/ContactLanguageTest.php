@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\contact\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -21,7 +19,9 @@ class ContactLanguageTest extends BrowserTestBase {
   use LanguageTestTrait;
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = [
     'contact',
@@ -51,7 +51,7 @@ class ContactLanguageTest extends BrowserTestBase {
   /**
    * Tests configuration options with language enabled.
    */
-  public function testContactLanguage(): void {
+  public function testContactLanguage() {
     // Ensure that contact form by default does not show the language select.
     $this->drupalGet('contact');
     $this->assertSession()->statusCodeEquals(200);

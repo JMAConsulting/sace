@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Handler;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -48,7 +46,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
     $this->installEntitySchema('entity_test');
   }
 
-  public function testFilterCombineContains(): void {
+  public function testFilterCombineContains() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -103,7 +101,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter with the 'regular_expression' operator.
    */
-  public function testFilterCombineRegEx(): void {
+  public function testFilterCombineRegEx() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -162,7 +160,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter with the 'word' operator.
    */
-  public function testFilterCombineWord(): void {
+  public function testFilterCombineWord() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -213,7 +211,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter with the 'allwords' operator.
    */
-  public function testFilterCombineAllWords(): void {
+  public function testFilterCombineAllWords() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -265,7 +263,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
    * and fields set in the combine filter are removed from the display
    * but not from the combined filter settings.
    */
-  public function testFilterCombineContainsFieldsOverwritten(): void {
+  public function testFilterCombineContainsFieldsOverwritten() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -309,7 +307,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests that the "combine" filter is only valid on displays that use fields.
    */
-  public function testNonFieldsRow(): void {
+  public function testNonFieldsRow() {
     $view = Views::getView('entity_test_fields');
     $view->setDisplay();
 
@@ -349,7 +347,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
    *
    * @covers ::opEqual
    */
-  public function testFilterCombineEqual(): void {
+  public function testFilterCombineEqual() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -449,7 +447,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter using the 'starts' operator.
    */
-  public function testFilterCombineStarts(): void {
+  public function testFilterCombineStarts() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -495,7 +493,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter using the 'not_starts' operator.
    */
-  public function testFilterCombineNotStarts(): void {
+  public function testFilterCombineNotStarts() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -545,7 +543,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter using the 'ends' operator.
    */
-  public function testFilterCombineEnds(): void {
+  public function testFilterCombineEnds() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -591,7 +589,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter using the 'not_ends' operator.
    */
-  public function testFilterCombineNotEnds(): void {
+  public function testFilterCombineNotEnds() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -641,7 +639,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the Combine field filter using the 'not' operator.
    */
-  public function testFilterCombineNot(): void {
+  public function testFilterCombineNot() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 
@@ -691,7 +689,7 @@ class FilterCombineTest extends ViewsKernelTestBase {
   /**
    * Tests the combine filter when no realName is used.
    */
-  public function testFilterCombineNoRealName(): void {
+  public function testFilterCombineNoRealName() {
     $view = Views::getView('test_view');
     $view->setDisplay();
 

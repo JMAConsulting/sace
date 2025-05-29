@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views_ui\Functional;
 
 use Drupal\views\Views;
@@ -39,7 +37,7 @@ class QueryTest extends UITestBase {
   /**
    * Tests query plugins settings.
    */
-  public function testQueryUI(): void {
+  public function testQueryUI() {
     $view = View::load('test_view');
     $display = &$view->getDisplay('default');
     $display['display_options']['query'] = ['type' => 'query_test'];

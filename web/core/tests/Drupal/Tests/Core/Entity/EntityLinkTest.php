@@ -62,7 +62,7 @@ class EntityLinkTest extends UnitTestCase {
    *
    * @dataProvider providerTestLink
    */
-  public function testToLink($entity_label, $link_text, $expected_text, $link_rel = 'canonical', array $link_options = []): void {
+  public function testToLink($entity_label, $link_text, $expected_text, $link_rel = 'canonical', array $link_options = []) {
     $language = new Language(['id' => 'es']);
     $link_options += ['language' => $language];
     $this->languageManager->expects($this->any())
@@ -115,12 +115,12 @@ class EntityLinkTest extends UnitTestCase {
   /**
    * Provides test data for testLink().
    */
-  public static function providerTestLink() {
+  public function providerTestLink() {
     $data = [];
     $data[] = [
       'some_entity_label',
-      'link text',
-      'link text',
+      'qwerqwer',
+      'qwerqwer',
     ];
     $data[] = [
       'some_entity_label',
@@ -134,20 +134,20 @@ class EntityLinkTest extends UnitTestCase {
     ];
     $data[] = [
       'some_entity_label',
-      'link text',
-      'link text',
+      'qwerqwer',
+      'qwerqwer',
       'edit-form',
     ];
     $data[] = [
       'some_entity_label',
-      'link text',
-      'link text',
+      'qwerqwer',
+      'qwerqwer',
       'edit-form',
     ];
     $data[] = [
       'some_entity_label',
-      'link text',
-      'link text',
+      'qwerqwer',
+      'qwerqwer',
       'edit-form',
       ['foo' => 'qwer'],
     ];

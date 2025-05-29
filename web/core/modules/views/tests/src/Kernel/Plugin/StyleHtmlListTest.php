@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views\Kernel\Plugin;
 
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
@@ -25,7 +23,7 @@ class StyleHtmlListTest extends ViewsKernelTestBase {
   /**
    * Make sure that the HTML list style markup is correct.
    */
-  public function testDefaultRowClasses(): void {
+  public function testDefaultRowClasses() {
     $view = Views::getView('test_style_html_list');
     $output = $view->preview();
     $output = (string) \Drupal::service('renderer')->renderRoot($output);

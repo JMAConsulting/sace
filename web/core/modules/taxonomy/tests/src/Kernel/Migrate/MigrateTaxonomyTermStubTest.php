@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\taxonomy\Kernel\Migrate;
 
 use Drupal\migrate\MigrateExecutable;
@@ -35,7 +33,7 @@ class MigrateTaxonomyTermStubTest extends MigrateDrupalTestBase {
   /**
    * Tests creation of taxonomy term stubs.
    */
-  public function testStub(): void {
+  public function testStub() {
     Vocabulary::create([
       'vid' => 'test_vocabulary',
       'name' => 'Test vocabulary',
@@ -46,7 +44,7 @@ class MigrateTaxonomyTermStubTest extends MigrateDrupalTestBase {
   /**
    * Tests creation of stubs when weight is mapped.
    */
-  public function testStubWithWeightMapping(): void {
+  public function testStubWithWeightMapping() {
     // Create a vocabulary via migration for the terms to reference.
     $vocabulary_data_rows = [
       ['id' => '1', 'name' => 'tags'],

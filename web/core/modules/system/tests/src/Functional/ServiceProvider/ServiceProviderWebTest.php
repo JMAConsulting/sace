@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\system\Functional\ServiceProvider;
 
 use Drupal\Tests\BrowserTestBase;
@@ -14,7 +12,9 @@ use Drupal\Tests\BrowserTestBase;
 class ServiceProviderWebTest extends BrowserTestBase {
 
   /**
-   * {@inheritdoc}
+   * Modules to enable.
+   *
+   * @var array
    */
   protected static $modules = ['file', 'service_provider_test'];
 
@@ -29,7 +29,7 @@ class ServiceProviderWebTest extends BrowserTestBase {
    * Also tests that services provided by module service providers get
    * registered to the DIC.
    */
-  public function testServiceProviderRegistrationIntegration(): void {
+  public function testServiceProviderRegistrationIntegration() {
     $this->assertTrue(\Drupal::hasService('service_provider_test_class'), 'The service_provider_test_class service has been registered to the DIC');
     // The event subscriber method in the test class calls
     // \Drupal\Core\Messenger\MessengerInterface::addStatus() with a message

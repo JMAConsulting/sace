@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\field_layout\Kernel;
 
 use Drupal\field_layout\Entity\FieldLayoutEntityViewDisplay;
@@ -21,7 +19,6 @@ class FieldLayoutEntityDisplayTest extends KernelTestBase {
     'field_layout',
     'entity_test',
     'field_layout_test',
-    'field_test',
     'system',
   ];
 
@@ -29,7 +26,7 @@ class FieldLayoutEntityDisplayTest extends KernelTestBase {
    * @covers ::preSave
    * @covers ::calculateDependencies
    */
-  public function testPreSave(): void {
+  public function testPreSave() {
     // Create an entity display with one hidden and one visible field.
     $entity_display = FieldLayoutEntityViewDisplay::create([
       'targetEntityType' => 'entity_test',
@@ -37,7 +34,7 @@ class FieldLayoutEntityDisplayTest extends KernelTestBase {
       'mode' => 'default',
       'status' => TRUE,
       'content' => [
-        'foo' => ['type' => 'field_no_settings'],
+        'foo' => ['type' => 'visible'],
         'name' => ['type' => 'hidden', 'region' => 'content'],
       ],
       'hidden' => [
@@ -63,7 +60,7 @@ class FieldLayoutEntityDisplayTest extends KernelTestBase {
       'mode' => 'default',
       'content' => [
         'foo' => [
-          'type' => 'field_no_settings',
+          'type' => 'visible',
         ],
       ],
       'hidden' => [
@@ -102,7 +99,7 @@ class FieldLayoutEntityDisplayTest extends KernelTestBase {
     ];
     // The field was moved to the default region.
     $expected['content']['foo'] = [
-      'type' => 'field_no_settings',
+      'type' => 'visible',
       'region' => 'main',
       'weight' => -4,
       'settings' => [],

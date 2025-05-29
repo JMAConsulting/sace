@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\views_ui\Functional;
 
 use Drupal\views\Views;
@@ -29,7 +27,7 @@ class StyleUITest extends UITestBase {
   /**
    * Tests changing the style plugin and changing some options of a style.
    */
-  public function testStyleUI(): void {
+  public function testStyleUI() {
     $view_name = 'test_view';
     $view_edit_url = "admin/structure/views/view/$view_name/edit";
 

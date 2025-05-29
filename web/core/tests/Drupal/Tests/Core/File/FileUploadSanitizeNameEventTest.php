@@ -21,7 +21,7 @@ class FileUploadSanitizeNameEventTest extends UnitTestCase {
    * @covers ::setFilename
    * @covers ::getFilename
    */
-  public function testSetFilename(): void {
+  public function testSetFilename() {
     $event = new FileUploadSanitizeNameEvent('foo.txt', '');
     $this->assertSame('foo.txt', $event->getFilename());
     $event->setFilename('foo.html');
@@ -31,7 +31,7 @@ class FileUploadSanitizeNameEventTest extends UnitTestCase {
   /**
    * @covers ::setFilename
    */
-  public function testSetFilenameException(): void {
+  public function testSetFilenameException() {
     $event = new FileUploadSanitizeNameEvent('foo.txt', '');
     $this->assertSame('foo.txt', $event->getFilename());
     $this->expectException(\InvalidArgumentException::class);
@@ -43,7 +43,7 @@ class FileUploadSanitizeNameEventTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::setFilename
    */
-  public function testConstructorException(): void {
+  public function testConstructorException() {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('$filename must be a filename with no path information, "bar/foo.txt" provided');
     new FileUploadSanitizeNameEvent('bar/foo.txt', '');
@@ -52,7 +52,7 @@ class FileUploadSanitizeNameEventTest extends UnitTestCase {
   /**
    * @covers ::getAllowedExtensions
    */
-  public function testAllowedExtensions(): void {
+  public function testAllowedExtensions() {
     $event = new FileUploadSanitizeNameEvent('foo.txt', '');
     $this->assertSame([], $event->getAllowedExtensions());
 
@@ -70,7 +70,7 @@ class FileUploadSanitizeNameEventTest extends UnitTestCase {
    * @param string $filename
    *   The filename to test
    */
-  public function testEventFilenameFunctions(string $filename): void {
+  public function testEventFilenameFunctions(string $filename) {
     $event = new FileUploadSanitizeNameEvent($filename, '');
     $this->assertSame($filename, $event->getFilename());
   }
@@ -81,7 +81,7 @@ class FileUploadSanitizeNameEventTest extends UnitTestCase {
    * @return array
    *   Arrays with original file name.
    */
-  public static function provideFilenames() {
+  public function provideFilenames() {
     return [
       'ASCII filename with extension' => [
         'example.txt',
@@ -104,7 +104,7 @@ class FileUploadSanitizeNameEventTest extends UnitTestCase {
   /**
    * @covers ::stopPropagation
    */
-  public function testStopPropagation(): void {
+  public function testStopPropagation() {
     $this->expectException(\RuntimeException::class);
     $event = new FileUploadSanitizeNameEvent('test.txt', '');
     $event->stopPropagation();

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\Render\Element;
 
 use Drupal\Core\Form\FormState;
@@ -35,7 +33,7 @@ class WeightTest extends KernelTestBase {
    *
    * @covers ::processWeight
    */
-  public function testProcessWeight(): void {
+  public function testProcessWeight() {
     $element = [];
     $form_state = new FormState();
     $complete_form = [];
@@ -61,7 +59,7 @@ class WeightTest extends KernelTestBase {
    *
    * @covers ::processWeight
    */
-  public function testProcessWeightSelectMax(): void {
+  public function testProcessWeightSelectMax() {
     $form_state = new FormState();
     $definition = [
       '#type' => 'weight',

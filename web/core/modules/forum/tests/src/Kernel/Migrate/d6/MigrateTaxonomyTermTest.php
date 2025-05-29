@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\forum\Kernel\Migrate\d6;
 
 use Drupal\Tests\forum\Kernel\Migrate\MigrateTestTrait;
@@ -41,7 +39,7 @@ class MigrateTaxonomyTermTest extends MigrateDrupal6TestBase {
   /**
    * Assert the forum taxonomy terms.
    */
-  public function testTaxonomyTerms(): void {
+  public function testTaxonomyTerms() {
     $this->assertEntity(8, 'en', 'General discussion', 'forums', '', NULL, 2, ['0'], 0);
     $this->assertEntity(9, 'en', 'Earth', 'forums', '', NULL, 0, ['0'], 1);
     $this->assertEntity(10, 'en', 'Birds', 'forums', '', NULL, 0, ['9'], 0);

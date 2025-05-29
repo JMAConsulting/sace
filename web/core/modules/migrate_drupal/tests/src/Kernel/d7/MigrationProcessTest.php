@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\migrate_drupal\Kernel\d7;
 
 use Drupal\KernelTests\FileSystemModuleDiscoveryDataProviderTrait;
@@ -28,7 +26,7 @@ class MigrationProcessTest extends MigrateDrupal7TestBase {
    *
    * @throws \Exception
    */
-  public function testGetProcess(): void {
+  public function testGetProcess() {
     /** @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface $plugin_manager */
     $plugin_manager = $this->container->get('plugin.manager.migration');
     $migrations = $plugin_manager->createInstancesByTag('Drupal 7');

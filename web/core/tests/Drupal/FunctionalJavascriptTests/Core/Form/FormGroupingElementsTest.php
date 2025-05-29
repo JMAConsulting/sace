@@ -42,7 +42,7 @@ class FormGroupingElementsTest extends WebDriverTestBase {
    * becomes visible when the tab is clicked, a fragment link to the child is
    * clicked or when the URI fragment pointing to that child changes.
    */
-  public function testVerticalTabChildVisibility(): void {
+  public function testVerticalTabChildVisibility() {
     $session = $this->getSession();
     $web_assert = $this->assertSession();
 
@@ -92,7 +92,7 @@ class FormGroupingElementsTest extends WebDriverTestBase {
    * becomes visible when a fragment link to the child is clicked or when the
    * URI fragment pointing to that child changes.
    */
-  public function testDetailsChildVisibility(): void {
+  public function testDetailsChildVisibility() {
     $session = $this->getSession();
     $web_assert = $this->assertSession();
 
@@ -139,7 +139,7 @@ class FormGroupingElementsTest extends WebDriverTestBase {
   /**
    * Confirms tabs containing a field with a validation error are open.
    */
-  public function testVerticalTabValidationVisibility(): void {
+  public function testVerticalTabValidationVisibility() {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 

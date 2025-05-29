@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\comment\Functional;
 
 use Drupal\comment\Tests\CommentTestTrait;
@@ -85,7 +83,7 @@ class CommentStatusFieldAccessTest extends BrowserTestBase {
   /**
    * Tests comment status field access.
    */
-  public function testCommentStatusFieldAccessStatus(): void {
+  public function testCommentStatusFieldAccessStatus() {
     $this->drupalLogin($this->nodeAuthor);
     $this->drupalGet('node/add/article');
     $assert = $this->assertSession();

@@ -18,14 +18,10 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        '89efb1254ef2d1c5d80096acd12c4098' => __DIR__ . '/..' . '/twig/twig/src/Resources/core.php',
-        'ffecb95d45175fd40f75be8a23b34f90' => __DIR__ . '/..' . '/twig/twig/src/Resources/debug.php',
-        'c7baa00073ee9c61edf148c51917cfb4' => __DIR__ . '/..' . '/twig/twig/src/Resources/escaper.php',
-        'f844ccf1d25df8663951193c3fc307c8' => __DIR__ . '/..' . '/twig/twig/src/Resources/string_loader.php',
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '2f69d3914119f042cca9e44442d5ce95' => __DIR__ . '/../..' . '/web/core/includes/bootstrap.inc',
+        '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
@@ -36,7 +32,7 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         '59969633dcdb4ee3e2fec945065028d6' => __DIR__ . '/..' . '/civicrm/civicrm-core/guzzle_php81_shim.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'fb4ca2d97fe7ba6af750497425204e70' => __DIR__ . '/..' . '/sentry/sentry/src/functions.php',
-        'a321afe5b5ec99bd361b396b4b67d157' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
+        '014237dd13e595931c6755e8f8e26793' => __DIR__ . '/..' . '/composer/autoload_civicrm_asset.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -212,10 +208,12 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
             'DrupalFinder\\' => 13,
             'DrupalCodeGenerator\\' => 20,
             'Dompdf\\' => 7,
+            'Doctrine\\Persistence\\' => 21,
             'Doctrine\\Deprecations\\' => 22,
             'Doctrine\\Common\\Lexer\\' => 22,
             'Doctrine\\Common\\Collections\\' => 28,
             'Doctrine\\Common\\Annotations\\' => 28,
+            'Doctrine\\Common\\' => 16,
             'Dflydev\\DotAccessData\\' => 22,
             'DMore\\ChromeDriver\\' => 19,
         ),
@@ -682,9 +680,13 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         array (
             0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
         ),
+        'Doctrine\\Persistence\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/persistence/src/Persistence',
+        ),
         'Doctrine\\Deprecations\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/deprecations/src',
+            0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
         ),
         'Doctrine\\Common\\Lexer\\' => 
         array (
@@ -697,6 +699,11 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'Doctrine\\Common\\Annotations\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
+        ),
+        'Doctrine\\Common\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
+            1 => __DIR__ . '/..' . '/doctrine/common/src',
         ),
         'Dflydev\\DotAccessData\\' => 
         array (
@@ -914,7 +921,6 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
         'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'Drupal' => __DIR__ . '/../..' . '/web/core/lib/Drupal.php',
-        'Drupal\\Component\\Datetime\\Time' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/Datetime/Time.php',
         'Drupal\\Component\\DependencyInjection\\Container' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/DependencyInjection/Container.php',
         'Drupal\\Component\\DependencyInjection\\PhpArrayContainer' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/DependencyInjection/PhpArrayContainer.php',
         'Drupal\\Component\\FileCache\\FileCacheFactory' => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component/FileCache/FileCacheFactory.php',
@@ -953,7 +959,6 @@ class ComposerStaticInit04b819f78926dc2ccf4881c8d48a7c6a
         'Random\\RandomError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomError.php',
         'Random\\RandomException' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomException.php',
         'ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
-        'SQLite3Exception' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/SQLite3Exception.php',
         'SebastianBergmann\\Diff\\Chunk' => __DIR__ . '/..' . '/sebastian/diff/src/Chunk.php',
         'SebastianBergmann\\Diff\\ConfigurationException' => __DIR__ . '/..' . '/sebastian/diff/src/Exception/ConfigurationException.php',
         'SebastianBergmann\\Diff\\Diff' => __DIR__ . '/..' . '/sebastian/diff/src/Diff.php',

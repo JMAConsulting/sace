@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\Tests\search\Kernel\Migrate\d7;
 
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
@@ -13,9 +11,6 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
  */
 class MigrateSearchSettingsTest extends MigrateDrupal7TestBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected static $modules = ['search'];
 
   /**
@@ -29,7 +24,7 @@ class MigrateSearchSettingsTest extends MigrateDrupal7TestBase {
   /**
    * Tests the migration of Search's variables to configuration.
    */
-  public function testSearchSettings(): void {
+  public function testSearchSettings() {
     $config = $this->config('search.settings');
     $this->assertSame('node_search', $config->get('default_page'));
     $this->assertSame(4, $config->get('index.minimum_word_size'));

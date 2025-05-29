@@ -1,13 +1,11 @@
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
 module:
-  accordion_view: 0
   adult_online_course_booking_request: 0
   adult_online_course_booking_update: 0
   adult_presentation_booking_request: 0
   adult_presentation_booking_update: 0
   antibot: 0
-  appointment_colours: 0
   asset_injector: 0
   autologout: 0
   basic_auth: 0
@@ -23,16 +21,6 @@ module:
   civicrm_entity_vf: 0
   civicrmtheme: 0
   ckeditor: 0
-  clin_add_note: 0
-  clin_book_appointment: 0
-  clin_booking: 0
-  clin_client_profile: 0
-  clin_flags: 0
-  clin_intake_adult_data: 0
-  clin_intake_cy_data: 0
-  clin_update_appointment: 0
-  clin_update_waitlist_entry: 0
-  clin_waitlist: 0
   colorbutton: 0
   community_engagement_booking_update: 0
   community_engagement_services_request: 0
@@ -91,14 +79,13 @@ module:
   ped_evaluation_summary: 0
   ped_online_course_booking_request: 0
   ped_online_course_booking_update: 0
+  phpass: 0
   redirect: 0
   rest: 0
   sace_activity_schedule_modification: 0
   sace_calendar_customisations: 0
   sace_custom: 0
-  saceflags: 0
   serialization: 0
-  simple_popup_blocks: 0
   slick: 0
   slick_extras: 0
   slick_ui: 0
@@ -114,7 +101,6 @@ module:
   update: 0
   upgrade_status: 0
   user: 0
-  views_accordion: 0
   views_aggregator: 0
   views_aggregator_more_functions: 0
   views_conditional: 0

@@ -127,11 +127,11 @@ interface EntityDisplayRepositoryInterface {
    * @code
    * \Drupal::service('entity_display.repository')
    *   ->getViewDisplay('node', 'article', 'default')
-   *   ->setComponent('body', [
+   *   ->setComponent('body', array(
    *     'type' => 'text_summary_or_trimmed',
-   *     'settings' => ['trim_length' => '200'],
+   *     'settings' => array('trim_length' => '200')
    *     'weight' => 1,
-   *   ])
+   *   ))
    *   ->removeComponent('field_image')
    *   ->save();
    * @endcode
@@ -164,13 +164,13 @@ interface EntityDisplayRepositoryInterface {
    * @code
    * \Drupal::service('entity_display.repository')
    *   ->getFormDisplay('node', 'article', 'default')
-   *   ->setComponent('body', [
+   *   ->setComponent('body', array(
    *     'type' => 'text_textarea_with_summary',
    *     'weight' => 1,
-   *   ])
-   *   ->setComponent('field_image', [
+   *   ))
+   *   ->setComponent('field_image', array(
    *     'region' => 'hidden',
-   *   ])
+   *   ))
    *   ->save();
    * @endcode
    *

@@ -43,7 +43,7 @@ class FilterOptionsTest extends WebDriverTestBase {
   /**
    * Tests filtering options in the 'Add fields' dialog.
    */
-  public function testFilterOptionsAddFields(): void {
+  public function testFilterOptionsAddFields() {
     $this->drupalGet('admin/structure/views/view/content');
 
     $session = $this->getSession();

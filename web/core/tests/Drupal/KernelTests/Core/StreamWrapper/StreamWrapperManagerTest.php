@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\KernelTests\Core\StreamWrapper;
 
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
@@ -38,14 +36,14 @@ class StreamWrapperManagerTest extends KernelTestBase {
    *
    * @dataProvider providerTestUriScheme
    */
-  public function testUriScheme($uri, $expected): void {
+  public function testUriScheme($uri, $expected) {
     $this->assertSame($expected, StreamWrapperManager::getScheme($uri));
   }
 
   /**
    * Data provider.
    */
-  public static function providerTestUriScheme() {
+  public function providerTestUriScheme() {
     $data = [];
     $data[] = [
       'public://filename',
