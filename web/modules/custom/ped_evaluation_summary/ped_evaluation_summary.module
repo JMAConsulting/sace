@@ -339,6 +339,14 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
         'note' => 'civicrm_1_activity_1_custom_1285',
       ],
     ],
+    'custom_1263' => [
+      'response_list' => 'age_responses_markup',
+      'response_count' => 'civicrm_1_activity_1_cg54_custom_1290',
+      'show_hide' => [
+        'age_summary_block',
+        'civicrm_1_activity_1_cg54_custom_1289',
+      ],
+    ],
   ];
 
   foreach ($textmapping as $sourceField => $summaryElements) {
