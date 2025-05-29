@@ -45,15 +45,6 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     ->execute()
     ->first();
 
-  $mapping = \Civi\Api4\OptionValue::get(FALSE)
-    ->addSelect('value', 'label')
-    ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
-    ->execute();
-  $mapper = [];
-  foreach ($mapping as $value) {
-    $mapper[$value['label']] = $value['value'];
-  }
-
   if (!empty($result['Booking_Information.Online_Courses'])) {
     $topic = \Civi\Api4\OptionValue::get(FALSE)
       ->addSelect('description')
@@ -300,54 +291,66 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   }
 
   $textmapping = [
-    'q2_markup_detail' => [
-      'text' => 'custom_666',
-      'value' => 'custom_59',
-      'count' => 'q2_total_block',
-      'note' => 'civicrm_1_activity_1_cg54_custom_715',
+    'custom_666' => [
+      'response_list' => 'q2_markup_detail',
+      'response_count' => 'civicrm_1_activity_1_cg54_custom_59',
+      'show_hide' => [
+        'count' => 'q2_total_block',
+        'note' => 'civicrm_1_activity_1_cg54_custom_715',
+      ],
     ],
-    'q5_markup_detail' => [
-      'text' => 'custom_668',
-      'value' => 'custom_65',
-      'count' => 'q5_total_block',
-      'note' => 'civicrm_1_activity_1_cg54_custom_1281',
+    'custom_668' => [
+      'response_list' => 'q5_markup_detail',
+      'response_count' => 'civicrm_1_activity_1_cg54_custom_65',
+      'show_hide' => [
+        'count' => 'q5_total_block',
+        'note' => 'civicrm_1_activity_1_cg54_custom_1281',
+      ],
     ],
-    'q9_markup_detail' => [
-      'text' => 'custom_670',
-      'value' => 'custom_724',
-      'count' => 'q9_total_block',
-      'note' => 'civicrm_1_activity_1_cg54_custom_1286',
+    'custom_670' => [
+      'response_list' => 'q9_markup_detail',
+      'response_count' => 'civicrm_1_activity_1_cg54_custom_724',
+      'show_hide' => [
+        'count' => 'q9_total_block',
+        'note' => 'civicrm_1_activity_1_cg54_custom_1286',
+      ],
     ],
-    'q18_markup_detail' => [
-      'text' => 'custom_678',
-      'value' => 'custom_787',
-      'count' => 'q18_total_block',
-      'note' => 'civicrm_1_activity_1_cg54_custom_1283',
+    'custom_678' => [
+      'response_list' => 'q18_markup_detail',
+      'response_count' => 'civicrm_1_activity_1_cg54_custom_787',
+      'show_hide' => [
+        'count' => 'q18_total_block',
+        'note' => 'civicrm_1_activity_1_cg54_custom_1283',
+      ],
     ],
-    'q22_markup_detail' => [
-      'text' => 'custom_679',
-      'value' => 'custom_803',
-      'count' => 'q22_total_block',
-      'note' => 'civicrm_1_activity_1_cg54_custom_1284',
+    'custom_679' => [
+      'response_list' => 'q22_markup_detail',
+      'response_count' => 'civicrm_1_activity_1_cg54_custom_803',
+      'show_hide' => [
+        'count' => 'q22_total_block',
+        'note' => 'civicrm_1_activity_1_cg54_custom_1284',
+      ],
     ],
-    'q23_markup_detail' => [
-      'text' => 'custom_812',
-      'value' => 'custom_804',
-      'count' => 'q23_total_block',
-      'note' => 'civicrm_1_activity_1_cg54_custom_1285',
+    'custom_812' => [
+      'response_list' => 'q23_markup_detail',
+      'response_count' => 'civicrm_1_activity_1_cg54_custom_804',
+      'show_hide' => [
+        'count' => 'q23_total_block',
+        'note' => 'civicrm_1_activity_1_custom_1285',
+      ],
     ],
   ];
 
-  foreach ($textmapping as $element => $cf) {
-    $result1 = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$cf['text']], $cf['text'] => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
+  foreach ($textmapping as $sourceField => $summaryElements) {
+    $result1 = civicrm_api3('Activity', 'get', ['custom_706' => $aid, 'return' => [$sourceField], $sourceField => ['IS NOT NULL' => 1], 'options' => ['limit' => 0]])['values'];
     $texts = [];
     foreach ($result1 as $value) {
-      if ($value[$cf['text']]) {
-        $texts[] = sprintf('<li>%s</li>', $value[$cf['text']]);
+      if ($value[$sourceField]) {
+        $texts[] = sprintf('<li>%s</li>', $value[$sourceField]);
       }
     }
     if (!empty($texts)) {
-      $elements[$element]['#text'] = sprintf('
+      $elements[$summaryElements['response_list']]['#text'] = sprintf('
       <details class="package-listing js-form-wrapper form-wrapper claro-details claro-details--package-listing">
         <summary role="button" aria-controls="edit-modules-core" aria-expanded="false" aria-pressed="false" class="claro-details__summary claro-details__summary--package-listing">
           Click for more details<span class="claro-details__summary-summary"></span>
@@ -357,92 +360,94 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
         </div>
       </details>', implode(' ', $texts));
     }
-    $elements['civicrm_1_activity_1_cg54_' . $cf['value']]['#default_value'] = count($texts);
+    $elements[$summaryElements['response_count']]['#default_value'] = count($texts);
   }
 
-  foreach ($mapper as $Q => $cfID) {
-    $element = array_key_exists('custom_' . $cfID, $dropdownmapping) ? $dropdownmapping['custom_' . $cfID] : sprintf('q%s_markup_detail', $Q);
-    $Q = (int) $Q;
-    $flag = TRUE;
-    switch ($Q) {
-      case 4:
-      case 5:
-      case 7:
-        //Show Q4 Q5 Q7 if Support content covered is Yes
-        $flag = ($result["Booking_Information.Support_Content"] == 1);
-        break;
+  $qMapping = \Civi\Api4\OptionValue::get(FALSE)
+    ->addSelect('value', 'label')
+    ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
+    ->execute()
+    ->indexBy('label')
+    ->column('value');
 
-      case 8:
-      case 9:
-        $flag = ($result["Booking_Information.Resources_Content"] == 1);
-        break;
+  foreach ($qMapping as $Q => $cfID) {
+    $applies = ped_evaluation_summary_check_q_applies_to_booking((int) $Q, $result);
 
-      case 15:
-      case 18:
-      case 13:
-        $flag = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
-        break;
+    $dropdown = $dropdownmapping['custom_' . $cfID] ?? NULL;
 
-      case 16:
-      case 14:
-        $flag = (bool) $result['Booking_Information.Safer_Spaces_Content'];
-        break;
-
-      case 17:
-        $flag = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
-        break;
-
-      case 19:
-        //Hide Q19 if Presentation Topic is not Bystander Intervention
-        $flag = (bool) in_array('BystanderIntervention', (array) $result["Booking_Information.Presentation_topics"]);
-        break;
-
-      case 20:
-        //Show Q20 if Privilege and Oppression Covered set to Yes
-        $flag = (bool) $result['Booking_Information.Privilege_and_Oppression_Content'];
-        break;
-
-      case 21:
-        //Hide Q21 if Presentation Method is not Online Course else hide Q22
-        $flag = !($result['Booking_Information.Presentation_Method'] == 'Online Course');
-        break;
-
-      case 22:
-        //Show for all presentation and online course evaluations.
-        $flag = in_array($result['activity_type_id'], [55, 59, 196, 199]);
-        break;
-
-      case 24:
-        $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
-        break;
-
-      case 6:
-        $flag = in_array($result['activity_type_id'], [59, 199]);
-        break;
-
-      case 10:
-        $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
-        break;
-
-      default:
-        break;
-    }
-
-    if (is_array($element)) {
-      foreach ($element as $key) {
-        $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $flag;
+    if ($dropdown) {
+      foreach ($dropdown as $key) {
+        $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $applies;
       }
     }
-    else {
-      $elements[$textmapping[$element]['count']]['#access'] = $flag;
-      $elements[$textmapping[$element]['note']]['#access'] = $flag;
+
+    $textmap = $textmapping['custom_' . $cfID] ?? NULL;
+    if ($textmap) {
+      foreach ($textmap['show_hide'] as $elementToShow) {
+        $elements[$elementToShow]['#access'] = $applies;
+      }
     }
+
     if (isset($elements['q' . $Q . '_markup_detail'])) {
-      $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#access'] = $flag;
+      $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#access'] = $applies;
     }
   }
 
   $elements['civicrm_3_contact_1_contact_existing']['#default_value'] = CRM_Core_Session::getLoggedInContactID();
+}
+
+function ped_evaluation_summary_check_q_applies_to_booking(int $Q, array $bookingDetails): bool {
+  switch ($Q) {
+    case 4:
+    case 5:
+    case 7:
+      //Show Q4 Q5 Q7 if Support content covered is Yes
+      return ($bookingDetails["Booking_Information.Support_Content"] == 1);
+
+    case 8:
+    case 9:
+      return ($bookingDetails["Booking_Information.Resources_Content"] == 1);
+
+    case 15:
+    case 18:
+    case 13:
+      return (bool) strstr(implode('', $bookingDetails["Booking_Information.Audience"]), 'Professionals');
+
+    case 16:
+    case 14:
+      return (bool) $bookingDetails['Booking_Information.Safer_Spaces_Content'];
+
+    case 17:
+      return ($bookingDetails['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+
+    case 19:
+      //Hide Q19 if Presentation Topic is not Bystander Intervention
+      return (bool) in_array('BystanderIntervention', (array) $bookingDetails["Booking_Information.Presentation_topics"]);
+
+    case 20:
+      //Show Q20 if Privilege and Oppression Covered set to Yes
+      return (bool) $bookingDetails['Booking_Information.Privilege_and_Oppression_Content'];
+
+    case 21:
+      //Hide Q21 if Presentation Method is not Online Course else hide Q22
+      return !($bookingDetails['Booking_Information.Presentation_Method'] == 'Online Course');
+
+    case 22:
+      //Show for all presentation and online course evaluations.
+      return in_array($bookingDetails['activity_type_id'], [55, 59, 196, 199]);
+
+    case 24:
+      return ($bookingDetails["Booking_Information.Youth_or_Adult"] == 'Adult');
+
+    case 6:
+      return in_array($bookingDetails['activity_type_id'], [59, 199]);
+
+    case 10:
+      return ($bookingDetails["Booking_Information.Youth_or_Adult"] == 'Adult');
+
+    default:
+      return TRUE;
+  }
 
 }
 
