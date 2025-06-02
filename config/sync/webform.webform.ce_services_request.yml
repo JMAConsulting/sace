@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - ped_evaluation_summary
     - webform_civicrm
 weight: 0
 open: null
@@ -1402,4 +1403,13 @@ handlers:
       theme_name: ''
       parameters: {  }
       debug: false
+  evaluation_summary_handler:
+    id: evaluation_summary_handler
+    handler_id: evaluation_summary_handler
+    label: 'Evaluation Summary Handler'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
 variants: {  }
