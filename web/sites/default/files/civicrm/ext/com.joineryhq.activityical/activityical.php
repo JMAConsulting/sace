@@ -45,15 +45,6 @@ function activityical_civicrm_config(&$config) {
 }
 
 /**
- * Implements hook_civicrm_xmlMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
- */
-function activityical_civicrm_xmlMenu(&$files) {
-  _activityical_civix_civicrm_xmlMenu($files);
-}
-
-/**
  * Implements hook_civicrm_install().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
@@ -63,87 +54,12 @@ function activityical_civicrm_install() {
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
- */
-function activityical_civicrm_postInstall() {
-  _activityical_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
- */
-function activityical_civicrm_uninstall() {
-  _activityical_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function activityical_civicrm_enable() {
   _activityical_civix_civicrm_enable();
-}
-
-/**
- * Implements hook_civicrm_disable().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
- */
-function activityical_civicrm_disable() {
-  _activityical_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_upgrade
- */
-function activityical_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _activityical_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_managed().
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
- */
-function activityical_civicrm_managed(&$entities) {
-  _activityical_civix_civicrm_managed($entities);
-}
-
-/**
- * Implements hook_civicrm_caseTypes().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
- */
-function activityical_civicrm_caseTypes(&$caseTypes) {
-  _activityical_civix_civicrm_caseTypes($caseTypes);
-}
-
-/**
- * Implements hook_civicrm_angularModules().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
- */
-function activityical_civicrm_angularModules(&$angularModules) {
-  _activityical_civix_civicrm_angularModules($angularModules);
-}
-
-/**
- * Implements hook_civicrm_alterSettingsFolders().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
- */
-function activityical_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _activityical_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -238,42 +154,33 @@ function activityical_civicrm_pageRun(&$page) {
   }
 }
 
-function _activityical_contact_has_feed_group($contact_id) {
-  // Check $this->_params['contact_id'] that they have the right civicrm group.
-  $result = _activityical_civicrmapi('setting', 'get', array('return' => 'activityical_group_id'));
-  $domainID = CRM_Core_Config::domainID();
-  $group_id = $result['values'][$domainID]['activityical_group_id'];
+/**
+ * Check whether a contact is in the group which means
+ * they should have a feed
+ * @return bool
+ */
+function _activityical_contact_has_feed_group($contact_id): bool {
+  $group_id = \Civi::settings()->get('activityical_group_id');
   if (empty($group_id)) {
     // No group defined; nobody can be in an undefined group.
     return FALSE;
   }
-  $api_params = array(
-    'group_id' => $group_id,
-    'contact_id' => $contact_id,
-  );
-  $result = _activityical_civicrmapi('group_contact', 'get', $api_params);
-  if (!$result['count']) {
-    return FALSE;
-  }
 
-  return TRUE;
+  // will return contact if they are in group, or null if not
+  $contactInGroup = \Civi\Api4\Contact::get(FALSE)
+    ->addSelect('id')
+    ->addWhere('id', '=', $contact_id)
+    ->addWhere('groups', 'IN', [$group_id])
+    ->execute()
+    ->first();
+
+  return !!$contactInGroup;
 }
 
 /**
  * Implements hook_civicrm_entityTypes().
  */
-function activityical_civicrm_entityTypes(&$entityTypes) {
-  $entityTypes['CRM_Activityical_DAO_ActivityicalContact'] = array(
-    'name' => 'ActivityicalContact',
-    'class' => 'CRM_Activityical_DAO_ActivityicalContact',
-    'table' => 'civicrm_activityicalcontact',
-  );
-  $entityTypes['CRM_Activityical_DAO_ActivityicalCache'] = array(
-    'name' => 'ActivityicalCache',
-    'class' => 'CRM_Activityical_DAO_ActivityicalCache',
-    'table' => 'civicrm_activityicalcache',
-  );
-}
+
 
 /**
  * Implements hook_civicrm_pre().
