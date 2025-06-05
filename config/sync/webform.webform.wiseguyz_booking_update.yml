@@ -590,6 +590,24 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_1289:
+      '#type': civicrm_options
+      '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_1289
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
   civicrm_1_activity_1_cg2_custom_126:
     '#type': textarea
     '#title': ' Additional needs or considerations (please specify)'

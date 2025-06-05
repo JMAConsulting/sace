@@ -3,7 +3,6 @@ langcode: en
 status: open
 dependencies:
   module:
-    - ped_evaluation_summary
     - webform_civicrm
 weight: 0
 open: null
@@ -296,6 +295,7 @@ elements: |-
       '#options':
         'In-Person Presentation': 'In-Person Presentation'
         'Online Presentation': 'Online Presentation'
+        'Online Course': 'Online Course'
       '#required': true
       '#default_value': 'In-Person Presentation'
       '#format_items': ul
@@ -448,6 +448,22 @@ elements: |-
         '#form_key': civicrm_1_activity_1_cg2_custom_35
         '#parent': civicrm_1_activity_1_fieldset_fieldset
         '#default_option': '0'
+    civicrm_1_activity_1_cg2_custom_1289:
+      '#type': civicrm_options
+      '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
+      '#description': '<p>With our new booking and evaluation system, we conduct most evaluations virtually through QR code and/or link. We ask that schools allow students to have their cell phones on them during the presentation (if possible given government regulations - some schools will allow them for external presenters). SACE educators will bring a handful of paper evaluations for participants who do not have cellphones and/or cannot complete the evaluation virtually.</p>'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#default_value': '0'
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_1289
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
   session_details_virtual:
     '#type': container
     '#title': 'Online Session Details'
@@ -1593,13 +1609,4 @@ handlers:
       theme_name: ''
       parameters: {  }
       debug: false
-  evaluation_summary_handler:
-    id: evaluation_summary_handler
-    handler_id: evaluation_summary_handler
-    label: 'Evaluation Summary Handler'
-    notes: ''
-    status: true
-    conditions: {  }
-    weight: 0
-    settings: {  }
 variants: {  }

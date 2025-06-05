@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 id: html_block
 label: 'HTML Block'
-revision: false
+revision: 0
 description: ''

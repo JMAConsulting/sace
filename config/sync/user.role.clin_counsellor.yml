@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - civicrm
     - file
 id: clin_counsellor
 label: 'CLIN Counsellor'
@@ -11,5 +10,3 @@ weight: 2
 is_admin: null
 permissions:
   - 'delete own files'
-  - 'view all activities'
-  - 'view all contacts'

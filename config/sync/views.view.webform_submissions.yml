@@ -374,7 +374,6 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -432,8 +431,7 @@ display:
           field: uid
           entity_type: webform_submission
           entity_field: uid
-          plugin_id: entity_target_id
-          target_entity_type_id: user
+          plugin_id: numeric
         in_draft:
           id: in_draft
           table: webform_submission

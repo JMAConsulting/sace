@@ -3,15 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - taxonomy.vocabulary.user_team
+    - field.storage.user.field_calendar_colour
     - user.role.clin_counsellor
     - user.role.clin_intake_worker
     - user.role.clin_team_lead
     - user.role.wheel
-  content:
-    - 'taxonomy_term:user_team:212073fb-cf52-4c79-b9ab-bf0ff88a8cd2'
-    - 'taxonomy_term:user_team:8bd10ee6-4747-46d8-93e2-9dd4a0f73249'
-    - 'taxonomy_term:user_team:feeecad5-05da-4ff2-910d-037a4fa3a0db'
   module:
     - better_exposed_filters
     - civicrm_entity
@@ -37,72 +33,6 @@ display:
     display_options:
       title: 'Appointments Calendar'
       fields:
-        id:
-          id: id
-          table: civicrm_activity
-          field: id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: id
-          plugin_id: field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
         subject:
           id: subject
           table: civicrm_activity
@@ -224,6 +154,72 @@ display:
           settings:
             timezone_override: ''
             format_type: medium
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        id:
+          id: id
+          table: civicrm_activity
+          field: id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: id
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -807,458 +803,21 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        display_name:
-          id: display_name
-          table: civicrm_contact
-          field: display_name
-          relationship: contact_1
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: display_name
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        created_date:
-          id: created_date
-          table: civicrm_activity
-          field: created_date
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: created_date
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: datetime_default
-          settings:
-            timezone_override: ''
-            format_type: medium
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        display_name_2:
-          id: display_name_2
-          table: civicrm_contact
-          field: display_name
-          relationship: contact_2
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: display_name
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        display_name_1:
-          id: display_name_1
-          table: civicrm_contact
-          field: display_name
-          relationship: contact
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_contact
-          entity_field: display_name
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        intake_completed_1414:
-          id: intake_completed_1414
-          table: civicrm_value_clin_adult_in_67
-          field: intake_completed_1414
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: custom_1414
-          plugin_id: civicrm_entity_custom_field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: "{% set cleaned_date = intake_completed_1414__value|replace({'<time datetime=\"': '', '\">Tue, 06/04/2024 - 00:00</time>': ''}) %}\r\n{% set date_obj = cleaned_date|date('Y-m-d\\TH:i:sP') %}\r\n{{ date_obj|date('d M Y, g:i A') }}"
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: datetime_custom
-          settings:
-            timezone_override: ''
-            date_format: 'd M Y, g:i A'
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: 0
-        initial_call_1413:
-          id: initial_call_1413
-          table: civicrm_value_clin_adult_in_67
-          field: initial_call_1413
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: civicrm_activity
-          entity_field: custom_1413
-          plugin_id: civicrm_entity_custom_field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: "{% set cleaned_date = initial_call_1413__value |replace({'<time datetime=\"': '', '\">Tue, 06/04/2024 - 00:00</time>': ''}) %}\r\n{% set date_obj = cleaned_date|date('Y-m-d\\TH:i:sP') %}\r\n{{ date_obj|date('d M Y, g:i A') }}"
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: datetime_custom
-          settings:
-            timezone_override: ''
-            date_format: 'd M Y, g:i A'
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: 0
-        colour_hex:
-          id: colour_hex
-          table: civicrm_appointment_colours
-          field: colour_hex
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: standard
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-        nothing_2:
-          id: nothing_2
+        nothing_1:
+          id: nothing_1
           table: views
           field: nothing
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: Buttons
           plugin_id: custom
           label: ''
           exclude: false
           alter:
             alter_text: true
-            text: "<h3> <a href=\"/contact-information/{{ id_1 }}\">{{ display_name }}</a></h3>\r\n{% if initial_call_1413 != '' %}\r\nInitial Call Date: {{ initial_call_1413 }}\r\n{%else%}\r\nAppointment Date: {{ activity_date_time }}\r\n{% endif %}\r\n<br>\r\n{% if intake_completed_1414 != '' %}\r\nIntake Completed Date: {{ intake_completed_1414 }}\r\n<br>\r\n{% endif %}\r\nIntake Completed By: {{ display_name_2 }}\r\n<br>\r\nClient Care Staff: {{ display_name_1 }}\r\n<br>\r\n{% if activity_type_id == 'CLIN - Intake Booking Adult' %} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-adult-intake-data?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Complete Intake</a>\r\n</div>\r\n{% elseif activity_type_id == 'CLIN - Intake Booking C and Y' %} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-c-y-intake-data?cid1={{ id_1 }}&aid={{ id }}\" class=\"button button--secondary\">Complete Intake</a>\r\n</div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'CLIN - Intake Booking C and Y' or activity_type_id == 'CLIN - Intake Booking Adult'%} \r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-update-appointment?aid={{ id }}&cid2={{ id_1}}&cid3={{ id_2 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n{% else %}\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-update-appointment?aid={{ id }}&cid2={{ id_1}}&cid3={{ id_2 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n{% endif %}"
-            make_link: true
-            path: 'https://staging.sace.jmaconsulting.biz/activity-detail/{{ id }}'
+            text: "<h3>{{ activity_type_id }}</h3>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Target:</span>\r\n  <span class=\"myactivity-value\">{{ sort_name }}</span>\r\n  </div>\r\n\r\n  <div>\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Activity ID:</span>\r\n  <span class=\"myactivity-value\">{{ id_4 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n  <span class=\"myactivity-label\">Date:</span>\r\n  <span class=\"myactivity-value\">{{ activity_date_time }}</span>\r\n  </div>\r\n</div>\r\n\r\n<a href=\"/clin-update-appointment?cid2={{ id_1}}&cid3={{ id_2 }}&aid={{ id }}&cid1={{ id_3 }}\" class=\"button button--secondary\">Update Appointment</a>\r\n<a href=\"/clin-intake?cid2={{ id_1}}&aid={{ id }}\" class=\"button button--secondary\">Intake</a>\r\n"
+            make_link: false
+            path: ''
             absolute: false
             external: false
             replace_spaces: false
@@ -1266,7 +825,7 @@ display:
             trim_whitespace: false
             alt: ''
             rel: ''
-            link_class: ''
+            link_class: 'btn btn-primary'
             prefix: ''
             suffix: ''
             target: ''
@@ -1293,10 +852,74 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
+        field_calendar_colour:
+          id: field_calendar_colour
+          table: user__field_calendar_colour
+          field: field_calendar_colour
+          relationship: user
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
       pager:
         type: none
         options:
           offset: 0
+          items_per_page: 0
       exposed_form:
         type: bef
         options:
@@ -1319,11 +942,47 @@ display:
             clin_counsellor: clin_counsellor
             wheel: wheel
       cache:
-        type: none
+        type: tag
         options: {  }
       empty: {  }
       sorts: {  }
-      arguments: {  }
+      arguments:
+        tid:
+          id: tid
+          table: taxonomy_term_field_data
+          field: tid
+          relationship: field_user_team
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: tid
+          plugin_id: taxonomy
+          default_action: ignore
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: fixed
+          default_argument_options:
+            argument: ''
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
       filters:
         activity_date_time:
           id: activity_date_time
@@ -1384,24 +1043,23 @@ display:
           plugin_id: list_field
           operator: or
           value:
-            65: '65'
             66: '66'
+            65: '65'
             67: '67'
             68: '68'
-            69: '69'
-            70: '70'
             71: '71'
             75: '75'
             76: '76'
             77: '77'
-            78: '78'
-            79: '79'
             80: '80'
-            81: '81'
+            79: '79'
+            69: '69'
+            70: '70'
+            78: '78'
             82: '82'
-            83: '83'
+            81: '81'
             84: '84'
-            346: '346'
+            83: '83'
           group: 1
           exposed: false
           expose:
@@ -1459,40 +1117,15 @@ display:
             multiple: true
             remember_roles:
               authenticated: authenticated
-              cad_staff: '0'
-              cad_tl: '0'
-              ce_staff: '0'
-              ce_director: '0'
-              eval: '0'
-              finance: '0'
-              taxreceipts: '0'
-              fund_development_officer: '0'
-              wheel: '0'
-              pe: '0'
-              pe_tl: '0'
-              vsil: '0'
-              vsil_tl: '0'
-              is_staff: '0'
               anonymous: '0'
               clin_team_lead: '0'
               clin_intake_worker: '0'
               clin_counsellor: '0'
               ped_team_lead: '0'
-              supervisors: '0'
-              clin_director: '0'
-              intake: '0'
-              pacs_tl: '0'
-              clin_tl: '0'
-              pacsa: '0'
-              reception: '0'
-              indigenous_cl: '0'
-              couns_tl: '0'
-              wiseguyz_staff: '0'
-              volunteer_supervisor: '0'
-            reduce: 1
-            user_team:
-              52: '52'
-              13: '13'
+              wheel: '0'
+              finance: '0'
+              taxreceipts: '0'
+            reduce: 0
           is_grouped: false
           group_info:
             label: ''
@@ -1599,54 +1232,6 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-        field_user_team_target_id:
-          id: field_user_team_target_id
-          table: user__field_user_team
-          field: field_user_team_target_id
-          relationship: user
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value:
-            - 53
-            - 54
-            - 52
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: user_team
-          type: textfield
-          hierarchy: false
-          limit: true
-          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -2057,11 +1642,16 @@ display:
           entity_type: civicrm_contact
           plugin_id: civicrm_entity_civicrm_contact_user
           required: false
+        field_user_team:
+          id: field_user_team
+          table: user__field_user_team
+          field: field_user_team
+          relationship: user
+          group_type: group
+          admin_label: 'field_user_team: Taxonomy term'
+          plugin_id: standard
+          required: false
       css_class: jma-user-contact
-      group_by: true
-      use_more: false
-      use_more_always: true
-      use_more_text: more
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -2072,7 +1662,8 @@ display:
         - 'languages:language_interface'
         - url
         - user.roles
-      tags: {  }
+      tags:
+        - 'config:field.storage.user.field_calendar_colour'
   page_1:
     id: page_1
     display_title: Page
@@ -2126,4 +1717,5 @@ display:
         - 'languages:language_interface'
         - url
         - user.roles
-      tags: {  }
+      tags:
+        - 'config:field.storage.user.field_calendar_colour'

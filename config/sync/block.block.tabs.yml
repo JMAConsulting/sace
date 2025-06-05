@@ -2,8 +2,6 @@ uuid: 0286fe34-55b6-4320-8479-e500117204cb
 langcode: en
 status: true
 dependencies:
-  module:
-    - system
   theme:
     - oliverolocal
 id: tabs
@@ -19,8 +17,4 @@ settings:
   provider: core
   primary: true
   secondary: false
-visibility:
-  request_path:
-    id: request_path
-    negate: false
-    pages: "/staff-dashboard/clients/*\r\n/contact-information/*\r\n/contact-information"
+visibility: {  }
