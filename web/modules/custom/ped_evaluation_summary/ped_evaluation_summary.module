@@ -1,13 +1,11 @@
 <?php
 
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Utility\WebformFormHelper;
 
 /**
  * Implements hook_form_NAME_alter() for webform_submission_presentation_evaluation_summary__add_form.
  * @param $form
- * @param FormStateInterface $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  * @param $form_id
  */
 function ped_evaluation_summary_form_webform_submission_presentation_evaluation_summary__add_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
@@ -31,24 +29,26 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
     $elements["civicrm_{$i}_contact_1_contact_existing"]['#value'] = $cid;
     $i++;
   }
-  $elements['civicrm_2_contact_1_contact_existing']['#value'] = $contacts[0]['target_contact_id'];
+  if (!empty($contacts)) {
+    $elements['civicrm_2_contact_1_contact_existing']['#value'] = $contacts[0]['target_contact_id'];
+  }
 
   // Get Booking Intake custom fields
   $result = \Civi\Api4\Activity::get(FALSE)
-//    ->addSelect( 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
-//    ->addSelect('Booking_Information.Number_of_Participants_per_course', 'activity_type_id', 'Booking_Information.Online_Courses', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
-->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program', 'Booking_Information.Number_of_Participants_per_course')
-->addJoin('ActivityContact AS activity_contact', 'INNER')
-->addGroupBy('id')
-->addWhere('activity_contact.record_type_id', '=', 3)
-->addWhere('id', '=', $aid)
+  //    ->addSelect( 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
+  //    ->addSelect('Booking_Information.Number_of_Participants_per_course', 'activity_type_id', 'Booking_Information.Online_Courses', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience')
+    ->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program', 'Booking_Information.Number_of_Participants_per_course')
+    ->addJoin('ActivityContact AS activity_contact', 'INNER')
+    ->addGroupBy('id')
+    ->addWhere('activity_contact.record_type_id', '=', 3)
+    ->addWhere('id', '=', $aid)
     ->execute()
     ->first();
 
   $mapping = \Civi\Api4\OptionValue::get(FALSE)
-      ->addSelect('value', 'label')
-      ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
-      ->execute();
+    ->addSelect('value', 'label')
+    ->addWhere('option_group_id:label', '=', 'PED Evaluation Question mapping')
+    ->execute();
   $mapper = [];
   foreach ($mapping as $value) {
     $mapper[$value['label']] = $value['value'];
@@ -56,9 +56,9 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
 
   if (!empty($result['Booking_Information.Online_Courses'])) {
     $topic = \Civi\Api4\OptionValue::get(FALSE)
-        ->addSelect('description')
-        ->addWhere('value', 'LIKE', $result['Booking_Information.Online_Courses'])
-        ->execute()->first()['description'];;
+      ->addSelect('description')
+      ->addWhere('value', 'LIKE', $result['Booking_Information.Online_Courses'])
+      ->execute()->first()['description'];;
   }
   else {
     $topics = (array) $result['Booking_Information.Presentation_topics:label'] ?? [];
@@ -76,230 +76,230 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   // Get student feedback from webform submitted data.
   $feedback = $result['Booking_Information.Number_of_Participants_per_course'];
 
-$onlineCount = \Civi\Api4\ActivityContact::get(FALSE)
-  ->addJoin('Activity AS activity', 'INNER', ['activity.id', '=', 'activity_id'])
-  ->addWhere('activity.PED_Booking_Reference.Booking_Reference_ID', '=', $aid)
-  ->addWhere('record_type_id', '=', 2)
-  ->addWhere('contact_id', '=', 860)
-  ->addWhere('activity.activity_type_id', '=', 197)
-  ->execute()
-  ->count();
+  $onlineCount = \Civi\Api4\ActivityContact::get(FALSE)
+    ->addJoin('Activity AS activity', 'INNER', ['activity.id', '=', 'activity_id'])
+    ->addWhere('activity.PED_Booking_Reference.Booking_Reference_ID', '=', $aid)
+    ->addWhere('record_type_id', '=', 2)
+    ->addWhere('contact_id', '=', 860)
+    ->addWhere('activity.activity_type_id', '=', 197)
+    ->execute()
+    ->count();
 
-$totalCount = \Civi\Api4\ActivityContact::get(FALSE)
-  ->addJoin('Activity AS activity', 'INNER', ['activity.id', '=', 'activity_id'])
-  ->addWhere('activity.PED_Booking_Reference.Booking_Reference_ID', '=', $aid)
-  ->addWhere('record_type_id', '=', 2)
-  ->addWhere('activity.activity_type_id', '=', 197)
-  ->execute()
-  ->count();
+  $totalCount = \Civi\Api4\ActivityContact::get(FALSE)
+    ->addJoin('Activity AS activity', 'INNER', ['activity.id', '=', 'activity_id'])
+    ->addWhere('activity.PED_Booking_Reference.Booking_Reference_ID', '=', $aid)
+    ->addWhere('record_type_id', '=', 2)
+    ->addWhere('activity.activity_type_id', '=', 197)
+    ->execute()
+    ->count();
 
-$elements['civicrm_1_activity_1_cg54_custom_458']['#default_value'] = $onlineCount;
-$elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCount - $onlineCount;
+  $elements['civicrm_1_activity_1_cg54_custom_458']['#default_value'] = $onlineCount;
+  $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCount - $onlineCount;
 
   // # of returned evaluations
   $elements['civicrm_1_activity_1_cg54_custom_24']['#default_value'] = $feedback;
 
   $dropdownmapping = [
   // q1
-  'custom_665' => [
-    'Strongly Agree' => 'custom_48',
-    'Agree' => 'custom_54',
-    'Somewhat Agree' => 'custom_55',
-    'Somewhat Disagree' => 'custom_707',
-    'Disagree' => 'custom_56',
-    'Strongly Disagree' => 'custom_57',
-    'total' => 'custom_58',
-  ],
-  //g3
-  'custom_667' => [
-    'Strongly Agree' => 'custom_60',
-    'Agree' => 'custom_61',
-    'Somewhat Agree' => 'custom_62',
-    'Somewhat Disagree' => 'custom_709',
-    'Disagree' => 'custom_63',
-    'Strongly Disagree' => 'custom_64',
-    'total' => 'custom_67',
-  ],
-  // q4
-  'custom_669' => [
-    'Strongly Agree' => 'custom_68',
-    'Agree' => 'custom_69',
-    'Somewhat Agree' => 'custom_70',
-    'Somewhat Disagree' => 'custom_711',
-    'Disagree' => 'custom_71',
-    'Strongly Disagree' => 'custom_72',
-    'total' => 'custom_73',
-  ],
-  //q6
-  'custom_671' => [
-    'Strongly Agree' => 'custom_75',
-    'Agree' => 'custom_76',
-    'Somewhat Agree' => 'custom_77',
-    'Somewhat Disagree' => 'custom_712',
-    'Disagree' => 'custom_78',
-    'Strongly Disagree' => 'custom_79',
-    'total' => 'custom_74',
-  ],
-  //q7
-  'custom_672' => [
-    'Strongly Agree' => 'custom_81',
-    'Agree' => 'custom_82',
-    'Somewhat Agree' => 'custom_83',
-    'Somewhat Disagree' => 'custom_713',
-    'Disagree' => 'custom_84',
-    'Strongly Disagree' => 'custom_85',
-    'total' => 'custom_723',
-  ],
-  //q8
-  'custom_673' => [
-    'Strongly Agree' => 'custom_716',
-    'Agree' => 'custom_717',
-    'Somewhat Agree' => 'custom_718',
-    'Somewhat Disagree' => 'custom_719',
-    'Disagree' => 'custom_720',
-    'Strongly Disagree' => 'custom_721',
-    'total' => 'custom_722',
-  ],
-  //q10
-  'custom_674' => [
-    'Strongly Agree' => 'custom_725',
-    'Agree' => 'custom_726',
-    'Somewhat Agree' => 'custom_727',
-    'Somewhat Disagree' => 'custom_728',
-    'Disagree' => 'custom_729',
-    'Strongly Disagree' => 'custom_730',
-    'total' => 'custom_731',
-  ],
-  //q11
-  'custom_675' => [
-    'Strongly Agree' => 'custom_732',
-    'Agree' => 'custom_733',
-    'Somewhat Agree' => 'custom_734',
-    'Somewhat Disagree' => 'custom_735',
-    'Disagree' => 'custom_736',
-    'Strongly Disagree' => 'custom_737',
-    'total' => 'custom_738',
-  ],
-  //q12
-  'custom_676' => [
-    'Strongly Agree' => 'custom_739',
-    'Agree' => 'custom_740',
-    'Somewhat Agree' => 'custom_741',
-    'Somewhat Disagree' => 'custom_742',
-    'Disagree' => 'custom_743',
-    'Strongly Disagree' => 'custom_744',
-    'total' => 'custom_745',
-  ],
-  //q13
-  'custom_677' => [
-    'Strongly Agree' => 'custom_746',
-    'Agree' => 'custom_750',
-    'Somewhat Agree' => 'custom_747',
-    'Somewhat Disagree' => 'custom_751',
-    'Disagree' => 'custom_748',
-    'Strongly Disagree' => 'custom_749',
-    'total' => 'custom_752',
-  ],
-  //q14
-  'custom_705' => [
-    'Strongly Agree' => 'custom_753',
-    'Agree' => 'custom_754',
-    'Somewhat Agree' => 'custom_755',
-    'Somewhat Disagree' => 'custom_756',
-    'Disagree' => 'custom_757',
-    'Strongly Disagree' => 'custom_758',
-    'total' => 'custom_759',
-  ],
-  //q15
-  'custom_681' => [
-    'Strongly Agree' => 'custom_760',
-    'Agree' => 'custom_761',
-    'Somewhat Agree' => 'custom_762',
-    'Somewhat Disagree' => 'custom_763',
-    'Disagree' => 'custom_764',
-    'Strongly Disagree' => 'custom_765',
-    'total' => 'custom_766',
-  ],
-  //q16
-  'custom_682' => [
-    'Strongly Agree' => 'custom_767',
-    'Agree' => 'custom_768',
-    'Somewhat Agree' => 'custom_769',
-    'Somewhat Disagree' => 'custom_770',
-    'Disagree' => 'custom_771',
-    'Strongly Disagree' => 'custom_772',
-    'total' => 'custom_773',
-  ],
-  //q17
-  'custom_680' => [
-    'Strongly Agree' => 'custom_774',
-    'Agree' => 'custom_775',
-    'Somewhat Agree' => 'custom_776',
-    'Somewhat Disagree' => 'custom_777',
-    'Disagree' => 'custom_778',
-    'Strongly Disagree' => 'custom_779',
-    'total' => 'custom_780'
-  ],
-  //q19
-  'custom_699' => [
-    'Strongly Agree' => 'custom_781',
-    'Agree' => 'custom_782',
-    'Somewhat Agree' => 'custom_783',
-    'Somewhat Disagree' => 'custom_784',
-    'Disagree' => 'custom_785',
-    'Strongly Disagree' => 'custom_786',
-    'total' => 'custom_788',
-  ],
-  //q20
-  'custom_700' => [
-    'Strongly Agree' => 'custom_789',
-    'Agree' => 'custom_790',
-    'Somewhat Agree' => 'custom_791',
-    'Somewhat Disagree' => 'custom_792',
-    'Disagree' => 'custom_793',
-    'Strongly Disagree' => 'custom_794',
-    'total' => 'custom_795',
-  ],
-  //q211
-  'custom_701' => [
-    'Strongly Agree' => 'custom_796',
-    'Agree' => 'custom_797',
-    'Somewhat Agree' => 'custom_798',
-    'Somewhat Disagree' => 'custom_799',
-    'Disagree' => 'custom_800',
-    'Strongly Disagree' => 'custom_801',
-    'total' => 'custom_802',
-  ],
-  //q212
-  'custom_1264' => [
-    'Strongly Agree' => 'custom_1268',
-    'Agree' => 'custom_1269',
-    'Somewhat Agree' => 'custom_1270',
-    'Somewhat Disagree' => 'custom_1271',
-    'Disagree' => 'custom_1272',
-    'Strongly Disagree' => 'custom_1273',
-    'total' => 'custom_1274',
-  ],
-  //q24
-  'custom_813' => [
-    'Strongly Agree' => 'custom_805',
-    'Agree' => 'custom_806',
-    'Somewhat Agree' => 'custom_807',
-    'Somewhat Disagree' => 'custom_808',
-    'Disagree' => 'custom_809',
-    'Strongly Disagree' => 'custom_810',
-    'total' => 'custom_811',
-  ],
-];
+    'custom_665' => [
+      'Strongly Agree' => 'custom_48',
+      'Agree' => 'custom_54',
+      'Somewhat Agree' => 'custom_55',
+      'Somewhat Disagree' => 'custom_707',
+      'Disagree' => 'custom_56',
+      'Strongly Disagree' => 'custom_57',
+      'total' => 'custom_58',
+    ],
+    //g3
+    'custom_667' => [
+      'Strongly Agree' => 'custom_60',
+      'Agree' => 'custom_61',
+      'Somewhat Agree' => 'custom_62',
+      'Somewhat Disagree' => 'custom_709',
+      'Disagree' => 'custom_63',
+      'Strongly Disagree' => 'custom_64',
+      'total' => 'custom_67',
+    ],
+    // q4
+    'custom_669' => [
+      'Strongly Agree' => 'custom_68',
+      'Agree' => 'custom_69',
+      'Somewhat Agree' => 'custom_70',
+      'Somewhat Disagree' => 'custom_711',
+      'Disagree' => 'custom_71',
+      'Strongly Disagree' => 'custom_72',
+      'total' => 'custom_73',
+    ],
+    //q6
+    'custom_671' => [
+      'Strongly Agree' => 'custom_75',
+      'Agree' => 'custom_76',
+      'Somewhat Agree' => 'custom_77',
+      'Somewhat Disagree' => 'custom_712',
+      'Disagree' => 'custom_78',
+      'Strongly Disagree' => 'custom_79',
+      'total' => 'custom_74',
+    ],
+    //q7
+    'custom_672' => [
+      'Strongly Agree' => 'custom_81',
+      'Agree' => 'custom_82',
+      'Somewhat Agree' => 'custom_83',
+      'Somewhat Disagree' => 'custom_713',
+      'Disagree' => 'custom_84',
+      'Strongly Disagree' => 'custom_85',
+      'total' => 'custom_723',
+    ],
+    //q8
+    'custom_673' => [
+      'Strongly Agree' => 'custom_716',
+      'Agree' => 'custom_717',
+      'Somewhat Agree' => 'custom_718',
+      'Somewhat Disagree' => 'custom_719',
+      'Disagree' => 'custom_720',
+      'Strongly Disagree' => 'custom_721',
+      'total' => 'custom_722',
+    ],
+    //q10
+    'custom_674' => [
+      'Strongly Agree' => 'custom_725',
+      'Agree' => 'custom_726',
+      'Somewhat Agree' => 'custom_727',
+      'Somewhat Disagree' => 'custom_728',
+      'Disagree' => 'custom_729',
+      'Strongly Disagree' => 'custom_730',
+      'total' => 'custom_731',
+    ],
+    //q11
+    'custom_675' => [
+      'Strongly Agree' => 'custom_732',
+      'Agree' => 'custom_733',
+      'Somewhat Agree' => 'custom_734',
+      'Somewhat Disagree' => 'custom_735',
+      'Disagree' => 'custom_736',
+      'Strongly Disagree' => 'custom_737',
+      'total' => 'custom_738',
+    ],
+    //q12
+    'custom_676' => [
+      'Strongly Agree' => 'custom_739',
+      'Agree' => 'custom_740',
+      'Somewhat Agree' => 'custom_741',
+      'Somewhat Disagree' => 'custom_742',
+      'Disagree' => 'custom_743',
+      'Strongly Disagree' => 'custom_744',
+      'total' => 'custom_745',
+    ],
+    //q13
+    'custom_677' => [
+      'Strongly Agree' => 'custom_746',
+      'Agree' => 'custom_750',
+      'Somewhat Agree' => 'custom_747',
+      'Somewhat Disagree' => 'custom_751',
+      'Disagree' => 'custom_748',
+      'Strongly Disagree' => 'custom_749',
+      'total' => 'custom_752',
+    ],
+    //q14
+    'custom_705' => [
+      'Strongly Agree' => 'custom_753',
+      'Agree' => 'custom_754',
+      'Somewhat Agree' => 'custom_755',
+      'Somewhat Disagree' => 'custom_756',
+      'Disagree' => 'custom_757',
+      'Strongly Disagree' => 'custom_758',
+      'total' => 'custom_759',
+    ],
+    //q15
+    'custom_681' => [
+      'Strongly Agree' => 'custom_760',
+      'Agree' => 'custom_761',
+      'Somewhat Agree' => 'custom_762',
+      'Somewhat Disagree' => 'custom_763',
+      'Disagree' => 'custom_764',
+      'Strongly Disagree' => 'custom_765',
+      'total' => 'custom_766',
+    ],
+    //q16
+    'custom_682' => [
+      'Strongly Agree' => 'custom_767',
+      'Agree' => 'custom_768',
+      'Somewhat Agree' => 'custom_769',
+      'Somewhat Disagree' => 'custom_770',
+      'Disagree' => 'custom_771',
+      'Strongly Disagree' => 'custom_772',
+      'total' => 'custom_773',
+    ],
+    //q17
+    'custom_680' => [
+      'Strongly Agree' => 'custom_774',
+      'Agree' => 'custom_775',
+      'Somewhat Agree' => 'custom_776',
+      'Somewhat Disagree' => 'custom_777',
+      'Disagree' => 'custom_778',
+      'Strongly Disagree' => 'custom_779',
+      'total' => 'custom_780',
+    ],
+    //q19
+    'custom_699' => [
+      'Strongly Agree' => 'custom_781',
+      'Agree' => 'custom_782',
+      'Somewhat Agree' => 'custom_783',
+      'Somewhat Disagree' => 'custom_784',
+      'Disagree' => 'custom_785',
+      'Strongly Disagree' => 'custom_786',
+      'total' => 'custom_788',
+    ],
+    //q20
+    'custom_700' => [
+      'Strongly Agree' => 'custom_789',
+      'Agree' => 'custom_790',
+      'Somewhat Agree' => 'custom_791',
+      'Somewhat Disagree' => 'custom_792',
+      'Disagree' => 'custom_793',
+      'Strongly Disagree' => 'custom_794',
+      'total' => 'custom_795',
+    ],
+    //q211
+    'custom_701' => [
+      'Strongly Agree' => 'custom_796',
+      'Agree' => 'custom_797',
+      'Somewhat Agree' => 'custom_798',
+      'Somewhat Disagree' => 'custom_799',
+      'Disagree' => 'custom_800',
+      'Strongly Disagree' => 'custom_801',
+      'total' => 'custom_802',
+    ],
+    //q212
+    'custom_1264' => [
+      'Strongly Agree' => 'custom_1268',
+      'Agree' => 'custom_1269',
+      'Somewhat Agree' => 'custom_1270',
+      'Somewhat Disagree' => 'custom_1271',
+      'Disagree' => 'custom_1272',
+      'Strongly Disagree' => 'custom_1273',
+      'total' => 'custom_1274',
+    ],
+    //q24
+    'custom_813' => [
+      'Strongly Agree' => 'custom_805',
+      'Agree' => 'custom_806',
+      'Somewhat Agree' => 'custom_807',
+      'Somewhat Disagree' => 'custom_808',
+      'Disagree' => 'custom_809',
+      'Strongly Disagree' => 'custom_810',
+      'total' => 'custom_811',
+    ],
+  ];
 
- foreach ($dropdownmapping as $cf => $values) {
-   unset($values['total']);
-   foreach ($values as $option => $element) {
-     $elements['civicrm_1_activity_1_cg54_' . $element]['#default_value'] = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, $cf => $option]);
-   }
- }
+  foreach ($dropdownmapping as $cf => $values) {
+    unset($values['total']);
+    foreach ($values as $option => $element) {
+      $elements['civicrm_1_activity_1_cg54_' . $element]['#default_value'] = civicrm_api3('Activity', 'getcount', ['custom_706' => $aid, $cf => $option]);
+    }
+  }
 
- $textmapping = [
+  $textmapping = [
     'q2_markup_detail' => [
       'text' => 'custom_666',
       'value' => 'custom_59',
@@ -347,7 +347,7 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
       }
     }
     if (!empty($texts)) {
-    $elements[$element]['#text'] = sprintf('
+      $elements[$element]['#text'] = sprintf('
       <details class="package-listing js-form-wrapper form-wrapper claro-details claro-details--package-listing">
         <summary role="button" aria-controls="edit-modules-core" aria-expanded="false" aria-pressed="false" class="claro-details__summary claro-details__summary--package-listing">
           Click for more details<span class="claro-details__summary-summary"></span>
@@ -360,100 +360,100 @@ $elements['civicrm_1_activity_1_cg54_custom_459']['#default_value'] = $totalCoun
     $elements['civicrm_1_activity_1_cg54_' . $cf['value']]['#default_value'] = count($texts);
   }
 
-foreach ($mapper as $Q => $cfID) {
-      $element = array_key_exists('custom_' . $cfID, $dropdownmapping) ? $dropdownmapping['custom_' . $cfID] : sprintf('q%s_markup_detail', $Q);
-      $Q = (int) $Q;
-      $flag = TRUE;
-      switch($Q) {
+  foreach ($mapper as $Q => $cfID) {
+    $element = array_key_exists('custom_' . $cfID, $dropdownmapping) ? $dropdownmapping['custom_' . $cfID] : sprintf('q%s_markup_detail', $Q);
+    $Q = (int) $Q;
+    $flag = TRUE;
+    switch ($Q) {
       case 4:
-        case 5:
-        case 7:
-          //Show Q4 Q5 Q7 if Support content covered is Yes
-          $flag = ($result["Booking_Information.Support_Content"] == 1);
-          break;
-
-        case 8:
-        case 9:
-          $flag = ($result["Booking_Information.Resources_Content"] == 1);
+      case 5:
+      case 7:
+        //Show Q4 Q5 Q7 if Support content covered is Yes
+        $flag = ($result["Booking_Information.Support_Content"] == 1);
         break;
 
-	case 15:
-        case 18:
-        case 13:
-          $flag = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
-          break;
+      case 8:
+      case 9:
+        $flag = ($result["Booking_Information.Resources_Content"] == 1);
+        break;
 
-        case 16: 
-        case 14:
-          $flag = (bool) $result['Booking_Information.Safer_Spaces_Content'];
-          break;
+      case 15:
+      case 18:
+      case 13:
+        $flag = (bool) strstr(implode('', $result["Booking_Information.Audience"]), 'Professionals');
+        break;
 
-        case 17:
-          $flag = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
-          break;
+      case 16:
+      case 14:
+        $flag = (bool) $result['Booking_Information.Safer_Spaces_Content'];
+        break;
 
-        case 19:
-          //Hide Q19 if Presentation Topic is not Bystander Intervention
-          $flag = (bool) in_array('BystanderIntervention', (array) $result["Booking_Information.Presentation_topics"]);
-          break;
+      case 17:
+        $flag = ($result['Booking_Information.Facilitating_Program'] == "InstitutionalSupport");
+        break;
 
-        case 20:
-          //Show Q20 if Privilege and Oppression Covered set to Yes
-          $flag = (bool) $result['Booking_Information.Privilege_and_Oppression_Content'];
-          break;
+      case 19:
+        //Hide Q19 if Presentation Topic is not Bystander Intervention
+        $flag = (bool) in_array('BystanderIntervention', (array) $result["Booking_Information.Presentation_topics"]);
+        break;
 
-        case 21:
-          //Hide Q21 if Presentation Method is not Online Course else hide Q22
-          $flag = !($result['Booking_Information.Presentation_Method'] == 'Online Course');
-          break;
+      case 20:
+        //Show Q20 if Privilege and Oppression Covered set to Yes
+        $flag = (bool) $result['Booking_Information.Privilege_and_Oppression_Content'];
+        break;
 
-        case 22:
-          //Show for all presentation and online course evaluations.
-          $flag = in_array($result['activity_type_id'], [55, 59, 196, 199]);
-          break;
+      case 21:
+        //Hide Q21 if Presentation Method is not Online Course else hide Q22
+        $flag = !($result['Booking_Information.Presentation_Method'] == 'Online Course');
+        break;
 
-        case 24:
-          $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');      
-          break;
+      case 22:
+        //Show for all presentation and online course evaluations.
+        $flag = in_array($result['activity_type_id'], [55, 59, 196, 199]);
+        break;
 
-        case 6:
-          $flag = in_array($result['activity_type_id'], [59, 199]);
-          break;
+      case 24:
+        $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
+        break;
 
-        case 10:
-          $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
-          break;
+      case 6:
+        $flag = in_array($result['activity_type_id'], [59, 199]);
+        break;
 
-        default:
-          break;
-        }
+      case 10:
+        $flag = ($result["Booking_Information.Youth_or_Adult"] == 'Adult');
+        break;
 
-        if (is_array($element)) {
-          foreach ($element as $key) {
-            $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $flag;
-          }
-        }
-        else {
-          $elements[$textmapping[$element]['count']]['#access'] = $flag;
-          $elements[$textmapping[$element]['note']]['#access'] = $flag;
-        }
-        $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#access'] = $flag;
+      default:
+        break;
     }
 
+    if (is_array($element)) {
+      foreach ($element as $key) {
+        $elements['civicrm_1_activity_1_cg54_' . $key]['#access'] = $flag;
+      }
+    }
+    else {
+      $elements[$textmapping[$element]['count']]['#access'] = $flag;
+      $elements[$textmapping[$element]['note']]['#access'] = $flag;
+    }
+    if (isset($elements['q' . $Q . '_markup_detail'])) {
+      $elements['question_markup_' . $Q]['#access'] = $elements['q' . $Q . '_markup_detail']['#access'] = $flag;
+    }
+  }
 
   $elements['civicrm_3_contact_1_contact_existing']['#default_value'] = CRM_Core_Session::getLoggedInContactID();
 
-  
 }
 
-  function ped_evaluation_summary_preprocess_page_title(&$variables, $hook) {
-    $current_path = \Drupal::service('path.current')->getPath();
-    if ($current_path == '/webform/presentation_evaluation_summary_' && \Drupal::currentUser()->id()) {
-      $variables['title'] = [
-        '#markup' => 'Staff Evaluation',
-      ];
-    }
+function ped_evaluation_summary_preprocess_page_title(&$variables, $hook) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($current_path == '/webform/presentation_evaluation_summary_' && \Drupal::currentUser()->id()) {
+    $variables['title'] = [
+      '#markup' => 'Staff Evaluation',
+    ];
   }
+}
 
 /**
  * Get student feedback for evaluation summary.
@@ -467,14 +467,14 @@ function get_ped_sace_student_feedback($aid) {
     ->condition('wfd.name', 'aid')
     ->condition('wfd.value', $aid)
     ->execute()
-    ->fetchAllKeyed(0,0);
+    ->fetchAllKeyed(0, 0);
 
   if (empty($sids)) {
     return [];
   }
 
   $result = \Drupal::database()->select('webform_submission_data', 'wfd')
-    ->fields('wfd', ['sid','name','value'])
+    ->fields('wfd', ['sid', 'name', 'value'])
     ->condition('wfd.sid', $sids, 'IN')
     ->execute();
 
