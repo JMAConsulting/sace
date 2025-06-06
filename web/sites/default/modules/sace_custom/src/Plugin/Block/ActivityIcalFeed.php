@@ -49,7 +49,6 @@ class ActivityIcalFeed extends BlockBase {
   public function build() {
     \Drupal::service('civicrm')->initialize();
 
-
     $contactId = $this->getContactId();
 
     if (!$contactId || !_activityical_contact_has_feed_group($contactId)) {
@@ -76,6 +75,7 @@ class ActivityIcalFeed extends BlockBase {
    * {@inheritdoc}
    */
   public function getCacheTags() {
+    \Drupal::service('civicrm')->initialize();
     $contactId = $this->getContactId();
     return Cache::mergeTags(parent::getCacheTags(), ["contact:{$contactId}"]);
   }
