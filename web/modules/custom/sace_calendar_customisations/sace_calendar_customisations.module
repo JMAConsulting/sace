@@ -55,6 +55,10 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
   }
   if ($view->id() == 'activity_detail') {
     $view->build_info['query']->groupby('civicrm_activity.id');
+    // following are needed to make the query full group by compat - but break things currently
+    // $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
+    // $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact_1.id');
+    // $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact_2.id');
   }
   if ($view->id() == 'kg_duplicate_of_ped_booking_calendar' || $view->id() == 'ped_update_online_booking' || $view->id() == 'duplicate_of_ped_booking_calendar') {
     $view->build_info['query']->groupby('civicrm_activity_contact3.id');
