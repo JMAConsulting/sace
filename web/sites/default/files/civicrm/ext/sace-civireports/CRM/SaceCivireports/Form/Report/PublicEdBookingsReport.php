@@ -185,6 +185,9 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
       ->addWhere('custom_group_id', '=', $cg['id'])
       ->execute();
     foreach ($customFields as $customField) {
+      if ('Age - Qualitative staff evaluation' == $customField['label']) {
+        $this->_columns[$cg['table_name']]['fields'][$customField['column_name']] = ['title' => $customField['label'], 'required' => 1];
+      }
       if ($customField['label'] == 'Number of participants') {
          $this->_columns[$cg['table_name']]['fields'][$customField['column_name']] = ['title' => $customField['label'], 'required' => 1, 'no_display' => 1];
       }
