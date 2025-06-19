@@ -7,6 +7,7 @@ dependencies:
     - civicrm_entity_vf
     - datetime
     - options
+    - text
 id: activity_detail
 label: 'Activity Detail'
 module: views
@@ -2043,6 +2044,69 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        parking_instructions_specificati_37:
+          id: parking_instructions_specificati_37
+          table: civicrm_value_booking_infor_2
+          field: parking_instructions_specificati_37
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: custom_37
+          plugin_id: civicrm_entity_custom_field
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          type: string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: 0
         nothing:
           id: nothing
           table: views
@@ -2055,7 +2119,120 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\"><a href={{ online_meeting_link_1267 }} target=\"_blank\">{{ online_meeting_link_1267 }}</a></span>\r\n  </div>\r\n{% elseif building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n<div class=\"meeting-buttons\">\r\n{% if activity_type_id  == 'Youth Online Course' %}\r\n  <a href=\"/youth-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/adult-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Youth Presentation' %}\r\n  <a href=\"/youth-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Presentation' %}\r\n  <a href=\"/adult-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Consultation' %}\r\n  <a href=\"/institutional-support-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'WiseGuyz' %}\r\n  <a href=\"/wiseguyz-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Community Engagement' %}\r\n  <a href=\"/community-engagement-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id_2 }}&cid2={{ id_1 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\" target=\"_blank\" >Update Booking</a>\r\n{% elseif activity_type_id starts with 'CLIN' %} \r\n  <a href=\"/clin-update-appointment?cid1={{ id }}&aid={{ id_2 }}&cid2={{ id_1 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-intake?cid2={{ id }}&aid={{ id_2 }}\" class=\"button button--secondary\">Intake</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id_2 }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n</div>\r\n<br />\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a></div>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id_2 }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n</div>\r\n  {% endif %}\r\n{% endif %}\r\n"
+            text: "{% if online_meeting_link_1267 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Online Meeting Link:</span>\r\n    <span class=\"myactivity-value\">{{ online_meeting_link_1267 }}</span>\r\n  </div>\r\n{% endif %}\r\n{% if building_room_location_details_1266 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Building Room/Location Details:</span>\r\n    <span class=\"myactivity-value\">{{ building_room_location_details_1266 }}</span>\r\n  </div>\r\n{% endif %}\r\n{% if parking_instructions_specificati_37 != '' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Parking:</span>\r\n    <span class=\"myactivity-value\">{{ parking_instructions_specificati_37 }}</span>\r\n  </div>\r\n{% endif %}\r\n\r\n{% if activity_type_id == 'Consultation' or activity_type_id == 'Community Engagement' or activity_type_id == 'WiseGuyz' or activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' or activity_type_id  == 'Youth Online Course' or activity_type_id  == 'Adult Online Course' or activity_type_id == 'Booths' %}\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Number of Participants:</span>\r\n    <span class=\"myactivity-value\">{{ number_of_participants_per_cours_815 }}</span>\r\n  </div>\r\n\r\n  <div class=\"myactivity-field\">\r\n    <span class=\"myactivity-label\">Booking Status:</span>\r\n    <span class=\"myactivity-value\">{{ status_id }}</span>\r\n  </div>\r\n{% endif %}"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+        details__value:
+          id: details__value
+          table: civicrm_activity
+          field: details__value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: details
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "<details>\r\n  <summary>Staff notes</summary>\r\n  {{ details__value__value }}\r\n</details>"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        nothing_1:
+          id: nothing_1
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: custom
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "\r\n<div class=\"meeting-buttons\">\r\n{% if activity_type_id  == 'Youth Online Course' %}\r\n  <a href=\"/youth-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Online Course' %}\r\n  <a href=\"/adult-online-course-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Youth Presentation' %}\r\n  <a href=\"/youth-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Adult Presentation' %}\r\n  <a href=\"/adult-presentation-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Consultation' %}\r\n  <a href=\"/institutional-support-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'WiseGuyz' %}\r\n  <a href=\"/wiseguyz-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif activity_type_id  == 'Community Engagement' %}\r\n  <a href=\"/community-engagement-booking-update?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Booking</a>\r\n{% elseif  activity_type_id == 'Booths' %}\r\n  <a href=\"/external-appointment-booking-update?&aid={{ id_2 }}&cid2={{ id_1 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\"button button--secondary\" target=\"_blank\" >Update Booking</a>\r\n{% elseif activity_type_id starts with 'CLIN' %} \r\n  <a href=\"/clin-update-appointment?cid1={{ id }}&aid={{ id_2 }}&cid2={{ id_1 }}&{{ activity_assignees_string }}\" class=\"button button--secondary\">Update Appointment</a>\r\n</div>\r\n<div class=\"meeting-buttons\">\r\n  <a href=\"/clin-intake?cid2={{ id }}&aid={{ id_2 }}\" class=\"button button--secondary\">Intake</a>\r\n{% else %}\r\n  <a href=\"/schedule-an-activity?cid1={{ id_1 }}&aid={{ id_2 }}\" class=\"button button--secondary\">Update Activity</a>\r\n{% endif %}\r\n</div>\r\n<br />\r\n{% if is_multiple_booking %}\r\n  <a href=\"/form/ped-multiple-update-booking?cid2={{ id_1 }}&aid={{ id_2 }}&cid1={{ id }}&{{ activity_assignees_string }}\" class=\" button button--primary\">Multiple Bookings</a>\r\n  &nbsp;&nbsp;\r\n{% endif %} \r\n\r\n&nbsp;&nbsp;\r\n{% if status_id == 'Completed' %}\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Youth Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a></div>\r\n  {% elseif  activity_type_id == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?cid2={{ id }}&bid={{ id_2 }}&cid1={{ id_1  }}\" class=\"button button--primary\" target=\"_blank\" >Adult Online Course Evaluation Feedback</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation  Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-sace-presentation-evaluation-form?bid={{ id_2 }}&cid1=860\" class=\"button button--primary\" target=\"_blank\" >Participant Evaluation Form</a> <a href=\"#\" id=\"copy-evaluation-url-button\" alt=\"Copy Evaluation Url\"><i class=\"fas fa-copy\"></i></a>\r\n</div>\r\n  {% endif %}\r\n\r\n  &nbsp;&nbsp;<br/>\r\n  {% if activity_type_id  == 'Youth Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n    <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Youth Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id  == 'Adult Online Course' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Adult Online Course Evaluation Summary</a>\r\n</div>\r\n  {% elseif activity_type_id == 'Youth Presentation' or activity_type_id == 'Adult Presentation' %}\r\n<div class=\"meeting-buttons\">\r\n     <a id=\"evaluation-form-link\" href=\"/ped-presentation-evaluation-summary-input?bid={{ id_2 }}&cid2={{ id }}\" class=\"button button--primary\" target=\"_blank\">Presentation Evaluation Summary</a>\r\n</div>\r\n  {% endif %}\r\n{% endif %}\r\n"
             make_link: false
             path: ''
             absolute: false
