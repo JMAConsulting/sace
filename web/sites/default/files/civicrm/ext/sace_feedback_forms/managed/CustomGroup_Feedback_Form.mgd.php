@@ -6,7 +6,7 @@ return [
     'name' => 'CustomGroup_Feedback_Form',
     'entity' => 'CustomGroup',
     'cleanup' => 'unused',
-    'update' => 'always',
+    'update' => 'unmodified',
     'params' => [
       'version' => 4,
       'values' => [
