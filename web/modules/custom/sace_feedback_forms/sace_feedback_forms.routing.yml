@@ -1,0 +1,13 @@
+sace_feedback_forms.feedback:
+  path: '/sace/feedback/{bookingId}'
+  defaults:
+    _controller: '\Drupal\sace_feedback_forms\Controller\FormFinder:feedbackForm'
+  requirements:
+    _permission: 'access content'
+
+sace_feedback_forms.feedback_summary:
+  path: '/sace/feedback-summary/{bookingId}'
+  defaults:
+    _controller: '\Drupal\sace_feedback_forms\Controller\FormFinder:feedbackSummaryForm'
+  requirements:
+    _permission: 'access content'
