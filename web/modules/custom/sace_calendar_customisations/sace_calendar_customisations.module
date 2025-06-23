@@ -25,6 +25,7 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
     if (\Drupal::request()->query->has('start') && \Drupal::request()->query->has('end')) {
       $start = \Drupal::request()->query->all()['start'];
       $end = \Drupal::request()->query->all()['end'];
+      $status = (array) \Drupal::request()->query->all()['status_id'];
       $view->build_info['query']->leftJoin('civicrm_value_booking_infor_2', 'cf', 'cf.entity_id = civicrm_activity.id ');
       $view->build_info['query']->where("(
         (
@@ -44,6 +45,10 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
          ) OR (
           (cf.end_date_661 IS NULL AND (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')))
       ))");
+
+      if (!empty($status)) {
+        $view->build_info['query']->where("(civicrm_activity.status_id IN ( " . implode(',', $status) . "))");
+      }
     }
     if ($view->id() == 'calendar_counsellors' && ($uid = \Drupal::currentUser()->id())) {
       $view->build_info['query']->where("((users_field_data_civicrm_uf_match.uid = '" . $uid . "'))");
@@ -68,6 +73,47 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
     $view->build_info['query']->groupby('civicrm_activity_contact.id');
     $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
     $view->build_info['query']->where('civicrm_activity.activity_type_id NOT IN (197, 200)');
+  }
+  if ($view->id() == 'my_calendar') {
+    $uid = \Drupal::currentUser()->id() ?: 0;
+    $view->build_info['query']->where("((users_field_data_civicrm_uf_match.uid = '" . $uid . "'))");
+  }
+  if ($view->id() == 'my_reminders') {
+    \Drupal::service('civicrm')->initialize();
+
+    $loggedInContactId = \CRM_Core_Session::getLoggedInContactId();
+
+    $activityIds = \Civi\Api4\Activity::get(TRUE)
+      // current user has role for booking
+      // NOTE: these may not work on the form currently?
+      ->addJoin('ActivityRole AS activity_role', 'INNER',
+        ['activity_role.activity_id', '=', 'id'],
+        ['activity_role.assignee_contact_id', '=', $loggedInContactId]
+      )
+      // no completed evaluation summary
+      ->addJoin('Activity AS completed_summary', 'EXCLUDE',
+        ['completed_summary.PED_Booking_Reference.Booking_Reference_ID', '=', 'id'],
+        ['completed_summary.status_id:name', '=', '"Completed"'],
+        ['completed_summary.activity_type_id:name', '=', '"PED - Presentation Evaluation Summary Score"']
+      )
+      // enabled booking types
+      ->addWhere('activity_type_id:name', 'IN', ['PED - Youth School Presentation Booking', 'PED - Adult or professional booking', 'PED - Online Course Booking', 'Adult Online Course Booking Request'])
+      // past end date
+      ->addWhere('Booking_Information.End_Date', '<', 'now')
+      // booking status is completed
+      ->addWhere('status_id:name', '=', 'Completed')
+      ->addSelect('id')
+      ->execute()
+      ->column('id');
+
+    if (!$activityIds) {
+      $view->build_info['query']->where('0 = 1');
+    }
+    else {
+      $activityIds = implode(',', $activityIds);
+      $view->build_info['query']->where("civicrm_activity.id IN ({$activityIds})");
+      $view->build_info['query']->groupby('civicrm_activity.id');
+    }
   }
 }
 
