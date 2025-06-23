@@ -106,8 +106,6 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
       ->execute()
       ->column('id');
 
-    \Civi::log()->debug(json_encode($activityIds));
-
     if (!$activityIds) {
       $view->build_info['query']->where('0 = 1');
     }
