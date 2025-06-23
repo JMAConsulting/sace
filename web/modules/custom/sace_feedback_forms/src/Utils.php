@@ -3,12 +3,15 @@
 namespace Drupal\sace_feedback_forms;
 
 use Drupal\webform\Utility\WebformFormHelper;
+use Drupal\webform\Entity\Webform;
 
-class Utils {
+class Utils
+{
 
   protected static $fieldNameCache = [];
 
-  public static function getWebformFieldForCustomField(string $customFieldName, string $customGroupName, string $entity, int $entityIndex = 1, int $cgIndex = 1) : string {
+  public static function getWebformFieldForCustomField(string $customFieldName, string $customGroupName, string $entity, int $entityIndex = 1, int $cgIndex = 1): string
+  {
     $field = \Civi\Api4\CustomField::get(FALSE)
       ->addWhere('name', '=', $customFieldName)
       ->addWhere('custom_group_id.name', '=', $customGroupName)
@@ -19,7 +22,8 @@ class Utils {
     return "civicrm_{$entityIndex}_{$entity}_{$cgIndex}_cg{$field['custom_group_id']}_custom_{$field['id']}";
   }
 
-  public static function getFeedbackCustomFieldsForBooking($bookingId): array {
+  public static function getFeedbackCustomFieldsForBooking($bookingId): array
+  {
     $formKey = self::getFeedbackFormForBooking($bookingId);
     if (!$formKey) {
       return [];
@@ -46,7 +50,8 @@ class Utils {
       ->execute();
   }
 
-  public static function getFeedbackFormForBooking($bookingId): ?string {
+  public static function getFeedbackFormForBooking($bookingId): ?string
+  {
     return \Civi\Api4\Activity::get(FALSE)
       ->addWhere('id', '=', $bookingId)
       ->addSelect('Booking_Information.Feedback_Webform')
@@ -66,4 +71,31 @@ class Utils {
     }
   }
 
+
+  /**
+   * Get webforms with a specific handler.
+   *
+   * @param string $key
+   *   The handler to check for - e.g. sace_feedback_form_handler or
+   *   sace_feedback_summary_form_handler
+   *
+   * @return Webform[]
+   *   An array of webforms that have the specified handler.
+   */
+  public static function getWebformOptionsForHandler(string $key): array
+  {
+    // TODO: should we cache these?
+    $options = [];
+
+    foreach (Webform::loadMultiple() as $webform) {
+      $handlers = $webform->getHandlers();
+      foreach ($handlers as $handler) {
+        if ($handler->getPluginId() === $key) {
+          $options[$webform->id()] = $webform->label();
+        }
+      }
+    }
+
+    return $options;
+  }
 }
