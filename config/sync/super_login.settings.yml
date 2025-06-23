@@ -1,6 +1,5 @@
 _core:
   default_config_hash: Hlupahg6P8_evVyusVQq8JyfJr3_-Arv9j_1sQAYjk0
-langcode: en
 super_login:
   login_text: 'Log In'
   forgot_pw_text: 'Forgot Password?'
