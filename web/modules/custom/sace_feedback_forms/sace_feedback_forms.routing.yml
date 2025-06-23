@@ -11,3 +11,11 @@ sace_feedback_forms.feedback_summary:
     _controller: '\Drupal\sace_feedback_forms\Controller\FormFinder:feedbackSummaryForm'
   requirements:
     _permission: 'access content'
+
+sace_feedback_forms.assign_to_booking:
+  path: '/sace/feedback-form-assign'
+  defaults:
+    _form: '\Drupal\sace_feedback_forms\Form\AssignFeedbackFormToBooking'
+    _title: 'Assign Feedback Form To Use For Booking'
+  requirements:
+    _permission: 'access content'
