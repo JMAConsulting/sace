@@ -1,0 +1,38 @@
+uuid: 57fd089f-f7fb-4fe3-8c44-b72543deaf33
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.my_reminders
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - oliverolocal
+id: oliverolocal_views_block__my_reminders_block_1
+theme: oliverolocal
+region: content
+weight: 0
+provider: null
+plugin: 'views_block:my_reminders-block_1'
+settings:
+  id: 'views_block:my_reminders-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /ce-staff-dashboard
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      ce_staff: ce_staff
+      wheel: wheel
