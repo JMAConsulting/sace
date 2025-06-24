@@ -54,14 +54,11 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
     $civicrm_submission_data = $this->database->query("SELECT civicrm_data FROM {webform_civicrm_submissions} WHERE sid = :sid", [
       ':sid' => $webform_submission->id(),
     ]);
-
-    if (!empty($civicrm_submission_data->fetchAll())) {
-      while ($row = $civicrm_submission_data->fetchAssoc()) {
-        $data = unserialize($row['civicrm_data']);
+    if ($row = $civicrm_submission_data->fetchAssoc()) {
+      $data = unserialize($row['civicrm_data']);
 
         // delete all old records
         ActivityRole::delete(FALSE)->addWhere('activity_id', '=', $data['activity'][1]['id'])->execute();
-
         foreach ($data['contact'] as $key => $contactId) {
           // Contact 1 on the PE Appointment Create and PE Update Booking are the Organisation and organisation contact that the booking is for not staff members
           if ($key == 1 || $key == 2) {
@@ -78,11 +75,9 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
             ActivityRole::create(FALSE)->addValue('assignee_contact_id', $contactId['id'])->addValue('activity_id', $data['activity'][1]['id'])->addValue('role_id:name', $role)->execute();
           }
         }
-      }
     }
     else {
      $aid = \Drupal::request()->query->get('aid');
-     //$webform_submission_data = $webform_submission->getData();
      ActivityRole::delete(FALSE)->addWhere('activity_id', '=', $aid)->execute();
      for ($i = 3; $i <= 6; $i++) {
        $role = FALSE;
