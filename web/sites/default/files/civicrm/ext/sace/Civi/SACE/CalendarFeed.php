@@ -33,13 +33,13 @@ class CalendarFeed extends AutoSubscriber {
       ->execute()
       ->single();
 
-    $extraDescription = $extraLocation = [];
+    $extraDescription = $address = [];
     foreach ($extraFields as $field => $label) {
       $value = $extraDetails[$field] ?? NULL;
-      if ($field == 'target_contact_id' && !empty($value)) {
+      if ($field == 'target_contact_id' && !empty($value[0])) {
         $address = \Civi\Api4\Address::get(FALSE)
-          ->addSelect('street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
-          ->addWhere('contact_id', '=', $value)
+          ->addSelect('contact_id.display_name', 'street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
+          ->addWhere('contact_id', '=', $value[0])
           ->addWhere('is_primary', '=', TRUE)
           ->setLimit(1)
           ->execute()
@@ -55,6 +55,7 @@ class CalendarFeed extends AutoSubscriber {
       $e->row['description'] .= $extraDescription;
     }
     if ($address) {
+      unset($address['id']);
       $extraLocation = implode(", ", $address);
       $e->row['location'] .= $extraLocation;
     }

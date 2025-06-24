@@ -39,15 +39,15 @@ END:VTIMEZONE
   {/if}
   {if $activity.activity_location}
     LOCATION:{$activity.activity_location|crmICalText}
+  {elseif $activity.location}
+    LOCATION:{$activity.location|crmICalText}
   {/if}
   {if $activity.contact_email}
     ORGANIZER:MAILTO:{$activity.contact_email|crmICalText}
   {/if}
   URL:{$activity.url}
   CONTACT;ALTREP={$base_url}/civicrm/contact/view?reset=1&cid={$activity.source_id}:{$activity.source_display_name}
-  X-ALT-DESC;FMTTYPE=text/html:
-  {$activity.description|activityicalHtml}
+  X-ALT-DESC;FMTTYPE=text/html:{$activity.description|activityicalHtml}
   END:VEVENT
 {/foreach}
 END:VCALENDAR
-
