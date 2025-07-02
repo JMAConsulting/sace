@@ -697,6 +697,194 @@ elements: |-
     '#default_value': '[current-page:query:aid]'
     '#wrapper_attributes':
       style: 'display:none;'
+  repeat_enabled:
+    '#type': checkbox
+    '#title': 'Repeat Activity?'
+  repeat_options:
+    '#type': fieldset
+    '#title': 'Repeat Options'
+    '#states':
+      visible:
+        ':input[name="repeat_enabled"]':
+          checked: true
+    repeat_start_date:
+      '#type': date
+      '#title': 'Repeat Start Date'
+      '#states':
+        required:
+          ':input[name="repeat_enabled"]':
+            checked: true
+    flexbox_repeat_interval:
+      '#type': webform_flexbox
+      '#align_items': center
+      repeat_interval_count:
+        '#type': number
+        '#title': 'Repeat every'
+        '#title_display': inline
+        '#default_value': '1'
+        '#min': 1
+        '#step': 1
+        '#default': 1
+        '#states':
+          required:
+            ':input[name="repeat_enabled"]':
+              checked: true
+      repeat_interval_unit:
+        '#type': select
+        '#title': 'Repeat Interval Unit'
+        '#title_display': invisible
+        '#options':
+          day: Day(s)
+          week: Week(s)
+          month: Month(s)
+          year: Year(s)
+        '#default_value': week
+        '#states':
+          required:
+            ':input[name="repeat_enabled"]':
+              checked: true
+    repeat_days_of_week:
+      '#type': checkboxes
+      '#title': 'Repeats on'
+      '#title_display': inline
+      '#options': days
+      '#options_display': side_by_side
+      '#states':
+        visible:
+          ':input[name="repeat_interval_unit"]':
+            value: week
+        required:
+          ':input[name="repeat_interval_unit"]':
+            value: week
+    repeat_on_month_options:
+      '#type': radios
+      '#title': 'Repeats on'
+      '#options':
+        date: 'the same date each month '
+        weekday: 'a regular weekday each month'
+      '#states':
+        visible:
+          ':input[name="repeat_interval_unit"]':
+            value: month
+        required:
+          ':input[name="repeat_interval_unit"]':
+            value: month
+    repeat_date_of_month:
+      '#type': select
+      '#title': 'Repeats on day of the month'
+      '#title_display': invisible
+      '#field_suffix': 'of the month'
+      '#options':
+        1: 1st
+        2: 2nd
+        3: 3rd
+        4: 4th
+        5: 5th
+        6: 6th
+        7: 7th
+        8: 8th
+        9: 9th
+        10: 10th
+        11: 11th
+        12: 12th
+        13: 13th
+        14: 14th
+        15: 15th
+        16: 16th
+        17: 17th
+        18: 18th
+        19: 19th
+        20: 20th
+        21: 21st
+        22: 22nd
+        23: 23rd
+        24: 24th
+        25: 25th
+        26: 26th
+        27: 27th
+        28: 28th
+        29: 29th
+        30: 30th
+        31: 31st
+      '#states':
+        visible:
+          ':input[name="repeat_on_month_options"]':
+            value: date
+        required:
+          ':input[name="repeat_on_month_options"]':
+            value: date
+      '#min': 1
+      '#max': 31
+      '#step': 1
+    flexbox_repeat_weekday_of_month:
+      '#type': webform_flexbox
+      repeat_weekday_of_month_ordinal:
+        '#type': select
+        '#title': 'Repeats on weekday of month ordinal'
+        '#title_display': invisible
+        '#options':
+          first: First
+          second: Second
+          third: Third
+          fourth: Fourth
+          last: Last
+        '#states':
+          visible:
+            ':input[name="repeat_on_month_options"]':
+              value: weekday
+          required:
+            ':input[name="repeat_on_month_options"]':
+              value: weekday
+      repeat_weekday_of_month_weekday:
+        '#type': select
+        '#title': 'Repeats on weekday of month'
+        '#title_display': invisible
+        '#options': days
+        '#options_display': side_by_side
+        '#states':
+          visible:
+            ':input[name="repeat_on_month_options"]':
+              value: weekday
+          required:
+            ':input[name="repeat_on_month_options"]':
+              value: weekday
+    repeat_end_type:
+      '#type': radios
+      '#title': 'Ends after'
+      '#options':
+        count: 'a set number of occurrences'
+        date: 'a set date'
+      '#states':
+        required:
+          ':input[name="repeat_enabled"]':
+            checked: true
+    repeat_end_after_count:
+      '#type': number
+      '#title': 'Number of occurrences'
+      '#states':
+        visible:
+          ':input[name="repeat_end_type"]':
+            value: count
+        required:
+          ':input[name="repeat_end_type"]':
+            value: count
+      '#min': 1
+      '#step': 1
+    repeat_end_date:
+      '#type': date
+      '#title': 'Repeat End Date'
+      '#states':
+        visible:
+          ':input[name="repeat_end_type"]':
+            value: date
+        required:
+          ':input[name="repeat_end_type"]':
+            value: date
+    repeat_exclude_dates:
+      '#type': date
+      '#title': 'Exclude Date(s)'
+      '#multiple': true
+    day_of_month: null
 css: ''
 javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-07'));\r\n})(jQuery);"
 settings:

@@ -55,7 +55,7 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
       ':sid' => $webform_submission->id(),
     ]);
 
-    if ($civicrm_submission_data) {
+    if (!empty($civicrm_submission_data->fetchAll())) {
       while ($row = $civicrm_submission_data->fetchAssoc()) {
         $data = unserialize($row['civicrm_data']);
 
@@ -80,6 +80,27 @@ class PeActivityRoleWebformHandler extends WebformHandlerBase {
         }
       }
     }
+    else {
+     $aid = \Drupal::request()->query->get('aid');
+     //$webform_submission_data = $webform_submission->getData();
+     ActivityRole::delete(FALSE)->addWhere('activity_id', '=', $aid)->execute();
+     for ($i = 3; $i <= 6; $i++) {
+       $role = FALSE;
+       if (!empty($webform_submission_data['contact_' . $i . '_shadowing'])) {
+         $role = 'Shadowing';
+       }
+       elseif (!empty($webform_submission_data['contact_' . $i . '_facilitator'])) {
+         $role = 'Facilitator';
+       }
+       if (!empty($role) && !empty($webform_submission_data['civicrm_' . $i . '_contact_1_contact_existing'])) {
+         ActivityRole::create(FALSE)
+          ->addValue('assignee_contact_id', $webform_submission_data['civicrm_' . $i . '_contact_1_contact_existing'])
+          ->addValue('activity_id', $aid)
+          ->addValue('role_id:name', $role)
+          ->execute();
+       }
+     }
+   }
   }
 
 }

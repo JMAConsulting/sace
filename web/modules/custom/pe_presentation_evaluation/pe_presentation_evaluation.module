@@ -37,7 +37,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     }
     // Get Booking Intake custom fields
     $result = \Civi\Api4\Activity::get(FALSE)
-      ->addSelect('activity_type_id', 'activity_date_time', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program')
+      ->addSelect('activity_type_id', 'activity_type_id:name', 'activity_date_time', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'activity_contact.contact_id', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program')
       ->addJoin('ActivityContact AS activity_contact', 'INNER')
       ->addGroupBy('id')
       ->addWhere('activity_contact.record_type_id', '=', 3)
@@ -58,8 +58,7 @@ function pe_presentation_evaluation_form_alter(&$form, \Drupal\Core\Form\FormSta
     $elements[$constants['TARGET_CONTACT']]['#default_value'] = $result['activity_contact.contact_id'];
     $elements[$constants['TARGET_CONTACT']]['#disabled'] = TRUE;
     $elements[$constants['TARGET_CONTACT']]['#hidden'] = TRUE;
-
-    if ($result['Booking_Information.Youth_or_Adult'] == 'Youth') {
+    if (!in_array($result['activity_type_id:name'], ['Adult Online Course Booking Request', 'PED - Adult or professional booking'])) {
       unset($elements[$constants['DEMOGRAPHIC_INFO']]['#options']['Sex Worker']);
     }
 
