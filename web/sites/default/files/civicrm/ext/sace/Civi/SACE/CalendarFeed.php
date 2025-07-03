@@ -14,7 +14,7 @@ class CalendarFeed extends AutoSubscriber {
 
   public function onFeedItemDetails(\Civi\Core\Event\GenericHookEvent $e) {
     // add custom fields for SACE
-    $extraFields = [
+    $extraDescriptionFields = [
       // already included?
       // Activity subject
       // Start & End Date
@@ -26,26 +26,19 @@ class CalendarFeed extends AutoSubscriber {
       'target_contact_id' => 'Target Contact ID',
     ];
 
-    $extraDetails = \Civi\Api4\Activity::get(FALSE)
+    $details = \Civi\Api4\Activity::get(FALSE)
       ->addWhere('id', '=', $e->activityId)
-      ->addSelect(...array_keys($extraFields))
+      ->addSelect(...array_keys($extraDescriptionFields))
+      // we also add location for target contact id
+      ->addSelect('target_contact_id')
       ->setLimit(1)
       ->execute()
       ->single();
 
-    $extraDescription = $address = [];
-    foreach ($extraFields as $field => $label) {
-      $value = $extraDetails[$field] ?? NULL;
-      if ($field == 'target_contact_id' && !empty($value[0])) {
-        $address = \Civi\Api4\Address::get(FALSE)
-          ->addSelect('contact_id.display_name', 'street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
-          ->addWhere('contact_id', '=', $value[0])
-          ->addWhere('is_primary', '=', TRUE)
-          ->setLimit(1)
-          ->execute()
-          ->single();
-      }
-      elseif ($value) {
+    $extraDescription = [];
+    foreach ($extraDescriptionFields as $field => $label) {
+      $value = $details[$field] ?? NULL;
+      if ($value) {
         $extraDescription[] = '<p>' . $label . ': ' . $value . '</p>';
       }
     }
@@ -54,10 +47,22 @@ class CalendarFeed extends AutoSubscriber {
       $extraDescription = implode("\n", $extraDescription);
       $e->row['description'] .= $extraDescription;
     }
-    if ($address) {
-      unset($address['id']);
-      $extraLocation = implode(", ", $address);
-      $e->row['location'] .= $extraLocation;
+
+    $targetContactId = $details['target_contact_id'][0] ?? NULL;
+
+    if (!$e->row['address_location'] && $targetContactId) {
+      $address = \Civi\Api4\Address::get(FALSE)
+        ->addSelect('contact_id.display_name', 'street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
+        ->addWhere('contact_id', '=', $targetContactId)
+        ->addWhere('is_primary', '=', TRUE)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      if ($address) {
+        unset($address['id']);
+        $e->row['address_location'] = implode(", ", $address);
+      }
     }
   }
 
