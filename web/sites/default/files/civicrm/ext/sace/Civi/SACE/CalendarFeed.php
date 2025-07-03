@@ -23,6 +23,7 @@ class CalendarFeed extends AutoSubscriber {
       'CE_External_Activities.Online Meeting Link' => 'Online Meeting Link',
       'CE_External_Activities.Building_Room_Location_details' => 'Building/Room Location',
       'Booking_Information.Parking_Instructions' => 'Parking Instructions',
+      'target_contact_id' => 'Target Contact ID',
     ];
 
     $extraDetails = \Civi\Api4\Activity::get(FALSE)
@@ -32,10 +33,19 @@ class CalendarFeed extends AutoSubscriber {
       ->execute()
       ->single();
 
-    $extraDescription = [];
+    $extraDescription = $address = [];
     foreach ($extraFields as $field => $label) {
       $value = $extraDetails[$field] ?? NULL;
-      if ($value) {
+      if ($field == 'target_contact_id' && !empty($value[0])) {
+        $address = \Civi\Api4\Address::get(FALSE)
+          ->addSelect('contact_id.display_name', 'street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
+          ->addWhere('contact_id', '=', $value[0])
+          ->addWhere('is_primary', '=', TRUE)
+          ->setLimit(1)
+          ->execute()
+          ->single();
+      }
+      elseif ($value) {
         $extraDescription[] = '<p>' . $label . ': ' . $value . '</p>';
       }
     }
@@ -43,6 +53,11 @@ class CalendarFeed extends AutoSubscriber {
     if ($extraDescription) {
       $extraDescription = implode("\n", $extraDescription);
       $e->row['description'] .= $extraDescription;
+    }
+    if ($address) {
+      unset($address['id']);
+      $extraLocation = implode(", ", $address);
+      $e->row['location'] .= $extraLocation;
     }
   }
 
