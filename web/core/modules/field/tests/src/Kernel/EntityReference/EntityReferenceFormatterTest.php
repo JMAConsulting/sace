@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\field\Kernel\EntityReference;
 
 use Drupal\Core\Cache\Cache;
@@ -127,7 +129,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Assert inaccessible items don't change the data of the fields.
    */
-  public function testAccess() {
+  public function testAccess(): void {
     // Revoke the 'view test entity' permission for this test.
     Role::load(RoleInterface::ANONYMOUS_ID)
       ->revokePermission('view test entity')
@@ -169,7 +171,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the merging of cache metadata.
    */
-  public function testCustomCacheTagFormatter() {
+  public function testCustomCacheTagFormatter(): void {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $formatter = 'entity_reference_custom_cache_tag';
@@ -182,7 +184,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the ID formatter.
    */
-  public function testIdFormatter() {
+  public function testIdFormatter(): void {
     $formatter = 'entity_reference_entity_id';
     $build = $this->buildRenderArray([$this->referencedEntity, $this->unsavedReferencedEntity], $formatter);
 
@@ -194,7 +196,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the entity formatter.
    */
-  public function testEntityFormatter() {
+  public function testEntityFormatter(): void {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $formatter = 'entity_reference_entity_view';
@@ -234,7 +236,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the recursive rendering protection of the entity formatter.
    */
-  public function testEntityFormatterRecursiveRendering() {
+  public function testEntityFormatterRecursiveRendering(): void {
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
     $formatter = 'entity_reference_entity_view';
@@ -298,7 +300,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Renders the same entity referenced from different places.
    */
-  public function testEntityReferenceRecursiveProtectionWithManyRenderedEntities() {
+  public function testEntityReferenceRecursiveProtectionWithManyRenderedEntities(): void {
     $formatter = 'entity_reference_entity_view';
     $view_builder = $this->entityTypeManager->getViewBuilder($this->entityType);
 
@@ -341,7 +343,7 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
   /**
    * Tests the label formatter.
    */
-  public function testLabelFormatter() {
+  public function testLabelFormatter(): void {
     $this->installEntitySchema('entity_test_label');
     /** @var \Drupal\Core\Render\RendererInterface $renderer */
     $renderer = $this->container->get('renderer');
@@ -405,6 +407,44 @@ class EntityReferenceFormatterTest extends EntityKernelTestBase {
 
     $build = $this->buildRenderArray([$referenced_entity_with_no_link_template], $formatter, ['link' => TRUE]);
     $this->assertEquals($referenced_entity_with_no_link_template->label(), $build[0]['#plain_text'], sprintf('The markup returned by the %s formatter is correct for an entity type with no valid link template.', $formatter));
+  }
+
+  /**
+   * Tests formatters set the correct _referringItem on referenced entities.
+   */
+  public function testFormatterReferencingItem(): void {
+    $storage = \Drupal::entityTypeManager()->getStorage($this->entityType);
+    // Create a referencing entity and confirm that the _referringItem property
+    // on the referenced entity in the built render array's items is set to the
+    // field item on the referencing entity.
+    $referencing_entity_1 = $storage->create([
+      'name' => $this->randomMachineName(),
+      $this->fieldName => $this->referencedEntity,
+    ]);
+    $referencing_entity_1->save();
+    $build_1 = $referencing_entity_1->get($this->fieldName)->view(['type' => 'entity_reference_entity_view']);
+    $this->assertEquals($this->referencedEntity->id(), $build_1['#items'][0]->entity->id());
+    $this->assertEquals($referencing_entity_1->id(), $build_1['#items'][0]->entity->_referringItem->getEntity()->id());
+    $this->assertEquals($referencing_entity_1->id(), $build_1[0]['#' . $this->entityType]->_referringItem->getEntity()->id());
+    // Create a second referencing entity and confirm that the _referringItem
+    // property on the referenced entity in the built render array's items is
+    // set to the field item on the second referencing entity.
+    $referencing_entity_2 = $storage->create([
+      'name' => $this->randomMachineName(),
+      $this->fieldName => $this->referencedEntity,
+    ]);
+    $referencing_entity_2->save();
+    $build_2 = $referencing_entity_2->get($this->fieldName)->view(['type' => 'entity_reference_entity_view']);
+    $this->assertEquals($this->referencedEntity->id(), $build_2['#items'][0]->entity->id());
+    $this->assertEquals($referencing_entity_2->id(), $build_2['#items'][0]->entity->_referringItem->getEntity()->id());
+    $this->assertEquals($referencing_entity_2->id(), $build_2[0]['#' . $this->entityType]->_referringItem->getEntity()->id());
+    // Confirm that the _referringItem property for the entity referenced by the
+    // first referencing entity is still set to the field item on the first
+    // referencing entity.
+    $this->assertEquals($referencing_entity_1->id(), $build_1['#items'][0]->entity->_referringItem->getEntity()->id());
+    // Confirm that the _referringItem property is not the same for the two
+    // render arrays.
+    $this->assertNotEquals($build_1['#items'][0]->entity->_referringItem->getEntity()->id(), $build_2['#items'][0]->entity->_referringItem->getEntity()->id());
   }
 
   /**
