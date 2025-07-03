@@ -25,6 +25,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorResolverInterface;
@@ -579,8 +580,22 @@ abstract class AbstractObjectNormalizer extends AbstractNormalizer
                     return $data;
                 }
 
-                if (('is_'.$builtinType)($data)) {
-                    return $data;
+                switch ($builtinType) {
+                    case Type::BUILTIN_TYPE_ARRAY:
+                    case Type::BUILTIN_TYPE_BOOL:
+                    case Type::BUILTIN_TYPE_CALLABLE:
+                    case Type::BUILTIN_TYPE_FLOAT:
+                    case Type::BUILTIN_TYPE_INT:
+                    case Type::BUILTIN_TYPE_ITERABLE:
+                    case Type::BUILTIN_TYPE_NULL:
+                    case Type::BUILTIN_TYPE_OBJECT:
+                    case Type::BUILTIN_TYPE_RESOURCE:
+                    case Type::BUILTIN_TYPE_STRING:
+                        if (('is_'.$builtinType)($data)) {
+                            return $data;
+                        }
+
+                        break;
                 }
             } catch (NotNormalizableValueException|InvalidArgumentException $e) {
                 if (!$isUnionType && !$isNullable) {
@@ -749,6 +764,30 @@ abstract class AbstractObjectNormalizer extends AbstractNormalizer
         }
 
         return $context;
+    }
+
+    protected function getAllowedAttributes(string|object $classOrObject, array $context, bool $attributesAsString = false): array|bool
+    {
+        if (false === $allowedAttributes = parent::getAllowedAttributes($classOrObject, $context, $attributesAsString)) {
+            return false;
+        }
+
+        if (null !== $this->classDiscriminatorResolver) {
+            $class = \is_object($classOrObject) ? $classOrObject::class : $classOrObject;
+            if (null !== $discriminatorMapping = $this->classDiscriminatorResolver->getMappingForMappedObject($classOrObject)) {
+                $allowedAttributes[] = $attributesAsString ? $discriminatorMapping->getTypeProperty() : new AttributeMetadata($discriminatorMapping->getTypeProperty());
+            }
+
+            if (null !== $discriminatorMapping = $this->classDiscriminatorResolver->getMappingForClass($class)) {
+                $attributes = [];
+                foreach ($discriminatorMapping->getTypesMapping() as $mappedClass) {
+                    $attributes[] = parent::getAllowedAttributes($mappedClass, $context, $attributesAsString);
+                }
+                $allowedAttributes = array_merge($allowedAttributes, ...$attributes);
+            }
+        }
+
+        return $allowedAttributes;
     }
 
     /**

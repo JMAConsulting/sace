@@ -65,6 +65,10 @@ class CsvEncoder implements EncoderInterface, DecoderInterface
         } elseif (empty($data)) {
             $data = [[]];
         } else {
+            if ($data instanceof \Traversable) {
+                // Generators can only be iterated once — convert to array to allow multiple traversals
+                $data = iterator_to_array($data);
+            }
             // Sequential arrays of arrays are considered as collections
             $i = 0;
             foreach ($data as $key => $value) {
@@ -168,18 +172,24 @@ class CsvEncoder implements EncoderInterface, DecoderInterface
                 $depth = $headerCount[$i];
                 $arr = &$item;
                 for ($j = 0; $j < $depth; ++$j) {
+                    $headerName = $headers[$i][$j];
+
+                    if ('' === $headerName) {
+                        $headerName = $i;
+                    }
+
                     // Handle nested arrays
                     if ($j === ($depth - 1)) {
-                        $arr[$headers[$i][$j]] = $cols[$i];
+                        $arr[$headerName] = $cols[$i];
 
                         continue;
                     }
 
-                    if (!isset($arr[$headers[$i][$j]])) {
-                        $arr[$headers[$i][$j]] = [];
+                    if (!isset($arr[$headerName])) {
+                        $arr[$headerName] = [];
                     }
 
-                    $arr = &$arr[$headers[$i][$j]];
+                    $arr = &$arr[$headerName];
                 }
             }
 
