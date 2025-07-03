@@ -23,7 +23,6 @@ class CalendarFeed extends AutoSubscriber {
       'CE_External_Activities.Online Meeting Link' => 'Online Meeting Link',
       'CE_External_Activities.Building_Room_Location_details' => 'Building/Room Location',
       'Booking_Information.Parking_Instructions' => 'Parking Instructions',
-      'target_contact_id' => 'Target Contact ID',
     ];
 
     $details = \Civi\Api4\Activity::get(FALSE)
