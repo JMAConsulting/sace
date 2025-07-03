@@ -38,13 +38,13 @@ class FullcalendarBlockTest extends WebDriverTestBase {
     // Add a Fullcalendar block in content region.
     $theme_name = $this->config('system.theme')->get('default');
 
-    // Set open dialog to currnet page to confirm that block settings works.
+    // Set open dialog to current page to confirm that block settings works.
     $this->drupalGet('admin/structure/block/add/fullcalendar_block/' . $theme_name);
     $click_event = $this->assertSession()->waitForElement('css', '#edit-settings-click-event');
     $click_event->click();
     $this->submitForm([
       'settings[event_source]' => 'https://fullcalendar.io/api/demo-feeds/events.json',
-      'settings[click_event][open_dialog]' => 2,
+      'settings[click_event][open_dialog]' => '2',
       'region' => 'content',
     ], 'Save block');
   }
@@ -88,6 +88,70 @@ class FullcalendarBlockTest extends WebDriverTestBase {
     $class = $first_column->getAttribute('class');
     // Monday class existing in the first column.
     $this->assertStringContainsString('fc-day-mon', $class);
+  }
+
+  /**
+   * Test that malicious XSS payloads in URL parameters do not trigger an XSS.
+   *
+   * This test sends several malicious payloads via URL query parameters to the
+   * user page. It overrides window.alert so that if any XSS payload executes,
+   * the test will detect it.
+   * It also confirms that the dangerous strings are not present
+   * in the rendered HTML.
+   */
+  public function testXssQueryParameters() {
+    // Define the malicious payloads.
+    $malicious_start = "alert('XSS')";
+    $malicious_view_mode = "<script>alert('XSS');</script>";
+    $malicious_attribute = '"><img src=x onerror=alert(1)>';
+    $malicious_js = "';alert('XSS');//";
+
+    // Test with the initial payloads.
+    $url = 'user/?start=' . urlencode($malicious_start) . '&viewMode=' . urlencode($malicious_view_mode);
+    $this->drupalGet($url);
+
+    // Override window.alert so that any call will set window.alertCalled.
+    $this->getSession()->executeScript("
+      window.alertCalled = false;
+      window.alert = function(msg) {
+        window.alertCalled = true;
+      };
+    ");
+
+    // Wait for the Fullcalendar block to appear.
+    $this->assertSession()->waitForElementVisible('css', '.fullcalendar-block', 5000);
+
+    // Ensure that no alert was triggered.
+    $alertCalled = $this->getSession()->evaluateScript('return window.alertCalled;');
+    $this->assertFalse($alertCalled, 'No alert was triggered with malicious start and viewMode parameters.');
+
+    // Confirm that the malicious view mode payload does not appear in the page.
+    $pageContent = $this->getSession()->getPage()->getContent();
+    $this->assertStringNotContainsString($malicious_view_mode, $pageContent, 'The malicious view mode payload is not present in the rendered HTML.');
+
+    // Test with alternative payloads that attempt attribute
+    // and JS context injection.
+    $url = 'user/?start=' . urlencode($malicious_js) . '&viewMode=' . urlencode($malicious_attribute);
+    $this->drupalGet($url);
+
+    // Again, override window.alert.
+    $this->getSession()->executeScript("
+      window.alertCalled = false;
+      window.alert = function(msg) {
+        window.alertCalled = true;
+      };
+    ");
+
+    // Wait for the Fullcalendar block.
+    $this->assertSession()->waitForElementVisible('css', '.fullcalendar-block', 5000);
+
+    // Check that no alert was triggered.
+    $alertCalled = $this->getSession()->evaluateScript('return window.alertCalled;');
+    $this->assertFalse($alertCalled, 'No alert was triggered with malicious js and attribute payloads.');
+
+    // Ensure the malicious attribute payload is not rendered in the HTML.
+    $pageContent = $this->getSession()->getPage()->getContent();
+    $this->assertStringNotContainsString($malicious_attribute, $pageContent, 'The malicious attribute payload is not present in the rendered HTML.');
   }
 
 }
