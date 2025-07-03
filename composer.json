@@ -32,9 +32,10 @@
         "drupal/codesnippet": "^1.7",
         "drupal/colorbutton": "^1.2",
         "drupal/content_access": "^2.0",
-        "drupal/core-composer-scaffold": "^10.1",
-        "drupal/core-project-message": "^10.1",
-        "drupal/core-recommended": "^10.1",
+        "drupal/core": "10.5.1",
+        "drupal/core-composer-scaffold": "10.5.1",
+        "drupal/core-project-message": "10.5.1",
+        "drupal/core-recommended": "10.5.1",
         "drupal/ctools": "^3.4",
         "drupal/editor_advanced_image": "^2.0@beta",
         "drupal/fontawesome": "^2.17",
@@ -114,6 +115,9 @@
         "patches": {
             "civicrm/civicrm-core": {
                 "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
+            },
+            "civicrm/civicrm-drupal-8": {
+                "Apply patch to fix cachability metadata fix": "./patches/civicrm-drupal-8-cachability-patch.patch"
             },
             "drupal/fullcalendar_view": {
                 "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch",
