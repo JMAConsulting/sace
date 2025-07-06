@@ -884,7 +884,13 @@ elements: |-
       '#type': date
       '#title': 'Exclude Date(s)'
       '#multiple': true
-    day_of_month: null
+      '#multiple__item_label': date
+      '#multiple__no_items_message': '<p>No dates excluded.</p>'
+      '#multiple__min_items': 0
+      '#multiple__empty_items': 0
+      '#multiple__sorting': false
+      '#multiple__add_more_input': false
+      '#multiple__add_more_button_label': 'Add excluded date'
 css: ''
 javascript: "(function($) {\r\n  $('#block-oliverolocal-fullcalendarblock').insertBefore($('#edit-flexbox-07'));\r\n})(jQuery);"
 settings:

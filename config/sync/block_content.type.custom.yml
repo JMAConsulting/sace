@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 id: custom
 label: 'Custom IMG'
-revision: 0
+revision: false
 description: ''
