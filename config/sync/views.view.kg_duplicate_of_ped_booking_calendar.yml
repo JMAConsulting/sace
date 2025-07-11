@@ -4773,13 +4773,12 @@ display:
           operator: or
           value:
             2: '2'
-            3: '3'
             9: '9'
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: status_id_op
-            label: 'Activity Status'
+            label: 'Booking Status'
             description: ''
             use_operator: false
             operator: status_id_op

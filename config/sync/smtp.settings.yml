@@ -1,5 +1,6 @@
 _core:
   default_config_hash: 2v5R3I9tNatGzKQjuZWh1y_955xK09313Vn-IIuedyI
+langcode: en
 smtp_on: true
 smtp_host: email-smtp.us-east-2.amazonaws.com
 smtp_hostbackup: ''
