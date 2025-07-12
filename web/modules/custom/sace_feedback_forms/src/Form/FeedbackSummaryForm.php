@@ -67,6 +67,9 @@ class FeedbackSummaryForm extends FormBase
       '#value' => $this->t('Submit'),
     ];
 
+    // add custom js/css
+    $form['#attached']['library'][] = 'sace_feedback_forms/sace_feedback_summary_form';
+
     return $form;
   }
 
