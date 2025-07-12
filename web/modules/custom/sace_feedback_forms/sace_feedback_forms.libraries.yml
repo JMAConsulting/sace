@@ -1,0 +1,4 @@
+sace_feedback_summary_form:
+  version: 1.0
+  js:
+    js/summary_form.js: {}
