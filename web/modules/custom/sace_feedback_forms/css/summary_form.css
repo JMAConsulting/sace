@@ -1,0 +1,6 @@
+.sace-feedback-summary-form--booking-details-intro .webform-flexbox {
+  gap: 1rem;
+}
+.sace-feedback-summary-form--booking-details-intro dt {
+  font-weight: bold;
+}
