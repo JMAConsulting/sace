@@ -53,7 +53,14 @@ class Utils
       ->indexBy('id');
 
     // preserve order from webform
-    return array_filter(array_map(fn ($id) => $customFields[$id] ?? NULL, $customFieldIds));
+    $customFields = array_filter(array_map(fn ($id) => $customFields[$id] ?? NULL, $customFieldIds));
+
+    // add Group.Field key as generally very useful
+    foreach ($customFields as &$field) {
+      $field['key'] = "{$field['custom_group_id.name']}.{$field['name']}";
+    }
+
+    return $customFields;
   }
 
   public static function getFeedbackFormForBooking($bookingId): ?string
@@ -105,7 +112,27 @@ class Utils
     return $options;
   }
 
-  public static function deriveBookingTopic(array $bookingDetails): string {
+  /**
+   * A common getter for details about a booking that are used in
+   * FeedbackForm and FeedbackSummaryForm - plus calculated fields like "topic"
+   */
+  public static function getBookingDetails(int $bookingId): array {
+    $bookingDetails = (array) \Civi\Api4\Activity::get(FALSE)
+      // used in FeedbackSummaryForm::addBookingDetailsIntro
+      ->addSelect('activity_type_id', 'activity_date_time', 'duration', 'Booking_Information.Youth_or_Adult', 'Booking_Information.Online_Courses', 'Booking_Information.Privilege_and_Oppression_Content', 'Booking_Information.Resources_Content', 'Booking_Information.Support_Content', 'Booking_Information.Presentation_topics', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Safer_Spaces_Content', 'Booking_Information.Facilitating_Program', 'Booking_Information.Presentation_Method', 'Booking_Information.Presentation_custom', 'Booking_Information.Audience', 'Booking_Information.Facilitating_Program')
+      // used in FeedbackSummaryForm::addFeedbackCounts
+      ->addSelect('Booking_Information.Number_of_Participants_per_course')
+      // used in deriveBookingTopic
+      ->addSelect('Booking_Information.Online_Courses', 'Booking_Information.Presentation_topics:label', 'Booking_Information.Presentation_custom')
+      ->addWhere('id', '=', $bookingId)
+      ->execute()
+      ->first();
+
+    $bookingDetails['topic'] = self::deriveBookingTopic($bookingDetails);
+    return $bookingDetails;
+  }
+
+  protected static function deriveBookingTopic(array $bookingDetails): string {
     if (!empty($bookingDetails['Booking_Information.Online_Courses'])) {
       $topic = \Civi\Api4\OptionValue::get(FALSE)
         ->addSelect('description')
