@@ -2,3 +2,6 @@ sace_feedback_summary_form:
   version: 1.0
   js:
     js/summary_form.js: {}
+  css:
+    theme:
+      css/summary_form.css: {}
