@@ -8,6 +8,8 @@ use Drupal\webform\Entity\Webform;
 class Utils
 {
 
+
+
   protected static $fieldNameCache = [];
 
   public static function getWebformFieldForCustomField(string $customFieldName, string $customGroupName, string $entity, int $entityIndex = 1, int $cgIndex = 1): string
@@ -41,13 +43,17 @@ class Utils
       }
     }, $elements));
 
-    return (array) \Civi\Api4\CustomField::get(FALSE)
+    $customFields = (array) \Civi\Api4\CustomField::get(FALSE)
       ->addWhere('id', 'IN', $customFieldIds)
       ->addSelect('*', 'custom_group_id.name')
       // TODO: exclude fields that always appear in the header?
       ->addWhere('custom_group_id.name', 'NOT IN', ['Booking_Information'])
       ->addWhere('name', '!=', 'Booking')
-      ->execute();
+      ->execute()
+      ->indexBy('id');
+
+    // preserve order from webform
+    return array_filter(array_map(fn ($id) => $customFields[$id] ?? NULL, $customFieldIds));
   }
 
   public static function getFeedbackFormForBooking($bookingId): ?string
@@ -98,4 +104,34 @@ class Utils
 
     return $options;
   }
+
+  public static function deriveBookingTopic(array $bookingDetails): string {
+    if (!empty($bookingDetails['Booking_Information.Online_Courses'])) {
+      $topic = \Civi\Api4\OptionValue::get(FALSE)
+        ->addSelect('description')
+        ->addWhere('value', 'LIKE', $bookingDetails['Booking_Information.Online_Courses'])
+        ->execute()->first()['description'];
+
+      if ($topic) {
+        return $topic;
+      }
+    }
+
+    $topics = [];
+    foreach ((array) $bookingDetails['Booking_Information.Presentation_topics:label'] as $topic) {
+      if ($topic === 'Custom / Unsure') {
+        $topic = $bookingDetails['Booking_Information.Presentation_custom'];
+      }
+      if ($topic) {
+        $topics[] = $topic;
+      }
+    }
+    if ($topics) {
+      return implode(', ', $topics);
+    }
+
+    // fallback if nothing else found
+    return 'the topics covered';
+  }
+
 }
