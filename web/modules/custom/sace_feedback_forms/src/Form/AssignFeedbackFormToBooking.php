@@ -5,7 +5,6 @@ namespace Drupal\sace_feedback_forms\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sace_feedback_forms\Utils;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AssignFeedbackFormToBooking extends FormBase {
 
@@ -21,7 +20,7 @@ class AssignFeedbackFormToBooking extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['booking_id'] = [
-      '#type' => 'number',
+      '#type' => 'hidden',
       '#title' => $this->t('Booking ID'),
       '#required' => TRUE,
       '#default_value' => \Drupal::request()->get('bid'),
@@ -57,7 +56,9 @@ class AssignFeedbackFormToBooking extends FormBase {
 
     \Drupal::messenger()->addMessage($this->t('Feedback form assigned'));
 
-    $feedbackUrl = "/sace/feedback/{$values['booking_id']}";
+    $form_state->setRedirect('sace_feedback_forms.feedback', [
+      'bookingId' => $values['booking_id']
+    ]);
   }
 
 }
