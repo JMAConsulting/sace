@@ -3,6 +3,7 @@
 namespace Drupal\sace_feedback_forms\Plugin\WebformHandler;
 
 use Drupal\sace_feedback_forms\Utils;
+use Drupal\sace_feedback_forms\TokenReplacement;
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\Core\Form\FormStateInterface;
@@ -33,11 +34,12 @@ class FeedbackForm extends WebformHandlerBase
    */
   protected $civicrm;
 
+  protected int $bookingId;
+
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
-  {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->civicrm = $container->get('civicrm');
     return $instance;
@@ -49,81 +51,59 @@ class FeedbackForm extends WebformHandlerBase
    * Add booking ID field to the form
    * This is populated from query param in postSave
    */
-  public function alterElements(array &$elements, WebformInterface $webform)
-  {
+  public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
     $this->civicrm->initialize();
-    $bookingId = \Drupal::request()->query->get('bid');
+    $this->bookingId = \Drupal::request()->query->get('bid') ?: 0;
 
-    $bookingField = $this->getBookingIdField();
+    foreach ($this->getHeaderFields() as $key => $fieldDesc) {
+      Utils::addElementOrSetDefault($form, $key, $fieldDesc);
+    }
 
-    Utils::addElementOrSetDefault($elements, $bookingField, [
-      '#type' => 'textfield',
-      '#title' => 'Booking Reference ID',
-      '#title_display' => 'inline',
-      '#states' => [
-        'readonly' => [
-          ":input[name=\"{$bookingField}\"]" => [
-            'filled' => TRUE
-          ],
-        ],
-      ],
-      //'#default_value' => '[current-page:query:bid]',
-      '#default_value' => $bookingId,
-      '#data_type' => 'Int',
-      '#form_key' => $bookingField,
-      '#extra' => [
-        'width' => 20,
-      ],
-    ]);
-
-    // TODO: if feedback fields were configured through CiviCRM, we could add them here
-    //
-    //    $fieldGroupId = \Civi\Api4\Activity::get(FALSE)
-    //      ->addWhere('id', '=', $bookingId)
-    //      ->addSelect('Booking_Information.Feedback_Field_Group')
-    //      ->execute()
-    //      ->first()['Booking_Information.Feedback_Field_Group'] ?? NULL;
-
-    //    $feedbackFields = \Civi\Api4\CustomField::get(FALSE)
-    //      ->addWhere('custom_group_id', '=', $fieldGroupId)
-    //      ->addSelect('id', 'html_type', 'label')
-    //      ->execute();
-
-    //    foreach ($feedbackFields as $field) {
-    //      $elementKey = "civicrm_1_activity_1_cg{$fieldGroupId}_custom_{$field['id']}";
-    //      $elements[$elementKey] = [
-    //        '#type' => 'text',
-    //        '#title' => $field['label'],
-    //      ];
-    //    }
+    if ($this->bookingId) {
+      $bookingTopic = Utils::getBookingTopic($this->bookingId);
+      TokenReplacement::run(['[the presentation topic]' => $bookingTopic], $form);
+    }
   }
 
-  //  /**
-  //   * @inheritdoc
-  //   *
-  //   * Populate the booking ID field based on url query param
-  //   */
-  //  public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-  //    $elements = WebformFormHelper::flattenElements($form);
-  //    if (empty($elements)) {
-  //      return;
-  //    }
+  protected function getHeaderFields(): array {
+    $bookingIdField = Utils::getWebformFieldForCustomField('Booking', 'Feedback_Form', 'activity');
+    $fields = [
+      $bookingIdField => [
+        '#type' => 'textfield',
+        '#title' => 'Booking Reference ID',
+        '#title_display' => 'inline',
+        '#states' => [
+          'readonly' => [
+            ":input[name=\"{$bookingIdField}\"]" => [
+              'filled' => TRUE,
+            ],
+          ],
+        ],
+        '#data_type' => 'Int',
+        '#form_key' => $bookingIdField,
+        '#extra' => [
+          'width' => 20,
+        ],
+      ],
+      'date_of_presentation' => [
+        '#type' => 'datetime',
+        '#title' => 'Date of Presentation',
+      ],
+    ];
 
-  //    $bookingId = \Drupal::request()->query->get('bid');
-  //    if (!$bookingId) {
-  //      \Drupal::messenger()->addError("No booking ID passed to feedback form");
-  //      return;
-  //    }
+    if ($this->bookingId) {
+      $fields[$bookingIdField]['#default_value'] = $this->bookingId;
 
-  //    $this->civicrm->initialize();
+      $bookingDate = \Civi\Api4\Activity::get(FALSE)
+        ->addWhere('id', '=', $this->bookingId)
+        ->addSelect('activity_date_time')
+        ->execute()
+        ->first()['activity_date_time'] ?? NULL;
 
-  //    $bookingField = $this->getBookingIdField();
+      // $fields['date_of_presentation']['#default_value'] = $bookingDate;
+    }
 
-  //    $elements[$bookingField]['#default_value'] = $bookingId;
-  //  }
-
-  protected function getBookingIdField(): string {
-    return Utils::getWebformFieldForCustomField('Booking', 'Feedback_Form', 'activity');
+    return $fields;
   }
 
 }
