@@ -41,9 +41,13 @@ class FeedbackSummaryForm extends FormBase
 
     $this->getBookingContacts();
 
-    $form['summary_header'] = [
+    $form['booking_details'] = [
       '#type' => 'fieldset',
       'booking_intro' => $this->getBookingDetailsIntro(),
+    ];
+
+    $form['summary_intro'] = [
+      '#type' => 'fieldset',
       'feedback_counts' => $this->getFeedbackCounts(),
     ];
 
@@ -228,7 +232,7 @@ class FeedbackSummaryForm extends FormBase
 
     // TODO: add standard fields for feedback counts
     foreach ($formValues as $key => $value) {
-      if (\str_starts_with($key, 'summary_') && !\is_null($value)) {
+      if (\str_starts_with($key, 'sum_') && !\is_null($value)) {
         $storageField = QuestionSummary::getOrCreateSummaryDataField($key);
         $saveSummary->addValue($storageField, $value);
       }
