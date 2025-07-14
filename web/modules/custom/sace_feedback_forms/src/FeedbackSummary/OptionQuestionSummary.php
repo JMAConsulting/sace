@@ -10,7 +10,7 @@ class OptionQuestionSummary extends QuestionSummary {
     if (!$prefix) {
       $prefix = $this->getPrefix();
     }
-    $elementKey = "{$prefix}_option_{$optionName}";
+    $elementKey = "{$prefix}_opt_{$optionName}";
     if (\strlen($elementKey) > 64) {
       $elementKey = \substr($elementKey, 0, 56) . \substr(\md5($elementKey), 0, 8);
     }
