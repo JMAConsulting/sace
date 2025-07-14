@@ -18,4 +18,4 @@ sace_feedback_forms.feedback_summary:
   defaults:
     _controller: '\Drupal\sace_feedback_forms\Controller\FormFinder:feedbackSummaryForm'
   requirements:
-    _permission: 'access content'
+    _permission: 'access CiviCRM'

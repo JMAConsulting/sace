@@ -61,7 +61,7 @@ class FeedbackForm extends WebformHandlerBase
 
     if ($this->bookingId) {
       $bookingDetails = Utils::getBookingDetails($this->bookingId);
-      TokenReplacement::run(['[the presentation topic]' => $bookingDetails['topic']], $form);
+      TokenReplacement::run(['[the presentation topic]' => $bookingDetails['topic'] ?: 'the topics covered'], $form);
     }
   }
 
