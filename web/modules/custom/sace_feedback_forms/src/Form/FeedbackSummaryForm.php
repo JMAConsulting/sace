@@ -6,6 +6,7 @@ use Drupal\sace_feedback_forms\Utils;
 use Drupal\sace_feedback_forms\TokenReplacement;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\redirect\Entity\Redirect;
 use Drupal\sace_feedback_forms\FeedbackSummary\QuestionSummary;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -239,6 +240,8 @@ class FeedbackSummaryForm extends FormBase
     }
 
     $summaryId = $saveSummary->execute()->first()['id'];
+
+    return new RedirectResponse("/civicrm/activity?reset=1&action=view&id={$summaryId}");
 
 //    $activityContactSave = \Civi\Api4\ActivityContact::save(FALSE);
 
