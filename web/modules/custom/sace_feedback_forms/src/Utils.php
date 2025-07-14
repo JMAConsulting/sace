@@ -132,7 +132,7 @@ class Utils
     return $bookingDetails;
   }
 
-  protected static function deriveBookingTopic(array $bookingDetails): string {
+  protected static function deriveBookingTopic(array $bookingDetails): ?string {
     if (!empty($bookingDetails['Booking_Information.Online_Courses'])) {
       $topic = \Civi\Api4\OptionValue::get(FALSE)
         ->addSelect('description')
@@ -157,8 +157,7 @@ class Utils
       return implode(', ', $topics);
     }
 
-    // fallback if nothing else found
-    return 'the topics covered';
+    return NULL;
   }
 
 }

@@ -48,7 +48,13 @@ class FormFinder extends ControllerBase {
 
   public function feedbackSummaryForm($bookingId) {
     $this->civicrm->initialize();
-    //\Drupal::service('civicrm')->initialize();
+
+    // check we have a user contact, required for form
+    $contact = \CRM_Core_Session::getLoggedInContactID();
+    if (!$contact) {
+      return 'Feedback summary forms require a CiviCRM user contact';
+    }
+
 
     // for now just check feedback is configured - otherwise summary form makes no sense
     $feedbackForm = Utils::getFeedbackFormForBooking($bookingId);
@@ -56,6 +62,8 @@ class FormFinder extends ControllerBase {
     if (!$feedbackForm) {
       return 'No feedback form is set for this booking';
     }
+
+
 
     return $this->formBuilder->getForm(FeedbackSummaryForm::class, $bookingId);
   }
