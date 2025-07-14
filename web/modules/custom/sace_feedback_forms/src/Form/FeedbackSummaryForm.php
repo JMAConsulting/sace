@@ -226,9 +226,9 @@ class FeedbackSummaryForm extends FormBase
 
     // TODO: what if we want to update an existing summary?
     $saveSummary = \Civi\Api4\Activity::create(FALSE)
-      ->addValue('activty_type_id:name', 'Feedback Summary')
-      ->addValue('Feedback_Form.Booking', $this->bookingId);
-      //->addValue('source_contact_id', $formValues['source_contact']);
+      ->addValue('activity_type_id:name', 'Feedback Summary')
+      ->addValue('Feedback_Form.Booking', $this->bookingId)
+      ->addValue('source_contact_id', \CRM_Core_Session::getLoggedInContactID());
 
     // TODO: add standard fields for feedback counts
     foreach ($formValues as $key => $value) {
