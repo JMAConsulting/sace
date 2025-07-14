@@ -43,13 +43,20 @@ abstract class QuestionSummary {
   }
 
   public function getPrefix(): string {
-    $prefix = 'sum_' . str_replace('.', '_', $this->sourceField);
-
-    if (strlen($prefix) > 32) {
-      $prefix = \substr($prefix, 0, 24) . \substr(\md5($prefix), 0, 8);
+    $group = $this->sourceFieldDetails['custom_group_id.name'];
+    if (strlen($group) > 15) {
+      $group = \substr($group, 0, 10);
     }
 
-    return $prefix;
+    $name = $this->sourceFieldDetails['name'];
+
+    if (strlen($name) > 15) {
+      $name = \substr($name, 0, 10);
+    }
+
+    $hash = \substr(\md5($this->sourceField), 0, 6);
+
+    return "sum_{$group}_{$name}_{$hash}";
   }
 
   /**
@@ -114,6 +121,8 @@ abstract class QuestionSummary {
       ->addValue('name', $summaryFieldKey)
       ->addValue('custom_group_id.name', 'Feedback_Summary')
       ->addValue('html_type', 'Text')
+      // sql type = Text to avoid exceeding max row size for table
+      ->addValue('data_type', 'Memo')
       ->execute()
       ->first();
 
