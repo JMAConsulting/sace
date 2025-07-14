@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sace_feedback_forms\FeedbackSummary\QuestionSummary;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Sace Feedback Summary Form
@@ -16,13 +17,6 @@ class FeedbackSummaryForm extends FormBase
 {
 
   protected const UNASSIGNED_USER_CONTACT_ID = 860; // = Unassigned User Contact
-
-  /**
-   * The CiviCRM service.
-   *
-   * @var \Drupal\civicrm\Civicrm
-   */
-  protected $civicrm;
 
   protected int $bookingId;
 
@@ -58,7 +52,7 @@ class FeedbackSummaryForm extends FormBase
       ...$this->getSummaryFields(),
     ];
 
-    $fomr['verified_by'] = $this->getVerifiedByField();
+    $form['verified_by'] = $this->getVerifiedBy();
 
     $this->replaceTokens($form);
 
@@ -92,7 +86,7 @@ class FeedbackSummaryForm extends FormBase
   }
 
   protected function getBookingDetailsIntro(): array {
-    $details = [
+    $details = array_filter([
       "Booking Reference ID" => $this->bookingId,
       "Presentation Topic" => $this->bookingDetails['topic'],
       //"Presentation Topic Detail" => '',
@@ -102,7 +96,7 @@ class FeedbackSummaryForm extends FormBase
       "Length" => "{$this->bookingDetails['duration']} minutes",
       "Audience Age" => $this->bookingDetails['Booking_Information.Youth_or_Adult'],
       "Presenter(s)" => implode(', ', $this->bookingDetails['assignee_contacts']),
-    ];
+    ]);
 
     $markup = [];
 
@@ -196,7 +190,7 @@ class FeedbackSummaryForm extends FormBase
     return $summaryFields;
   }
 
-  protected function getVerifiedByField(): array {
+  protected function getVerifiedBy(): array {
     $loggedInContactId = \CRM_Core_Session::getLoggedInContactID();
     $currentContact = \Civi\Api4\Contact::get(FALSE)->addWhere('id', '=', $loggedInContactId)->addSelect('display_name')->execute()->single();
     $name = $currentContact['display_name'];
@@ -215,7 +209,7 @@ class FeedbackSummaryForm extends FormBase
    */
   protected function replaceTokens(&$form) {
     $tokenValues = [
-      '[the presentation topic]' => $this->bookingDetails['topic'],
+      '[the presentation topic]' => $this->bookingDetails['topic'] ?: 'the topics covered',
     ];
     TokenReplacement::run($tokenValues, $form);
   }

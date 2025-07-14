@@ -43,7 +43,7 @@ abstract class QuestionSummary {
   }
 
   public function getPrefix(): string {
-    $prefix = 'summary_' . str_replace('.', '_', $this->sourceField);
+    $prefix = 'sum_' . str_replace('.', '_', $this->sourceField);
 
     if (strlen($prefix) > 32) {
       $prefix = \substr($prefix, 0, 24) . \substr(\md5($prefix), 0, 8);
@@ -91,20 +91,11 @@ abstract class QuestionSummary {
    * @return string CiviCRM field key on Activity record
    */
   public static function getOrCreateSummaryDataField(string $summaryFieldKey): string {
-    $summaryFieldKey = str_replace('summary_', '', $summaryFieldKey);
-
+    // TODO: get full field label again
     $label = \str_replace('_', ' ', $summaryFieldKey);
+    $label = \str_replace('sum ', 'Summary ', $label);
+    $label = \str_replace(' opt ', ' Option ', $label);
 
-    if (\strlen($summaryFieldKey) >= 64) {
-      $parts = explode('_option_', $summaryFieldKey);
-      $partLength = 64 / count($parts);
-      foreach ($parts as $part) {
-        \substr($summaryFieldKey, 0, 54) . \substr(md5($summaryFieldKey), 10);
-
-      }
-
-    }
-    // TODO: might summary field key be too long for custom field name column?
     $existingField = \Civi\Api4\CustomField::get(FALSE)
       // should we restrict to a particular custom field group?
       // probably the key is specific enough
