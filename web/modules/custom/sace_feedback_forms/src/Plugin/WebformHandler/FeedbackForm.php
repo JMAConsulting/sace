@@ -100,9 +100,8 @@ class FeedbackForm extends WebformHandlerBase
         ->execute()
         ->first()['activity_date_time'] ?? NULL;
 
-      // $fields['date_of_presentation']['#default_value'] = $bookingDate;
+      $fields['date_of_presentation']['#default_value'] = \Drupal\Core\Datetime\DrupalDateTime::createFromFormat('Y-m-d H:i:s', $bookingDate);
     }
-
     return $fields;
   }
 
