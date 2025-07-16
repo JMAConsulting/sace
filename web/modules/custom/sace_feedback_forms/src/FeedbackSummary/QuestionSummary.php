@@ -18,12 +18,16 @@ abstract class QuestionSummary {
   protected array $sourceFieldDetails;
 
   public static function createForField(array $fieldDetails): QuestionSummary {
+    $fieldKey = $fieldDetails['key'];
+    if ($fieldKey === 'source_contact_id') {
+      return new SubmittedByCounts('source_contact_id');
+    }
     if ($fieldDetails['option_group_id']) {
-      return new OptionQuestionSummary($fieldDetails['key'], $fieldDetails);
+      return new OptionQuestionSummary($fieldKey, $fieldDetails);
     }
 
     // for now we treat any non-option question as a text question
-    return new TextQuestionSummary($fieldDetails['key'], $fieldDetails);
+    return new TextQuestionSummary($fieldKey, $fieldDetails);
   }
 
   public function __construct(string $sourceField, array $sourceFieldDetails = []) {
@@ -44,14 +48,14 @@ abstract class QuestionSummary {
 
   public function getPrefix(): string {
     $group = $this->sourceFieldDetails['custom_group_id.name'];
-    if (strlen($group) > 15) {
-      $group = \substr($group, 0, 10);
+    if (strlen($group) > 16) {
+      $group = \substr($group, 0, 16);
     }
 
     $name = $this->sourceFieldDetails['name'];
 
-    if (strlen($name) > 15) {
-      $name = \substr($name, 0, 10);
+    if (strlen($name) > 16) {
+      $name = \substr($name, 0, 16);
     }
 
     $hash = \substr(\md5($this->sourceField), 0, 6);
@@ -74,6 +78,14 @@ abstract class QuestionSummary {
   }
 
   /**
+   * Get fields needed to store the result of summarising this question.
+   * @return array[]
+   *   Keys should match those in getElements
+   *   Values are params to pass to CustomField::create
+   */
+  abstract public function getStorageFields(): array;
+
+  /**
    * Get the elements to include on the summary form for this question
    */
   abstract public function getElements(): array;
@@ -91,42 +103,44 @@ abstract class QuestionSummary {
     return $fieldset;
   }
 
+
   /**
    * This allow get or create a CustomField in CiviCRM to store values
    * for one of the generated summary fields
    *
    * @return string CiviCRM field key on Activity record
    */
-  public static function getOrCreateSummaryDataField(string $summaryFieldKey): string {
-    // TODO: get full field label again
-    $label = \str_replace('_', ' ', $summaryFieldKey);
-    $label = \str_replace('sum ', 'Summary ', $label);
-    $label = \str_replace(' opt ', ' Option ', $label);
+  public static function getOrCreateStorageField(array $storageField): string {
+    $key = $storageField['name'];
 
     $existingField = \Civi\Api4\CustomField::get(FALSE)
       // should we restrict to a particular custom field group?
       // probably the key is specific enough
-      //->addWhere('custom_group_id.name', '=', 'Feedback_Summary')
-      ->addWhere('name', '=', $summaryFieldKey)
-      ->addSelect('name', 'custom_group_id.name')
+      ->addWhere('custom_group_id.name', '=', 'Feedback_Summary')
+      ->addWhere('name', '=', $key)
+      ->addSelect('name', 'custom_group_id.name', 'label')
       ->execute()
       ->first();
 
     if ($existingField) {
+      $label = $storageField['label'];
+      if ($existingField['label'] !== $label) {
+        \Civi::log()->debug("Existing summary field found for {$key} but label {$existingField['label']} does not match expected {$label}. We will use it anyway but you may want to update the label.");
+      }
       return $existingField['custom_group_id.name'] . '.' . $existingField['name'];
     }
 
-    \Civi\Api4\CustomField::create(FALSE)
-      ->addValue('label', $label)
-      ->addValue('name', $summaryFieldKey)
-      ->addValue('custom_group_id.name', 'Feedback_Summary')
-      ->addValue('html_type', 'Text')
-      // sql type = Text to avoid exceeding max row size for table
-      ->addValue('data_type', 'Memo')
-      ->execute()
-      ->first();
+    $fieldCreate = \Civi\Api4\CustomField::create(FALSE)
+      ->addValue('name', $key)
+      ->addValue('custom_group_id:name', 'Feedback_Summary');
 
-    return 'Feedback_Summary.' . $summaryFieldKey;
+    foreach ($storageField as $prop => $value) {
+      $fieldCreate->addValue($prop, $value);
+    }
+
+    $fieldCreate->execute();
+
+    return 'Feedback_Summary.' . $key;
   }
 
 }

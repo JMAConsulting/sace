@@ -4,6 +4,37 @@ namespace Drupal\sace_feedback_forms\FeedbackSummary;
 
 class TextQuestionSummary extends QuestionSummary {
 
+  /**
+   * @inheritdoc
+   */
+  public function getStorageFields(): array {
+    $prefix = $this->getPrefix();
+    $sourceLabel = $this->sourceFieldDetails['label'];
+
+    return [
+      "{$prefix}_count" => [
+        'name' => "{$prefix}_count",
+        'label' => "{$sourceLabel} - Response Count",
+        'html_type' => 'Number',
+      ],
+      "{$prefix}_sentiment" => [
+        'name' => "{$prefix}_sentiment",
+        'label' => "{$sourceLabel} - Summary of Responses",
+        'html_type' => 'Text',
+        'data_type' => 'Memo',
+      ],
+      "{$prefix}_notable" => [
+        'name' => "{$prefix}_notable",
+        'label' => "{$sourceLabel} - Notable Responses",
+        'html_type' => 'Textarea',
+        'data_type' => 'Memo',
+      ],
+    ];
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function getElements(): array {
     $prefix = $this->getPrefix();
 
