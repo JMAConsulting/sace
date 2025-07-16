@@ -23,7 +23,9 @@ class FeedbackSummaryForm extends FormBase
 
   protected array $bookingDetails;
 
-  protected array $summaryFields = [];
+  protected array $questionSummaries;
+
+  protected array $submittedForms;
 
   /**
    * {@inheritdoc}
@@ -40,22 +42,24 @@ class FeedbackSummaryForm extends FormBase
 
     $this->bookingDetails = Utils::getBookingDetails($this->bookingId);
 
-    $this->getBookingContacts();
+    $this->fetchBookingContacts();
+
+    $this->fetchQuestions();
+
+    $this->fetchSubmittedForms();
 
     $form['booking_details'] = [
       '#type' => 'fieldset',
       'booking_intro' => $this->getBookingDetailsIntro(),
     ];
 
-    $form['summary_intro'] = [
+    $form['question_summary_fields'] = [
       '#type' => 'fieldset',
-      'feedback_counts' => $this->getFeedbackCounts(),
+      ...$this->getQuestionSummaryFields(),
     ];
 
-    $form['feedback_summary_fields'] = [
-      '#type' => 'fieldset',
-      ...$this->getSummaryFields(),
-    ];
+    // unusual case the default value is provided from the booking rather than submitted forms
+    $form['question_summary_fields']['submitted_by_counts']['total_number_participants']['#default_value'] = $this->bookingDetails['Booking_Information.Number_of_Participants_per_course'];
 
     $form['verified_by'] = $this->getVerifiedBy();
 
@@ -72,7 +76,7 @@ class FeedbackSummaryForm extends FormBase
     return $form;
   }
 
-  protected function getBookingContacts() {
+  protected function fetchBookingContacts() {
     $activityContacts = \Civi\Api4\ActivityContact::get(FALSE)
       ->addWhere('activity_id', '=', $this->bookingId)
       ->addSelect('contact_id.display_name', 'record_type_id:name')
@@ -88,6 +92,29 @@ class FeedbackSummaryForm extends FormBase
 
     $this->bookingDetails['target_contacts'] = $namesByType['Activity Targets'];
     $this->bookingDetails['assignee_contacts'] = $namesByType['Activity Assignees'];
+  }
+
+  /**
+   * Build model for summary fields based on what fields appear on the feedback form for this activity
+   */
+  protected function fetchQuestions(): void {
+    // always include source contact id, which is summarised into online/staff entered counts
+    $sourceFields = [['key' => 'source_contact_id'], ...Utils::getFeedbackCustomFieldsForBooking($this->bookingId)];
+
+    foreach ($sourceFields as $sourceFieldRecord) {
+      // api4 key for the field
+      $this->questionSummaries[$sourceFieldRecord['key']] = QuestionSummary::createForField($sourceFieldRecord);
+    }
+  }
+
+  protected function fetchSubmittedForms(): void {
+    $toFetch = array_keys($this->questionSummaries);
+
+    $this->submittedForms = (array) \Civi\Api4\Activity::get(FALSE)
+      ->addWhere('Feedback_Form.Booking', '=', $this->bookingId)
+      ->addWhere('activity_type_id:name', '!=', 'Feedback Summary')
+      ->addSelect(...$toFetch)
+      ->execute();
   }
 
   protected function getBookingDetailsIntro(): array {
@@ -120,76 +147,19 @@ class FeedbackSummaryForm extends FormBase
     return $bookingIntro;
   }
 
-  protected function getFeedbackCounts(): array {
-    $feedbackCounts = [
-      '#type' => 'webform_flexbox',
-    ];
-
-    $submittedForms = \Civi\Api4\Activity::get(FALSE)
-      ->addSelect('source_contact_id')
-      ->addWhere('Feedback_Form.Booking', '=', $this->bookingId)
-      ->addWhere('activity_type_id:name', '!=', 'Feedback Summary')
-      ->execute()
-      ->column('source_contact_id');
-
-    $submittedOnline = count(array_filter($submittedForms, fn ($sourceContactId) => ($sourceContactId === self::UNASSIGNED_USER_CONTACT_ID)));
-
-    $feedbackCounts['number_participants'] = [
-      '#title' => 'Number of participants',
-      '#type' => 'number',
-      '#default_value' => $this->bookingDetails['Booking_Information.Number_of_Participants_per_course'],
-      '#flex' => 1,
-      '#prefix' => '<div class="webform-flex webform-flex--1"><div class="webform-flex--container">',
-      '#suffix' => '</div></div>',
-    ];
-    $feedbackCounts['submitted_online'] = [
-      '#title' => 'Number of online evaluations',
-      '#type' => 'number',
-      '#default_value' => $submittedOnline,
-      '#flex' => 1,
-      '#prefix' => '<div class="webform-flex webform-flex--1"><div class="webform-flex--container">',
-      '#suffix' => '</div></div>',
-    ];
-    $feedbackCounts['submitted_by_staff'] = [
-      '#title' => 'Number of staff entered evaluations',
-      '#type' => 'number',
-      '#default_value' => count($submittedForms) - $submittedOnline,
-      '#flex' => 1,
-      '#prefix' => '<div class="webform-flex webform-flex--1"><div class="webform-flex--container">',
-      '#suffix' => '</div></div>',
-    ];
-
-    return [
-      'feedback_counts' => $feedbackCounts,
-    ];
-
-  }
-
   /**
    * Fetch info about what fields appear on the feedback form for this activity
    * And from this determine the corresponding summary fields
-   * @param int $bookingId
    * @return array
    */
-  protected function getSummaryFields(): array
-  {
+  protected function getQuestionSummaryFields(): array {
     $summaryFields = [];
 
-    $sourceFields = Utils::getFeedbackCustomFieldsForBooking($this->bookingId);
-
-    $toFetch = array_map(fn ($field) => $field['key'], $sourceFields);
-
-    $feedbackRecords = (array) \Civi\Api4\Activity::get(FALSE)
-      ->addWhere('Feedback_Form.Booking', '=', $this->bookingId)
-      ->addSelect(...$toFetch)
-      ->execute();
-
-    foreach ($sourceFields as $sourceFieldRecord) {
+    foreach ($this->questionSummaries as $sourceQuestion) {
       // api4 key for the field
-      $fieldSummary = QuestionSummary::createForField($sourceFieldRecord);
-      $fieldset = $fieldSummary->getPrepopulatedFieldset($feedbackRecords);
+      $fieldset = $sourceQuestion->getPrepopulatedFieldset($this->submittedForms);
 
-      $summaryFields[$fieldSummary->getPrefix()] = $fieldset;
+      $summaryFields[$sourceQuestion->getPrefix()] = $fieldset;
     }
 
     return $summaryFields;
@@ -197,14 +167,16 @@ class FeedbackSummaryForm extends FormBase
 
   protected function getVerifiedBy(): array {
     $loggedInContactId = \CRM_Core_Session::getLoggedInContactID();
-    $currentContact = \Civi\Api4\Contact::get(FALSE)->addWhere('id', '=', $loggedInContactId)->addSelect('display_name')->execute()->single();
+    $currentContact = \Civi\Api4\Contact::get(FALSE)
+      ->addWhere('id', '=', $loggedInContactId)
+      ->addSelect('display_name')
+      ->execute()
+      ->single();
     $name = $currentContact['display_name'];
 
     return [
       '#type' => 'markup',
-      '#markup' => "<div class='webform-flexbox'>
-        <strong>Verified By</strong><span>{$name}</span>
-      </div>",
+      '#markup' => "<div class='webform-flexbox'><strong>Verified By</strong><span>{$name}</span></div>",
     ];
   }
 
@@ -223,20 +195,32 @@ class FeedbackSummaryForm extends FormBase
    * Save submitted values to CiviCRM activity
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $formValues = $form_state->getValues();
-
     // TODO: what if we want to update an existing summary?
     $saveSummary = \Civi\Api4\Activity::create(FALSE)
       ->addValue('activity_type_id:name', 'Feedback Summary')
       ->addValue('Feedback_Form.Booking', $this->bookingId)
       ->addValue('source_contact_id', \CRM_Core_Session::getLoggedInContactID());
 
-    // TODO: add standard fields for feedback counts
+    // now get submitted values from the form
+    $formValues = $form_state->getValues();
+
+    // build model of storage fields based on question summaries
+    $storageFields = [];
+    foreach ($this->questionSummaries as $sourceQuestion) {
+      $storageFields = array_merge($storageFields, $sourceQuestion->getStorageFields());
+    }
+
     foreach ($formValues as $key => $value) {
-      if (\str_starts_with($key, 'sum_') && !\is_null($value)) {
-        $storageField = QuestionSummary::getOrCreateSummaryDataField($key);
-        $saveSummary->addValue($storageField, $value);
+      if (is_null($value)) {
+        continue;
       }
+      $storageField = $storageFields[$key] ?? NULL;
+      if (!$storageField) {
+        continue;
+      }
+
+      $storageFieldKey = QuestionSummary::getOrCreateStorageField($storageField);
+      $saveSummary->addValue($storageFieldKey, $value);
     }
 
     $summaryId = $saveSummary->execute()->first()['id'];
