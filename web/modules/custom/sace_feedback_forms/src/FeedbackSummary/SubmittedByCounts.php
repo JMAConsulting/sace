@@ -8,6 +8,7 @@ namespace Drupal\sace_feedback_forms\FeedbackSummary;
  */
 class SubmittedByCounts extends QuestionSummary
 {
+  protected const UNASSIGNED_USER_CONTACT_ID = 860; // = Unassigned User Contact
 
   /**
    * CiviCRM field key for the feedback form question to be summarised

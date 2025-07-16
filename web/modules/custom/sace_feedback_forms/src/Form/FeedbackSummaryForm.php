@@ -18,8 +18,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class FeedbackSummaryForm extends FormBase
 {
 
-  protected const UNASSIGNED_USER_CONTACT_ID = 860; // = Unassigned User Contact
-
   protected int $bookingId;
 
   protected array $bookingDetails;
