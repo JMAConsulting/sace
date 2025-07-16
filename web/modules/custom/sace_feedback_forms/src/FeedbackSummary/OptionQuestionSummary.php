@@ -6,11 +6,25 @@ class OptionQuestionSummary extends QuestionSummary {
 
   protected array $options;
 
+  public function __construct(string $sourceField, array $sourceFieldDetails = []) {
+    parent::__construct($sourceField, $sourceFieldDetails);
+
+    $this->options = (array) \Civi\Api4\OptionValue::get(FALSE)
+      ->addWhere('option_group_id', '=', $this->sourceFieldDetails['option_group_id'])
+      // TODO should this be included
+      // ->addWhere('is_active', '=', TRUE)
+      ->execute();
+
+    foreach ($this->options as &$option) {
+      $option['summary_field_key'] = $this->getOptionElementKey($option['name'], $prefix);
+    }
+  }
+
   protected function getOptionElementKey(string $optionName, string $prefix = ''): string {
     if (!$prefix) {
       $prefix = $this->getPrefix();
     }
-    $elementKey = "{$prefix}_opt_{$optionName}";
+    $elementKey = "{$prefix}_{$optionName}";
     if (\strlen($elementKey) > 64) {
       $elementKey = \substr($elementKey, 0, 56) . \substr(\md5($elementKey), 0, 8);
     }
@@ -20,21 +34,34 @@ class OptionQuestionSummary extends QuestionSummary {
   /**
    * @inheritdoc
    */
+  public function getStorageFields(): array {
+    $prefix = $this->getPrefix();
+    $sourceLabel = $this->sourceFieldDetails['label'];
+
+    $fields = [];
+
+    foreach ($this->options as $option) {
+      $fields[$option['summary_field_key']] = [
+        'name' => $option['summary_field_key'],
+        'label' => "{$sourceLabel} - {$option['label']}",
+        'html_type' => 'Number',
+      ];
+    }
+
+    return $fields;
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function getElements(): array {
+    $prefix = $this->getPrefix();
+
     $optionsFlexbox = [
       '#type' => 'webform_flexbox',
     ];
 
-    $this->options = (array) \Civi\Api4\OptionValue::get(FALSE)
-      ->addWhere('option_group_id', '=', $this->sourceFieldDetails['option_group_id'])
-      // TODO should this be included
-      // ->addWhere('is_active', '=', TRUE)
-      ->execute();
-
-    $prefix = $this->getPrefix();
-
-    foreach ($this->options as &$option) {
-      $option['summary_field_key'] = $this->getOptionElementKey($option['name'], $prefix);
+    foreach ($this->options as $option) {
       $optionsFlexbox[$option['summary_field_key']] = [
         '#type' => 'number',
         '#title' => "# {$option['label']}",
