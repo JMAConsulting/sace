@@ -38,11 +38,13 @@ class FormFinder extends ControllerBase {
     // Q: are there any other transformations?
     $feedbackForm = \str_replace('_', '-', $feedbackForm);
 
+    $userContact = \CRM_Core_Session::getLoggedInContactID();
+
     // this is passed through from the URL previously. not sure
     // how it varies - maybe should be stored on the booking?
-    $orgContact = \Drupal::request()->query->get('cid1') ?: 1;
+    $orgContact = \Drupal::request()->query->get('cid2') ?: 1;
 
-    $url = "/form/{$feedbackForm}?bid={$bookingId}&cid1={$orgContact}";
+    $url = "/form/{$feedbackForm}?bid={$bookingId}&cid1={$userContact}&cid2={$orgContact}";
     return new RedirectResponse($url);
   }
 
