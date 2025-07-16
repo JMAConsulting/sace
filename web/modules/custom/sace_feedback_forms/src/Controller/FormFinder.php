@@ -7,6 +7,7 @@ use Drupal\sace_feedback_forms\Form\FeedbackSummaryForm;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormFinder extends ControllerBase {
 
@@ -54,7 +55,7 @@ class FormFinder extends ControllerBase {
     // check we have a user contact, required for form
     $contact = \CRM_Core_Session::getLoggedInContactID();
     if (!$contact) {
-      return 'Feedback summary forms require a CiviCRM user contact';
+      return new Response('Feedback summary forms require a CiviCRM user contact', 400);
     }
 
 
@@ -62,7 +63,7 @@ class FormFinder extends ControllerBase {
     $feedbackForm = Utils::getFeedbackFormForBooking($bookingId);
 
     if (!$feedbackForm) {
-      return 'No feedback form is set for this booking';
+      return new Response('Feedback summary forms require a CiviCRM user contact', 400);
     }
 
 
