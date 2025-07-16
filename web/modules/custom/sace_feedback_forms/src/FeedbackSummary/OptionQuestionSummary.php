@@ -45,7 +45,8 @@ class OptionQuestionSummary extends QuestionSummary {
       $fields[$option['summary_field_key']] = [
         'name' => $option['summary_field_key'],
         'label' => "{$sourceLabel} - {$option['label']}",
-        'html_type' => 'Number',
+        'data_type' => 'Int',
+        'html_type' => 'Text',
       ];
     }
 
