@@ -15,6 +15,7 @@ class OptionQuestionSummary extends QuestionSummary {
       // ->addWhere('is_active', '=', TRUE)
       ->execute();
 
+    $prefix = $this->getPrefix();
     foreach ($this->options as &$option) {
       $option['summary_field_key'] = $this->getOptionElementKey($option['name'], $prefix);
     }
