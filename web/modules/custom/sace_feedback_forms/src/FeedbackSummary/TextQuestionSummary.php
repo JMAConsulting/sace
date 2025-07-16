@@ -15,7 +15,8 @@ class TextQuestionSummary extends QuestionSummary {
       "{$prefix}_count" => [
         'name' => "{$prefix}_count",
         'label' => "{$sourceLabel} - Response Count",
-        'html_type' => 'Number',
+        'data_type' => 'Int',
+        'html_type' => 'Text',
       ],
       "{$prefix}_sentiment" => [
         'name' => "{$prefix}_sentiment",

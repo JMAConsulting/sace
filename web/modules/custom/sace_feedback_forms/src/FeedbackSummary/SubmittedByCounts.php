@@ -50,17 +50,20 @@ class SubmittedByCounts extends QuestionSummary
       'total_number_participants' => [
         'name' => 'total_number_participants',
         'label' => 'Total number of participants',
-        'html_type' => 'number',
+        'data_type' => 'Int',
+        'html_type' => 'Text',
       ],
       'feedback_forms_submitted_online' => [
         'name' => 'feedback_forms_submitted_online',
         'label' => 'Number of evaluations submitted online',
-        'html_type' => 'number',
+        'data_type' => 'Int',
+        'html_type' => 'Text',
       ],
       'feedback_forms_submitted_by_staff' => [
         'name' => 'feedback_forms_submitted_by_staff',
         'label' => 'Number of staff-entered evaluations',
-        'html_type' => 'number',
+        'data_type' => 'Int',
+        'html_type' => 'Text',
       ],
     ];
   }
