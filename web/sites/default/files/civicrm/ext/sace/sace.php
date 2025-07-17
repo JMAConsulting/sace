@@ -30,3 +30,13 @@ function sace_civicrm_install(): void {
 function sace_civicrm_enable(): void {
   _sace_civix_civicrm_enable();
 }
+
+function sace_civicrm_copy($objectName, &$object, $original_id = NULL): void {
+  if ($objectName == 'Activity' && !empty($object->duration) && !empty($object->activity_date_time) && !empty($object->id)) {
+    $endDate = strtotime($object->activity_date_time . ' + ' . $object->duration . ' minute');
+    \Civi\Api4\Activity::update(FALSE)
+     ->addWhere('id', '=', $object->id)
+     ->addValue('Booking_Information.End_Date', date('YmdHis', $endDate))
+     ->execute();
+  }
+}
