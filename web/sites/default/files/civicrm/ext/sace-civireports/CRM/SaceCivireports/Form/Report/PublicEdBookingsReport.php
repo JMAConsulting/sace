@@ -186,10 +186,10 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
       ->execute();
     foreach ($customFields as $customField) {
       if ('Age - Qualitative staff evaluation' == $customField['label']) {
-        $this->_columns[$cg['table_name']]['fields'][$customField['column_name']] = ['title' => $customField['label'], 'required' => 1];
+        $this->_columns[$cg['table_name']]['fields'][$customField['column_name']] = ['title' => $customField['label'], 'required' => 0];
       }
       if ($customField['label'] == 'Number of participants') {
-         $this->_columns[$cg['table_name']]['fields'][$customField['column_name']] = ['title' => $customField['label'], 'required' => 1, 'no_display' => 1];
+         $this->_columns[$cg['table_name']]['fields'][$customField['column_name']] = ['title' => $customField['label'], 'required' => 0, 'no_display' => 1];
       }
       if (strstr($customField['label'], 'SUM_') && !strstr($customField['label'], 'EVAL_SUM_') && !strstr($customField['label'], 'STAFF_EVAL_SUM_')) {
         $q = preg_replace("/[^0-9]/", '', $customField['label']);
@@ -230,25 +230,25 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
         ] as $key => $label) {
           $this->_columns[$cg['table_name']]['fields'][$mapper['options'][$key]['column_name']] = [
             'title' => $label,
-            'required' => TRUE,
+            'required' => FALSE,
           ];
           $dbAlias[] = $mapper['options'][$key]['column_name'];
         }
         $this->_columns[$cg['table_name']]['fields'][$Q . '_responses'] = [
         'title' => 'Number of respondents',
-        'required' => TRUE,
+        'required' => FALSE,
         'dbAlias' => sprintf("(%s)", implode(' + ', $dbAlias)),
         ];
       }
       if ($mapper['type'] == 'TextArea') {
        $this->_columns[$cg['table_name']]['fields'][$mapper['options']['total']['column_name']] = [
          'title' => (strstr($Q, '_staff') ? 'Qualitative staff evaluations' : (strstr($Q, '_note') ? 'Noteworthy comments from evaluations' : 'Number Surveyed Able to List Something Learned')),
-         'required' => TRUE,
+         'required' => FALSE,
        ];
        if (strstr($Q, '_note')) {
           $this->_columns[$cg['table_name']]['fields'][str_replace('_note', '', $Q) . '_responses'] = [
             'title' => 'Number of respondents',
-            'required' => TRUE,
+            'required' => FALSE,
             'dbAlias' => sprintf("(%s + %s)", $questionMapper[str_replace('_note', '', $Q)]['options']['total']['column_name'], $questionMapper[str_replace('_note', '', $Q) . '_staff']['options']['total']['column_name']),
           ];
        }
