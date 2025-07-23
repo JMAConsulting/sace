@@ -70,7 +70,7 @@ class CalendarFeed extends AutoSubscriber {
       if ($address) {
         unset($address['id']);
         $e->row['address_location'] = implode(", ", $address);
-        $e->row['description'] .= '<p>Location: </p>' . $implode(", ", $address);
+        $e->row['description'] .= '<p>Address: </p>' . implode(", <br/>", $address);
       }
     }
   }
