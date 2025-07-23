@@ -19,13 +19,37 @@ use Drupal\Core\Cache\Cache;
 
 class ActivityIcalFeed extends BlockBase {
 
+  protected function getContactId(): ?int {
+    $path = \Drupal::service('path.current')->getPath();
+
+    // if we are on a user page, check which user
+    if (str_starts_with($path, '/user/')) {
+      $userId = explode('/', $path)[2];
+
+      if (!is_numeric($userId)) {
+        // not a user profile page - disable the block
+        return NULL;
+      }
+
+      $userId = (int) $userId;
+      return \Civi\Api4\UFMatch::get(FALSE)
+        ->addSelect('contact_id')
+        ->addWhere('uf_id', '=', $userId)
+        ->execute()
+        ->first()['contact_id'] ?? NULL;
+    }
+
+    // not a user page - use logged in user
+    return \CRM_Core_Session::getLoggedInContactId();
+  }
+
   /**
    * {@inheritdoc}
    */
   public function build() {
     \Drupal::service('civicrm')->initialize();
 
-    $contactId = \CRM_Core_Session::getLoggedInContactId();
+    $contactId = $this->getContactId();
 
     if (!$contactId || !_activityical_contact_has_feed_group($contactId)) {
       return [];
@@ -36,13 +60,14 @@ class ActivityIcalFeed extends BlockBase {
 
     $markup = <<<HTML
       <a href="{$feedUrl}" target="_blank">
-        {$this->t('My Feed')}
+        {$this->t('Activity Feed')}
         <i class="fa fa-rss"></i>
       </a>
     HTML;
 
     return [
       '#markup' => $markup,
+      'tags' => ["contact:{$contactId}"],
     ];
   }
 
@@ -50,8 +75,9 @@ class ActivityIcalFeed extends BlockBase {
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    $userId = \Drupal::currentUser()->id();
-    return Cache::mergeTags(parent::getCacheTags(), ["user:{$userId}"]);
+    \Drupal::service('civicrm')->initialize();
+    $contactId = $this->getContactId();
+    return Cache::mergeTags(parent::getCacheTags(), ["contact:{$contactId}"]);
   }
 
 }
