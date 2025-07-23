@@ -194,11 +194,22 @@ class FeedbackSummaryForm extends FormBase
    * Save submitted values to CiviCRM activity
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // TODO: what if we want to update an existing summary?
+    $activity = Activity::get(FALSE)
+      ->addSelect('id')
+      ->addWhere('Feedback_Form.Booking', '=', $this->bookingId)
+      ->addWhere('activity_type_id:name', '=', 'Feedback Summary')
+      ->execute()
+      ->first();
+
     $saveSummary = \Civi\Api4\Activity::create(FALSE)
       ->addValue('activity_type_id:name', 'Feedback Summary')
       ->addValue('Feedback_Form.Booking', $this->bookingId)
       ->addValue('source_contact_id', \CRM_Core_Session::getLoggedInContactID());
+
+    if ($activity) {
+      // update existing summary
+      $saveSummary->addValue('id', $activity['id']);
+    }
 
     // now get submitted values from the form
     $formValues = $form_state->getValues();
