@@ -1,0 +1,45 @@
+uuid: 07c36f54-aecb-4277-9041-2b72bb9db1a4
+langcode: en
+status: true
+dependencies:
+  module:
+    - fullcalendar_block
+    - system
+    - user
+  theme:
+    - oliverolocal
+id: my_activities_calendar
+theme: oliverolocal
+region: content
+weight: 0
+provider: null
+plugin: fullcalendar_block
+settings:
+  id: fullcalendar_block
+  label: 'Calendar: Activities Assigned To Me'
+  label_display: '0'
+  provider: fullcalendar_block
+  event_source: '/my-activities?_format=json'
+  use_token: false
+  initial_view: dayGridMonth
+  header_start: 'prev,next today'
+  header_center: title
+  header_end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+  open_dialog: 1
+  dialog_width: 800
+  plugins: {  }
+  advanced: ''
+  advanced_drupal: ''
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /ce-staff-dashboard
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      ce_staff: ce_staff
+      wheel: wheel
