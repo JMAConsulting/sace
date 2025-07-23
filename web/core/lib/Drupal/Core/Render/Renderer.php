@@ -160,10 +160,18 @@ class Renderer implements RendererInterface {
   /**
    * {@inheritdoc}
    */
-  public function renderPlain(&$elements) {
+  public function renderInIsolation(&$elements) {
     return $this->executeInRenderContext(new RenderContext(), function () use (&$elements) {
       return $this->render($elements, TRUE);
     });
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function renderPlain(&$elements) {
+    @trigger_error('Renderer::renderPlain() is deprecated in drupal:10.3.0 and is removed from drupal:12.0.0. Instead, you should use ::renderInIsolation(). See https://www.drupal.org/node/3407994', E_USER_DEPRECATED);
+    return $this->renderInIsolation($elements);
   }
 
   /**
@@ -180,7 +188,7 @@ class Renderer implements RendererInterface {
     $placeholder_element['#create_placeholder'] = FALSE;
 
     // Render the placeholder into markup.
-    $markup = $this->renderPlain($placeholder_element);
+    $markup = $this->renderInIsolation($placeholder_element);
     return $markup;
   }
 
@@ -272,7 +280,7 @@ class Renderer implements RendererInterface {
           // Abort, but bubble new cache metadata from the access result.
           $context = $this->getCurrentRenderContext();
           if (!isset($context)) {
-            throw new \LogicException("Render context is empty, because render() was called outside of a renderRoot() or renderPlain() call. Use renderPlain()/renderRoot() or #lazy_builder/#pre_render instead.");
+            throw new \LogicException("Render context is empty, because render() was called outside of a renderRoot() or renderInIsolation() call. Use renderInIsolation()/renderRoot() or #lazy_builder/#pre_render instead.");
           }
           $context->push(new BubbleableMetadata());
           $context->update($elements);
@@ -292,7 +300,7 @@ class Renderer implements RendererInterface {
 
     $context = $this->getCurrentRenderContext();
     if (!isset($context)) {
-      throw new \LogicException("Render context is empty, because render() was called outside of a renderRoot() or renderPlain() call. Use renderPlain()/renderRoot() or #lazy_builder/#pre_render instead.");
+      throw new \LogicException("Render context is empty, because render() was called outside of a renderRoot() or renderInIsolation() call. Use renderInIsolation()/renderRoot() or #lazy_builder/#pre_render instead.");
     }
     $context->push(new BubbleableMetadata());
 
@@ -347,14 +355,11 @@ class Renderer implements RendererInterface {
     $pre_bubbling_elements = array_intersect_key($elements, [
       '#cache' => TRUE,
       '#lazy_builder' => TRUE,
+      '#lazy_builder_preview' => TRUE,
       '#create_placeholder' => TRUE,
     ]);
 
-    // If the default values for this element have not been loaded yet, populate
-    // them.
-    if (isset($elements['#type']) && empty($elements['#defaults_loaded'])) {
-      $elements += $this->elementInfo->getInfo($elements['#type']);
-    }
+    $this->loadElementDefaults($elements);
 
     // First validate the usage of #lazy_builder; both of the next if-statements
     // use it if available.
@@ -386,9 +391,11 @@ class Renderer implements RendererInterface {
     }
     // If instructed to create a placeholder, and a #lazy_builder callback is
     // present (without such a callback, it would be impossible to replace the
-    // placeholder), replace the current element with a placeholder.
-    // @todo remove the isMethodCacheable() check when
-    //   https://www.drupal.org/node/2367555 lands.
+    // placeholder), replace the current element with a placeholder. On
+    // uncacheable requests, always skip placeholdering - if a form is inside
+    // a placeholder, which is likely, we want to render it as soon as possible,
+    // so that form submission and redirection can take over before any more
+    // content is rendered.
     if (isset($elements['#create_placeholder']) && $elements['#create_placeholder'] === TRUE && $this->requestStack->getCurrentRequest()->isMethodCacheable()) {
       if (!isset($elements['#lazy_builder'])) {
         throw new \LogicException('When #create_placeholder is set, a #lazy_builder callback must be present as well.');
@@ -401,6 +408,9 @@ class Renderer implements RendererInterface {
       // Throw an exception if #lazy_builder callback does not return an array;
       // provide helpful details for troubleshooting.
       assert(is_array($new_elements), "#lazy_builder callbacks must return a valid renderable array, got " . gettype($new_elements) . " from " . Variable::callableToString($elements['#lazy_builder'][0]));
+
+      // The lazy builder could have set a #type, load its defaults.
+      $this->loadElementDefaults($new_elements);
 
       // Retain the original cacheability metadata, plus cache keys.
       CacheableMetadata::createFromRenderArray($elements)
@@ -634,6 +644,18 @@ class Renderer implements RendererInterface {
   }
 
   /**
+   * Loads an element's default values based on its type.
+   *
+   * @param array $element
+   *   The render array representing the element.
+   */
+  protected function loadElementDefaults(array &$element): void {
+    if (isset($element['#type']) && empty($element['#defaults_loaded'])) {
+      $element += $this->elementInfo->getInfo($element['#type']);
+    }
+  }
+
+  /**
    * Returns the current render context.
    *
    * @return \Drupal\Core\Render\RenderContext|null
@@ -641,6 +663,11 @@ class Renderer implements RendererInterface {
    */
   protected function getCurrentRenderContext() {
     $request = $this->requestStack->getCurrentRequest();
+
+    if (is_null($request)) {
+      return NULL;
+    }
+
     return static::$contextCollection[$request] ?? NULL;
   }
 
@@ -653,7 +680,7 @@ class Renderer implements RendererInterface {
    *
    * @return $this
    */
-  protected function setCurrentRenderContext(RenderContext $context = NULL) {
+  protected function setCurrentRenderContext(?RenderContext $context = NULL) {
     $request = $this->requestStack->getCurrentRequest();
     static::$contextCollection[$request] = $context;
     return $this;
