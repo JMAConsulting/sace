@@ -67,7 +67,9 @@ class ActivityIcalFeed extends BlockBase {
 
     return [
       '#markup' => $markup,
-      'tags' => ["contact:{$contactId}"],
+      '#cache' => [
+        'tags' => ["contact:{$contactId}"],
+      ]
     ];
   }
 
