@@ -1,0 +1,21 @@
+.sace-feedback-summary-form--booking-details-intro .webform-flexbox {
+  margin-left: 0;
+  gap: 1rem;
+}
+.sace-feedback-summary-form--booking-details-intro dt {
+  font-weight: bold;
+}
+
+.sace-feedback-forms-option-summary-total {
+  background-color: yellow;
+}
+.sace-feedback-forms-option-summary-total .form-item__label {
+  margin-top: 0;
+}
+
+.webform-flexbox:has(.webform-flex--1:nth-child(8)) {
+  flex-flow: row wrap;
+}
+.webform-flexbox .webform-flex--1 {
+  min-width: 5rem;
+}

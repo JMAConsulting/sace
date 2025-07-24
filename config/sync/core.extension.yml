@@ -85,6 +85,7 @@ module:
   sace_activity_schedule_modification: 0
   sace_calendar_customisations: 0
   sace_custom: 0
+  sace_feedback_forms: 0
   serialization: 0
   slick: 0
   slick_extras: 0
