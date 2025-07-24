@@ -1489,7 +1489,82 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-      filters: {  }
+      filters:
+        status_id:
+          id: status_id
+          table: civicrm_activity
+          field: status_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: status_id
+          plugin_id: list_field
+          operator: or
+          value:
+            2: '2'
+            3: '3'
+            9: '9'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: status_id_op
+            label: 'Activity Status'
+            description: ''
+            use_operator: false
+            operator: status_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: status_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              reception: '0'
+              indigenous_cl: '0'
+              couns_tl: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       style:
         type: fullcalendar_view_display
         options:
@@ -1744,6 +1819,17 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
+              status_id:
+                plugin_id: bef
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: true
       filters:
         activity_date_time:
           id: activity_date_time
@@ -1822,6 +1908,81 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        status_id:
+          id: status_id
+          table: civicrm_activity
+          field: status_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: civicrm_activity
+          entity_field: status_id
+          plugin_id: list_field
+          operator: or
+          value:
+            2: '2'
+            3: '3'
+            9: '9'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: status_id_op
+            label: 'Booking Status'
+            description: ''
+            use_operator: false
+            operator: status_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: status_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              cad_staff: '0'
+              cad_tl: '0'
+              ce_staff: '0'
+              ce_director: '0'
+              eval: '0'
+              finance: '0'
+              taxreceipts: '0'
+              fund_development_officer: '0'
+              wheel: '0'
+              pe: '0'
+              pe_tl: '0'
+              vsil: '0'
+              vsil_tl: '0'
+              is_staff: '0'
+              anonymous: '0'
+              clin_team_lead: '0'
+              clin_intake_worker: '0'
+              clin_counsellor: '0'
+              ped_team_lead: '0'
+              supervisors: '0'
+              clin_director: '0'
+              intake: '0'
+              pacs_tl: '0'
+              clin_tl: '0'
+              pacsa: '0'
+              reception: '0'
+              indigenous_cl: '0'
+              couns_tl: '0'
+              wiseguyz_staff: '0'
+              volunteer_supervisor: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:
@@ -1830,6 +1991,7 @@ display:
         exposed_form: false
         filters: false
         filter_groups: false
+      exposed_block: true
       display_extenders: {  }
       path: my-calendar
     cache_metadata:
