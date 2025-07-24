@@ -51,4 +51,5 @@ settings:
             - Source
             - Maximize
   plugins: {  }
-image_upload: {  }
+image_upload:
+  status: false
