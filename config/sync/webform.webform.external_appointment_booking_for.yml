@@ -453,10 +453,10 @@ elements: |-
     civicrm_1_activity_1_activity_subject:
       '#type': textfield
       '#title': 'Calendar Title'
-      '#data_type': String
       '#counter_type': character
       '#counter_maximum': 255
       '#counter_maximum_message': ' '
+      '#data_type': String
       '#form_key': civicrm_1_activity_1_activity_subject
       '#extra':
         width: 20
