@@ -28,14 +28,19 @@
 
 
 $(document).on("fullcalendar_block.beforebuild", eventCalendarBeforeBuild);
-$('.js-form-item-activity-date-time').insertBefore($('#block-oliverolocal-fullcalendarblock'));
-$('.js-form-item-activity-date-time').css('width', '200px');
+  if ($('#block-oliverolocal-fullcalendarblock').length > 0) {
+    $('.js-form-item-activity-date-time').insertBefore($('#block-oliverolocal-fullcalendarblock'));
+  }
+  $('.js-form-item-activity-date-time').css('width', '200px');
 
 if ($('#block-oliverolocal-fullcalendar-myactivity').length > 0) {
    $('.js-form-item-activity-date-time').insertBefore($('#block-oliverolocal-fullcalendar-myactivity'));
    $('#edit-submit-calendar-counsellors').parent().hide();
 }
-if ($('#block-oliverolocal-fullcalendarteam').length > 0) {
+if ($('.fullcalendar-block').length > 0) {
+$('.js-form-item-activity-date-time').insertBefore($('.fullcalendar-block'));
+}
+else if ($('#block-oliverolocal-fullcalendarteam').length > 0) {
    $('.js-form-item-activity-date-time').insertBefore($('#block-oliverolocal-fullcalendarteam'));
 }
 
