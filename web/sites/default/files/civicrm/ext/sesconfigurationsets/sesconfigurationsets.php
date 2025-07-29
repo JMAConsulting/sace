@@ -29,6 +29,14 @@ function sesconfigurationsets_civicrm_install(): void {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
 function sesconfigurationsets_civicrm_enable(): void {
+  // set the default configuration set value
+  // but only if we haven't set it before
+  if (!Civi::settings()->get('sesconfigurationsets')) {
+    // get rid of http:// or https:// before the url and remove any trailing slashes
+    $url = preg_replace("/https?:\/\//", '', rtrim(CIVICRM_UF_BASEURL, '/'));
+    $default = str_replace('.', '-', $url) . '-ses-cs';
+    Civi::settings()->set('sesconfigurationsets', $default);
+  }
   _sesconfigurationsets_civix_civicrm_enable();
 }
 
