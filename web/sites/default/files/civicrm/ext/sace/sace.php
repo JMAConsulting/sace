@@ -39,4 +39,17 @@ function sace_civicrm_copy($objectName, &$object, $original_id = NULL): void {
      ->addValue('Booking_Information.End_Date', date('YmdHis', $endDate))
      ->execute();
   }
+  if ($objectName == 'Activity' && !empty($object->id)) {
+    $result = \Civi\Api4\Activity::get(TRUE)
+      ->addSelect('Booking_Information.Feedback_Webform')
+      ->addWhere('Booking_Information.Feedback_Webform', 'IS NOT NULL')
+      ->addWhere('id', '=', $object->id)
+      ->execute()->first();
+    if (!empty($result)) {
+      \Civi\Api4\Activity::update(FALSE)
+        ->addValue('Booking_Information.Feedback_Webform', '')
+        ->addWhere('id', '=', $object->id)
+        ->execute();
+    }
+  }
 }
