@@ -104,8 +104,7 @@ class SubmittedByCounts extends QuestionSummary
    */
   public function prepopulateValues(array &$fieldset, array $feedbackRecords): void {
     $submittedSourceContacts = \array_column($feedbackRecords, 'source_contact_id');
-    $submittedOnline = count(array_filter($submittedSourceContacts, fn($sourceContactId) => ($sourceContactId === self::UNASSIGNED_USER_CONTACT_ID)));
-
+    $submittedOnline = count(array_filter($submittedSourceContacts, fn($sourceContactId) => ($sourceContactId !== self::UNASSIGNED_USER_CONTACT_ID)));
     $fieldset['feedback_forms_submitted_online']['#default_value'] = $submittedOnline;
     $fieldset['feedback_forms_submitted_by_staff']['#default_value'] = count($submittedSourceContacts) - $submittedOnline;
   }
