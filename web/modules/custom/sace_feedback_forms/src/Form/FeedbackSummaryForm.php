@@ -11,7 +11,7 @@ use Drupal\redirect\Entity\Redirect;
 use Drupal\sace_feedback_forms\FeedbackSummary\QuestionSummary;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
+use Civi\Api4\Activity;
 /**
  * Sace Feedback Summary Form
  */
@@ -160,7 +160,6 @@ class FeedbackSummaryForm extends FormBase
 
       $summaryFields[$sourceQuestion->getPrefix()] = $fieldset;
     }
-
     return $summaryFields;
   }
 
@@ -201,7 +200,7 @@ class FeedbackSummaryForm extends FormBase
       ->execute()
       ->first();
 
-    $saveSummary = \Civi\Api4\Activity::create(FALSE)
+    $saveSummary = Activity::create(FALSE)
       ->addValue('activity_type_id:name', 'Feedback Summary')
       ->addValue('Feedback_Form.Booking', $this->bookingId)
       ->addValue('source_contact_id', \CRM_Core_Session::getLoggedInContactID());
