@@ -1,0 +1,18 @@
+.fieldset--group .fieldset__legend--visible, .fieldset__wrapper .fieldset__wrapper--group {
+    border: solid 2px #f7f9ff !important;
+    border-bottom-right-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    margin: 0.4em 0.5em 0.4em 0;
+}
+
+
+.fieldset__legend.fieldset__legend--composite.fieldset__legend--visible,
+label span.fieldset__legend.fieldset__legend--visible
+ {
+    background-color: #f7f9ff !important;
+}
+
+label span.fieldset__legend.fieldset__legend--visible,
+.jma-grid-6 .form-boolean-group  {
+  padding: 10px;
+}

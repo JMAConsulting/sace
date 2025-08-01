@@ -63,6 +63,16 @@ class FeedbackForm extends WebformHandlerBase
       $bookingDetails = Utils::getBookingDetails($this->bookingId);
       TokenReplacement::run(['[the presentation topic]' => $bookingDetails['topic'] ?: 'the topics covered'], $form);
     }
+    foreach ($form['elements']['civicrm_1_activity_1_fieldset_fieldset'] as $elementName => $metadata) {
+      if (is_array($metadata) && $metadata['#type'] == 'radios') {
+        $form['elements']['civicrm_1_activity_1_fieldset_fieldset'][$elementName]['#wrapper_attributes']['class'] = ['jma-grid-6'];
+      }
+      if (is_array($metadata) && $metadata['#type'] == 'textarea') {
+        $form['elements']['civicrm_1_activity_1_fieldset_fieldset'][$elementName]['#title'] = sprintf('<span class="fieldset__legend fieldset__legend--visible">%s</span>', $metadata['#title']);
+      }
+    }
+    $form['#attached']['library'][] = 'sace_feedback_forms/sace_feedback_form';
+    $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
   }
 
   protected function getHeaderFields(): array {
@@ -88,6 +98,7 @@ class FeedbackForm extends WebformHandlerBase
       'date_of_presentation' => [
         '#type' => 'datetime',
         '#title' => 'Date of Presentation',
+        '#disabled' => TRUE,
       ],
     ];
 
