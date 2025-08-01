@@ -44,6 +44,7 @@ class FormFinder extends ControllerBase {
     // this is passed through from the URL previously. not sure
     // how it varies - maybe should be stored on the booking?
     $orgContact = \Drupal::request()->query->get('cid2') ?: 1;
+    $userContact = \Drupal::request()->query->get('cid1') ?: $userContact;
 
     $url = "/form/{$feedbackForm}?bid={$bookingId}&cid1={$userContact}&cid2={$orgContact}";
     return new RedirectResponse($url);
