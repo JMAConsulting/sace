@@ -80,6 +80,22 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
             ->setValues($newActivity)
             ->execute()
             ->first();
+
+          $summaryActivityType = ($newActivityRecord['activity_type_id'] == 201) ? 'Feedback Summary' : 'PED - Presentation Evaluation Summary Score';
+          $id = Activity::create(FALSE)
+          ->addValue('activity_type_id:name', $summaryActivityType)
+          ->addValue('Feedback_Form.Booking', $newActivityRecord['id'])
+          ->addValue('status_id:name', 'Pending')
+          ->addValue('source_contact_id', $newActivity['source_contact_id'])
+          ->execute()
+          ->first()['id'];
+
+          Activity::update(FALSE)
+          ->addWhere('id', '=', $newActivityRecord['id'])
+          ->addValue('Booking_Information.Presentation_Evaluation_Summary_Activity_ID', $id)
+          ->execute();
+
+
           foreach ($activityContacts as $contact) {
             $this->api('ActivityContact', 'create', [
               'activity_id' => $newActivityRecord['id'],
