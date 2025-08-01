@@ -5,3 +5,10 @@ sace_feedback_summary_form:
   css:
     theme:
       css/summary_form.css: {}
+sace_feedback_form:
+  version: 1.0
+  js:
+    js/feedback_form.js: {}
+  css:
+    theme:
+      css/feedback_form.css: {}
