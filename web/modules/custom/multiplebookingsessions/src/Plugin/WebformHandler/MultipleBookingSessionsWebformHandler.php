@@ -82,9 +82,11 @@ class MultipleBookingSessionsWebformHandler extends WebformHandlerBase {
             ->first();
 
           $summaryActivityType = ($newActivityRecord['activity_type_id'] == 201) ? 'Feedback Summary' : 'PED - Presentation Evaluation Summary Score';
+          $summaryCustomField = ($newActivityRecord['activity_type_id'] == 201) ? 'Feedback_Form.Booking' : 'PED_Booking_Reference.Booking_Reference_ID';
+
           $id = Activity::create(FALSE)
           ->addValue('activity_type_id:name', $summaryActivityType)
-          ->addValue('Feedback_Form.Booking', $newActivityRecord['id'])
+          ->addValue($summaryCustomField, $newActivityRecord['id'])
           ->addValue('status_id:name', 'Pending')
           ->addValue('source_contact_id', $newActivity['source_contact_id'])
           ->execute()
