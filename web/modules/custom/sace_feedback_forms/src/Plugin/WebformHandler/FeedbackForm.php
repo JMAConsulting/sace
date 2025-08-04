@@ -63,14 +63,25 @@ class FeedbackForm extends WebformHandlerBase
       $bookingDetails = Utils::getBookingDetails($this->bookingId);
       TokenReplacement::run(['[the presentation topic]' => $bookingDetails['topic'] ?: 'the topics covered'], $form);
     }
-    foreach ($form['elements']['civicrm_1_activity_1_fieldset_fieldset'] as $elementName => $metadata) {
+    foreach ($form['elements'] as $elementName => $metadata) {
       if (is_array($metadata) && $metadata['#type'] == 'radios') {
-        $form['elements']['civicrm_1_activity_1_fieldset_fieldset'][$elementName]['#wrapper_attributes']['class'] = ['jma-grid-6'];
+        $form['elements'][$elementName]['#wrapper_attributes']['class'] = ['jma-grid-6'];
       }
-      if (is_array($metadata) && $metadata['#type'] == 'textarea') {
-        $form['elements']['civicrm_1_activity_1_fieldset_fieldset'][$elementName]['#title'] = sprintf('<span class="fieldset__legend fieldset__legend--visible">%s</span>', $metadata['#title']);
+      elseif (is_array($metadata) && $metadata['#type'] == 'textarea') {
+        $form['elements'][$elementName]['#title'] = sprintf('<span class="fieldset__legend fieldset__legend--visible">%s</span>', $metadata['#title']);
+      }
+      elseif (is_array($metadata) && substr($elementName, -9) == '_fieldset') {
+        foreach($form['elements'][$elementName] as $fieldSetElementName => $metadata1) {
+          if (is_array($metadata1) && $metadata1['#type'] == 'radios') {
+            $form['elements'][$elementName][$fieldSetElementName]['#wrapper_attributes']['class'] = ['jma-grid-6'];
+          }
+          elseif (is_array($metadata1) && $metadata1['#type'] == 'textarea') {
+            $form['elements'][$elementName][$fieldSetElementName]['#title'] = sprintf('<span class="fieldset__legend fieldset__legend--visible">%s</span>', $metadata1['#title']);
+          }
+        }
       }
     }
+
     $form['#attached']['library'][] = 'sace_feedback_forms/sace_feedback_form';
     $form['#attached']['library'][] = 'pe_presentation_evaluation/pe_presentation_evaluation';
   }
