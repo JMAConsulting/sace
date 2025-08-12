@@ -26,5 +26,6 @@
   </classloader>
   <civix>
     <namespace>CRM/Noprevnext</namespace>
+    <format>25.01.1</format>
   </civix>
 </extension>
