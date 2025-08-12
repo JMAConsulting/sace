@@ -54,7 +54,7 @@ class CRM_Contact_BAO_Relationship extends CRM_Contact_DAO_Relationship implemen
 
     $extendedParams = self::loadExistingRelationshipDetails($params);
     // When id is specified we always want to update, so we don't need to check for duplicate relations.
-    if (!isset($params['id']) && self::checkDuplicateRelationship($extendedParams, (int) $extendedParams['contact_id_a'], (int) $extendedParams['contact_id_b'], CRM_Utils_Array::value('id', $extendedParams, 0))) {
+    if (!isset($params['id']) && self::checkDuplicateRelationship($extendedParams, (int) $extendedParams['contact_id_a'], (int) $extendedParams['contact_id_b'], $extendedParams['id'] ?? 0)) {
       throw new CRM_Core_Exception('Duplicate Relationship');
     }
     $params = $extendedParams;
@@ -219,7 +219,7 @@ class CRM_Contact_BAO_Relationship extends CRM_Contact_DAO_Relationship implemen
     foreach (self::getdefaults() as $defaultField => $defaultValue) {
       if (isset($params[$defaultField])) {
         if (in_array($defaultField, $dateFields)) {
-          $relationship->$defaultField = CRM_Utils_Date::format(CRM_Utils_Array::value($defaultField, $params));
+          $relationship->$defaultField = CRM_Utils_Date::format($params[$defaultField] ?? NULL);
           if (!$relationship->$defaultField) {
             $relationship->$defaultField = 'NULL';
           }
@@ -271,7 +271,7 @@ class CRM_Contact_BAO_Relationship extends CRM_Contact_DAO_Relationship implemen
     if (($session->get('userID') == $relationship->contact_id_a) ||
       CRM_Contact_BAO_Contact_Permission::allow($relationship->contact_id_a, CRM_Core_Permission::EDIT)
     ) {
-      $rType = substr(CRM_Utils_Array::value('relationship_type_id', $params), -3);
+      $rType = substr($params['relationship_type_id'], -3);
       $recentOther = [
         'editUrl' => CRM_Utils_System::url('civicrm/contact/view/rel',
           "action=update&reset=1&id={$relationship->id}&cid={$relationship->contact_id_a}&rtype={$rType}&context=home"
@@ -875,7 +875,7 @@ WHERE  is_active = 1 AND relationship_type_id = ' . CRM_Utils_Type::escape($type
     ]);
 
     if (is_array($result) && !empty($result['is_error']) && $result['error_message'] != 'Duplicate Relationship') {
-      throw new CRM_Core_Exception($result['error_message'], CRM_Utils_Array::value('error_code', $result, 'undefined'), $result);
+      throw new CRM_Core_Exception($result['error_message'], $result['error_code'] ?? 'undefined', $result);
     }
 
     return TRUE;
@@ -1427,7 +1427,7 @@ LEFT JOIN  civicrm_country ON (civicrm_address.country_id = civicrm_country.id)
         $relTypeValues = [];
         CRM_Contact_BAO_RelationshipType::retrieve($relTypeParams, $relTypeValues);
 
-        if (($relTypeValues['name_a_b'] ?? NULL) == CRM_Utils_Array::value('name_b_a', $relTypeValues)) {
+        if (($relTypeValues['name_a_b'] ?? NULL) == ($relTypeValues['name_b_a'] ?? NULL)) {
           $values[$cid]['relationshipTypeDirection'] = '_a_b';
         }
         else {
@@ -1440,7 +1440,7 @@ LEFT JOIN  civicrm_country ON (civicrm_address.country_id = civicrm_country.id)
 
     $relationshipProcessor = new CRM_Member_Utils_RelationshipProcessor(array_keys($values), $active);
     foreach ($values as $cid => $details) {
-      $relatedContacts = array_keys(CRM_Utils_Array::value('relatedContacts', $details, []));
+      $relatedContacts = array_keys($details['relatedContacts'] ?? []);
       $mainRelatedContactId = reset($relatedContacts);
 
       foreach ($relationshipProcessor->getRelationshipMembershipsForContact((int) $cid) as $membershipId => $membershipValues) {
@@ -1697,7 +1697,7 @@ AND cc.sort_name LIKE '%$name%'";
    *
    * @see CRM_Dedupe_Merger::cpTables()
    */
-  public static function mergeRelationships($mainId, $otherId, &$sqls) {
+  public static function mergeRelationships(int $mainId, int $otherId, &$sqls) {
     // Delete circular relationships
     $sqls[] = "DELETE FROM civicrm_relationship
       WHERE (contact_id_a = $mainId AND contact_id_b = $otherId AND case_id IS NULL)
@@ -1709,6 +1709,9 @@ AND cc.sort_name LIKE '%$name%'";
       WHERE r1.relationship_type_id = r2.relationship_type_id
       AND r1.id <> r2.id
       AND r1.case_id IS NULL AND r2.case_id IS NULL
+      AND r1.is_active = r2.is_active
+      AND ((r1.start_date = r2.start_date) OR (r1.start_date IS NULL AND r2.start_date IS NULL))
+      AND ((r1.end_date = r2.end_date) OR (r1.end_date IS NULL AND r2.end_date IS NULL))
       AND (
         r1.contact_id_a = $mainId AND r2.contact_id_a = $otherId AND r1.contact_id_b = r2.contact_id_b
         OR r1.contact_id_b = $mainId AND r2.contact_id_b = $otherId AND r1.contact_id_a = r2.contact_id_a
@@ -1879,7 +1882,7 @@ AND cc.sort_name LIKE '%$name%'";
             'civicrm/contact/view',
             "reset=1&cid={$values['cid']}");
 
-        $relationship['relation'] = CRM_Utils_Array::value('case', $values, '') . CRM_Utils_System::href(
+        $relationship['relation'] = ($values['case'] ?? '') . CRM_Utils_System::href(
             $values['relation'],
             'civicrm/contact/view/rel',
             "action=view&reset=1&cid={$values['cid']}&id={$values['id']}&rtype={$values['rtype']}");
@@ -2002,7 +2005,10 @@ AND cc.sort_name LIKE '%$name%'";
   }
 
   /**
-   * @inheritdoc
+   * Legacy option getter
+   *
+   * @deprecated
+   * @inheritDoc
    */
   public static function buildOptions($fieldName, $context = NULL, $props = []) {
     // Quickform-specific format, for use when editing relationship type options in a popup from the contact relationship form
@@ -2181,7 +2187,7 @@ SELECT count(*)
            AND owner_membership_id = {$membershipValues['owner_membership_id']}
     AND is_current_member = 1";
     $result = CRM_Core_DAO::singleValueQuery($query);
-    if ($result < CRM_Utils_Array::value('max_related', $membershipValues, PHP_INT_MAX)) {
+    if ($result < ($membershipValues['max_related'] ?? PHP_INT_MAX)) {
       // Convert custom_xx_id fields to custom_xx
       // See https://lab.civicrm.org/dev/membership/-/issues/37
       // This makes sure the value is copied and not the looked up value.

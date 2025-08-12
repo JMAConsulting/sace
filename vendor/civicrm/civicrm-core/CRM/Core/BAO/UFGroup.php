@@ -466,6 +466,7 @@ class CRM_Core_BAO_UFGroup extends CRM_Core_DAO_UFGroup implements \Civi\Core\Ho
       'help_post' => $field->help_post,
       'visibility' => $field->visibility,
       'in_selector' => $field->in_selector,
+      // In core I believe "rule" will never exist anymore in $importableFields since 5.75, but see farther down where it gets set for some input_types.
       'rule' => $importableFields[$field->field_name]['rule'] ?? NULL,
       'location_type_id' => $field->location_type_id ?? NULL,
       'website_type_id' => $field->website_type_id ?? NULL,
@@ -483,6 +484,20 @@ class CRM_Core_BAO_UFGroup extends CRM_Core_DAO_UFGroup implements \Civi\Core\Ho
       'bao' => $fieldMetaData['bao'] ?? NULL,
       'html_type' => $fieldMetaData['html']['type'] ?? NULL,
     ];
+
+    // "rule" used to come from the xml schema, but now we fall back to basing it on the html_type.
+    // It's used for example in buildProfile to add a form rule.
+    if (empty($formattedField['rule'])) {
+      switch ($formattedField['html_type']) {
+        case 'Email':
+          $formattedField['rule'] = 'email';
+          break;
+
+        case 'Url':
+          $formattedField['rule'] = 'url';
+          break;
+      }
+    }
 
     $formattedField = CRM_Utils_Date::addDateMetadataToField($fieldMetaData, $formattedField);
 
@@ -1141,7 +1156,7 @@ class CRM_Core_BAO_UFGroup extends CRM_Core_DAO_UFGroup implements \Civi\Core\Ho
           }
         }
       }
-      elseif (strpos($name, '-') !== FALSE) {
+      elseif (str_contains($name, '-')) {
         [$fieldName, $id, $type] = CRM_Utils_System::explode('-', $name, 3);
 
         if (!in_array($fieldName, $multipleFields)) {
@@ -1359,6 +1374,15 @@ class CRM_Core_BAO_UFGroup extends CRM_Core_DAO_UFGroup implements \Civi\Core\Ho
       $ufJoin->uf_group_id = $event->id;
       $ufJoin->delete();
     }
+  }
+
+  /**
+   * Callback for hook_civicrm_post().
+   * @param \Civi\Core\Event\PostEvent $event
+   * @throws CRM_Core_Exception
+   */
+  public static function self_hook_civicrm_post(\Civi\Core\Event\PostEvent $event) {
+    Civi::cache('metadata')->clear();
   }
 
   /**
@@ -1607,7 +1631,7 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
     // add permissioning for profiles only if not registration
     if (!$skipPermission) {
       $permissionClause = CRM_Core_Permission::ufGroupClause($op, 'civicrm_uf_group.');
-      if (strpos($queryString, 'WHERE') !== FALSE) {
+      if (str_contains($queryString, 'WHERE')) {
         $queryString .= " AND $permissionClause ";
       }
       else {
@@ -1752,13 +1776,11 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
     $selectAttributes = ['class' => 'crm-select2', 'placeholder' => TRUE];
 
     if ($fieldName == 'image_URL' && $mode == CRM_Profile_Form::MODE_EDIT) {
-      $deleteExtra = json_encode(ts('Are you sure you want to delete the contact image?'));
       $deleteURL = [
         CRM_Core_Action::DELETE => [
           'name' => ts('Delete Contact Image'),
           'url' => 'civicrm/contact/image',
-          'qs' => 'reset=1&id=%%id%%&gid=%%gid%%&action=delete&qfKey=%%key%%',
-          'extra' => 'onclick = "' . htmlspecialchars("if (confirm($deleteExtra)) this.href+='&confirmed=1'; else return false;") . '"',
+          'qs' => 'reset=1&id=%%id%%&gid=%%gid%%&action=delete',
         ],
       ];
       $deleteURL = CRM_Core_Action::formLink($deleteURL,
@@ -1766,7 +1788,6 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
         [
           'id' => $form->get('id'),
           'gid' => $form->get('gid'),
-          'key' => $form->controller->_key,
         ],
         ts('more'),
         FALSE,
@@ -1859,7 +1880,7 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
     }
     elseif (in_array($fieldName, ['gender_id', 'communication_style_id'])) {
       $options = [];
-      $pseudoValues = CRM_Core_PseudoConstant::get('CRM_Contact_DAO_Contact', $fieldName);
+      $pseudoValues = CRM_Contact_DAO_Contact::buildOptions($fieldName);
       $form->addRadio($name, ts('%1', [1 => $title]), $pseudoValues, ['allowClear' => !$required], NULL, $required);
     }
     elseif ($fieldName === 'prefix_id' || $fieldName === 'suffix_id') {
@@ -2020,7 +2041,7 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
     elseif ($fieldName === 'soft_credit_type') {
       $name = "soft_credit_type[$rowNumber]";
       $form->add('select', $name, $title,
-        CRM_Core_OptionGroup::values("soft_credit_type"), ['placeholder' => TRUE]
+        CRM_Core_OptionGroup::values("soft_credit_type"), FALSE, ['placeholder' => TRUE]
       );
       //CRM-15350: choose SCT field default value as 'Gift' for membership use
       //else (for contribution), use configured SCT default value
@@ -2317,12 +2338,12 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
                         $defaults[$fldName] = $value[$fieldName];
                       }
                     }
-                    elseif (strpos($fieldName, 'address_custom') === 0 && !empty($value[substr($fieldName, 8)])) {
+                    elseif (str_starts_with($fieldName, 'address_custom') && !empty($value[substr($fieldName, 8)])) {
                       $defaults[$fldName] = self::formatCustomValue($field, $value[substr($fieldName, 8)]);
                     }
                   }
                 }
-                elseif (strpos($fieldName, 'address_custom') === 0 && !empty($value[substr($fieldName, 8)])) {
+                elseif (str_starts_with($fieldName, 'address_custom') && !empty($value[substr($fieldName, 8)])) {
                   $defaults[$fldName] = self::formatCustomValue($field, $value[substr($fieldName, 8)]);
                 }
               }
@@ -2331,7 +2352,6 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
           else {
             if (is_array($details)) {
               if ($fieldName === 'url'
-                && !empty($details['website'])
                 && !empty($details['website'][$locTypeId])
               ) {
                 $defaults[$fldName] = $details['website'][$locTypeId]['url'] ?? NULL;
@@ -2461,7 +2481,7 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
       $fields = array_keys($profileFields);
       foreach ($fields as $val) {
         foreach ($required as $key => $field) {
-          if (strpos($val, $field) === 0) {
+          if (str_starts_with($val, $field)) {
             unset($required[$key]);
           }
         }
@@ -2585,8 +2605,8 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
     [$domainEmailName, $domainEmailAddress] = CRM_Core_BAO_Domain::getNameAndEmail();
 
     if (!$domainEmailAddress || $domainEmailAddress === 'info@EXAMPLE.ORG') {
-      $fixUrl = CRM_Utils_System::url('civicrm/admin/domain', 'action=update&reset=1');
-      CRM_Core_Error::statusBounce(ts('The site administrator needs to enter a valid \'FROM Email Address\' in <a href="%1">Administer CiviCRM &raquo; Communications &raquo; FROM Email Addresses</a>. The email address used may need to be a valid mail account with your email service provider.', [1 => $fixUrl]));
+      $fixUrl = CRM_Utils_System::url('civicrm/admin/options/site_email_address');
+      CRM_Core_Error::statusBounce(ts('The site administrator needs to enter a valid "Site Email Address" in <a href="%1">Administer CiviCRM &raquo; Communications &raquo; Site Email Addresses</a>. The email address used may need to be a valid mail account with your email service provider.', [1 => $fixUrl]));
     }
 
     foreach ($emailList as $emailTo) {
@@ -3159,7 +3179,7 @@ AND    ( entity_id IS NULL OR entity_id <= 0 )
     //check if contact email exist.
     $hasEmails = FALSE;
     foreach ($params as $name => $value) {
-      if (strpos($name, 'email-') !== FALSE) {
+      if (str_contains($name, 'email-')) {
         $hasEmails = TRUE;
         break;
       }
