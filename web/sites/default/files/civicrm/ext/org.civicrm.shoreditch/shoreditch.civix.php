@@ -7,9 +7,9 @@
  * extension.
  */
 class CRM_Shoreditch_ExtensionUtil {
-  const SHORT_NAME = 'shoreditch';
-  const LONG_NAME = 'org.civicrm.shoreditch';
-  const CLASS_PREFIX = 'CRM_Shoreditch';
+  const SHORT_NAME = "shoreditch";
+  const LONG_NAME = "org.civicrm.shoreditch";
+  const CLASS_PREFIX = "CRM_Shoreditch";
 
   /**
    * Translate a string using the extension's domain.
@@ -24,9 +24,9 @@ class CRM_Shoreditch_ExtensionUtil {
    *   Translated text.
    * @see ts
    */
-  public static function ts($text, $params = []) {
+  public static function ts($text, $params = array()) {
     if (!array_key_exists('domain', $params)) {
-      $params['domain'] = [self::LONG_NAME, NULL];
+      $params['domain'] = array(self::LONG_NAME, NULL);
     }
     return ts($text, $params);
   }
@@ -94,15 +94,6 @@ function _shoreditch_civix_civicrm_config(&$config = NULL) {
   $template =& CRM_Core_Smarty::singleton();
 
   $extRoot = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-  $extDir = $extRoot . 'templates';
-
-  if (is_array($template->template_dir)) {
-    array_unshift($template->template_dir, $extDir);
-  }
-  else {
-    $template->template_dir = [$extDir, $template->template_dir];
-  }
-
   $include_path = $extRoot . PATH_SEPARATOR . get_include_path();
   set_include_path($include_path);
 }
@@ -140,7 +131,7 @@ function _shoreditch_civix_civicrm_install() {
 function _shoreditch_civix_civicrm_postInstall() {
   _shoreditch_civix_civicrm_config();
   if ($upgrader = _shoreditch_civix_upgrader()) {
-    if (is_callable([$upgrader, 'onPostInstall'])) {
+    if (is_callable(array($upgrader, 'onPostInstall'))) {
       $upgrader->onPostInstall();
     }
   }
@@ -166,7 +157,7 @@ function _shoreditch_civix_civicrm_uninstall() {
 function _shoreditch_civix_civicrm_enable() {
   _shoreditch_civix_civicrm_config();
   if ($upgrader = _shoreditch_civix_upgrader()) {
-    if (is_callable([$upgrader, 'onEnable'])) {
+    if (is_callable(array($upgrader, 'onEnable'))) {
       $upgrader->onEnable();
     }
   }
@@ -181,7 +172,7 @@ function _shoreditch_civix_civicrm_enable() {
 function _shoreditch_civix_civicrm_disable() {
   _shoreditch_civix_civicrm_config();
   if ($upgrader = _shoreditch_civix_upgrader()) {
-    if (is_callable([$upgrader, 'onDisable'])) {
+    if (is_callable(array($upgrader, 'onDisable'))) {
       $upgrader->onDisable();
     }
   }
@@ -193,9 +184,8 @@ function _shoreditch_civix_civicrm_disable() {
  * @param $op string, the type of operation being performed; 'check' or 'enqueue'
  * @param $queue CRM_Queue_Queue, (for 'enqueue') the modifiable list of pending up upgrade tasks
  *
- * @return mixed
- *   based on op. for 'check', returns array(boolean) (TRUE if upgrades are pending)
- *   for 'enqueue', returns void
+ * @return mixed  based on op. for 'check', returns array(boolean) (TRUE if upgrades are pending)
+ *                for 'enqueue', returns void
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
  */
@@ -218,23 +208,22 @@ function _shoreditch_civix_upgrader() {
 }
 
 /**
- * Search directory tree for files which match a glob pattern.
+ * Search directory tree for files which match a glob pattern
  *
  * Note: Dot-directories (like "..", ".git", or ".svn") will be ignored.
  * Note: In Civi 4.3+, delegate to CRM_Utils_File::findFiles()
  *
- * @param string $dir base dir
- * @param string $pattern , glob pattern, eg "*.txt"
- *
- * @return array
+ * @param $dir string, base dir
+ * @param $pattern string, glob pattern, eg "*.txt"
+ * @return array(string)
  */
 function _shoreditch_civix_find_files($dir, $pattern) {
-  if (is_callable(['CRM_Utils_File', 'findFiles'])) {
+  if (is_callable(array('CRM_Utils_File', 'findFiles'))) {
     return CRM_Utils_File::findFiles($dir, $pattern);
   }
 
-  $todos = [$dir];
-  $result = [];
+  $todos = array($dir);
+  $result = array();
   while (!empty($todos)) {
     $subdir = array_shift($todos);
     foreach (_shoreditch_civix_glob("$subdir/$pattern") as $match) {
@@ -256,7 +245,6 @@ function _shoreditch_civix_find_files($dir, $pattern) {
   }
   return $result;
 }
-
 /**
  * (Delegated) Implements hook_civicrm_managed().
  *
@@ -299,13 +287,14 @@ function _shoreditch_civix_civicrm_caseTypes(&$caseTypes) {
     $name = preg_replace('/\.xml$/', '', basename($file));
     if ($name != CRM_Case_XMLProcessor::mungeCaseType($name)) {
       $errorMessage = sprintf("Case-type file name is malformed (%s vs %s)", $name, CRM_Case_XMLProcessor::mungeCaseType($name));
-      throw new CRM_Core_Exception($errorMessage);
+      CRM_Core_Error::fatal($errorMessage);
+      // throw new CRM_Core_Exception($errorMessage);
     }
-    $caseTypes[$name] = [
+    $caseTypes[$name] = array(
       'module' => E::LONG_NAME,
       'name' => $name,
       'file' => $file,
-    ];
+    );
   }
 }
 
@@ -363,12 +352,11 @@ function _shoreditch_civix_civicrm_themes(&$themes) {
  *
  * @link http://php.net/glob
  * @param string $pattern
- *
- * @return array
+ * @return array, possibly empty
  */
 function _shoreditch_civix_glob($pattern) {
   $result = glob($pattern);
-  return is_array($result) ? $result : [];
+  return is_array($result) ? $result : array();
 }
 
 /**
@@ -379,18 +367,16 @@ function _shoreditch_civix_glob($pattern) {
  *    'Mailing', or 'Administer/System Settings'
  * @param array $item - the item to insert (parent/child attributes will be
  *    filled for you)
- *
- * @return bool
  */
 function _shoreditch_civix_insert_navigation_menu(&$menu, $path, $item) {
   // If we are done going down the path, insert menu
   if (empty($path)) {
-    $menu[] = [
-      'attributes' => array_merge([
+    $menu[] = array(
+      'attributes' => array_merge(array(
         'label'      => CRM_Utils_Array::value('name', $item),
         'active'     => 1,
-      ], $item),
-    ];
+      ), $item),
+    );
     return TRUE;
   }
   else {
@@ -401,9 +387,9 @@ function _shoreditch_civix_insert_navigation_menu(&$menu, $path, $item) {
     foreach ($menu as $key => &$entry) {
       if ($entry['attributes']['name'] == $first) {
         if (!isset($entry['child'])) {
-          $entry['child'] = [];
+          $entry['child'] = array();
         }
-        $found = _shoreditch_civix_insert_navigation_menu($entry['child'], implode('/', $path), $item);
+        $found = _shoreditch_civix_insert_navigation_menu($entry['child'], implode('/', $path), $item, $key);
       }
     }
     return $found;
@@ -414,7 +400,7 @@ function _shoreditch_civix_insert_navigation_menu(&$menu, $path, $item) {
  * (Delegated) Implements hook_civicrm_navigationMenu().
  */
 function _shoreditch_civix_navigationMenu(&$nodes) {
-  if (!is_callable(['CRM_Core_BAO_Navigation', 'fixNavigationMenu'])) {
+  if (!is_callable(array('CRM_Core_BAO_Navigation', 'fixNavigationMenu'))) {
     _shoreditch_civix_fixNavigationMenu($nodes);
   }
 }
@@ -472,6 +458,8 @@ function _shoreditch_civix_civicrm_alterSettingsFolders(&$metaDataFolders = NULL
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
+
 function _shoreditch_civix_civicrm_entityTypes(&$entityTypes) {
-  $entityTypes = array_merge($entityTypes, []);
+  $entityTypes = array_merge($entityTypes, array (
+  ));
 }

@@ -185,5 +185,5 @@ function shoreditch_civicrm_pageRun(&$page) {
  *   TRUE if Shoreditch is the active theme.
  */
 function _shoreditch_isActive() {
-  return Civi::service('themes')->getActiveThemeKey() === 'shoreditch';
+  return Civi::service('themes')->getActiveThemeKey() === 'shoreditch' || CRM_Utils_System::currentPath() === 'civicrm/a';
 }
