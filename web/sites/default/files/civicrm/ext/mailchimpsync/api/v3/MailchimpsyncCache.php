@@ -43,6 +43,7 @@ function _civicrm_api3_mailchimpsync_cache_get_spec(&$spec) {
     'description' => 'Set this to 1 to include related data that is relatively expensive to compute.',
   ];
 }
+
 /**
  * MailchimpsyncCache.get API
  *
@@ -61,10 +62,10 @@ function civicrm_api3_mailchimpsync_cache_get($params) {
     $group_ids = CRM_Mailchimpsync::getAllGroupIds();
     if ($contact_ids && $group_ids) {
       /*
-        // 2019-11-01
+      // 2019-11-01
       // At first I thought this should be live, but actually it makes more sense for us
       // to show whateever is in the cache.
-        // 2019-12-12
+      // 2019-12-12
       // I'm not clear any more on this thinking. Live seems better and it's how the getStats works, too.
       // ? could we call updateCiviCRMGroups for these records now? NO, must not change data in a get request.
 
@@ -73,24 +74,24 @@ function civicrm_api3_mailchimpsync_cache_get($params) {
 
       CRM_Core_DAO::executeQuery("SET SESSION group_concat_max_len = 1000000;");
       $sql = "SELECT contact_id, GROUP_CONCAT(CONCAT_WS(';', group_id, status, date) SEPARATOR '|') subs
-        FROM civicrm_subscription_history h1
-        WHERE
-        group_id IN ($group_ids)
-        AND contact_id IN ($contact_ids)
-        AND NOT EXISTS (
-          SELECT id FROM civicrm_subscription_history h2
-          WHERE h2.group_id = h1.group_id
-          AND h2.contact_id = h1.contact_id
-          AND h2.id > h1.id)
-          GROUP BY contact_id;";
+      FROM civicrm_subscription_history h1
+      WHERE
+      group_id IN ($group_ids)
+      AND contact_id IN ($contact_ids)
+      AND NOT EXISTS (
+      SELECT id FROM civicrm_subscription_history h2
+      WHERE h2.group_id = h1.group_id
+      AND h2.contact_id = h1.contact_id
+      AND h2.id > h1.id)
+      GROUP BY contact_id;";
       $d = CRM_Core_DAO::executeQuery($sql)->fetchMap('subs', 'contact_id');
-      */
+       */
 
       $names = civicrm_api3('Contact', 'get', ['return' => 'display_name', 'id' => ['IN' => $contact_ids]]);
 
       foreach ($returnValues['values'] as &$row) {
         $audience = CRM_Mailchimpsync_Audience::newFromListId($row['mailchimp_list_id']);
-        $parsed = $audience->parseSubs($row['mailchimp_updated'] ?? NULL, $row['civicrm_groups']);
+        $parsed = $audience->parseSubs($row ?? [], $row['civicrm_groups']);
         $row['civicrm_status'] = $parsed[$audience->getSubscriptionGroup()]['status'];
         $row['civicrm_updated'] = $parsed[$audience->getSubscriptionGroup()]['updated'];
         $row['most_recent'] = $parsed[$audience->getSubscriptionGroup()]['mostRecent'];
@@ -108,7 +109,7 @@ function civicrm_api3_mailchimpsync_cache_get($params) {
           WHERE u.mailchimpsync_cache_id = %1
           ORDER BY u.id DESC
           LIMIT 3";
-        $fails = CRM_Core_DAO::executeQuery($sql, [1=>[$row['id'], 'String']]);
+        $fails = CRM_Core_DAO::executeQuery($sql, [1 => [$row['id'], 'String']]);
         $row['errors'] = '';
         $row['updates'] = [];
         while ($fails->fetch()) {
@@ -127,7 +128,7 @@ function civicrm_api3_mailchimpsync_cache_get($params) {
           if ($fail) {
             $update_row['error'] = "{$fail->title}: {$fail->detail}";
             if ($fail->title == 'Member Exists') {
-              $update_row['error'] .= ' ' . E::ts( "One cause of 'Member Exists' errors is that you have two separate contacts in CiviCRM for the same email, which leads to an impossible sync situation (because feasibly you could subscribe one contact and unsubscribe the other!). You should check and merge contacts if you find duplicates." );
+              $update_row['error'] .= ' ' . E::ts("One cause of 'Member Exists' errors is that you have two separate contacts in CiviCRM for the same email, which leads to an impossible sync situation (because feasibly you could subscribe one contact and unsubscribe the other!). You should check and merge contacts if you find duplicates.");
             }
             $update_row['status'] = 'error';
           }
@@ -166,7 +167,7 @@ function civicrm_api3_mailchimpsync_cache_get($params) {
               // Update error message.
               $c = count($list);
               $row['errors'] = "This CiviCRM contact has " . ($c + 1) . " emails. This one is unsubscribed at Mailchimp, "
-                . "but the other " . (($c>1) ? 's' : '') . " - " . implode(' and ', $list) . " are subscribed. This shows as a "
+                . "but the other " . (($c > 1) ? 's' : '') . " - " . implode(' and ', $list) . " are subscribed. This shows as a "
                 . "fail here but it's fine that we're ignoring it.";
             }
             else {

@@ -1,6 +1,6 @@
 site_name: Mailchimp Sync
 repo_url: https://github.com/artfulrobot/mailchimpsync
-theme: 
+theme:
   name: material
 
 markdown_extensions:
@@ -31,6 +31,7 @@ nav:
     - 'FAQ': discussion/faq.md
     - 'Sync failures': discussion/fails.md
 - Reference:
+    - 'Change Log': reference/changes.md
     - 'API Reference': reference/api.md
     - 'Table Reference': reference/tables.md
     - 'Sync Details': reference/sync-detail.md

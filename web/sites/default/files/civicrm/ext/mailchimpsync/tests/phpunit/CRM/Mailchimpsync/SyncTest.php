@@ -17,13 +17,16 @@ use Civi\Test\TransactionalInterface;
 class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
   use CRM_Mailchimpsync_FixturesTrait;
 
-  /** @var CRM_Mailchimpsync_MailchimpApiMock */
+  /**
+   * @var CRM_Mailchimpsync_MailchimpApiMock*/
   public $api;
 
-  /** @var string 2019-09-23 type dates */
+  /**
+   * @var string20190923typedates*/
   public $a_week_ago;
   public static $already_recreated_db = FALSE;
   public $yesterday;
+
   public function setUpHeadless() {
 
     // Set this TRUE after changing schema etc.
@@ -45,7 +48,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       ->apply($force_recreate_database);
   }
 
-  public function setUp() {
+  public function setUp(): void {
     $this->a_week_ago = date('Y-m-d', strtotime('today - 1 week'));
     $this->yesterday = date('Y-m-d', strtotime('yesterday'));
     // Clean out our sync table (don't use TRUNCATE, doesn't play well with transactional rollback)
@@ -57,7 +60,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     parent::setUp();
   }
 
-  public function tearDown() {
+  public function tearDown(): void {
     parent::tearDown();
   }
 
@@ -128,10 +131,10 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'Wilma'  , 'lname' => 'Flintstone', 'email' => 'wilma@example.com'  , 'status' => 'subscribed'   , 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Betty'  , 'lname' => 'Rubble'    , 'email' => 'betty@example.com'  , 'status' => 'subscribed'   , 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Barney' , 'lname' => 'Rubble'    , 'email' => 'barney@example.com' , 'status' => 'unsubscribed' , 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Wilma'  , 'lname' => 'Flintstone', 'email' => 'wilma@example.com'  , 'status' => 'subscribed'   , 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Betty'  , 'lname' => 'Rubble'    , 'email' => 'betty@example.com'  , 'status' => 'subscribed'   , 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Barney' , 'lname' => 'Rubble'    , 'email' => 'barney@example.com' , 'status' => 'unsubscribed' , 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
@@ -179,15 +182,15 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago],
         ],
       ],
       'list_2' => [
         'members' => [
-          [ 'fname' => 'Bam Bam', 'lname' => 'Flintstone', 'email' => 'bambam@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Bam Bam', 'lname' => 'Flintstone', 'email' => 'bambam@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
@@ -204,7 +207,6 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $status = $audiences[1]->getStatus();
     $this->assertEquals('Called but locks say process already busy. Will not do anything.', $status['log'][0]['message'] ?? '');
     $this->assertEquals('busy', $status['locks']['fetchAndReconcile']);
-
 
     // Now do a fetch and reconcile on list 2 - this should NOT be blocked.
     $audiences[2]->fetchAndReconcile([]);
@@ -228,15 +230,15 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago],
         ],
       ],
       'list_2' => [
         'members' => [
-          [ 'fname' => 'Bam Bam', 'lname' => 'Flintstone', 'email' => 'bambam@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Bam Bam', 'lname' => 'Flintstone', 'email' => 'bambam@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
@@ -264,15 +266,15 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'Bam Bam', 'lname' => 'Flintstone', 'email' => 'bambam@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Bam Bam', 'lname' => 'Flintstone', 'email' => 'bambam@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
         ],
       ],
       'list_2' => [
         'members' => [
-          [ 'fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
@@ -319,7 +321,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     // Create cache record for contact 2, without Mailchimp ID
     $sql = "INSERT INTO civicrm_mailchimpsync_cache (mailchimp_list_id, civicrm_contact_id)
             VALUES('list_1', %1)";
-    CRM_Core_DAO::executeQuery($sql, [ 1 => [$contact_2, 'Integer'] ]);
+    CRM_Core_DAO::executeQuery($sql, [1 => [$contact_2, 'Integer']]);
 
     // Soft Delete contacts
     civicrm_api3('Contact', 'delete', ['id' => $contact_2]);
@@ -341,7 +343,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     // Now it's just left in for the note.
     //
     // Fully delete contact 1 - the FK should delete the cahce record for us.
-    civicrm_api3('Contact', 'delete', ['id' => $contact_1, 'skip_undelete'=>1]);
+    civicrm_api3('Contact', 'delete', ['id' => $contact_1, 'skip_undelete' => 1]);
     // Do work we want to test:
     $affected = $audience->removeInvalidContactIds();
     // check expectations
@@ -349,6 +351,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(0, $affected['deleted'], "Expected removeInvalidContactIds not to delete any cache rows");
 
   }
+
   public function testContactsMatchedByEmail() {
     $default_stats = [
       'found_by_single_email'                           => 0,
@@ -382,7 +385,6 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(1, $bao->find(1), "Failed to find contact1 (test 1)");
     $this->assertEquals($contact_1, $bao->civicrm_contact_id, "Failed to populate contact_id (test 1)");
 
-
     //
     // Now reset the cache, add a 2nd duplicate email to the same contact and retry.
     CRM_Core_DAO::executeQuery('UPDATE civicrm_mailchimpsync_cache SET civicrm_contact_id = NULL');
@@ -392,8 +394,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $stats = $audience->populateMissingContactIds();
     $this->assertEquals([
       'found_by_single_email' => 1,
-      ] + $default_stats
-      , array_intersect_key($stats, $default_stats), "Failed to populate contact from email (test 2)");
+    ] + $default_stats,
+       array_intersect_key($stats, $default_stats), "Failed to populate contact from email (test 2)");
     // Check it found the right contact.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->mailchimp_email = 'contact1@example.com';
@@ -438,7 +440,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     // Algorithm should now choose contact 2 which will have lower ID.
     //
     CRM_Core_DAO::executeQuery('UPDATE civicrm_mailchimpsync_cache SET civicrm_contact_id = NULL');
-    civicrm_api3('Contact', 'delete', ['id' => $contact_1, 'skip_undelete'=>1]);
+    civicrm_api3('Contact', 'delete', ['id' => $contact_1, 'skip_undelete' => 1]);
     $contact_1 = (int) civicrm_api3('Contact', 'create', ['contact_type' => 'Individual', 'first_name' => 'test1', 'email' => 'contact1@example.com'])['id'];
     $stats = $audience->populateMissingContactIds();
     $this->assertEquals(['used_first_undeleted_contact' => 1] + $default_stats,
@@ -458,6 +460,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       "Expected to have one contact remaining");
 
   }
+
   public function testContactsCreated() {
     // Create records without contact id.
     $sql = "INSERT INTO civicrm_mailchimpsync_cache (mailchimp_member_id, mailchimp_list_id, mailchimp_email, mailchimp_status)
@@ -498,6 +501,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     }
 
   }
+
   /**
    */
   public function testCiviOnly() {
@@ -531,6 +535,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $bao->civicrm_contact_id = $contact_2;
     $this->assertEquals(1, $bao->count());
   }
+
   /**
    */
   public function testAddCiviOnlyDoesNotAddDeleted() {
@@ -550,6 +555,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     // Check
     $this->assertEquals(0, $added, "Should not add deleted contacts");
   }
+
   /**
    *
    * Various tests on reconciling the subscription group.
@@ -569,7 +575,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $contact_1 = (int) civicrm_api3('Contact', 'create', [
       'contact_type' => 'Individual',
       'first_name' => 'test1',
-      'email' => 'contact1@example.com'])['id'];
+      'email' => 'contact1@example.com',
+    ])['id'];
 
     // Create cache record manually for our fixture.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -604,23 +611,23 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       // Allow overriding the civicrm_updated for test.
       /*
       CRM_Core_DAO::executeQuery(
-        'UPDATE civicrm_subscription_history
-          SET date = %1
-          WHERE contact_id = %2 AND group_id = %3',
-        [
-          1 => [$civicrm_updated, 'String'],
-          2 => [$bao->civicrm_contact_id, 'Integer'],
-          3 => [$audience->getSubscriptionGroup(), 'Integer']
-        ]);
+      'UPDATE civicrm_subscription_history
+      SET date = %1
+      WHERE contact_id = %2 AND group_id = %3',
+      [
+      1 => [$civicrm_updated, 'String'],
+      2 => [$bao->civicrm_contact_id, 'Integer'],
+      3 => [$audience->getSubscriptionGroup(), 'Integer']
+      ]);
       $bao->civicrm_updated = $civicrm_updated;
-      */
+       */
 
     }
     $bao->save();
 
     // Now it's all set up, run reconciliation then test expected outcomes.
     $updates = [];
-    $subs = $audience->parseSubs($bao->mailchimp_updated, $bao->civicrm_groups);
+    $subs = $audience->parseSubs($bao, $bao->civicrm_groups);
     $audience->reconcileSubscriptionGroup($updates, $bao, $subs);
 
     $this->assertEquals($data['expected_mailchimp_updates'], $updates, "$description Mailchimp updates differ");
@@ -631,20 +638,20 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     switch ($data['expected_group_status']) {
 
-    case null:
-    case 'Deleted':
-      // Expect there to be no group membership for this contact.
-      $this->assertEquals(0, $gc->find(), "$description Found group contact record, expected none.");
-      break;
+      case NULL:
+      case 'Deleted':
+        // Expect there to be no group membership for this contact.
+        $this->assertEquals(0, $gc->find(), "$description Found group contact record, expected none.");
+        break;
 
-    case 'Added':
-    case 'Removed':
-      $this->assertEquals(1, $gc->find(1), "$description No GroupContact record.");
-      $this->assertEquals($data['expected_group_status'], $gc->status, "$description Group contact record wrong.");
-      break;
+      case 'Added':
+      case 'Removed':
+        $this->assertEquals(1, $gc->find(1), "$description No GroupContact record.");
+        $this->assertEquals($data['expected_group_status'], $gc->status, "$description Group contact record wrong.");
+        break;
 
-    default:
-      throw new Exception("Invalid exepcted_group_status: $data[expected_group_status]");
+      default:
+        throw new Exception("Invalid exepcted_group_status: $data[expected_group_status]");
     }
   }
 
@@ -654,14 +661,15 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
    *
    * @dataProvider reconcileIssue9DataProvider
    */
-  public function testReconcileIssue9($description, $mailchimp_status_1, $mailchimp_status_2, $civicrm_status, $expected_civicrm_status, $expect_cannot_sync=FALSE) {
+  public function testReconcileIssue9($description, $mailchimp_status_1, $mailchimp_status_2, $civicrm_status, $expected_civicrm_status, $expect_cannot_sync = FALSE) {
     $audience = $this->createConfigFixture1AndGetAudience(TRUE);
 
     // Create one test contact.
     $contact_1 = (int) civicrm_api3('Contact', 'create', [
       'contact_type' => 'Individual',
       'first_name'   => 'test1',
-      'email'        => 'contact1@example.com'])['id'];
+      'email'        => 'contact1@example.com',
+    ])['id'];
 
     // Add a 2nd email for this contact.
     civicrm_api3('Email', 'create', ['email' => 'email2@example.com', 'contact_id' => $contact_1]);
@@ -704,7 +712,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     // Now it's all set up, run reconciliation, first for cache_1, then 2.
     $updates = [];
-    $subs = $audience->parseSubs($cache_1->mailchimp_updated, $cache_1->civicrm_groups);
+    $subs = $audience->parseSubs($cache_1, $cache_1->civicrm_groups);
     try {
       $audience->reconcileSubscriptionGroup($updates, $cache_1, $subs);
     }
@@ -717,7 +725,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals([], $updates, "Expected no updates to Mailchimp.");
     $updates = [];
     // ... 2nd cache record.
-    $subs = $audience->parseSubs($cache_2->mailchimp_updated, $cache_2->civicrm_groups);
+    $subs = $audience->parseSubs($cache_2, $cache_2->civicrm_groups);
     try {
       $audience->reconcileSubscriptionGroup($updates, $cache_2, $subs);
     }
@@ -750,21 +758,21 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'unsubscribed', 'unsubscribed',
         'Added',
         'Removed',
-        FALSE
+        FALSE,
       ],
       [
         'cleaned/unsubscribed means Removed',
         'cleaned', 'unsubscribed',
         'Added',
         'Removed',
-        FALSE
+        FALSE,
       ],
       [
         'cleaned/unsubscribed means Removed',
         'unsubscribed', 'cleaned',
         'Added',
         'Removed',
-        FALSE
+        FALSE,
 
       ],
       [
@@ -772,7 +780,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'subscribed', 'subscribed',
         'Added',
         'Added',
-        FALSE
+        FALSE,
 
       ],
       [
@@ -780,14 +788,14 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'subscribed', 'subscribed',
         'Removed',
         'Added',
-        FALSE
+        FALSE,
       ],
       [
         'cleaned/unsubscribed means Removed - should stay removed',
         'unsubscribed', 'cleaned',
         'Removed',
         'Removed',
-        FALSE
+        FALSE,
       ],
       // The following fail under issue#9
       [
@@ -795,21 +803,21 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'unsubscribed', 'subscribed',
         'Added',
         'Added',
-        TRUE
+        TRUE,
       ],
       [
         'subscribed/unsubscribed means Added',
         'subscribed', 'unsubscribed',
         'Added',
         'Added',
-        TRUE
+        TRUE,
       ],
       [
         'subscribed/cleaned means Added',
         'subscribed', 'cleaned',
         'Added',
         'Added',
-        TRUE
+        TRUE,
       ],
       // These tests check when CiviCRM was not subscribed.
       // They pass pre issue9
@@ -819,7 +827,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'unsubscribed', 'unsubscribed',
         'Removed',
         'Removed',
-        FALSE
+        FALSE,
       ],
       // #11
       [
@@ -827,7 +835,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'unsubscribed', 'subscribed',
         'Removed',
         'Added',
-        FALSE
+        FALSE,
       ],
       // #12
       [
@@ -835,7 +843,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'subscribed', 'unsubscribed',
         'Removed',
         'Added',
-        FALSE
+        FALSE,
       ],
       // #13
       [
@@ -843,10 +851,11 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'subscribed', 'cleaned',
         'Removed',
         'Added',
-        FALSE
+        FALSE,
       ],
     ];
   }
+
   /**
    * Provides test cases for testReconcileSubscriptionGroup
    *
@@ -856,22 +865,24 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     return [
       [[
         'description' => "New contact at Mailchimp",
-        'civicrm_status' => null,
-        'civicrm_updated' => null,
+        'civicrm_status' => NULL,
+        'civicrm_updated' => NULL,
         'mailchimp_status' => 'subscribed',
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "New contact at CiviCRM",
         'civicrm_status' => 'Added',
         'civicrm_updated' => $today,
-        'mailchimp_status' => null,
-        'mailchimp_updated' => null,
+        'mailchimp_status' => NULL,
+        'mailchimp_updated' => NULL,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => ['email_address' => 'contact1@example.com', 'status' => 'subscribed'],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contacts both subscribed, civi later",
         'civicrm_status' => 'Added',
@@ -880,7 +891,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $this->yesterday,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contacts both subscribed, mailchimp later",
         'civicrm_status' => 'Added',
@@ -889,7 +901,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contacts both unsubscribed, mailchimp later",
         'civicrm_status' => 'Removed',
@@ -898,7 +911,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Removed',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contacts both unsubscribed, civi later",
         'civicrm_status' => 'Removed',
@@ -907,7 +921,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $this->yesterday,
         'expected_group_status' => 'Removed',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has unsubscribed at Mailchimp, CiviCRM should update",
         'civicrm_status' => 'Added',
@@ -916,7 +931,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Removed',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has been archived at Mailchimp, CiviCRM should update",
         'civicrm_status' => 'Added',
@@ -925,7 +941,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Removed',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has been cleaned at Mailchimp, CiviCRM should update",
         'civicrm_status' => 'Added',
@@ -934,7 +951,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Removed',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has been subscribed again at CiviCRM, mailchimp should update",
         'civicrm_status' => 'Added',
@@ -943,7 +961,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $this->yesterday,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => ['status' => 'subscribed'],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has been subscribed again at CiviCRM, mailchimp should update unarchive",
         'civicrm_status' => 'Added',
@@ -952,7 +971,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $this->yesterday,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => ['status' => 'subscribed'],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has been unsubscribed at CiviCRM, mailchimp should update unarchive",
         'civicrm_status' => 'Removed',
@@ -961,7 +981,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $this->yesterday,
         'expected_group_status' => 'Removed',
         'expected_mailchimp_updates' => ['status' => 'unsubscribed'],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has been subscribed at Mailchimp, CiviCRM should update from Removed",
         'civicrm_status' => 'Removed',
@@ -970,7 +991,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact has been subscribed at Mailchimp, CiviCRM should update from Deleted",
         'civicrm_status' => 'Deleted',
@@ -979,7 +1001,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Added',
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
       [[
         'description' => "Contact was subscribed at CiviCRM, is unsubscribed at Mailchimp and was updated in the same second. CiviCRM should win.",
         'civicrm_status' => 'Added',
@@ -987,21 +1010,24 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'mailchimp_status' => 'unsubscribed',
         'mailchimp_updated' => $today,
         'expected_group_status' => 'Added',
-        'expected_mailchimp_updates' => ['status'=>'subscribed'],
-      ]],
+        'expected_mailchimp_updates' => ['status' => 'subscribed'],
+      ],
+      ],
 
       [[
         'description' => "Strange case (should never happen) where contact apparently exists nowhere",
-        'civicrm_status' => null,
-        'civicrm_updated' => null,
-        'mailchimp_status' => null,
-        'mailchimp_updated' => null,
-        'expected_group_status' => null,
+        'civicrm_status' => NULL,
+        'civicrm_updated' => NULL,
+        'mailchimp_status' => NULL,
+        'mailchimp_updated' => NULL,
+        'expected_group_status' => NULL,
         'expected_mailchimp_updates' => [],
-      ]],
+      ],
+      ],
 
     ];
   }
+
   /**
    * Test tag sync.
    */
@@ -1012,25 +1038,30 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $contact_1 = (int) civicrm_api3('Contact', 'create', [
       'contact_type' => 'Individual',
       'first_name' => 'test1',
-      'email' => 'contact1@example.com'])['id'];
+      'last_name' => 'noname',
+      'email' => 'contact1@example.com',
+    ])['id'];
 
-    // Add the Volunteer and Major Donor tags (which are defined by the example dataset)
-    $tags = CRM_Core_DAO::executeQuery( "SELECT id, name FROM civicrm_tag WHERE used_for='civicrm_contact'")->fetchMap('name', 'id');
+    // Add the Volunteer and Major_Donor tags (which are defined by the example dataset)
+    $tags = CRM_Core_DAO::executeQuery("SELECT id, name FROM civicrm_tag WHERE used_for='civicrm_contact'")->fetchMap('name', 'id');
     civicrm_api3('EntityTag', 'create', [
       'tag_id' => $tags['Volunteer'],
       'entity_table' => 'civicrm_contact',
       'entity_id' => $contact_1,
     ]);
     $md_entity_tag_id = civicrm_api3('EntityTag', 'create', [
-      'tag_id' => $tags['Major Donor'],
+      'tag_id' => $tags['Major_Donor'],
       'entity_table' => 'civicrm_contact',
       'entity_id' => $contact_1,
     ]);
 
     // Delete the other tags as it makes it hard to test!
-    civicrm_api3('Tag', 'delete', ['id' => 1]); // Non-profit
-    civicrm_api3('Tag', 'delete', ['id' => 2]); // Company
-    civicrm_api3('Tag', 'delete', ['id' => 3]); // Governmment Entity
+    // Non-profit
+    civicrm_api3('Tag', 'delete', ['id' => 1]);
+    // Company
+    civicrm_api3('Tag', 'delete', ['id' => 2]);
+    // Governmment Entity
+    civicrm_api3('Tag', 'delete', ['id' => 3]);
 
     // Create cache record manually for our fixture.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -1051,7 +1082,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;
     $bao->find(TRUE);
-    $audience->reconcileQueueItem($bao, $with_data=TRUE);
+    $audience->reconcileQueueItem($bao, $with_data = TRUE);
 
     // Reload the cache entry, check it's like we expected.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -1061,23 +1092,27 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $data = unserialize($bao->civicrm_data);
     $this->assertEquals('live', $bao->sync_status);
     $this->assertEquals([
-      'mcs_tags' => [ 'previous' => '4,5' ]
+      'mcs_tags' => ['previous' => '4,5'],
+      'mcs_names' => ['previous' => ['first_name' => 'test1', 'last_name' => 'noname']],
     ], $data, "CiviCRM data not as expected (did hook fire?).");
 
     // We expect one update.
     $update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
     $update->mailchimpsync_cache_id = $cache_id;
-    $this->assertEquals(1, $update->find(), "Expected one update.");
+    $count = $update->find();
+    $this->assertEquals(1, $count, "Expected one update.");
     $update->fetch();
     $data = json_decode($update->data, TRUE);
-    $this->assertEquals(['tags' => [
-          ['name' => 'CiviCRM: Major Donor', 'status' => 'active'],
-          ['name' => 'CiviCRM: Volunteer',   'status' => 'active'],
-        ]], $data);
+    $this->assertEquals([
+      'merge_fields' => ['FNAME' => 'test1', 'LNAME' => 'noname'],
+      'tags' => [
+          ['name' => 'CiviCRM: Major_Donor', 'status' => 'active'],
+          ['name' => 'CiviCRM: Volunteer', 'status' => 'active'],
+      ],
+    ], $data);
 
     // ok for testing purposes let's just delete that update now.
     $update->delete();
-
 
     // ---------------------------------------------------------------
     // 2nd test.
@@ -1092,7 +1127,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;
     $bao->find(TRUE);
-    $audience->reconcileQueueItem($bao, $with_data=TRUE);
+    $audience->reconcileQueueItem($bao, $with_data = TRUE);
 
     // Reload the cache entry, check it's like we expected.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -1102,7 +1137,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $data = unserialize($bao->civicrm_data);
     $this->assertEquals('live', $bao->sync_status);
     $this->assertEquals([
-      'mcs_tags' => [ 'previous' => '4' ]
+      'mcs_names' => ['previous' => ['first_name' => 'test1', 'last_name' => 'noname']],
+      'mcs_tags' => ['previous' => '4'],
     ], $data, "CiviCRM data not as expected (did hook fire?).");
 
     // We expect one update.
@@ -1111,10 +1147,12 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(1, $update->find(), "Expected one update.");
     $update->fetch();
     $data = json_decode($update->data, TRUE);
-    $this->assertEquals(['tags' => [
-          ['name' => 'CiviCRM: Major Donor', 'status' => 'active'],
-          ['name' => 'CiviCRM: Volunteer',   'status' => 'inactive'],
-        ]], $data);
+    $this->assertEquals([
+      'tags' => [
+          ['name' => 'CiviCRM: Major_Donor', 'status' => 'active'],
+          ['name' => 'CiviCRM: Volunteer', 'status' => 'inactive'],
+      ],
+    ], $data);
 
     // ok for testing purposes let's just delete that update now.
     $update->delete();
@@ -1125,7 +1163,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;
     $bao->find(TRUE);
-    $audience->reconcileQueueItem($bao, $with_data=TRUE);
+    $audience->reconcileQueueItem($bao, $with_data = TRUE);
 
     // Reload the cache entry, check it's like we expected.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -1135,7 +1173,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $data = unserialize($bao->civicrm_data);
     $this->assertEquals('ok', $bao->sync_status);
     $this->assertEquals([
-      'mcs_tags' => [ 'previous' => '4' ]
+      'mcs_names' => ['previous' => ['first_name' => 'test1', 'last_name' => 'noname']],
+      'mcs_tags' => ['previous' => '4'],
     ], $data, "CiviCRM data not as expected (did hook fire?).");
 
     // We expect no updates.
@@ -1145,6 +1184,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $update->fetch();
 
   }
+
   /**
    *
    */
@@ -1172,6 +1212,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals('live', $cache_entry->sync_status);
 
   }
+
   /**
    * Pretty much duplicate of testReconcileQueueItemQueuesUpdate but at higher level.
    */
@@ -1200,6 +1241,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals('live', $cache_entry->sync_status);
 
   }
+
   /**
    */
   public function testBatchSubmission() {
@@ -1208,7 +1250,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $_ = $this->createConfig2();
     $audience = $_->audience;
     // Add a 2nd contact that's already known to both systems.
-    $contact_2 = (int) civicrm_api3('Contact', 'create', ['contact_type' => 'Individual', 'first_name' => 'test2', 'email' => 'contact2@example.com'])['id'];
+    $contact_2 = (int) civicrm_api3('Contact', 'create', ['contact_type' => 'Individual', 'first_name' => 'test2', 'last_name' => 'test2lname', 'email' => 'contact2@example.com'])['id'];
     // Create cache record manually for our fixture.
     $cache_entry = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $cache_entry->civicrm_contact_id = $contact_2;
@@ -1217,7 +1259,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $cache_entry->mailchimp_email = 'contact2@example.com';
     $cache_entry->mailchimp_member_id = md5('contact2@example.com');
     $cache_entry->mailchimp_status = 'unsubscribed';
-    $cache_entry->mailchimp_updated = '2000-01-01'; // old
+    // old
+    $cache_entry->mailchimp_updated = '2000-01-01';
     $cache_entry->subscribeInCiviCRM($audience);
     $cache_entry->save();
 
@@ -1249,8 +1292,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api = $audience->getMailchimpApi();
 
     $got = $api->batches;
-    $this->assertInternalType('string', $got['batch_0']['operations'][0]['body'] ?? NULL);
-    $this->assertInternalType('string', $got['batch_0']['operations'][1]['body'] ?? NULL);
+    $this->assertIsString($got['batch_0']['operations'][0]['body'] ?? NULL);
+    $this->assertIsString($got['batch_0']['operations'][1]['body'] ?? NULL);
     // Decode the json because we can't guarantee the order it gets serialised in.
     $got['batch_0']['operations'][0]['body'] = json_decode($got['batch_0']['operations'][0]['body'], TRUE);
     $got['batch_0']['operations'][1]['body'] = json_decode($got['batch_0']['operations'][1]['body'], TRUE);
@@ -1267,7 +1310,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
               'skip_merge_validation' => TRUE,
               'email_address' => 'contact1@example.com',
               'status' => 'subscribed',
-            ]
+            ],
           ],
           [
             'method' => 'PUT',
@@ -1277,22 +1320,22 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
               'skip_merge_validation' => TRUE,
               'email_address' => 'contact2@example.com',
               'status' => 'subscribed',
-            ]
-          ]
-        ]
-      ]
+            ],
+          ],
+        ],
+      ],
     ], $got, "Failed checking batches were created as expected.");
   }
-  /**
-   * @expectedException CRM_Mailchimpsync_BatchWebhookNotRelevantException
-   */
+
   public function testBatchWebhookProcessDoesNotProcessUnknownBatch() {
+    $this->expectException(CRM_Mailchimpsync_BatchWebhookNotRelevantException::class);
     $wh = new CRM_Mailchimpsync_Page_BatchWebhook();
     $wh->processWebhook([
       'type' => 'batch_operation_completed',
-      'data' => [ 'id' => '123456789a' ],
+      'data' => ['id' => '123456789a'],
     ]);
   }
+
   /**
    */
   public function testBatchWebhookCanProcessSuccessInSingleFile() {
@@ -1304,23 +1347,24 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     // Now mock the responses
     $api->setMockMailchimpBatchResults('https://example.com/batch-1-results', [
       'file_uno.json' => [
-      'data' => [
-        'operation_id' => 'mailchimpsync_' . $various->update_id,
-        'status_code' => 200,
-        'response' => json_encode([
-          'email_address' => 'contact1@example.com',
-          'status' => 'subscribed',
-          'id' => $api->getMailchimpMemberIdFromEmail('contact1@example.com'),
-          'last_changed' => date('YmdHis'),
-        ]),
-      ]]
+        'data' => [
+          'operation_id' => 'mailchimpsync_' . $various->update_id,
+          'status_code' => 200,
+          'response' => json_encode([
+            'email_address' => 'contact1@example.com',
+            'status' => 'subscribed',
+            'id' => $api->getMailchimpMemberIdFromEmail('contact1@example.com'),
+            'last_changed' => date('YmdHis'),
+          ]),
+        ],
+      ],
     ]);
 
     // Call the thing we want to test.
     $wh = new CRM_Mailchimpsync_Page_BatchWebhook();
     $wh->processWebhook([
       'type' => 'batch_operation_completed',
-      'data' => [ 'id' => '123456789a' ],
+      'data' => ['id' => '123456789a'],
     ]);
 
     // Load the batch, make sure it's been updated.
@@ -1346,6 +1390,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(1, $cache->find(1));
     $this->assertEquals('ok', $cache->sync_status);
   }
+
   /**
    * For some reason Mailchimp's batch responses sometimes come in multiple tarred files.
    */
@@ -1366,7 +1411,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $cache_entry_2->civicrm_updated = $this->yesterday;
     $cache_entry_2->sync_status = 'live';
     $cache_entry_2->save();
-    $various->cache_entry_2_id=$cache_entry_2->id;
+    $various->cache_entry_2_id = $cache_entry_2->id;
     // Create second update
     $update2 = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
     $update2->mailchimpsync_batch_id = $various->batch_id;
@@ -1384,7 +1429,6 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'errored_operations' => 0,
       'total_operations' => 2,
     ]);
-
 
     $api->setMockMailchimpBatchResults('https://example.com/batch-1-results', [
       'file_uno.json' => [
@@ -1409,15 +1453,15 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
             'id' => $api->getMailchimpMemberIdFromEmail('contact1@example.com'),
             'last_changed' => date('YmdHis'),
           ]),
-        ]
-      ]
+        ],
+      ],
     ]);
 
     // Call the thing we want to test.
     $wh = new CRM_Mailchimpsync_Page_BatchWebhook();
     $wh->processWebhook([
       'type' => 'batch_operation_completed',
-      'data' => [ 'id' => '123456789a' ],
+      'data' => ['id' => '123456789a'],
     ]);
 
     // Load the batch, make sure it's been updated.
@@ -1456,6 +1500,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     //$this->dumpTables();
   }
+
   /**
    * It's feasible that a cache entry has two updates pending.
    *
@@ -1502,7 +1547,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $wh = new CRM_Mailchimpsync_Page_BatchWebhook();
     $wh->processWebhook([
       'type' => 'batch_operation_completed',
-      'data' => [ 'id' => '123456789a' ],
+      'data' => ['id' => '123456789a'],
     ]);
 
     // Load the batch, make sure it's been updated.
@@ -1542,6 +1587,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     //$this->dumpTables();
   }
+
   /**
    * If we try to subscribe someone and get an error about compliance,
    * we can retry to set them 'pending' which causes Mailchimp itself to send
@@ -1574,7 +1620,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
@@ -1592,11 +1638,14 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     // Call the thing we want to test:
     $returned_error = [
-        'title' => 'Member In Compliance State',
-        'status' => 400, // we don't test this
-        'detail' => '...', // we don't test this
-        'type' => '...', // we don't test this
-      ];
+      'title' => 'Member In Compliance State',
+    // we don't test this
+      'status' => 400,
+    // we don't test this
+      'detail' => '...',
+    // we don't test this
+      'type' => '...',
+    ];
     $update->handleMailchimpUpdatesResponse([
       'status_code' => 400,
       'response' => $returned_error,
@@ -1675,6 +1724,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals('live', $cache->sync_status);
 
   }
+
   /**
    * If we try to subscribe someone and get an error not about compliance,
    * we have to flag it as failed.
@@ -1691,9 +1741,9 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     // Call the thing we want to test:
     $returned_error = [
-        'title' => 'No way, this person hates you.',
+      'title' => 'No way, this person hates you.',
         // Mailchimp has some other bits here
-      ];
+    ];
     $update->handleMailchimpUpdatesResponse([
       'status_code' => 400,
       'response' => $returned_error,
@@ -1714,6 +1764,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     //$this->dumpTables();
   }
+
   /**
    */
   public function testWebhookHandlesSubscribe() {
@@ -1729,7 +1780,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'data' => [
         'list_id' => 'list_1',
         'email' => 'wilma@example.com',
-      ]
+      ],
     ]);
 
     // We should now have wilma in the database.
@@ -1745,7 +1796,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'data' => [
         'list_id' => 'list_1',
         'email' => 'wilma@example.com',
-      ]
+      ],
     ]);
 
     // We should now have wilma in the database.
@@ -1754,6 +1805,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertContactIsInGroup($c['id'], $audience->getSubscriptionGroup());
 
   }
+
   /**
    * Test profile updates are handled.
    *
@@ -1771,23 +1823,22 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'test1', 'lname' => '', 'email' => 'contact1@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'test1', 'lname' => '', 'email' => 'contact1@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
 
-
     // Update cache to be in sync with mailchimp.
     $cache_entry->mailchimp_status = 'subscribed';
     $cache_entry->mailchimp_updated = date('YmdHis');
-    $cache_entry->mailchimp_id = $api->getMailchimpMemberIdFromEmail($cache_entry->mailchimp_email);
+    $cache_entry->mailchimp_id = $api->getMailchimpMemberIdFromEmail('contact1@example.com');
     $cache_entry->save();
 
     // Now change data.
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'test1', 'lname' => 'Changed', 'email' => 'contact1@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'test1', 'lname' => 'Changed', 'email' => 'contact1@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
@@ -1802,8 +1853,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'merges' => [
           'FNAME' => '',
           'LNAME' => 'Changed',
-        ]
-      ]
+        ],
+      ],
     ]);
 
     // We should now have wilma in the database.
@@ -1813,6 +1864,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals('Changed', $c['last_name']);
 
   }
+
   /**
    */
   public function testWebhookHandlesUnsubscribe() {
@@ -1850,7 +1902,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'test1', 'lname' => '', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => date('YmdHis', time() + 2) ],
+          ['fname' => 'test1', 'lname' => 'noname', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => date('YmdHis', time() + 2)],
         ],
       ],
     ]);
@@ -1862,7 +1914,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'data' => [
         'list_id' => 'list_1',
         'email'   => 'contact1@example.com',
-      ]
+      ],
     ]);
 
     $c = civicrm_api3('contact', 'getsingle', ['id' => $cache_entry->civicrm_contact_id]);
@@ -1881,6 +1933,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(1, $update2->find(1));
     $this->assertEquals("", $update2->error_response);
   }
+
   /**
    */
   public function testWebhookHandlesCleaned() {
@@ -1902,7 +1955,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'test1', 'lname' => '', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => date('YmdHis', time() + 2) ],
+          ['fname' => 'test1', 'lname' => 'noname', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => date('YmdHis', time() + 2)],
         ],
       ],
     ]);
@@ -1914,7 +1967,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'data' => [
         'list_id' => 'list_1',
         'email'   => 'contact1@example.com',
-      ]
+      ],
     ]);
 
     $c = civicrm_api3('contact', 'getsingle', ['id' => $cache_entry->civicrm_contact_id]);
@@ -1924,6 +1977,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $email = civicrm_api3('Email', 'getsingle', ['email' => 'contact1@example.com']);
     $this->assertEquals(1, $email['on_hold'], "Email is not on hold, but should be");
   }
+
   /**
    */
   public function testWebhookHandlesEmailUpdate() {
@@ -1945,7 +1999,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'test1', 'lname' => '', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => date('YmdHis', time() + 2) ],
+          ['fname' => 'test1', 'lname' => 'noname', 'email' => 'contact1@example.com', 'status' => 'unsubscribed', 'last_changed' => date('YmdHis', time() + 2)],
         ],
       ],
     ]);
@@ -1958,14 +2012,17 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
         'list_id' => 'list_1',
         'old_email'   => 'contact1@example.com',
         'new_email'   => 'contact1@example.uk',
-      ]
+      ],
     ]);
 
     // Check the email was put on hold.
     $email = civicrm_api3('Email', 'getsingle', ['email' => 'contact1@example.uk', 'contact_id' => $cache_entry->civicrm_contact_id]);
     $this->assertEquals(1, $email['is_bulkmail'], "Email found but not bulkmail");
   }
-  // Test helpers.
+
+  /**
+   * Test helpers.
+   */
   public function dumpTables() {
     print "\nContacts: \n" . $this->dumpSql("SELECT id, first_name FROM civicrm_contact ORDER BY id") . "\n";
     print "Emails: \n" . $this->dumpSql("SELECT id, contact_id, email FROM civicrm_email ORDER BY contact_id") . "\n";
@@ -1973,7 +2030,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     print "Updates: \n" . $this->dumpSql("SELECT * FROM civicrm_mailchimpsync_update") . "\n";
     print "Batches: \n" . $this->dumpSql("SELECT * FROM civicrm_mailchimpsync_batch") . "\n";
   }
-  public function dumpSql($sql, $params=[], $pretty=FALSE) {
+
+  public function dumpSql($sql, $params = [], $pretty = FALSE) {
     $results = CRM_Core_DAO::executeQuery($sql, $params)->fetchAll();
     $output = '';
     foreach ($results as $row) {
@@ -1986,10 +2044,12 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $r = civicrm_api3('Contact', 'get', ['contact_id' => $contact_id, 'group' => $group_id]);
     $this->assertEquals(1, $r['count'], "Expected that contact was in group, but isn't.");
   }
+
   public function assertContactIsNotInGroup($contact_id, $group_id) {
     $r = civicrm_api3('Contact', 'get', ['contact_id' => $contact_id, 'group' => $group_id]);
     $this->assertEquals(0, $r['count'], "Expected that contact was not in group, but is.");
   }
+
   /**
    * Get lots of stats info on an audience and return a hash.
    *
@@ -1999,7 +2059,9 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $hash = md5(json_encode([$audience->getConfig(), $audience->getStatus(), $audience->getStats()]));
     return $hash;
   }
+
   // Unused at the mo.
+
   /**
    * This is disabled for now as we implemented tag pushing. But the code is
    * kept in case we need to build a similar test on something else.
@@ -2015,7 +2077,8 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $contact_1 = (int) civicrm_api3('Contact', 'create', [
       'contact_type' => 'Individual',
       'first_name' => 'test1',
-      'email' => 'contact1@example.com'])['id'];
+      'email' => 'contact1@example.com',
+    ])['id'];
 
     // Create cache record manually for our fixture.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -2036,7 +2099,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;
     $bao->find(TRUE);
-    $audience->reconcileQueueItem($bao, $with_data=TRUE);
+    $audience->reconcileQueueItem($bao, $with_data = TRUE);
 
     // Reload the cache entry, check it's like we expected.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -2052,7 +2115,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
           ['name' => 'tag2', 'status' => 'active'],
         ],
         'stage' => 2,
-      ]
+      ],
     ], $data, "CiviCRM data not as expected (did hook fire?).");
 
     // We expect one update.
@@ -2061,10 +2124,12 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(1, $update->find(), "Expected one update.");
     $update->fetch();
     $data = json_decode($update->data, TRUE);
-    $this->assertEquals(['tags' => [
+    $this->assertEquals([
+      'tags' => [
           ['name' => 'tag1', 'status' => 'active'],
           ['name' => 'tag2', 'status' => 'active'],
-        ]], $data);
+      ],
+    ], $data);
 
     // ok for testing purposes let's just delete that update now.
     $update->delete();
@@ -2076,7 +2141,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;
     $bao->find(TRUE);
-    $audience->reconcileQueueItem($bao, $with_data=TRUE);
+    $audience->reconcileQueueItem($bao, $with_data = TRUE);
 
     // Reload the cache entry, check it's like we expected.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -2091,7 +2156,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
           ['name' => 'tag1', 'status' => 'inactive'],
         ],
         'stage' => 3,
-      ]
+      ],
     ], $data, "CiviCRM data not as expected (did hook fire?).");
 
     // We expect one update.
@@ -2100,7 +2165,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(1, $update->find(), "Expected one update.");
     $update->fetch();
     $data = json_decode($update->data, TRUE);
-    $this->assertEquals(['tags' => [ ['name' => 'tag1', 'status' => 'inactive'] ]], $data);
+    $this->assertEquals(['tags' => [['name' => 'tag1', 'status' => 'inactive']]], $data);
     // ok for testing purposes let's just delete that update now.
     $update->delete();
 
@@ -2111,7 +2176,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;
     $bao->find(TRUE);
-    $audience->reconcileQueueItem($bao, $with_data=TRUE);
+    $audience->reconcileQueueItem($bao, $with_data = TRUE);
 
     // Reload the cache entry, check it's like we expected.
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
@@ -2120,7 +2185,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
 
     $data = unserialize($bao->civicrm_data);
     $this->assertEquals('ok', $bao->sync_status);
-    $this->assertEquals([ 'testHook' => [] ], $data, "CiviCRM data not as expected (did hook fire?).");
+    $this->assertEquals(['testHook' => []], $data, "CiviCRM data not as expected (did hook fire?).");
 
     // We expect no updates.
     $update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
@@ -2128,6 +2193,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $this->assertEquals(0, $update->find(), "Expected one update.");
 
   }
+
   /**
    * This is not used for now as we implemented tag pushing. But the code is
    * kept in case we need to build a similar test on something else.
@@ -2190,4 +2256,5 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $cache_entry->civicrm_data = serialize($data);
     $event->needs_saving = TRUE;
   }
+
 }

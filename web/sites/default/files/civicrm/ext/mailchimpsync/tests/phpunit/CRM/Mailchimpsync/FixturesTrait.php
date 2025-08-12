@@ -2,15 +2,15 @@
 trait CRM_Mailchimpsync_FixturesTrait {
 
   /**
-   * Set up one list in one account linked to one group.
+   * Set up one list in one account linked to one group, return the audience.
    *
    * @param bool $with_group - whether to create a subscription group for this.
    *
-   * @return array of CRM_Mailchimpsync_Audience objects, indexed from 1
    */
-  protected function createConfigFixture1AndGetAudience($with_group = FALSE) {
+  protected function createConfigFixture1AndGetAudience($with_group = FALSE): CRM_Mailchimpsync_Audience {
     return $this->createConfigFixtureAndGetAudience(1, $with_group)[1];
   }
+
   /**
    * Set up two lists in one account linked to one group.
    *
@@ -19,19 +19,20 @@ trait CRM_Mailchimpsync_FixturesTrait {
    *
    * @return array of CRM_Mailchimpsync_Audience objects, indexed from 1
    */
-  protected function createConfigFixtureAndGetAudience($n=1, $with_group = FALSE) {
+  protected function createConfigFixtureAndGetAudience($n = 1, $with_group = FALSE) {
 
     $config = [
       'lists' => [],
       'accounts' => [
         'mock_account_1' => [
-          'audiences' => [ ],
+          'apiKey'             => 'mock_account_1',
+          'audiences'          => [],
           'batchWebhookSecret' => 'MockBatchWebhookSecret',
-        ]
-      ]
+        ],
+      ],
     ];
 
-    for($i=1; $i<=$n; $i++) {
+    for ($i = 1; $i <= $n; $i++) {
       $config['accounts']['mock_account_1']['audiences']["list_$i"] = [];
 
       if ($with_group) {
@@ -46,25 +47,28 @@ trait CRM_Mailchimpsync_FixturesTrait {
       }
 
       $config['lists']["list_$i"] = [
-          'apiKey'            => 'mock_account_1',
-          'subscriptionGroup' => $group_id,
+        'apiKey'            => 'mock_account_1',
+        'subscriptionGroup' => $group_id,
       ];
     }
 
     CRM_Mailchimpsync::setConfig($config);
 
     $audiences = [];
-    for($i=1; $i<=$n; $i++) {
+    for ($i = 1; $i <= $n; $i++) {
       $audiences[$i] = CRM_Mailchimpsync_Audience::newFromListId("list_$i");
     }
     return $audiences;
   }
+
   public function assertExpectedCacheStats($expected) {
     // Fetch stats.
     $sql = "SELECT mailchimp_status, COUNT(id) count FROM civicrm_mailchimpsync_cache GROUP BY mailchimp_status";
     $stats = CRM_Core_DAO::executeQuery($sql)->fetchMap('mailchimp_status', 'count');
     $total = 0;
-    foreach ($stats as $count) { $total += (int) $count; }
+    foreach ($stats as $count) {
+      $total += (int) $count;
+    }
     if (isset($expected['count'])) {
       $this->assertEquals($expected['count'], $total, "Expected $expected[count] rows in civicrm_mailchimpsync_cache table, but got $total.");
     }
@@ -79,6 +83,7 @@ trait CRM_Mailchimpsync_FixturesTrait {
       }
     }
   }
+
   /**
    * DRY used in testBatchSubmission
    *
@@ -88,8 +93,8 @@ trait CRM_Mailchimpsync_FixturesTrait {
    * - cache is left without mailchimp fields except list_id
    *
    * @return StdClass with props:
-   * - CRM_Mailchimpsync_Audience audience
-   * - CRM_Mailchimpsync_BAO_MailchimpsyncCache cache_entry
+   *   - CRM_Mailchimpsync_Audience audience
+   *   - CRM_Mailchimpsync_BAO_MailchimpsyncCache cache_entry
    */
   protected function createConfig2() {
     // Check that mailchimp updates get added to the mailchimpsync_update table.
@@ -107,6 +112,7 @@ trait CRM_Mailchimpsync_FixturesTrait {
       'cache_entry' => $cache_entry,
     ];
   }
+
   /**
    * DRY code
    *
@@ -115,10 +121,10 @@ trait CRM_Mailchimpsync_FixturesTrait {
    * - Mocks a successful batch webhook response saying the updates all went OK.
    *
    * @return StdClass with props:
-   * - audience
-   * - cache_entry
-   * - batch_id
-   * - update_id
+   *   - audience
+   *   - cache_entry
+   *   - batch_id
+   *   - update_id
    */
   protected function batchWebhookSetup() {
     // We need fixture for a webhook.
@@ -159,16 +165,18 @@ trait CRM_Mailchimpsync_FixturesTrait {
 
     return $various;
   }
+
   public function setMockSubscriberData1($api) {
     $api->setMockMailchimpData([
       'list_1' => [
         'members' => [
-          [ 'fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago ],
-          [ 'fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago ],
+          ['fname' => 'Wilma', 'lname' => 'Flintstone', 'email' => 'wilma@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Betty', 'lname' => 'Rubble', 'email' => 'betty@example.com', 'status' => 'subscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Barney', 'lname' => 'Rubble', 'email' => 'barney@example.com', 'status' => 'unsubscribed', 'last_changed' => $this->a_week_ago],
+          ['fname' => 'Pebbles', 'lname' => 'Flintstone', 'email' => 'pebbles@example.com', 'status' => 'transactional', 'last_changed' => $this->a_week_ago],
         ],
       ],
     ]);
   }
+
 }

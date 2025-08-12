@@ -37,7 +37,15 @@ This extension keeps Mailchimp Audience(s) in sync with CiviCRM mailing groups.
     - One-way sync: changes made at Mailchimp will never migrate into
       CiviCRM and will be overwritten.
 
+- Pulls Mailchimp campaigns into CiviCRM as a Mailchimp Campaign activity;
+  see mailchimp emails sent to contacts.
+
 - Supports multiple Mailchimp Accounts.
+
+
+## Warning: Database Requirements
+
+This extension (as of v1.3) requires either MariaDB 10.2+ or MySQL 8.0+ (because it uses window functions). These are fairly old versions of the database but some people do run old services, and CiviCRM core only requires MySQL 5.7 which **won't work**. If you are interested in making it work rather than upgrading please [ get in touch](https://artfulrobot.uk/contact).
 
 ## Health warning
 

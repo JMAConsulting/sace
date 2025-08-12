@@ -19,16 +19,18 @@ class CRM_Mailchimpsync_UnMailchimpTarChunk implements JsonSerializable {
     if (!$this->is_null) {
       $this->filename = rtrim(substr($data, 0, 100), "\x00");
       $this->type = $data[156];
-      $this->length = octdec(ltrim(rtrim(substr($data, 124, 12), "\x00"),'0'));
+      $this->length = octdec(ltrim(rtrim(substr($data, 124, 12), "\x00"), '0'));
     }
   }
-  public function jsonSerialize() {
+
+  public function jsonSerialize(): mixed {
     return [
       'filename' => $this->filename,
       'length' => $this->length,
       'type' => $this->type,
     ];
   }
+
   /**
    * Is it a directory?
    *
@@ -37,5 +39,5 @@ class CRM_Mailchimpsync_UnMailchimpTarChunk implements JsonSerializable {
   public function isDirectory() {
     return ($this->type === '5');
   }
-}
 
+}

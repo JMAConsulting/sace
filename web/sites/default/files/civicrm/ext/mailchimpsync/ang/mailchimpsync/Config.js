@@ -8,6 +8,11 @@
     if (!(('accounts' in config) && !Array.isArray(config.accounts))) {
       config.accounts = {};
     }
+    for (const listID in config.lists) {
+      if (Array.isArray(config.lists[listID].trustOverride ?? '')) {
+        config.lists[listID].trustOverride = {};
+      }
+    }
   }
 
   angular.module('mailchimpsync').config(function($routeProvider) {
@@ -79,13 +84,15 @@
           listName: mcsConfig.accounts[list.apiKey].audiences[listId].name,
           groupName: mailingGroups[list.subscriptionGroup].title,
           webhookFound: mcsConfig.accounts[list.apiKey].audiences[listId].webhookFound,
+          trustOverride: list.trustOverride?.subscription || '',
         });
         for (const interestId in newValue[listId].interests) {
           rows.push({
             listId,
             interestId,
             interestName: mcsConfig.accounts[list.apiKey].audiences[listId].interests[interestId],
-            groupName: mailingGroups[list.interests[interestId]].title
+            groupName: mailingGroups[list.interests[interestId]].title,
+            trustOverride: list.trustOverride?.[interestId] || '',
           });
         }
         rows.push({
@@ -104,7 +111,8 @@
         groupId: '',
         apiKey: '',
         originalListId: listId || null,
-        isSaving: false
+        isSaving: false,
+        trustOverride: '',
       };
       if (listId && listId in mcsConfig.lists) {
         //xxx
@@ -112,6 +120,7 @@
         console.log('listEdit existing ', listId, mcsConfig, d);
         $scope.editData.groupId = d.subscriptionGroup;
         $scope.editData.apiKey = d.apiKey;
+        $scope.editData.trustOverride = d.trustOverride?.subscription ?? '';
       }
       $scope.view = 'editAudience';
     };
@@ -130,7 +139,8 @@
       // then save.
       const newListConfig = {
           subscriptionGroup: $scope.editData.groupId,
-          apiKey: $scope.editData.apiKey
+          apiKey: $scope.editData.apiKey,
+          trustOverride: { subscription: $scope.editData.trustOverride },
         };
 
       // Store in config array, keyed by Mailchimp List ID.
@@ -153,10 +163,12 @@
         groupId: '',
         apiKey: '',
         originalInterestId: interestId || null,
-        isSaving: false
+        isSaving: false,
+        trustOverride: '',
       };
       if (interestId && interestId in mcsConfig.lists[listId].interests) {
         $scope.editData.groupId = mcsConfig.lists[listId].interests[interestId];
+        $scope.editData.trustOverride = mcsConfig.lists[listId].trustOverride?.[interestId] || '';
       }
       $scope.view = 'editInterest';
     };
@@ -174,6 +186,8 @@
         mcsConfig.lists[$scope.editData.listId].interests = {};
       }
       mcsConfig.lists[$scope.editData.listId].interests[$scope.editData.interestId] = $scope.editData.groupId;
+      mcsConfig.lists[$scope.editData.listId].trustOverride[$scope.editData.interestId] = $scope.editData.trustOverride;
+
 
       // If the selected interest changed we need to remove the previous item.
       if ($scope.editData.originalInterestId && $scope.editData.originalInterestId !== $scope.editData.interestId) {

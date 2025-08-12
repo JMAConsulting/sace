@@ -4,6 +4,7 @@ require_once 'mailchimpsync.civix.php';
 use CRM_Mailchimpsync_ExtensionUtil as E;
 
 // untouched civix generated:
+
 /**
  * Implements hook_civicrm_config().
  *
@@ -11,15 +12,6 @@ use CRM_Mailchimpsync_ExtensionUtil as E;
  */
 function mailchimpsync_civicrm_config(&$config) {
   _mailchimpsync_civix_civicrm_config($config);
-}
-
-/**
- * Implements hook_civicrm_xmlMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
- */
-function mailchimpsync_civicrm_xmlMenu(&$files) {
-  _mailchimpsync_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -32,24 +24,6 @@ function mailchimpsync_civicrm_install() {
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postInstall
- */
-function mailchimpsync_civicrm_postInstall() {
-  _mailchimpsync_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_uninstall
- */
-function mailchimpsync_civicrm_uninstall() {
-  _mailchimpsync_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
@@ -58,84 +32,8 @@ function mailchimpsync_civicrm_enable() {
   _mailchimpsync_civix_civicrm_enable();
 }
 
-/**
- * Implements hook_civicrm_disable().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_disable
- */
-function mailchimpsync_civicrm_disable() {
-  _mailchimpsync_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_upgrade
- */
-function mailchimpsync_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _mailchimpsync_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_managed().
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
- */
-function mailchimpsync_civicrm_managed(&$entities) {
-  _mailchimpsync_civix_civicrm_managed($entities);
-}
-
-/**
- * Implements hook_civicrm_caseTypes().
- *
- * Generate a list of case-types.
- *
- * Note: This hook only runs in CiviCRM 4.4+.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
- */
-function mailchimpsync_civicrm_caseTypes(&$caseTypes) {
-  _mailchimpsync_civix_civicrm_caseTypes($caseTypes);
-}
-
-/**
- * Implements hook_civicrm_angularModules().
- *
- * Generate a list of Angular modules.
- *
- * Note: This hook only runs in CiviCRM 4.5+. It may
- * use features only available in v4.6+.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_angularModules
- */
-function mailchimpsync_civicrm_angularModules(&$angularModules) {
-  _mailchimpsync_civix_civicrm_angularModules($angularModules);
-}
-
-/**
- * Implements hook_civicrm_alterSettingsFolders().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
- */
-function mailchimpsync_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _mailchimpsync_civix_civicrm_alterSettingsFolders($metaDataFolders);
-}
-
-/**
- * Implements hook_civicrm_entityTypes().
- *
- * Declare entity types provided by this module.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_entityTypes
- */
-function mailchimpsync_civicrm_entityTypes(&$entityTypes) {
-  _mailchimpsync_civix_civicrm_entityTypes($entityTypes);
-}
-
 // altered civix generated
+
 /**
  * Define a permission administer_mailchimpsync
  *
@@ -143,9 +41,13 @@ function mailchimpsync_civicrm_entityTypes(&$entityTypes) {
  */
 function mailchimpsync_civicrm_permission(&$permissions) {
   $permissions += [
-    'administer_mailchimpsync' => ['label' => E::ts('Administer Mailchimpsync')],
+    'administer_mailchimpsync' => [
+      'label' => E::ts('Administer Mailchimpsync'),
+      'description' => E::ts('Modify the settings of the mailchimpsync extension'),
+    ],
   ];
 }
+
 /**
  * Implements hook_civicrm_navigationMenu().
  *
@@ -172,6 +74,7 @@ function mailchimpsync_civicrm_navigationMenu(&$menu) {
 }
 
 // Other CiviCRM hooks
+
 /**
  * Add 'Include in next Mailchimp Sync' to the search tasks for contacts.
  *
@@ -181,7 +84,7 @@ function mailchimpsync_civicrm_navigationMenu(&$menu) {
  * @param array &$tasks
  */
 function mailchimpsync_civicrm_searchTasks($objectName, &$tasks) {
-  if($objectName == 'contact'){
+  if ($objectName == 'contact') {
     $tasks[] = [
       'title' => 'Include in next Mailchimp Sync',
       'class' => 'CRM_Mailchimpsync_Form_Task_ScheduleResync',
@@ -198,14 +101,18 @@ function mailchimpsync_civicrm_searchTasks($objectName, &$tasks) {
  */
 function mailchimpsync_civicrm_container($container) {
   $container->findDefinition('dispatcher')
-            ->addMethodCall('addListener', [
-              'hook_mailchimpsync_data_updates_check_pre',
-              'mailchimpsync__tags_sync_pre'])
-            ->addMethodCall('addListener', [
-              'hook_mailchimpsync_data_updates_check',
-              'mailchimpsync__tags_sync']);
+    ->addMethodCall('addListener', [
+      'hook_mailchimpsync_data_updates_check_pre',
+      'mailchimpsync__name_and_tags_sync_pre',
+    ])
+    ->addMethodCall('addListener', [
+      'hook_mailchimpsync_data_updates_check',
+      'mailchimpsync__name_and_tags_sync',
+    ]);
 }
+
 // Custom hooks
+
 /**
  * Get cache of tags in RAM
  *
@@ -218,11 +125,11 @@ function mailchimpsync_civicrm_container($container) {
  *                        We can trust that these are integers, for SQL safety purposes
  *    - 'pre_data'        array - we store our results in here, under the 'mcs_tags' key.
  */
-function mailchimpsync__tags_sync_pre($event) {
+function mailchimpsync__name_and_tags_sync_pre($event) {
 
   $ids = implode(',', $event->cache_entry_ids);
 
-  // Get CiviCRM tags for these cotacts as a string like <tagid>[,<tagid>]...
+  // Get CiviCRM tags for these contacts as a string like <tagid>[,<tagid>]...
   $event->pre_data['mcs_tags']['contact_tags'] = CRM_Core_DAO::executeQuery(
     "SELECT civicrm_contact_id, GROUP_CONCAT(tag_id ORDER BY tag_id SEPARATOR ',') tags
     FROM civicrm_mailchimpsync_cache mcc
@@ -237,11 +144,24 @@ function mailchimpsync__tags_sync_pre($event) {
   $event->pre_data['mcs_tags']['all_tags'] = CRM_Core_DAO::executeQuery(
     "SELECT id, name FROM civicrm_tag
     WHERE used_for='civicrm_contact'")
-  ->fetchMap('id', 'name');
+    ->fetchMap('id', 'name');
+
+  // Load all contact names.
+  $dao = CRM_Core_DAO::executeQuery(
+    "SELECT civicrm_contact_id, first_name, last_name
+    FROM civicrm_mailchimpsync_cache mcc
+    INNER JOIN civicrm_contact ct
+      ON mcc.civicrm_contact_id = ct.id
+    WHERE mcc.id IN ($ids);");
+  while ($dao->fetch()) {
+    $event->pre_data['mcs_names'][$dao->civicrm_contact_id] = ['first_name' => $dao->first_name, 'last_name' => $dao->last_name];
+  }
+  $dao->free();
 
 }
+
 /**
- * Add tags to data updates.
+ * Add names and tags to data updates.
  *
  * Implements hook_mailchimpsync_data_updates_check
  *
@@ -259,51 +179,109 @@ function mailchimpsync__tags_sync_pre($event) {
  *
  * @param Civi\Core\Event\GenericHookEvent
  */
-function mailchimpsync__tags_sync($event) {
-  $data = unserialize($event->cache_entry->civicrm_data);
+function mailchimpsync__name_and_tags_sync($event) {
+  /** @var CRM_Mailchimpsync_BAO_MailchimpsyncCache $cache_entry */
   $cache_entry = $event->cache_entry;
+  $data = $cache_entry->getCiviCRMData();
+  $mailchimp_data = $cache_entry->getMailchimpData();
 
+  $changes = FALSE;
 
-  if (empty($event->pre_data['mcs_tags']['all_tags'])) {
-    // No tags registered in CiviCRM!
-    return;
+  // Load current names in CiviCRM.
+  $names = $event->pre_data['mcs_names'][$cache_entry->civicrm_contact_id] ?? ['first_name' => '', 'last_name' => ''];
+
+  if (FALSE) {
+    // pretend MC has no names to force a push.
+    // @todo expose this as an api param.
+    unset($data['mcs_names']['previous']);
   }
 
-  $contacts_tags = $event->pre_data['mcs_tags']['contact_tags'][$cache_entry->civicrm_contact_id] ?? '';
-  if (!isset($data['mcs_tags']['previous']) || $data['mcs_tags']['previous'] !== $contacts_tags) {
-    // Tags have changed.
+  $namesInMailchimp = [
+    'first_name' => $mailchimp_data['first_name'] ?? '',
+    'last_name' => $mailchimp_data['last_name'] ?? '',
+  ];
+  if (($data['mcs_names']['previous'] ?? NULL) !== $names
+    || $names !== $namesInMailchimp
+  ) {
+    // Names have changed in Civi since last push,
+    // or names are different in Civi to Mailchimp.
 
-    // Store our raw tags list for next time.
-    $data['mcs_tags']['previous'] = $contacts_tags;
+    // store name for next time
+    $data['mcs_names']['previous'] = $names;
 
-    // We'll need to provide a full set of updates to all
-    // CiviCRM tags.
-    $data['mcs_tags']['tag_updates'] = [];
-
-    // Convert to array.
-    $contacts_tags = $contacts_tags ? explode(',', $contacts_tags) : [];
-
-    // Store the updates in tag_updates in the mailchimp API expected format.
-    foreach ($event->pre_data['mcs_tags']['all_tags'] as $tag_id => $tag_name) {
-      $data['mcs_tags']['tag_updates'][] = [
-        'name'   => 'CiviCRM: ' . $tag_name,
-        'status' => (in_array($tag_id, $contacts_tags)) ? 'active' : 'inactive'
-      ];
+    // Update FNAME, LNAME. Nb. `array_filter` will remove fields with empty() values.
+    $data['mcs_names']['mailchimp_updates'] = [
+      'merge_fields' => array_filter([
+        'FNAME' => $names['first_name'],
+        'LNAME' => $names['last_name'],
+      ]),
+    ];
+    // Mark this entry as needing updates.
+    $cache_entry->sync_status = 'todo';
+    $changes = TRUE;
+  }
+  else {
+    // Names have not changed. Clear out any updates from an earlier run.
+    if (!empty($data['mcs_names']['mailchimp_updates'])) {
+      $data['mcs_names']['mailchimp_updates'] = [];
+      $changes = TRUE;
     }
+  }
 
-    // Ensure this is going to be included in the sync.
-    if ($cache_entry->sync_status !== 'todo') {
+  // Tags:
+  if (!empty($event->pre_data['mcs_tags']['all_tags'])) {
+
+    $contacts_tags = $event->pre_data['mcs_tags']['contact_tags'][$cache_entry->civicrm_contact_id] ?? '';
+    if (!isset($data['mcs_tags']['previous']) || $data['mcs_tags']['previous'] !== $contacts_tags) {
+      // Tags have changed.
+
+      // Store our raw tags list for next time.
+      $data['mcs_tags']['previous'] = $contacts_tags;
+
+      // We'll need to provide a full set of updates to all
+      // CiviCRM tags.
+      $data['mcs_tags']['tag_updates'] = [];
+
+      // Convert to array.
+      $contacts_tags = $contacts_tags ? explode(',', $contacts_tags) : [];
+
+      // Store the updates in tag_updates in the mailchimp API expected format.
+      foreach ($event->pre_data['mcs_tags']['all_tags'] as $tag_id => $tag_name) {
+        $data['mcs_tags']['tag_updates'][] = [
+          'name'   => 'CiviCRM: ' . $tag_name,
+          'status' => (in_array($tag_id, $contacts_tags)) ? 'active' : 'inactive',
+        ];
+      }
+
+      // Ensure this is going to be included in the sync.
       $cache_entry->sync_status = 'todo';
+      $changes = TRUE;
     }
+    else {
+      // Tags unchanged, clear out updates from previous run
+      if (!empty($data['mcs_tags']['tag_updates'])) {
+        $data['mcs_tags']['tag_updates'] = [];
+        $changes = TRUE;
+      }
+    }
+  }
 
+  if ($changes) {
+    // Put the modified data back on the record.
+    $event->cache_entry->civicrm_data = serialize($data);
     // Notify the calling code that this cache entry needs saving.
     // (we don't save it ourselves as other extns may also edit this).
     $event->needs_saving = TRUE;
   }
-  // else: Tags have not changed. So get rid of any updates left from last time
+}
 
-  if ($event->needs_saving) {
-    // Put the modified data back on the record.
-    $event->cache_entry->civicrm_data = serialize($data);
-  }
+/**
+ * Implements hook_civicrm_alterLogTables().
+ *
+ * Exclude tables from logging tables since they hold mostly temp data.
+ */
+function mailchimpsync_civicrm_alterLogTables(&$logTableSpec) {
+  unset($logTableSpec['civicrm_mailchimpsync_batch']);
+  unset($logTableSpec['civicrm_mailchimpsync_update']);
+  unset($logTableSpec['civicrm_mailchimpsync_status']);
 }

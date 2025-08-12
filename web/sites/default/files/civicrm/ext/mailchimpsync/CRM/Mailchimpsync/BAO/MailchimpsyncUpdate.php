@@ -1,6 +1,14 @@
 <?php
 use CRM_Mailchimpsync_ExtensionUtil as E;
 
+/**
+ * @method mixed find(bool $n = false)
+ * @method CRM_Core_DAO save($hook = TRUE)
+ * @method mixed orderBy($order = FALSE)
+ * @method int count($countWhat = false,$whereAddOnly = false)
+ * @method array fetchMap($keyColumn, $valueColumn)
+ * @method bool fetch()
+ */
 class CRM_Mailchimpsync_BAO_MailchimpsyncUpdate extends CRM_Mailchimpsync_DAO_MailchimpsyncUpdate {
 
   /**
@@ -45,6 +53,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncUpdate extends CRM_Mailchimpsync_DAO_Ma
     // Save our changes.
     $this->save();
   }
+
   public function handleMailchimpUpdateRetryPending(array $response, array $mailchimp_updates) {
     // If this was a subscribe, retry setting it to pending.
     // We leave the sync status as 'live' for now.
@@ -55,11 +64,13 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncUpdate extends CRM_Mailchimpsync_DAO_Ma
     $new_update->save();
     Civi::log()->info("Failed to subscribe via update $this->id but will try to set them as pending (update $new_update->id).");
   }
+
   public function handleMailchimpUpdateFail($response) {
     $cache = $this->getCacheBao();
     $cache->sync_status = 'fail';
     $cache->save();
   }
+
   /**
    * Mark this update complete and update sync cache.
    *
@@ -97,6 +108,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncUpdate extends CRM_Mailchimpsync_DAO_Ma
       $cache->save();
     }
   }
+
   /**
    *
    * @return CRM_Mailchimpsync_BAO_MailchimpsyncCache
@@ -110,4 +122,5 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncUpdate extends CRM_Mailchimpsync_DAO_Ma
     }
     return $cache;
   }
+
 }

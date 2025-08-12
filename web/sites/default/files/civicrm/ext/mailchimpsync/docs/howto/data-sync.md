@@ -34,7 +34,7 @@ When the fetchandreconcile action is called `with_data`, the following hooks
 are called:
 
 1. `hook_mailchimpsync_data_updates_check_pre` This is called first and is an
-   opportunity to do lookups that are cheaper to do en-masse. 
+   opportunity to do lookups that are cheaper to do en-masse.
 
 2. `hook_mailchimpsync_data_updates_check` - called once for every cache
    entry processed.
@@ -70,7 +70,7 @@ function <yourext>_civicrm_container($container) {
 ### The pre hook. `hook_mailchimpsync_data_updates_check_pre`
 
 Please see the code in `mailchimpsync.php` for the function
-`mailchimpsync__tags_sync_pre` which is the implementation of the tags
+`mailchimpsync__name_and_tags_sync_pre` which is the implementation of the tags
 sync. The `$event->pre_data` array is there for extensions to cache data.
 The tags sync uses the `mc_tags` key within that array as a container for
 the things it needs, you should use something unique to your extension for
@@ -81,7 +81,7 @@ all relevant contacts.
 ### The main in-loop hook. `hook_mailchimpsync_data_updates_check`
 
 Please see the code in `mailchimpsync.php` for the function
-`mailchimpsync__tags_sync` which is the implementation of the tags sync.
+`mailchimpsync__name_and_tags_sync` which is the implementation of the tags sync.
 
 The `$event->pre_data` array populated in the previous hook is available,
 and this hook would be typically implemented by...

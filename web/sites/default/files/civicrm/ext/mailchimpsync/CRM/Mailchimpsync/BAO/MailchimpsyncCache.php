@@ -1,6 +1,14 @@
 <?php
 use CRM_Mailchimpsync_ExtensionUtil as E;
 
+/**
+ *
+ * @method mixed find(bool $n = false)
+ * @method CRM_Core_DAO save($hook = TRUE)
+ * @method array fetchMap($keyColumn, $valueColumn)
+ * @method bool fetch()
+ * @method array toArray(string $format = '%s', bool $hideEmpty = false)
+ */
 class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_MailchimpsyncCache {
 
   /**
@@ -9,20 +17,19 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
    * @param array $params key-value pairs
    * @return CRM_Mailchimpsync_DAO_MailchimpsyncCache|NULL
    *
-  public static function create($params) {
-    $className = 'CRM_Mailchimpsync_DAO_MailchimpsyncCache';
-    $entityName = 'MailchimpsyncCache';
-    $hook = empty($params['id']) ? 'create' : 'edit';
-
-    CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
-    $instance = new $className();
-    $instance->copyValues($params);
-    $instance->save();
-    CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
-
-    return $instance;
-  } */
-
+   * public static function create($params) {
+   * $className = 'CRM_Mailchimpsync_DAO_MailchimpsyncCache';
+   * $entityName = 'MailchimpsyncCache';
+   * $hook = empty($params['id']) ? 'create' : 'edit';
+   *
+   * CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
+   * $instance = new $className();
+   * $instance->copyValues($params);
+   * $instance->save();
+   * CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
+   *
+   * return $instance;
+   * } */
 
   /**
    * Abort any unsubmitted updates.
@@ -50,6 +57,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
   public function isSubscribedAtMailchimp() {
     return (bool) ($this->mailchimp_status && in_array($this->mailchimp_status, ['subscribed', 'pending']));
   }
+
   /**
    * Set CiviCRM subscription group Added.
    *
@@ -66,6 +74,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
     CRM_Contact_BAO_GroupContact::addContactsToGroup($contacts, $audience->getSubscriptionGroup(), 'MCsync');
     return $this;
   }
+
   /**
    * Set CiviCRM subscription group status Removed.
    *
@@ -109,6 +118,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
       $contacts, $audience->getSubscriptionGroup(), 'MCsync', 'Removed');
     return $this;
   }
+
   /**
    * Return a new object for the same record by reloading from database.
    *
@@ -121,6 +131,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
     $obj->find(TRUE);
     return $obj;
   }
+
   /**
    * Checks whether a contact's email is on hold.
    * Nb. a missing email (e.g. not yet subscribed at mailchimp) is treated as not on hold.
@@ -136,6 +147,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
     $email->on_hold = 1;
     return (bool) $email->find();
   }
+
   /**
    * Used by API Mailchimpsync.includecontact
    *
@@ -151,10 +163,11 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
     $contact_ids = implode(',', $contact_ids);
     $dao = CRM_Core_DAO::executeQuery("UPDATE civicrm_mailchimpsync_cache SET sync_status = %1 WHERE civicrm_contact_id IN ($contact_ids)",
       [
-        1 => [$status, 'String']
+        1 => [$status, 'String'],
       ]);
     return $dao->affectedRows();
   }
+
   /**
    * MailchimpsyncCache.get
    *
@@ -162,7 +175,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
    * @return array
    */
   public static function apiSearch(array $params) {
-    $i=1;
+    $i = 1;
 
     if (empty($params['mailchimp_list_id'])) {
       throw new \Exception("must provide mailchimp_list_id");
@@ -205,21 +218,21 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
 
     foreach (['sync_status', 'mailchimp_status', 'mailchimp_email', 'mailchimp_list_id', 'civicrm_contact_id'] as $field) {
       if (isset($params[$field])) {
-        if (is_string($params[$field])) {
+        if (is_string($params[$field]) || is_int($params[$field])) {
           $wheres[] = "$field = %$i";
           $sql_params[$i] = [$params[$field], 'String'];
           $i++;
         }
         elseif (is_array($params[$field])) {
           switch (array_keys($params[$field])[0] ?? NULL) {
-          case 'LIKE':
-            $wheres[] = "$field LIKE %$i";
-            $sql_params[$i] = ['%' . $params[$field]['LIKE'] . '%', 'String'];
-            $i++;
-            break;
+            case 'LIKE':
+              $wheres[] = "$field LIKE %$i";
+              $sql_params[$i] = ['%' . $params[$field]['LIKE'] . '%', 'String'];
+              $i++;
+              break;
 
-          default:
-            throw new Exception("unsupported query");
+            default:
+              throw new Exception("unsupported query");
           }
         }
         else {
@@ -227,7 +240,6 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
         }
       }
     }
-
 
     // @todo civicrm_status
 
@@ -258,10 +270,11 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
 
     return $results;
   }
+
   /**
    * Update the 'civicrm_groups' field in our cache table.
    *
-   * @param array $params. Optional keys describe filters for records to update:
+   * @param array $params
    * - id: only update this cache item.
    * - list_id: only update cache items for this list.
    */
@@ -326,6 +339,52 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncCache extends CRM_Mailchimpsync_DAO_Mai
         $wheres
       ";
     CRM_Core_DAO::executeQuery($sql, $sql_params);
+  }
+
+  /**
+   * Return unserialized mailchimp_data
+   */
+  public function getMailchimpData(): array {
+    $data = unserialize($this->mailchimp_data ?? '');
+    if (empty($data)) {
+      $data = [];
+    }
+    return $data;
+  }
+
+  /**
+   * Return unserialized civicrm_data
+   */
+  public function getCiviCRMData(): array {
+    $data = unserialize($this->civicrm_data ?? '');
+    if (empty($data)) {
+      $data = [];
+    }
+    return $data;
+  }
+
+  /**
+   * Set mailchimp_data, handling serialize call.
+   *
+   * serialize() was chosen as it performed much faster than json_serialize() at the time.
+   *
+   * @return static
+   */
+  public function setMailchimpData(array $newData) {
+    $this->mailchimp_data = serialize($newData);
+    return $this;
+  }
+
+  /**
+   * Set civicrm_data, handling serialize call.
+   *
+   * serialize() was chosen as it performed much faster than json_serialize() at the time.
+   *
+   * @return static
+   */
+  public function setCiviCRMData(array $newData) {
+    $this->civicrm_data = serialize($newData);
+    return $this;
   }
 
 }

@@ -30,6 +30,236 @@ There are parts to this:
    unsubscribed result in a new update job to set their status to
    'pending'. Other failures are just logged.
 
+
+## Fetch And Reconcile algorithm in words
+
+See the Tables doc first.
+
+### `mergeMailchimpData()`
+
+... fetches data from Mailchimp since a given date, or, by default, since that list's data was last fetched (as stored against the group details in Civi - @todo check) and updates/populates the cache table. Note that if there are *any* 'trust overrides' set, we will fetch *all* data from Mailchimp.
+
+We store: `mailchimp_status`, `mailchimp_updated` - the changed date from MC. And we construct an array of other data with keys:
+
+- `first_name` (from FNAME)
+- `last_name` (from LNAME)
+- `status` (copy of status)
+- `interest-{interestID}` (from interests)
+
+... And for each of these keys there's another with an `@` at the end, which is the timestamp that that field was last changed, as best we can figure out. So when fetching, if a value has not changed, this timestamp is not updated.
+
+All contacts fetched this way get their `sync_status` set to `'todo'` because something about them has changed at Mailchimp's end, so we need to sync.
+
+**During a new interest sync, we must fetch ALL from Mailchimp. Do this by using a really old date.**
+
+Compare the data against the previous fetched data. This helps us realise which data changed recently, rather than assuming all data changed recently.
+
+If there was no data previously (e.g. interest sync just added), we use the `last_changed` date for the whole record.
+
+In each case, if it did not change, leave that data's timestamp alone.
+
+
+### `removeInvalidContactIds()`
+
+The cache table may contain data on Contacts that have been deleted. We NULL-out all the Civi data fields for these. We then delete any rows where there's now neither Civi nor Mailchimp data present.
+
+### `populateMissingContactIDs()`
+
+This is about updating cache records where there's no CiviCRM Contact ID. Various queries are done to try to find contact ID for each contact:
+
+- the email is owned by a single non-deleted contact. Use that. The other cases
+  mean the email is owned by multiple contacts.
+- choose the lowest Contact ID we find where the contact is in the group for this audience.
+- choose the lowest Contact ID we find with any subscription history to the group for that audience.
+- finally, just choose the lowest Contact ID.
+
+### `createNewContactsFromMailchimp()`
+
+Creates contacts found at Mailchimp but not in CiviCRM, i.e. `contact_id`  in the cache table is NULL.
+
+Nb. if someone comes in from Mailchimp who is not subscribed there's no point us adding them in, however we leave them in the cache table.
+
+New contacts get the email, first and last names and 'mainchimpsync' set as their source.
+
+The cache table's `contact_id` is set up to point to the new contact.
+
+
+### `cleanupDuplicatesInCache()`
+
+See function definition. Bit of an edge case.
+
+### `addCiviOnly()`
+
+If there are any contacts Added to the subscription group in CiviCRM, but not known to Mailchimp, add them to the cache table.
+
+This creates cache table rows with only the mc list id, contact id, `'todo'` as `sync_status` Both `civicrm_data` and `mailchimp_data` are empty. (We can't even grab their name by SQL because we serialize() the `civicrm_data`.)
+
+### `identifyGroupContactChanges()`
+
+So far we have marked cache records as `'todo'` if they were fetched from Mailchimp (because they have been changed/added there since our 'since' date.) We have also set this on any contacts we added (presumably it's already todo though.) And we've adedd in records where someone's in the group at Civi but not known to Mailchimp and marked these `'todo'` too.
+
+Now we also set *todo* on any contact who has had a subscription history record since our since date, relating to either the subscription group, or any sync-ed interest groups.
+
+This method is also where we update our cache of CiviCRM group memberships.
+
+
+### Note:
+
+We now have any member/subscription based changes as `'todo'` in our cache table.
+
+### `checkForDataUpdates()` - Optional via with_data parameter.
+
+This is a hookable process. Mailchimpsync includes a data sync hook dealing with names and tags.
+
+First a 'pre' hook is called allowing us to gather data where it might be more efficient to fetch to RAM in bulk, for example.
+
+Then a hook runs on a per-row basis of the cache table, for all rows that either:
+
+- are marked 'todo', e.g. by the process above because of subscription
+  changes, or new members from either side.
+
+  or
+
+- we think are subscribed or pending at mailchimp. (We skip any
+  non-subscribed people on the Mailchimp list because who cares.)
+
+These hooks need to keep track of changes themselves, and only output updates to be sent to mailchimp where it's actually needed. They do this by storing data in an array structure. **todo explain** - See mailchimpsync.php's implementations. **The hook must also be sure to set `$event->cache->sync_status = 'todo'`** otherwise the updates will only get passed through if there are also subscription updates.
+
+
+### `reconcileQueue()`
+
+This loops all cache records with `sync_status` as `'todo'`.
+
+First it figures out whether they should be subscribed or not.
+
+
+
+Mailchimps' `last_changed` data refers to *any* change to the member at Mailchimp, not just the membership status.
+
+Consider this case:
+
+1. added at mc
+2. removed from civi
+3. name changed at mc.
+
+This leaves us with data saying that MC had the last change at (3), and Civi at (2) is older.
+
+So we need to know what changed. But we simply don't have this data - we'd have to keep a log of every change throughout time with regular full-table polling to do this which is not practically possible.
+
+So when doing a full table check, we need the user to say who to trust for subscriptions and interests too.
+
+
+It does this by looking for which party had the latest update, Mailchimp or Civi, and assuming that to be correct.
+
+If they should be subscribed, it calls reconcileInterestGroups and reconcileExtraData. This may result in updates for Mailchimp, which are then **queued**, and the cache row is set to `'live'`. If there are no updates the `sync_status` is set to `'ok'`. A CannotSyncException may be thrown which results in `'fail'` status.
+
+
+### `submitUpdates()`
+
+All queued updates are batched up and sent to Mailchimp. We record the batch IDs so we can figure out which updates worked later from the batch webhook.
+
+
+## Config settings JSON blob
+
+Below is a sample of the config settings, with one audience-subscription group sync and one interest group sync and one mailchimp account.
+
+- `aaaaaaaaaa` is the Mailchimp list ID. It is typically a unique hex string.
+- `111` is the CiviCRM group ID of the subscription group.
+- `cccccccccc` is the Mailchimp interest ID. This will belong to one
+  interest-category, but it's the 'leaf' interest ID that matters.
+
+```json
+{
+  "lists": {
+    "aaaaaaaaaa": {
+      "subscriptionGroup": "111",
+      "apiKey": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-us11",
+      "interests": {
+        "cccccccccc": "22222"
+      },
+      "trustOverride": {
+        "subscription": "Mailchimp",
+        "cccccccccc"": "CiviCRM",
+      }
+    }
+  },
+  "accounts": {
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-us11": {
+      "apiKey": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-us11",
+      "account_name": "Example Org",
+      "email": "services.mailchimp@example.org",
+      "first_name": "Wilma",
+      "last_name": "McMailchimpAccountOwner",
+      "username": "example",
+      "audiences": {
+        "aaaaaaaaaa": {
+          "name": "Main audience",
+          "interests": {
+            "cccccccccc": "Civi Groups: test interest"
+          },
+          "webhook": "https://example.org\/civicrm\/mailchimpsync\/webhook?secret=redacted",
+          "webhooks": [
+          {
+            "id": "eeeeeeeeee",
+            "url": "https://example.org/civicrm/mailchimpsync/webhook?secret=redacted",
+            "events": {
+              "subscribe": true,
+              "unsubscribe": true,
+              "profile": true,
+              "cleaned": true,
+              "upemail": true,
+              "campaign": false
+            },
+            "sources": { "user": true, "admin": true, "api": false }
+          }
+          ],
+          "webhookFound": true
+        }
+      },
+      "webhookUrl": "https://example.org/civicrm/mailchimpsync/webhook?secret=redacted",
+      "batchWebhookSecret": "redacted,
+      "batchWebhook": "https://example.org/civicrm/mailchimpsync/batch-webhook?secret=redacted",
+      "batchWebhooks": [
+      {
+        "id": "eeeeeeeeee",
+        "url": "https://example.org/civicrm/mailchimpsync/batch-webhook?secret=redacted",
+        "enabled": true,
+        "_links": [
+        {
+          "rel": "parent",
+          "href": "https://us11.api.mailchimp.com/3.0/batch-webhooks",
+          "method": "GET",
+          "targetSchema": "https:...",
+          "schema": "https://us11.a..."
+        },
+        {
+          "rel": "self",
+          "href": "https://us11.api.m...",
+          "method": "GET",
+          "targetSchema": "https://us11..."
+        },
+        {
+          "rel": "update",
+          "href": "https://us11.api.mailchimp.com/3.0/batch-webhooks/eeeeeeeeee",
+          "method": "PATCH",
+          "targetSchema": "https://us11.a..."
+        },
+        {
+          "rel": "delete",
+          "href": "https://us11.api.mailchimp.com/3.0/batch-webhooks/eeeeeeeeee",
+          "method": "DELETE"
+        }
+        ]
+      }
+      ],
+      "batchWebhookFound": true
+    }
+  }
+}
+```
+
+## old
+
 !!! danger
     This diagram needs updating.
 

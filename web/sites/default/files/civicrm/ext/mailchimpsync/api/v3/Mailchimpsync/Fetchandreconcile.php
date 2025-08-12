@@ -38,13 +38,19 @@ function _civicrm_api3_mailchimpsync_Fetchandreconcile_spec(&$spec) {
       'readyToReconcileQueue',
       'readyToCheckForDataUpdates',
       'readyToSubmitUpdates',
-    ]
+    ],
   ];
   $spec['with_data'] = [
     'description' => E::ts('Do data sync'),
     'type'        => CRM_Utils_Type::T_BOOLEAN,
     'api.default' => FALSE,
   ];
+  // This would be nice, but it's hard to implement.
+  // $spec['force_name_tags'] = [
+  //   'description' => E::ts('Send name and tags data to Mailchimp, even if we did it before.'),
+  //   'type'        => CRM_Utils_Type::T_BOOLEAN,
+  //   'api.default' => FALSE,
+  // ];
 }
 
 /**
@@ -54,11 +60,11 @@ function _civicrm_api3_mailchimpsync_Fetchandreconcile_spec(&$spec) {
  * @return array API result descriptor
  * @see civicrm_api3_create_success
  * @see civicrm_api3_create_error
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_Fetchandreconcile($params) {
 
-  // Safety check that the on_hold value (if given) is valid.
+  // Safety check that the stop_on value (if given) is valid.
   $valid = [
     'readyToFetch',
     'readyToFixContactIds',
@@ -68,10 +74,10 @@ function civicrm_api3_mailchimpsync_Fetchandreconcile($params) {
     'readyToCheckForGroupChanges',
     'readyToReconcileQueue',
     'readyToCheckForDataUpdates',
-    'readyToSubmitUpdates'
+    'readyToSubmitUpdates',
   ];
   if (!empty($params['stop_on']) && !in_array($params['stop_on'], $valid)) {
-    throw new API_Exception('on_hold param must be one of: ' . implode(', ', $valid));
+    throw new CRM_Core_Exception('stop_on param must be one of: ' . implode(', ', $valid));
   }
 
   if (!empty($params['group_id'])) {
@@ -79,7 +85,7 @@ function civicrm_api3_mailchimpsync_Fetchandreconcile($params) {
       $audiences = [CRM_Mailchimpsync_Audience::newFromGroupId($params['group_id'])->getListId()];
     }
     catch (\InvalidArgumentException $e) {
-      throw new API_Exception($e->getMessage());
+      throw new CRM_Core_Exception($e->getMessage());
     }
   }
   else {
@@ -102,7 +108,7 @@ function civicrm_api3_mailchimpsync_Fetchandreconcile($params) {
     else {
       // No time limit. We'll use 1 day - if it's running longer than this something is surely wrong!
       // (If you want to set a longer limit, just pass in whatever you need.)
-      $stop_time = $started_time + 60*60*24;
+      $stop_time = $started_time + 60 * 60 * 24;
     }
   }
 
@@ -120,18 +126,20 @@ function civicrm_api3_mailchimpsync_Fetchandreconcile($params) {
     $default_params['with_data'] = 1;
   }
 
+  $returnValues = [];
   while ($audiences && time() < $stop_time) {
     $audience = CRM_Mailchimpsync_Audience::newFromListId(array_shift($audiences));
     if (!empty($params['force_restart'])) {
       // Force reset before we start(!)
       $audience->updateAudienceStatusSetting(function(&$config) {
-        $config['locks']['fetchAndReconcile'] = null;
+        $config['locks']['fetchAndReconcile'] = NULL;
         $config['log'] = [];
         $config['fetch'] = [];
       });
     }
     $audience->fetchAndReconcile([
-      'time_limit' => $stop_time - time(), // Remaining time.
+    // Remaining time.
+      'time_limit' => $stop_time - time(),
     ] + $default_params);
     $returnValues[] = [
       'list_id'  => $audience->getListId(),
