@@ -22,18 +22,22 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
 
   protected $_ignoreCase = FALSE;
 
+  protected $baseEntity = '';
+
   /**
    * Get user job information.
    *
    * @return \string[][]
    */
   public static function getUserJobInfo(): array {
-    return [[
-      'name' => 'csv_api_importer',
-      'id' => 'csv_api_importer',
-      'title' => 'Api Import',
-      'entity' => 'Unknown',
-    ]];
+    return [
+      [
+        'name' => 'csv_api_import',
+        'id' => 'csv_api_import',
+        'title' => 'Api Import',
+        'entity' => '',
+      ],
+    ];
   }
 
   /**
@@ -304,9 +308,11 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
   public function import(array $values): void {
     $rowNumber = (int) ($values[array_key_last($values)]);
     $entity = $this->getSubmittedValue('entity');
+    // Civiimport wants a numeric array, not an associative array.
+    $values = array_values($values);
     try {
       $params = $this->getMappedRow($values);
-      foreach ($params as $key => $value) {
+      foreach ($params[$this->getEntity()] as $key => $value) {
         $fieldMetadata = $this->getFieldMetadata($key);
         if ($fieldMetadata['referenced_field'] ?? NULL) {
           $refEntity = $fieldMetadata['entity_name'];
@@ -348,7 +354,7 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
       }
       $params['skipRecentView'] = TRUE;
       $params['check_permissions'] = TRUE;
-      $result = civicrm_api3($entity, 'create', $params);
+      $result = civicrm_api3($entity, 'create', $params[$this->getEntity()]);
     }
     catch (Exception $e) {
       $this->setImportStatus($rowNumber, 'ERROR', $e->getMessage());
@@ -374,6 +380,13 @@ class CRM_Csvimport_Import_Parser_Api extends CRM_Import_Parser {
    */
   public function getEntity(): string {
     return $this->getSubmittedValue('entity');
+  }
+
+  public function getBaseEntity(): string {
+    if ($this->baseEntity === NULL) {
+      $this->baseEntity = $this->getSubmittedValue('entity');
+    }
+    return $this->baseEntity;
   }
 
   /**
