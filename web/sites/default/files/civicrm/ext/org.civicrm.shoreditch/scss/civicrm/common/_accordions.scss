@@ -1,3 +1,5 @@
+/* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-no-qualifying-type, selector-max-id */
+
 %no-border-radius {
   border-radius: 0 !important;
 }
@@ -17,7 +19,7 @@
     color: $crm-white !important;
     font-size: $font-size-h2;
     font-weight: $crm-font-weight-h3 !important;
-
+    
     &::before {
       color: $crm-white;
     }
@@ -31,12 +33,11 @@
   }
 
   .helpicon {
-    color: $crm-white;
+    color: $brand-primary;
     opacity: 1;
     padding-left: 15px;
 
     &:hover {
-      color: $crm-white;
       opacity: 0.8;
     }
   }
