@@ -390,7 +390,9 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       $this->_state->setName($this->_name);
     }
     $this->_action = (int) $action;
-
+    $this->registerElementType('radio_with_div', 'CRM/Core/QuickForm/RadioWithDiv.php', 'CRM_Core_QuickForm_RadioWithDiv');
+    $this->registerElementType('group_with_div', 'CRM/Core/QuickForm/GroupWithDiv.php', 'CRM_Core_QuickForm_GroupWithDiv');
+    $this->registerElementType('advcheckbox_with_div', 'CRM/Core/QuickForm/AdvCheckBoxWithDiv.php', 'CRM_Core_QuickForm_AdvCheckBoxWithDiv');
     $this->registerRules();
 
     // let the constructor initialize this, should happen only once
@@ -454,6 +456,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       'autocomplete',
       'validContact',
       'email',
+      'numberInternational',
     ];
 
     foreach ($rules as $rule) {
@@ -806,7 +809,6 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
     // our ensured variables get blown away, so we need to set them even if
     // it's already been initialized.
     self::$_template->ensureVariablesAreAssigned($this->expectedSmartyVariables);
-    self::$_template->addExpectedTabHeaderKeys();
     $this->_formBuilt = TRUE;
   }
 
@@ -916,7 +918,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       }
 
       // hack - addGroup uses an array to express variable spacing, read from the last element
-      $spacing[] = CRM_Utils_Array::value('spacing', $button, self::ATTR_SPACING);
+      $spacing[] = $button['spacing'] ?? self::ATTR_SPACING;
     }
     $this->addGroup($prevnext, 'buttons', '', $spacing, FALSE);
   }
@@ -1172,7 +1174,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       }
     }
     catch (\Civi\Payment\Exception\PaymentProcessorException $e) {
-      CRM_Core_Error::statusBounce(ts('Payment approval failed with message :') . $e->getMessage(), $payment->getCancelUrl($params['qfKey'], CRM_Utils_Array::value('participant_id', $params)));
+      CRM_Core_Error::statusBounce(ts('Payment approval failed with message :') . $e->getMessage(), $payment->getCancelUrl($params['qfKey'], $params['participant_id'] ?? NULL));
     }
 
     $this->set('pre_approval_parameters', $result['pre_approval_parameters']);
@@ -1494,10 +1496,16 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       if ($required) {
         $optAttributes['class'] .= ' required';
       }
-      $element = $this->createElement('radio', NULL, NULL, $var, $key, $optAttributes);
+      $element = $this->createElement('radio_with_div', NULL, NULL, $var, $key, $optAttributes);
       $options[] = $element;
     }
-    $group = $this->addGroup($options, $name, $title, $separator);
+    if (!empty($attributes['options_per_line'])) {
+      $group = $this->addElement('group_with_div', $name, $title, $options, $separator, TRUE);
+      $group->setAttribute('options_per_line', $attributes['options_per_line']);
+    }
+    else {
+      $group = $this->addGroup($options, $name, $title, $separator);
+    }
 
     $optionEditKey = 'data-option-edit-path';
     if (!empty($attributes[$optionEditKey])) {
@@ -1632,30 +1640,6 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
   }
 
   /**
-   * @deprecated
-   * Use $this->addDatePickerRange() instead.
-   *
-   * @param string $name
-   * @param string $from
-   * @param string $to
-   * @param string $label
-   * @param string $dateFormat
-   * @param bool $required
-   * @param bool $displayTime
-   */
-  public function addDateRange($name, $from = '_from', $to = '_to', $label = 'From:', $dateFormat = 'searchDate', $required = FALSE, $displayTime = FALSE) {
-    CRM_Core_Error::deprecatedFunctionWarning('CRM_Core_Form::addDatePickerRange');
-    if ($displayTime) {
-      $this->addDateTime($name . $from, $label, $required, ['formatType' => $dateFormat]);
-      $this->addDateTime($name . $to, ts('To:'), $required, ['formatType' => $dateFormat]);
-    }
-    else {
-      $this->addDate($name . $from, $label, $required, ['formatType' => $dateFormat]);
-      $this->addDate($name . $to, ts('To:'), $required, ['formatType' => $dateFormat]);
-    }
-  }
-
-  /**
    * Add a search for a range using date picker fields.
    *
    * @param string $fieldName
@@ -1688,7 +1672,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       $label,
       $options,
       $required,
-      ['class' => 'crm-select2']
+      ['class' => 'crm-select2', 'title' => $label]
     );
     $attributes = ['formatType' => 'searchDate'];
     $extra = ['time' => $isDateTime];
@@ -1780,7 +1764,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       $props['placeholder'] = $placeholder;
     }
     // Handle custom field
-    if (strpos($name, 'custom_') === 0 && is_numeric($name[7])) {
+    if (str_starts_with($name, 'custom_') && is_numeric($name[7])) {
       [, $id] = explode('_', $name);
       $label = $props['label'] ?? CRM_Core_DAO::getFieldValue('CRM_Core_DAO_CustomField', 'label', $id);
       $gid = CRM_Core_DAO::getFieldValue('CRM_Core_DAO_CustomField', 'option_group_id', $id);
@@ -1795,7 +1779,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
         if (
           $uniqueName === $props['field'] ||
           ($fieldSpec['name'] ?? NULL) === $props['field'] ||
-          in_array($props['field'], CRM_Utils_Array::value('api.aliases', $fieldSpec, []))
+          in_array($props['field'], $fieldSpec['api.aliases'] ?? [])
         ) {
           break;
         }
@@ -1815,16 +1799,17 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
   /**
    * Handles a repeated bit supplying a placeholder for entity selection
    *
-   * @param string $props
+   * @param array $props
    *   The field properties, including the entity and context.
    * @param bool $required
    *   If the field is required.
-   * @param string $title
+   * @param string|null $title
    *   A field title, if applicable.
-   * @return string
+   *
+   * @return string|null
    *   The placeholder text.
    */
-  private static function selectOrAnyPlaceholder($props, $required, $title = NULL) {
+  private static function selectOrAnyPlaceholder(array $props, bool $required, ?string $title = NULL): ?string {
     if (empty($props['entity'])) {
       return NULL;
     }
@@ -1889,9 +1874,9 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
     }
 
     // Handle custom fields
-    if (strpos($name, 'custom_') === 0 && is_numeric($name[7])) {
+    if (str_starts_with($name, 'custom_') && is_numeric($name[7])) {
       $fieldId = (int) substr($name, 7);
-      return CRM_Core_BAO_CustomField::addQuickFormElement($this, $name, $fieldId, $required, $context == 'search', CRM_Utils_Array::value('label', $props));
+      return CRM_Core_BAO_CustomField::addQuickFormElement($this, $name, $fieldId, $required, $context == 'search', $props['label'] ?? NULL);
     }
 
     // Core field - get metadata.
@@ -2009,7 +1994,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
 
       case 'Select':
       case 'Select2':
-        $props['class'] = CRM_Utils_Array::value('class', $props, 'big') . ' crm-select2';
+        $props['class'] = ($props['class'] ?? 'big') . ' crm-select2';
         // TODO: Add and/or option for fields that store multiple values
         return $this->add(strtolower($widget), $name, $label, $options, $required, $props);
 
@@ -2192,124 +2177,6 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
    */
   public function setVar($name, $value) {
     $this->$name = $value;
-  }
-
-  /**
-   * Add date.
-   *
-   * @deprecated
-   * Use $this->add('datepicker', ...) instead.
-   *
-   * @param string $name
-   *   Name of the element.
-   * @param string $label
-   *   Label of the element.
-   * @param bool $required
-   *   True if required.
-   * @param array $attributes
-   *   Key / value pair.
-   */
-  public function addDate($name, $label, $required = FALSE, $attributes = NULL) {
-    CRM_Core_Error::deprecatedFunctionWarning('CRM_Core_Form::add("datepicker")');
-    if (!empty($attributes['formatType'])) {
-      // get actual format
-      $params = ['name' => $attributes['formatType']];
-      $values = [];
-
-      // cache date information
-      static $dateFormat;
-      $key = "dateFormat_" . str_replace(' ', '_', $attributes['formatType']);
-      if (empty($dateFormat[$key])) {
-        CRM_Core_DAO::commonRetrieve('CRM_Core_DAO_PreferencesDate', $params, $values);
-        $dateFormat[$key] = $values;
-      }
-      else {
-        $values = $dateFormat[$key];
-      }
-
-      if ($values['date_format']) {
-        $attributes['format'] = $values['date_format'];
-      }
-
-      if (!empty($values['time_format'])) {
-        $attributes['timeFormat'] = $values['time_format'];
-      }
-      $attributes['startOffset'] = $values['start'];
-      $attributes['endOffset'] = $values['end'];
-    }
-
-    $config = CRM_Core_Config::singleton();
-    if (empty($attributes['format'])) {
-      $attributes['format'] = $config->dateInputFormat;
-    }
-
-    if (!isset($attributes['startOffset'])) {
-      $attributes['startOffset'] = 10;
-    }
-
-    if (!isset($attributes['endOffset'])) {
-      $attributes['endOffset'] = 10;
-    }
-
-    $this->add('text', $name, $label, $attributes);
-
-    if (!empty($attributes['addTime']) || !empty($attributes['timeFormat'])) {
-
-      if (!isset($attributes['timeFormat'])) {
-        $timeFormat = $config->timeInputFormat;
-      }
-      else {
-        $timeFormat = $attributes['timeFormat'];
-      }
-
-      // 1 - 12 hours and 2 - 24 hours, but for jquery widget it is 0 and 1 respectively
-      if ($timeFormat) {
-        $show24Hours = TRUE;
-        if ($timeFormat == 1) {
-          $show24Hours = FALSE;
-        }
-
-        //CRM-6664 -we are having time element name
-        //in either flat string or an array format.
-        $elementName = $name . '_time';
-        if (substr($name, -1) == ']') {
-          $elementName = substr($name, 0, strlen($name) - 1) . '_time]';
-        }
-
-        $this->add('text', $elementName, ts('Time'), ['timeFormat' => $show24Hours]);
-      }
-    }
-
-    if ($required) {
-      $this->addRule($name, ts('Please select %1', [1 => $label]), 'required');
-      if (!empty($attributes['addTime']) && !empty($attributes['addTimeRequired'])) {
-        $this->addRule($elementName, ts('Please enter a time.'), 'required');
-      }
-    }
-  }
-
-  /**
-   * Function that will add date and time.
-   *
-   * @deprecated
-   * Use $this->add('datepicker', ...) instead.
-   *
-   * @param string $name
-   * @param string $label
-   * @param bool $required
-   * @param array $attributes
-   */
-  public function addDateTime($name, $label, $required = FALSE, $attributes = NULL) {
-    CRM_Core_Error::deprecatedFunctionWarning('CRM_Core_Form::add("datepicker")');
-    $addTime = ['addTime' => TRUE];
-    if (is_array($attributes)) {
-      $attributes = array_merge($attributes, $addTime);
-    }
-    else {
-      $attributes = $addTime;
-    }
-
-    $this->addDate($name, $label, $required, $attributes);
   }
 
   /**
@@ -2870,10 +2737,11 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       // This is appropriate as it is a pseudofield.
       $this->setConstants(['task' => '']);
       $this->assign('taskMetaData', $tasks);
-      $select = $this->add('select', 'task', NULL, ['' => ts('Actions')], FALSE, [
+      $select = $this->add('select', 'task', NULL, ['' => ts('Actions')], FALSE,
+      [
         'class' => 'crm-select2 crm-action-menu fa-check-circle-o huge crm-search-result-actions',
-      ]
-      );
+        'title' => ts('Actions'),
+      ]);
       foreach ($tasks as $key => $task) {
         $attributes = [];
         if (isset($task['data'])) {
@@ -3177,7 +3045,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
     // Numeric fields are not in submittableMoneyFields (for now)
     $fieldRules = $this->_rules[$fieldName] ?? [];
     foreach ($fieldRules as $rule) {
-      if ('money' === $rule['type']) {
+      if ('money' === $rule['type'] || 'numberInternational' === $rule['type']) {
         return CRM_Utils_Rule::cleanMoney($value);
       }
     }

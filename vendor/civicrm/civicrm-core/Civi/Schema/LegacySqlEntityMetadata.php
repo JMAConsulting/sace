@@ -44,6 +44,9 @@ class LegacySqlEntityMetadata extends EntityMetadataBase {
       case 'primary_keys':
         return $this->getClassName()::$_primaryKey ?? ['id'];
 
+      case 'primary_key':
+        return $this->getClassName()::$_primaryKey[0] ?? 'id';
+
       case 'description':
         return $this->getClassName()::getEntityDescription();
 
@@ -167,6 +170,9 @@ class LegacySqlEntityMetadata extends EntityMetadataBase {
       case \CRM_Utils_Type::T_DATE + \CRM_Utils_Type::T_TIME:
         return 'datetime';
 
+      case \CRM_Utils_Type::T_TIME:
+        return 'time';
+
       default:
         throw new \CRM_Core_Exception('Unknown field type for ' . $legacyField['name']);
     }
@@ -184,10 +190,6 @@ class LegacySqlEntityMetadata extends EntityMetadataBase {
       $usage[] = 'export';
     }
     return $usage;
-  }
-
-  public function getOptions(string $fieldName, ?array $values = NULL): ?array {
-    // TODO: Implement getOptions() method.
   }
 
 }

@@ -232,7 +232,7 @@ return [
         'duplicate_matching',
       ],
       'input_attrs' => [
-        'multiple' => '1',
+        'multiple' => TRUE,
         'control_field' => 'contact_type',
       ],
       'pseudoconstant' => [
@@ -241,6 +241,7 @@ return [
         'label_column' => 'label',
         'icon_column' => 'icon',
         'condition' => 'parent_id IS NOT NULL',
+        'condition_provider' => ['CRM_Contact_BAO_Contact', 'alterContactSubType'],
       ],
     ],
     'first_name' => [
@@ -482,7 +483,7 @@ return [
         'duplicate_matching',
       ],
       'input_attrs' => [
-        'multiple' => '1',
+        'multiple' => TRUE,
       ],
       'pseudoconstant' => [
         'option_group_name' => 'preferred_communication_method',
@@ -770,12 +771,11 @@ return [
       ],
     ],
     'is_deceased' => [
-      'title' => ts('Deceased'),
+      'title' => ts('Deceased / Closed'),
       'sql_type' => 'boolean',
       'input_type' => 'CheckBox',
       'required' => TRUE,
       'add' => '1.1',
-      'contact_type' => 'Individual',
       'default' => FALSE,
       'usage' => [
         'import',
@@ -783,16 +783,15 @@ return [
         'duplicate_matching',
       ],
       'input_attrs' => [
-        'label' => ts('Is Deceased'),
+        'label' => ts('Is Deceased / Closed'),
       ],
     ],
     'deceased_date' => [
-      'title' => ts('Deceased Date'),
+      'title' => ts('Deceased / Closed Date'),
       'sql_type' => 'date',
       'input_type' => 'Select Date',
-      'description' => ts('Date of deceased'),
+      'description' => ts('Date deceased / closed'),
       'add' => '1.5',
-      'contact_type' => 'Individual',
       'usage' => [
         'import',
         'export',
@@ -800,7 +799,7 @@ return [
       ],
       'input_attrs' => [
         'format_type' => 'birth',
-        'label' => ts('Deceased Date'),
+        'label' => ts('Deceased / Closed Date'),
       ],
     ],
     'household_name' => [
@@ -879,7 +878,9 @@ return [
       ],
       'input_attrs' => [
         'label' => ts('Current Employer'),
-        'filter' => ['contact_type' => 'Organization'],
+        'filter' => [
+          'contact_type' => 'Organization',
+        ],
       ],
       'entity_reference' => [
         'entity' => 'Contact',
@@ -943,7 +944,7 @@ return [
         'label' => ts('Preferred Mail Format'),
       ],
       'pseudoconstant' => [
-        'callback' => 'CRM_Core_SelectValues::pmf',
+        'callback' => ['CRM_Core_SelectValues', 'pmf'],
       ],
     ],
   ],

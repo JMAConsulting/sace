@@ -46,8 +46,8 @@
               <tr class="crm-participant-form-block-additionalParticipants">
                 <td class="label"><label>{ts}Also Registered by this Participant{/ts}</label></td>
                 <td>
-                  {foreach from=$additionalParticipants key=apName item=apURL}
-                    <a href="{$apURL}" title="{ts}view additional participant{/ts}">{$apName}</a><br />
+                  {foreach from=$additionalParticipants key=apName item=ap}
+                    <a href="{$ap.url}" title="{ts escape='htmlattribute'}view additional participant{/ts}">{$apName}</a>{if $ap.status} ({$ap.status}){/if}<br />
                   {/foreach}
                 </td>
               </tr>
@@ -57,7 +57,7 @@
                 <td class="label"><label>{ts}Registered By{/ts}</label></td>
                 <td class="view-value">
                   <a href="{crmURL p='civicrm/contact/view/participant' q="reset=1&id=$participant_registered_by_id&cid=$registered_by_contact_id&action=view"}"
-                     title="{ts}view primary participant{/ts}">{$registered_by_display_name}</a>
+                     title="{ts escape='htmlattribute'}view primary participant{/ts}">{$registered_by_display_name}</a>
                 </td>
               </tr>
             {/if}
@@ -122,7 +122,7 @@
       {/if}
 
       {if $action eq 2 and $accessContribution and array_key_exists(0, $rows) &&  $rows.0.contribution_id}
-      {include file="CRM/Contribute/Form/Selector.tpl" context="Search"}
+      {include file="CRM/Contribute/Form/Selector.tpl" context="dashboard" single=false}
       {/if}
 
       <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>

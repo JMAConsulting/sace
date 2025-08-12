@@ -138,7 +138,7 @@ return [
               'type' => 'field',
               'key' => 'is_ssl',
               'dataType' => 'Boolean',
-              'label' => E::ts('Use SSL?'),
+              'label' => E::ts('Use SSL'),
               'sortable' => TRUE,
               'editable' => TRUE,
             ],
@@ -191,6 +191,7 @@ return [
           'classes' => [
             'table',
             'table-striped',
+            'crm-sticky-header',
           ],
           'toolbar' => [
             [
