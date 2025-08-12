@@ -1,3 +1,5 @@
+/* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-no-qualifying-type, selector-max-id */
+
 table {
   .crm-icon {
     @include contact-type-icons();
@@ -103,7 +105,7 @@ table {
   }
 
   td {
-    background: $crm-white;
+    background: $crm-white !important;
 
     &.label {
       vertical-align: middle !important;

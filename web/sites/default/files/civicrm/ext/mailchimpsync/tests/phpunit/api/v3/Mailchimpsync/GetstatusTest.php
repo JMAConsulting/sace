@@ -29,7 +29,7 @@ class api_v3_Mailchimpsync_GetstatusTest extends \PHPUnit\Framework\TestCase imp
   /**
    * The setup() method is executed before the test is executed (optional).
    */
-  public function setUp() {
+  public function setUp():void {
     parent::setUp();
   }
 
@@ -37,7 +37,7 @@ class api_v3_Mailchimpsync_GetstatusTest extends \PHPUnit\Framework\TestCase imp
    * The tearDown() method is executed after the test was executed (optional)
    * This can be used for cleanup.
    */
-  public function tearDown() {
+  public function tearDown():void {
     parent::tearDown();
   }
 
@@ -62,7 +62,6 @@ class api_v3_Mailchimpsync_GetstatusTest extends \PHPUnit\Framework\TestCase imp
       'total_operations' => 1,
     ]);
 
-
     // Run tests.
     $result = civicrm_api3('Mailchimpsync', 'Getstatus', []);
     $this->assertEquals(1, $result['count']);
@@ -70,17 +69,17 @@ class api_v3_Mailchimpsync_GetstatusTest extends \PHPUnit\Framework\TestCase imp
     $this->assertEquals('readyToFetch', $result['values']['list_1']['locks']['fetchAndReconcile']);
     $this->assertEquals(FALSE, $result['values']['list_1']['in_sync']);
     foreach ([
-        'failed' => 0,
-        'subscribed_at_mailchimp' => 0,
-        'subscribed_at_civicrm' => 1,
-        'to_add_to_mailchimp' => 1,
-        'cannot_subscribe' => 0,
-        'to_remove_from_mailchimp' => 0,
-        'todo' => 0,
-        'mailchimp_updates_pending' => 1,
-        'mailchimp_updates_unsubmitted' => 0,
-      ] as $k=>$v) {
-        $this->assertEquals($v , $result['values']['list_1']['stats'][$k]);
+      'failed' => 0,
+      'subscribed_at_mailchimp' => 0,
+      'subscribed_at_civicrm' => 1,
+      'to_add_to_mailchimp' => 1,
+      'cannot_subscribe' => 0,
+      'to_remove_from_mailchimp' => 0,
+      'todo' => 0,
+      'mailchimp_updates_pending' => 1,
+      'mailchimp_updates_unsubmitted' => 0,
+    ] as $k => $v) {
+      $this->assertEquals($v, $result['values']['list_1']['stats'][$k]);
     }
 
     $this->assertThat($result['values']['list_1'], $this->logicalNot($this->arrayHasKey('batches')));

@@ -6,7 +6,7 @@ Technical reference to the API.
 
 This is for emergency troubleshooting and should not normally be used since it basically destroys the tracking data used to monitor sync processes. It does *not* abort any sync processes that may be running (although it might cause them to crash), and it can leave your data in a mess. See also `Mailchimpsync.abortsync`
 
-### `group_id` parameter (integer) (`id` is alised to this)
+### `group_id` parameter (integer) (`id` is aliased to this)
 
 Without this, sync is run for each list in turn. With this given, sync will only run for that group. (The group has to be a subscription sync; this is not a way to run sync for a given group of contacts, it's a way to specify one of the configured subscription sync groups.)
 
@@ -24,7 +24,7 @@ With a `max_time` set, the process will continue as normal but after each bit of
 - `ever`: sync all contacts regardless when they were changed.
 
 !!! note
-    Use `ever` don't use some ages-ago date instead because it causes Mailchimp's API to lock up. See [Mailchimp Issues](../discussion/mailchimp-issues.md)
+    Use `ever` not some ages-ago date instead because that causes Mailchimp's API to lock up. See [Mailchimp Issues](../discussion/mailchimp-issues.md)
 
 ### `stop_on` parameter (String)
 
@@ -81,7 +81,7 @@ If given as 1 then it will fetch batches info from Mailchimp.
 
 This sets the `sync_status` to `todo` for the given contact ID(s). It is used by the "Include in the next Mailchimp Sync" search task.
 
-Note that this works on all cache records for each contact ID given, i.e. across audiences/lists. It returns an 'affected' parameter, which is the numberof cache rows (not contacts) that were updated.
+Note that this works on all cache records for each contact ID given, i.e. across audiences/lists. It returns an 'affected' parameter, which is the number of cache rows (not contacts) that were updated.
 
 ### `contact_id` (int) | array of ints
 
@@ -119,4 +119,4 @@ Used for the delete processes only. The Mailchimp webhook ID to delete.
 
 This is a CiviCRM entity, however the `get` action is overridden so that we can report on and search for related `civicrm_group_contact` data using the `civicrm_status` = `Added|Removed` parameter.
 
-There is also a `troubleshoot` parameter - set this to 1 to include related data that is relatively expensive to compute. This is used by the Cache Browser on the sttaus page.
+There is also a `troubleshoot` parameter - set this to 1 to include related data that is relatively expensive to compute. This is used by the Cache Browser on the status page.

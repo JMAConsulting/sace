@@ -29,7 +29,7 @@ class api_v3_Mailchimpsync_UpdateconfigTest extends \PHPUnit\Framework\TestCase 
   /**
    * The setup() method is executed before the test is executed (optional).
    */
-  public function setUp() {
+  public function setUp():void {
     parent::setUp();
   }
 
@@ -37,7 +37,7 @@ class api_v3_Mailchimpsync_UpdateconfigTest extends \PHPUnit\Framework\TestCase 
    * The tearDown() method is executed after the test was executed (optional)
    * This can be used for cleanup.
    */
-  public function tearDown() {
+  public function tearDown():void {
     parent::tearDown();
   }
 
@@ -52,34 +52,32 @@ class api_v3_Mailchimpsync_UpdateconfigTest extends \PHPUnit\Framework\TestCase 
     ])['id'];
 
     $data = [
-        'lists' => [
-          'list_1' => [
-            'apiKey' => 'mock_account_1',
-            'subscriptionGroup' => $group_id,
-          ],
+      'lists' => [
+        'list_1' => [
+          'apiKey' => 'mock_account_1',
+          'subscriptionGroup' => $group_id,
         ],
-        'accounts' => [
-          'mock_account_1' => [
-            'audiences' => [
-              'list_1' => [ ]
-            ],
-            'batchWebhookSecret' => 'MockBatchWebhookSecret',
-          ]
-        ]
-      ];
-    civicrm_api3('Mailchimpsync', 'updateconfig', [ 'config' => json_encode($data) ]);
+      ],
+      'accounts' => [
+        'mock_account_1' => [
+          'audiences' => [
+            'list_1' => [],
+          ],
+          'batchWebhookSecret' => 'MockBatchWebhookSecret',
+        ],
+      ],
+    ];
+    civicrm_api3('Mailchimpsync', 'updateconfig', ['config' => json_encode($data)]);
 
     $config = CRM_Mailchimpsync::getConfig();
-    $this->assertInternalType('array', $config);
+    $this->assertIsArray($config);
     $this->assertEquals($data, $config);
   }
 
-  /**
-   * @expectedException CiviCRM_API3_Exception
-   * @expectedExceptionMessage Failed to parse JSON in 'config' parameter.
-   */
   public function testInvalidJsonRejected() {
-    civicrm_api3('Mailchimpsync', 'updateconfig', [ 'config' => 'invalid json' ]);
+    $this->expectException(CiviCRM_API3_Exception::class);
+    $this->expectExceptionMessage("Failed to parse JSON in 'config' parameter.");
+    civicrm_api3('Mailchimpsync', 'updateconfig', ['config' => 'invalid json']);
   }
 
   /**
@@ -185,7 +183,6 @@ class api_v3_Mailchimpsync_UpdateconfigTest extends \PHPUnit\Framework\TestCase 
     $update->completed = 1;
     $update->data = '';
     $update->save();
-
 
     // Now remove list_1
     unset($config['lists']['list_1']);

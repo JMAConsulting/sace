@@ -1,22 +1,28 @@
 <?php
 use CRM_Mailchimpsync_ExtensionUtil as E;
 
+/**
+ * @method mixed find(bool $n = false)
+ * @method CRM_Core_DAO save($hook = TRUE)
+ */
 class CRM_Mailchimpsync_BAO_MailchimpsyncBatch extends CRM_Mailchimpsync_DAO_MailchimpsyncBatch {
 
   /**
-   * Called when we think a batch has completed.
+   * Called by the batch webhook page by Mailchimp when a batch (or batches) have completed.
+   *
+   * May also be called manually via api3 mailchimpsync.batch_processcompleted.
    *
    * @param array|null $batch_status if not given, the batch status is fetched from the api
    * @param bool $force If true, we don't check that the batch has not been processed already.
    * @throws InvalidArgumentException if the batch has not finished.
    */
-  public function processCompletedBatch($batch_status=NULL, $force=FALSE) {
+  public function processCompletedBatch($batch_status = NULL, $force = FALSE) {
 
     // Check if processing is already underway.
     if (!$force && $this->response_processed > 0) {
       throw new InvalidArgumentException("Batch $this->id ($this->mailchimp_batch_id) "
         . (($this->response_processed == 1) ? 'currently being' : 'already')
-        . ' processed. Use the force parameter if you want to reprocess this.'
+        . ' processed. If this was an api3 call, use the force parameter if you want to reprocess this.'
         );
     }
 
@@ -75,6 +81,7 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncBatch extends CRM_Mailchimpsync_DAO_Mai
     }
 
   }
+
   /**
    * Process a response file.
    *
@@ -108,4 +115,5 @@ class CRM_Mailchimpsync_BAO_MailchimpsyncBatch extends CRM_Mailchimpsync_DAO_Mai
       $update->handleMailchimpUpdatesResponse($response);
     }
   }
+
 }
