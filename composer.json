@@ -16,9 +16,9 @@
     ],
     "require": {
         "civicrm/civicrm-asset-plugin": "~1.1",
-        "civicrm/civicrm-core": "5.78.3",
-        "civicrm/civicrm-drupal-8": "5.78.3",
-        "civicrm/civicrm-packages": "5.78.3",
+        "civicrm/civicrm-core": "6.5.0",
+        "civicrm/civicrm-drupal-8": "6.5.0",
+        "civicrm/civicrm-packages": "6.5.0",
         "composer/installers": "^1.2",
         "drupal/admin_toolbar": "^3.4",
         "drupal/antibot": "^2.0",
@@ -114,9 +114,6 @@
         "patches": {
             "civicrm/civicrm-core": {
                 "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
-            },
-            "civicrm/civicrm-drupal-8": {
-                "Apply patch to fix cachability metadata fix": "./patches/civicrm-drupal-8-cachability-patch.patch"
             },
             "drupal/fullcalendar_view": {
                 "Apply patch to fix all day calendar events display": "./patches/full_calendar_view_all_day_patch.patch",

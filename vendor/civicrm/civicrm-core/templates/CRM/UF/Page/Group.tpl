@@ -43,15 +43,19 @@
     {/if}
     {if $rows}
       <div id='mainTabContainer'>
-        <ul>
-          <li id='tab_user-profiles'>    <a href='#user-profiles'     title='{ts}User-defined Profile{/ts}'>{ts}User-defined Profiles{/ts}</a></li>
-          <li id='tab_reserved-profiles'><a href='#reserved-profiles' title='{ts}Reserved Profiles{/ts}'>{ts}Reserved Profiles{/ts}</a></li>
+        <ul role="tablist">
+          <li id='tab_user-profiles' role="tab">
+            <a href='#user-profiles' title='{ts escape='htmlattribute'}User-defined Profile{/ts}'>{ts}User-defined Profiles{/ts}</a>
+          </li>
+          <li id='tab_reserved-profiles' role="tab">
+            <a href='#reserved-profiles' title='{ts escape='htmlattribute'}Reserved Profiles{/ts}'>{ts}Reserved Profiles{/ts}</a>
+          </li>
         </ul>
 
         {* handle enable/disable actions*}
         {include file="CRM/common/enableDisableApi.tpl"}
         {include file="CRM/common/jsortable.tpl"}
-        <div id="user-profiles">
+        <div id="user-profiles" role="tabpanel">
           <div class="crm-content-block">
             <table class="display">
               <thead>
@@ -87,16 +91,10 @@
                 {/foreach}
               </tbody>
             </table>
-
-            {if NOT ($action eq 1 or $action eq 2)}
-              <div class="crm-submit-buttons">
-                  <a href="{crmURL p='civicrm/admin/uf/group/add' q='action=add&reset=1'}" id="newCiviCRMProfile-bottom" class="button"><span><i class="crm-i fa-plus-circle" aria-hidden="true"></i> {ts}Add Profile{/ts}</span></a>
-              </div>
-            {/if}
           </div>
         </div>{* user profile*}
 
-        <div id="reserved-profiles">
+        <div id="reserved-profiles" role="tabpanel">
           <div class="crm-content-block">
             <table class="display">
               <thead>
@@ -132,12 +130,6 @@
                 {/foreach}
               </tbody>
             </table>
-
-            {if NOT ($action eq 1 or $action eq 2)}
-              <div class="crm-submit-buttons">
-                <a href="{crmURL p='civicrm/admin/uf/group/add' q='action=add&reset=1'}" id="newCiviCRMProfile-bottom" class="button"><span><i class="crm-i fa-plus-circle" aria-hidden="true"></i> {ts}Add Profile{/ts}</span></a>
-              </div>
-            {/if}
           </div>
         </div>{* reserved profile*}
       </div>

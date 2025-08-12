@@ -22,7 +22,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Activity Detail'
+      title: '{{ subject }} - {{ activity_type_id }}'
       fields:
         subject:
           id: subject
