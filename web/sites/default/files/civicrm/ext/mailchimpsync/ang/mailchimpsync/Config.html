@@ -190,6 +190,21 @@
         </select>
       </div>
 
+      <div class="row">
+        <label class="" crm-ui-for="editData.trustOverride" >{{ts('Trust override')}}</label>
+        <select
+          crm-ui-id="editData.trustOverride"
+          ng-model="editData.trustOverride"
+          crm-ui-select="{allowClear:true, width: '100%'}"
+          name="trust_override"
+          class="crm-form-text"
+          >
+            <option value="" >{{ts('None')}}</option>
+            <option value="Mailchimp" >Mailchimp</option>
+            <option value="CiviCRM" >CiviCRM</option>
+        </select>
+      </div>
+
       <a href ng-click="view='overview'" tabstop="-1">{{ts('Cancel Edits')}}</a>
       <button ng-click="listSave()" >{{ts('Save')}}</button>
       <br/>
@@ -247,6 +262,21 @@
                   value="{{group.id}}">
             {{group.title}}
           </option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.trustOverride" >{{ts('Trust override')}}</label>
+        <select
+          crm-ui-id="editData.trustOverride"
+          ng-model="editData.trustOverride"
+          crm-ui-select="{allowClear:true, width: '100%'}"
+          name="trust_override"
+          class="crm-form-text"
+          >
+            <option value="" >{{ts('None')}}</option>
+            <option value="Mailchimp" >Mailchimp</option>
+            <option value="CiviCRM" >CiviCRM</option>
         </select>
       </div>
 

@@ -5,20 +5,19 @@
  * @licence AGPL-3
  * @copyright Rich Lott / Artful Robot
  */
+class CRM_Mailchimpsync {
 
-class CRM_Mailchimpsync
-{
   /**
    * Returns an API object for the given key.
    *
    * These are cached per API key.
    *
    * @param string Mailchimp API key
-   * @return CRM_Mailchimpsync_MailchimpApiInterface
+   * @return CRM_Mailchimpsync_MailchimpApiBase
    */
-  public static function getMailchimpApi(string $key, $reset=FALSE) {
+  public static function getMailchimpApi(string $key, $reset = FALSE) {
     if ($reset || !isset(\Civi::$statics['mailchimpsync_apis'][$key])) {
-      if (substr($key, 0,5) == 'mock_') {
+      if (substr($key, 0, 5) == 'mock_') {
         $api = new CRM_Mailchimpsync_MailchimpApiMock($key);
       }
       else {
@@ -28,6 +27,7 @@ class CRM_Mailchimpsync
     }
     return \Civi::$statics['mailchimpsync_apis'][$key];
   }
+
   /**
    * Access CiviCRM setting for main config.
    *
@@ -36,6 +36,7 @@ class CRM_Mailchimpsync
   public static function getConfig() {
     return json_decode(Civi::settings()->get('mailchimpsync_config'), TRUE);
   }
+
   /**
    * Set CiviCRM setting for main config.
    *
@@ -85,7 +86,7 @@ class CRM_Mailchimpsync
       $lists_placeholders = [];
       $params = [];
       $i = 1;
-      foreach (array_keys($config['lists']) as $list_id ) {
+      foreach (array_keys($config['lists']) as $list_id) {
         $lists_placeholders[] = "%$i";
         $params[$i] = [$list_id, 'String'];
         $i++;
@@ -112,6 +113,7 @@ class CRM_Mailchimpsync
 
     return $config;
   }
+
   /**
    * Submit batches for all lists.
    *
@@ -129,6 +131,7 @@ class CRM_Mailchimpsync
     }
     return $results;
   }
+
   /**
    * Fetch batches for each API key and update our batches table.
    *
@@ -143,7 +146,7 @@ class CRM_Mailchimpsync
     )->fetchMap('i', 'i');
     $api_keys = [];
     foreach ($list_ids as $list_id) {
-      $api_keys[ $config['lists'][$list_id]['apiKey'] ] = 1;
+      $api_keys[$config['lists'][$list_id]['apiKey']] = 1;
     }
 
     foreach (array_keys($api_keys) as $api_key) {
@@ -174,6 +177,7 @@ class CRM_Mailchimpsync
     }
     return $batches;
   }
+
   /**
    * Get an array of Integer Group ID used for any 2 way sync.
    *
@@ -190,6 +194,7 @@ class CRM_Mailchimpsync
     }
     return $group_ids;
   }
+
   /**
    * Get the batch webhook url for this account.
    *
@@ -198,7 +203,7 @@ class CRM_Mailchimpsync
    *
    * @return string
    */
-  public static function getBatchWebhookUrl($api_key, $secret=NULL) {
+  public static function getBatchWebhookUrl($api_key, $secret = NULL) {
     if (!$secret) {
       $secret = static::getBatchWebhookSecret($api_key);
     }
@@ -210,6 +215,7 @@ class CRM_Mailchimpsync
     $htmlize = FALSE;
     return CRM_Utils_System::url('civicrm/mailchimpsync/batch-webhook', ['secret' => $secret], $absolute, $fragment, $htmlize, $frontend);
   }
+
   /**
    * Get the webhook url for this account.
    *
@@ -218,7 +224,7 @@ class CRM_Mailchimpsync
    *
    * @return string
    */
-  public static function getWebhookUrl($api_key, $secret=NULL) {
+  public static function getWebhookUrl($api_key, $secret = NULL) {
     if (!$secret) {
       $secret = static::getBatchWebhookSecret($api_key);
     }
@@ -229,6 +235,7 @@ class CRM_Mailchimpsync
     $htmlize = FALSE;
     return CRM_Utils_System::url('civicrm/mailchimpsync/webhook', ['secret' => $secret], $absolute, $fragment, $htmlize, $frontend);
   }
+
   /**
    * Get the batch webhook secret for this account.
    *
@@ -248,6 +255,7 @@ class CRM_Mailchimpsync
       return $secret;
     }
   }
+
   /**
    * See if the given secret matches any of our accounts.
    */
@@ -260,6 +268,7 @@ class CRM_Mailchimpsync
     }
     return FALSE;
   }
+
   /**
    * See if the given secret matches any of our accounts.
    */
@@ -267,6 +276,7 @@ class CRM_Mailchimpsync
     // Don't see it would add any security to use a 2nd key here.
     return static::batchWebhookKeyIsValid($secret);
   }
+
   /**
    * Reload batch webhook details and store in config.
    */
@@ -286,6 +296,7 @@ class CRM_Mailchimpsync
     $account['batchWebhookFound'] = in_array($account['batchWebhook'], array_column($account['batchWebhooks'], 'url'));
     return static::setConfig($config);
   }
+
   /**
    * Reload webhook details and store in config.
    */
@@ -305,4 +316,5 @@ class CRM_Mailchimpsync
     $list['webhookFound'] = in_array($list['webhook'], array_column($list['webhooks'], 'url'));
     return static::setConfig($config);
   }
+
 }

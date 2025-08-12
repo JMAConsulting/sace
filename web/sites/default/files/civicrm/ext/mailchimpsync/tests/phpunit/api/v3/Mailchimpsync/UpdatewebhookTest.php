@@ -29,7 +29,7 @@ class api_v3_Mailchimpsync_UpdatebatchwebhookTest extends \PHPUnit\Framework\Tes
   /**
    * The setup() method is executed before the test is executed (optional).
    */
-  public function setUp() {
+  public function setUp():void {
     parent::setUp();
   }
 
@@ -37,7 +37,7 @@ class api_v3_Mailchimpsync_UpdatebatchwebhookTest extends \PHPUnit\Framework\Tes
    * The tearDown() method is executed after the test was executed (optional)
    * This can be used for cleanup.
    */
-  public function tearDown() {
+  public function tearDown():void {
     parent::tearDown();
   }
 
@@ -59,7 +59,7 @@ class api_v3_Mailchimpsync_UpdatebatchwebhookTest extends \PHPUnit\Framework\Tes
       [
         'method'  => 'POST',
         'path'    => 'batch-webhooks',
-        'options' => ['body' => [ 'url' => $expected_webhook_url ]],
+        'options' => ['body' => ['url' => $expected_webhook_url]],
       ], $api->calls[0]);
 
   }
@@ -108,22 +108,24 @@ class api_v3_Mailchimpsync_UpdatebatchwebhookTest extends \PHPUnit\Framework\Tes
       [
         'method'  => 'POST',
         'path'    => 'lists/list_1/webhooks',
-        'options' => ['body' => [
-          'url' => $expected_webhook_url,
-          'events' => [
-            'subscribe' => TRUE,
-            'unsubscribe' => TRUE,
-            'profile' => TRUE,
-            'upemail' => TRUE,
-            'cleaned' => TRUE,
-            'campaign' => FALSE,
+        'options' => [
+          'body' => [
+            'url' => $expected_webhook_url,
+            'events' => [
+              'subscribe' => TRUE,
+              'unsubscribe' => TRUE,
+              'profile' => TRUE,
+              'upemail' => TRUE,
+              'cleaned' => TRUE,
+              'campaign' => FALSE,
+            ],
+            'sources' => [
+              'user' => TRUE,
+              'admin' => TRUE,
+              'api' => FALSE,
+            ],
           ],
-          'sources' => [
-            'user' => TRUE,
-            'admin' => TRUE,
-            'api' => FALSE,
-          ]
-        ]],
+        ],
       ], $api->calls[0]);
 
   }
