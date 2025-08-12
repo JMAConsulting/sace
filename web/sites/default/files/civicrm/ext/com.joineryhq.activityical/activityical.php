@@ -39,7 +39,7 @@ function _activityical_check_permission($access_arguments, $op) {
 function activityical_civicrm_config(&$config) {
   $extRoot = dirname(__FILE__) . DIRECTORY_SEPARATOR;
   $template =& CRM_Core_Smarty::singleton();
-  $template->plugins_dir = array_merge(array($extRoot . 'Smarty' . DIRECTORY_SEPARATOR . 'plugins'), (array) $template->plugins_dir);
+  $template->addPluginsDir($extRoot . 'Smarty' . DIRECTORY_SEPARATOR . 'plugins');
 
   _activityical_civix_civicrm_config($config);
 }
