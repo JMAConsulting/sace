@@ -34,6 +34,13 @@
  *   the help html to be inserted
  */
 function smarty_function_help($params, $smarty) {
+  if (isset($params['values']) && is_array($params['values'])) {
+    // Passing in values is way easier at the smarty level as it likely already
+    // has a field spec. Use/ prefer values.
+    $params = array_merge($params, $params['values']);
+    unset($params['values']);
+  }
+
   if (!isset($params['id']) || !isset($smarty->getTemplateVars()['config'])) {
     return NULL;
   }
@@ -120,5 +127,6 @@ function smarty_function_help($params, $smarty) {
   foreach ($params as &$param) {
     $param = is_bool($param) || is_numeric($param) ? (int) $param : (string) $param;
   }
-  return '<a class="' . $class . '" title="' . $title . '" aria-label="' . $title . '" href="#" onclick=\'CRM.help(' . $helpTextTitle . ', ' . json_encode($params) . '); return false;\'>&nbsp;</a>';
+  $helpTextParams = htmlspecialchars(json_encode($params), ENT_QUOTES);
+  return '<a class="' . $class . '" title="' . $title . '" aria-label="' . $title . '" href="#" onclick=\'CRM.help(' . $helpTextTitle . ', ' . $helpTextParams . '); return false;\'>&nbsp;</a>';
 }
