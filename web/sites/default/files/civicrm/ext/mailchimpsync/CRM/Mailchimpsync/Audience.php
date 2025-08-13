@@ -1,19 +1,45 @@
 <?php
+
+use Civi\Api4\Contact;
+use Civi\Api4\Group;
+
 /**
  * Class to represent a Mailchimp Audience(list) that is synced with CiviCRM.
  *
  * This handles the config for this audience, too.
  *
  */
-class CRM_Mailchimpsync_Audience
-{
-  /** @var string */
+class CRM_Mailchimpsync_Audience {
+  /**
+   * @var string
+   */
   protected $mailchimp_list_id;
 
-  /** @var array */
+  /**
+   * @var array
+   */
+  protected $mailchimpListInfo;
+
+  /**
+   * This holds a copy of the config for this Audience
+   * from the mailchimpsync_config settings object.
+   *
+   * Keys: subscriptionGroup, apiKey, interests, trustOverride
+   *
+   * 'interests' is a map of Mailchimp interest ID => Civi Group ID
+   * 'trustOverride' is a map 'subscription' or interestID to one of:
+   * - 'Mailchimp'
+   * - 'CiviCRM'
+   * - '' (no override)
+   *
+   * @var array
+   */
   protected $config;
 
-  /** Cached mailchimpsync_audience_status_* value */
+  protected array $groupIdToInterestIdMap;
+
+  /**
+   * Cached mailchimpsync_audience_status_* value */
   protected $status_cache;
 
   /**
@@ -28,13 +54,7 @@ class CRM_Mailchimpsync_Audience
     if (!preg_match('/^[0-9a-zA-Z_]+$/', $list_id)) {
       throw new \InvalidArgumentException("Invalid Mailchimp list id: '$list_id'");
     }
-    $config = CRM_Mailchimpsync::getConfig();
-    $this->mailchimp_list_id = $list_id;
-    $this->config = $config['lists'][$list_id]
-      ?? [
-        'subscriptionGroup' => 0,
-        'api_key' => NULL,
-      ];
+    $this->setListId($list_id);
   }
 
   /**
@@ -50,6 +70,7 @@ class CRM_Mailchimpsync_Audience
     $obj = new static($list_id);
     return $obj;
   }
+
   /**
    * Instantiate object given CiviCRM group ID.
    *
@@ -66,17 +87,38 @@ class CRM_Mailchimpsync_Audience
     }
     throw new \InvalidArgumentException("Unknown group ID `$group_id`");
   }
+
   /**
    * Setter for List ID.
    *
-   * @param string $list_id
-   *
    * @return CRM_Mailchimpsync_Audience
    */
-  public function setListId($list_id) {
+  public function setListId(string $list_id): CRM_Mailchimpsync_Audience {
     $this->mailchimp_list_id = $list_id;
+    $config = CRM_Mailchimpsync::getConfig();
+    $this->config = $config['lists'][$list_id] ?? [];
+    $this->config += [
+      'subscriptionGroup' => 0,
+      'apiKey' => NULL,
+      'trustOverride' => [],
+    ];
+    $apiKey = $this->config['apiKey'];
+    $this->mailchimpListInfo = $apiKey
+      ? ($config['accounts'][$apiKey]['audiences'][$list_id] ?? NULL)
+      : NULL;
+    if (!$this->mailchimpListInfo) {
+      // dummy empty structure.
+      $this->mailchimpListInfo = [
+        'name' => NULL,
+        'interests' => [],
+        'webhook' => NULL,
+        'webhooks' => [],
+        'webhookFound' => FALSE,
+      ];
+    }
     return $this;
   }
+
   /**
    * Setter for CiviCRM Group.
    *
@@ -88,6 +130,7 @@ class CRM_Mailchimpsync_Audience
     $this->config['subscriptionGroup'] = $group_id;
     return $this;
   }
+
   /**
    * Getter for List ID.
    *
@@ -96,6 +139,7 @@ class CRM_Mailchimpsync_Audience
   public function getListId() {
     return $this->mailchimp_list_id;
   }
+
   /**
    * Getter for CiviCRM Group.
    *
@@ -107,13 +151,23 @@ class CRM_Mailchimpsync_Audience
     }
     return (int) $this->config['subscriptionGroup'];
   }
+
   /**
-   * Return the config for this list from mailchimpsync_config setting.
+   * Return the subscription config for this list from mailchimpsync_config setting.
    * @return array
    */
   public function getConfig() {
     return $this->config;
   }
+
+  /**
+   * Return the info about this audience from mailchimpsync_config setting.
+   * @return array
+   */
+  public function getListInfo() {
+    return $this->mailchimpListInfo;
+  }
+
   /**
    * Update/set the config for this list from mailchimpsync_config setting.
    * @return CRM_Mailchimpsync_Audience $this
@@ -122,9 +176,10 @@ class CRM_Mailchimpsync_Audience
 
     // Ensure we have defaults.
     $local_config += [
-        'subscriptionGroup' => 0,
-        'api_key' => NULL,
-        'interests' => [],
+      'subscriptionGroup' => 0,
+      'api_key' => NULL,
+      'interests' => [],
+      'trustOverride' => [],
     ];
     $global_config = CRM_Mailchimpsync::getConfig();
     $global_config['lists'][$this->mailchimp_list_id] = $local_config;
@@ -133,8 +188,11 @@ class CRM_Mailchimpsync_Audience
     // Update our cache of the config.
     $this->config = $local_config;
 
+    $this->groupIdToInterestIdMap = array_flip($this->config['interests']);
+
     return $this;
   }
+
   /**
    * This function deals with the fetch and reconciliation phases of the sync.
    *
@@ -155,9 +213,22 @@ class CRM_Mailchimpsync_Audience
     $params += ['time_limit' => 604800];
     $stop_time = time() + $params['time_limit'];
     $with_data = (!empty($params['with_data']));
+    $group = Group::get(FALSE)
+      ->addWhere('id', '=', $this->config['subscriptionGroup'])
+      ->execute()->single();
 
     // Calculate 'since' option.
     $relevant_since = $this->getRelevantSinceDate($params);
+
+    Civi::log()->info("Mailchimp Audience sync for group {group_id} ({group_title}) and audience {list_id} ({list_name})", [
+      'group_id' => $group['id'],
+      'group_title' => $group['title'],
+      'list_id' => $this->mailchimp_list_id,
+      'list_name' => $this->mailchimpListInfo['name'],
+      'syncing_since' => date('Y-m-d H:i', $relevant_since),
+      '=start' => 'mcsFetch' . $group['id'],
+      '=' => 'timed',
+    ]);
 
     $remaining_time = $stop_time - time();
 
@@ -166,80 +237,91 @@ class CRM_Mailchimpsync_Audience
       $current_state = $status['locks']['fetchAndReconcile'] ?? NULL;
 
       if (($params['stop_on'] ?? 'no stopping') === $current_state) {
-        $this->log("Stopped as requested at step $params[stop_on]");
-        return; // exit the loop completely.
+        $this->log("Stopped as requested at step $params[stop_on]", 'debug', ['=' => 'pop']);
+        // exit the loop completely.
+        return;
       }
 
       switch ($current_state) {
 
-      // Busy states - this is to prevent a 2nd cron job firing over the top of this one.
-      case 'busy':
-        $this->log("Called but locks say process already busy. Will not do anything.");
-        return; // exit.
+        // Busy states - this is to prevent a 2nd cron job firing over the top of this one.
+        case 'busy':
+          $this->log("Called but locks say process already busy. Will not do anything.",
+            'debug', ['=' => 'pop']);
+          // exit.
+          return;
 
-      case NULL:
-      case 'readyToFetch':
-        $merge_mailchimp_params = ['max_time' => $remaining_time];
-        if ($relevant_since !== FALSE) {
-          $merge_mailchimp_params['since'] = $relevant_since;
-        }
-        $this->mergeMailchimpData($merge_mailchimp_params);
-        break;
+        case NULL:
+        case 'readyToFetch':
+          $merge_mailchimp_params = ['max_time' => $remaining_time];
+          if ($relevant_since !== FALSE) {
+            $merge_mailchimp_params['since'] = $relevant_since;
+          }
+          $this->mergeMailchimpData($merge_mailchimp_params);
+          break;
 
-      case 'readyToFixContactIds':
-        // Assume these two are quick enough to run together as one; they're all SQL driven.
-        $this->updateLock([
-          'for'    => 'fetchAndReconcile',
-          'to'     => 'busy',
-          'andLog' => 'Beginning to remove invalid contact IDs and populate missing ones from email matches.'
-        ]);
-        $this->removeInvalidContactIds();
-        $this->log("removeInvalidContactIds: beginning populateMissingContactIds");
-        $result = $this->populateMissingContactIds();
-        $this->log("removeInvalidContactIds: completed populateMissingContactIds: "
-          . json_encode($result, JSON_PRETTY_PRINT));
-        $this->updateLock([
-          'for'    => 'fetchAndReconcile',
-          'to'     => 'readyToCreateNewContactsFromMailchimp',
-        ]);
-        break;
+        case 'readyToFixContactIds':
+          // Assume these two are quick enough to run together as one; they're all SQL driven.
+          $this->updateLock([
+            'for'    => 'fetchAndReconcile',
+            'to'     => 'busy',
+            'andLog' => 'Beginning to remove invalid contact IDs and populate missing ones from email matches.',
+          ]);
+          $this->removeInvalidContactIds();
+          $this->log("removeInvalidContactIds: beginning populateMissingContactIds", 'debug', ['=' => 'start,timed']);
+          $result = $this->populateMissingContactIds();
+          $this->log("removeInvalidContactIds: completed populateMissingContactIds: "
+            . json_encode($result, JSON_PRETTY_PRINT), 'debug', ['=' => 'pop']);
+          $this->updateLock([
+            'for'    => 'fetchAndReconcile',
+            'to'     => 'readyToCreateNewContactsFromMailchimp',
+          ]);
+          break;
 
-      case 'readyToCreateNewContactsFromMailchimp':
-        $total = $this->createNewContactsFromMailchimp($remaining_time);
-        break;
+        case 'readyToCreateNewContactsFromMailchimp':
+          $this->createNewContactsFromMailchimp($remaining_time);
+          break;
 
-      case 'readyToCleanUpDuplicates':
-        $total = $this->cleanUpDuplicatesInCache();
-        break;
+        case 'readyToCleanUpDuplicates':
+          $this->cleanUpDuplicatesInCache();
+          break;
 
-      case 'readyToAddCiviOnly':
-        $total = $this->addCiviOnly();
-        break;
+        case 'readyToProcessEmailChanges':
+          $this->processEmailChanges();
+          break;
 
-      case 'readyToCheckForGroupChanges':
-        // Insert data step after this.
-        $next = $with_data ? 'readyToCheckForDataUpdates' : 'readyToReconcileQueue';
-        $this->identifyGroupContactChanges($relevant_since, $next);
-        break;
+        case 'readyToAddCiviOnly':
+          $this->addCiviOnly();
+          break;
 
-      case 'readyToCheckForDataUpdates':
-        $this->checkForDataUpdates($remaining_time, $relevant_since);
-        break;
+        case 'readyToCheckForGroupChanges':
+          // Insert data step after this.
+          $next = $with_data ? 'readyToCheckForDataUpdates' : 'readyToReconcileQueue';
+          $this->identifyGroupContactChanges($relevant_since, $next);
+          break;
 
-      case 'readyToReconcileQueue':
-        $stats = $this->reconcileQueueProcess($remaining_time, $relevant_since, $with_data);
-        break;
+        case 'readyToCheckForDataUpdates':
+          $this->checkForDataUpdates($remaining_time, $relevant_since);
+          break;
 
-      case 'readyToSubmitUpdates':
-        $stats = $this->submitUpdatesBatches($remaining_time);
-        if ($stats['is_complete']) {
-          $this->log('fetchAndReconcile process is complete.');
-        }
-        return;
+        case 'readyToReconcileQueue':
+          $stats = $this->reconcileQueueProcess($remaining_time, $relevant_since, $with_data);
+          break;
+
+        case 'readyToSubmitUpdates':
+          $stats = $this->submitUpdatesBatches($remaining_time);
+          if ($stats['is_complete']) {
+            $this->log('fetchAndReconcile process is complete.', 'debug', ['=' => 'pop']);
+            // Remove any trust overrides, we only do them once.
+            $config = ['trustOverride' => []] + $this->config;
+            $this->setConfig($config);
+          }
+          return;
+
         // break 2;
 
-      default:
-        throw new Exception("Invalid lock: {$status['locks']['fetchAndReconcile']}");
+        default:
+          throw new Exception("Invalid lock: {$status['locks']['fetchAndReconcile']}");
       }
 
       // Update remaining time.
@@ -247,9 +329,13 @@ class CRM_Mailchimpsync_Audience
     }
 
     if ($remaining_time <= 0) {
-      $this->log('Stopped processing as out of time.');
+      $this->log('Stopped processing as out of time.', 'debug', ['=' => 'pop']);
+    }
+    else {
+      $this->log('Stopped processing unexpectedly? This code path should not be found!', 'notice', ['=' => 'pop']);
     }
   }
+
   /**
    * Abort a sync.
    */
@@ -288,11 +374,13 @@ class CRM_Mailchimpsync_Audience
       'andLog' => 'Abort!',
       'andAlso' => function(&$s) {
         $s['fetch']['offset'] = 0;
-      }
+      },
     ]);
   }
+
   // The following are mostly internal.
   // The following methods deal with the 'fetch' phase
+
   /**
    * Merge subscriber data form Mailchimp into our table.
    *
@@ -305,19 +393,19 @@ class CRM_Mailchimpsync_Audience
    *            longer than this number of seconds.
    *
    */
-  public function mergeMailchimpData(array $params=[]) {
+  public function mergeMailchimpData(array $params = []) {
 
     $this->updateLock([
       'for'    => 'fetchAndReconcile',
       'to'     => 'busy',
-      'andLog' => 'mergeMailchimpData: beginning to fetch data from mailchimp.'
+      'andLog' => 'mergeMailchimpData: beginning to fetch data from mailchimp.',
     ]);
 
     try {
       $status = $this->getStatus();
 
       // 1 week max excution time, expected to be equivalent to no max time.
-      $params += ['max_time' => 60*60*24*7];
+      $params += ['max_time' => 60 * 60 * 24 * 7];
       $stop_time = time() + $params['max_time'];
 
       $api = $this->getMailchimpApi();
@@ -337,6 +425,17 @@ class CRM_Mailchimpsync_Audience
           $query['since_last_changed'] = date(DATE_ISO8601, $params['since']);
         }
 
+        $overrides = [];
+        foreach ($this->config['trustOverride'] ?? [] as $t => $override) {
+          if ($override) {
+            $overrides[] = "Override: always choose $override for $t";
+          }
+        }
+        if ($overrides) {
+          $query['since_last_changed'] = date(DATE_ISO8601, strtotime('2010-01-01'));
+          $this->log("mergeMailchimpData: doing full fetch because of overrides: " . implode(', ', $overrides), 'debug');
+        }
+
         $this->updateAudienceStatusSetting(function(&$c) use ($query) {
           $c['lastSyncTime'] = date('Y-m-d H:i:s');
           $c['log'] = [];
@@ -351,7 +450,7 @@ class CRM_Mailchimpsync_Audience
       }
 
       do {
-        $this->log("fetchMergeMailchimpData: fetching up to $api->max_members_to_fetch records from offset $query[offset] "
+        $this->log("mergeMailchimpData: fetching up to $api->max_members_to_fetch records from offset $query[offset] "
           . (($query['since_last_changed'] ?? '') ? ' since ' . $query['since_last_changed'] : ''));
         $response = $api->get("lists/$this->mailchimp_list_id/members", $query);
 
@@ -372,35 +471,39 @@ class CRM_Mailchimpsync_Audience
           });
         }
 
-      } while ($more_to_fetch>0 && time() < $stop_time);
+      } while ($more_to_fetch > 0 && time() < $stop_time);
     }
     catch (Exception $e) {
       // Release lock (to allow fetch to try again) before rethrowing.
-      $this->log('fetchMergeMailchimpData: ERROR: ' . $e->getMessage());
+      $this->log('mergeMailchimpData: ERROR: ' . $e->getMessage());
       $this->updateLock(['for' => 'fetchAndReconcile', 'to' => 'readyToFetch']);
       throw $e;
     }
 
     // Successful finish, we're now ready to reconcile.
-    if ($more_to_fetch>0) {
+    if ($more_to_fetch > 0) {
       $this->updateLock([
         'for'    => 'fetchAndReconcile',
         'to'     => 'readyToFetch',
-        'andLog' => "fetchMergeMailchimpData: stopping but $more_to_fetch more to fetch" ]);
+        'andLog' => "mergeMailchimpData: stopping but $more_to_fetch more to fetch",
+      ]);
     }
     else {
       // We've fetched everything.
       $this->updateLock([
         'for'     => 'fetchAndReconcile',
         'to'      => 'readyToFixContactIds',
-        'andLog'  => "fetchMergeMailchimpData: completed ($response[total_items] fetched).",
+        'andLog'  => "mergeMailchimpData: completed ($response[total_items] fetched).",
         // Reset the offset for next time.
-        'andAlso' => function(&$c) { $c['fetch']['offset'] = 0; }
+        'andAlso' => function(&$c) {
+          $c['fetch']['offset'] = 0;
+        },
       ]);
     }
   }
+
   /**
-   * Copy data from mailchimp into our table.
+   * Copy data from an mailchimp api call into our cache table.
    *
    * @param object $member
    *
@@ -417,23 +520,42 @@ class CRM_Mailchimpsync_Audience
     }
 
     $bao->sync_status = 'todo';
+    // duplicate data (also stored in mailchimp_data.status). @fixme one day.
+    $changed = $bao->mailchimp_updated = date('YmdHis', strtotime($member['last_changed']));
     $bao->mailchimp_status = $member['status'];
-    $bao->mailchimp_updated = date('YmdHis', strtotime($member['last_changed']));
 
-    // Create JSON data from Mailchimp.
-    $data = [
-      'first_name' => $member['merge_fields']['FNAME'] ?? NULL,
-      'last_name'  => $member['merge_fields']['LNAME'] ?? NULL,
-      'interests'  => $member['interests'] ?? [],
-    ];
-    // Nb. while I prefer JSON for readability, PHP's serialize is a *lot*
-    // faster, which will count on a big list.
-    $bao->mailchimp_data = serialize($data);
-    // Q. some way here to address the 2 way interests sync ? @todo
+    // Unpack previous data, if any.
+    $data = $bao->getMailchimpData();
 
-    // Update
+    // This update function updates a field in data, and if changed, updates the field's timestamp
+    // denoted by {fieldname}@. i.e. (and also here for searchability) first_name@ last_name@
+    $update = function(string $fieldName, $newData) use (&$data, $changed) {
+      $oldData = $data[$fieldName] ?? '';
+      if ($oldData != $newData) {
+        // Data has changed since we last loaded it (or this is the first load)
+        $data[$fieldName] = $newData;
+        $data[$fieldName . '@'] = $changed;
+      }
+      else {
+        // Data has not changed at Mailchimp since we last loaded it.
+        if (empty($data[$fieldName . '@'])) {
+          // we expect a date so if we don't have one, populate it now.
+          $data[$fieldName . '@'] = $changed;
+        }
+      }
+    };
+
+    $update('status', $member['status']);
+    $update('first_name', $member['merge_fields']['FNAME'] ?? NULL);
+    $update('last_name', $member['merge_fields']['LNAME'] ?? NULL);
+    foreach ($member['interests'] ?? [] as $interestID => $interested) {
+      $update("interest-$interestID", $interested);
+    }
+    // clean up historical data keys (pre v2)
+    unset($data['interests']);
+
+    $bao->setMailchimpData($data);
     $bao->save();
-
     return $bao;
   }
 
@@ -443,8 +565,8 @@ class CRM_Mailchimpsync_Audience
    * e.g. if a contact is deleted (including a merge).
    *
    * @return array with keys:
-   * - updated: int Number of affected rows.
-   * - deleted: int number of cache records deleted.
+   *   - updated: int Number of affected rows.
+   *   - deleted: int number of cache records deleted.
    */
   public function removeInvalidContactIds() {
 
@@ -475,6 +597,7 @@ class CRM_Mailchimpsync_Audience
     $this->log("removeInvalidContactIds: Removed $results[updated] stale CiviCRM Contact IDs; Deleted $results[deleted] empty rows from mailchimpsync cache table.");
     return $results;
   }
+
   /**
    * Try various techniques for finding an appropriate CiviCRM Contact ID from
    * the email found at Mailchimp.
@@ -504,7 +627,7 @@ class CRM_Mailchimpsync_Audience
     // 1. If we find that the email is owned by a single non-deleted contact, use that.
     $emails = \Civi\Api4\Email::get()
       ->addSelect('contact_id')
-      ->addWhere('email', '=',$cache_entry->mailchimp_email)
+      ->addWhere('email', '=', $cache_entry->mailchimp_email)
       ->addWhere('contact_id.is_deleted', '=', FALSE)
       ->setCheckPermissions(FALSE)
       ->execute();
@@ -568,6 +691,7 @@ class CRM_Mailchimpsync_Audience
     $stats['remaining'] = 0;
     return $stats;
   }
+
   /**
    * Try various techniques for finding an appropriate CiviCRM Contact ID from
    * the email found at Mailchimp.
@@ -634,6 +758,7 @@ class CRM_Mailchimpsync_Audience
     // Create them now.
     return $stats;
   }
+
   /**
    * 1. If the email we're trying to match only belongs to one (undeleted) contact,
    * use that.
@@ -715,6 +840,7 @@ class CRM_Mailchimpsync_Audience
     $dao = CRM_Core_DAO::executeQuery($sql, [1 => [$this->mailchimp_list_id, 'String']]);
     return $dao->affectedRows();
   }
+
   /**
    * 3. Next, use the first (lowest contact ID) that owns the email that has any group history.
    * This is also fast.
@@ -742,6 +868,7 @@ class CRM_Mailchimpsync_Audience
     $dao = CRM_Core_DAO::executeQuery($sql, [1 => [$this->mailchimp_list_id, 'String']]);
     return $dao->affectedRows();
   }
+
   protected function populateMissingContactIdsPhase4() {
 
     // Create table with the first contact owner of each email.
@@ -781,19 +908,19 @@ class CRM_Mailchimpsync_Audience
    * @param null|int time in seconds to spend.
    * @return int No. contacts created.
    */
-  public function createNewContactsFromMailchimp($remaining_time=NULL) {
+  public function createNewContactsFromMailchimp($remaining_time = NULL) {
 
     $this->updateLock([
       'for'    => 'fetchAndReconcile',
       'to'     => 'busy',
-      'andLog' => 'createNewContactsFromMailchimp: beginning.'
+      'andLog' => 'createNewContactsFromMailchimp: beginning.',
     ]);
     $total = 0;
     $dao = CRM_Core_DAO::executeQuery(
       'SELECT * FROM civicrm_mailchimpsync_cache WHERE mailchimp_list_id = %1 AND civicrm_contact_id IS NULL',
-      [ 1 => [$this->mailchimp_list_id, 'String'] ]
+      [1 => [$this->mailchimp_list_id, 'String']]
     );
-    $stop_time = time() + ($remaining_time ?? 60*60*24*7);
+    $stop_time = time() + ($remaining_time ?? 60 * 60 * 24 * 7);
 
     while ($dao->fetch()) {
 
@@ -814,11 +941,13 @@ class CRM_Mailchimpsync_Audience
     // Completed!
     $this->updateLock([
       'for'    => 'fetchAndReconcile',
-      'to'     => 'readyToAddCiviOnly',
+      // 'to'     => 'readyToAddCiviOnly',
+      'to'     => 'readyToProcessEmailChanges',
       'andLog' => "createNewContactsFromMailchimp: Added $total new contacts found in Mailchimp but not CiviCRM. No more to do.",
     ]);
     return $total;
   }
+
   /**
    * Create new contact from the data given.
    *
@@ -826,7 +955,7 @@ class CRM_Mailchimpsync_Audience
    * CRM_Mailchimpsync_BAO_MailchimpsyncCache or a custom SQL DAO;
    * as long as it has these fields:
    *
-   * - id
+   * - id (ID from the cache table)
    * - mailchimp_status
    * - mailchimp_email
    * - mailchimp_data
@@ -848,7 +977,7 @@ class CRM_Mailchimpsync_Audience
     ];
 
     // If we have their name, use it to create contact.
-    $mailchimp_data = unserialize($dao->mailchimp_data);
+    $mailchimp_data = unserialize((string) $dao->mailchimp_data);
     foreach (['first_name', 'last_name'] as $field) {
       if (!empty($mailchimp_data[$field])) {
         $params[$field] = $mailchimp_data[$field];
@@ -860,10 +989,89 @@ class CRM_Mailchimpsync_Audience
 
     return $contact_id;
   }
+
+  /**
+   *
+   */
+  public function processEmailChanges() {
+    $this->updateLock([
+      'for'    => 'fetchAndReconcile',
+      'to'     => 'busy',
+      'andLog' => "processEmailChanges ",
+    ]);
+
+    $sql = <<<SQL
+      WITH rankedEmails AS (
+        SELECT contact_id, email,
+          ROW_NUMBER() OVER (
+            PARTITION BY contact_id
+            ORDER BY is_bulkmail DESC, is_primary DESC
+          ) rank
+          FROM civicrm_email e
+          WHERE on_hold = 0 AND email IS NOT NULL AND email <> ''
+      )
+
+      SELECT mc.id, mc.mailchimp_email, mc.civicrm_contact_id, rankedEmails.email
+      FROM civicrm_mailchimpsync_cache mc
+      INNER JOIN rankedEmails ON mc.civicrm_contact_id = rankedEmails.contact_id
+                  AND rankedEmails.rank = 1
+      WHERE
+        mc.mailchimp_email IS NOT NULL
+        AND mc.mailchimp_list_id = %1
+        AND mc.mailchimp_email <> ''
+        AND mc.mailchimp_status = 'subscribed'
+        AND mc.mailchimp_email != rankedEmails.email
+        ;
+    SQL;
+    $dao = CRM_Core_DAO::executeQuery($sql, [1 => [$this->mailchimp_list_id, 'String']]);
+    while ($dao->fetch()) {
+      $this->updateMailchimpWithChangedEmail($dao->id, $dao->civicrm_contact_id, $dao->mailchimp_email, $dao->email);
+    }
+    $dao->free();
+
+    $this->updateLock([
+      'for'    => 'fetchAndReconcile',
+      'to'     => 'readyToAddCiviOnly',
+      'andLog' => "processEmailChanges: done",
+    ]);
+  }
+
+  public function updateMailchimpWithChangedEmail(int $cache_id, int $contactID, string $oldEmail, string $newEmail) {
+    $api = $this->getMailchimpApi();
+    $oldID = $api->getMailchimpMemberIdFromEmail($oldEmail);
+    $newID = $api->getMailchimpMemberIdFromEmail($newEmail);
+    // Update mailchimp
+    try {
+      $api->patch("lists/{$this->mailchimp_list_id}/members/{$oldID}", [
+        'body' => [
+          'email_address' => $newEmail,
+          'status' => 'subscribed',
+        ],
+      ]);
+    }
+    catch (\Exception $e) {
+      $this->log("Contact $contactID changed email email from $oldEmail ($oldID) to $newEmail ($newID). Change sent to Mailchimp PATCH lists/{$this->mailchimp_list_id}/members/{$oldID} gave error. This can happen if the change has already been made at mailchimp.", 'error');
+    }
+    // Update our cache table.
+    CRM_Core_DAO::executeQuery(<<<SQL
+      UPDATE civicrm_mailchimpsync_cache
+         SET mailchimp_member_id = %1, mailchimp_email = %2
+       WHERE id = %3;
+    SQL, [
+      1 => [$newID, 'String'],
+      2 => [$newEmail, 'String'],
+      3 => [$cache_id, 'Positive'],
+    ]);
+    $this->log("Contact $contactID changed email email from $oldEmail ($oldID) to $newEmail ($newID).");
+  }
+
   /**
    *
    * If there are any contacts Added to the subscription group in CiviCRM, but
    * not known to Mailchimp, add them to the cache table.
+   *
+   * This creates cache table rows with only the mc list id, contact id, 'todo' as sync_status
+   * Both civicrm_data and mailchimp_data are empty.
    *
    * @param array $params
    */
@@ -888,7 +1096,7 @@ class CRM_Mailchimpsync_Audience
           )
     ";
     $dao = CRM_Core_DAO::executeQuery($sql, [
-      1 => [$this->mailchimp_list_id, 'String']
+      1 => [$this->mailchimp_list_id, 'String'],
     ]);
     $total = $dao->affectedRows();
     $this->updateLock([
@@ -935,7 +1143,7 @@ class CRM_Mailchimpsync_Audience
         )
     ";
     $ids = CRM_Core_DAO::executeQuery($sql, [
-      1 => [$this->mailchimp_list_id, 'String']
+      1 => [$this->mailchimp_list_id, 'String'],
     ])->fetchMap('id', 'id');
     if ($ids) {
       CRM_Core_DAO::executeQuery("DELETE from civicrm_mailchimpsync_cache WHERE id IN ("
@@ -979,9 +1187,9 @@ class CRM_Mailchimpsync_Audience
                     AND h.date >= %2
            )";
       $dao = CRM_Core_DAO::executeQuery($sql, [
-          1 => [$this->getListId(), 'String'],
-          2 => [date('YmdHis', $since), 'String'],
-        ]);
+        1 => [$this->getListId(), 'String'],
+        2 => [date('YmdHis', $since), 'String'],
+      ]);
     }
     else {
       // Without a 'since' limit, everything is todo, except
@@ -1003,10 +1211,11 @@ class CRM_Mailchimpsync_Audience
       'andLog' => "identifyGroupContactChanges: complete ($affected records added to todo list).",
     ]);
   }
+
   /**
    * A data sync allows other extensions to provide data for Mailchimp.
    *
-   * Extensions implementing hook_mailchimpsync_data_updates_check 
+   * Extensions implementing hook_mailchimpsync_data_updates_check
    * should do what they need to ascertain what the data should be, and if it has
    * changed. Data should be stored in the civicrm_data field.
    * If it needs changing the sync_status should be set to 'todo'
@@ -1043,7 +1252,7 @@ class CRM_Mailchimpsync_Audience
    * @param int $remaining_time
    * @param int $relevant_since
    */
-  public function checkForDataUpdates($remaining_time, $relevant_since=NULL, $single_cache_item_id = NULL) {
+  public function checkForDataUpdates($remaining_time, $relevant_since = NULL, $single_cache_item_id = NULL) {
 
     $this->updateLock([
       'for'    => 'fetchAndReconcile',
@@ -1051,8 +1260,9 @@ class CRM_Mailchimpsync_Audience
       'andLog' => "checkForDataUpdates: calling hooks",
     ]);
 
-    $complete = TRUE; // xxx @todo we should be stop-and-startable not a monolytic process.
-    $stop_time = time() + ($remaining_time ?? 60*60*24*7);
+    // xxx @todo we should be stop-and-startable not a monolytic process.
+    $complete = TRUE;
+    $stop_time = time() + ($remaining_time ?? 60 * 60 * 24 * 7);
 
     $this->dataUpdates();
 
@@ -1071,6 +1281,7 @@ class CRM_Mailchimpsync_Audience
       ]);
     }
   }
+
   /**
    * Run the hooks to let extensions update data on subscribed contacts.
    *
@@ -1092,10 +1303,10 @@ class CRM_Mailchimpsync_Audience
     // do some bulk calculation and stash the result somewhere for faster
     // lookup later. $pre_data is passed into the per-cache-item call. It's
     // probably safest for extensions to store their data under a key with
-    // their name to avoid potential collsions with others.
+    // their name to avoid potential collisions with others.
     $pre_data = [];
 
-    // Now loop all cache items.
+    // Identify cache items to run for.
     if ($single_cache_item_id) {
       $cache_ids = [$single_cache_item_id];
     }
@@ -1141,9 +1352,11 @@ class CRM_Mailchimpsync_Audience
 
     if (!$cache_ids) {
       // Nothing to do!
+      Civi::log()->info("dataUpdates: no cache items found.");
       return;
     }
 
+    // Call the pre-hook
     $dummy = NULL;
     CRM_Utils_Hook::singleton()->invoke(
       ['audience', 'cache_entry_ids', 'pre_data'],
@@ -1151,7 +1364,6 @@ class CRM_Mailchimpsync_Audience
       $dummy, $dummy, $dummy,
       'mailchimpsync_data_updates_check_pre');
 
-    $done = 0;
     foreach ($cache_ids as $cache_id) {
       // if ($stop_time && (time() > $stop_time)) {
       //   // Time to stop.
@@ -1184,7 +1396,9 @@ class CRM_Mailchimpsync_Audience
       $dummy, $dummy, $dummy,
       'mailchimpsync_data_updates_check_post');
   }
+
   // The following methods deal with the 'reconciliation' phase
+
   /**
    * Loop 'todo' entries and reconcile them.
    *
@@ -1193,7 +1407,7 @@ class CRM_Mailchimpsync_Audience
    * @param int $relevant_since
    * @param bool $with_data
    */
-  public function reconcileQueueProcess(int $max_time=0, $relevant_since = NULL, $with_data = FALSE) {
+  public function reconcileQueueProcess(int $max_time = 0, $relevant_since = 0, $with_data = FALSE) {
     $this->updateLock([
       'for'    => 'fetchAndReconcile',
       'to'     => 'busy',
@@ -1240,32 +1454,38 @@ class CRM_Mailchimpsync_Audience
         'for'    => 'fetchAndReconcile',
         'to'     => 'readyToSubmitUpdates',
         'andLog' => "reconcileQueueProcess: Completed reconciliation of $stats[done] contacts. (Need to submit $mailchimp_updates updates to Mailchimp)",
-        'andAlso' => function(&$c) { unset($c['fetch']['since']); }
+        'andAlso' => function(&$c) {
+          unset($c['fetch']['since']);
+        },
       ]);
     }
     else {
       $this->updateLock([
         'for'    => 'fetchAndReconcile',
-        'to'     => 'readyToReconcileQueue', // reset for next time.
-        'andLog' => "reconcileQueueProcess: Reconciled $stats[done], " . ($stats['count'] - $stats[done]) . " remaining but ran out of time. So far, $mailchimp_updates updates to Mailchimp in the queue.",
+      // reset for next time.
+        'to'     => 'readyToReconcileQueue',
+        'andLog' => 'reconcileQueueProcess: Reconciled ' . $stats['done'] . ', ' . ($stats['count'] - $stats['done']) . ' remaining but ran out of time. So far, $mailchimp_updates updates to Mailchimp in the queue.',
       ]);
     }
     return $stats;
   }
+
   /**
    * Reconcile a single item from the cache table.
    *
    * This will result in the item having status 'ok', or 'live' if mailchimp updates are queued.
    *
+   * It encompasses the subscription, the interests and, if with_data, the data.
+   *
    * @param CRM_Mailchimpsync_DAO_MailchimpsyncCache $dao
    * @param bool $with_data
    */
-  public function reconcileQueueItem(CRM_Mailchimpsync_BAO_MailchimpsyncCache $cache_entry, $with_data=FALSE) {
+  public function reconcileQueueItem(CRM_Mailchimpsync_BAO_MailchimpsyncCache $cache_entry, $with_data = FALSE) {
 
     $mailchimp_updates = [];
     $tags = [];
     try {
-      $subs = $this->parseSubs($cache_entry->mailchimp_updated, $cache_entry->civicrm_groups);
+      $subs = $this->parseSubs($cache_entry, $cache_entry->civicrm_groups);
       $final_state_is_subscribed = $this->reconcileSubscriptionGroup($mailchimp_updates, $cache_entry, $subs);
 
       if ($final_state_is_subscribed) {
@@ -1296,9 +1516,28 @@ class CRM_Mailchimpsync_Audience
         }
         if ($tags) {
           // Queue a mailchimp member tags update.
+          // We have to do this as a separate update because the tags API
+          // is separate and requires that the member exists.
           $update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
           $update->mailchimpsync_cache_id = $cache_entry->id;
-          $update->data = json_encode(['tags' => $tags]);
+          $tagsUpdateData = ['tags' => $tags];
+          if (empty($cache_entry->mailchimp_email)) {
+            // This is a new-to-mailchimp contact. We need to ensure email address is available for the update to work.
+            // $email = $this->getBestEmailForNewContact($cache_entry->civicrm_contact_id);
+            if (!empty($mailchimp_updates['email_address'])) {
+              // Good.
+              $tagsUpdateData['email_address'] = $mailchimp_updates['email_address'];
+            }
+            else {
+              Civi::log()->error("mailchimpsync: tags update: expected there to have been an email_address in data for cache entry $cache_entry->id. Skipping tags update.", [
+                'cache_entry' => $cache_entry->toArray(),
+                'mailchimp_updates' => $mailchimp_updates,
+                'tags' => $tags,
+              ]);
+              return;
+            }
+          }
+          $update->data = json_encode($tagsUpdateData);
           $update->save();
         }
       }
@@ -1330,7 +1569,10 @@ class CRM_Mailchimpsync_Audience
 
     $civicrm_subscription = $subs[$this->config['subscriptionGroup']] ?? NULL;
 
-    if ($civicrm_subscription['mostRecent'] === 'Mailchimp') {
+    $override = $this->config['trustOverride']['subscription'] ?? '';
+
+    if ($override === 'Mailchimp' || $civicrm_subscription['mostRecent'] === 'Mailchimp') {
+      // Override says use Mailchimp, or it
       // Exists in Mailchimp and Mailchimp has been updated since CiviCRM was,
       // at least in terms of the subscription group, or the contact has no group
       // subscription history.
@@ -1371,7 +1613,7 @@ class CRM_Mailchimpsync_Audience
       }
     }
     else {
-      // Either does not exist in Mailchimp yet, or does but CiviCRM is more up-to-date
+      // Either overridden, or does not exist in Mailchimp yet, or does but CiviCRM is more up-to-date
       // in terms of its subscription group.
       if ($civicrm_subscription['status'] === 'Added') {
         if ($cache_entry->isSubscribedAtMailchimp()) {
@@ -1382,55 +1624,58 @@ class CRM_Mailchimpsync_Audience
         else {
           // C:Added, M:?
           switch ($cache_entry->mailchimp_status) {
-          case null:
-            // Find best email to use to subscribe this contact.
-            $mailchimp_updates['email_address'] = $this->getBestEmailForNewContact($cache_entry->civicrm_contact_id);
-            $mailchimp_updates['status'] = 'subscribed';
-            return TRUE;
+            case NULL:
+              // Find best email to use to subscribe this contact.
+              $mailchimp_updates['email_address'] = $this->getBestEmailForNewContact($cache_entry->civicrm_contact_id);
+              $mailchimp_updates['status'] = 'subscribed';
+              return TRUE;
 
-          case 'unsubscribed':
-          case 'archived':
-          case 'transactional':
-            if ($cache_entry->mailchimpEmailIsOnHoldInCivi()) {
-              throw new CRM_Mailchimpsync_CannotSyncException("Contact's email adderss is on hold in CiviCRM; refusing to resubscribe at Mailchimp.");
-            }
-            // @see https://github.com/artfulrobot/mailchimpsync/issues/10
-            // Before we set the status to subscribed, we have to check if
-            // there are any unsubmitted updates setting the subscription to
-            // 'pending'. If so we need to load that update and abort it.
-            $existing_update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
-            $existing_update->mailchimpsync_cache_id = $cache_entry->id;
-            $existing_update->mailchimpsync_batch_id = 'null';
-            $existing_update->orderBy('id'); // Process older first, this way we prefer newer details.
-
-            $require_pending_status = FALSE;
-            if ($existing_update->find()) {
-              $updates_to_abort = $existing_update->fetchMap('id', 'id');
-              foreach ($updates_to_abort as $update_id) {
-                $existing_update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
-                $existing_update->id = $update_id;
-                $existing_update->find(TRUE);
-
-                // Merge any data from the old update not yet present in our update.
-                $old_update = json_decode($existing_update->data, TRUE);
-                $mailchimp_updates = array_merge($old_update, $mailchimp_updates);
-                // Check 'status' value
-                $require_pending_status |= (($old_update['status'] ?? '') === 'pending');
-                // Abort old update.
-                $existing_update->completed = 1;
-                $existing_update->error_response = 'Update aborted as superseded by another update before this was submitted.';
-                $existing_update->save();
+            case 'unsubscribed':
+            case 'archived':
+            case 'transactional':
+              if ($cache_entry->mailchimpEmailIsOnHoldInCivi()) {
+                throw new CRM_Mailchimpsync_CannotSyncException("Contact's email adderss is on hold in CiviCRM; refusing to resubscribe at Mailchimp.");
               }
-            }
-            // Force status.
-            $mailchimp_updates['status'] = $require_pending_status ? 'pending' : 'subscribed';
-            return TRUE;
+              // @see https://github.com/artfulrobot/mailchimpsync/issues/10
+              // Before we set the status to subscribed, we have to check if
+              // there are any unsubmitted updates setting the subscription to
+              // 'pending'. If so we need to load that update and abort it.
+              $existing_update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
+              $existing_update->mailchimpsync_cache_id = $cache_entry->id;
+              $existing_update->mailchimpsync_batch_id = 'null';
+              // Process older first, this way we prefer newer details.
+              $existing_update->orderBy('id');
+
+              $require_pending_status = FALSE;
+              if ($existing_update->find()) {
+                $updates_to_abort = $existing_update->fetchMap('id', 'id');
+                foreach ($updates_to_abort as $update_id) {
+                  $existing_update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
+                  $existing_update->id = $update_id;
+                  $existing_update->find(TRUE);
+
+                  // Merge any data from the old update not yet present in our update.
+                  $old_update = json_decode($existing_update->data, TRUE);
+                  $mailchimp_updates = array_merge($old_update, $mailchimp_updates);
+                  // Check 'status' value
+                  $require_pending_status |= (($old_update['status'] ?? '') === 'pending');
+                  // Abort old update.
+                  $existing_update->completed = 1;
+                  $existing_update->error_response = 'Update aborted as superseded by another update before this was submitted.';
+                  $existing_update->save();
+                }
+              }
+              // Force status.
+              $mailchimp_updates['status'] = $require_pending_status ? 'pending' : 'subscribed';
+              return TRUE;
+
             break;
 
-          case 'cleaned':
-          default:
-          // We will not be able to subscribe this person.
-          throw new CRM_Mailchimpsync_CannotSyncException("Contact 'cleaned' by mailchimp; cannot resubscribe.");
+            case 'cleaned':
+            default:
+              // We will not be able to subscribe this person.
+              throw new CRM_Mailchimpsync_CannotSyncException("Contact 'cleaned' by mailchimp; cannot resubscribe.");
+
             break;
           }
         }
@@ -1453,6 +1698,12 @@ class CRM_Mailchimpsync_Audience
   /**
    * Interest groups
    *
+   * Civi has Groups.
+   * Mailchimp has Interests which each belong to one "Interest Category". Mailchimp
+   * is not super clear on these words and mixes in Group all the time.
+   *
+   * Our sync cares not for interest categories, it is a mapping between an interest and a Civi Group.
+   *
    * @param &array $mailchimp_updates
    * @param CRM_Mailchimpsync_BAO_MailchimpsyncCache $cache_entry
    * @param array $subs
@@ -1460,19 +1711,20 @@ class CRM_Mailchimpsync_Audience
   public function reconcileInterestGroups(&$mailchimp_updates, CRM_Mailchimpsync_BAO_MailchimpsyncCache $cache_entry, $subs) {
     // each interest group...
 
-    $mailchimp_data = unserialize($cache_entry->mailchimp_data);
+    $mailchimp_data = $cache_entry->getMailchimpData();
     foreach ($this->config['interests'] ?? [] as $interest_id => $group_id) {
-      if (isset($mailchimp_data['interests'][$interest_id])) {
-        $mailchimp_status = (bool) $mailchimp_data['interests'][$interest_id];
+      $override = $this->config['trustOverride'][$interest_id] ?? '';
+
+      if (isset($mailchimp_data["interest-{$interest_id}"])) {
+        $mailchimp_status = (bool) $mailchimp_data["interest-{$interest_id}"];
         $civicrm_status = (($subs[$group_id]['status'] ?? '') === 'Added');
 
         if ($mailchimp_status !== $civicrm_status) {
           // There are differences.
 
-          if (($subs[$group_id]['mostRecent'] ?? 'Mailchimp') === 'Mailchimp' ) {
-            // Mailchimp was most recently updated. This also includes the case
-            // when CiviCRM has no group subscription history for this group
-            // and therefore we say Mailchimp is authoritative.
+          if ($override === 'Mailchimp' || ($subs[$group_id]['mostRecent'] ?? 'Mailchimp') === 'Mailchimp') {
+            // Mailchimp was most recently updated, or we're forcing it with a trustOverride. This also includes the case
+            // when CiviCRM has no group subscription history for this group and therefore we say Mailchimp is authoritative.
             $contacts = [$cache_entry->civicrm_contact_id];
             if ($mailchimp_status) {
               CRM_Contact_BAO_GroupContact::addContactsToGroup($contacts, $group_id, 'MCsync');
@@ -1482,15 +1734,17 @@ class CRM_Mailchimpsync_Audience
             }
           }
           else {
-            // CiviCRM was most recently updated, we will update Mailchimp.
+            // CiviCRM was most recently updated, or forced, we will update Mailchimp.
             $mailchimp_updates['interests'][$interest_id] = $civicrm_status ? TRUE : FALSE;
           }
         }
       }
       else {
         // Hmmm. Mailchimp is not returning any data for this.
-        // e.g. Interest has been deleted?
+        // Case 1: Interest has been deleted. We should not push an interest update, it will fail, but this is sort of config-fault.
+        // Case 2: Interest has just been added to sync and we didn't load the data? This should not happen, I think issue #19
         // Clearly we cannot update anything.
+        Civi::log()->notice("Mailchimp has not returned any data for interest '$interest_id' so we cannot sync it with group $group_id.");
         continue;
       }
     }
@@ -1499,7 +1753,7 @@ class CRM_Mailchimpsync_Audience
   /**
    * Merge in data.
    *
-   * example civicrm_data:
+   * example $cache_entry->civicrm_data array:
    * {
    *   some_data_sync_ext : {
    *     mailchimp_updates: {...},  (optional)
@@ -1534,7 +1788,7 @@ class CRM_Mailchimpsync_Audience
             // We also disallow extensions setting 'status'
             unset($d['mailchimp_updates']['status']);
             // We merge our data on top of the extension's so that ours takes precidence.
-            $mailchimp_updates = array_replace_recursive($d['mailchimp_updates'], $mailchimp_updates);
+            $mailchimp_updates = array_replace_recursive($mailchimp_updates, $d['mailchimp_updates']);
             unset($data[$key]['mailchimp_updates']);
             $changed = TRUE;
           }
@@ -1554,7 +1808,9 @@ class CRM_Mailchimpsync_Audience
     }
 
   }
+
   // The following methods deal with the batching phase.
+
   /**
    *
    * Look for updates, submit up to 1000 at a time to the API.
@@ -1632,6 +1888,8 @@ class CRM_Mailchimpsync_Audience
       // https://lab.civicrm.org/extensions/mailchimpsync/issues/5
       $data['skip_merge_validation'] = TRUE;
 
+      // We have two types of update record possible: 'normal' and 'tags'
+      // These are separate because the API has separate endpoints for these.
       if (!isset($data['tags'])) {
         // Normal update.
 
@@ -1645,6 +1903,7 @@ class CRM_Mailchimpsync_Audience
         }
         else {
           // Contact is already known at mailchimp, so we use mailchimp's email.
+          // (It seems Mailchimp always wants the email address submitting.)
           $data['email_address'] = $dao->mailchimp_email;
           $requests[$id] += [
             'method'       => 'PUT',
@@ -1668,6 +1927,11 @@ class CRM_Mailchimpsync_Audience
           $member_hash = $api->getMailchimpMemberIdFromEmail($dao->mailchimp_email);
         }
         else {
+          if (empty($data['email_address'])) {
+            Civi::log()->alert("mailchimpsync: Missing email address in update record, $dao->id SKIPPING UPDATE",
+              ['data' => $data, 'dao_record' => $dao->toArray()]
+            );
+          }
           $member_hash = $api->getMailchimpMemberIdFromEmail($data['email_address']);
         }
         $requests[$id] += [
@@ -1693,11 +1957,82 @@ class CRM_Mailchimpsync_Audience
       // Update the updates table to 'claim' these records under this batch.
       $batch_id = (int) $batch->id;
       $sql = "UPDATE civicrm_mailchimpsync_update SET mailchimpsync_batch_id = $batch_id
-              WHERE id IN (" . implode(',', array_keys($requests)) .");";
+              WHERE id IN (" . implode(',', array_keys($requests)) . ");";
       CRM_Core_DAO::executeQuery($sql);
     }
 
     return count($requests);
+  }
+
+  /**
+   * Ensure the subscriber is registered at Mailchimp and then calls syncSingle()
+   *
+   * @return NULL|CRM_Mailchimpsync_BAO_MailchimpsyncCache
+   */
+  public function syncSingleContact(int $contactID) {
+
+    $api = $this->getMailchimpApi();
+
+    $contactIsInGroup = (bool) Contact::get(FALSE)
+      ->addWhere('id', '=', $contactID)
+      ->addWhere('in_group', '=', $this->getSubscriptionGroup())
+      ->execute()->countFetched();
+
+    // (1) find member_id and ensure cache_entry --------------------
+    $member_id = '';
+
+    $cache_entry = civicrm_api3('MailchimpsyncCache', 'get', [
+      'sequential' => 1,
+      'civicrm_contact_id' => $contactID,
+      'mailchimp_list_id' => $this->mailchimp_list_id,
+    ])['values'][0] ?? NULL;
+    if ($cache_entry) {
+      $member_id = $data['mailchimp_member_id'] ?? '';
+    }
+    else {
+      // No cache entry yet. Make a minimal one like addCiviOnly does.
+      $result = civicrm_api3('MailchimpsyncCache', 'create', [
+        'civicrm_contact_id' => $contactID,
+        'mailchimp_list_id' => $this->mailchimp_list_id,
+        'sync_status' => "todo",
+      ]);
+      // reload.
+      $cache_entry = civicrm_api3('MailchimpsyncCache', 'get', [
+        'sequential' => 1,
+        'civicrm_contact_id' => $contactID,
+        'mailchimp_list_id' => $this->mailchimp_list_id,
+      ])['values'][0] ?? NULL;
+    }
+
+    if (!$member_id) {
+      $email = $this->getBestEmailForNewContact($contactID);
+      $member_id = $api->getMailchimpMemberIdFromEmail($email);
+    }
+    // ------------------ ok, got cache entry and a $member_id
+
+    // Find if subscriber exists at Mailchimp. ---------------
+    try {
+      $member = $api->get("lists/$this->mailchimp_list_id/members/$member_id");
+    }
+    catch (CRM_Mailchimpsync_RequestErrorException $e) {
+      // Not found. Create now?
+      $member = $api->post("lists/$this->mailchimp_list_id/members", [
+        'email_address' => $email,
+        'status' => $contactIsInGroup ? 'subscribed' : 'unsubscribed',
+      ]);
+      $member_id = $member['id'];
+      $email = $member['email_address'];
+
+      // Update our cache table in case Mailchimp tweaked anything
+      civicrm_api3('MailchimpsyncCache', 'create', [
+        'id' => $cache_entry['id'],
+        'mailchimp_email' => $member['email_address'],
+        'mailchimp_member_id' => $member_id,
+      ]);
+    }
+    // ------------------ ok, member exists at mailchimp.
+
+    return $this->syncSingle($email);
   }
 
   /**
@@ -1749,23 +2084,25 @@ class CRM_Mailchimpsync_Audience
 
     return $cache_entry;
   }
+
   // utility methods
+
   /**
    * Unpack the GROUP_CONCAT generated field.
    *
-   * @param string Datetime mailchimp was updated.
+   * @param CRM_Mailchimpsync_BAO_MailchimpsyncCache|array $cache
    * @param string Subscriptions data from civicrm_groups
    *
    * @return array structure: {
-   *    <group_id>: {
+   *   <group_id>: {
    *      status: 'Added',
    *      date: '2019-10-21 12:12:13',
    *      mostRecent: 'Mailchimp' | 'CiviCRM'
-   *  },
-   *  ...
-   * }
+   *   },
+   *   ...
+   *   }
    */
-  public function parseSubs($mailchimp_updated, $subs) {
+  public function parseSubs($cache, $subs) {
     $output = [];
 
     // Default status sets mostRecent to Mailchimp, since that must be true if
@@ -1776,37 +2113,47 @@ class CRM_Mailchimpsync_Audience
     foreach ($this->config['interests'] ?? [] as $group_id) {
       $output[(int) $group_id] = $default;
     }
-
-    $mailchimp_updated = $mailchimp_updated
-      ? strtotime($mailchimp_updated)
-      : NULL;
-
+    if (is_array($cache)) {
+      $cache = (object) $cache;
+    }
+    $mailchimpData = unserialize((string) $cache->mailchimp_data);
     if ($subs) {
       foreach (explode('|', $subs) as $_) {
         $details = explode(';', $_);
 
         if (isset($output[$details[0]])) {
+          $groupID = $details[0];
           // This is a group relevant to this list.
-          $output[$details[0]]['status'] = $details[1];
-          $output[$details[0]]['updated'] = $details[2];
+          $output[$groupID]['status'] = $details[1];
+          $output[$groupID]['updated'] = $details[2];
 
+          // Get date updated in mailchimp.
+          if ($groupID == $this->config['subscriptionGroup']) {
+            $mailchimp_updated = $mailchimpData['status@'] ?? $cache->mailchimp_updated ?? NULL;
+          }
+          else {
+            $interestId = $this->groupIdToInterestIdMap[$groupID] ?? '';
+            $mailchimp_updated = $mailchimpData["interest-{$interestId}@"] ?? $cache->mailchimp_updated ?? NULL;
+          }
+          $mailchimp_updated = $mailchimp_updated ? strtotime($mailchimp_updated) : NULL;
           if ($mailchimp_updated) {
             if (strtotime($details[2]) >= $mailchimp_updated) {
-              $output[$details[0]]['mostRecent'] = 'CiviCRM';
+              $output[$groupID]['mostRecent'] = 'CiviCRM';
             }
             else {
-              $output[$details[0]]['mostRecent'] = 'Mailchimp';
+              $output[$groupID]['mostRecent'] = 'Mailchimp';
             }
           }
           else {
             // Mailchimp has no record of this; CiviCRM must be more up to date.
-            $output[$details[0]]['mostRecent'] = 'CiviCRM';
+            $output[$groupID]['mostRecent'] = 'CiviCRM';
           }
         }
       }
     }
     return $output;
   }
+
   /**
    * Encapsulates code around determining the 'since' date to use.
    *
@@ -1817,7 +2164,7 @@ class CRM_Mailchimpsync_Audience
    *
    * @throws InvalidArgumentException if the input params specify a date we can't parse.
    *
-   * @param array $params. May contain key 'since' with string datetime value.
+   * @param array $params
    * @return int|FALSE
    */
   public function getRelevantSinceDate($params) {
@@ -1837,7 +2184,8 @@ class CRM_Mailchimpsync_Audience
         // Use passed-in since datetime.
         $_ = strtotime($params['since']);
         if ($_) {
-          return $_ - 2*60*60; // Nb. we allow 2 hours overlap to be safe.
+          // Nb. we allow 2 hours overlap to be safe.
+          return $_ - 2 * 60 * 60;
         }
         // Invalid since date.
         throw new InvalidArgumentException("Could not parse 'since' date.");
@@ -1846,7 +2194,7 @@ class CRM_Mailchimpsync_Audience
         // No since date was passed in specifically, so we see if we can find
         // the datetime of the last sync.
         if (!empty($status['lastSyncTime'])) {
-          return strtotime($status['lastSyncTime']) - 2*60*60;
+          return strtotime($status['lastSyncTime']) - 2 * 60 * 60;
         }
         else {
           // No since date passed in and looks like it's never run before.
@@ -1861,12 +2209,13 @@ class CRM_Mailchimpsync_Audience
       return $status['fetch']['since'] ?? FALSE;
     }
   }
+
   /**
    * Get the status array for this audience.
    *
    * @param bool $reset_cache
    */
-  public function getStatus($reset_cache=FALSE) {
+  public function getStatus($reset_cache = FALSE) {
     if ($reset_cache || !$this->status_cache) {
       $status = CRM_Core_DAO::executeQuery(
         'SELECT data FROM civicrm_mailchimpsync_status WHERE list_id = %1',
@@ -1889,7 +2238,7 @@ class CRM_Mailchimpsync_Audience
           'INSERT INTO civicrm_mailchimpsync_status VALUES(%1, %2);',
           [
             1 => [$this->mailchimp_list_id, 'String'],
-            2 => [serialize($status), 'String']
+            2 => [serialize($status), 'String'],
           ]);
 
       }
@@ -1898,6 +2247,7 @@ class CRM_Mailchimpsync_Audience
 
     return $this->status_cache;
   }
+
   /**
    * Fetch some stats for this list.
    *
@@ -1907,7 +2257,7 @@ class CRM_Mailchimpsync_Audience
     // Count of sync statuses.
     $params = [
       1 => [$this->mailchimp_list_id, 'String'],
-      2 => [$this->getSubscriptionGroup(), 'Integer']
+      2 => [$this->getSubscriptionGroup(), 'Integer'],
     ];
 
     $sql = "SELECT sync_status, COALESCE(mailchimp_status, 'missing') mailchimp_status, COALESCE(gc.status, 'missing') civicrm_status, COUNT(*) c
@@ -1932,13 +2282,12 @@ class CRM_Mailchimpsync_Audience
       // Regardless of sync_status...
       $civicrm_is_subscribed = $row['civicrm_status'] === 'Added';
       if ($civicrm_is_subscribed) {
-          $stats['subscribed_at_civicrm'] += $row['c'];
+        $stats['subscribed_at_civicrm'] += $row['c'];
       }
       $mailchimp_is_subscribed = in_array($row['mailchimp_status'], ['subscribed', 'pending']);
       if ($mailchimp_is_subscribed) {
         $stats['subscribed_at_mailchimp'] += $row['c'];
       }
-
 
       // Now special cases
       if ($row['sync_status'] === 'fail') {
@@ -1973,7 +2322,7 @@ class CRM_Mailchimpsync_Audience
         $stats['todo'] += $row['c'];
       }
       else {
-          $stats['weird'][] = $row;
+        $stats['weird'][] = $row;
       }
     }
 
@@ -1988,14 +2337,16 @@ class CRM_Mailchimpsync_Audience
 
     return $stats;
   }
+
   /**
    * Fetches the appropriate API object for this list.
    *
-   * @return CRM_Mailchimpsync_Audience
+   * @return CRM_Mailchimpsync_MailchimpApiBase
    */
   public function getMailchimpApi() {
     return CRM_Mailchimpsync::getMailchimpApi($this->config['apiKey']);
   }
+
   /**
    * Finds the best email address
    *
@@ -2007,7 +2358,7 @@ class CRM_Mailchimpsync_Audience
    * @return string email address
    */
   public function getBestEmailForNewContact($contact_id) {
-   $sql = "SELECT email
+    $sql = "SELECT email
               FROM civicrm_email e
              WHERE contact_id = %1 AND e.on_hold = 0 AND email IS NOT NULL AND email != ''
           ORDER BY is_bulkmail DESC, is_primary DESC
@@ -2019,13 +2370,23 @@ class CRM_Mailchimpsync_Audience
     }
     return $email;
   }
-  public function log($message) {
+
+  /**
+   * Append to the sync log stored for this audience.
+   * Optionally append to Civi::log, if $level given.
+   *
+   */
+  public function log($message, string $level = '', array $logParams = []) {
     $log = ['time' => date('Y-m-d H:i:s'), 'message' => $message];
     // Update the config.
     $this->updateAudienceStatusSetting(function(&$config) use ($log) {
       $config['log'][] = $log;
     });
+    if ($level) {
+      Civi::log()->$level($message, $logParams);
+    }
   }
+
   /**
    * Update setting.
    *
@@ -2033,7 +2394,7 @@ class CRM_Mailchimpsync_Audience
    *        This must take &$config as a parameter and alter it as needed.
    *        If no changes are needed it should return FALSE
    */
-  public function updateAudienceStatusSetting(Callable $callback) {
+  public function updateAudienceStatusSetting(callable $callback) {
 
     // Lock tables and ensure we have the latest data from db.
     //CRM_Core_DAO::executeQuery("LOCK TABLES civicrm_setting WRITE, civicrm_recurring_entity READ;");
@@ -2048,7 +2409,7 @@ class CRM_Mailchimpsync_Audience
         'UPDATE civicrm_mailchimpsync_status SET data = %1 WHERE list_id = %2',
         [
           1 => [serialize($config), 'String'],
-          2 => [$this->mailchimp_list_id, 'String']
+          2 => [$this->mailchimp_list_id, 'String'],
         ]);
 
       $this->status_cache = $config;
@@ -2058,6 +2419,7 @@ class CRM_Mailchimpsync_Audience
     //CRM_Core_DAO::executeQuery("UNLOCK TABLES;");
     return $this;
   }
+
   /**
    * Attempt to obtain a lock for this audience.
    *
@@ -2073,7 +2435,7 @@ class CRM_Mailchimpsync_Audience
     $purpose = $params['for'];
     $required_status = $params['if'];
     $intent = $params['to'];
-    $this->updateAudienceStatusSetting(function(&$status) use ($purpose, $required_status, $intent, &$lock_obtained){
+    $this->updateAudienceStatusSetting(function(&$status) use ($purpose, $required_status, $intent, &$lock_obtained) {
 
       if (!isset($status['locks'][$purpose])
         || $status['locks'][$purpose] === $required_status
@@ -2089,6 +2451,7 @@ class CRM_Mailchimpsync_Audience
     });
     return $lock_obtained;
   }
+
   /**
    * Update a lock.
    *
@@ -2108,14 +2471,16 @@ class CRM_Mailchimpsync_Audience
       $config['locks'][$purpose] = $ready;
       if ($message) {
         $config['log'][] = ['time' => date('Y-m-d H:i:s'), 'message' => $message];
+        Civi::log()->debug($message);
       }
       if (is_callable($andAlso)) {
         $andAlso($config);
       }
     });
   }
+
   /**
-   * Look up all the 2 way sync groups.
+   * Look up all the sync groups.
    *
    * @return array of integers (SQL safe)
    */
@@ -2128,4 +2493,5 @@ class CRM_Mailchimpsync_Audience
 
     return $group_ids;
   }
+
 }

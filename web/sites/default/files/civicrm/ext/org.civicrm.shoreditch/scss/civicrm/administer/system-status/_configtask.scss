@@ -1,3 +1,5 @@
+/* stylelint-disable max-nesting-depth, selector-max-compound-selectors, selector-no-qualifying-type, selector-max-id */
+
 &#{civi-page('admin-configtask')} {
   #crm-container {
     @include civicrm-table;
@@ -19,12 +21,6 @@
           background: $gray-lighter !important;
         }
       }
-
-      tr:not(.columnheader) {
-        td {
-          background: $crm-white !important;
-        }
-      }
     }
 
     td.tasklist a {
@@ -36,5 +32,5 @@
         color: $brand-danger;
       }
     }
-  }
+  } 
 }

@@ -2,10 +2,10 @@ Tables used by this extension.
 
 ## `civicrm_mailchimpsync_batch`
 
-This table holds one record per submitted batch of updates. Most of it's
-fields hold data obtained from Mailchimp's batch status resposnes.
+This table holds one record per submitted batch of updates. Most of its
+fields hold data obtained from Mailchimp's batch status responses.
 
-N.b. while a batch  update for Mailchimp may contain any API requests, the
+N.b. while a batch update for Mailchimp may contain any API requests, the
 way our system is designed it means each batch will only contain updates
 on a particular audience. We store the audience ID in the
 `mailchimp_list_id` field.
@@ -26,7 +26,11 @@ this; it's something set manually by a call to Mailchimpsync.abortsync
 This table has one row per contact/member per sync connection. It holds
 their status at Mailchimp and at CiviCRM.
 
-- `mailchimp_member_id` is the md5 of the lowercase email address; this is
+- `mailchimp_list_id`
+
+- `mailchimp_member_id` is email address at mailchimp.
+
+- `mailchimp_email` is the md5 of the lowercase email address; this is
   how Mailchimp refers to emails. Yes, it's problematic - see [Mailchimp
   Issues](../discussion/mailchimp-issues.md). This won't be set until the
   member exists at Mailchimp.
@@ -35,8 +39,9 @@ their status at Mailchimp and at CiviCRM.
   subscribed|unsubscribed|cleaned|pending|transactional|archived
 
 - `mailchimp_updated` the date that mailchimp says the member was last
-  updated. This is super important in determining which system is right
-  about whether someone should be subscribed.
+  updated (`last_changed` in the MC API). This is super important in
+  determining which system is right about whether someone should be
+  subscribed.
 
 - `mailchimp_data` PHP serialized data loaded from Mailchimp.
 
@@ -58,11 +63,52 @@ their status at Mailchimp and at CiviCRM.
     - `redo`: We tried to subscribe them but couldn't because of a 'compliance state' so we're trying again using the Pending status.
     - `fail`: An update failed (or was aborted)
 
+
+### `mailchimp_data`
+
+```
+{
+  "first_name": "Wilma",
+  "first_name@": "2022-20-20...",
+  "last_name": "Flintstone",
+  "interests": {
+    "{interestid}": bool, ...
+  }
+
+  "first_name": { "current": "Wilma", "updated": "2020-20-20..." },
+  "last_name":  { "current": "Wilma", "updated": "2020-20-20..." },
+  "status":     { "current": "subscribed", "updated": "2020-20-20..." },
+  "interests": {
+    "{interestid}": { "current": bool, "updated": "2020..."},
+    ...
+  }
+}
+```
+### `civicrm_data`
+
+This is a bit of a misnomer.
+
+  ```
+   [
+     'your_identifier' => [
+       'mailchimp_updates' => [],
+       'tag_updates' => [],
+       'other_for_your_use' => ...
+     ]
+   ]
+  ```
+
+
+All  `*.mailchimp_updates.*` will be used merged to generate an update call. Same for `tag_updates`.
+
+Other data is for internal use.
+
+
 ## `civicrm_mailchimpsync_update`
 
 This stores the individual updates included (or to be included) in batches for
-Mailchimp to process. `completed` is updated once it's completd, and if there's
-an error it's stored in the `error_response` field
+Mailchimp to process. `completed` is updated once it's completed, and if there's
+an error it's stored in the `error_response` field.
 
 ## `civicrm_mailchimpsync_status`
 

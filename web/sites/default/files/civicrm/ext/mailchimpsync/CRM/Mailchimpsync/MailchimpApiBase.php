@@ -4,16 +4,17 @@
  * Base class for Mailchimp API helper.
  *
  */
-abstract class CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_MailchimpApiInterface
-{
-  /** In Oct 2019, this is the maximum allowed members per request from Mailchimp. */
+abstract class CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_MailchimpApiInterface {
+  /**
+ * In Oct 2019, this is the maximum allowed members per request from Mailchimp. */
   const MAX_MEMBERS_COUNT = 1000;
 
   /**
    * This is used in place of the constant for testing purposes.
    */
   public $max_members_to_fetch = self::MAX_MEMBERS_COUNT;
-  /** @var string */
+  /**
+   * @var string*/
   protected $api_key;
 
   /**
@@ -33,6 +34,7 @@ abstract class CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_M
   public function mergeCiviData(array $params) {
 
   }
+
   /**
    * Calculate Mailchimp ID from email.
    *
@@ -49,7 +51,7 @@ abstract class CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_M
    * @param string $email
    * @return string
    */
-  public static function getMailchimpMemberIdFromEmail($email) {
+  public static function getMailchimpMemberIdFromEmail(string $email) {
     $strtolower = function_exists('mb_strtolower') ? 'mb_strtolower' : 'strtolower';
     return md5($strtolower($email));
   }
@@ -57,33 +59,38 @@ abstract class CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_M
   /**
    * Make GET request.
    */
-  public function get(string $path, array $query=[]) {
+  public function get(string $path, array $query = []) {
     return $this->request('GET', $path, ['query' => $query]);
   }
+
   /**
    * Make POST request.
    */
-  public function post(string $path, $options=[]) {
+  public function post(string $path, $options = []) {
     return $this->request('POST', $path, $options);
   }
+
   /**
    * Make PATCH request.
    */
-  public function patch(string $path, array $options=[]) {
+  public function patch(string $path, array $options = []) {
     return $this->request('PATCH', $path, $options);
   }
+
   /**
    * Make PUT request.
    */
-  public function put(string $path, array $options=[]) {
+  public function put(string $path, array $options = []) {
     return $this->request('PUT', $path, $options);
   }
+
   /**
    * Make DELETE request.
    */
-  public function delete(string $path, array $options=[]) {
+  public function delete(string $path, array $options = []) {
     return $this->request('DELETE', $path, $options);
   }
+
   /**
    * Wrapper around batch submission.
    *
@@ -91,14 +98,17 @@ abstract class CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_M
    * @return String batch ID
    */
   public function submitBatch($requests) {
-    $response = $this->post('batches', ['body' => [
-      'operations' => array_values($requests),
-    ]]);
+    $response = $this->post('batches', [
+      'body' => [
+        'operations' => array_values($requests),
+      ],
+    ]);
     if (!$response['id']) {
       throw new UnexpectedValueException("Submitting a batch failed to return a batch ID.");
     }
     return $response['id'];
   }
+
   /**
    * Download the resource URL to an uncompressed tar file.
    *

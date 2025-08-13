@@ -30,7 +30,7 @@ class CRM_Activityical_Feed {
     );
     $result = _activityical_civicrmapi('activityical_contact', 'get', $params);
 
-    if ($result['count'] && $hash = CRM_Utils_Array::value('hash', $result['values'][0])) {
+    if ($result['count'] && $hash = $result['values'][0]['hash'] ?? NULL) {
       $this->hash = $hash;
     }
     else {
@@ -135,25 +135,7 @@ class CRM_Activityical_Feed {
     // Set up placeholders for CiviCRM query. CiviCRM's query method doesn't
     // have anything like Drupals db_placeholders, so we do it ourselves here.
     $placeholders = $params = array();
-    $placeholders['status'] = array();
     $placeholder_count = 1;
-
-    // Placeholders for blocked statuses
-    // TODO: this should be a setting.
-    $values = CRM_Core_OptionGroup::values('activity_status');
-    $blocked_status_values = array_keys(array_intersect($values, self::getBlockedStatuses()));
-
-    if (empty($blocked_status_values)) {
-      $blocked_status_values[] = 0;
-    }
-    foreach ($blocked_status_values as $value) {
-      $i = $placeholder_count++;
-      $placeholders['status'][] = '%' . $i;
-      $params[$i] = array(
-        $value,
-        'Integer',
-      );
-    }
 
     // Placeholder for contact_id
     $i = $placeholder_count++;
@@ -168,7 +150,7 @@ class CRM_Activityical_Feed {
       $activityical_past_days = $this->query_params['pdays'];
     }
     else {
-      $activityical_past_days = CRM_Utils_Array::value('activityical_past_days', $settings, 0);
+      $activityical_past_days = $settings['activityical_past_days'] ?? 0;
     }
     $i = $placeholder_count++;
     $placeholders['activityical_past_days'] = '%' . $i;
@@ -182,7 +164,7 @@ class CRM_Activityical_Feed {
       $activityical_future_days = $this->query_params['fdays'];
     }
     else {
-      $activityical_future_days = CRM_Utils_Array::value('activityical_future_days', $settings, 0);
+      $activityical_future_days = $settings['activityical_future_days'] ?? 0;
     }
     $i = $placeholder_count++;
     $placeholders['activityical_future_days'] = '%' . $i;
@@ -283,14 +265,12 @@ class CRM_Activityical_Feed {
           )
         LEFT JOIN civicrm_contact target ON activity_target.contact_id = target.id
       WHERE
-        civicrm_activity.status_id NOT IN
-          (" . implode(',', $placeholders['status']) . ")
-        AND contact_primary.id = '{$placeholders['contact_id']}'
+        contact_primary.id = '{$placeholders['contact_id']}'
         AND civicrm_activity.is_test = 0
         AND date(civicrm_activity.activity_date_time) >= (CURRENT_DATE - INTERVAL {$placeholders['activityical_past_days']} DAY)
         AND date(civicrm_activity.activity_date_time) <= (CURRENT_DATE + INTERVAL {$placeholders['activityical_future_days']} DAY)
         $extra_where
-      GROUP BY civicrm_activity.id
+      GROUP BY civicrm_activity.id, source.id, activity_type.label
       ORDER BY activity_date_time desc
     ";
 
@@ -316,7 +296,13 @@ class CRM_Activityical_Feed {
       // FIXME: how to handle timezones?
       // $row['activity_date_time'] = civicrm_activity_contact_datetime_to_utc($row['activity_date_time'], $this->contact_id);
 
-      $return[] = $row;
+      $hookEvent = \Civi\Core\Event\GenericHookEvent::create([
+        'activityId' => $row['id'],
+        'row' => $row,
+      ]);
+      \Civi::dispatcher()->dispatch('civi.activityical.feed_item_details', $hookEvent);
+
+      $return[] = $hookEvent->row;
     }
     return $return;
   }
@@ -349,7 +335,7 @@ class CRM_Activityical_Feed {
         ),
       );
       $result = _activityical_civicrmapi('setting', 'get', $api_params);
-      $use_cache = (bool) CRM_Utils_Array::value('activityical_cache_lifetime', $result['values'][CRM_Core_Config::domainID()], 0);
+      $use_cache = (bool) $result['values'][CRM_Core_Config::domainID()]['activityical_cache_lifetime'] ?? 0;
     }
     return $use_cache;
   }
@@ -398,17 +384,6 @@ class CRM_Activityical_Feed {
     return $output;
   }
 
-  public static function getBlockedStatuses() {
-    $blocked_statuses = array(
-      'Completed',
-      'Cancelled',
-      'Left Message',
-      'Unreachable',
-      'Not Required',
-    );
-    return $blocked_statuses;
-  }
-
   public function getTimezoneString() {
     if (empty($this->timezone_string)) {
       $timezone_string = '';
@@ -453,6 +428,35 @@ class CRM_Activityical_Feed {
       // Use @ operator to ignore PHP strict notice if time zone has not yet been
       // set in the php.ini configuration.
       $timezone_string = variable_get('date_default_timezone', @date_default_timezone_get());
+    }
+    return $timezone_string;
+  }
+
+  public function getTimezoneString_Drupal8() {
+    $timezone_string = '';
+    // If timezones can be configurable per user, get the user's timezone setting.
+    $configurable_timezones = \Drupal::config('system.date')->get('timezone.user.configurable');
+    if ($configurable_timezones == 1) {
+      // Get the global user if no uid is given.
+      $result = _activityical_civicrmapi('UFMatch', 'get', array(
+        'sequential' => 1,
+        'contact_id' => $this->contact_id,
+      ));
+      if (!empty($result['values'])) {
+        $uid = $result['values'][0]['uf_id'];
+        $user = \Drupal\user\Entity\User::load($uid);
+        $user_timezone = $user->getTimeZone();
+        // Get the user's timezone setting, if any.
+        if ($user_timezone) {
+          $timezone_string = $user_timezone;
+        }
+      }
+    }
+    // If no timezone has been found yet, get the system timezone.
+    if (empty($timezone_string)) {
+      // Use @ operator to ignore PHP strict notice if time zone has not yet been
+      // set in the php.ini configuration.
+      $timezone_string = \Drupal::config('system.date')->get('timezone.default') ?? date_default_timezone_get();
     }
     return $timezone_string;
   }

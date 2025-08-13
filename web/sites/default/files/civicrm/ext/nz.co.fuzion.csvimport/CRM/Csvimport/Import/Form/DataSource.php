@@ -1,34 +1,12 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.4                                                |
- +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2013                                |
- +--------------------------------------------------------------------+
- | This file is a part of CiviCRM.                                    |
+ | Copyright CiviCRM LLC. All rights reserved.                        |
  |                                                                    |
- | CiviCRM is free software; you can copy, modify, and distribute it  |
- | under the terms of the GNU Affero General Public License           |
- | Version 3, 19 November 2007 and the CiviCRM Licensing Exception.   |
- |                                                                    |
- | CiviCRM is distributed in the hope that it will be useful, but     |
- | WITHOUT ANY WARRANTY; without even the implied warranty of         |
- | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               |
- | See the GNU Affero General Public License for more details.        |
- |                                                                    |
- | You should have received a copy of the GNU Affero General Public   |
- | License and the CiviCRM Licensing Exception along                  |
- | with this program; if not, contact CiviCRM LLC                     |
- | at info[AT]civicrm[DOT]org. If you have questions about the        |
- | GNU Affero General Public License or the licensing of CiviCRM,     |
- | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
+ | This work is published under the GNU AGPLv3 license with some      |
+ | permitted exceptions and without any warranty. For full license    |
+ | and copyright information, see https://civicrm.org/licensing       |
  +--------------------------------------------------------------------+
-*/
-
-/**
- *
- * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2013
  */
 
 use Civi\Api4\Note;
@@ -39,29 +17,10 @@ use Civi\Api4\Note;
 class CRM_Csvimport_Import_Form_DataSource extends CRM_Import_Form_DataSource {
 
   use CRM_Csvimport_Import_Form_CSVImportFormTrait;
-  public $_parser = 'CRM_Csvimport_Import_Parser_Api';
-
-  protected $_enableContactOptions = FALSE;
-
-  protected $_mappingType = 'Import Participant';//@todo make this vary depending on api - need to create option values
-
-  /**
-   * Get the name of the type to be stored in civicrm_user_job.type_id.
-   *
-   * @return string
-   */
-  public function getUserJobType(): string {
-    return 'csv_api_importer';
-  }
 
   public function getTemplateFileName(): string {
     return 'CRM/Csvimport/Import/Form/DataSource.tpl';
   }
-
-  /**
-   * Include duplicate options
-   */
-  protected $isDuplicateOptions = FALSE;
 
   /**
    * Function to actually build the form - this appears to be entirely code that should be in a shared base class in core
@@ -71,17 +30,17 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Import_Form_DataSource {
   public function buildQuickForm(): void {
     //We are gathering this as a text field for now. I tried to put it into the URL but for some reason
     //adding &x=y in the url causes it not to load at all.
-    $allEntities = civicrm_api3('entity', 'get', []);
+    $allEntities = civicrm_api3('entity', 'get');
     $creatableEntities = [];
     foreach ($allEntities['values'] as $entity) {
       try {
         $actions = civicrm_api3($entity, 'getactions', ['entity' => $entity]);
         //can add 'submit' later when we can figure out how to specify on submit
-        if (array_intersect(['create',], $actions['values'])) {
+        if (array_intersect(['create'], $actions['values'])) {
           $creatableEntities[$entity] = $entity;
         }
       }
-      catch (CRM_Core_Exception $e) {
+      catch (CRM_Core_Exception) {
         // Ignore entities that raise an exception
       }
     }
@@ -95,36 +54,10 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Import_Form_DataSource {
       ->execute()[0]['options'];
 
     $this->add('select', 'noteEntity', ts('Which entity are you importing "Notes" to'), $noteEntities + ['0' => ts('Set this in CSV')], FALSE, ['class' => 'crm-select2']);
-    if ($this->isDuplicateOptions) {
-      $duplicateOptions = [];
-      $duplicateOptions[] = $this->createElement('radio',
-        NULL, NULL, ts('Skip'), CRM_Import_Parser::DUPLICATE_SKIP
-      );
-      $duplicateOptions[] = $this->createElement('radio',
-        NULL, NULL, ts('Update'), CRM_Import_Parser::DUPLICATE_UPDATE
-      );
-      $duplicateOptions[] = $this->createElement('radio',
-        NULL, NULL, ts('No Duplicate Checking'), CRM_Import_Parser::DUPLICATE_NOCHECK
-      );
 
-      $this->addGroup($duplicateOptions, 'onDuplicate',
-        ts('On Duplicate Entries')
-      );
-    }
+    $this->setDefaults(['onDuplicate' => CRM_Import_Parser::DUPLICATE_SKIP]);
 
-    $this->setDefaults([
-      'onDuplicate' =>
-        CRM_Import_Parser::DUPLICATE_SKIP,
-    ]);
-
-    if ($this->_enableContactOptions) {
-      $this->addContactOptions();
-    }
-
-    $this->setDefaults([
-        'contactType' => 'Individual',
-      ]
-    );
+    $this->setDefaults(['contactType' => 'Individual']);
     $this->addElement('checkbox', 'allowEntityUpdate', ts('Allow Updating An Entity Using Unique Fields'));
     $this->addElement('checkbox', 'ignoreCase', ts('Ignore Case For Field Option Values'));
 
@@ -133,7 +66,8 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Import_Form_DataSource {
     $this->removeElement('savedMapping');
     //get the saved mapping details
     $mappingArray = CRM_Core_BAO_Mapping::getMappings(
-      CRM_Core_PseudoConstant::getKey('CRM_Core_BAO_Mapping', 'mapping_type_id', $this->_mappingType)
+    //@todo make this vary depending on api - need to create option values
+      CRM_Core_PseudoConstant::getKey('CRM_Core_BAO_Mapping', 'mapping_type_id', 'Import Participant')
     );
     $this->assign('savedMapping', $mappingArray);
     $this->add('select', 'savedMapping', ts('Mapping Option'), ['' => ts('- select -')] + $mappingArray);
@@ -157,29 +91,4 @@ class CRM_Csvimport_Import_Form_DataSource extends CRM_Import_Form_DataSource {
     return $defaults;
   }
 
-  /**
-   * @throws \CRM_Core_Exception
-   */
-  public function addContactOptions(): void {
-    //contact types option
-    $contactOptions = [];
-    if (CRM_Contact_BAO_ContactType::isActive('Individual')) {
-      $contactOptions[] = $this->createElement('radio',
-        NULL, NULL, ts('Individual'), 'Individual'
-      );
-    }
-    if (CRM_Contact_BAO_ContactType::isActive('Household')) {
-      $contactOptions[] = $this->createElement('radio',
-        NULL, NULL, ts('Household'), 'Household'
-      );
-    }
-    if (CRM_Contact_BAO_ContactType::isActive('Organization')) {
-      $contactOptions[] = $this->createElement('radio',
-        NULL, NULL, ts('Organization'), 'Organization'
-      );
-    }
-    $this->addGroup($contactOptions, 'contactType', ts('Contact Type'));
-  }
-
 }
-

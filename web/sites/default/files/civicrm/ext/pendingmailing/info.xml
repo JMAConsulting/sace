@@ -28,4 +28,7 @@
   <classloader>
     <psr0 prefix="CRM_" path="."/>
   </classloader>
+  <mixins>
+    <mixin>smarty-v2@1.0.3</mixin>
+  </mixins>
 </extension>
