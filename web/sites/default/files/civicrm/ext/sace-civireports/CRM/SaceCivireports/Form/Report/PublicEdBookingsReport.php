@@ -46,7 +46,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           ],
           'participant_count' => [
             'title' => ts('Number of participants'),
-            'dbAlias' => '0',
+            'dbAlias' => 'GROUP_CONCAT(DISTINCT number_of_students_per_session_24)',
           ],
         ],
         'filters' => [
@@ -280,7 +280,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
       'fields' => [
         'age' => [
           'title' => ts('Age (Demographic information open field)'),
-          'dbAlias' => 'GROUP_CONCAT(pp.age_1263)',
+          'dbAlias' => 'GROUP_CONCAT(DISTINCT pp.age_1263)',
         ],
         'demo_questions' => [
           'title' => ts('Number of respondents to demo questions'),
@@ -332,9 +332,14 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
 
   public function from() {
     $this->_from = "
-      FROM civicrm_value_ped_booking_r_53 {$this->_aliases['civicrm_value_ped_booking_r_53']}
-      INNER JOIN civicrm_activity {$this->_aliases['civicrm_activity']} ON {$this->_aliases['civicrm_activity']}.id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706
-      INNER JOIN civicrm_value_ped_presentat_54 {$this->_aliases['civicrm_value_ped_presentat_54']} ON {$this->_aliases['civicrm_value_ped_presentat_54']}.entity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.entity_id
+      FROM civicrm_activity {$this->_aliases['civicrm_activity']}
+      INNER JOIN (
+        SELECT entity_id, booking_reference_id_706
+        FROM civicrm_value_ped_booking_r_53 bf
+         INNER JOIN civicrm_activity a ON a.id = bf.entity_id AND a.activity_type_id IN (200)
+      ) summary ON summary.booking_reference_id_706 = {$this->_aliases['civicrm_activity']}.id
+      INNER JOIN civicrm_value_ped_booking_r_53 {$this->_aliases['civicrm_value_ped_booking_r_53']} ON {$this->_aliases['civicrm_value_ped_booking_r_53']}.entity_id = summary.entity_id
+      LEFT JOIN civicrm_value_ped_presentat_54 {$this->_aliases['civicrm_value_ped_presentat_54']} ON {$this->_aliases['civicrm_value_ped_presentat_54']}.entity_id = summary.entity_id
       LEFT JOIN civicrm_value_booking_infor_2 {$this->_aliases['civicrm_value_booking_infor_2']} ON {$this->_aliases['civicrm_value_booking_infor_2']}.entity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706
       LEFT JOIN civicrm_activity_contact assignee ON assignee.activity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706 AND assignee.record_type_id = 2
       LEFT JOIN civicrm_activity_contact target ON target.activity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.booking_reference_id_706 AND target.record_type_id = 3
@@ -345,8 +350,13 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
       LEFT JOIN civicrm_entity_tag tc_entity_tag ON tc_entity_tag.entity_id = tc.id AND tc_entity_tag.entity_table = 'civicrm_contact' 
       LEFT JOIN civicrm_tag tc_tag ON tc_tag.id = tc_entity_tag.tag_id
       LEFT JOIN civicrm_contact sc ON sc.id = source.contact_id
-      LEFT JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = {$this->_aliases['civicrm_value_ped_booking_r_53']}.entity_id
-    ";
+      LEFT JOIN (
+	SELECT entity_id, booking_reference_id_706
+        FROM civicrm_value_ped_booking_r_53 bf
+         INNER JOIN civicrm_activity a ON a.id = bf.entity_id AND a.activity_type_id IN (197)
+      ) feedback ON feedback.booking_reference_id_706 = {$this->_aliases['civicrm_activity']}.id
+      LEFT JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = feedback.entity_id
+   ";
 
   }
 
@@ -561,7 +571,6 @@ WHERE cg.is_active = 1 AND
           $row['civicrm_contact_sc_presenter_' . $count] = '';
           $count++;
         }
-        $row['civicrm_activity_participant_count'] = $row['civicrm_value_ped_presentat_54_number_of_students_per_session_24'];
       }
       else {
         $row['civicrm_contact_sc_presenter_2'] = $row['civicrm_contact_sc_presenter_3'] = $row['civicrm_contact_sc_presenter_4'] = '';
