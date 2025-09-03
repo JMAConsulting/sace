@@ -59,7 +59,7 @@ class EvaluationSummaryWebformHandler extends WebformHandlerBase {
       while ($row = $civicrm_submission_data->fetchAssoc()) {
         $data = unserialize($row['civicrm_data']);
         $activity = Activity::get(FALSE)
-          ->addSelect('source_contact_id')
+          ->addSelect('source_contact_id', 'target_contact_id')
           ->addWhere('id', '=', $data['activity'][1]['id'])
           ->execute()
           ->first();
@@ -69,6 +69,7 @@ class EvaluationSummaryWebformHandler extends WebformHandlerBase {
           ->addValue('PED_Booking_Reference.Booking_Reference_ID', $data['activity'][1]['id'])
           ->addValue('status_id:name', 'Pending')
           ->addValue('source_contact_id', $activity['source_contact_id'])
+          ->addValue('target_contact_id', $activity['target_contact_id'])
           ->addValue('PED_Presentation_Evaluation_Summary_Score.Result_Verified_by', $activity['source_contact_id'])
           ->execute()
           ->first()['id'];
