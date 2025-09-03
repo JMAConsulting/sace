@@ -18,7 +18,7 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   \Drupal::service('civicrm')->initialize();
   // APIv4 doesn't fetch assignee and target contact ids, so relying on api v3
   $contacts = civicrm_api3('Activity', 'get', [
-    'return' => ["target_contact_id", "assignee_contact_id"],
+    'return' => ["assignee_contact_id"],
     'id' => $aid,
   ])['values'][$aid];
 
@@ -29,9 +29,6 @@ function ped_evaluation_summary_form_webform_submission_presentation_evaluation_
   foreach ($contacts['assignee_contact_id'] as $cid) {
     $elements["civicrm_{$i}_contact_1_contact_existing"]['#value'] = $cid;
     $i++;
-  }
-  if (!empty($contacts)) {
-    $elements['civicrm_2_contact_1_contact_existing']['#value'] = $contacts[0]['target_contact_id'];
   }
 
   // Get Booking Intake custom fields
