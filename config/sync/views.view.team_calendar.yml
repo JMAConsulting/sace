@@ -3735,36 +3735,36 @@ display:
                   is_secondary: false
                 select_all_none: true
                 select_all_none_nested: false
-                display_inline: true
-              subject:
-                plugin_id: default
-                advanced:
-                  placeholder_text: ''
-                  collapsible: false
-                  is_secondary: false
+                display_inline: false
               uf_select:
                 plugin_id: bef
                 advanced:
                   sort_options: false
                   rewrite:
                     filter_rewrite_values: ''
-                  collapsible: false
+                  collapsible: true
                   is_secondary: false
                 select_all_none: true
                 select_all_none_nested: false
                 display_inline: false
-              field_user_team_target_id:
+              subject:
                 plugin_id: default
                 advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: ''
+                  placeholder_text: ''
                   collapsible: false
                   is_secondary: false
               activity_date_time:
                 plugin_id: bef_datepicker
                 advanced:
                   placeholder_text: ''
+                  collapsible: false
+                  is_secondary: false
+              field_user_team_target_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
       filters:
