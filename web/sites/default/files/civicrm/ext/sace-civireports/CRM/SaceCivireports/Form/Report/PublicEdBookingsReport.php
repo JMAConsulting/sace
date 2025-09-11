@@ -280,7 +280,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
       'fields' => [
         'age' => [
           'title' => ts('Age (Demographic information open field)'),
-          'dbAlias' => 'GROUP_CONCAT(DISTINCT pp.age_1263)',
+          'dbAlias' => 'GROUP_CONCAT(DISTINCT CONCAT(pp.entity_id, "-", pp.age_1263))',
         ],
         'demo_questions' => [
           'title' => ts('Number of respondents to demo questions'),
@@ -554,6 +554,11 @@ WHERE cg.is_active = 1 AND
 
     $this->assign('_columnHeaders1', $CH2);
     foreach ($rows as $rowNum => &$row) {
+      if (!empty($row['civicrm_value_ped_participa_49_age'])) {
+        $records = (array) explode(',', $row['civicrm_value_ped_participa_49_age']);
+        $values = array_reduce($records, fn($carry, $record) => ($key = explode('-', $record)[1]) && ($carry[$key] = ($carry[$key] ?? 0) + 1) ? $carry : $carry, []);
+        $row['civicrm_value_ped_participa_49_age'] = implode(', ', array_map(fn($k, $v) => "$k ($v)", array_keys($values), $values));
+      }
       if (array_key_exists('civicrm_activity_activity_type_id', $row)) {
         if ($value = $row['civicrm_activity_activity_type_id']) {
           $rows[$rowNum]['civicrm_activity_activity_type_id'] = $activityType[$value];
