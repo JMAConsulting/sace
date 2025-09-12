@@ -59,6 +59,12 @@ elements: |-
       '#text': |
         <div class="field field--name-field-button02 field--type-link field--label-hidden field__item"><a class="button button--secondary" href="/wiseguyz-booking-request">WiseGuyz</a></div>
       '#format': html
+  processed_text_02:
+    '#type': processed_text
+    '#admin_title': 'Education Amendment Act Blurb'
+    '#text': |
+      <p><b>*Please note,&nbsp;</b>in accordance with the Education Amendment Act coming into effect September 1st, SACE is currently going through the required approval processes for us to continue presenting in schools.&nbsp;<strong>Until we get the required approval, we will not be booking any youth presentations with schools.</strong>&nbsp;If you would like to be contacted once SACE has received approval to begin offered youth presentations, <a href="https://forms.gle/7ZJ6FuU5eDdaRpYx6" id="LPlnk841081" title="https://forms.gle/7ZJ6FuU5eDdaRpYx6">please fill out this form</a>.&nbsp;Once we receive approval, we will send an email out to everyone on this waitlist. Presentations will then&nbsp;be scheduled on a first come first serve basis. If you have any questions, please email us as <a href="mailto:education@sace.ca" id="OWA1205e2e1-a33e-993e-7020-2eb471a3b1af">education@sace.ca</a>.</p>
+    '#format': html
   online_course_booking_header:
     '#type': processed_text
     '#admin_title': 'Online Course Booking Request Header and Blurb'
