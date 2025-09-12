@@ -14,7 +14,7 @@ class CalendarFeed extends AutoSubscriber {
 
   public function onFeedItemDetails(\Civi\Core\Event\GenericHookEvent $e) {
     // add custom fields for SACE
-    $extraFields = [
+    $extraDescriptionFields = [
       // already included?
       // Activity subject
       // Start & End Date
@@ -23,12 +23,13 @@ class CalendarFeed extends AutoSubscriber {
       'CE_External_Activities.Online Meeting Link' => 'Online Meeting Link',
       'CE_External_Activities.Building_Room_Location_details' => 'Building/Room Location',
       'Booking_Information.Parking_Instructions' => 'Parking Instructions',
-      'target_contact_id' => 'Target Contact ID',
     ];
 
-    $extraDetails = \Civi\Api4\Activity::get(FALSE)
+    $details = \Civi\Api4\Activity::get(FALSE)
       ->addWhere('id', '=', $e->activityId)
-      ->addSelect(...array_keys($extraFields))
+      ->addSelect(...array_keys($extraDescriptionFields))
+      // we also add location for target contact id
+      ->addSelect('target_contact_id')
       ->setLimit(1)
       ->execute()
       ->single();
@@ -54,10 +55,23 @@ class CalendarFeed extends AutoSubscriber {
       $extraDescription = implode("\n", $extraDescription);
       $e->row['description'] .= $extraDescription;
     }
-    if ($address) {
-      unset($address['id']);
-      $extraLocation = implode(", ", $address);
-      $e->row['location'] .= $extraLocation;
+
+    $targetContactId = $details['target_contact_id'][0] ?? NULL;
+
+    if (!$e->row['address_location'] && $targetContactId) {
+      $address = \Civi\Api4\Address::get(FALSE)
+        ->addSelect('contact_id.display_name', 'street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
+        ->addWhere('contact_id', '=', $targetContactId)
+        ->addWhere('is_primary', '=', TRUE)
+        ->setLimit(1)
+        ->execute()
+        ->first();
+
+      if ($address) {
+        unset($address['id']);
+        $e->row['address_location'] = implode(", ", $address);
+        $e->row['description'] .= '<p>Address: </p>' . implode(", <br/>", $address);
+      }
     }
   }
 

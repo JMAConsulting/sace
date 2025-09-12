@@ -25,6 +25,7 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
     if (\Drupal::request()->query->has('start') && \Drupal::request()->query->has('end')) {
       $start = \Drupal::request()->query->all()['start'];
       $end = \Drupal::request()->query->all()['end'];
+      $status = (array) \Drupal::request()->query->all()['status_id'];
       $view->build_info['query']->leftJoin('civicrm_value_booking_infor_2', 'cf', 'cf.entity_id = civicrm_activity.id ');
       $view->build_info['query']->where("(
         (
@@ -44,6 +45,10 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
          ) OR (
           (cf.end_date_661 IS NULL AND (DATE_FORMAT((civicrm_activity.activity_date_time + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s') >= DATE_FORMAT(('" . $start . "' + INTERVAL -25200 SECOND), '%Y-%m-%d\T%H:%i:%s')))
       ))");
+
+      if (!empty($status)) {
+        $view->build_info['query']->where("(civicrm_activity.status_id IN ( " . implode(',', $status) . "))");
+      }
     }
     if ($view->id() == 'calendar_counsellors' && ($uid = \Drupal::currentUser()->id())) {
       $view->build_info['query']->where("((users_field_data_civicrm_uf_match.uid = '" . $uid . "'))");
@@ -55,6 +60,10 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
   }
   if ($view->id() == 'activity_detail') {
     $view->build_info['query']->groupby('civicrm_activity.id');
+    // following are needed to make the query full group by compat - but break things currently
+    // $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
+    // $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact_1.id');
+    // $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact_2.id');
   }
   if ($view->id() == 'kg_duplicate_of_ped_booking_calendar' || $view->id() == 'ped_update_online_booking' || $view->id() == 'duplicate_of_ped_booking_calendar') {
     $view->build_info['query']->groupby('civicrm_activity_contact3.id');
@@ -62,8 +71,22 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
   }
   if ($view->id() == 'calendar_counsellors' || $view->id() == 'team_calendar') {
     $view->build_info['query']->groupby('civicrm_activity_contact.id');
-    $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');    
-    $view->build_info['query']->where('civicrm_activity.activity_type_id NOT IN (197, 200)'); 
+    $view->build_info['query']->groupby('civicrm_contact_civicrm_activity_contact.id');
+    $view->build_info['query']->where('civicrm_activity.activity_type_id NOT IN (197, 200)');
+  }
+}
+
+function sace_calendar_customisations_preprocess_views_view_field(&$variable) {
+
+  if (($variable['view']->id() === 'activity_detail')
+    && ($variable['field']->realField === 'details'))
+  {
+    $output = $variable['output'];
+    // unscramble html
+    $output = html_entity_decode($output);
+    // create drupal markup element to prevent further filtering
+    $output = \Drupal\Core\Render\Markup::create($output);
+    $variable['output'] = $output;
   }
 }
 
