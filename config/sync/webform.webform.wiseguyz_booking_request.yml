@@ -1614,7 +1614,7 @@ handlers:
     handler_id: evaluation_summary_handler
     label: 'Evaluation Summary Handler'
     notes: ''
-    status: true
+    status: false
     conditions: {  }
     weight: 0
     settings: {  }
