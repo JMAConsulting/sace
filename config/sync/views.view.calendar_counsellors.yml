@@ -1993,7 +1993,7 @@ display:
         filter_groups: false
       exposed_block: true
       display_extenders: {  }
-      path: my-calendar
+      path: my-calendar-old
     cache_metadata:
       max-age: -1
       contexts:
