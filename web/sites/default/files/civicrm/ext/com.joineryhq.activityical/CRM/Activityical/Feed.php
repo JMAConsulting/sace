@@ -362,7 +362,7 @@ class CRM_Activityical_Feed {
       $activity['url'] = CRM_Utils_System::url($path, NULL, TRUE, NULL, FALSE, FALSE, TRUE);
 
       // Adjust date/time for relevant timezone.
-      $activity['activity_date_time'] = $this->convertToUTC($activity['activity_date_time']);
+      //$activity['activity_date_time'] = $this->convertToUTC($activity['activity_date_time']);
     }
 
     // Require a file from CiviCRM's dynamic include path.
