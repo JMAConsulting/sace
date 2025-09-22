@@ -97,7 +97,7 @@ function activityical_civicrm_pageRun(&$page) {
     if (_activityical_contact_has_feed_group($contact_id)) {
       $tpl = CRM_Core_Smarty::singleton();
       // Only if this CiviCRM is showing activities on the user dashboard
-      if (isset($tpl->get_template_vars()['activity_rows']) || isset($tpl->get_template_vars()['activity_rowsEmpty'])) {
+      if (isset($tpl->getTemplateVars()['activity_rows']) || isset($tpl->getTemplateVars()['activity_rowsEmpty'])) {
         $url_query = array(
           'contact_id' => $contact_id,
         );
@@ -192,7 +192,7 @@ function activityical_civicrm_pre($op, $objectName, $objectId, &$params) {
   )) {
     // If we're changing an activity, clear activityical cache for any new or
     // old assignees.
-    $id = $objectId ?: CRM_Utils_Array::value('id', $params);
+    $id = $objectId ?: ($params['id'] ?? NULL);
     if ($id) {
       $contact_ids = array();
       $api_params = array(
@@ -203,7 +203,7 @@ function activityical_civicrm_pre($op, $objectName, $objectId, &$params) {
       foreach ($result['values'] as $value) {
         $contact_ids[$value['contact_id']] = 1;
       }
-      foreach (CRM_Utils_Array::value('assignee_contact_id', $params, array()) as $contact_id) {
+      foreach (($params['assignee_contact_id'] ?? []) as $contact_id) {
         $contact_ids[$contact_id] = 1;
       }
       foreach (array_keys($contact_ids) as $contact_id) {
