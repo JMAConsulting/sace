@@ -1,7 +1,23 @@
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Joinery//NONSGML CiviCRM activities iCalendar feed//EN
+X-WR-TIMEZONE:{$timezone}
 METHOD:PUBLISH
+{foraech from=$timezones item=tzItem}
+BEGIN:VTIMEZONE
+TZID:{$tzItem.id}
+{foreach from=$tzItem.transitions item=tzTr}
+BEGIN:{$tzTr.type}
+TZOFFSETFROM:{$tzTr.offset_from}
+TZOFFSETTO:{$tzTr.offset_to}
+TZNAME:{$tzTr.abbr}
+{if $tzTr.dtstart}
+DTSTART:{$tzTr.dtstart|crmICalDate}
+{/if}
+END:{$tzTr.type}
+{/foreach}
+END:VTIMEZONE
+{/foreach}
 {foreach from=$activities key=uid item=activity}
 BEGIN:VEVENT
 UID:activity-{$activity.id}-{$smarty.now|crmICalDate}@{$domain}
