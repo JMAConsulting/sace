@@ -3,7 +3,7 @@ VERSION:2.0
 PRODID:-//Joinery//NONSGML CiviCRM activities iCalendar feed//EN
 X-WR-TIMEZONE:{$timezone}
 METHOD:PUBLISH
-{foraech from=$timezones item=tzItem}
+{foreach from=$timezones item=tzItem}
 BEGIN:VTIMEZONE
 TZID:{$tzItem.id}
 {foreach from=$tzItem.transitions item=tzTr}
