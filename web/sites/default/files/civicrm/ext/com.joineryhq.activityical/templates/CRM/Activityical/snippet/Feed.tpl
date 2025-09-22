@@ -1,23 +1,7 @@
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Joinery//NONSGML CiviCRM activities iCalendar feed//EN
-X-WR-TIMEZONE:{$timezone}
 METHOD:PUBLISH
-{foreach from=$timezones item=tzItem}
-BEGIN:VTIMEZONE
-TZID:{$tzItem.id}
-{foreach from=$tzItem.transitions item=tzTr}
-BEGIN:{$tzTr.type}
-TZOFFSETFROM:{$tzTr.offset_from}
-TZOFFSETTO:{$tzTr.offset_to}
-TZNAME:{$tzTr.abbr}
-{if $tzTr.dtstart}
-DTSTART:{$tzTr.dtstart|crmICalDate}
-{/if}
-END:{$tzTr.type}
-{/foreach}
-END:VTIMEZONE
-{/foreach}
 {foreach from=$activities key=uid item=activity}
 BEGIN:VEVENT
 UID:activity-{$activity.id}-{$smarty.now|crmICalDate}@{$domain}
@@ -29,14 +13,14 @@ DESCRIPTION:{$activity.description|crmICalText}
 CATEGORIES:{$activity.activity_type|crmICalText}
 {/if}
 CALSCALE:GREGORIAN
-DTSTAMP;TZID={$timezone}:{$smarty.now|date_format:'%Y-%m-%d %H:%M:%S'|crmICalDate}
+DTSTAMP;VALUE=DATE-TIME:{$smarty.now|date_format:'%Y-%m-%d %H:%M:%S'|crmICalDate}
 {if $activity.activity_date_time}
-DTSTART;TZID={$timezone}:{$activity.activity_date_time|crmICalDate}
+DTSTART;VALUE=DATE-TIME:{$activity.activity_date_time|crmICalDate}Z
 {/if}
 {if $activity.activity_duration}
 DURATION:PT{$activity.activity_duration}M
 {else}
-DTEND;TZID={$timezone}:{$activity.activity_date_time|crmICalDate}
+DTEND;VALUE=DATE-TIME:{$activity.activity_date_time|crmICalDate}Z
 {/if}
 {if $activity.activity_location}
   LOCATION:{$activity.activity_location|crmICalText}

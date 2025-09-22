@@ -78,7 +78,7 @@ class CRM_Activityical_Feed {
       'contact_id' => $this->contact_id,
     );
     $result = _activityical_civicrmapi('activityical_contact', 'get', $params);
-    $id = CRM_Utils_Array::value('id', $result);
+    $id = $result['id'] ?? NULL;
 
     $params = array(
       'id' => $id,
@@ -342,33 +342,18 @@ class CRM_Activityical_Feed {
 
   public function getFeed() {
     $activities = $this->getData();
-    $timezones = [];
-    if (count($activities) > 0) {
-      $date_min = min(
-        array_map(function ($activity) {
-          return strtotime($activity['activity_date_time']);
-        }, $activities)
-      );
-      $date_max = max(
-        array_map(function ($activity) {
-          return strtotime($activity['activity_date_time']);
-        }, $activities)
-      );
-      $timezones = CRM_Utils_ICalendar::generate_timezones([$this->getTimezoneString()], $date_min, $date_max);
-    }
     foreach ($activities as &$activity) {
       // Define URL to activity.
       $path = "civicrm/activity?action=view&context=activity&reset=1&cid={$activity['contact_id']}&id={$activity['id']}&atype={$activity['activity_type_id']}";
       $activity['url'] = CRM_Utils_System::url($path, NULL, TRUE, NULL, FALSE, FALSE, TRUE);
 
       // Adjust date/time for relevant timezone.
-      //$activity['activity_date_time'] = $this->convertToUTC($activity['activity_date_time']);
+      $activity['activity_date_time'] = $this->convertToUTC($activity['activity_date_time']);
     }
 
     // Require a file from CiviCRM's dynamic include path.
     require_once 'CRM/Core/Smarty.php';
     $tpl = CRM_Core_Smarty::singleton();
-    $tpl->assign('timezones', $timezones);
     $tpl->assign('timezone', $this->getTimezoneString());
     $tpl->assign('activities', $activities);
 
