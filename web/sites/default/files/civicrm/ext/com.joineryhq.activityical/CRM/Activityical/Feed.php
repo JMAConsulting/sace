@@ -347,12 +347,12 @@ class CRM_Activityical_Feed {
       $date_min = min(
         array_map(function ($activity) {
           return strtotime($activity['activity_date_time']);
-        }, $info)
+        }, $activities)
       );
       $date_max = max(
         array_map(function ($activity) {
           return strtotime($activity['activity_date_time']);
-        }, $info)
+        }, $activities)
       );
       $timezones = CRM_Utils_ICalendar::generate_timezones([$this->getTimezoneString()], $date_min, $date_max);
     }
