@@ -112,18 +112,18 @@ abstract class QuestionSummary {
    */
   public static function getOrCreateStorageField(array $storageField): string {
     $key = $storageField['name'];
+    $label = $storageField['label'];
 
     $existingField = \Civi\Api4\CustomField::get(FALSE)
       // should we restrict to a particular custom field group?
       // probably the key is specific enough
       ->addWhere('custom_group_id.name', '=', 'Feedback_Summary')
-      ->addWhere('name', '=', $key)
+      ->addWhere('label', '=', $label)
       ->addSelect('name', 'custom_group_id.name', 'label')
       ->execute()
       ->first();
 
     if ($existingField) {
-      $label = $storageField['label'];
       if ($existingField['label'] !== $label) {
         \Civi::log()->debug("Existing summary field found for {$key} but label {$existingField['label']} does not match expected {$label}. We will use it anyway but you may want to update the label.");
       }
