@@ -170,8 +170,19 @@ class SaceActivityScheduleWebformHandler extends WebformHandlerBase {
     }
     $startTime = explode('T', $webformData['civicrm_1_activity_1_activity_activity_date_time'])[1];
 
-    $actionScheduleCreate = \Civi\Api4\ActionSchedule::create(FALSE)
-      ->addValue('name', 'repeat_civicrm_activity_' . $initialActivityId)
+    $actionScheduleCreate = \Civi\Api4\ActionSchedule::get(FALSE)
+     ->addWhere('name', '=', 'repeat_civicrm_activity_' . $initialActivityId)
+     ->execute()
+     ->first()['id'] ?? NULL;
+
+    if (!empty($actionScheduleCreate)) {
+      $actionScheduleCreate = \Civi\Api4\ActionSchedule::update(FALSE)->addWhere('id', '=', $actionScheduleCreate);
+    }
+    else {
+      $actionScheduleCreate = \Civi\Api4\ActionSchedule::create(FALSE);
+    }
+
+    $actionScheduleCreate->addValue('name', 'repeat_civicrm_activity_' . $initialActivityId)
       ->addValue('title', 'Repetition Schedule for Activity ID ' . $initialActivityId)
       ->addValue('used_for', 'civicrm_activity')
       ->addValue('mapping_id:name', 'activity_type')
