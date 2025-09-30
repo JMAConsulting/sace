@@ -68,6 +68,7 @@ class ActivityIcalFeed extends BlockBase {
     return [
       '#markup' => $markup,
       '#cache' => [
+        'max-age' => 0, // No caching
         'tags' => ["contact:{$contactId}"],
       ]
     ];
