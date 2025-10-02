@@ -25,6 +25,7 @@ module:
   community_engagement_booking_update: 0
   community_engagement_services_request: 0
   config: 0
+  config_ignore: 0
   contact: 0
   content_access: 0
   contextual: 0
