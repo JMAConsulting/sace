@@ -527,6 +527,15 @@ elements: |-
     '#extra':
       width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_1_activity_1_cg2_custom_1295:
+    '#type': textarea
+    '#data_type': Memo
+    '#extra':
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg2_custom_1295
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Name of Participants'
   civicrm_1_activity_1_cg2_custom_40:
     '#type': civicrm_options
     '#title': 'Content Topic'
@@ -1371,7 +1380,6 @@ handlers:
     conditions: {  }
     weight: -50
     settings:
-      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '6'
       1_contact_type: individual
@@ -1676,6 +1684,7 @@ handlers:
         '': ''
       civicrm_1_activity_1_activity_engagement_level: 0
       civicrm_1_activity_1_activity_campaign_id: 0
+      activity_1_settings_dynamic_custom_cg62: 0
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
@@ -1724,6 +1733,9 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1261: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_1289: 0
       civicrm_1_activity_1_cg2_custom_1291: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1292: 0
+      civicrm_1_activity_1_cg2_custom_1294: 0
+      civicrm_1_activity_1_cg2_custom_1295: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg49: 0
       civicrm_1_activity_1_cg49_custom_665: 0
       civicrm_1_activity_1_cg49_custom_666: 0
@@ -2008,6 +2020,8 @@ handlers:
       civicrm_1_activity_1_cg31_custom_352: 0
       civicrm_1_activity_1_cg31_custom_353: 0
       civicrm_1_activity_1_cg31_custom_354: 0
+      activity_1_settings_dynamic_custom_cg61: 0
+      civicrm_1_activity_1_cg61_custom_1293: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -2172,6 +2186,7 @@ handlers:
           1:
             existing_activity_status: {  }
             details: {  }
+            dynamic_custom_cg62: 0
             dynamic_custom_cg2: 0
             dynamic_custom_cg49: 0
             dynamic_custom_cg53: 0
@@ -2183,6 +2198,7 @@ handlers:
             dynamic_custom_cg18: 0
             dynamic_custom_cg20: 0
             dynamic_custom_cg31: 0
+            dynamic_custom_cg61: 0
             activity:
               1:
                 target_contact_id:
