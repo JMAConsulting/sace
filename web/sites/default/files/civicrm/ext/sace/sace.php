@@ -40,7 +40,7 @@ function sace_civicrm_copy($objectName, &$object, $original_id = NULL): void {
      ->execute();
   }
   if ($objectName == 'Activity' && !empty($object->id)) {
-    $result = \Civi\Api4\Activity::get(TRUE)
+    $result = \Civi\Api4\Activity::get(FALSE)
       ->addSelect('Booking_Information.Feedback_Webform')
       ->addWhere('Booking_Information.Feedback_Webform', 'IS NOT NULL')
       ->addWhere('id', '=', $object->id)
