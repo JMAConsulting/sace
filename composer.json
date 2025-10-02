@@ -31,6 +31,7 @@
         "drupal/charts": "^3.2",
         "drupal/codesnippet": "^1.7",
         "drupal/colorbutton": "^1.2",
+        "drupal/config_ignore": "^3.3",
         "drupal/content_access": "^2.0",
         "drupal/core": "10.5.1",
         "drupal/core-composer-scaffold": "10.5.1",
