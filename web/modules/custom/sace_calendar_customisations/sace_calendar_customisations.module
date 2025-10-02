@@ -85,7 +85,7 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
 
     $loggedInContactId = \CRM_Core_Session::getLoggedInContactId();
 
-    $activityIds = \Civi\Api4\Activity::get(TRUE)
+    $activityIds = \Civi\Api4\Activity::get(FALSE)
       // current user has role for booking
       // NOTE: these may not work on the form currently?
       ->addJoin('ActivityRole AS activity_role', 'INNER',

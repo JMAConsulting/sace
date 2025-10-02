@@ -274,6 +274,10 @@ elements: |-
     '#extra':
       width: 20
     '#parent': civicrm_1_activity_1_fieldset_fieldset
+  your_session_s:
+    '#type': webform_section
+    '#title': 'Your Session(s)'
+    '#description': '<p>The WiseGuyz Program bookings may be set up initially through this form, and then details added in the Booking Update Form as specific dates and details are added. The CiviCRM build for this form will be fleshed out pending program development.</p>'
   processed_text_02:
     '#type': processed_text
     '#states':
