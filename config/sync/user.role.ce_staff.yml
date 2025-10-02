@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - civicrm
     - file
 id: ce_staff
 label: 'CE Staff'
@@ -10,3 +11,4 @@ weight: -14
 is_admin: null
 permissions:
   - 'delete own files'
+  - 'view all activities'
