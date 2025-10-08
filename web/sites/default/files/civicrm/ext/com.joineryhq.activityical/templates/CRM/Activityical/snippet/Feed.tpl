@@ -13,14 +13,14 @@ DESCRIPTION:{$activity.description|crmICalText}
 CATEGORIES:{$activity.activity_type|crmICalText}
 {/if}
 CALSCALE:GREGORIAN
-DTSTAMP;TZID=America/Edmonton:{$smarty.now|date_format:'%Y-%m-%d %H:%M:%S'|crmICalDate}
+DTSTAMP;VALUE=DATE-TIME:{$smarty.now|date_format:'%Y-%m-%d %H:%M:%S'|crmICalDate}
 {if $activity.activity_date_time}
-DTSTART;TZID=America/Edmonton:{$activity.activity_date_time|crmICalDate}
+DTSTART;VALUE=DATE-TIME:{$activity.activity_date_time|crmICalDate}Z
 {/if}
 {if $activity.activity_duration}
 DURATION:PT{$activity.activity_duration}M
 {else}
-DTEND;TZID=America/Edmonton:{$activity.activity_date_time|crmICalDate}
+DTEND;VALUE=DATE-TIME:{$activity.activity_date_time|crmICalDate}Z
 {/if}
 {if $activity.activity_location}
   LOCATION:{$activity.activity_location|crmICalText}
