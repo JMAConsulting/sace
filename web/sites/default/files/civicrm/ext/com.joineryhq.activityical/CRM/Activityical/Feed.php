@@ -78,7 +78,7 @@ class CRM_Activityical_Feed {
       'contact_id' => $this->contact_id,
     );
     $result = _activityical_civicrmapi('activityical_contact', 'get', $params);
-    $id = CRM_Utils_Array::value('id', $result);
+    $id = $result['id'] ?? NULL;
 
     $params = array(
       'id' => $id,
@@ -354,6 +354,7 @@ class CRM_Activityical_Feed {
     // Require a file from CiviCRM's dynamic include path.
     require_once 'CRM/Core/Smarty.php';
     $tpl = CRM_Core_Smarty::singleton();
+    $tpl->assign('timezone', $this->getTimezoneString());
     $tpl->assign('activities', $activities);
 
     // Assign base_url to be used in links.

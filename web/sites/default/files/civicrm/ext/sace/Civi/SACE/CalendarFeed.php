@@ -36,8 +36,8 @@ class CalendarFeed extends AutoSubscriber {
       ->single();
 
     $extraDescription = $address = [];
-    foreach ($extraFields as $field => $label) {
-      $value = $extraDetails[$field] ?? NULL;
+    foreach ($extraDescriptionFields as $field => $label) {
+      $value = $details[$field] ?? NULL;
       if ($field == 'target_contact_id' && !empty($value[0])) {
         $address = \Civi\Api4\Address::get(FALSE)
           ->addSelect('contact_id.display_name', 'street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
