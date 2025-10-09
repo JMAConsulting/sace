@@ -357,9 +357,9 @@ elements: |-
       '#empty_option': '-Select-'
       '#civicrm_live_options': 0
       '#options':
-        'In-Person Presentation': 'In-Person Presentation'
         'In-Person Activity': 'In-Person Activity'
         'Phone Activity': 'Phone Activity'
+        'Online Activity': 'Online Activity'
       '#required': true
       '#format_items': ul
       '#extra':
@@ -386,19 +386,124 @@ elements: |-
     '#default_option': ''
     '#default_value': ''
     '#civicrm_live_options': '1'
-  civicrm_1_activity_1_cg2_custom_1234:
-    '#type': textarea
-    '#data_type': Memo
+  flexbox_10:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg2_custom_127:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg2_custom_127
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#readonly': true
+      '#title': 'Preferred Dates'
+    civicrm_1_activity_1_cg2_custom_129:
+      '#type': textfield
+      '#title': 'Preferred Start and End Time(s)'
+      '#readonly': true
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_129
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  flexbox_15:
+    '#type': webform_flexbox
+    '#wrapper_attributes':
+      class:
+        - jma-grid-4
+    '#format_items': ul
     '#extra':
-      cols: '60'
-      rows: '4'
-    '#form_key': civicrm_1_activity_1_cg2_custom_1234
-    '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
-          value: '203'
+      aslist: 0
+      multiple: 1
+    '#form_key': civicrm_1_activity_1_cg2_custom_25
     '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#title': 'Your Event or Initiative'
+    '#default_option': ''
+    '#default_value': ''
+    civicrm_1_activity_1_cg2_custom_128:
+      '#type': textfield
+      '#title': 'How many presentations would you like?'
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_1233"]':
+            value: '1'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_128
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  event_details:
+    '#type': fieldset
+    '#title': 'Event Details'
+    civicrm_1_activity_1_cg2_custom_1234:
+      '#type': textarea
+      '#title': 'Name and Description of Event'
+      '#states':
+        visible:
+          ':input[name="civicrm_1_activity_1_activity_activity_type_id"]':
+            value: '203'
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg2_custom_1234
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_1369:
+      '#type': textarea
+      '#title': 'How do you see SACE aligning with the purpose and goal of the event?'
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg2_custom_1369
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_126:
+      '#type': textarea
+      '#title': ' Additional needs or considerations (please specify)'
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg2_custom_126
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  event_attendee_details:
+    '#type': fieldset
+    '#title': 'Event Attendee Details'
+    civicrm_1_activity_1_cg2_custom_815:
+      '#type': textfield
+      '#title': 'Anticipated number of participants/attendees'
+      '#field_prefix': '#'
+      '#field_suffix': students
+      '#data_type': Float
+      '#form_key': civicrm_1_activity_1_cg2_custom_815
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    flexbox_21:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_1367:
+        '#type': textarea
+        '#title': 'Who is the target audience for this event?'
+        '#data_type': Memo
+        '#extra':
+          cols: '60'
+          rows: '4'
+        '#form_key': civicrm_1_activity_1_cg2_custom_1367
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+      civicrm_1_activity_1_cg2_custom_1368:
+        '#type': textarea
+        '#title': 'How will participants engage with this event?'
+        '#data_type': Memo
+        '#extra':
+          cols: '60'
+          rows: '4'
+        '#form_key': civicrm_1_activity_1_cg2_custom_1368
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
   civicrm_1_activity_1_cg2_custom_41:
     '#type': textfield
     '#title': 'Topic Details'
@@ -411,12 +516,20 @@ elements: |-
     '#parent': civicrm_1_activity_1_fieldset_fieldset
   processed_text_03:
     '#type': processed_text
+    '#states':
+      invisible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_1233"]':
+          value: '1'
     '#text': |-
 
       <h3><span style="color:#2e416c;">Additional Content</span></h3>
     '#format': html
   flexbox_11:
     '#type': webform_flexbox
+    '#states':
+      invisible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_1233"]':
+          value: '1'
     civicrm_1_activity_1_cg2_custom_331:
       '#type': civicrm_options
       '#title': 'Resources Content'
@@ -473,106 +586,13 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_1261
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
-  flexbox_10:
-    '#type': webform_flexbox
-    civicrm_1_activity_1_cg2_custom_127:
-      '#type': textfield
-      '#data_type': String
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#form_key': civicrm_1_activity_1_cg2_custom_127
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#readonly': true
-      '#title': 'Preferred Dates'
-    civicrm_1_activity_1_cg2_custom_129:
-      '#type': textfield
-      '#title': 'Preferred Start and End Time(s)'
-      '#readonly': true
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_129
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-  flexbox_15:
-    '#type': webform_flexbox
-    '#wrapper_attributes':
-      class:
-        - jma-grid-4
-    '#format_items': ul
-    '#extra':
-      aslist: 0
-      multiple: 1
-    '#form_key': civicrm_1_activity_1_cg2_custom_25
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#default_option': ''
-    '#default_value': ''
-    civicrm_1_activity_1_cg2_custom_815:
-      '#type': textfield
-      '#title': 'Approximate number of participants per presentation'
-      '#field_prefix': '#'
-      '#field_suffix': students
-      '#data_type': Float
-      '#form_key': civicrm_1_activity_1_cg2_custom_815
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg2_custom_128:
-      '#type': textfield
-      '#title': 'How many presentations would you like?'
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_128
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
   in_person_presentation_details:
     '#type': fieldset
-    '#title': 'In-Person Presentation Details'
+    '#title': 'In-Person Event Details'
     '#states':
       invisible:
         ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
-          '!value': 'In-Person Presentation'
-    civicrm_1_activity_1_cg2_custom_34:
-      '#type': civicrm_options
-      '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available? If not, we can bring our own equipment.'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#wrapper_attributes':
-        class:
-          - jma-grid-4
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_34
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
-    civicrm_1_activity_1_cg2_custom_35:
-      '#type': civicrm_options
-      '#title': 'Will there be Internet access?'
-      '#civicrm_live_options': 0
-      '#options':
-        1: 'Yes'
-        0: 'No'
-      '#default_value': '0'
-      '#wrapper_attributes':
-        class:
-          - jma-grid-4
-      '#format_items': ul
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_35
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': '0'
+          '!value': 'In-Person Activity'
     civicrm_1_activity_1_cg2_custom_37:
       '#type': textfield
       '#title': 'Parking instructions'
@@ -581,7 +601,7 @@ elements: |-
       '#states':
         visible:
           ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
-            value: 'In-Person Presentation'
+            value: 'In-Person Activity'
       '#data_type': String
       '#form_key': civicrm_1_activity_1_cg2_custom_37
       '#extra':
@@ -600,162 +620,215 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-  civicrm_1_activity_1_cg2_custom_126:
-    '#type': textarea
-    '#title': ' Additional needs or considerations (please specify)'
-    '#data_type': Memo
-    '#extra':
-      cols: '60'
-      rows: '4'
-    '#form_key': civicrm_1_activity_1_cg2_custom_126
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_1365:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg2_custom_1365
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Set-up and Take-Down Instructions'
+    civicrm_1_activity_1_cg2_custom_1366:
+      '#type': textarea
+      '#title': 'What is the physical accessibility of this space?'
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg2_custom_1366
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_34:
+      '#type': civicrm_options
+      '#title': 'Will A/V (computer and projector/SMART board, and audio capabilities) be available? If not, we can bring our own equipment.'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_1233"]':
+            value: '1'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_34
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
+    civicrm_1_activity_1_cg2_custom_35:
+      '#type': civicrm_options
+      '#title': 'Will there be Internet access?'
+      '#civicrm_live_options': 0
+      '#options':
+        1: 'Yes'
+        0: 'No'
+      '#states':
+        invisible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_1233"]':
+            value: '1'
+      '#default_value': '0'
+      '#wrapper_attributes':
+        class:
+          - jma-grid-4
+      '#format_items': ul
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#form_key': civicrm_1_activity_1_cg2_custom_35
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': '0'
+  flexbox_09:
+    '#type': fieldset
+    '#title': 'Online Event Details'
+    '#states':
+      visible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
+          value: 'Online Activity'
+    flexbox_22:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_119:
+        '#type': civicrm_options
+        '#title': 'Which virtual platform would you like to use?'
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#data_type': String
+        '#form_key': civicrm_1_activity_1_cg2_custom_119
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+        '#civicrm_live_options': '1'
+        '#options':
+          'Google Meets': 'Google Meets'
+          'Microsoft Teams': 'Microsoft Teams'
+          Zoom: Zoom
+          Other: Other
+      civicrm_1_activity_1_cg58_custom_1267:
+        '#type': textfield
+        '#data_type': String
+        '#counter_type': character
+        '#counter_maximum': 255
+        '#counter_maximum_message': ' '
+        '#form_key': civicrm_1_activity_1_cg58_custom_1267
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#title': 'Online Meeting Link'
+    flexbox_23:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_120:
+        '#type': civicrm_options
+        '#title': 'Will participants be joining from one location or from home?'
+        '#options':
+          Classroom: Classroom
+          Home: Home
+          Both: Both
+          TBD: TBD
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#data_type': String
+        '#form_key': civicrm_1_activity_1_cg2_custom_120
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+        '#civicrm_live_options': '1'
+      civicrm_1_activity_1_cg2_custom_124:
+        '#type': civicrm_options
+        '#title': 'Will participants be joining together as one large group, or separately from their own devices?'
+        '#options':
+          'Own devices': 'Own devices'
+          'One large group': 'One large group'
+          Both: Both
+          TBD: TBD
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#data_type': String
+        '#form_key': civicrm_1_activity_1_cg2_custom_124
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+        '#civicrm_live_options': '1'
+      civicrm_1_activity_1_cg2_custom_121:
+        '#type': civicrm_options
+        '#title': 'Will we be able to see the participants?'
+        '#options':
+          'Yes': 'Yes'
+          'No': 'No'
+          TBD: TBD
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_activity_1_cg2_custom_121
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+        '#civicrm_live_options': '1'
+    flexbox_24:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_123:
+        '#type': civicrm_options
+        '#title': 'Will participants be able to participate in discussions using a chat function?'
+        '#options':
+          'Yes': 'Yes'
+          'No': 'No'
+          TBD: TBD
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_activity_1_cg2_custom_123
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+        '#civicrm_live_options': '1'
+      civicrm_1_activity_1_cg2_custom_122:
+        '#type': civicrm_options
+        '#title': 'Will participants be able to participate in discussions using a microphone?'
+        '#options':
+          'Yes': 'Yes'
+          'No': 'No'
+          TBD: TBD
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#form_key': civicrm_1_activity_1_cg2_custom_122
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+        '#civicrm_live_options': '1'
+      civicrm_1_activity_1_cg2_custom_125:
+        '#type': civicrm_options
+        '#title': 'Will there be a facilitator in the room to help relay questions and answers that participants have?'
+        '#options':
+          'Yes': 'Yes'
+          'No': 'No'
+          TBD: TBD
+        '#extra':
+          aslist: 1
+          multiple: 0
+        '#data_type': String
+        '#form_key': civicrm_1_activity_1_cg2_custom_125
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+        '#default_option': ''
+        '#default_value': ''
+        '#civicrm_live_options': '1'
   civicrm_1_activity_1_activity_details:
     '#type': text_format
     '#title': 'Staff Notes'
     '#form_key': civicrm_1_activity_1_activity_details
     '#parent': civicrm_1_activity_1_fieldset_fieldset
     '#extra': {  }
-  flexbox_09:
-    '#type': fieldset
-    '#title': 'Online Presentation Details'
-    '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
-          value: 'Online Presentation'
-    civicrm_1_activity_1_cg58_custom_1267:
-      '#type': textfield
-      '#data_type': String
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#form_key': civicrm_1_activity_1_cg58_custom_1267
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Online Meeting Link'
-    civicrm_1_activity_1_cg2_custom_119:
-      '#type': civicrm_options
-      '#title': 'Which virtual platform would you like to use?'
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_119
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
-      '#options':
-        'Google Meets': 'Google Meets'
-        'Microsoft Teams': 'Microsoft Teams'
-        Zoom: Zoom
-        Other: Other
-    civicrm_1_activity_1_cg2_custom_121:
-      '#type': civicrm_options
-      '#title': 'Will we be able to see the students?'
-      '#options':
-        'Yes': 'Yes'
-        'No': 'No'
-        TBD: TBD
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_121
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
-    civicrm_1_activity_1_cg2_custom_122:
-      '#type': civicrm_options
-      '#title': 'Will students be able to participate in discussions using a microphone?'
-      '#options':
-        'Yes': 'Yes'
-        'No': 'No'
-        TBD: TBD
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_122
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
-    civicrm_1_activity_1_cg2_custom_123:
-      '#type': civicrm_options
-      '#title': 'Will students be able to participate in discussions using a chat function?'
-      '#options':
-        'Yes': 'Yes'
-        'No': 'No'
-        TBD: TBD
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#form_key': civicrm_1_activity_1_cg2_custom_123
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
-    civicrm_1_activity_1_cg2_custom_124:
-      '#type': civicrm_options
-      '#title': 'Will students be joining together as one large group, or separately from their own devices?'
-      '#options':
-        Individually: Individually
-        Groupings: Groupings
-        Both: Both
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_124
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
-    civicrm_1_activity_1_cg2_custom_125:
-      '#type': civicrm_options
-      '#title': 'Will there be a teacher in the room to help relay questions and answers that students have?'
-      '#options':
-        'Yes': 'Yes'
-        'No': 'No'
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_125
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
-    civicrm_1_activity_1_cg2_custom_120:
-      '#type': civicrm_options
-      '#title': 'Will students be joining from their classroom or from home?'
-      '#options':
-        Classroom: Classroom
-        Home: Home
-        Both: Both
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_120
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
   processed_text_05:
     '#type': processed_text
     '#text': |
       <h2><span style="color:#2e416c;">Assigned Staff</span></h2>
     '#format': html
-  civicrm_1_activity_1_cg2_custom_1294:
-    '#type': textarea
-    '#data_type': Memo
-    '#extra':
-      cols: '60'
-      rows: '4'
-    '#form_key': civicrm_1_activity_1_cg2_custom_1294
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#title': 'Instructions for booth set-up'
   flexbox_04:
     '#type': webform_flexbox
     civicrm_1_activity_1_activity_activity_date_time:
@@ -1059,195 +1132,21 @@ elements: |-
     '#default_option': ''
     '#default_value': ''
     '#civicrm_live_options': '1'
-  civicrm_1_activity_1_fieldset_fieldset:
-    '#type': fieldset
-    '#title': Activity
-    '#form_key': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg2_custom_333:
-      '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |-
-          2SLGBTQ+|2SLGBTQ+
-          Adults|Adults
-          Child 3-12|Child 3-12
-          FirstNationsMetisInuitIndigenous|First Nations, Métis, or Inuit/ Indigenous
-          Guardians|Guardians/Parents
-          Men/Boys|Men/Boys/Masc/NB (Trans-Inclusive)
-          Newcomer|Newcomer/Non-Status/Refugee/Immigrant
-          People With Disabilities|People With Disabilities
-          ProfessionalAEN|Professional - Arts, Entertainment, and Nightlife
-          ProfessionalG|Professional - General
-          ProfessionalH|Professional - Health
-          ProfessionalJ|Professional - Justice
-          ProfessionalSP|Professional - Service Providers
-          ProfessionalSS|Professional - Social Services
-          ProfessionalE|Professionals - Education
-          Racialized/POC|Racialized/POC
-          Seniors/Older Adults|Seniors/Older Adults
-          volunteers|Volunteers
-          Women|Women/Girls/Femme/NB (Trans-Inclusive)
-          Youth|Youth 12-18
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_333
-      '#options':
-        2SLGBTQ+: 2SLGBTQ+
-        Adults: Adults
-        'Child 3-12': 'Child 3-12'
-        FirstNationsMetisInuitIndigenous: 'First Nations, Métis, or Inuit/ Indigenous'
-        Guardians: Guardians/Parents
-        Men/Boys: 'Men/Boys/Masc/NB (Trans-Inclusive)'
-        Newcomer: Newcomer/Non-Status/Refugee/Immigrant
-        'People With Disabilities': 'People With Disabilities'
-        ProfessionalAEN: 'Professional - Arts, Entertainment, and Nightlife'
-        ProfessionalG: 'Professional - General'
-        ProfessionalH: 'Professional - Health'
-        ProfessionalJ: 'Professional - Justice'
-        ProfessionalSP: 'Professional - Service Providers'
-        ProfessionalSS: 'Professional - Social Services'
-        ProfessionalE: 'Professionals - Education'
-        Racialized/POC: Racialized/POC
-        'Seniors/Older Adults': 'Seniors/Older Adults'
-        volunteers: Volunteers
-        Women: 'Women/Girls/Femme/NB (Trans-Inclusive)'
-        Youth: 'Youth 12-18'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Content Population of Focus'
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg2_custom_40:
-      '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 0
-        items: |-
-          2SLGBTQ+|2SLGBTQ+ Communities & Sexual Violence
-          BystanderIntervention|Bystander Intervention
-          ChildSexualAbuse|Child Sexual Abuse
-          CommunityResources|Community Resources
-          CreatingSaferSpacesandRespondingtoSexualViolence|Creating Safer Spaces & Responding to Sexual Violence
-          DomesticViolence|Domestic Violence
-          Drug-Facilitated|Drug-Facilitated Sexual Assault
-          FRT|First Responders Training (FRT)
-          GenderSexualityMedia|Gender, Sexuality, and Media
-          GenderStereotypes|Gender Stereotypes
-          HealthCareSystemsandSexualViolence|Health Care Systems & Sexual Violence
-          HealthyRelationships|Healthy Relationships
-          Information for Partners & Supporters|Information for Partners & Supporters
-          IntimatePartnerViolence|Intimate Partner Violence
-          Legal Systems & Sexual Violence|Legal Systems & Sexual Violence
-          Masculinities|Masculinities
-          NonConsensualPhotoSharing|Non-Consensual Photo Sharing
-          PrivilegeandOppression|Privilege & Oppression
-          RacismandSexualViolence|Racism & Sexual Violence
-          Recognizing & Responding to Sexual Violence|Recognizing & Responding to Sexual Violence
-          SACEandtheSPEAKProgram|SPEAK Safe Preschoolers Program
-          SACEServices|SACE Services
-          SACE Services Tour|SACE Services Tour
-          SexualAssaultConsent|Sexual Assault & Consent
-          SexualAssaultConsentNonConsensualPhotosharing|Sexual Assault, Consent, and Non-Consensual Photo Sharing
-          Sexual Assault & Self-Care|Sexual Assault & Self-Care
-          SexualHarassment|Sexual Harassment
-          SexualHealth|Sexual Health
-          SexualViolence|Sexual Violence
-          SexualViolenceTrauma|Sexual Violence Trauma
-          SupportiveResponsestoSexualViolence|Supportive Responses to Sexual Violence
-          TechnologyFacilitatedSexualViolence|Technology-Facilitated Sexual Violence
-          ViolencePreventionAdvocacy|Violence Prevention and Advocacy
-          CustomUnsure|Custom / Unsure
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_40
-      '#options':
-        2SLGBTQ+: '2SLGBTQ+ Communities & Sexual Violence'
-        BystanderIntervention: 'Bystander Intervention'
-        ChildSexualAbuse: 'Child Sexual Abuse'
-        CommunityResources: 'Community Resources'
-        CreatingSaferSpacesandRespondingtoSexualViolence: 'Creating Safer Spaces & Responding to Sexual Violence'
-        DomesticViolence: 'Domestic Violence'
-        Drug-Facilitated: 'Drug-Facilitated Sexual Assault'
-        FRT: 'First Responders Training (FRT)'
-        GenderSexualityMedia: 'Gender, Sexuality, and Media'
-        GenderStereotypes: 'Gender Stereotypes'
-        HealthCareSystemsandSexualViolence: 'Health Care Systems & Sexual Violence'
-        HealthyRelationships: 'Healthy Relationships'
-        'Information for Partners & Supporters': 'Information for Partners & Supporters'
-        IntimatePartnerViolence: 'Intimate Partner Violence'
-        'Legal Systems & Sexual Violence': 'Legal Systems & Sexual Violence'
-        Masculinities: Masculinities
-        NonConsensualPhotoSharing: 'Non-Consensual Photo Sharing'
-        PrivilegeandOppression: 'Privilege & Oppression'
-        RacismandSexualViolence: 'Racism & Sexual Violence'
-        'Recognizing & Responding to Sexual Violence': 'Recognizing & Responding to Sexual Violence'
-        SACEandtheSPEAKProgram: 'SPEAK Safe Preschoolers Program'
-        SACEServices: 'SACE Services'
-        'SACE Services Tour': 'SACE Services Tour'
-        SexualAssaultConsent: 'Sexual Assault & Consent'
-        SexualAssaultConsentNonConsensualPhotosharing: 'Sexual Assault, Consent, and Non-Consensual Photo Sharing'
-        'Sexual Assault & Self-Care': 'Sexual Assault & Self-Care'
-        SexualHarassment: 'Sexual Harassment'
-        SexualHealth: 'Sexual Health'
-        SexualViolence: 'Sexual Violence'
-        SexualViolenceTrauma: 'Sexual Violence Trauma'
-        SupportiveResponsestoSexualViolence: 'Supportive Responses to Sexual Violence'
-        TechnologyFacilitatedSexualViolence: 'Technology-Facilitated Sexual Violence'
-        ViolencePreventionAdvocacy: 'Violence Prevention and Advocacy'
-        CustomUnsure: 'Custom / Unsure'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Content Topic'
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg2_custom_25:
-      '#type': civicrm_options
-      '#extra':
-        multiple: 1
-        aslist: 1
-        items: |-
-          Grade 7 (ages 12-13)|Grade 7 (ages 12-13)
-          Grade 8 (ages 13-14)|Grade 8 (ages 13-14)
-          Grade 9 (ages 14-15)|Grade 9 (ages 14-15)
-          High School (ages 15-18)|High School (ages 15-18)
-          Adults (ages 18+)|Adults (ages 18+)
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_25
-      '#options':
-        'Grade 7 (ages 12-13)': 'Grade 7 (ages 12-13)'
-        'Grade 8 (ages 13-14)': 'Grade 8 (ages 13-14)'
-        'Grade 9 (ages 14-15)': 'Grade 9 (ages 14-15)'
-        'High School (ages 15-18)': 'High School (ages 15-18)'
-        'Adults (ages 18+)': 'Adults (ages 18+)'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Grades and Ages'
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg2_custom_1232:
-      '#type': civicrm_options
-      '#data_type': String
-      '#extra':
-        aslist: 1
-        items: |-
-          AgencyDevelopment|Agency Development
-          Clinical|Clinical
-          CreatingSaferSpaces|Creating Safer Spaces
-          DisclosureConsult|Disclosure Consult
-          IncidentConsult|Incident Consult
-          LetterofSupport|Letter of Support
-          SexualViolenceEducationServices|Sexual Violence Education Services
-          SexualViolencePolicy|Sexual Violence Policy
-          SexualViolenceResources|Sexual Violence Resources
-          Sexua ViolenceResponsePrevention|Sexual Violence Response & Prevention
-      '#form_key': civicrm_1_activity_1_cg2_custom_1232
-      '#options':
-        AgencyDevelopment: 'Agency Development'
-        Clinical: Clinical
-        CreatingSaferSpaces: 'Creating Safer Spaces'
-        DisclosureConsult: 'Disclosure Consult'
-        IncidentConsult: 'Incident Consult'
-        LetterofSupport: 'Letter of Support'
-        SexualViolenceEducationServices: 'Sexual Violence Education Services'
-        SexualViolencePolicy: 'Sexual Violence Policy'
-        SexualViolenceResources: 'Sexual Violence Resources'
-        'Sexua ViolenceResponsePrevention': 'Sexual Violence Response & Prevention'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Consultation Topic'
-      '#civicrm_live_options': 1
+  civicrm_1_activity_1_cg2_custom_1294:
+    '#type': textfield
+    '#title': 'Presentation Evaluation Summary Activity ID'
+    '#counter_type': character
+    '#counter_maximum': 255
+    '#counter_maximum_message': ' '
+    '#states':
+      invisible:
+        ':input[name="civicrm_1_activity_1_cg2_custom_1233"]':
+          filled: true
+    '#data_type': Float
+    '#form_key': civicrm_1_activity_1_cg2_custom_1294
+    '#extra':
+      width: 20
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
 css: "#edit-civicrm-1-activity-1-cg2-custom-40 > div.js-form-type-checkbox {\r\n width: 49% !important;\r\n}"
 javascript: ''
 settings:
@@ -1744,16 +1643,17 @@ handlers:
         '': ''
       civicrm_1_activity_1_activity_engagement_level: 0
       civicrm_1_activity_1_activity_campaign_id: 0
+      activity_1_settings_dynamic_custom_cg62: 0
       civicrm_1_activity_1_activityupload_file_1: 0
       civicrm_1_activity_1_activityupload_file_2: 0
       civicrm_1_activity_1_activityupload_file_3: 0
       activity_1_settings_dynamic_custom_cg2: 0
-      civicrm_1_activity_1_cg2_custom_333: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_333: 0
       civicrm_1_activity_1_cg2_custom_332: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_334: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_331: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_330: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_40: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_40: 0
       civicrm_1_activity_1_cg2_custom_88: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_126: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_125: create_civicrm_webform_element
@@ -1765,7 +1665,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_119: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_90: 0
       civicrm_1_activity_1_cg2_custom_43: 0
-      civicrm_1_activity_1_cg2_custom_25: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_25: 0
       civicrm_1_activity_1_cg2_custom_34: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_35: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_37: create_civicrm_webform_element
@@ -1786,13 +1686,20 @@ handlers:
       civicrm_1_activity_1_cg2_custom_698: 0
       civicrm_1_activity_1_cg2_custom_815: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_816: 0
-      civicrm_1_activity_1_cg2_custom_1232: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1232: 0
       civicrm_1_activity_1_cg2_custom_1233: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_1234: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_1261: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_1289: 0
-      civicrm_1_activity_1_cg2_custom_1293: 0
+      civicrm_1_activity_1_cg2_custom_1291: 0
+      civicrm_1_activity_1_cg2_custom_1292: 0
       civicrm_1_activity_1_cg2_custom_1294: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1295: 0
+      civicrm_1_activity_1_cg2_custom_1365: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1366: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1367: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1368: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1369: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg49: 0
       civicrm_1_activity_1_cg49_custom_665: 0
       civicrm_1_activity_1_cg49_custom_666: 0
@@ -1981,9 +1888,6 @@ handlers:
       civicrm_1_activity_1_cg54_custom_1284: 0
       civicrm_1_activity_1_cg54_custom_1285: 0
       civicrm_1_activity_1_cg54_custom_1286: 0
-      civicrm_1_activity_1_cg54_custom_1290: 0
-      civicrm_1_activity_1_cg54_custom_1291: 0
-      civicrm_1_activity_1_cg54_custom_1292: 0
       activity_1_settings_dynamic_custom_cg58: 0
       civicrm_1_activity_1_cg58_custom_1265: 0
       civicrm_1_activity_1_cg58_custom_1266: create_civicrm_webform_element
@@ -1992,6 +1896,8 @@ handlers:
       activity_1_settings_dynamic_custom_cg9: 0
       civicrm_1_activity_1_cg9_custom_115: 0
       civicrm_1_activity_1_cg9_custom_265: 0
+      activity_1_settings_dynamic_custom_cg60: 0
+      civicrm_1_activity_1_cg60_custom_1290: 0
       activity_1_settings_dynamic_custom_cg17: 0
       civicrm_1_activity_1_cg17_custom_144: 0
       civicrm_1_activity_1_cg17_custom_147: 0
@@ -2078,6 +1984,80 @@ handlers:
       civicrm_1_activity_1_cg31_custom_352: 0
       civicrm_1_activity_1_cg31_custom_353: 0
       civicrm_1_activity_1_cg31_custom_354: 0
+      activity_1_settings_dynamic_custom_cg61: 0
+      civicrm_1_activity_1_cg61_custom_1293: 0
+      activity_1_settings_dynamic_custom_cg63: 0
+      civicrm_1_activity_1_cg63_custom_1296: 0
+      civicrm_1_activity_1_cg63_custom_1297: 0
+      civicrm_1_activity_1_cg63_custom_1298: 0
+      civicrm_1_activity_1_cg63_custom_1299: 0
+      civicrm_1_activity_1_cg63_custom_1300: 0
+      civicrm_1_activity_1_cg63_custom_1301: 0
+      civicrm_1_activity_1_cg63_custom_1302: 0
+      civicrm_1_activity_1_cg63_custom_1303: 0
+      civicrm_1_activity_1_cg63_custom_1304: 0
+      civicrm_1_activity_1_cg63_custom_1305: 0
+      civicrm_1_activity_1_cg63_custom_1306: 0
+      civicrm_1_activity_1_cg63_custom_1308: 0
+      activity_1_settings_dynamic_custom_cg64: 0
+      civicrm_1_activity_1_cg64_custom_1309: 0
+      civicrm_1_activity_1_cg64_custom_1310: 0
+      civicrm_1_activity_1_cg64_custom_1311: 0
+      civicrm_1_activity_1_cg64_custom_1312: 0
+      civicrm_1_activity_1_cg64_custom_1313: 0
+      civicrm_1_activity_1_cg64_custom_1314: 0
+      civicrm_1_activity_1_cg64_custom_1315: 0
+      civicrm_1_activity_1_cg64_custom_1316: 0
+      civicrm_1_activity_1_cg64_custom_1317: 0
+      civicrm_1_activity_1_cg64_custom_1324: 0
+      civicrm_1_activity_1_cg64_custom_1318: 0
+      civicrm_1_activity_1_cg64_custom_1319: 0
+      civicrm_1_activity_1_cg64_custom_1320: 0
+      civicrm_1_activity_1_cg64_custom_1321: 0
+      civicrm_1_activity_1_cg64_custom_1322: 0
+      civicrm_1_activity_1_cg64_custom_1323: 0
+      activity_1_settings_dynamic_custom_cg65: 0
+      civicrm_1_activity_1_cg65_custom_1325: 0
+      civicrm_1_activity_1_cg65_custom_1326: 0
+      civicrm_1_activity_1_cg65_custom_1327: 0
+      civicrm_1_activity_1_cg65_custom_1328: 0
+      civicrm_1_activity_1_cg65_custom_1329: 0
+      civicrm_1_activity_1_cg65_custom_1330: 0
+      civicrm_1_activity_1_cg65_custom_1331: 0
+      civicrm_1_activity_1_cg65_custom_1332: 0
+      civicrm_1_activity_1_cg65_custom_1333: 0
+      civicrm_1_activity_1_cg65_custom_1334: 0
+      civicrm_1_activity_1_cg65_custom_1335: 0
+      civicrm_1_activity_1_cg65_custom_1336: 0
+      civicrm_1_activity_1_cg65_custom_1337: 0
+      civicrm_1_activity_1_cg65_custom_1338: 0
+      civicrm_1_activity_1_cg65_custom_1339: 0
+      civicrm_1_activity_1_cg65_custom_1340: 0
+      civicrm_1_activity_1_cg65_custom_1341: 0
+      civicrm_1_activity_1_cg65_custom_1342: 0
+      civicrm_1_activity_1_cg65_custom_1343: 0
+      civicrm_1_activity_1_cg65_custom_1344: 0
+      civicrm_1_activity_1_cg65_custom_1345: 0
+      activity_1_settings_dynamic_custom_cg66: 0
+      civicrm_1_activity_1_cg66_custom_1346: 0
+      civicrm_1_activity_1_cg66_custom_1347: 0
+      civicrm_1_activity_1_cg66_custom_1348: 0
+      civicrm_1_activity_1_cg66_custom_1349: 0
+      civicrm_1_activity_1_cg66_custom_1350: 0
+      civicrm_1_activity_1_cg66_custom_1351: 0
+      civicrm_1_activity_1_cg66_custom_1352: 0
+      civicrm_1_activity_1_cg66_custom_1353: 0
+      civicrm_1_activity_1_cg66_custom_1354: 0
+      civicrm_1_activity_1_cg66_custom_1355: 0
+      civicrm_1_activity_1_cg66_custom_1356: 0
+      civicrm_1_activity_1_cg66_custom_1357: 0
+      civicrm_1_activity_1_cg66_custom_1358: 0
+      civicrm_1_activity_1_cg66_custom_1359: 0
+      civicrm_1_activity_1_cg66_custom_1360: 0
+      civicrm_1_activity_1_cg66_custom_1361: 0
+      civicrm_1_activity_1_cg66_custom_1362: 0
+      civicrm_1_activity_1_cg66_custom_1363: 0
+      civicrm_1_activity_1_cg66_custom_1364: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -2242,16 +2222,23 @@ handlers:
           1:
             existing_activity_status: {  }
             details: {  }
+            dynamic_custom_cg62: 0
             dynamic_custom_cg2: 0
             dynamic_custom_cg49: 0
             dynamic_custom_cg53: 0
             dynamic_custom_cg54: 0
             dynamic_custom_cg58: 0
             dynamic_custom_cg9: 0
+            dynamic_custom_cg60: 0
             dynamic_custom_cg17: 0
             dynamic_custom_cg18: 0
             dynamic_custom_cg20: 0
             dynamic_custom_cg31: 0
+            dynamic_custom_cg61: 0
+            dynamic_custom_cg63: 0
+            dynamic_custom_cg64: 0
+            dynamic_custom_cg65: 0
+            dynamic_custom_cg66: 0
             activity:
               1:
                 target_contact_id:

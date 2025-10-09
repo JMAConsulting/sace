@@ -207,7 +207,7 @@ class FeedbackSummaryForm extends FormBase
 
     if ($activity) {
       // update existing summary
-      $saveSummary->addValue('id', $activity['id']);
+      $saveSummary = Activity::update(FALSE)->addWhere('id', '=', $activity['id']);
     }
 
     // now get submitted values from the form

@@ -172,7 +172,7 @@ elements: |-
   location:
     '#type': webform_markup
     '#markup': '<h2>Location</h2>'
-  flexbox_19:
+  flexbox_20:
     '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_88:
       '#type': civicrm_options
@@ -190,6 +190,40 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': ''
       '#default_value': ''
+  flexbox_18:
+    '#type': webform_flexbox
+    civicrm_1_activity_1_cg58_custom_1266:
+      '#type': textfield
+      '#title': 'Building Room/Location Details'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        visible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
+            value: 'In-Person Activity'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg58_custom_1266
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_cg2_custom_37:
+      '#type': textfield
+      '#title': 'Parking Instructions'
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#states':
+        visible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
+            value: 'In-Person Activity'
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_37
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+  flexbox_19:
+    '#type': webform_flexbox
     civicrm_1_activity_1_cg2_custom_119:
       '#type': civicrm_options
       '#title': 'Online Platform'
@@ -200,6 +234,10 @@ elements: |-
         Other: Other
         TBD: TBD
         N/A: N/A
+      '#states':
+        visible:
+          ':input[name="civicrm_1_activity_1_cg2_custom_88"]':
+            value: 'Online Activity'
       '#default_value': TBD
       '#extra':
         aslist: 1
@@ -209,19 +247,6 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': N/A
       '#civicrm_live_options': '1'
-  flexbox_18:
-    '#type': webform_flexbox
-    civicrm_1_activity_1_cg58_custom_1266:
-      '#type': textfield
-      '#data_type': String
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#form_key': civicrm_1_activity_1_cg58_custom_1266
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Building Room/Location Details'
     civicrm_1_activity_1_cg58_custom_1267:
       '#type': textfield
       '#title': 'Online Meeting Link'
@@ -237,17 +262,6 @@ elements: |-
       '#extra':
         width: 20
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg2_custom_37:
-      '#type': textfield
-      '#data_type': String
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#form_key': civicrm_1_activity_1_cg2_custom_37
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Parking Instructions'
   markup:
     '#type': webform_markup
     '#markup': '<h2>Attendees</h2>'
