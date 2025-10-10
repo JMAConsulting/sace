@@ -2,6 +2,7 @@
 
 use Drupal\views\ViewExecutable;
 use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
 
 function sace_calendar_customisations_block_view_fullcalendar_block_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
   $build['#attached']['library'][] = 'sace_calendar_customisations/calendar_block';
@@ -80,11 +81,13 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
     $view->build_info['query']->where("((users_field_data_civicrm_uf_match.uid = '" . $uid . "'))");
     $view->build_info['query']->where('civicrm_activity.activity_type_id <> 334');
   }
-  if ($view->id() == 'my_reminders') {
+}
+
+function sace_calendar_customisations_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() === 'my_reminders') {
     \Drupal::service('civicrm')->initialize();
 
     $loggedInContactId = \CRM_Core_Session::getLoggedInContactId();
-
     $activityIds = \Civi\Api4\Activity::get(FALSE)
       // current user has role for booking
       // NOTE: these may not work on the form currently?
@@ -107,17 +110,23 @@ function sace_calendar_customisations_views_pre_execute(ViewExecutable $view) {
       ->addSelect('id')
       ->execute()
       ->column('id');
+    // Modify query based on results
+    if (empty($activityIds)) {
+      // Force empty result
+      $query->addWhereExpression(0, '0 = 1');
+    } else {
+      // Add WHERE condition for matching activity IDs
+      $escapedIds = implode(',', array_map('intval', $activityIds));
+      $query->addWhereExpression(0, "civicrm_activity.id IN ($escapedIds)");
 
-    if (!$activityIds) {
-      $view->build_info['query']->where('0 = 1');
-    }
-    else {
-      $activityIds = implode(',', $activityIds);
-      $view->build_info['query']->where("civicrm_activity.id IN ({$activityIds})");
-      $view->build_info['query']->groupby('civicrm_activity.id');
+      // If grouping is needed
+      if (method_exists($query, 'addGroupBy')) {
+        $query->addGroupBy('civicrm_activity.id');
+      }
     }
   }
 }
+
 
 function sace_calendar_customisations_preprocess_views_view_field(&$variable) {
 
