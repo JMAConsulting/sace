@@ -43,9 +43,8 @@ class CalendarFeed extends AutoSubscriber {
           ->addSelect('contact_id.display_name', 'street_address', 'city', 'postal_code', 'country_id:label', 'state_province_id:label')
           ->addWhere('contact_id', '=', $value[0])
           ->addWhere('is_primary', '=', TRUE)
-          ->setLimit(1)
           ->execute()
-          ->single();
+          ->first();
       }
       elseif ($value) {
         $extraDescription[] = '<p>' . $label . ': ' . $value . '</p>';
