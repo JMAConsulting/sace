@@ -8,8 +8,8 @@ smtp_port: '587'
 smtp_protocol: tls
 smtp_autotls: false
 smtp_timeout: 30
-smtp_username: AKIARIKRJIOTSVNDH5KB
-smtp_password: BHWbQ3Z98cvL22MOgccPzFm/5OMoYjvUhucSmOv4euAm
+smtp_username: <blanked-out>
+smtp_password: <blanked-out>
 smtp_from: ''
 smtp_fromname: ''
 smtp_client_hostname: ''
