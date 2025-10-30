@@ -409,7 +409,6 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       $request['vaultKey'] = $vault_key;
       $request['vaultId'] = $vault_id;
     }
-    \Civi::log()->debug('L412 Faps request', ['request' => $request, 'params' => $params]);
     // Make the request.
     // CRM_Core_Error::debug_var('payment request', $request);
     $result = $payment_request->request($credentials, $request);
