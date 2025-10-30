@@ -675,21 +675,22 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_34
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
-  civicrm_1_activity_1_cg2_custom_126:
-    '#type': textarea
-    '#title': ' Additional needs or considerations (please specify)'
-    '#data_type': Memo
-    '#extra':
-      cols: '60'
-      rows: '4'
-    '#form_key': civicrm_1_activity_1_cg2_custom_126
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-  civicrm_1_activity_1_activity_details:
-    '#type': text_format
-    '#title': 'Staff Notes'
-    '#form_key': civicrm_1_activity_1_activity_details
-    '#parent': civicrm_1_activity_1_fieldset_fieldset
-    '#extra': {  }
+    civicrm_1_activity_1_cg2_custom_1370:
+      '#type': civicrm_options
+      '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
+      '#options':
+        1: 'Yes - Personal Devices During Presentation'
+        2: 'Yes - Other Devices Post-Presentation'
+        3: 'No - Paper Evaluations During Presentation'
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_1370
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
   flexbox_09:
     '#type': fieldset
     '#title': 'Online Presentation Details'
@@ -725,6 +726,38 @@ elements: |-
         'Microsoft Teams': 'Microsoft Teams'
         Zoom: Zoom
         Other: Other
+    civicrm_1_activity_1_cg2_custom_120:
+      '#type': civicrm_options
+      '#title': 'Will students be joining from their classroom or from home?'
+      '#options':
+        Classroom: Classroom
+        Home: Home
+        Both: Both
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_120
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
+    civicrm_1_activity_1_cg2_custom_124:
+      '#type': civicrm_options
+      '#title': 'Will students be joining together as one large group, or separately from their own devices?'
+      '#options':
+        Individually: Individually
+        Groupings: Groupings
+        Both: Both
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_124
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_121:
       '#type': civicrm_options
       '#title': 'Will we be able to see the students?'
@@ -770,22 +803,6 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
-    civicrm_1_activity_1_cg2_custom_124:
-      '#type': civicrm_options
-      '#title': 'Will students be joining together as one large group, or separately from their own devices?'
-      '#options':
-        Individually: Individually
-        Groupings: Groupings
-        Both: Both
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_124
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
     civicrm_1_activity_1_cg2_custom_125:
       '#type': civicrm_options
       '#title': 'Will there be a teacher in the room to help relay questions and answers that students have?'
@@ -801,22 +818,21 @@ elements: |-
       '#default_option': ''
       '#default_value': ''
       '#civicrm_live_options': '1'
-    civicrm_1_activity_1_cg2_custom_120:
-      '#type': civicrm_options
-      '#title': 'Will students be joining from their classroom or from home?'
-      '#options':
-        Classroom: Classroom
-        Home: Home
-        Both: Both
-      '#extra':
-        aslist: 1
-        multiple: 0
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_120
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#default_option': ''
-      '#default_value': ''
-      '#civicrm_live_options': '1'
+  civicrm_1_activity_1_cg2_custom_126:
+    '#type': textarea
+    '#title': ' Additional needs or considerations (please specify)'
+    '#data_type': Memo
+    '#extra':
+      cols: '60'
+      rows: '4'
+    '#form_key': civicrm_1_activity_1_cg2_custom_126
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+  civicrm_1_activity_1_activity_details:
+    '#type': text_format
+    '#title': 'Staff Notes'
+    '#form_key': civicrm_1_activity_1_activity_details
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#extra': {  }
   processed_text_05:
     '#type': processed_text
     '#text': |
@@ -1317,7 +1333,6 @@ handlers:
     conditions: {  }
     weight: -50
     settings:
-      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '6'
       1_contact_type: individual
@@ -1669,11 +1684,16 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
       civicrm_1_activity_1_cg2_custom_1261: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_1289: 0
       civicrm_1_activity_1_cg2_custom_1291: 0
       civicrm_1_activity_1_cg2_custom_1292: 0
       civicrm_1_activity_1_cg2_custom_1294: 0
       civicrm_1_activity_1_cg2_custom_1295: 0
+      civicrm_1_activity_1_cg2_custom_1365: 0
+      civicrm_1_activity_1_cg2_custom_1366: 0
+      civicrm_1_activity_1_cg2_custom_1367: 0
+      civicrm_1_activity_1_cg2_custom_1368: 0
+      civicrm_1_activity_1_cg2_custom_1369: 0
+      civicrm_1_activity_1_cg2_custom_1370: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg49: 0
       civicrm_1_activity_1_cg49_custom_665: 0
       civicrm_1_activity_1_cg49_custom_666: 0
@@ -2012,6 +2032,26 @@ handlers:
       civicrm_1_activity_1_cg65_custom_1343: 0
       civicrm_1_activity_1_cg65_custom_1344: 0
       civicrm_1_activity_1_cg65_custom_1345: 0
+      activity_1_settings_dynamic_custom_cg66: 0
+      civicrm_1_activity_1_cg66_custom_1346: 0
+      civicrm_1_activity_1_cg66_custom_1347: 0
+      civicrm_1_activity_1_cg66_custom_1348: 0
+      civicrm_1_activity_1_cg66_custom_1349: 0
+      civicrm_1_activity_1_cg66_custom_1350: 0
+      civicrm_1_activity_1_cg66_custom_1351: 0
+      civicrm_1_activity_1_cg66_custom_1352: 0
+      civicrm_1_activity_1_cg66_custom_1353: 0
+      civicrm_1_activity_1_cg66_custom_1354: 0
+      civicrm_1_activity_1_cg66_custom_1355: 0
+      civicrm_1_activity_1_cg66_custom_1356: 0
+      civicrm_1_activity_1_cg66_custom_1357: 0
+      civicrm_1_activity_1_cg66_custom_1358: 0
+      civicrm_1_activity_1_cg66_custom_1359: 0
+      civicrm_1_activity_1_cg66_custom_1360: 0
+      civicrm_1_activity_1_cg66_custom_1361: 0
+      civicrm_1_activity_1_cg66_custom_1362: 0
+      civicrm_1_activity_1_cg66_custom_1363: 0
+      civicrm_1_activity_1_cg66_custom_1364: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -2192,6 +2232,7 @@ handlers:
             dynamic_custom_cg63: 0
             dynamic_custom_cg64: 0
             dynamic_custom_cg65: 0
+            dynamic_custom_cg66: 0
             activity:
               1:
                 target_contact_id:

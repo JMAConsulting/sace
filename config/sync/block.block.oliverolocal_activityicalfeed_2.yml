@@ -5,7 +5,6 @@ dependencies:
   module:
     - sace_custom
     - system
-    - user
   theme:
     - oliverolocal
 id: oliverolocal_activityicalfeed_2
@@ -24,11 +23,3 @@ visibility:
     id: request_path
     negate: false
     pages: '/user/*'
-  user_role:
-    id: user_role
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'
-    roles:
-      wheel: wheel
-      pe: pe

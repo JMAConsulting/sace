@@ -555,18 +555,7 @@ elements: |-
     '#default_value': ''
   civicrm_1_activity_1_cg2_custom_1291:
     '#type': civicrm_options
-    '#title': 'Module 1 WiseGuyz Facilitated'
-    '#options':
-      1: 'M1S1: Program Introduction and Rapport Building'
-      2: 'M1S2: Values and Building Empathy'
-      3: 'M1S3: Emotion, Stress, and Self-Care'
-      4: 'M1S4: Conflict Resolution and Communication'
-      5: 'M1S5: Boundaries'
-      6: 'M1S6: Healthy Decision-Making'
-    '#states':
-      visible:
-        ':input[name="civicrm_1_activity_1_cg2_custom_40"]':
-          value: HealthyRelationships
+    '#title': 'Module 1 WiseGuyz Session Facilitated'
     '#extra':
       aslist: 0
       multiple: 1
@@ -576,6 +565,77 @@ elements: |-
     '#default_option': ''
     '#default_value': ''
     '#civicrm_live_options': '1'
+    '#options':
+      1: 'M1S1: Program Introduction and Rapport Building'
+      2: 'M1S2: Values and Building Empathy'
+      3: 'M1S3: Emotion, Stress, and Self-Care'
+      4: 'M1S4: Conflict Resolution and Communication'
+      5: 'M1S5: Boundaries'
+      6: 'M1S6: Healthy Decision-Making'
+  civicrm_1_activity_1_cg2_custom_1371:
+    '#type': civicrm_options
+    '#extra':
+      multiple: 1
+      aslist: 0
+      items: |-
+        1|M2S1: Introduction to Human Sexuality
+        2|M2S2: Introduction to Anatomy and Puberty
+        3|M2S3: STI's and Safer Sex
+        4|M2S4: Pregnancy and Pregnancy Options
+        5|M2S5: Consent
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_1371
+    '#options':
+      1: 'M2S1: Introduction to Human Sexuality'
+      2: 'M2S2: Introduction to Anatomy and Puberty'
+      3: "M2S3: STI's and Safer Sex"
+      4: 'M2S4: Pregnancy and Pregnancy Options'
+      5: 'M2S5: Consent'
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Module 2 WiseGuyz Session Facilitated'
+    '#civicrm_live_options': 1
+  civicrm_1_activity_1_cg2_custom_1372:
+    '#type': civicrm_options
+    '#extra':
+      multiple: 1
+      aslist: 0
+      items: |-
+        1|M3S1: Social Construction of Gender
+        2|M3S2: Gender in the Media - Masculinity
+        3|M3S3: Gender in the Media - Femininity
+        4|M3S4: Sexual and Gender-Based Violence
+        5|M3S5: Gender and Sexual Diversity
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_1372
+    '#options':
+      1: 'M3S1: Social Construction of Gender'
+      2: 'M3S2: Gender in the Media - Masculinity'
+      3: 'M3S3: Gender in the Media - Femininity'
+      4: 'M3S4: Sexual and Gender-Based Violence'
+      5: 'M3S5: Gender and Sexual Diversity'
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Module 3 WiseGuyz Session Facilitated'
+    '#civicrm_live_options': 1
+  civicrm_1_activity_1_cg2_custom_1373:
+    '#type': civicrm_options
+    '#extra':
+      multiple: 1
+      aslist: 0
+      items: |-
+        1|M4S1: Human Rights
+        2|M4S2: Privilege and Power
+        3|M4S3: Being an Engaged Bystander
+        4|M4S4: Media Arts Project Celebration
+    '#data_type': String
+    '#form_key': civicrm_1_activity_1_cg2_custom_1373
+    '#options':
+      1: 'M4S1: Human Rights'
+      2: 'M4S2: Privilege and Power'
+      3: 'M4S3: Being an Engaged Bystander'
+      4: 'M4S4: Media Arts Project Celebration'
+    '#parent': civicrm_1_activity_1_fieldset_fieldset
+    '#title': 'Module 4 WiseGuyz Session Facilitated'
+    '#civicrm_live_options': 1
   civicrm_1_activity_1_activity_details:
     '#type': text_format
     '#title': 'Staff Notes'
@@ -1731,11 +1791,19 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
       civicrm_1_activity_1_cg2_custom_1261: create_civicrm_webform_element
-      civicrm_1_activity_1_cg2_custom_1289: 0
       civicrm_1_activity_1_cg2_custom_1291: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1371: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1372: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1373: create_civicrm_webform_element
       civicrm_1_activity_1_cg2_custom_1292: 0
       civicrm_1_activity_1_cg2_custom_1294: 0
       civicrm_1_activity_1_cg2_custom_1295: create_civicrm_webform_element
+      civicrm_1_activity_1_cg2_custom_1365: 0
+      civicrm_1_activity_1_cg2_custom_1366: 0
+      civicrm_1_activity_1_cg2_custom_1367: 0
+      civicrm_1_activity_1_cg2_custom_1368: 0
+      civicrm_1_activity_1_cg2_custom_1369: 0
+      civicrm_1_activity_1_cg2_custom_1370: 0
       activity_1_settings_dynamic_custom_cg49: 0
       civicrm_1_activity_1_cg49_custom_665: 0
       civicrm_1_activity_1_cg49_custom_666: 0
@@ -2022,6 +2090,78 @@ handlers:
       civicrm_1_activity_1_cg31_custom_354: 0
       activity_1_settings_dynamic_custom_cg61: 0
       civicrm_1_activity_1_cg61_custom_1293: 0
+      activity_1_settings_dynamic_custom_cg63: 0
+      civicrm_1_activity_1_cg63_custom_1296: 0
+      civicrm_1_activity_1_cg63_custom_1297: 0
+      civicrm_1_activity_1_cg63_custom_1298: 0
+      civicrm_1_activity_1_cg63_custom_1299: 0
+      civicrm_1_activity_1_cg63_custom_1300: 0
+      civicrm_1_activity_1_cg63_custom_1301: 0
+      civicrm_1_activity_1_cg63_custom_1302: 0
+      civicrm_1_activity_1_cg63_custom_1303: 0
+      civicrm_1_activity_1_cg63_custom_1304: 0
+      civicrm_1_activity_1_cg63_custom_1305: 0
+      civicrm_1_activity_1_cg63_custom_1306: 0
+      civicrm_1_activity_1_cg63_custom_1308: 0
+      activity_1_settings_dynamic_custom_cg64: 0
+      civicrm_1_activity_1_cg64_custom_1309: 0
+      civicrm_1_activity_1_cg64_custom_1310: 0
+      civicrm_1_activity_1_cg64_custom_1311: 0
+      civicrm_1_activity_1_cg64_custom_1312: 0
+      civicrm_1_activity_1_cg64_custom_1313: 0
+      civicrm_1_activity_1_cg64_custom_1314: 0
+      civicrm_1_activity_1_cg64_custom_1315: 0
+      civicrm_1_activity_1_cg64_custom_1316: 0
+      civicrm_1_activity_1_cg64_custom_1317: 0
+      civicrm_1_activity_1_cg64_custom_1324: 0
+      civicrm_1_activity_1_cg64_custom_1318: 0
+      civicrm_1_activity_1_cg64_custom_1319: 0
+      civicrm_1_activity_1_cg64_custom_1320: 0
+      civicrm_1_activity_1_cg64_custom_1321: 0
+      civicrm_1_activity_1_cg64_custom_1322: 0
+      civicrm_1_activity_1_cg64_custom_1323: 0
+      activity_1_settings_dynamic_custom_cg65: 0
+      civicrm_1_activity_1_cg65_custom_1325: 0
+      civicrm_1_activity_1_cg65_custom_1326: 0
+      civicrm_1_activity_1_cg65_custom_1327: 0
+      civicrm_1_activity_1_cg65_custom_1328: 0
+      civicrm_1_activity_1_cg65_custom_1329: 0
+      civicrm_1_activity_1_cg65_custom_1330: 0
+      civicrm_1_activity_1_cg65_custom_1331: 0
+      civicrm_1_activity_1_cg65_custom_1332: 0
+      civicrm_1_activity_1_cg65_custom_1333: 0
+      civicrm_1_activity_1_cg65_custom_1334: 0
+      civicrm_1_activity_1_cg65_custom_1335: 0
+      civicrm_1_activity_1_cg65_custom_1336: 0
+      civicrm_1_activity_1_cg65_custom_1337: 0
+      civicrm_1_activity_1_cg65_custom_1338: 0
+      civicrm_1_activity_1_cg65_custom_1339: 0
+      civicrm_1_activity_1_cg65_custom_1340: 0
+      civicrm_1_activity_1_cg65_custom_1341: 0
+      civicrm_1_activity_1_cg65_custom_1342: 0
+      civicrm_1_activity_1_cg65_custom_1343: 0
+      civicrm_1_activity_1_cg65_custom_1344: 0
+      civicrm_1_activity_1_cg65_custom_1345: 0
+      activity_1_settings_dynamic_custom_cg66: 0
+      civicrm_1_activity_1_cg66_custom_1346: 0
+      civicrm_1_activity_1_cg66_custom_1347: 0
+      civicrm_1_activity_1_cg66_custom_1348: 0
+      civicrm_1_activity_1_cg66_custom_1349: 0
+      civicrm_1_activity_1_cg66_custom_1350: 0
+      civicrm_1_activity_1_cg66_custom_1351: 0
+      civicrm_1_activity_1_cg66_custom_1352: 0
+      civicrm_1_activity_1_cg66_custom_1353: 0
+      civicrm_1_activity_1_cg66_custom_1354: 0
+      civicrm_1_activity_1_cg66_custom_1355: 0
+      civicrm_1_activity_1_cg66_custom_1356: 0
+      civicrm_1_activity_1_cg66_custom_1357: 0
+      civicrm_1_activity_1_cg66_custom_1358: 0
+      civicrm_1_activity_1_cg66_custom_1359: 0
+      civicrm_1_activity_1_cg66_custom_1360: 0
+      civicrm_1_activity_1_cg66_custom_1361: 0
+      civicrm_1_activity_1_cg66_custom_1362: 0
+      civicrm_1_activity_1_cg66_custom_1363: 0
+      civicrm_1_activity_1_cg66_custom_1364: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -2199,6 +2339,10 @@ handlers:
             dynamic_custom_cg20: 0
             dynamic_custom_cg31: 0
             dynamic_custom_cg61: 0
+            dynamic_custom_cg63: 0
+            dynamic_custom_cg64: 0
+            dynamic_custom_cg65: 0
+            dynamic_custom_cg66: 0
             activity:
               1:
                 target_contact_id:
