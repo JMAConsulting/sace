@@ -409,6 +409,7 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       $request['vaultKey'] = $vault_key;
       $request['vaultId'] = $vault_id;
     }
+    \Civi::log()->debug('L412 Faps request', ['request' => $request, 'params' => $params]);
     // Make the request.
     // CRM_Core_Error::debug_var('payment request', $request);
     $result = $payment_request->request($credentials, $request);
@@ -540,19 +541,6 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       }
     }
     $request = [];
-    $convert = [
-      'ownerEmail' => 'email',
-      'ownerStreet' => 'street_address',
-      'ownerCity' => 'city',
-      'ownerState' => 'state_province',
-      'ownerZip' => 'postal_code',
-      'ownerCountry' => 'country',
-      'orderId' => 'invoiceID',
-      'cardNumber' => 'credit_card_number',
-//      'cardtype' => 'credit_card_type',
-      'cVV' => 'cvv2',
-      'creditCardCryptogram' => 'cryptogram',
-    ];
     foreach ($convert as $r => $p) {
       if ($r == 'ownerName') {
         $request[$r] = '';
