@@ -1,4 +1,4 @@
-uuid: 42093afa-1d16-44a8-8db3-1a797e042e3a
+uuid: 3ac4f939-ae99-47f0-88ef-3a855c24e15c
 langcode: en
 status: open
 dependencies:
@@ -11,37 +11,11 @@ close: null
 uid: 93
 template: false
 archive: false
-id: wiseguyz_module_1_evaluation_for
-title: 'WiseGuyz Module 1 Evaluation Form'
+id: wiseguyz_module_2_evaluation_for
+title: 'WiseGuyz Module 2 Evaluation Form'
 description: ''
 categories: {  }
 elements: |-
-  civicrm_1_contact_1_fieldset_fieldset:
-    '#type': fieldset
-    '#title': Client
-    '#title_display': invisible
-    '#description_display': invisible
-    '#states':
-      invisible:
-        '':
-          '': ''
-    '#form_key': civicrm_1_contact_1_fieldset_fieldset
-    civicrm_1_contact_1_contact_existing:
-      '#type': civicrm_contact
-      '#title': 'Existing Contact'
-      '#widget': hidden
-      '#none_prompt': '- None Found -'
-      '#results_display':
-        display_name: display_name
-      '#states':
-        invisible:
-          '':
-            '': ''
-      '#default': user
-      '#contact_type': individual
-      '#form_key': civicrm_1_contact_1_contact_existing
-      '#parent': civicrm_1_contact_1_fieldset_fieldset
-      '#extra': {  }
   civicrm_2_contact_1_fieldset_fieldset:
     '#type': fieldset
     '#title': Organization/School
@@ -51,11 +25,10 @@ elements: |-
       '#title': 'Existing Contact'
       '#disabled': true
       '#widget': autocomplete
-      '#search_prompt': '- Choose existing -'
       '#none_prompt': '- None Found -'
       '#show_hidden_contact': 1
       '#results_display':
-        organization_name: organization_name
+        display_name: display_name
       '#default_relationship_to': '1'
       '#default_relationship':
         '': ''
@@ -81,14 +54,16 @@ elements: |-
       '#type': civicrm_number
       '#title': 'Booking Reference ID'
       '#disabled': true
-      '#data_type': EntityReference
       '#extra':
         aslist: 1
+        multiple: 0
+      '#data_type': EntityReference
       '#form_key': civicrm_1_activity_1_cg61_custom_1293
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#civicrm_live_options': 1
+      '#default_option': null
+      '#civicrm_live_options': '1'
       '#options': {  }
-    civicrm_1_activity_1_cg63_custom_1296:
+    civicrm_1_activity_1_cg64_custom_1309:
       '#type': civicrm_options
       '#extra':
         aslist: 0
@@ -100,7 +75,7 @@ elements: |-
           Disagree|Disagree
           Strongly Disagree|Strongly Disagree
       '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1296
+      '#form_key': civicrm_1_activity_1_cg64_custom_1309
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -111,16 +86,16 @@ elements: |-
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Q1 I learned something new about healthy relationships'
       '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1297:
+    civicrm_1_activity_1_cg64_custom_1310:
       '#type': textarea
       '#data_type': Memo
       '#extra':
         cols: '60'
         rows: '4'
-      '#form_key': civicrm_1_activity_1_cg63_custom_1297
+      '#form_key': civicrm_1_activity_1_cg64_custom_1310
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#title': 'Q2 List one new thing you learned about healthy relationships'
-    civicrm_1_activity_1_cg63_custom_1298:
+    civicrm_1_activity_1_cg64_custom_1311:
       '#type': civicrm_options
       '#extra':
         aslist: 0
@@ -132,7 +107,7 @@ elements: |-
           Disagree|Disagree
           Strongly Disagree|Strongly Disagree
       '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1298
+      '#form_key': civicrm_1_activity_1_cg64_custom_1311
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -141,9 +116,9 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q3 I feel better able to understand my emotions and handle stress.'
+      '#title': 'Q3 I am able to identify consent versus problematic behaviours or abuse (not consent)'
       '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1299:
+    civicrm_1_activity_1_cg64_custom_1312:
       '#type': civicrm_options
       '#extra':
         aslist: 0
@@ -155,7 +130,7 @@ elements: |-
           Disagree|Disagree
           Strongly Disagree|Strongly Disagree
       '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1299
+      '#form_key': civicrm_1_activity_1_cg64_custom_1312
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -164,87 +139,18 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q4 I feel more prepared to set boundaries, negotiate, and advocate for my needs'
+      '#title': 'Q4 I learned something new about sexual health'
       '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1300:
-      '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1300
-      '#options':
-        'Strongly Agree': 'Strongly Agree'
-        Agree: Agree
-        'Somewhat Agree': 'Somewhat Agree'
-        'Somewhat Disagree': 'Somewhat Disagree'
-        Disagree: Disagree
-        'Strongly Disagree': 'Strongly Disagree'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q5 I learned something new about understanding and respecting other’s feelings and experiences'
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1301:
-      '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1301
-      '#options':
-        'Strongly Agree': 'Strongly Agree'
-        Agree: Agree
-        'Somewhat Agree': 'Somewhat Agree'
-        'Somewhat Disagree': 'Somewhat Disagree'
-        Disagree: Disagree
-        'Strongly Disagree': 'Strongly Disagree'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q6 I have a greater understanding of how to practice healthy decision-making in relationships'
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1302:
-      '#type': civicrm_options
-      '#extra':
-        aslist: 0
-        items: |-
-          Strongly Agree|Strongly Agree
-          Agree|Agree
-          Somewhat Agree|Somewhat Agree
-          Somewhat Disagree|Somewhat Disagree
-          Disagree|Disagree
-          Strongly Disagree|Strongly Disagree
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1302
-      '#options':
-        'Strongly Agree': 'Strongly Agree'
-        Agree: Agree
-        'Somewhat Agree': 'Somewhat Agree'
-        'Somewhat Disagree': 'Somewhat Disagree'
-        Disagree: Disagree
-        'Strongly Disagree': 'Strongly Disagree'
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q7 I have more knowledge to help promote healthy and positive masculinity in my community'
-      '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1303:
+    civicrm_1_activity_1_cg64_custom_1313:
       '#type': textarea
       '#data_type': Memo
       '#extra':
         cols: '60'
         rows: '4'
-      '#form_key': civicrm_1_activity_1_cg63_custom_1303
+      '#form_key': civicrm_1_activity_1_cg64_custom_1313
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': "Q8 List one thing you can do to promote healthy and positive masculinity in your community\_"
-    civicrm_1_activity_1_cg63_custom_1304:
+      '#title': 'Q5 List one new thing you learned about sexual health'
+    civicrm_1_activity_1_cg64_custom_1314:
       '#type': civicrm_options
       '#extra':
         aslist: 0
@@ -256,7 +162,7 @@ elements: |-
           Disagree|Disagree
           Strongly Disagree|Strongly Disagree
       '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1304
+      '#form_key': civicrm_1_activity_1_cg64_custom_1314
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -265,9 +171,18 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q9 I felt supported by the WiseGuyz facilitator(s)'
+      '#title': 'Q6 I learned something new about how to take care of my sexual and reproductive health'
       '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1305:
+    civicrm_1_activity_1_cg64_custom_1315:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg64_custom_1315
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q7 List one thing you can do to take care of your sexual and reproductive health'
+    civicrm_1_activity_1_cg64_custom_1316:
       '#type': civicrm_options
       '#extra':
         aslist: 0
@@ -279,7 +194,7 @@ elements: |-
           Disagree|Disagree
           Strongly Disagree|Strongly Disagree
       '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg63_custom_1305
+      '#form_key': civicrm_1_activity_1_cg64_custom_1316
       '#options':
         'Strongly Agree': 'Strongly Agree'
         Agree: Agree
@@ -288,26 +203,136 @@ elements: |-
         Disagree: Disagree
         'Strongly Disagree': 'Strongly Disagree'
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q10 The content was effective'
+      '#title': 'Q8 I feel more comfortable and skilled in communicating about my sexual health'
       '#civicrm_live_options': 1
-    civicrm_1_activity_1_cg63_custom_1306:
+    civicrm_1_activity_1_cg64_custom_1317:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg64_custom_1317
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q9 I learned about resources people can access for help'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg64_custom_1324:
       '#type': textarea
       '#data_type': Memo
       '#extra':
         cols: '60'
         rows: '4'
-      '#form_key': civicrm_1_activity_1_cg63_custom_1306
+      '#form_key': civicrm_1_activity_1_cg64_custom_1324
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q11 What did you like most about the module?'
-    civicrm_1_activity_1_cg63_custom_1308:
+      '#title': 'Q10 List one resource people can access for help '
+    civicrm_1_activity_1_cg64_custom_1318:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg64_custom_1318
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q11 I have more knowledge to help promote healthy and positive masculinity in my community'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg64_custom_1319:
       '#type': textarea
       '#data_type': Memo
       '#extra':
         cols: '60'
         rows: '4'
-      '#form_key': civicrm_1_activity_1_cg63_custom_1308
+      '#form_key': civicrm_1_activity_1_cg64_custom_1319
       '#parent': civicrm_1_activity_1_fieldset_fieldset
-      '#title': 'Q12 What did you like least about the module? Is there anything you would change, or anything missing you would like to learn about?'
+      '#title': 'Q12 List one thing you can do to promote healthy and positive masculinity in your community'
+    civicrm_1_activity_1_cg64_custom_1320:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg64_custom_1320
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q13 I felt supported by the WiseGuyz facilitator(s)'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg64_custom_1321:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg64_custom_1321
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q14 The content was effective'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg64_custom_1322:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg64_custom_1322
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q15 What did you like most about the module?'
+    civicrm_1_activity_1_cg64_custom_1323:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg64_custom_1323
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q16 What did you like least about the module? Is there anything you would change, or anything missing you would like to learn about?'
 css: ''
 javascript: ''
 settings:
@@ -499,15 +524,15 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: -48
+    weight: -49
     settings:
       nid: 1
       number_of_contacts: '2'
       1_contact_type: individual
-      1_webform_label: Client
+      1_webform_label: 'Contact 1'
       civicrm_1_contact_1_contact_contact_sub_type:
         '': ''
-      civicrm_1_contact_1_contact_existing: create_civicrm_webform_element
+      civicrm_1_contact_1_contact_existing: 0
       civicrm_1_contact_1_contact_prefix_id: 0
       civicrm_1_contact_1_contact_first_name: 0
       civicrm_1_contact_1_contact_middle_name: 0
@@ -543,7 +568,8 @@ handlers:
       2_contact_type: organization
       2_webform_label: Organization/School
       civicrm_2_contact_1_contact_contact_sub_type:
-        '': ''
+        School: School
+      contact_2_number_of_cg1: '0'
       civicrm_2_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_2_contact_1_contact_organization_name: 0
       civicrm_2_contact_1_contact_legal_name: 0
@@ -612,18 +638,77 @@ handlers:
       activity_1_settings_dynamic_custom_cg61: 0
       civicrm_1_activity_1_cg61_custom_1293: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg63: 0
-      civicrm_1_activity_1_cg63_custom_1296: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1297: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1298: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1299: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1300: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1301: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1302: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1303: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1304: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1305: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1306: create_civicrm_webform_element
-      civicrm_1_activity_1_cg63_custom_1308: create_civicrm_webform_element
+      civicrm_1_activity_1_cg63_custom_1296: 0
+      civicrm_1_activity_1_cg63_custom_1297: 0
+      civicrm_1_activity_1_cg63_custom_1298: 0
+      civicrm_1_activity_1_cg63_custom_1299: 0
+      civicrm_1_activity_1_cg63_custom_1300: 0
+      civicrm_1_activity_1_cg63_custom_1301: 0
+      civicrm_1_activity_1_cg63_custom_1302: 0
+      civicrm_1_activity_1_cg63_custom_1303: 0
+      civicrm_1_activity_1_cg63_custom_1304: 0
+      civicrm_1_activity_1_cg63_custom_1305: 0
+      civicrm_1_activity_1_cg63_custom_1306: 0
+      civicrm_1_activity_1_cg63_custom_1308: 0
+      activity_1_settings_dynamic_custom_cg64: 0
+      civicrm_1_activity_1_cg64_custom_1309: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1310: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1311: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1312: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1313: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1314: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1315: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1316: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1317: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1324: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1318: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1319: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1320: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1321: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1322: create_civicrm_webform_element
+      civicrm_1_activity_1_cg64_custom_1323: create_civicrm_webform_element
+      activity_1_settings_dynamic_custom_cg65: 0
+      civicrm_1_activity_1_cg65_custom_1325: 0
+      civicrm_1_activity_1_cg65_custom_1326: 0
+      civicrm_1_activity_1_cg65_custom_1327: 0
+      civicrm_1_activity_1_cg65_custom_1328: 0
+      civicrm_1_activity_1_cg65_custom_1329: 0
+      civicrm_1_activity_1_cg65_custom_1330: 0
+      civicrm_1_activity_1_cg65_custom_1331: 0
+      civicrm_1_activity_1_cg65_custom_1332: 0
+      civicrm_1_activity_1_cg65_custom_1333: 0
+      civicrm_1_activity_1_cg65_custom_1334: 0
+      civicrm_1_activity_1_cg65_custom_1335: 0
+      civicrm_1_activity_1_cg65_custom_1336: 0
+      civicrm_1_activity_1_cg65_custom_1337: 0
+      civicrm_1_activity_1_cg65_custom_1338: 0
+      civicrm_1_activity_1_cg65_custom_1339: 0
+      civicrm_1_activity_1_cg65_custom_1340: 0
+      civicrm_1_activity_1_cg65_custom_1341: 0
+      civicrm_1_activity_1_cg65_custom_1342: 0
+      civicrm_1_activity_1_cg65_custom_1343: 0
+      civicrm_1_activity_1_cg65_custom_1344: 0
+      civicrm_1_activity_1_cg65_custom_1345: 0
+      activity_1_settings_dynamic_custom_cg66: 0
+      civicrm_1_activity_1_cg66_custom_1346: 0
+      civicrm_1_activity_1_cg66_custom_1347: 0
+      civicrm_1_activity_1_cg66_custom_1348: 0
+      civicrm_1_activity_1_cg66_custom_1349: 0
+      civicrm_1_activity_1_cg66_custom_1350: 0
+      civicrm_1_activity_1_cg66_custom_1351: 0
+      civicrm_1_activity_1_cg66_custom_1352: 0
+      civicrm_1_activity_1_cg66_custom_1353: 0
+      civicrm_1_activity_1_cg66_custom_1354: 0
+      civicrm_1_activity_1_cg66_custom_1355: 0
+      civicrm_1_activity_1_cg66_custom_1356: 0
+      civicrm_1_activity_1_cg66_custom_1357: 0
+      civicrm_1_activity_1_cg66_custom_1358: 0
+      civicrm_1_activity_1_cg66_custom_1359: 0
+      civicrm_1_activity_1_cg66_custom_1360: 0
+      civicrm_1_activity_1_cg66_custom_1361: 0
+      civicrm_1_activity_1_cg66_custom_1362: 0
+      civicrm_1_activity_1_cg66_custom_1363: 0
+      civicrm_1_activity_1_cg66_custom_1364: 0
       participant_reg_type: '0'
       reg_options:
         event_type:
@@ -650,7 +735,7 @@ handlers:
       block_unknown_users: 0
       create_new_relationship: 0
       disable_contact_paging: 0
-      new_contact_source: 'WiseGuyz Module 1 Evaluation Form'
+      new_contact_source: 'WiseGuyz Module 2 Evaluation Form'
       data:
         contact:
           1:
@@ -658,7 +743,7 @@ handlers:
               1:
                 contact_type: individual
                 contact_sub_type: {  }
-                webform_label: Client
+                webform_label: 'Contact 1'
             matching_rule: Unsupervised
             number_of_cg5: '0'
             number_of_cg12: '0'
@@ -673,8 +758,10 @@ handlers:
             contact:
               1:
                 contact_type: organization
-                contact_sub_type: {  }
+                contact_sub_type:
+                  School: School
                 webform_label: Organization/School
+            number_of_cg1: '0'
             matching_rule: Unsupervised
             number_of_cg52: '0'
             number_of_cg27: '0'
@@ -696,6 +783,9 @@ handlers:
             dynamic_custom_cg58: 0
             dynamic_custom_cg61: 0
             dynamic_custom_cg63: 0
+            dynamic_custom_cg64: 0
+            dynamic_custom_cg65: 0
+            dynamic_custom_cg66: 0
             activity:
               1:
                 activity_type_id: '340'
