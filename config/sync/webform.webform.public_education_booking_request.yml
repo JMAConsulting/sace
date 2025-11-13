@@ -612,29 +612,31 @@ elements: |-
       '#text': |
         <h3><span style="color:#2e416c;">In-Person Presentation Details</span></h3>
       '#format': html
-    civicrm_1_activity_1_cg2_custom_37:
-      '#type': textfield
-      '#title': 'Parking Instructions'
-      '#size': 100
-      '#placeholder': 'If there are specific parking instructions to follow, please indicate them here.'
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg2_custom_37
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
-    civicrm_1_activity_1_cg58_custom_1266:
-      '#type': textfield
-      '#title': 'Building Location and Room Details'
-      '#placeholder': 'Please include any relevant information about accessing the building and/or the room.'
-      '#size': 100
-      '#counter_type': character
-      '#counter_maximum': 255
-      '#counter_maximum_message': ' '
-      '#data_type': String
-      '#form_key': civicrm_1_activity_1_cg58_custom_1266
-      '#extra':
-        width: 20
-      '#parent': civicrm_1_activity_1_fieldset_fieldset
+    flexbox_08:
+      '#type': webform_flexbox
+      civicrm_1_activity_1_cg2_custom_37:
+        '#type': textfield
+        '#title': 'Parking Instructions'
+        '#size': 100
+        '#placeholder': 'If there are specific parking instructions to follow, please indicate them here.'
+        '#data_type': String
+        '#form_key': civicrm_1_activity_1_cg2_custom_37
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
+      civicrm_1_activity_1_cg58_custom_1266:
+        '#type': textfield
+        '#title': 'Building Location and Room Details'
+        '#placeholder': 'Please include any relevant information about accessing the building and/or the room.'
+        '#size': 100
+        '#counter_type': character
+        '#counter_maximum': 255
+        '#counter_maximum_message': ' '
+        '#data_type': String
+        '#form_key': civicrm_1_activity_1_cg58_custom_1266
+        '#extra':
+          width: 20
+        '#parent': civicrm_1_activity_1_fieldset_fieldset
     civicrm_1_activity_1_cg2_custom_35:
       '#type': civicrm_options
       '#title': 'Will there be internet access?'
@@ -666,6 +668,34 @@ elements: |-
       '#form_key': civicrm_1_activity_1_cg2_custom_34
       '#parent': civicrm_1_activity_1_fieldset_fieldset
       '#default_option': '0'
+    virtual_evaluations_blurb:
+      '#type': processed_text
+      '#text': |
+        <p><strong>Note on virtual evaluations:&nbsp;</strong>Whenever possible, we ask that schools allow students to complete our presentation evaluations virtually as this gives students more time to engage with SACE content. Our virtual evaluations can be completed 2 ways:&nbsp;<br />
+        &nbsp;</p>
+
+        <ul>
+        	<li><strong>Personal Devices:&nbsp;</strong>Students are allowed to&nbsp;have their cell phones on them at the end of the presentation (if possible given government regulations - some schools will allow them for external presenters) and complete evaluations through a QR code.&nbsp;SACE educators will also&nbsp;bring a handful of paper evaluations for participants who do not have cellphones and/or cannot complete the evaluation virtually for any reason.&nbsp;<br />
+        	&nbsp;</li>
+        	<li><strong>Other Devices Post-Presentation:&nbsp;</strong>Students are given 5-10 minutes in the class block immediately following their presentation to complete evaluations online (e.g. Chromebooks, tablets, computers etc.).&nbsp;</li>
+        </ul>
+      '#format': html
+    civicrm_1_activity_1_cg2_custom_1370:
+      '#type': civicrm_options
+      '#title': 'Will participants have access to personal devices to complete virtual evaluations?'
+      '#options':
+        1: 'Yes - Personal Devices During Presentation'
+        2: 'Yes - Other Devices Post-Presentation'
+        3: 'No - Paper Evaluations During Presentation'
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg2_custom_1370
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': ''
+      '#default_value': ''
+      '#civicrm_live_options': '1'
     flexbox_07:
       '#type': webform_flexbox
   session_details_virtual:
@@ -1102,7 +1132,6 @@ handlers:
     conditions: {  }
     weight: -50
     settings:
-      disable: 'Leave Fields and Save Settings'
       nid: 1
       number_of_contacts: '4'
       1_contact_type: individual
@@ -1372,7 +1401,6 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1233: 0
       civicrm_1_activity_1_cg2_custom_1234: 0
       civicrm_1_activity_1_cg2_custom_1261: 0
-      civicrm_1_activity_1_cg2_custom_1289: 0
       civicrm_1_activity_1_cg2_custom_1291: 0
       civicrm_1_activity_1_cg2_custom_1292: 0
       civicrm_1_activity_1_cg2_custom_1294: 0
@@ -1382,6 +1410,7 @@ handlers:
       civicrm_1_activity_1_cg2_custom_1367: 0
       civicrm_1_activity_1_cg2_custom_1368: 0
       civicrm_1_activity_1_cg2_custom_1369: 0
+      civicrm_1_activity_1_cg2_custom_1370: create_civicrm_webform_element
       activity_1_settings_dynamic_custom_cg49: 0
       civicrm_1_activity_1_cg49_custom_665: 0
       civicrm_1_activity_1_cg49_custom_666: 0

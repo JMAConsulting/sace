@@ -691,6 +691,7 @@ elements: |-
           value: 'Online Activity'
     flexbox_22:
       '#type': webform_flexbox
+      '#align_items': flex-end
       civicrm_1_activity_1_cg2_custom_119:
         '#type': civicrm_options
         '#title': 'Which virtual platform would you like to use?'
@@ -721,6 +722,7 @@ elements: |-
         '#title': 'Online Meeting Link'
     flexbox_23:
       '#type': webform_flexbox
+      '#align_items': flex-end
       civicrm_1_activity_1_cg2_custom_120:
         '#type': civicrm_options
         '#title': 'Will participants be joining from one location or from home?'
@@ -772,6 +774,7 @@ elements: |-
         '#civicrm_live_options': '1'
     flexbox_24:
       '#type': webform_flexbox
+      '#align_items': flex-end
       civicrm_1_activity_1_cg2_custom_123:
         '#type': civicrm_options
         '#title': 'Will participants be able to participate in discussions using a chat function?'

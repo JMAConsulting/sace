@@ -1,0 +1,934 @@
+uuid: 67ce3118-d6f4-42dd-88e3-31167c48f823
+langcode: en
+status: open
+dependencies:
+  module:
+    - sace_feedback_forms
+    - webform_civicrm
+weight: 0
+open: null
+close: null
+uid: 93
+template: false
+archive: false
+id: wiseguyz_module_3_evaluation
+title: 'WiseGuyz Module 3 Evaluation Form'
+description: ''
+categories: {  }
+elements: |-
+  civicrm_2_contact_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': Organization/School
+    '#form_key': civicrm_2_contact_1_fieldset_fieldset
+    civicrm_2_contact_1_contact_existing:
+      '#type': civicrm_contact
+      '#title': 'School Name'
+      '#disabled': true
+      '#widget': autocomplete
+      '#none_prompt': '- None Found -'
+      '#show_hidden_contact': 1
+      '#results_display':
+        display_name: display_name
+      '#default_relationship_to': '1'
+      '#default_relationship':
+        '': ''
+      '#filter_relationship_contact': ''
+      '#contact_type': organization
+      '#form_key': civicrm_2_contact_1_contact_existing
+      '#parent': civicrm_2_contact_1_fieldset_fieldset
+      '#extra': {  }
+  civicrm_1_activity_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': Activity
+    '#form_key': civicrm_1_activity_1_fieldset_fieldset
+    civicrm_1_activity_1_activity_activity_date_time:
+      '#type': datetime
+      '#title': 'Evaluation Date'
+      '#disabled': true
+      '#default_value': now
+      '#date_time_step': '60'
+      '#form_key': civicrm_1_activity_1_activity_activity_date_time
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#extra': {  }
+    civicrm_1_activity_1_cg61_custom_1293:
+      '#type': civicrm_number
+      '#title': 'Booking Reference ID'
+      '#disabled': true
+      '#extra':
+        aslist: 1
+        multiple: 0
+      '#data_type': EntityReference
+      '#form_key': civicrm_1_activity_1_cg61_custom_1293
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#default_option': null
+      '#civicrm_live_options': '1'
+      '#options': {  }
+    civicrm_1_activity_1_cg65_custom_1325:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1325
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q1 I learned something new about healthy relationships'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1326:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1326
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q2 List one new thing you learned about healthy relationships'
+    civicrm_1_activity_1_cg65_custom_1327:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1327
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q3 I have more knowledge to help promote healthy and positive masculinity in my community'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1328:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1328
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q4 List one thing you can do to promote healthy and positive masculinity in your community'
+    civicrm_1_activity_1_cg65_custom_1329:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1329
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q5 I am able to identify consent versus problematic behaviours of abuse (not consent)'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1330:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1330
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': "Q6 I learned about resources people can access for help\_"
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1331:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1331
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q7 List one resource people can access for help'
+    civicrm_1_activity_1_cg65_custom_1332:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1332
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q8 I learned something new about sexual violence'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1333:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1333
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q9 List one new thing you learned about sexual violence'
+    civicrm_1_activity_1_cg65_custom_1334:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1334
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q10  I learned something new about gender, sexuality, and the media'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1335:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1335
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q11 List one new thing you learned about gender, sexuality, and the media'
+    civicrm_1_activity_1_cg65_custom_1336:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Live Q&A with a SACE Educator|Live Q&A with a SACE Educator
+          Sexual Harassment Add-On Module (High School Only) |Sexual Harassment Add-On Module
+          Non-Consensual Photo Sharing Add-On Module (High School Only) |Non-Consensual Photo Sharing Add-On Module
+          None|None
+          Racism & Sexual Violence|Racism & Sexual Violence
+          2SLGBTQ+ Community & Sexual Violence|2SLGBTQ+ Community & Sexual Violence
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1336
+      '#options':
+        'Live Q&A with a SACE Educator': 'Live Q&A with a SACE Educator'
+        "Sexual Harassment Add-On Module (High School Only)\_": 'Sexual Harassment Add-On Module'
+        "Non-Consensual Photo Sharing Add-On Module (High School Only)\_": 'Non-Consensual Photo Sharing Add-On Module'
+        None: None
+        'Racism & Sexual Violence': 'Racism & Sexual Violence'
+        '2SLGBTQ+ Community & Sexual Violence': '2SLGBTQ+ Community & Sexual Violence'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': "Q12 I feel more confident I can recognize and analyze gender stereotypes\_"
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1337:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1337
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q13 I feel more comfortable and accepting of diverse sexual and gender identities'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1338:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1338
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q14 I learned something new about how to address gender inequality in your community'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1339:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1339
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q15 List one thing you can do to address gender inequality in your community'
+    civicrm_1_activity_1_cg65_custom_1340:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1340
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q16 I felt supported by the WiseGuyz facilitator(s)'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1341:
+      '#type': civicrm_options
+      '#extra':
+        aslist: 0
+        items: |-
+          Strongly Agree|Strongly Agree
+          Agree|Agree
+          Somewhat Agree|Somewhat Agree
+          Somewhat Disagree|Somewhat Disagree
+          Disagree|Disagree
+          Strongly Disagree|Strongly Disagree
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1341
+      '#options':
+        'Strongly Agree': 'Strongly Agree'
+        Agree: Agree
+        'Somewhat Agree': 'Somewhat Agree'
+        'Somewhat Disagree': 'Somewhat Disagree'
+        Disagree: Disagree
+        'Strongly Disagree': 'Strongly Disagree'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q17  The content was effective'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1342:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1342
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q18 What did you like most about the module?'
+    civicrm_1_activity_1_cg65_custom_1343:
+      '#type': textarea
+      '#data_type': Memo
+      '#extra':
+        cols: '60'
+        rows: '4'
+      '#form_key': civicrm_1_activity_1_cg65_custom_1343
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Q19 What did you like least about the module? Is there anything you would change, or anything missing you would like to learn about?'
+    civicrm_1_activity_1_cg65_custom_1344:
+      '#type': civicrm_options
+      '#extra':
+        multiple: 1
+        aslist: 0
+        items: |-
+          Black|Black
+          Deaf|Deaf or Hard of Hearing
+          Direct, Indirect/Family|Direct, Indirect/Family, or Past Connection to the Canadian Armed Forces
+          Francophone|Francophone (Language)
+          Indigenous|Indigenous/First Nations, Métis, or Inuit
+          Man/Boy|Man/Boy (Trans-Inclusive)
+          Neurodiverse|Neurodiverse
+          Newcomers|Newcomer/Non-Status, Refugee, or Immigrant
+          Racialized|Person of Colour/Racialized
+          Person with a Disability|Person with a Disability
+          Queer, LGBPA, and/or a Sexual Minority|Queer, LGBPA, and/or a Sexual Minority
+          Senior/Elder/Older Adult|Senior/Elder/Older Adult
+          Trans|Trans, Two-Spirit, Nonbinary, and/or a Gender Minority
+          White/Caucasion|White/Caucasion
+          Woman/Girl|Woman/Girl (Trans-Inclusive)
+      '#data_type': String
+      '#form_key': civicrm_1_activity_1_cg65_custom_1344
+      '#options':
+        Black: Black
+        Deaf: 'Deaf or Hard of Hearing'
+        'Direct, Indirect/Family': 'Direct, Indirect/Family, or Past Connection to the Canadian Armed Forces'
+        Francophone: 'Francophone (Language)'
+        Indigenous: 'Indigenous/First Nations, Métis, or Inuit'
+        Man/Boy: 'Man/Boy (Trans-Inclusive)'
+        Neurodiverse: Neurodiverse
+        Newcomers: 'Newcomer/Non-Status, Refugee, or Immigrant'
+        Racialized: 'Person of Colour/Racialized'
+        'Person with a Disability': 'Person with a Disability'
+        'Queer, LGBPA, and/or a Sexual Minority': 'Queer, LGBPA, and/or a Sexual Minority'
+        'Senior/Elder/Older Adult': 'Senior/Elder/Older Adult'
+        Trans: 'Trans, Two-Spirit, Nonbinary, and/or a Gender Minority'
+        White/Caucasion: White/Caucasion
+        Woman/Girl: 'Woman/Girl (Trans-Inclusive)'
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': 'Demographic Information'
+      '#civicrm_live_options': 1
+    civicrm_1_activity_1_cg65_custom_1345:
+      '#type': textfield
+      '#data_type': String
+      '#counter_type': character
+      '#counter_maximum': 255
+      '#counter_maximum_message': ' '
+      '#form_key': civicrm_1_activity_1_cg65_custom_1345
+      '#extra':
+        width: 20
+      '#parent': civicrm_1_activity_1_fieldset_fieldset
+      '#title': Age
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: both
+  form_submit_once: false
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: page
+  confirmation_url: ''
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - anonymous
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  webform_civicrm:
+    id: webform_civicrm
+    handler_id: webform_civicrm
+    label: CiviCRM
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -49
+    settings:
+      nid: 1
+      number_of_contacts: '2'
+      1_contact_type: individual
+      1_webform_label: 'Contact 1'
+      civicrm_1_contact_1_contact_contact_sub_type:
+        '': ''
+      civicrm_1_contact_1_contact_existing: 0
+      civicrm_1_contact_1_contact_prefix_id: 0
+      civicrm_1_contact_1_contact_first_name: 0
+      civicrm_1_contact_1_contact_middle_name: 0
+      civicrm_1_contact_1_contact_last_name: 0
+      civicrm_1_contact_1_contact_suffix_id: 0
+      civicrm_1_contact_1_contact_nick_name: 0
+      civicrm_1_contact_1_contact_gender_id: 0
+      civicrm_1_contact_1_contact_job_title: 0
+      civicrm_1_contact_1_contact_birth_date: 0
+      civicrm_1_contact_1_contact_preferred_communication_method: 0
+      civicrm_1_contact_1_contact_privacy: 0
+      civicrm_1_contact_1_contact_preferred_language: 0
+      civicrm_1_contact_1_contact_communication_style_id: 0
+      civicrm_1_contact_1_contact_image_url: 0
+      civicrm_1_contact_1_contact_contact_id: 0
+      civicrm_1_contact_1_contact_user_id: 0
+      civicrm_1_contact_1_contact_external_identifier: 0
+      civicrm_1_contact_1_contact_source: 0
+      civicrm_1_contact_1_contact_cs: 0
+      civicrm_1_contact_1_contact_employer_id: 0
+      civicrm_1_contact_1_contact_is_deceased: 0
+      civicrm_1_contact_1_contact_deceased_date: 0
+      contact_1_settings_matching_rule: Unsupervised
+      contact_1_number_of_cg5: '0'
+      contact_1_number_of_cg12: '0'
+      contact_1_number_of_other: '0'
+      contact_1_number_of_address: '0'
+      contact_1_number_of_phone: '0'
+      contact_1_number_of_email: '0'
+      contact_1_number_of_website: '0'
+      contact_1_number_of_im: '0'
+      contact_1_number_of_cg30: '0'
+      2_contact_type: organization
+      2_webform_label: Organization/School
+      civicrm_2_contact_1_contact_contact_sub_type:
+        School: School
+      contact_2_number_of_cg1: '0'
+      civicrm_2_contact_1_contact_existing: create_civicrm_webform_element
+      civicrm_2_contact_1_contact_organization_name: 0
+      civicrm_2_contact_1_contact_legal_name: 0
+      civicrm_2_contact_1_contact_sic_code: 0
+      civicrm_2_contact_1_contact_nick_name: 0
+      civicrm_2_contact_1_contact_preferred_communication_method: 0
+      civicrm_2_contact_1_contact_privacy: 0
+      civicrm_2_contact_1_contact_preferred_language: 0
+      civicrm_2_contact_1_contact_communication_style_id: 0
+      civicrm_2_contact_1_contact_image_url: 0
+      civicrm_2_contact_1_contact_contact_id: 0
+      civicrm_2_contact_1_contact_user_id: 0
+      civicrm_2_contact_1_contact_external_identifier: 0
+      civicrm_2_contact_1_contact_source: 0
+      civicrm_2_contact_1_contact_cs: 0
+      contact_2_settings_matching_rule: Unsupervised
+      contact_2_number_of_cg52: '0'
+      contact_2_number_of_cg27: '0'
+      contact_2_number_of_other: '0'
+      contact_2_number_of_address: '0'
+      contact_2_number_of_phone: '0'
+      contact_2_number_of_email: '0'
+      contact_2_number_of_website: '0'
+      contact_2_number_of_im: '0'
+      contact_2_number_of_relationship: '0'
+      contact_2_number_of_cg30: '0'
+      prefix_known: ''
+      prefix_unknown: ''
+      toggle_message: 0
+      message: ''
+      activity_number_of_activity: '1'
+      activity_1_settings_existing_activity_status:
+        '': ''
+      activity_1_settings_details:
+        view_link: view_link
+        entire_result: 0
+        edit_link: 0
+        view_link_secure: 0
+        update_existing: 0
+      civicrm_1_activity_1_activity_activity_type_id: '340'
+      civicrm_1_activity_1_activity_target_contact_id:
+        2: '2'
+      civicrm_1_activity_1_activity_source_contact_id: '0'
+      civicrm_1_activity_1_activity_subject: 0
+      civicrm_1_activity_1_activity_details: 0
+      civicrm_1_activity_1_activity_status_id: '0'
+      civicrm_1_activity_1_activity_priority_id: '0'
+      civicrm_1_activity_1_activity_assignee_contact_id:
+        '': ''
+      civicrm_1_activity_1_activity_location: 0
+      civicrm_1_activity_1_activity_activity_date_time: create_civicrm_webform_element
+      civicrm_1_activity_1_activity_duration: 0
+      civicrm_1_activity_1_activity_tag:
+        '': ''
+      civicrm_1_activity_1_activity_engagement_level: 0
+      civicrm_1_activity_1_activity_campaign_id: 0
+      activity_1_settings_dynamic_custom_cg62: 0
+      civicrm_1_activity_1_activityupload_file_1: 0
+      civicrm_1_activity_1_activityupload_file_2: 0
+      civicrm_1_activity_1_activityupload_file_3: 0
+      activity_1_settings_dynamic_custom_cg58: 0
+      civicrm_1_activity_1_cg58_custom_1265: 0
+      civicrm_1_activity_1_cg58_custom_1266: 0
+      civicrm_1_activity_1_cg58_custom_1267: 0
+      civicrm_1_activity_1_cg58_custom_1287: 0
+      activity_1_settings_dynamic_custom_cg61: 0
+      civicrm_1_activity_1_cg61_custom_1293: create_civicrm_webform_element
+      activity_1_settings_dynamic_custom_cg63: 0
+      civicrm_1_activity_1_cg63_custom_1296: 0
+      civicrm_1_activity_1_cg63_custom_1297: 0
+      civicrm_1_activity_1_cg63_custom_1298: 0
+      civicrm_1_activity_1_cg63_custom_1299: 0
+      civicrm_1_activity_1_cg63_custom_1300: 0
+      civicrm_1_activity_1_cg63_custom_1301: 0
+      civicrm_1_activity_1_cg63_custom_1302: 0
+      civicrm_1_activity_1_cg63_custom_1303: 0
+      civicrm_1_activity_1_cg63_custom_1304: 0
+      civicrm_1_activity_1_cg63_custom_1305: 0
+      civicrm_1_activity_1_cg63_custom_1306: 0
+      civicrm_1_activity_1_cg63_custom_1308: 0
+      activity_1_settings_dynamic_custom_cg64: 0
+      civicrm_1_activity_1_cg64_custom_1309: 0
+      civicrm_1_activity_1_cg64_custom_1310: 0
+      civicrm_1_activity_1_cg64_custom_1311: 0
+      civicrm_1_activity_1_cg64_custom_1312: 0
+      civicrm_1_activity_1_cg64_custom_1313: 0
+      civicrm_1_activity_1_cg64_custom_1314: 0
+      civicrm_1_activity_1_cg64_custom_1315: 0
+      civicrm_1_activity_1_cg64_custom_1316: 0
+      civicrm_1_activity_1_cg64_custom_1317: 0
+      civicrm_1_activity_1_cg64_custom_1324: 0
+      civicrm_1_activity_1_cg64_custom_1318: 0
+      civicrm_1_activity_1_cg64_custom_1319: 0
+      civicrm_1_activity_1_cg64_custom_1320: 0
+      civicrm_1_activity_1_cg64_custom_1321: 0
+      civicrm_1_activity_1_cg64_custom_1322: 0
+      civicrm_1_activity_1_cg64_custom_1323: 0
+      activity_1_settings_dynamic_custom_cg65: 0
+      civicrm_1_activity_1_cg65_custom_1325: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1326: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1327: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1328: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1329: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1330: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1331: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1332: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1333: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1334: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1335: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1336: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1337: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1338: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1339: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1340: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1341: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1342: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1343: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1344: create_civicrm_webform_element
+      civicrm_1_activity_1_cg65_custom_1345: create_civicrm_webform_element
+      activity_1_settings_dynamic_custom_cg66: 0
+      civicrm_1_activity_1_cg66_custom_1346: 0
+      civicrm_1_activity_1_cg66_custom_1347: 0
+      civicrm_1_activity_1_cg66_custom_1348: 0
+      civicrm_1_activity_1_cg66_custom_1349: 0
+      civicrm_1_activity_1_cg66_custom_1350: 0
+      civicrm_1_activity_1_cg66_custom_1351: 0
+      civicrm_1_activity_1_cg66_custom_1352: 0
+      civicrm_1_activity_1_cg66_custom_1353: 0
+      civicrm_1_activity_1_cg66_custom_1354: 0
+      civicrm_1_activity_1_cg66_custom_1355: 0
+      civicrm_1_activity_1_cg66_custom_1356: 0
+      civicrm_1_activity_1_cg66_custom_1357: 0
+      civicrm_1_activity_1_cg66_custom_1358: 0
+      civicrm_1_activity_1_cg66_custom_1359: 0
+      civicrm_1_activity_1_cg66_custom_1360: 0
+      civicrm_1_activity_1_cg66_custom_1361: 0
+      civicrm_1_activity_1_cg66_custom_1362: 0
+      civicrm_1_activity_1_cg66_custom_1363: 0
+      civicrm_1_activity_1_cg66_custom_1364: 0
+      participant_reg_type: '0'
+      reg_options:
+        event_type:
+          any: any
+        show_past_events: now
+        show_future_events: '1'
+        show_public_events: all
+        title_display: title
+        show_full_events: 1
+        event_sort_field: start_date
+        show_remaining: '0'
+        validate: 1
+        block_form: 0
+        disable_unregister: 0
+        allow_url_load: 0
+        disable_primary_participant: 0
+      membership_1_number_of_membership: '0'
+      membership_2_number_of_membership: '0'
+      civicrm_1_contribution_1_contribution_enable_contribution: '0'
+      grant_number_of_grant: '0'
+      checksum_text: ''
+      create_fieldsets: 1
+      confirm_subscription: 1
+      block_unknown_users: 0
+      create_new_relationship: 0
+      disable_contact_paging: 0
+      new_contact_source: 'WiseGuyz Module 3 Evaluation'
+      data:
+        contact:
+          1:
+            contact:
+              1:
+                contact_type: individual
+                contact_sub_type: {  }
+                webform_label: 'Contact 1'
+            matching_rule: Unsupervised
+            number_of_cg5: '0'
+            number_of_cg12: '0'
+            number_of_other: '0'
+            number_of_address: '0'
+            number_of_phone: '0'
+            number_of_email: '0'
+            number_of_website: '0'
+            number_of_im: '0'
+            number_of_cg30: '0'
+          2:
+            contact:
+              1:
+                contact_type: organization
+                contact_sub_type:
+                  School: School
+                webform_label: Organization/School
+            number_of_cg1: '0'
+            matching_rule: Unsupervised
+            number_of_cg52: '0'
+            number_of_cg27: '0'
+            number_of_other: '0'
+            number_of_address: '0'
+            number_of_phone: '0'
+            number_of_email: '0'
+            number_of_website: '0'
+            number_of_im: '0'
+            number_of_relationship: '0'
+            number_of_cg30: '0'
+        activity:
+          number_of_activity: '1'
+          1:
+            existing_activity_status: {  }
+            details:
+              view_link: view_link
+            dynamic_custom_cg62: 0
+            dynamic_custom_cg58: 0
+            dynamic_custom_cg61: 0
+            dynamic_custom_cg63: 0
+            dynamic_custom_cg64: 0
+            dynamic_custom_cg65: 0
+            dynamic_custom_cg66: 0
+            activity:
+              1:
+                activity_type_id: '340'
+                target_contact_id:
+                  2: '2'
+        membership:
+          1:
+            number_of_membership: '0'
+          2:
+            number_of_membership: '0'
+        grant:
+          number_of_grant: '0'
+        participant_reg_type: '0'
+        reg_options:
+          event_type:
+            any: any
+          show_past_events: now
+          show_future_events: '1'
+          show_public_events: all
+          title_display: title
+          show_full_events: 1
+          event_sort_field: start_date
+          show_remaining: '0'
+          validate: 1
+          block_form: 0
+          disable_unregister: 0
+          allow_url_load: 0
+          disable_primary_participant: 0
+  sace_feedback_form_handler:
+    id: sace_feedback_form_handler
+    handler_id: sace_feedback_form_handler
+    label: 'SACE Feedback Form Handler'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings: {  }
+variants: {  }

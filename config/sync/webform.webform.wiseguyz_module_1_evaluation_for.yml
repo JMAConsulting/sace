@@ -79,7 +79,7 @@ elements: |-
       '#extra': {  }
     civicrm_1_activity_1_cg61_custom_1293:
       '#type': civicrm_number
-      '#title': Booking
+      '#title': 'Booking Reference ID'
       '#disabled': true
       '#data_type': EntityReference
       '#extra':
