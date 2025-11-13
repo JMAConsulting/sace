@@ -29,6 +29,7 @@
         "drupal/blazy_ui": "^3.0",
         "drupal/calendar_link": "^3.0",
         "drupal/charts": "^3.2",
+        "drupal/ckeditor5_plugin_pack": "^1.4",
         "drupal/codesnippet": "^1.7",
         "drupal/colorbutton": "^1.2",
         "drupal/config_ignore": "^3.3",
