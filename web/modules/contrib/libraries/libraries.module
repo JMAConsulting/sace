@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\DrupalKernel;
-use Drupal\Core\Extension\ModuleHandler;
 use Drupal\libraries\ExternalLibrary\Asset\AttachableAssetLibraryRegistrationInterface;
 use Drupal\libraries\ExternalLibrary\Utility\LibraryAccessorInterface;
 use Drupal\libraries\ExternalLibrary\Utility\LibraryIdAccessorInterface;
@@ -36,7 +35,7 @@ function libraries_library_info_build() {
       // the build process, but should be logged.
       if ($e instanceof LibraryIdAccessorInterface || $e instanceof LibraryAccessorInterface) {
         $libraries_with_errors[] = $external_library_id;
-        watchdog_exception('libraries', $e);
+        \Drupal::logger('libraries')->error($e->getMessage());
       }
       else {
         // Re-throw exceptions that are not library-specific.
@@ -168,12 +167,15 @@ function libraries_get_libraries() {
  * https://www.drupal.org/node/2170763
  */
 function libraries_scan_info_files() {
-  $profile = \Drupal::service('extension.list.profile')->getPath(\Drupal::installProfile());
+  $install_profile = \Drupal::installProfile();
   $config = DrupalKernel::findSitePath(\Drupal::request());
 
   // Build a list of directories.
   $directories = \Drupal::moduleHandler()->invokeAll('libraries_info_file_paths', $args = []);
-  $directories[] = "$profile/libraries";
+  if ($install_profile) {
+    $profile = \Drupal::service('extension.list.profile')->getPath($install_profile);
+    $directories[] = "$profile/libraries";
+  }
   $directories[] = 'sites/all/libraries';
   $directories[] = 'libraries';
   $directories[] = "$config/libraries";
