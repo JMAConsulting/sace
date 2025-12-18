@@ -9,7 +9,7 @@ class CRM_Activityical_Permission {
    * We only need one instance of this object. So we use the singleton
    * pattern and cache the instance in this variable
    *
-   * @var CRM_Core_Config
+   * @var CRM_Activityical_Permission
    */
   private static $_singleton = NULL;
 
@@ -28,7 +28,7 @@ class CRM_Activityical_Permission {
   /**
    * Singleton function used to manage this object.
    *
-   * @return CRM_Core_Config
+   * @return CRM_Activityical_Permission
    */
   public static function &singleton($params = NULL) {
     if (self::$_singleton === NULL) {
@@ -42,8 +42,8 @@ class CRM_Activityical_Permission {
   }
 
   public function viewFeed() {
-    $contact_id = CRM_Utils_Array::value('cid', $this->_params);
-    $hash = CRM_Utils_Array::value('key', $this->_params);
+    $contact_id = $this->_params['cid'] ?? NULL;
+    $hash = $this->_params['key'] ?? NULL;
 
     // Ensure correct parameters.
     if (empty($contact_id) || empty($hash)) {
@@ -65,7 +65,7 @@ class CRM_Activityical_Permission {
   public function manageFeedDetails() {
     // Only allow access if no contact_id is given (working on my own contact)
     // or user has 'administer civicrm'.
-    $contact_id = CRM_Utils_Array::value('contact_id', $this->_params);
+    $contact_id = $this->_params['contact_id'] ?? NULL;
     return (
       !$contact_id
       || $contact_id == CRM_Core_Session::singleton()->getLoggedInContactID()

@@ -78,7 +78,7 @@ class CRM_Activityical_Feed {
       'contact_id' => $this->contact_id,
     );
     $result = _activityical_civicrmapi('activityical_contact', 'get', $params);
-    $id = CRM_Utils_Array::value('id', $result);
+    $id = $result['id'] ?? NULL;
 
     $params = array(
       'id' => $id,
@@ -290,7 +290,7 @@ class CRM_Activityical_Feed {
         AND date(civicrm_activity.activity_date_time) >= (CURRENT_DATE - INTERVAL {$placeholders['activityical_past_days']} DAY)
         AND date(civicrm_activity.activity_date_time) <= (CURRENT_DATE + INTERVAL {$placeholders['activityical_future_days']} DAY)
         $extra_where
-      GROUP BY civicrm_activity.id
+      GROUP BY civicrm_activity.id, source.id, activity_type.label
       ORDER BY activity_date_time desc
     ";
 
@@ -316,7 +316,13 @@ class CRM_Activityical_Feed {
       // FIXME: how to handle timezones?
       // $row['activity_date_time'] = civicrm_activity_contact_datetime_to_utc($row['activity_date_time'], $this->contact_id);
 
-      $return[] = $row;
+      $hookEvent = \Civi\Core\Event\GenericHookEvent::create([
+        'activityId' => $row['id'],
+        'row' => $row,
+      ]);
+      \Civi::dispatcher()->dispatch('civi.activityical.feed_item_details', $hookEvent);
+
+      $return[] = $hookEvent->row;
     }
     return $return;
   }
@@ -368,6 +374,7 @@ class CRM_Activityical_Feed {
     // Require a file from CiviCRM's dynamic include path.
     require_once 'CRM/Core/Smarty.php';
     $tpl = CRM_Core_Smarty::singleton();
+    $tpl->assign('timezone', $this->getTimezoneString());
     $tpl->assign('activities', $activities);
 
     // Assign base_url to be used in links.
@@ -481,11 +488,11 @@ class CRM_Activityical_Feed {
     if (empty($timezone_string)) {
       // Use @ operator to ignore PHP strict notice if time zone has not yet been
       // set in the php.ini configuration.
-      $timezone_string = \Drupal::config('system.date')->get('timezone.default') ?? date_default_timezone_get(); 
+      $timezone_string = \Drupal::config('system.date')->get('timezone.default') ?? date_default_timezone_get();
     }
     return $timezone_string;
   }
-  
+
   public function getTimezoneString_Joomla() {
     $timezone_string = '';
     $result = _activityical_civicrmapi('UFMatch', 'get', array(
