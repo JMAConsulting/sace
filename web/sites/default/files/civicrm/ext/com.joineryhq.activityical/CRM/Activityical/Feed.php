@@ -290,7 +290,7 @@ class CRM_Activityical_Feed {
         AND date(civicrm_activity.activity_date_time) >= (CURRENT_DATE - INTERVAL {$placeholders['activityical_past_days']} DAY)
         AND date(civicrm_activity.activity_date_time) <= (CURRENT_DATE + INTERVAL {$placeholders['activityical_future_days']} DAY)
         $extra_where
-      GROUP BY civicrm_activity.id
+      GROUP BY civicrm_activity.id, source.id, activity_type.label
       ORDER BY activity_date_time desc
     ";
 
@@ -375,6 +375,7 @@ class CRM_Activityical_Feed {
     // Require a file from CiviCRM's dynamic include path.
     require_once 'CRM/Core/Smarty.php';
     $tpl = CRM_Core_Smarty::singleton();
+    $tpl->assign('timezone', $this->getTimezoneString());
     $tpl->assign('activities', $activities);
 
     // Assign base_url to be used in links.
