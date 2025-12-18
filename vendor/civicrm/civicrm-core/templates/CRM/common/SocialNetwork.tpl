@@ -7,7 +7,7 @@
  | and copyright information, see https://civicrm.org/licensing       |
  +--------------------------------------------------------------------+
 *}
-{* Adds social networking buttons (Facebook, Twitter, LinkedIn, email) to public pages (online contributions, event info) *}
+{* Adds social networking buttons (Facebook, Twitter, Instagram, email) to public pages (online contributions, event info) *}
 
 <div class="crm-section crm-socialnetwork alert alert-success status crm-ok" role="alert">
     <h2>{ts}Help spread the word{/ts}</h2>
@@ -24,10 +24,10 @@
         <a href="https://facebook.com/sharer/sharer.php?u={$url|escape:'url'}" target="_blank" class="btn btn-default" role="button" title="{ts escape='htmlattribute'}Share{/ts}">{ts}Facebook{/ts}</a>
         <a href="https://www.instagram.com/?url={$url|escape:'url'}&amp;title={$title|escape:'url'}" target="_blank" rel="noopener" class="btn btn-default" title="{ts escape='htmlattribute'}Share{/ts}">{ts}Instagram{/ts}</a>
     {else}
-        <button onclick="window.open('https://twitter.com/intent/tweet?url={$url|escape:'url'}&amp;text={$title|escape:'url'}','_blank')" type="button" class="btn btn-default crm-button" id="crm-tw" title="{ts escape='htmlattribute'}Tweet{/ts}"><i aria-hidden="true" class="crm-i fa-twitter"></i>&nbsp;&nbsp;{ts}Twitter{/ts}</button>
-        <button onclick="window.open('https://facebook.com/sharer/sharer.php?u={$url|escape:'url'}','_blank')" type="button" class="btn btn-default crm-button" role="button" id="crm-fb" title="{ts escape='htmlattribute'}Share{/ts}"><i aria-hidden="true" class="crm-i fa-facebook"></i>&nbsp;&nbsp;{ts}Facebook{/ts}</button>
-        <button onclick="window.open('https://www.instagram.com/?url={$url|escape:'url'}&amp;title={$title|escape:'url'}','_blank')" type="button" rel="noopener" class="btn btn-default crm-button" id="crm-li" title="{ts escape='htmlattribute'}Share{/ts}"><i aria-hidden="true" class="crm-i fa-instagram"></i>&nbsp;&nbsp;{ts}Instagram{/ts}</button>
-        <button onclick="window.open('mailto:?subject={$title|escape:'quotes'}&amp;body={$url|escape:'url'}','_self')" type="button" rel="noopener" class="btn btn-default crm-button" id="crm-email"><i aria-hidden="true" class="crm-i fa-envelope" title="{ts escape='htmlattribute'}Email{/ts}"></i>&nbsp;&nbsp;{ts}Email{/ts}</button>
+        <button onclick="window.open('https://twitter.com/intent/tweet?url={$url|escape:'url'}&amp;text={$title|escape:'url'}','_blank')" type="button" class="btn btn-default crm-button" id="crm-tw" title="{ts escape='htmlattribute'}Tweet{/ts}"><i class="crm-i fa-twitter" role="img" aria-hidden="true"></i>&nbsp;&nbsp;{ts}Twitter{/ts}</button>
+        <button onclick="window.open('https://facebook.com/sharer/sharer.php?u={$url|escape:'url'}','_blank')" type="button" class="btn btn-default crm-button" role="button" id="crm-fb" title="{ts escape='htmlattribute'}Share{/ts}"><i class="crm-i fa-facebook" role="img" aria-hidden="true"></i>&nbsp;&nbsp;{ts}Facebook{/ts}</button>
+        <button onclick="window.open('https://www.instagram.com/?url={$url|escape:'url'}&amp;title={$title|escape:'url'}','_blank')" type="button" rel="noopener" class="btn btn-default crm-button" id="crm-li" title="{ts escape='htmlattribute'}Share{/ts}"><i class="crm-i fa-instagram" role="img" aria-hidden="true"></i>&nbsp;&nbsp;{ts}Instagram{/ts}</button>
+        <button onclick="window.open('mailto:?subject={$title|escape:'quotes'}&amp;body={$url|escape:'url'}','_self')" type="button" rel="noopener" class="btn btn-default crm-button" id="crm-email"><i class="crm-i fa-envelope" title="{ts escape='htmlattribute'}Email{/ts}" role="img" aria-hidden="true"></i>&nbsp;&nbsp;{ts}Email{/ts}</button>
     {/if}
     {if $pageURL}
     <p class="clear">
