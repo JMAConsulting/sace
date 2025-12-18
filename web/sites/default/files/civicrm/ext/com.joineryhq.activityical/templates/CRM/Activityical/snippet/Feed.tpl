@@ -23,7 +23,9 @@ DURATION:PT{$activity.activity_duration}M
 DTEND;VALUE=DATE-TIME:{$activity.activity_date_time|crmICalDate}Z
 {/if}
 {if $activity.activity_location}
-LOCATION:{$activity.activity_location|crmICalText}
+  LOCATION:{$activity.activity_location|crmICalText}
+{elseif $activity.location}
+  LOCATION:{$activity.location|crmICalText}
 {/if}
 {if $activity.contact_email}
 ORGANIZER:MAILTO:{$activity.contact_email|crmICalText}
@@ -32,8 +34,7 @@ ORGANIZER:MAILTO:{$activity.contact_email|crmICalText}
 URL:{$activity.url}
 {/if}
 CONTACT;ALTREP={$base_url}/civicrm/contact/view?reset=1&cid={$activity.source_id}:{$activity.source_display_name}
-X-ALT-DESC;FMTTYPE=text/html:
- {$activity.description|activityicalHtml}
+X-ALT-DESC;FMTTYPE=text/html: {$activity.description|activityicalHtml}
 END:VEVENT
 {/foreach}
 END:VCALENDAR
