@@ -254,6 +254,7 @@ abstract class CRM_Import_Form_DataSource extends CRM_Import_Forms {
       // Unset fields that should not be copied over.
       unset($userJob['id'], $userJob['name'], $userJob['created_date'], $userJob['is_template'], $userJob['queue_id'], $userJob['start_date'], $userJob['end_date']);
       $userJob['metadata']['template_id'] = $templateID;
+      // @todo - this Template key is obsolete - definitely in Civiimport - probably entirely.
       $userJob['metadata']['Template']['mapping_id'] = $mappingID;
       $userJob['created_id'] = CRM_Core_Session::getLoggedInContactID();
       $userJob['expires_date'] = '+1 week';
@@ -278,9 +279,11 @@ abstract class CRM_Import_Form_DataSource extends CRM_Import_Forms {
         $submittedValues = $this->getSubmittedValues();
         $fieldsToCopyOver = array_keys(array_diff_key($submittedValues, $this->submittableFields));
         $templateID = (int) $this->getSubmittedValue('userJobTemplate');
-        if ($templateID && $templateID !== $this->getUserJob()['metadata']['template_id'] ?? NULL) {
+        if ($templateID && $templateID !== ($this->getUserJob()['metadata']['template_id'] ?? NULL)) {
           $this->updateUserJobMetadata('template_id', $templateID);
           $this->updateUserJobMetadata('import_mappings', $this->getTemplateJob()['metadata']['import_mappings']);
+          $this->updateUserJobMetadata('import_options', $this->getTemplateJob()['metadata']['import_options']);
+          $this->updateUserJobMetadata('bundled_actions', $this->getTemplateJob()['metadata']['bundled_actions']);
         }
         if ($submittedValues['use_existing_upload']) {
           // Use the already saved value.
