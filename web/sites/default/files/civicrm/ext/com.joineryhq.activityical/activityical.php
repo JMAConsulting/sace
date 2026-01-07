@@ -37,9 +37,7 @@ function _activityical_check_permission($access_arguments, $op) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
  */
 function activityical_civicrm_config(&$config) {
-  $extRoot = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-  $template =& CRM_Core_Smarty::singleton();
-  $template->addPluginsDir($extRoot . 'Smarty' . DIRECTORY_SEPARATOR . 'plugins');
+  CRM_Core_Smarty::singleton()->addPluginsDir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Smarty' . DIRECTORY_SEPARATOR . 'plugins');
 
   _activityical_civix_civicrm_config($config);
 }
@@ -166,7 +164,8 @@ function _activityical_contact_has_feed_group($contact_id): bool {
     return FALSE;
   }
 
-  // will return contact if they are in group, or null if not
+  // will return contact if they are in the group, or null if not
+  // Api4 should handle smart groups seamlessly too
   $contactInGroup = \Civi\Api4\Contact::get(FALSE)
     ->addSelect('id')
     ->addWhere('id', '=', $contact_id)
@@ -176,11 +175,6 @@ function _activityical_contact_has_feed_group($contact_id): bool {
 
   return !!$contactInGroup;
 }
-
-/**
- * Implements hook_civicrm_entityTypes().
- */
-
 
 /**
  * Implements hook_civicrm_pre().

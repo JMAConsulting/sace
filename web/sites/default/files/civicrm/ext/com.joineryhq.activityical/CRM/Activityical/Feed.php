@@ -135,7 +135,25 @@ class CRM_Activityical_Feed {
     // Set up placeholders for CiviCRM query. CiviCRM's query method doesn't
     // have anything like Drupals db_placeholders, so we do it ourselves here.
     $placeholders = $params = array();
+    $placeholders['status'] = array();
     $placeholder_count = 1;
+
+    // Placeholders for blocked statuses
+    // TODO: this should be a setting.
+    $values = CRM_Core_OptionGroup::values('activity_status');
+    $blocked_status_values = array_keys(array_intersect($values, self::getBlockedStatuses()));
+
+    if (empty($blocked_status_values)) {
+      $blocked_status_values[] = 0;
+    }
+    foreach ($blocked_status_values as $value) {
+      $i = $placeholder_count++;
+      $placeholders['status'][] = '%' . $i;
+      $params[$i] = array(
+        $value,
+        'Integer',
+      );
+    }
 
     // Placeholder for contact_id
     $i = $placeholder_count++;
@@ -265,7 +283,9 @@ class CRM_Activityical_Feed {
           )
         LEFT JOIN civicrm_contact target ON activity_target.contact_id = target.id
       WHERE
-        contact_primary.id = '{$placeholders['contact_id']}'
+        civicrm_activity.status_id NOT IN
+          (" . implode(',', $placeholders['status']) . ")
+        AND contact_primary.id = '{$placeholders['contact_id']}'
         AND civicrm_activity.is_test = 0
         AND date(civicrm_activity.activity_date_time) >= (CURRENT_DATE - INTERVAL {$placeholders['activityical_past_days']} DAY)
         AND date(civicrm_activity.activity_date_time) <= (CURRENT_DATE + INTERVAL {$placeholders['activityical_future_days']} DAY)
@@ -383,6 +403,17 @@ class CRM_Activityical_Feed {
     $output = implode("\r\n", $lines);
 
     return $output;
+  }
+
+  public static function getBlockedStatuses() {
+    $blocked_statuses = array(
+      'Completed',
+      'Cancelled',
+      'Left Message',
+      'Unreachable',
+      'Not Required',
+    );
+    return $blocked_statuses;
   }
 
   public function getTimezoneString() {
