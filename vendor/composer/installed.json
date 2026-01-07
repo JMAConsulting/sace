@@ -408,17 +408,17 @@
         },
         {
             "name": "civicrm/civicrm-core",
-            "version": "6.5.0",
-            "version_normalized": "6.5.0.0",
+            "version": "6.9.1",
+            "version_normalized": "6.9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-core.git",
-                "reference": "6ccd39bd3bf650443ce939d340eeb6bcf7ecbbdd"
+                "reference": "f3af43ebed87dacf13de28ba94fa94449da874bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/civicrm/civicrm-core/zipball/6ccd39bd3bf650443ce939d340eeb6bcf7ecbbdd",
-                "reference": "6ccd39bd3bf650443ce939d340eeb6bcf7ecbbdd",
+                "url": "https://api.github.com/repos/civicrm/civicrm-core/zipball/f3af43ebed87dacf13de28ba94fa94449da874bc",
+                "reference": "f3af43ebed87dacf13de28ba94fa94449da874bc",
                 "shasum": ""
             },
             "require": {
@@ -441,7 +441,7 @@
                 "ext-xml": "*",
                 "ext-zip": "*",
                 "ezyang/htmlpurifier": "^4.13",
-                "firebase/php-jwt": ">=3 <7",
+                "firebase/php-jwt": ">=6.0 <7",
                 "guzzlehttp/guzzle": "^6.3 || ^7.3",
                 "guzzlehttp/psr7": "^1.9 || ^2.0",
                 "knplabs/knp-snappy": "^1.4",
@@ -451,7 +451,7 @@
                 "league/oauth2-google": "^4.0",
                 "marcj/topsort": "~1.1",
                 "pear/auth_sasl": "1.2.0",
-                "pear/db": "~1.12.1",
+                "pear/db": "~1.12.2",
                 "pear/log": "1.14.5",
                 "pear/mail": "^2.0",
                 "pear/mail_mime": "~1.10",
@@ -490,12 +490,15 @@
                 "zetacomponents/base": "1.9.*",
                 "zetacomponents/mail": "~1.9.4"
             },
-            "time": "2025-08-07T02:25:16+00:00",
+            "conflict": {
+                "padaliyajay/php-autoprefixer": "1.5"
+            },
+            "time": "2025-12-18T01:22:34+00:00",
             "type": "library",
             "extra": {
                 "patches": {
                     "pear/db": {
-                        "Apply CiviCRM Customisations for the pear:db package": "https://download.civicrm.org/patches/83a3d0dd9f8e555a474ee433c453ff741a4dedf1983bad8b3566136e90f9c46b/pear_db_civicrm_changes.patch",
+                        "Apply CiviCRM Customisations for the pear:db package": "https://download.civicrm.org/patches/47e125fec0c789b095880fa65c6037210b01179290d5727b22b70fa77333496b/pear_db_civicrm_changes.patch",
                         "Ensure that error messages about MySQL-SSL connections are reported": "https://download.civicrm.org/patches/a6e31a769218801fb1fb3d679ff72d3d8a7c5637d3bb7b78680cd7809552e0c6/mysqli-ssl.patch"
                     },
                     "pear/mail": {
@@ -920,7 +923,7 @@
             ],
             "description": "Open source constituent relationship management for non-profits, NGOs and advocacy organizations.",
             "support": {
-                "source": "https://github.com/civicrm/civicrm-core/tree/6.5.0"
+                "source": "https://github.com/civicrm/civicrm-core/tree/6.9.1"
             },
             "funding": [
                 {
@@ -932,17 +935,17 @@
         },
         {
             "name": "civicrm/civicrm-drupal-8",
-            "version": "6.5.0",
-            "version_normalized": "6.5.0.0",
+            "version": "6.9.1",
+            "version_normalized": "6.9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-drupal-8.git",
-                "reference": "519db1f4e5423985993c3b0ac0b09d85cfd81b9e"
+                "reference": "8e40921e6598d3d673e24c8b976e95b3ba9855f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/civicrm/civicrm-drupal-8/zipball/519db1f4e5423985993c3b0ac0b09d85cfd81b9e",
-                "reference": "519db1f4e5423985993c3b0ac0b09d85cfd81b9e",
+                "url": "https://api.github.com/repos/civicrm/civicrm-drupal-8/zipball/8e40921e6598d3d673e24c8b976e95b3ba9855f1",
+                "reference": "8e40921e6598d3d673e24c8b976e95b3ba9855f1",
                 "shasum": ""
             },
             "require": {
@@ -950,7 +953,7 @@
                 "civicrm/civicrm-core": ">=5.21.0 || dev-master",
                 "composer/installers": "^1 || ^2"
             },
-            "time": "2025-06-24T08:16:05+00:00",
+            "time": "2025-11-28T01:30:43+00:00",
             "type": "drupal-module",
             "extra": {
                 "installer-name": "civicrm"
@@ -984,7 +987,7 @@
             ],
             "description": "Open source constituent relationship management for non-profits, NGOs and advocacy organizations.",
             "support": {
-                "source": "https://github.com/civicrm/civicrm-drupal-8/tree/6.5.0"
+                "source": "https://github.com/civicrm/civicrm-drupal-8/tree/6.9.1"
             },
             "funding": [
                 {
@@ -996,8 +999,8 @@
         },
         {
             "name": "civicrm/civicrm-packages",
-            "version": "6.5.0",
-            "version_normalized": "6.5.0.0",
+            "version": "6.9.1",
+            "version_normalized": "6.9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-packages.git",
@@ -1015,7 +1018,7 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "Legacy third party dependencies for CiviCRM",
             "support": {
-                "source": "https://github.com/civicrm/civicrm-packages/tree/6.5.0"
+                "source": "https://github.com/civicrm/civicrm-packages/tree/6.9.1"
             },
             "install-path": "../civicrm/civicrm-packages"
         },
@@ -9554,7 +9557,7 @@
             "type": "library",
             "extra": {
                 "patches_applied": {
-                    "Apply CiviCRM Customisations for the pear:db package": "https://download.civicrm.org/patches/83a3d0dd9f8e555a474ee433c453ff741a4dedf1983bad8b3566136e90f9c46b/pear_db_civicrm_changes.patch",
+                    "Apply CiviCRM Customisations for the pear:db package": "https://download.civicrm.org/patches/47e125fec0c789b095880fa65c6037210b01179290d5727b22b70fa77333496b/pear_db_civicrm_changes.patch",
                     "Ensure that error messages about MySQL-SSL connections are reported": "https://download.civicrm.org/patches/a6e31a769218801fb1fb3d679ff72d3d8a7c5637d3bb7b78680cd7809552e0c6/mysqli-ssl.patch"
                 }
             },
