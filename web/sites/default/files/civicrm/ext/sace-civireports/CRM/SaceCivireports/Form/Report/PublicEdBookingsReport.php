@@ -231,8 +231,9 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           $this->_columns[$cg['table_name']]['fields'][$mapper['options'][$key]['column_name']] = [
             'title' => $label,
             'required' => FALSE,
+            'dbAlias' => "COALESCE(" . $mapper['options'][$key]['column_name'] . ",0)",
           ];
-          $dbAlias[] = $mapper['options'][$key]['column_name'];
+          $dbAlias[] = "COALESCE(" . $mapper['options'][$key]['column_name'] . ",0)";
         }
         $this->_columns[$cg['table_name']]['fields'][$Q . '_responses'] = [
         'title' => 'Number of respondents',
@@ -249,7 +250,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
           $this->_columns[$cg['table_name']]['fields'][str_replace('_note', '', $Q) . '_responses'] = [
             'title' => 'Number of respondents',
             'required' => FALSE,
-            'dbAlias' => sprintf("(%s + %s)", $questionMapper[str_replace('_note', '', $Q)]['options']['total']['column_name'], $questionMapper[str_replace('_note', '', $Q) . '_staff']['options']['total']['column_name']),
+            'dbAlias' => sprintf("(COALESCE(%s, 0) + COALESCE(%s, 0))", $questionMapper[str_replace('_note', '', $Q)]['options']['total']['column_name'], $questionMapper[str_replace('_note', '', $Q) . '_staff']['options']['total']['column_name']),
           ];
        }
        if (!empty($mapper['options']['total']['dbAlias'])) {
