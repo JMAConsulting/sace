@@ -283,9 +283,7 @@ class CRM_Activityical_Feed {
           )
         LEFT JOIN civicrm_contact target ON activity_target.contact_id = target.id
       WHERE
-        civicrm_activity.status_id NOT IN
-          (" . implode(',', $placeholders['status']) . ")
-        AND contact_primary.id = '{$placeholders['contact_id']}'
+        contact_primary.id = '{$placeholders['contact_id']}'
         AND civicrm_activity.is_test = 0
         AND date(civicrm_activity.activity_date_time) >= (CURRENT_DATE - INTERVAL {$placeholders['activityical_past_days']} DAY)
         AND date(civicrm_activity.activity_date_time) <= (CURRENT_DATE + INTERVAL {$placeholders['activityical_future_days']} DAY)
