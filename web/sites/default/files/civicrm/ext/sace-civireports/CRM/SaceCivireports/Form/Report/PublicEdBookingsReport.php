@@ -16,7 +16,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
   protected $_customGroupExtends = 'Activity';
 
   public $_demographicFields = [];
-  public $__audienceFields = [];
+  public $_audienceFields = [];
   public function __construct() {
     $this->_columns = [
       'civicrm_activity' => [
@@ -65,7 +65,7 @@ class CRM_SaceCivireports_Form_Report_PublicEdBookingsReport extends CRM_Report_
             'title' => ts('Length (in minutes)'),
             'type' => CRM_Utils_Type::T_INT,
           ],
-'contact_id' => [
+          'contact_id' => [
             'name' => 'contact_id',
             'title' => ts('Presenter(s)'),
             'dbAlias' => 'sc.id',
@@ -332,12 +332,19 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
   }
 
   public function from() {
+    $this->createTemporaryTable('max_activities',
+      "SELECT a.id, max(a.activity_date_time) AS activity_date, bf.booking_reference_id_706
+        FROM civicrm_activity a
+        INNER JOIN civicrm_value_ped_booking_r_53 bf ON bf.entity_id = a.id
+        WHERE a.activity_type_id IN (200)
+        GROUP BY bf.booking_reference_id_706"
+    );
     $this->_from = "
       FROM civicrm_activity {$this->_aliases['civicrm_activity']}
       INNER JOIN (
-        SELECT entity_id, booking_reference_id_706
-        FROM civicrm_value_ped_booking_r_53 bf
-         INNER JOIN civicrm_activity a ON a.id = bf.entity_id AND a.activity_type_id IN (200)
+        SELECT a.id AS entity_id, m.booking_reference_id_706
+        FROM civicrm_activity a
+        INNER JOIN {$this->temporaryTables['max_activities']['name']} as m ON m.activity_date = a.activity_date_time AND m.id = a.id
       ) summary ON summary.booking_reference_id_706 = {$this->_aliases['civicrm_activity']}.id
       INNER JOIN civicrm_value_ped_booking_r_53 {$this->_aliases['civicrm_value_ped_booking_r_53']} ON {$this->_aliases['civicrm_value_ped_booking_r_53']}.entity_id = summary.entity_id
       LEFT JOIN civicrm_value_ped_presentat_54 {$this->_aliases['civicrm_value_ped_presentat_54']} ON {$this->_aliases['civicrm_value_ped_presentat_54']}.entity_id = summary.entity_id
@@ -348,13 +355,13 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
       LEFT JOIN civicrm_contact ac ON ac.id = assignee.contact_id
       LEFT JOIN civicrm_contact tc ON tc.id = target.contact_id
       LEFT JOIN civicrm_address tc_add ON tc_add.contact_id = tc.id AND tc_add.is_primary = 1
-      LEFT JOIN civicrm_entity_tag tc_entity_tag ON tc_entity_tag.entity_id = tc.id AND tc_entity_tag.entity_table = 'civicrm_contact' 
+      LEFT JOIN civicrm_entity_tag tc_entity_tag ON tc_entity_tag.entity_id = tc.id AND tc_entity_tag.entity_table = 'civicrm_contact'
       LEFT JOIN civicrm_tag tc_tag ON tc_tag.id = tc_entity_tag.tag_id
       LEFT JOIN civicrm_contact sc ON sc.id = source.contact_id
       LEFT JOIN (
-	SELECT entity_id, booking_reference_id_706
+        SELECT entity_id, booking_reference_id_706
         FROM civicrm_value_ped_booking_r_53 bf
-         INNER JOIN civicrm_activity a ON a.id = bf.entity_id AND a.activity_type_id IN (197)
+        INNER JOIN civicrm_activity a ON a.id = bf.entity_id AND a.activity_type_id IN (197)
       ) feedback ON feedback.booking_reference_id_706 = {$this->_aliases['civicrm_activity']}.id
       LEFT JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = feedback.entity_id
    ";
@@ -418,7 +425,7 @@ WHERE cg.is_active = 1 AND
     $selectedAids = CRM_Utils_Array::collect('civicrm_activity_id', $rows);
     if (!empty($this->_params['fields']['demo_questions']) && !empty($selectedAids)) {
       $sql = sprintf("SELECT  count(pp.entity_id) as count, pb.booking_reference_id_706 as aid
-            FROM civicrm_value_booking_infor_2 bi 
+            FROM civicrm_value_booking_infor_2 bi
             INNER JOIN civicrm_value_ped_booking_r_53 pb ON pb.booking_reference_id_706 = bi.entity_id
             INNER JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = pb.entity_id
             WHERE demographic_information_1262 <> '' AND pb.booking_reference_id_706 IN (%s)
@@ -435,7 +442,7 @@ WHERE cg.is_active = 1 AND
     foreach ($this->_demographicFields as $ov => $name) {
       if (!empty($this->_params['fields'][$name]) && !empty($selectedAids)) {
         $sql = sprintf("SELECT  count(pp.entity_id) as count, pb.booking_reference_id_706 as aid
-        FROM civicrm_value_booking_infor_2 bi 
+        FROM civicrm_value_booking_infor_2 bi
         INNER JOIN civicrm_value_ped_booking_r_53 pb ON pb.booking_reference_id_706 = bi.entity_id
         INNER JOIN civicrm_value_ped_participa_49 pp ON pp.entity_id = pb.entity_id
         WHERE demographic_information_1262 REGEXP '([[:cntrl:]]|^){$ov}([[:cntrl:]]|$)' AND pb.booking_reference_id_706 IN (%s)
@@ -451,11 +458,11 @@ WHERE cg.is_active = 1 AND
       }
     }
 
-    
+
   foreach ($this->_audienceFields as $ov => $name) {
   if (!empty($this->_params['fields'][$name]) && !empty($selectedAids)) {
     $sql = sprintf("SELECT count(entity_id) as count, entity_id as aid
-    FROM civicrm_value_booking_infor_2 
+    FROM civicrm_value_booking_infor_2
     WHERE audience_341 REGEXP '([[:cntrl:]]|^){$ov}([[:cntrl:]]|$)' AND entity_id IN (%s)
     GROUP BY entity_id" , implode(',', $selectedAids));
     $this->addToDeveloperTab($sql);
