@@ -344,7 +344,7 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
       INNER JOIN (
         SELECT a.id AS entity_id, m.booking_reference_id_706
         FROM civicrm_activity a
-        INNER JOIN {$this->temporaryTables['max_activities']['name']} as m ON m.id = a.id
+        INNER JOIN {$this->temporaryTables['max_activities']['name']} as m ON m.activity_date = a.activity_date_time AND m.id = a.id
       ) summary ON summary.booking_reference_id_706 = {$this->_aliases['civicrm_activity']}.id
       INNER JOIN civicrm_value_ped_booking_r_53 {$this->_aliases['civicrm_value_ped_booking_r_53']} ON {$this->_aliases['civicrm_value_ped_booking_r_53']}.entity_id = summary.entity_id
       LEFT JOIN civicrm_value_ped_presentat_54 {$this->_aliases['civicrm_value_ped_presentat_54']} ON {$this->_aliases['civicrm_value_ped_presentat_54']}.entity_id = summary.entity_id
