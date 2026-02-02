@@ -333,7 +333,7 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
 
   public function from() {
     $this->createTemporaryTable('max_activities',
-      "SELECT a.id, max(a.activity_date_time) AS activity_date, bf.booking_reference_id_706
+      "SELECT max(a.id) as id, max(a.activity_date_time) AS activity_date, bf.booking_reference_id_706
         FROM civicrm_activity a
         INNER JOIN civicrm_value_ped_booking_r_53 bf ON bf.entity_id = a.id
         WHERE a.activity_type_id IN (200)
