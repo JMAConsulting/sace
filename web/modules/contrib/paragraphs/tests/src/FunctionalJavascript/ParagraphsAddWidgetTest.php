@@ -12,6 +12,8 @@ use Drupal\Tests\paragraphs\Traits\ParagraphsCoreVersionUiTestTrait;
  *
  * @group paragraphs
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paragraphs')]
 class ParagraphsAddWidgetTest extends WebDriverTestBase {
 
   use LoginAdminTrait;
@@ -83,47 +85,11 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     $icon_two = $this->addParagraphsTypeIcon('text');
 
     // Add a text field to the text_paragraph type.
-    $this->drupalGet('admin/structure/paragraphs_type/' . $paragraph_type . '/fields/add-field');
-    if ($this->coreVersion('10.2')) {
-      $page->selectFieldOption('new_storage_type', 'formatted_text');
-      $this->assertSession()->waitForElementVisible('css', '#text_long');
-      $page->selectFieldOption('group_field_options_wrapper', 'text_long');
-    }
-    else {
-      $page->selectFieldOption('new_storage_type', 'text_long');
-    }
-    $page->fillField('label', 'Text');
-    $this->assertSession()->waitForElementVisible('css', '#edit-name-machine-name-suffix .link');
-    $page->pressButton('Edit');
-    $page->fillField('field_name', 'text');
-    if ($this->coreVersion('10.2')) {
-      $page->pressButton('Continue');
-      $page->pressButton('Save settings');
-    }
-    else {
-      $page->pressButton('Save and continue');
-      $page->pressButton('Save field settings');
-      $page->pressButton('Save settings');
-    }
+    $this->addFieldtoParagraphType($paragraph_type, 'field_text', 'text_long');
 
     // Create paragraph type Nested test.
     $this->addParagraphsType('nested_test');
-
-    $this->drupalGet('/admin/structure/paragraphs_type/nested_test/fields/add-field');
-    $page->selectFieldOption('new_storage_type', 'field_ui:entity_reference_revisions:paragraph');
-    $page->fillField('label', 'Paragraphs');
-    $this->assertSession()->waitForElementVisible('css', '#edit-name-machine-name-suffix .link');
-    $page->pressButton('Edit');
-    $page->fillField('field_name', 'paragraphs');
-    if ($this->coreVersion('10.2')) {
-      $page->pressButton('Continue');
-      $page->pressButton('Save settings');
-    }
-    else {
-      $page->pressButton('Save and continue');
-      $page->pressButton('Save field settings');
-      $page->pressButton('Save settings');
-    }
+    $this->addFieldtoParagraphType('nested_test', 'field_paragraphs', 'entity_reference_revisions', ['target_type' => 'paragraph']);
 
     // Set the settings for the field in the nested paragraph.
     $component = [
@@ -156,7 +122,6 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     // Find the add button in the nested paragraph with xpath.
     $element = $this->xpath('//div[contains(@class, "form-item")]/div/div/div[contains(@class, "paragraph-type-add-modal")]/input');
     $element[0]->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
 
     // Add a text inside the nested paragraph.
     $page = $this->getSession()->getPage();
@@ -227,93 +192,13 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     $this->addParagraphsType('test_3');
 
     // Add a text field to the text_paragraph type.
-    $this->drupalGet('admin/structure/paragraphs_type/test_1/fields/add-field');
-    if ($this->coreVersion('10.2')) {
-      $page->selectFieldOption('new_storage_type', 'formatted_text');
-      $this->assertSession()->waitForElementVisible('css', '#text_long');
-      $page->selectFieldOption('group_field_options_wrapper', 'text_long');
-    }
-    else {
-      $page->selectFieldOption('new_storage_type', 'text_long');
-    }
-    $page->fillField('label', 'Text');
-    $this->assertSession()->waitForElementVisible('css', '#edit-name-machine-name-suffix .link');
-    $page->pressButton('Edit');
-    $page->fillField('field_name', 'text_1');
-    if ($this->coreVersion('10.2')) {
-      $page->pressButton('Continue');
-      $page->pressButton('Save settings');
-    }
-    else {
-      $page->pressButton('Save and continue');
-      $page->pressButton('Save field settings');
-      $page->pressButton('Save settings');
-    }
-
-    $this->drupalGet('admin/structure/paragraphs_type/test_2/fields/add-field');
-    if ($this->coreVersion('10.2')) {
-      $page->selectFieldOption('new_storage_type', 'formatted_text');
-      $this->assertSession()->waitForElementVisible('css', '#text_long');
-      $page->selectFieldOption('group_field_options_wrapper', 'text_long');
-    }
-    else {
-      $page->selectFieldOption('new_storage_type', 'text_long');
-    }
-    $page->fillField('label', 'Text');
-    $this->assertSession()->waitForElementVisible('css', '#edit-name-machine-name-suffix .link');
-    $page->pressButton('Edit');
-    $page->fillField('field_name', 'text_2');
-    if ($this->coreVersion('10.2')) {
-      $page->pressButton('Continue');
-      $page->pressButton('Save settings');
-    }
-    else {
-      $page->pressButton('Save and continue');
-      $page->pressButton('Save field settings');
-      $page->pressButton('Save settings');
-    }
-
-    $this->drupalGet('admin/structure/paragraphs_type/test_3/fields/add-field');
-    if ($this->coreVersion('10.2')) {
-      $page->selectFieldOption('new_storage_type', 'formatted_text');
-      $this->assertSession()->waitForElementVisible('css', '#text_long');
-      $page->selectFieldOption('group_field_options_wrapper', 'text_long');
-    }
-    else {
-      $page->selectFieldOption('new_storage_type', 'text_long');
-    }
-    $page->fillField('label', 'Text');
-    $this->assertSession()->waitForElementVisible('css', '#edit-name-machine-name-suffix .link');
-    $page->pressButton('Edit');
-    $page->fillField('field_name', 'test_3');
-    if ($this->coreVersion('10.2')) {
-      $page->pressButton('Continue');
-      $page->pressButton('Save settings');
-    }
-    else {
-      $page->pressButton('Save and continue');
-      $page->pressButton('Save field settings');
-      $page->pressButton('Save settings');
-    }
+    $this->addFieldtoParagraphType('test_1', 'field_text1', 'text_long');
+    $this->addFieldtoParagraphType('test_2', 'field_text2', 'text_long');
+    $this->addFieldtoParagraphType('test_3', 'field_text3', 'text_long');
 
     // Create paragraph type Nested test.
     $this->addParagraphsType('test_nested');
-
-    $this->drupalGet('/admin/structure/paragraphs_type/test_nested/fields/add-field');
-    $page->selectFieldOption('new_storage_type', 'field_ui:entity_reference_revisions:paragraph');
-    $page->fillField('label', 'Paragraphs');
-    $this->assertSession()->waitForElementVisible('css', '#edit-name-machine-name-suffix .link');
-    $page->pressButton('Edit');
-    $page->fillField('field_name', 'paragraphs');
-    if ($this->coreVersion('10.2')) {
-      $page->pressButton('Continue');
-      $page->pressButton('Save settings');
-    }
-    else {
-      $page->pressButton('Save and continue');
-      $page->pressButton('Save field settings');
-      $page->pressButton('Save settings');
-    }
+    $this->addParagraphsField('test_nested', 'field_paragraphs', 'paragraph');
 
     // Set the settings for the field in the nested paragraph.
     $component = [
@@ -351,7 +236,6 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').last().val('')");
     for ($i = 1; $i <= 2; $i++) {
       $page->find('xpath', '//*[@name="button_add_modal" and not(ancestor::table)]')->click();
-      $this->assertSession()->assertWaitOnAjaxRequest();
       $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_' . $i . '")]')->click();
       $this->assertSession()->assertWaitOnAjaxRequest();
     }
@@ -364,7 +248,6 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     // Add new paragraph to 1st position - set delta to 0 for base paragraphs.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').last().val(0)");
     $page->find('xpath', '//*[@name="button_add_modal" and not(ancestor::table)]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_3")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
@@ -376,7 +259,6 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     // Add new paragraph to 3rd position - set delta to 2 for base paragraphs.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').last().val(2)");
     $page->find('xpath', '//*[@name="button_add_modal" and not(ancestor::table)]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_2")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
@@ -388,7 +270,6 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     // Add new paragraph to last position - using really big delta.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').last().val(1000)");
     $page->find('xpath', '//*[@name="button_add_modal" and not(ancestor::table)]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_1")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
@@ -400,7 +281,6 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
     // Clear delta base paragraphs.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').last().val('')");
     $page->find('xpath', '//*[@name="button_add_modal" and not(ancestor::table)]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_3")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
@@ -438,35 +318,30 @@ class ParagraphsAddWidgetTest extends WebDriverTestBase {
 
     // Add paragraph in nested to have initial state for adding positions.
     $page->find('xpath', '//*[@name="button_add_modal" and ancestor::table]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_1")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
     // Add new paragraph to first position.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').first().val(0)");
     $page->find('xpath', '//*[@name="button_add_modal" and ancestor::table]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_3")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
     // Add new paragraph to 2nd position - using float value for index.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').first().val(1.1111)");
     $page->find('xpath', '//*[@name="button_add_modal" and ancestor::table]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_2")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
     // Add new paragraph to first position - using negative index.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').first().val(-100)");
     $page->find('xpath', '//*[@name="button_add_modal" and ancestor::table]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_2")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 
     // Add new paragraph to last position - using some text as position.
     $this->getSession()->executeScript("jQuery('input.paragraph-type-add-delta').first().val('some_text')");
     $page->find('xpath', '//*[@name="button_add_modal" and ancestor::table]')->click();
-    $this->assertSession()->assertWaitOnAjaxRequest();
     $page->find('xpath', '//*[contains(@class, "paragraphs-add-dialog") and contains(@class, "ui-dialog-content")]//*[contains(@name, "test_3")]')->click();
     $this->assertSession()->assertWaitOnAjaxRequest();
 

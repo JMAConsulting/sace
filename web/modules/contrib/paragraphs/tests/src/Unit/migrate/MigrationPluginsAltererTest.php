@@ -2,8 +2,11 @@
 
 namespace Drupal\Tests\paragraphs\Unit\migrate;
 
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\paragraphs\MigrationPluginsAlterer;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the MigrationPluginsAlterer service.
@@ -14,6 +17,7 @@ use Drupal\Tests\UnitTestCase;
  *
  * @group paragraphs
  */
+#[Group('paragraphs')]
 class MigrationPluginsAltererTest extends UnitTestCase {
 
   /**
@@ -30,12 +34,11 @@ class MigrationPluginsAltererTest extends UnitTestCase {
     parent::setUp();
 
     $logger_channel = $this->createMock('Drupal\Core\Logger\LoggerChannelInterface');
-    $logger_factory = $this->getMockBuilder('Drupal\Core\Logger\LoggerChannelFactory')
-      ->getMock();
+    $logger_factory = $this->createMock('Drupal\Core\Logger\LoggerChannelFactoryInterface');
     $logger_factory->expects($this->atLeastOnce())
       ->method('get')
       ->with('paragraphs')
-      ->will($this->returnValue($logger_channel));
+      ->willReturn($logger_channel);
 
     $this->paragraphsMigrationPluginsAlterer = new MigrationPluginsAlterer($logger_factory);
   }
@@ -46,6 +49,7 @@ class MigrationPluginsAltererTest extends UnitTestCase {
    * @dataProvider providerParagraphsMigrationPrepareProcess
    * @covers ::paragraphsMigrationPrepareProcess
    */
+  #[DataProvider('providerParagraphsMigrationPrepareProcess')]
   public function testParagraphsMigrationPrepareProcess(array $input, array $expected) {
     ['process' => $process, 'property' => $property] = $input;
     $success = $this->paragraphsMigrationPluginsAlterer->paragraphsMigrationPrepareProcess($process, $property);
@@ -59,7 +63,7 @@ class MigrationPluginsAltererTest extends UnitTestCase {
    * @return array[]
    *   Data and expected results.
    */
-  public function providerParagraphsMigrationPrepareProcess() {
+  public static function providerParagraphsMigrationPrepareProcess() {
     return [
       // Missing property (no change).
       [

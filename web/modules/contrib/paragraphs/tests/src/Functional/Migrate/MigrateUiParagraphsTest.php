@@ -3,6 +3,9 @@
 namespace Drupal\Tests\paragraphs\Functional\Migrate;
 
 use Drupal\Tests\paragraphs\Traits\ParagraphsNodeMigrationAssertionsTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the migration of paragraph entities.
@@ -11,7 +14,14 @@ use Drupal\Tests\paragraphs\Traits\ParagraphsNodeMigrationAssertionsTrait;
  *
  * @group legacy
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paragraphs')]
 class MigrateUiParagraphsTest extends MigrateUiParagraphsTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
 
   use ParagraphsNodeMigrationAssertionsTrait;
 
@@ -20,6 +30,7 @@ class MigrateUiParagraphsTest extends MigrateUiParagraphsTestBase {
    *
    * @dataProvider providerParagraphsMigrate
    */
+  #[DataProvider('providerParagraphsMigrate')]
   public function testParagraphsMigrate($node_migrate_type_classic) {
     $this->setClassicNodeMigration($node_migrate_type_classic);
     $this->assertMigrateUpgradeViaUi();
@@ -35,7 +46,7 @@ class MigrateUiParagraphsTest extends MigrateUiParagraphsTestBase {
    * @return bool[][]
    *   Classic node migration type.
    */
-  public function providerParagraphsMigrate() {
+  public static function providerParagraphsMigrate() {
     return [
       ['node_migrate_type_classic' => TRUE],
       ['node_migrate_type_classic' => FALSE],
