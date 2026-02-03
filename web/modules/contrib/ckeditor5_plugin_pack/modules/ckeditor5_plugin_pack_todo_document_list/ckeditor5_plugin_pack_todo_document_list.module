@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2003-2025, CKSource Holding sp. z o.o. All rights reserved.
+ * Copyright (c) 2003-2026, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -29,6 +29,13 @@ function ckeditor5_plugin_pack_todo_document_list_ckeditor5_plugin_info_alter(ar
  */
 function ckeditor5_plugin_pack_todo_document_list_install($is_syncing): void {
   ckeditor5_plugin_pack_display_trial_info_message();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ckeditor5_plugin_pack_todo_document_list_uninstall($is_syncing) {
+  ckeditor5_plugin_pack_remove_ckeditor_plugins(['todoList'], ['ckeditor5_plugin_pack_todo_document_list__todo_document_list']);
 }
 
 /**

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2003-2025, CKSource Holding sp. z o.o. All rights reserved.
+ * Copyright (c) 2003-2026, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -29,8 +29,45 @@ function ckeditor5_plugin_pack_layout_table_ckeditor5_plugin_info_alter(array &$
 }
 
 /**
+ * Implements hook_editor_js_settings_alter().
+ */
+function ckeditor5_plugin_pack_layout_table_editor_js_settings_alter(array &$settings) {
+  // Ensure that the table contentToolbar items are unique.
+  foreach ($settings["editor"]["formats"] as $format_id => $format) {
+    if ($format['editor'] !== 'ckeditor5') {
+      continue;
+    }
+    $editorConfig = $format["editorSettings"]["config"];
+    if (isset($editorConfig["table"]['disableProperties'])) {
+
+      if ($editorConfig["table"]['disableProperties']) {
+        foreach ($editorConfig["table"]['contentToolbar'] as $key => $value) {
+          if (in_array($value, ['tableProperties', 'tableCellProperties'])) {
+            unset($editorConfig["table"]['contentToolbar'][$key]);
+          }
+        }
+        $settings["editor"]["formats"][$format_id]["editorSettings"]["config"]["table"]['contentToolbar'] = array_values($editorConfig["table"]['contentToolbar']);
+      }
+      else {
+        $settings["editor"]["formats"][$format_id]["editorSettings"]["config"]["table"]['contentToolbar'] = array_unique($editorConfig["table"]['contentToolbar']);
+      }
+
+    }
+  }
+}
+
+/**
  * Implements hook_install().
  */
 function ckeditor5_plugin_pack_layout_table_install($is_syncing): void {
   ckeditor5_plugin_pack_display_trial_info_message();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ckeditor5_plugin_pack_layout_table_uninstall($is_syncing) {
+  ckeditor5_plugin_pack_remove_ckeditor_plugins(['insertTableLayout', 'tableType'], [
+    'ckeditor5_plugin_pack_layout_table__table_properties'
+  ]);
 }

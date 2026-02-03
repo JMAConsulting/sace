@@ -11,10 +11,14 @@ use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\Tests\migrate_drupal_ui\Functional\MigrateUpgradeTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Provides a base class for testing Paragraphs migration via the UI.
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paragraphs')]
 abstract class MigrateUiParagraphsTestBase extends MigrateUpgradeTestBase {
 
   use StringTranslationTrait;
@@ -405,7 +409,7 @@ abstract class MigrateUiParagraphsTestBase extends MigrateUpgradeTestBase {
     $session = $this->assertSession();
     $session->responseContains('Upgrade a site by importing its files and the data from its database into a clean and empty new install of Drupal');
 
-    $this->submitForm([], $this->t('Continue'));
+    $this->submitForm([], 'Continue');
     $session->pageTextContains('Provide credentials for the database of the Drupal site you want to upgrade.');
 
     $driver = $connection_options['driver'];
@@ -420,6 +424,7 @@ abstract class MigrateUiParagraphsTestBase extends MigrateUpgradeTestBase {
       $form = $drivers[$driver]->getInstallTasks()->getFormOptions($connection_options);
     }
     else {
+      // @phpstan-ignore-next-line
       $drivers = drupal_get_database_types();
       $form = $drivers[$driver]->getFormOptions($connection_options);
     }
@@ -437,17 +442,17 @@ abstract class MigrateUiParagraphsTestBase extends MigrateUpgradeTestBase {
     }
     $edits = $this->translatePostValues($edit);
 
-    $this->submitForm($edits, $this->t('Review upgrade'));
+    $this->submitForm($edits, 'Review upgrade');
     $session->pageTextNotContains('Resolve all issues below to continue the upgrade.');
 
     // ID conflict form.
-    $session->buttonExists($this->t('I acknowledge I may lose data. Continue anyway.'));
-    $this->submitForm([], $this->t('I acknowledge I may lose data. Continue anyway.'));
+    $session->buttonExists('I acknowledge I may lose data. Continue anyway.');
+    $this->submitForm([], 'I acknowledge I may lose data. Continue anyway.');
     $session->statusCodeEquals(200);
 
     // Perform the upgrade.
-    $this->submitForm([], $this->t('Perform upgrade'));
-    $session->pageTextContains($this->t('Congratulations, you upgraded Drupal!'));
+    $this->submitForm([], 'Perform upgrade');
+    $session->pageTextContains('Congratulations, you upgraded Drupal!');
 
     // Have to reset all the statics after migration to ensure entities are
     // loadable.

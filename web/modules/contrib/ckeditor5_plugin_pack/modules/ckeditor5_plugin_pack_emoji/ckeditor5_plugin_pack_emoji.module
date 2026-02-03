@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2003-2025, CKSource Holding sp. z o.o. All rights reserved.
+ * Copyright (c) 2003-2026, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -12,6 +12,13 @@ declare(strict_types=1);
  */
 function ckeditor5_plugin_pack_emoji_install($is_syncing): void {
   ckeditor5_plugin_pack_display_trial_info_message();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ckeditor5_plugin_pack_emoji_uninstall($is_syncing) {
+  ckeditor5_plugin_pack_remove_ckeditor_plugins(['emoji'], ['ckeditor5_plugin_pack_emoji_emoji']);
 }
 
 /**
@@ -44,5 +51,24 @@ function ckeditor5_plugin_pack_emoji_ckeditor5_plugin_info_alter(array &$plugin_
   $libraryVersionChecker = \Drupal::service('ckeditor5_plugin_pack.core_library_version_checker');
   if (!$libraryVersionChecker->isLibraryVersionHigherOrEqual('44.3.0')) {
     unset($plugin_definitions['ckeditor5_plugin_pack_emoji_emoji']);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function ckeditor5_plugin_pack_emoji_form_filter_format_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Get the filter format entity from the form state.
+  $filter_format = $form_state->getFormObject()->getEntity();
+
+  // Check if CKEditor 5 is the selected editor.
+  $editor = \Drupal::entityTypeManager()->getStorage('editor')->load($filter_format->id());
+  if (!$editor || $editor->getEditor() !== 'ckeditor5') {
+    return;
+  }
+
+  $libraryVersionChecker = \Drupal::service('ckeditor5_plugin_pack.core_library_version_checker');
+  if (!$libraryVersionChecker->isLibraryVersionHigherOrEqual('44.3.0')) {
+    ckeditor5_plugin_pack_old_version_warning_message('Emoji');
   }
 }

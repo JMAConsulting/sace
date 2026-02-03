@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2003-2025, CKSource Holding sp. z o.o. All rights reserved.
+ * Copyright (c) 2003-2026, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -69,10 +69,10 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
     }
 
     if ($this->libraryVersionChecker->isLibraryVersionHigherOrEqual('44.0.0')) {
-      $static_plugin_config['licenseKey'] = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODI3Nzc2MDAsImp0aSI6IjA2MTFhOGMyLWQ4MzMtNGJkNy05NzhlLWQzZWU1OTM2MTE2YyIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOiJkcnVwYWwiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiYTkwODE4ZGQifQ.Gx9jCO_S_c5r1OQq0AJfwbdDg-Vd6-RYhwkPhRtzcPuh3HrJfIDp2Qoo1AoKLt8SHte9JPV1QwuvmS3p6w1qwA';
+      $static_plugin_config['licenseKey'] = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3OTU0Nzg0MDAsImp0aSI6IjFhYTU3Yjg1LTI4MmYtNDA0Yy1iOGJjLWRlZjMxY2JhNTE0MSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOiJkcnVwYWwiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiMWI5MDYxMDcifQ.nti5B6fVADt74CgmHt9UUrgs5AjsbOQZESlFolk9nfms5QuSLtViQS8zLId5i_uVaaqwc4v_dr_0vIa8ukmQtQ';
     }
     else {
-      $static_plugin_config['licenseKey'] = '5QFOn1Age1cDjWJau0Xzr22Mh5aI74k1hzDtZek3tEoc5tlWgojOc6G1AFQXtUXCRrpeI+3hNpwUONEBTJSVP5iuG8IhZscg+YXoFZduEwhmyoIrbeF/xZ6vuFG0va6jyKL2B3AXZQLv6mtyxXTyjrcepjdi9MkxfDPxwxbHX1z1fy6LTvwuwtbSzlp4tUxIDhJ7Z3LZWy60CsnHZKvjajscXJsAAtBLtJmwqqYnrTO+yuC/I6e8wZ98J7F67ys=';
+      $static_plugin_config['licenseKey'] = 'v+VnVUkoRLt0uNIXgyq4lpkwrMElte1PrLtw9iX++LapiRgH9EGQ+DQmoJJS+xLSiwGqal3CcbuiE/KQlpntGd4APpvX2nm/XjeyZZNcQ3J8zLDbZQnwLfh1Iukvs+MvVR7KKDbXfqA4rSa/e7ad0yw/hJ+Il5Al/kyuqlOHFKJwypNIa6O/2uycZcYMEJ/6ygCZbOb9ueMKhd72jpLn56XOLXmD61Z2Ty3A1buYFzRyRPvrErxX+O7FUm4PyUE=';
     }
 
     return $static_plugin_config;

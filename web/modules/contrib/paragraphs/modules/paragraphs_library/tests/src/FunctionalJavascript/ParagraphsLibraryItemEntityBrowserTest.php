@@ -5,12 +5,16 @@ namespace Drupal\Tests\paragraphs_library\FunctionalJavascript;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Tests\entity_browser\FunctionalJavascript\EntityBrowserWebDriverTestBase;
 use Drupal\Tests\paragraphs\FunctionalJavascript\ParagraphsTestBaseTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests entity browser integration with paragraphs.
  *
  * @group paragraphs_library
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paragraphs_library')]
 class ParagraphsLibraryItemEntityBrowserTest extends EntityBrowserWebDriverTestBase {
 
   use ParagraphsTestBaseTrait;
@@ -98,16 +102,9 @@ class ParagraphsLibraryItemEntityBrowserTest extends EntityBrowserWebDriverTestB
     $this->getSession()->switchToIFrame('entity_browser_iframe_paragraphs_library_items');
     $style_selector = $this->getSession()->getPage()->find('css', 'input[value="paragraphs_library_item:1"].form-radio');
     $style_selector->click();
+    $this->assertSession()->buttonExists('Select reusable paragraph')->press();
     $this->getSession()->switchToIFrame();
 
-    $drop = <<<JS
-    jQuery('input[type=submit][value="Select reusable paragraph"]', window.frames['entity_browser_iframe_paragraphs_library_items'].document).trigger('click')
-JS;
-    $this->getSession()->evaluateScript($drop);
-    // Now wait until the button and iframe is gone, wait at least one second
-    // because the ajax detection does not reliable detect the active ajax
-    // processing in the iframe.
-    sleep(1);
     $this->waitForAjaxToFinish();
     $this->submitForm([], 'Save');
     // Check that the paragraph was correctly reused.
@@ -159,12 +156,8 @@ JS;
     $this->getSession()->switchToIFrame('entity_browser_iframe_paragraphs_library_items');
     $style_selector = $this->getSession()->getPage()->find('css', 'input[value="paragraphs_library_item:2"].form-radio');
     $style_selector->click();
+    $this->assertSession()->buttonExists('Select reusable paragraph')->press();
     $this->getSession()->switchToIFrame();
-    $drop = <<<JS
-    jQuery('input[type=submit][value="Select reusable paragraph"]', window.frames['entity_browser_iframe_paragraphs_library_items'].document).trigger('click')
-JS;
-    $this->getSession()->evaluateScript($drop);
-    sleep(1);
     $this->waitForAjaxToFinish();
     // Edit the inside library item after adding it.
     $this->getSession()->getPage()->pressButton('Edit');
@@ -197,12 +190,8 @@ JS;
     $style_selector = $this->getSession()->getPage()->find('css', 'input[value="paragraphs_library_item:3"].form-radio');
     $this->assertTrue($style_selector->isVisible());
     $style_selector->click();
+    $this->assertSession()->buttonExists('Select reusable paragraph')->press();
     $this->getSession()->switchToIFrame();
-    $drop = <<<JS
-    jQuery('input[type=submit][value="Select reusable paragraph"]', window.frames['entity_browser_iframe_paragraphs_library_items'].document).trigger('click')
-JS;
-    $this->getSession()->evaluateScript($drop);
-    sleep(1);
     $this->waitForAjaxToFinish();
     $this->assertSession()->elementContains('css', '.paragraphs-collapsed-description .paragraphs-content-wrapper', 'Inner library item');
     $this->submitForm([], 'Save');

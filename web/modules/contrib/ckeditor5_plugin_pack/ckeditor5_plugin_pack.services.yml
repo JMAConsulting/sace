@@ -9,3 +9,4 @@ services:
     arguments:
       - '@library.discovery'
       - '@config.factory'
+      - '@module_handler'

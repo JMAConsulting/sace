@@ -4,12 +4,16 @@ namespace Drupal\Tests\paragraphs\Functional\WidgetStable;
 
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\NodeType;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests paragraphs configuration.
  *
  * @group paragraphs
  */
+#[RunTestsInSeparateProcesses]
+#[Group('paragraphs')]
 class ParagraphsConfigTest extends ParagraphsTestBase {
 
   /**
@@ -124,29 +128,23 @@ class ParagraphsConfigTest extends ParagraphsTestBase {
     $this->assertSession()->responseContains('<div class="messages messages--error');
 
     // Check a not paragraphs translatable field does not display the message.
-    if ($this->coreVersion('10.2')) {
-      $this->drupalGet('admin/structure/types/manage/paragraphed_test/fields/add-field');
+    $this->drupalGet('admin/structure/types/manage/paragraphed_test/fields/add-field');
+    if ($this->coreVersion('11.2')) {
+      $this->clickLink('Reference');
+    }
+    else {
       $selected_group = [
         'new_storage_type' => 'reference',
       ];
-      $this->submitForm($selected_group, 'Change field group');
-      $edit = [
-        'group_field_options_wrapper' => 'field_ui:entity_reference:node',
-        'label' => 'new_no_field_paragraphs',
-        'field_name' => 'new_no_field_paragraphs',
-      ];
-      $this->submitForm($edit, 'Continue');
+      $this->submitForm($selected_group, 'Continue');
     }
-    else {
-      $this->drupalGet('admin/structure/types/manage/paragraphed_test/fields/add-field');
-      $edit = [
-        'new_storage_type' => 'field_ui:entity_reference:node',
-        'label' => 'new_no_field_paragraphs',
-        'field_name' => 'new_no_field_paragraphs',
-      ];
-      $this->submitForm($edit, 'Save and continue');
-      $this->submitForm([], 'Save field settings');
-    }
+
+    $edit = [
+      $this->coreVersion('11.2') ? 'field_options_wrapper' : 'group_field_options_wrapper' => 'field_ui:entity_reference:node',
+      'label' => 'new_no_field_paragraphs',
+      'field_name' => 'new_no_field_paragraphs',
+    ];
+    $this->submitForm($edit, 'Continue');
     $this->assertSession()->pageTextNotContains('Paragraphs fields do not support translation.');
     $this->assertSession()->responseNotContains('<div class="messages messages--warning');
   }
