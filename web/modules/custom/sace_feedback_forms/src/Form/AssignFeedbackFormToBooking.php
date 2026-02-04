@@ -49,7 +49,7 @@ class AssignFeedbackFormToBooking extends FormBase {
     $values = $form_state->getValues();
 
     \Drupal::service('civicrm')->initialize();
-    \Civi\Api4\Activity::update(TRUE)
+    \Civi\Api4\Activity::update(FALSE)
       ->addWhere('id', '=', $values['booking_id'])
       ->addValue('Booking_Information.Feedback_Webform', $values['webform'])
       ->execute();
