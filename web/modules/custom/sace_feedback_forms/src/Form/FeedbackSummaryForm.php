@@ -234,13 +234,13 @@ class FeedbackSummaryForm extends FormBase
 
     $summaryId = $saveSummary->execute()->first()['id'];
 
-    $form_state->setRedirectUrl(Url::fromUri('base:/civicrm/activity', [
+/*    $form_state->setRedirectUrl(Url::fromUri('base:/civicrm/activity', [
       'query' => [
         'reset' => 1,
         'action' => 'view',
         'id' => $summaryId,
       ],
-    ]));
+]));*/
 
 //    $activityContactSave = \Civi\Api4\ActivityContact::save(FALSE);
 
