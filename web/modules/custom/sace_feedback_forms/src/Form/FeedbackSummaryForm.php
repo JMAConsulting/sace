@@ -207,7 +207,7 @@ class FeedbackSummaryForm extends FormBase
 
     if ($activity) {
       // update existing summary
-      $saveSummary = Activity::update(FALSE)->addWhere('id', '=', $activity['id']);
+      $saveSummary = Activity::update(FALSE)->addWhere('id', '=', $activity['id'])->addValue('status_id:name', 'Completed');
     }
 
     // now get submitted values from the form
@@ -234,13 +234,7 @@ class FeedbackSummaryForm extends FormBase
 
     $summaryId = $saveSummary->execute()->first()['id'];
 
-/*    $form_state->setRedirectUrl(Url::fromUri('base:/civicrm/activity', [
-      'query' => [
-        'reset' => 1,
-        'action' => 'view',
-        'id' => $summaryId,
-      ],
-]));*/
+    $form_state->setRedirectUrl(Url::fromUri('base:/feedback-summary-confirmation'));
 
 //    $activityContactSave = \Civi\Api4\ActivityContact::save(FALSE);
 
