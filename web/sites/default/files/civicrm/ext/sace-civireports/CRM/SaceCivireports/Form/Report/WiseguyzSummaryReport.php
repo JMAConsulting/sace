@@ -157,14 +157,14 @@ public function addCustomDataToColumns($addFields = TRUE, $permCustomGroupIds = 
       FROM civicrm_activity {$this->_aliases['civicrm_activity']}
       INNER JOIN (
         SELECT a.id, entity_id, booking_1442
-        FROM civicrm_value_feedback_form_60 bf
+        FROM civicrm_value_feedback_form_61 bf
          INNER JOIN civicrm_activity a ON a.id = bf.entity_id AND a.activity_type_id IN (341)
       ) summary ON summary.booking_1442 = {$this->_aliases['civicrm_activity']}.id
-      INNER JOIN civicrm_value_feedback_form_60 {$this->_aliases['civicrm_value_feedback_form_60']} ON {$this->_aliases['civicrm_value_feedback_form_60']}.entity_id = summary.entity_id
-      LEFT JOIN civicrm_value_booking_infor_2 {$this->_aliases['civicrm_value_booking_infor_2']} ON {$this->_aliases['civicrm_value_booking_infor_2']}.entity_id = {$this->_aliases['civicrm_value_feedback_form_60']}.booking_1442
-      LEFT JOIN civicrm_activity_contact assignee ON assignee.activity_id = {$this->_aliases['civicrm_value_feedback_form_60']}.booking_1442 AND assignee.record_type_id = 2
-      LEFT JOIN civicrm_activity_contact target ON target.activity_id = {$this->_aliases['civicrm_value_feedback_form_60']}.booking_1442 AND target.record_type_id = 3
-      LEFT JOIN civicrm_activity_contact source ON source.activity_id = {$this->_aliases['civicrm_value_feedback_form_60']}.booking_1442 AND source.record_type_id = 1
+      INNER JOIN civicrm_value_feedback_form_61 {$this->_aliases['civicrm_value_feedback_form_61']} ON {$this->_aliases['civicrm_value_feedback_form_61']}.entity_id = summary.entity_id
+      LEFT JOIN civicrm_value_booking_infor_2 {$this->_aliases['civicrm_value_booking_infor_2']} ON {$this->_aliases['civicrm_value_booking_infor_2']}.entity_id = {$this->_aliases['civicrm_value_feedback_form_61']}.booking_1442
+      LEFT JOIN civicrm_activity_contact assignee ON assignee.activity_id = {$this->_aliases['civicrm_value_feedback_form_61']}.booking_1442 AND assignee.record_type_id = 2
+      LEFT JOIN civicrm_activity_contact target ON target.activity_id = {$this->_aliases['civicrm_value_feedback_form_61']}.booking_1442 AND target.record_type_id = 3
+      LEFT JOIN civicrm_activity_contact source ON source.activity_id = {$this->_aliases['civicrm_value_feedback_form_61']}.booking_1442 AND source.record_type_id = 1
       LEFT JOIN civicrm_contact ac ON ac.id = assignee.contact_id
       LEFT JOIN civicrm_contact tc ON tc.id = target.contact_id
       LEFT JOIN civicrm_address tc_add ON tc_add.contact_id = tc.id AND tc_add.is_primary = 1
