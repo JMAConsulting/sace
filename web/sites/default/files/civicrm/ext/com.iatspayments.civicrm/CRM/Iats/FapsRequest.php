@@ -28,6 +28,11 @@
  */
 
 class Faps_Transaction implements JsonSerializable {
+
+  /**
+   * Transaction Data
+   */
+  public $array;
   /**
   * Transaction class: Ties into the PHP JSON Functions & makes them easily available to the CRM_Iats_FapsRequest class.
   * Using the class like so: $a = json_encode(new Faps_Transaction($txnarray), JSON_PRETTY_PRINT)
@@ -51,6 +56,8 @@ class CRM_Iats_FapsRequest {
   public $status = "";
   private $liveUrl = "https://secure.1stpaygateway.net/secure/RestGW/Gateway/Transaction/";
   private $testUrl = "https://secure-v.goemerchant.com/secure/RestGW/Gateway/Transaction/";
+  private $action = '';
+  private $apiRequest = '';
 
   /**
    *
