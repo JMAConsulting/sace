@@ -11,11 +11,19 @@ jobs:
 
     strategy:
       matrix:
-        drupal_version: ['9.5', '10.0', '10.1', '10.2']
+        drupal_version: ['10.5', '10.6', '11.2', '11.3']
         module: ['editor_advanced_image']
+        experimental: [ false ]
+#         include:
+#           - drupal_version: '10.6'
+#             module: 'loco_translate'
+#             experimental: true
+#           - drupal_version: '11.4'
+#             module: 'loco_translate'
+#             experimental: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: docker compose -f docker-compose.yml pull --include-deps drupal
       - name: Build the docker compose stack
         run: docker compose -f docker-compose.yml build --pull --build-arg BASE_IMAGE_TAG=${{ matrix.drupal_version }} drupal
@@ -27,6 +35,7 @@ jobs:
         run: docker compose exec -T drupal wait-for-it db:3306 -t 60
       - name: Run unit tests
         run: docker compose -f docker-compose.yml exec -T -u www-data drupal phpunit --testdox --no-coverage --group=${{ matrix.module }} --exclude-group=${{ matrix.module }}_functional --configuration=/var/www/html/phpunit.xml
+        continue-on-error: ${{ matrix.experimental }}
 
   tests-functional:
     name: Functional Tests
@@ -34,11 +43,19 @@ jobs:
 
     strategy:
       matrix:
-        drupal_version: ['9.5', '10.0', '10.1', '10.2']
+        drupal_version: ['10.5', '10.6', '11.2', '11.3']
         module: ['editor_advanced_image']
+        experimental: [ false ]
+#         include:
+#           - drupal_version: '10.6'
+#             module: 'loco_translate'
+#             experimental: true
+#           - drupal_version: '11.4'
+#             module: 'loco_translate'
+#             experimental: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: docker compose -f docker-compose.yml pull --include-deps drupal
       - name: Build the docker compose stack
         run: docker compose -f docker-compose.yml build --pull --build-arg BASE_IMAGE_TAG=${{ matrix.drupal_version }} drupal
@@ -54,6 +71,7 @@ jobs:
         run: docker compose -f docker-compose.yml exec -T -u www-data drupal drush site-install standard --db-url="mysql://drupal:drupal@db/drupal" -y
       - name: Run tests
         run: docker compose -f docker-compose.yml exec -T -u www-data drupal phpunit --testdox --no-coverage --group=${{ matrix.module }}_functional --configuration=/var/www/html/phpunit.xml --fail-on-risky
+        continue-on-error: ${{ matrix.experimental }}
 
   upgrade-status:
     name: Upgrade Status
@@ -61,20 +79,20 @@ jobs:
 
     strategy:
       matrix:
-        drupal_version: ['9.5']
+        drupal_version: ['10.6']
         module: ['editor_advanced_image']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - run: docker compose -f docker-compose.yml pull --include-deps drupal
       - name: Build the docker compose stack
         run: docker compose -f docker-compose.yml build --pull --build-arg BASE_IMAGE_TAG=${{ matrix.drupal_version }} drupal
       - name: Up a persistent Docker Container
         run: docker compose -f docker-compose.yml up -d drupal
       - name: Add upgrade status dependency
-        run: docker compose exec -T drupal wait-for-it db:3306 -- composer require --dev drupal/upgrade_status --no-interaction
+        run: docker compose exec -T drupal wait-for-it db:3306 -- composer require --dev drupal/upgrade_status --no-interaction --with-all-dependencies
       - name: Bootstrap Drupal
         run: docker compose -f docker-compose.yml exec -T -u www-data drupal drush site-install standard --db-url="mysql://drupal:drupal@db/drupal" -y
       - name: Enable upgrade status

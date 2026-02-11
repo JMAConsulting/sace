@@ -5,6 +5,65 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.1.2] - 2026-01-26
+### Added
+- add official support of drupal 11.3
+- add official support of drupal 10.6
+
+## [3.1.1] - 2025-10-06
+### Fixed
+- fix Gitlab stylelint not working with custom .stylelintrc.json
+
+## [3.1.0] - 2025-07-24
+### Added
+- add official support of drupal 10.5
+- add official support of drupal 11.2
+
+### Fixed
+- fix Update to CK Editor 45 in Drupal 10.5 Causing Editor Ribbon to Disappear - #3530984
+
+### Changed
+- remove scanning CSS/JS with phpcs (deprecated and support will be removed in PHP_CodeSniffer 4.0)
+
+### Removed
+- remove legacy version annotation on docker-compose.yml
+- drop coverage of Drupal 10.2.x
+- drop coverage of Drupal 10.3.x
+- drop coverage of Drupal 10.4.x
+- drop coverage of Drupal 11.0.x
+- drop coverage of Drupal 11.1.x
+
+## [3.0.1] - 2025-04-23
+### Added
+- add official support of drupal 10.4
+- add official support of drupal 11.1
+
+### Changed
+- pass all dataprovider phpunit to static methods
+- update Docker MariaDB 10.3 -> 10.6
+
+### Removed
+- remove legacy version annotation on docker-compose.yml
+- drop coverage of Drupal 10.0.x
+- drop coverage of Drupal 10.1.x
+- drop coverage of Drupal 10.2.x
+
+### Fixed
+- fix attributs removed when input field is cleared - #3512964
+
+### Security
+- upgrade javascript dependencies
+
+## [3.0.0] - 2024-05-03
+### Removed
+- drop support of drupal 9.x
+- drop support of CKEditor 4.x
+
+### Added
+- add official support of drupal 11
+
+## [2.3.0] - 2024-04-08
 ### Fixed
 - fix latests phpcs latests changes
 
@@ -88,7 +147,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - First draft.
 
-[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.2...HEAD
+[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.2...HEAD
+[3.1.2]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.1...3.1.2
+[3.1.1]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.0...3.1.1
+[3.1.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.0.1...3.1.0
+[3.0.1]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.0.0...3.0.1
+[3.0.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.3...3.0.0
+[2.3.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.2...8.x-2.3
 [2.2.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.1...8.x-2.2
 [2.1.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.0...8.x-2.1
 [2.0.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/8.x-2.0-beta1...8.x-2.0

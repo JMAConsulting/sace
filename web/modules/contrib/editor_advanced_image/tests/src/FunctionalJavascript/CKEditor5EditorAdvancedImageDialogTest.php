@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\nbsp\FunctionalJavascript;
+namespace Drupal\Tests\editor_advanced_image\FunctionalJavascript;
 
 use Drupal\editor\Entity\Editor;
 use Drupal\file\Entity\File;
@@ -203,7 +203,7 @@ class CKEditor5EditorAdvancedImageDialogTest extends WebDriverTestBase {
     $this->drupalGet($this->testNode->toUrl('edit-form'));
     $this->waitForEditor();
     $assert_session = $this->assertSession();
-    $img = $assert_session->waitForElementVisible('css', '.ck-content img', 1000);
+    $img = $assert_session->waitForElementVisible('css', '.ck-widget.image', 1000);
     $img->click();
     $eai_button = $this->getBalloonButton('Editor Advanced Image');
     $eai_button->click();
@@ -211,6 +211,16 @@ class CKEditor5EditorAdvancedImageDialogTest extends WebDriverTestBase {
     $balloon->hasField($expected_input_label);
     $eai_input = $page->find('css', '.ck-balloon-panel .ck-editor-advanced-image input[type=text]');
     self::assertSame("foo-bar-{$attribute_name}", $eai_input->getValue());
+
+    // Clear the input field and save the changes in the balloon.
+    $eai_input->setValue('');
+    $this->assertNotEmpty($save_button = $this->getBalloonButton('Save'));
+    $save_button->click();
+
+    // Save the node and verify that the attribute value has been removed.
+    $page->pressButton('Save');
+    $imgElement = $assert_session->waitForElement('css', "img[{$attribute_name}]");
+    $this->assertEmpty($imgElement->getAttribute($attribute_name), "The attribute {$attribute_name} should be removed but {$imgElement->getAttribute($attribute_name)} founded.");
   }
 
   /**
@@ -311,19 +321,19 @@ class CKEditor5EditorAdvancedImageDialogTest extends WebDriverTestBase {
   /**
    * A collection of attribute to enable and ensure works when enabled.
    */
-  public function providerAttributesTest(): iterable {
+  public static function providerAttributesTest(): iterable {
     return [
       '<img title>' => [
         'attribute_name' => 'title',
-        'input_label' => 'Title',
+        'expected_input_label' => 'Title',
       ],
       '<img class>' => [
         'attribute_name' => 'class',
-        'input_label' => 'CSS classes',
+        'expected_input_label' => 'CSS classes',
       ],
       '<img id>' => [
         'attribute_name' => 'id',
-        'input_label' => 'ID',
+        'expected_input_label' => 'ID',
       ],
     ];
   }
