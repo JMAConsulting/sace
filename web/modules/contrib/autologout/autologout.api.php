@@ -21,13 +21,13 @@
 function hook_autologout_prevent() {
   // Don't include autologout JS checks on ajax callbacks.
   $path_args = explode('/', current_path());
-  $blacklist = [
+  $deny_list = [
     'ajax',
     'autologout_ajax_logout',
     'autologout_ajax_set_last',
   ];
 
-  if (in_array($path_args[0], $blacklist)) {
+  if (in_array($path_args[0], $deny_list)) {
     return TRUE;
   }
 }
@@ -46,4 +46,14 @@ function hook_autologout_refresh_only() {
   if (\Drupal::service('router.admin_context')->isAdminRoute(routeMatch()->getRouteObject()) && !\Drupal::config('autologout.settings')->get('enforce_admin')) {
     return TRUE;
   }
+}
+
+/**
+ * React right after user has been logged out via autologout.
+ *
+ * This hook fires only when user is logged out via autologout, not when the
+ * user logs themselves out. This is fired after the session has been destroyed
+ * and the active user has been set to anonymous.
+ */
+function hook_autologout_user_logout() {
 }

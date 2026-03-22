@@ -5,11 +5,13 @@
  * Automated Logout - Module.
  */
 
-use Drupal\Core\Url;
+// cspell:ignore whitelisted
+
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
 use Drupal\user\Entity\User;
-use Drupal\Component\Utility\Xss;
 
 /**
  * Implements hook_help().
@@ -122,8 +124,8 @@ function autologout_autologout_prevent() {
   $url = \Drupal::service('path.current')->getPath();
   $path_args = explode('/', $url);
 
-  // Check if user IP address is in the whitelist.
-  $ip_address_whitelist = array_map('trim',
+  // Check if user IP address is in the allow list.
+  $ip_address_allow_list = array_map('trim',
       explode("\n", trim(\Drupal::config('autologout.settings')->get('whitelisted_ip_addresses') ?: ''))
   );
 
@@ -138,7 +140,7 @@ function autologout_autologout_prevent() {
 
   // If user has no timeout set.
   if (\Drupal::service('autologout.manager')->getUserTimeout() === 0) {
-    _check_session_variable();
+    autologout_check_session_variable();
     return TRUE;
   }
 
@@ -168,8 +170,8 @@ function autologout_autologout_prevent() {
       }
     }
   }
-  if (in_array($user_ip, $ip_address_whitelist)) {
-    _check_session_variable();
+  if (in_array($user_ip, $ip_address_allow_list)) {
+    autologout_check_session_variable();
     return TRUE;
   }
 
@@ -179,9 +181,13 @@ function autologout_autologout_prevent() {
 /**
  * Helper function to unset the autologout session variable if present.
  */
-function _check_session_variable() {
-  if (isset($_SESSION['autologout_last'])) {
-    unset($_SESSION['autologout_last']);
+function autologout_check_session_variable() {
+  $currentRequest = \Drupal::service('request_stack')->getCurrentRequest();
+  if ($currentRequest->hasSession()) {
+    $session = $currentRequest->getSession()->get('autologout_last');
+  }
+  if (isset($session)) {
+    $currentRequest->getSession()->remove('autologout_last');
   }
 }
 
@@ -221,7 +227,11 @@ function autologout_page_attachments_alter(array &$attachments) {
   $timeout = $autologout_manager->getUserTimeout();
   $timeout_padding = $settings->get('padding');
   $redirect_url = $autologout_manager->getUserRedirectUrl();
-  $redirect_query = \Drupal::service('redirect.destination')->getAsArray() + ['autologout_timeout' => 1];
+  $redirect_query = [];
+  if ($settings->get('include_destination')) {
+    $redirect_query[] = \Drupal::service('redirect.destination')->getAsArray();
+  }
+  $redirect_query += ['autologout_timeout' => 1];
   $no_dialog = $settings->get('no_dialog');
   $disable_buttons = $settings->get('disable_buttons');
   $yes_button = $settings->get('yes_button');
@@ -241,6 +251,18 @@ function autologout_page_attachments_alter(array &$attachments) {
   $msg = t(Xss::filter($settings->get('message')));
   $logout_regardless_of_activity = $settings->get('logout_regardless_of_activity');
 
+  // Get the Drupal cookie lifetime and samesite from Core.
+  $options = \Drupal::getContainer()->getParameter('session.storage.options');
+  $lifetime = $options['cookie_lifetime'];
+  $expiry = \Drupal::time()->getRequestTime() + 2000000;
+  if ($lifetime > 0) {
+    $expiry = \Drupal::time()->getRequestTime() + $lifetime;
+  }
+  if (is_numeric($lifetime) && intval($lifetime) === 0) {
+    $expiry = 0;
+  }
+  $cookie_samesite = $options['cookie_samesite'] ?: 'Lax';
+
   $settings = [
     'timeout' => $refresh_only ? ($timeout * 500) : ($timeout * 1000),
     'timeout_padding' => $timeout_padding * 1000,
@@ -256,6 +278,14 @@ function autologout_page_attachments_alter(array &$attachments) {
     'use_alt_logout_method' => $use_alt_logout_method,
     'logout_regardless_of_activity' => $logout_regardless_of_activity,
     'modal_width' => $settings->get('modal_width') ? (int) $settings->get('modal_width') : 'auto',
+    'cookie_lifetime' => $expiry,
+    'cookie_secure' => $settings->get('cookie_secure') ?: FALSE,
+    'cookie_httponly' => FALSE,
+    'cookie_samesite' => $cookie_samesite,
+    'alt_logout_url' => _autologout_get_url_with_token('autologout.alt_logout'),
+    'ajax_logout_url' => _autologout_get_url_with_token('autologout.ajax_logout'),
+    'ajax_set_last_url' => _autologout_get_url_with_token('autologout.ajax_set_last'),
+    'ajax_get_time_left_url' => _autologout_get_url_with_token('autologout.ajax_get_time_left'),
   ];
   // If this is an AJAX request, then the logout redirect url should still be
   // referring to the page that generated this request.
@@ -275,7 +305,9 @@ function autologout_page_attachments_alter(array &$attachments) {
     ]);
   }
 
-  autologout_attach_js($attachments, $settings);
+  if (\Drupal::currentUser()->isAuthenticated()) {
+    autologout_attach_js($attachments, $settings);
+  }
 }
 
 /**
@@ -301,6 +333,30 @@ function autologout_attach_js(array &$element, array $settings) {
   $element['#attached']['drupalSettings']['autologout'] = $settings;
   $element['#attached']['library'][] = 'autologout/drupal.autologout';
   $element['#cache']['tags'][] = 'config:autologout.settings';
+  $element['#cache']['contexts'][] = 'session';
+}
+
+/**
+ * Generates a URL with a CSRF token for a route.
+ *
+ * Routes with _csrf_token requirement need manually generated tokens
+ * when the URL is used in drupalSettings or other non-rendering contexts.
+ *
+ * @param string $route_name
+ *   The route name.
+ * @param array $route_parameters
+ *   (optional) Route parameters.
+ *
+ * @return string
+ *   The URL string with CSRF token.
+ *
+ * @see https://drupal.stackexchange.com/a/221258
+ */
+function _autologout_get_url_with_token($route_name, array $route_parameters = []) {
+  $url = Url::fromRoute($route_name, $route_parameters);
+  $token = \Drupal::csrfToken()->get($url->getInternalPath());
+  $url->setOptions(['query' => ['token' => $token]]);
+  return $url->toString();
 }
 
 /**
@@ -310,7 +366,7 @@ function autologout_attach_js(array &$element, array $settings) {
  * session_limit module thinking the user has reached their
  * session limit.
  */
-function autologout_user_login($account) {
+function autologout_user_login($account): void {
   // Cleanup old sessions.
   $autologout_manager = \Drupal::service('autologout.manager');
   $timeout = \Drupal::service('autologout.manager')->getUserTimeout($account->id());
@@ -319,27 +375,56 @@ function autologout_user_login($account) {
   if ($autologout_manager->preventJs()) {
     return;
   }
+  // Now Sessions table is no longer defined in system_schema().
+  // Do not clear session if there is no sessions table.
+  // @see https://www.drupal.org/node/3431286
+  if (\Drupal::database()->schema()->tableExists('sessions')) {
+    $timeout_padding = \Drupal::config('autologout.settings')->get('padding');
+    $timestamp = \Drupal::time()->getRequestTime() - ($timeout + $timeout_padding);
 
-  $timeout_padding = \Drupal::config('autologout.settings')->get('padding');
-  $timestamp = \Drupal::time()->getRequestTime() - ($timeout + $timeout_padding);
+    // Find all stale sessions.
+    $database = \Drupal::database();
+    $sids = $database->select('sessions', 's')
+      ->fields('s', ['sid'])
+      ->condition('uid', $account->id())
+      ->condition('timestamp', $timestamp, '<')
+      ->orderBy('timestamp', 'DESC')
+      ->execute()
+      ->fetchCol();
 
-  // Find all stale sessions.
-  $database = \Drupal::database();
-  $sids = $database->select('sessions', 's')
-    ->fields('s', ['sid'])
-    ->condition('uid', $account->id())
-    ->condition('timestamp', $timestamp, '<')
-    ->orderBy('timestamp', 'DESC')
-    ->execute()
-    ->fetchCol();
-
-  if (!empty($sids)) {
-    // Delete stale sessions at login.
-    $database->delete('sessions')
-      ->condition('sid', $sids, 'IN')
-      ->execute();
+    if (!empty($sids)) {
+      // Delete stale sessions at login.
+      $database->delete('sessions')
+        ->condition('sid', $sids, 'IN')
+        ->execute();
+    }
   }
 
   // Add login time cookie.
-  user_cookie_save(['autologout_login' => \Drupal::time()->getCurrentTime()]);
+  $config = \Drupal::config('autologout.settings');
+  // Get the Drupal cookie lifetime and samesite from Core.
+  $options = \Drupal::getContainer()->getParameter('session.storage.options');
+  $lifetime = $options['cookie_lifetime'];
+  $cookie_samesite = $options['cookie_samesite'] ?: 'Lax';
+  // By default, expire like cores expiry.
+  $expiry = \Drupal::time()->getRequestTime() + 2000000;
+  if ($lifetime > 0) {
+    $expiry = \Drupal::time()->getRequestTime() + $lifetime;
+  }
+  // If lifetime is *exactly* 0 that means we want to set the expiry to 0,
+  // meaning the cookie will expire when the browser is closed. If the cookie
+  // is empty but *not* 0, the default above applies.
+  if (is_numeric($lifetime) && intval($lifetime) === 0) {
+    $expiry = 0;
+  }
+
+  setrawcookie('Drupal.visitor.autologout_login', rawurlencode(\Drupal::time()->getCurrentTime()),
+    [
+      'expires' => $expiry,
+      'path' => '/',
+      'secure' => $config->get('cookie_secure') ?: FALSE,
+      'httponly' => FALSE,
+      'samesite' => $cookie_samesite,
+    ],
+  );
 }
