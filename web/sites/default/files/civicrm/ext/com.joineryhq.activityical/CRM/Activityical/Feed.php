@@ -314,6 +314,7 @@ class CRM_Activityical_Feed {
       // FIXME: how to handle timezones?
       // $row['activity_date_time'] = civicrm_activity_contact_datetime_to_utc($row['activity_date_time'], $this->contact_id);
 
+      // Allow Extensions to modify ical row
       $hookEvent = \Civi\Core\Event\GenericHookEvent::create([
         'activityId' => $row['id'],
         'row' => $row,
