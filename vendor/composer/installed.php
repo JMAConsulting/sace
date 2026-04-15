@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '329ab8e0e9c3e9b3f9f4d26245072a98b852f10c',
+        'reference' => '7eb11f31f88cca2108cae245a93271f02b5b41d5',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -813,6 +813,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'drupal/js_cookie' => array(
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'reference' => '1.0.2',
+            'type' => 'drupal-module',
+            'install_path' => __DIR__ . '/../../web/modules/contrib/js_cookie',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'drupal/layout_builder_modal' => array(
             'pretty_version' => '1.2.0',
             'version' => '1.2.0.0',
@@ -942,7 +951,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '329ab8e0e9c3e9b3f9f4d26245072a98b852f10c',
+            'reference' => '7eb11f31f88cca2108cae245a93271f02b5b41d5',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
