@@ -3,12 +3,17 @@
 namespace Drupal\autologout\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\user\UserData;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\UserData;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+// cspell:ignore whitelisted
 
 /**
  * Provides settings for autologout module.
@@ -45,19 +50,31 @@ class AutologoutSettingsForm extends ConfigFormBase {
   protected $userData;
 
   /**
+   * The EntityTypeManager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructs an AutologoutSettingsForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
+   * @param \Drupal\Core\Config\TypedConfigManager $config_typed
+   *   The typed config object.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module manager service.
    * @param \Drupal\user\UserData $user_data
    *   The user.data service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, UserData $user_data) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManager $config_typed, ModuleHandlerInterface $module_handler, UserData $user_data, EntityTypeManagerInterface $entity_type_manager) {
+    parent::__construct($config_factory, $config_typed);
     $this->moduleHandler = $module_handler;
     $this->userData = $user_data;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -66,8 +83,10 @@ class AutologoutSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('module_handler'),
-      $container->get('user.data')
+      $container->get('user.data'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -136,7 +155,7 @@ class AutologoutSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Logout user regardless of activity'),
       '#default_value' => $config->get('logout_regardless_of_activity'),
       '#weight' => -5,
-      '#description' => $this->t("Enable this to autologout user regardless of his activity."),
+      '#description' => $this->t("Enable this to autologout user regardless of their activity."),
     ];
 
     $form['no_individual_logout_threshold'] = [
@@ -174,6 +193,13 @@ class AutologoutSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('redirect_url'),
       '#size' => 40,
       '#description' => $this->t('Send users to this internal page when they are logged out.'),
+    ];
+
+    $form['include_destination'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include destination'),
+      '#default_value' => $config->get('include_destination'),
+      '#description' => $this->t('Enable this if you want to set the redirect destination.'),
     ];
 
     $form['no_dialog'] = [
@@ -237,7 +263,7 @@ class AutologoutSettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Disable buttons'),
       '#default_value' => $config->get('disable_buttons'),
-      '#description' => $this->t('Disable Yes/No buttons for automatic logout popout.'),
+      '#description' => $this->t('Disable Yes/No buttons for the automatic logout dialog.'),
     ];
 
     $form['yes_button'] = [
@@ -271,7 +297,7 @@ class AutologoutSettingsForm extends ConfigFormBase {
     ];
     $form['whitelisted_ip_addresses'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Whitelisted ip addresses'),
+      '#title' => $this->t('Allow listed ip addresses'),
       '#default_value' => $config->get('whitelisted_ip_addresses'),
       '#size' => 40,
       '#description' => $this->t('Users from these IP addresses will not be logged out.'),
@@ -284,6 +310,12 @@ class AutologoutSettingsForm extends ConfigFormBase {
         '#description' => $this->t('Change the display of the dynamic timer. Available replacement values are: %day%, %month%, %year%, %dow%, %moy%, %years%, %ydays%, %days%, %hours%, %mins%, and %secs%.'),
       ];
     }
+    $form['cookie_secure'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Cookie Secure'),
+      '#default_value' => $config->get('cookie_secure') ?: FALSE,
+      '#description' => $this->t("Specifies whether or not the cookie should only be transmitted over a secure HTTPS connection. The cookie will only be set if a secure connection exists."),
+    ];
 
     $form['role_container'] = [
       '#type' => 'container',
@@ -306,8 +338,8 @@ class AutologoutSettingsForm extends ConfigFormBase {
       ],
     ];
 
-    foreach (user_roles(TRUE) as $key => $role) {
-      if ($key != 'authenticated') {
+    foreach ($this->entityTypeManager->getStorage('user_role')->loadMultiple() as $key => $role) {
+      if ($key !== AccountInterface::ANONYMOUS_ROLE) {
         $form['role_container']['table'][$key] = [
           'enabled' => [
             '#type' => 'checkbox',
@@ -383,7 +415,7 @@ class AutologoutSettingsForm extends ConfigFormBase {
 
     if ($values['role_logout']) {
       // Validate timeouts for each role.
-      foreach (array_keys(user_roles(TRUE)) as $role) {
+      foreach (array_keys($this->entityTypeManager->getStorage('user_role')->loadMultiple()) as $role) {
         if (empty($new_stack[$role]) || $new_stack[$role]['enabled'] == 0) {
           // Don't validate role timeouts for non enabled roles.
           continue;
@@ -431,7 +463,7 @@ class AutologoutSettingsForm extends ConfigFormBase {
       if (!empty($ip_address) && !filter_var(trim($ip_address), FILTER_VALIDATE_IP)) {
         $form_state->setErrorByName(
           'whitelisted_ip_addresses',
-          $this->t('Whitlelisted IP address list should contain only valid IP addresses, one per row')
+          $this->t('Allow listed IP address list should contain only valid IP addresses, one per row')
         );
       }
     }
@@ -458,6 +490,7 @@ class AutologoutSettingsForm extends ConfigFormBase {
       ->set('role_logout', $values['role_logout'])
       ->set('role_logout_max', $values['role_logout_max'])
       ->set('redirect_url', $values['redirect_url'])
+      ->set('include_destination', $values['include_destination'])
       ->set('no_dialog', $values['no_dialog'])
       ->set('dialog_title', $values['dialog_title'])
       ->set('message', $values['message'])
@@ -471,6 +504,8 @@ class AutologoutSettingsForm extends ConfigFormBase {
       ->set('whitelisted_ip_addresses', $values['whitelisted_ip_addresses'])
       ->set('use_alt_logout_method', $values['use_alt_logout_method'])
       ->set('use_watchdog', $values['use_watchdog'])
+      ->set('cookie_secure', $values['cookie_secure'])
+      ->set('cookie_httponly', FALSE)
       ->save();
 
     if (!empty($values['table'])) {

@@ -57,6 +57,30 @@ class AutologoutTest extends BrowserTestBase {
   public $userData;
 
   /**
+   * Parses a URL with token query string into path and query components.
+   *
+   * This is needed because drupalGet() double-encodes query strings when
+   * passed as part of the URL string.
+   *
+   * @param string $url
+   *   The URL string with query parameters (e.g., '/path?token=abc').
+   *
+   * @return array
+   *   Array with 'path' and 'query' keys.
+   */
+  protected function parseUrlWithToken(string $url): array {
+    $parsed = parse_url($url);
+    $query = [];
+    if (!empty($parsed['query'])) {
+      parse_str($parsed['query'], $query);
+    }
+    return [
+      'path' => $parsed['path'] ?? $url,
+      'query' => $query,
+    ];
+  }
+
+  /**
    * Performs any pre-requisite tasks that need to happen.
    */
   public function setUp(): void {
@@ -114,15 +138,24 @@ class AutologoutTest extends BrowserTestBase {
    * Tests a user is logged out with the alternate logout method.
    */
   public function testAutologoutAlternateLogoutMethod() {
-    // Test that alternate logout works as expected.
-    $this->drupalGet('autologout_alt_logout');
+    // Visit a page to get URLs with CSRF tokens from drupalSettings.
+    $this->drupalGet('node');
+    $this->assertSession()->statusCodeEquals(200);
+    $settings = $this->getDrupalSettings();
+
+    // Get URL with valid CSRF token from drupalSettings and parse it.
+    $altLogoutParts = $this->parseUrlWithToken($settings['autologout']['alt_logout_url']);
+
+    // Test that alternate logout works as expected with CSRF token.
+    $this->drupalGet($altLogoutParts['path'], ['query' => $altLogoutParts['query']]);
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains(
       $this->t('You have been logged out due to inactivity.')
     );
 
     // Check further logout requests result in access denied.
-    $this->drupalGet('autologout_alt_logout');
+    // Note: User is logged out so should get 403.
+    $this->drupalGet($altLogoutParts['path'], ['query' => $altLogoutParts['query']]);
     $this->assertSession()->statusCodeEquals(403);
   }
 
@@ -284,6 +317,39 @@ class AutologoutTest extends BrowserTestBase {
     // Test that the JS timeout variable is updated.
     $jsSettings = $this->getDrupalSettings();
     $this->assertEquals(5000, $jsSettings['autologout']['timeout']);
+  }
+
+  /**
+   * Tests the behaviour when no dialog setting is enabled.
+   */
+  public function testAutologoutNoDialog(): void {
+    // Visit the page and check that user is logged in.
+    $this->drupalGet('node');
+    $this->assertSession()->statusCodeEquals(200);
+    self::assertTrue($this->drupalUserIsLoggedIn($this->privilegedUser));
+
+    // Test that no dialog variable is set to false.
+    $jsSettings = $this->getDrupalSettings();
+    $this->assertEquals(FALSE, $jsSettings['autologout']['no_dialog']);
+
+    // Update the no dialog variable and reload the page.
+    $autologoutSettings = $this->configFactory->getEditable('autologout.settings');
+    $autologoutSettings->set('no_dialog', TRUE)->save();
+    $this->drupalGet('node');
+
+    // Test that the JS no dialog variable is updated.
+    $jsSettings = $this->getDrupalSettings();
+    $this->assertEquals(TRUE, $jsSettings['autologout']['no_dialog']);
+
+    // Wait for timeout period to elapse.
+    sleep(15);
+
+    // Verify user is logged out.
+    $this->drupalGet('node');
+    self::assertFalse($this->drupalUserIsLoggedIn($this->privilegedUser));
+    $this->assertSession()->pageTextContains(
+      $this->t('You have been logged out due to inactivity.')
+    );
   }
 
 }
