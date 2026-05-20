@@ -69,7 +69,7 @@ final class RequestIntegration implements IntegrationInterface
     /**
      * @var array<string, mixed> The options
      *
-     * @psalm-var array{
+     * @phpstan-var array{
      *     pii_sanitize_headers: string[]
      * }
      */
@@ -81,7 +81,7 @@ final class RequestIntegration implements IntegrationInterface
      * @param RequestFetcherInterface|null $requestFetcher PSR-7 request fetcher
      * @param array<string, mixed>         $options        The options
      *
-     * @psalm-param array{
+     * @phpstan-param array{
      *     pii_sanitize_headers?: string[]
      * } $options
      */
@@ -137,7 +137,7 @@ final class RequestIntegration implements IntegrationInterface
         if ($options->shouldSendDefaultPii()) {
             $serverParams = $request->getServerParams();
 
-            if (isset($serverParams['REMOTE_ADDR'])) {
+            if (!empty($serverParams['REMOTE_ADDR'])) {
                 $user = $event->getUser();
                 $requestData['env']['REMOTE_ADDR'] = $serverParams['REMOTE_ADDR'];
 
@@ -267,7 +267,7 @@ final class RequestIntegration implements IntegrationInterface
             } elseif (\is_array($item)) {
                 $result[$key] = $this->parseUploadedFiles($item);
             } else {
-                throw new \UnexpectedValueException(sprintf('Expected either an object implementing the "%s" interface or an array. Got: "%s".', UploadedFileInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
+                throw new \UnexpectedValueException(\sprintf('Expected either an object implementing the "%s" interface or an array. Got: "%s".', UploadedFileInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
             }
         }
 

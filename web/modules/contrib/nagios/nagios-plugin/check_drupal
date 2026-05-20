@@ -4,7 +4,7 @@
 #
 # Requires a Drupal module from https://drupal.org/project/nagios
 #
-# Copyright 2009 Khalid Baheyeldin http://2bits.com
+# Copyright 2009 Khalid Baheyeldin https://2bits.com
 #
 ECHO="/bin/echo"
 GREP="/bin/egrep"
@@ -141,7 +141,7 @@ fi
 if $SSL; then
   CMD="$WGET --no-check-certificate -S -T $timeout -O - --http-user=$http_user --http-password=$http_password -U $unique_id https://$host_name/$path"
 else
-  CMD="$WGET -S -T $timeout -O - --http-user=$http_user --http-password=$http_password -U $unique_id http://$host_name/$path"
+  CMD="$WGET -S -T $timeout -O - --http-user=$http_user --http-password=$http_password -U $unique_id https://$host_name/$path"
 fi
 
 $CMD > "$temp" 2>&1

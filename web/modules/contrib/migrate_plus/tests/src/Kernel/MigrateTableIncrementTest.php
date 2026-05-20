@@ -1,18 +1,21 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\migrate_plus\Kernel;
 
 use Drupal\Core\Database\Connection;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\Tests\migrate\Kernel\MigrateTestBase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests migration destination table with auto-increment keys.
- *
- * @group migrate
  */
+#[Group('migrate_plus')]
+#[RunTestsInSeparateProcesses]
 class MigrateTableIncrementTest extends MigrateTestBase {
 
   public const TABLE_NAME = 'migrate_test_destination_table';
@@ -32,7 +35,7 @@ class MigrateTableIncrementTest extends MigrateTestBase {
    *
    * @var int
    */
-  protected int $batchSize = 1;
+  protected static int $batchSize = 1;
 
   /**
    * {@inheritdoc}
@@ -76,7 +79,7 @@ class MigrateTableIncrementTest extends MigrateTestBase {
    * @return array
    *   The migration definition.
    */
-  public function tableDestinationMigration(): array {
+  public static function tableDestinationMigration(): array {
     return [
       'dummy table' => [
         [
@@ -105,7 +108,7 @@ class MigrateTableIncrementTest extends MigrateTestBase {
           'destination' => [
             'plugin' => 'table',
             'table_name' => static::TABLE_NAME,
-            'batch_size' => $this->batchSize,
+            'batch_size' => static::$batchSize,
             'id_fields' => [
               'id' => [
                 'type' => 'integer',
@@ -129,9 +132,8 @@ class MigrateTableIncrementTest extends MigrateTestBase {
    *   The migration definition.
    *
    * @dataProvider tableDestinationMigration
-   *
-   * @throws \Drupal\migrate\MigrateException
    */
+  #[DataProvider('tableDestinationMigration')]
   public function testTableDestination(array $definition) {
     $migration = \Drupal::service('plugin.manager.migration')->createStubMigration($definition);
 
@@ -157,9 +159,8 @@ class MigrateTableIncrementTest extends MigrateTestBase {
    *   The migration definition.
    *
    * @dataProvider tableDestinationMigration
-   *
-   * @throws \Drupal\migrate\MigrateException
    */
+  #[DataProvider('tableDestinationMigration')]
   public function testTableDestinationWithExistingData(array $definition) {
     $this->connection->insert(static::TABLE_NAME)
       ->fields([

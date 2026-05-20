@@ -8,6 +8,9 @@ use Twig\Error\SyntaxError;
 use Twig\Source;
 use Twig\Util\TemplateDirIterator;
 
+/**
+ * Twig Deprecation Analyzer.
+ */
 class TwigDeprecationAnalyzer {
 
   /**
@@ -27,13 +30,14 @@ class TwigDeprecationAnalyzer {
    * This is based on Twig\Util\DeprecationCollector which is a final class
    * and thus cannot be extended. While it did find non-twig runtime deprecated
    * errors, it did not gave us the file/line information, so we needed to copy
-   * and modify that behaviour. We folded in our twig file/line parsing inline
+   * and modify that behavior. We folded in our twig file/line parsing inline
    * then to make it simpler.
-   * 
+   *
    * @param \Drupal\Core\Extension\Extension $extension
    *   The extension to be analyzed.
    *
    * @return \Drupal\upgrade_status\DeprecationMessage[]
+   *   The deprecation message.
    */
   public function analyze(Extension $extension): array {
     $deprecations = [];
@@ -71,13 +75,14 @@ class TwigDeprecationAnalyzer {
     foreach ($iterator as $name => $contents) {
       try {
         $this->twigEnvironment->parse($this->twigEnvironment->tokenize(new Source($contents, $name)));
-      } catch (SyntaxError $e) {
+      }
+      catch (SyntaxError $e) {
         // Report twig syntax error which stops us from parsing it.
         $deprecations[] = new DeprecationMessage(
           'Twig template ' . $name . ' contains a syntax error and cannot be parsed.',
           $name,
           $e->getTemplateLine(),
-         'TwigDeprecationAnalyzer'
+          'TwigDeprecationAnalyzer'
         );
       }
     }

@@ -1,11 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\migrate_plus\Plugin\migrate_plus\data_parser;
 
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\migrate\MigrateException;
+use Drupal\migrate_plus\Attribute\DataParser;
+use Drupal\migrate_plus\DataFetcherPluginManager;
 use Drupal\migrate_plus\DataParserPluginBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Obtain XML data for migration using the XMLReader pull parser.
@@ -14,13 +20,12 @@ use Drupal\migrate_plus\DataParserPluginBase;
  * parsing very large XML sources (e.g. 200MB WordPress dumps), which reduces
  * the memory usage and increases the performance. The disadvantage is that it's
  * not possible to use XPath search across the entire source.
- *
- * @DataParser(
- *   id = "xml",
- *   title = @Translation("XML")
- * )
  */
-class Xml extends DataParserPluginBase {
+#[DataParser(
+  id: 'xml',
+  title: new TranslatableMarkup('XML')
+)]
+class Xml extends DataParserPluginBase implements ContainerFactoryPluginInterface {
 
   use XmlTrait;
 
@@ -80,10 +85,37 @@ class Xml extends DataParserPluginBase {
   protected bool $prefixedName = FALSE;
 
   /**
-   * {@inheritdoc}
+   * Temporary file name of file that holds XML.
+   *
+   * @var string|null
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  protected ?string $tempFileName = NULL;
+
+  /**
+   * The file system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
+   * Constructs a new XML data parser.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\migrate_plus\DataFetcherPluginManager $fetcherPluginManager
+   *   The data fetcher plugin manager.
+   * @param \Drupal\Core\File\FileSystemInterface $file_system
+   *   The file system service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, DataFetcherPluginManager $fetcherPluginManager, FileSystemInterface $file_system) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $fetcherPluginManager);
+
+    $this->fileSystem = $file_system;
 
     $this->reader = new \XMLReader();
 
@@ -92,7 +124,7 @@ class Xml extends DataParserPluginBase {
 
     // Parse the element query. First capture group is the element path, second
     // (if present) is the attribute.
-    preg_match_all('|^/([^\[]+)\[?(.*?)]?$|', $configuration['item_selector'], $matches);
+    preg_match_all('|^/([^\[]+)\[?(.*?)]?$|', (string) $configuration['item_selector'], $matches);
     $element_path = $matches[1][0];
     $this->elementsToMatch = explode('/', $element_path);
     $predicate = $matches[2][0];
@@ -107,7 +139,7 @@ class Xml extends DataParserPluginBase {
       $this->prefixedName = TRUE;
     }
 
-    foreach ($this->fieldSelectors() as $field_name => $xpath) {
+    foreach ($this->fieldSelectors() as $xpath) {
       $prefix = substr($xpath, 0, 3);
       if ($prefix === '../') {
         $this->parentElementsOfInterest[] = str_replace('../', '', $xpath);
@@ -116,6 +148,19 @@ class Xml extends DataParserPluginBase {
         $this->parentElementsOfInterest[] = str_replace('..\\', '', $xpath);
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('plugin.manager.migrate_plus.data_fetcher'),
+      $container->get('file_system'),
+    );
   }
 
   /**
@@ -139,9 +184,9 @@ class Xml extends DataParserPluginBase {
       $dom = new \DOMDocument();
       $node = $dom->importNode($node, TRUE);
       $dom->appendChild($node);
-      $sxml_elem = simplexml_import_dom($node);
-      $this->registerNamespaces($sxml_elem);
-      return $sxml_elem;
+      $simple_xml_element = simplexml_import_dom($node);
+      $this->registerNamespaces($simple_xml_element);
+      return $simple_xml_element;
     }
     else {
       foreach (libxml_get_errors() as $error) {
@@ -168,13 +213,31 @@ class Xml extends DataParserPluginBase {
     // (Re)open the provided URL.
     $this->reader->close();
 
+    // Fetch the data and save it to a temporary file.
+    $xml_data = $this->getDataFetcherPlugin()->getResponseContent($url);
+    $this->tempFileName = $this->fileSystem->tempnam('temporary://', 'file');
+    if (file_put_contents($this->tempFileName, $xml_data) === FALSE) {
+      throw new MigrateException('Unable to save temporary XML');
+    }
+
     // Clear XML error buffer. Other Drupal code that executed during the
     // migration may have polluted the error buffer and could create false
     // positives in our error check below. We are only concerned with errors
     // that occur from attempting to load the XML string into an object here.
     libxml_clear_errors();
 
-    return $this->reader->open($url, NULL, \LIBXML_NOWARNING);
+    return $this->reader->open($this->tempFileName, NULL, \LIBXML_NOWARNING);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function nextSource(): bool {
+    $valid_source = parent::nextSource();
+    if (isset($this->tempFileName) && file_exists($this->tempFileName)) {
+      unlink($this->tempFileName);
+    }
+    return $valid_source;
   }
 
   /**
@@ -207,6 +270,8 @@ class Xml extends DataParserPluginBase {
             if (empty($this->xpathPredicate) || $this->predicateMatches($target_element)) {
               break;
             }
+            // Set target back to NULL since this didn't match a predicate.
+            $target_element = NULL;
           }
         }
       }

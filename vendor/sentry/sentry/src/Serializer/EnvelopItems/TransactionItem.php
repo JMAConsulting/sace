@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sentry\Serializer\EnvelopItems;
 
 use Sentry\Event;
+use Sentry\EventType;
 use Sentry\Serializer\Traits\BreadcrumbSeralizerTrait;
 use Sentry\Tracing\Span;
 use Sentry\Tracing\TransactionMetadata;
@@ -28,17 +29,14 @@ class TransactionItem implements EnvelopeItemInterface
     public static function toEnvelopeItem(Event $event): string
     {
         $header = [
-            'type' => (string) $event->getType(),
+            'type' => (string) EventType::transaction(),
             'content_type' => 'application/json',
         ];
 
         $payload = [
             'timestamp' => $event->getTimestamp(),
             'platform' => 'php',
-            'sdk' => [
-                'name' => $event->getSdkIdentifier(),
-                'version' => $event->getSdkVersion(),
-            ],
+            'sdk' => $event->getSdkPayload(),
         ];
 
         if ($event->getStartTimestamp() !== null) {
@@ -125,22 +123,18 @@ class TransactionItem implements EnvelopeItemInterface
 
         $payload['spans'] = array_values(array_map([self::class, 'serializeSpan'], $event->getSpans()));
 
-        if (!empty($event->getMetricsSummary())) {
-            $payload['_metrics_summary'] = self::serializeMetricsSummary($event->getMetricsSummary());
-        }
-
         $transactionMetadata = $event->getSdkMetadata('transaction_metadata');
         if ($transactionMetadata instanceof TransactionMetadata) {
             $payload['transaction_info']['source'] = (string) $transactionMetadata->getSource();
         }
 
-        return sprintf("%s\n%s", JSON::encode($header), JSON::encode($payload));
+        return \sprintf("%s\n%s", JSON::encode($header), JSON::encode($payload));
     }
 
     /**
      * @return array<string, mixed>
      *
-     * @psalm-return array{
+     * @phpstan-return array{
      *     span_id: string,
      *     trace_id: string,
      *     parent_span_id?: string,
@@ -149,9 +143,9 @@ class TransactionItem implements EnvelopeItemInterface
      *     status?: string,
      *     description?: string,
      *     op?: string,
+     *     origin: string,
      *     data?: array<string, mixed>,
      *     tags?: array<string, string>
-     *     _metrics_summary?: array<string, mixed>
      * }
      */
     protected static function serializeSpan(Span $span): array
@@ -160,6 +154,7 @@ class TransactionItem implements EnvelopeItemInterface
             'span_id' => (string) $span->getSpanId(),
             'trace_id' => (string) $span->getTraceId(),
             'start_timestamp' => $span->getStartTimestamp(),
+            'origin' => $span->getOrigin() ?? 'manual',
         ];
 
         if ($span->getParentSpanId() !== null) {
@@ -190,28 +185,6 @@ class TransactionItem implements EnvelopeItemInterface
             $result['tags'] = $span->getTags();
         }
 
-        if (!empty($span->getMetricsSummary())) {
-            $result['_metrics_summary'] = self::serializeMetricsSummary($span->getMetricsSummary());
-        }
-
         return $result;
-    }
-
-    /**
-     * @param array<string, array<string, MetricsSummary>> $metricsSummary
-     *
-     * @return array<string, mixed>
-     */
-    protected static function serializeMetricsSummary(array $metricsSummary): array
-    {
-        $formattedSummary = [];
-
-        foreach ($metricsSummary as $mri => $metrics) {
-            foreach ($metrics as $metric) {
-                $formattedSummary[$mri][] = $metric;
-            }
-        }
-
-        return $formattedSummary;
     }
 }

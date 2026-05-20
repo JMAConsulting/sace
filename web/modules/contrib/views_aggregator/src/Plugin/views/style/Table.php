@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\views_aggregator\Plugin\views\style;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\views\Attribute\ViewsStyle;
 use Drupal\views\Plugin\views\field\BulkForm;
+use Drupal\views\Plugin\views\field\FieldHandlerInterface;
 use Drupal\views\Plugin\views\style\Table as ViewsTable;
-use Drupal\views\ResultRow;
 use Drupal\views\Render\ViewsRenderPipelineMarkup;
+use Drupal\views\ResultRow;
 
 /**
  * Style plugin to render each item as a row in a table.
@@ -24,25 +29,45 @@ use Drupal\views\Render\ViewsRenderPipelineMarkup;
  *   display_types = {"normal"}
  * )
  */
+#[ViewsStyle(
+  id: "views_aggregator_plugin_style_table",
+  title: new TranslatableMarkup("Table with aggregation options"),
+  help: new TranslatableMarkup("Creates a tabular UI for the user to define aggregation functions."),
+  theme: "views_aggregator_results_table",
+  display_types: ["normal"],
+)]
 class Table extends ViewsTable {
+
+  /**
+   * An array of field values used by the Commerce module.
+   *
+   * @var array
+   *
+   * @phpcs:disable Drupal.NamingConventions.ValidVariableName.LowerCamelName
+   */
+  protected $commerce_field_values;
+  // phpcs:enable
 
   /**
    * {@inheritdoc}
    */
   protected function defineOptions() {
+    // Note: Most of the options are provided by parent class Table.
     $options = parent::defineOptions();
+
+    // Here we define two additional options for views_aggregator.
     $options['group_aggregation'] = [
       'contains' => [
         'group_aggregation_results' => ['default' => 0],
+        'grouping_field_class' => ['default' => ''],
+        'grouping_row_class' => ['default' => ''],
         'result_label_prefix' => ['default' => ''],
         'result_label_suffix' => ['default' => ''],
-        'grouping_row_class' => ['default' => ''],
-        'grouping_field_class' => ['default' => ''],
       ],
     ];
     $options['column_aggregation'] = [
       'contains' => [
-        'totals_per_page' => ['default' => TRUE],
+        'totals_per_page' => ['default' => 1],
         'totals_row_position' => ['default' => [1 => 0, 2 => 2, 3 => 0]],
         'totals_row_class' => ['default' => ''],
         'precision' => ['default' => 2],
@@ -55,8 +80,11 @@ class Table extends ViewsTable {
    * {@inheritdoc}
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
-    // Note: bulk of form is provided by superclass Table.
+    // Note: Bulk of form is provided by parent class Table.
     parent::buildOptionsForm($form, $form_state);
+
+    // Here we add additional form elements to the options form, for the options
+    // added by views_aggregator in the above ::defineOptions() method.
     $handlers = $this->displayHandler->getHandlers('field');
     $columns = $this->sanitizeColumns($this->options['columns']);
     foreach ($columns as $field => $column) {
@@ -91,7 +119,6 @@ class Table extends ViewsTable {
     ];
 
     foreach ($columns as $field => $column) {
-
       $form['info'][$field]['has_aggr'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Apply group function'),
@@ -170,12 +197,6 @@ class Table extends ViewsTable {
         ],
       ];
     }
-    if (isset($this->options['group_aggregation']['group_aggregation_results'])) {
-      $group_aggregation_results = $this->options['group_aggregation']['group_aggregation_results'];
-    }
-    else {
-      $group_aggregation_results = 0;
-    }
     $form['group_aggregation'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Group aggregation options'),
@@ -189,7 +210,7 @@ class Table extends ViewsTable {
         1 => $this->t('no aggregation, results will be shown after each group (like subtotals)'),
       ],
       '#description' => $this->t('Select the second option, if you want to show subtotals'),
-      '#default_value' => $group_aggregation_results,
+      '#default_value' => $this->options['group_aggregation']['group_aggregation_results'],
       '#weight' => -2,
     ];
     $form['group_aggregation']['grouping_field_class'] = [
@@ -197,6 +218,12 @@ class Table extends ViewsTable {
       '#type' => 'textfield',
       '#description' => $this->t('The CSS class to provide on each cell of the column/field that is being <em>Grouped and compressed</em>.'),
       '#default_value' => $this->options['group_aggregation']['grouping_field_class'],
+    ];
+    $form['group_aggregation']['grouping_row_class'] = [
+      '#title' => $this->t('Grouping row class'),
+      '#type' => 'textfield',
+      '#description' => $this->t('<em>If no aggregation selected: </em>The CSS class to provide on each subtotals result row.'),
+      '#default_value' => $this->options['group_aggregation']['grouping_row_class'],
     ];
     $form['group_aggregation']['result_label_prefix'] = [
       '#title' => $this->t('Label prefix'),
@@ -209,12 +236,6 @@ class Table extends ViewsTable {
       '#type' => 'textfield',
       '#description' => $this->t('<em>If no aggregation selected: </em>Attach this <em>after</em> the label in the column/field that is being <em>Grouped and compressed</em>.'),
       '#default_value' => $this->options['group_aggregation']['result_label_suffix'],
-    ];
-    $form['group_aggregation']['grouping_row_class'] = [
-      '#title' => $this->t('Grouping row class'),
-      '#type' => 'textfield',
-      '#description' => $this->t('<em>If no aggregation selected: </em>The CSS class to provide on each subtotals result row.'),
-      '#default_value' => $this->options['group_aggregation']['grouping_row_class'],
     ];
 
     $form['column_aggregation'] = [
@@ -246,7 +267,8 @@ class Table extends ViewsTable {
     ];
     $form['column_aggregation']['precision'] = [
       '#title' => $this->t('Column aggregation row default numeric precision'),
-      '#type' => 'textfield',
+      '#type' => 'number',
+      '#min' => 0,
       '#size' => 3,
       '#description' => $this->t('The number of decimals to use for column aggregations whose precisions are not defined elsewhere.'),
       '#default_value' => $this->options['column_aggregation']['precision'],
@@ -267,6 +289,8 @@ class Table extends ViewsTable {
   public function validateOptionsForm(&$form, FormStateInterface $form_state) {
     parent::validateOptionsForm($form, $form_state);
 
+    // Add additional validation to the options form, for the form elements
+    // added by views_aggregator in the above ::buildOptionsForm() method.
     $allowed_tags = ['b', 'br', 'em', 'i', 'p', 'strong', 'u'];
     $tag_msg = $this->t('<strong>Parameter</strong> field contains an illegal character or illegal HTML tag. Allowed tags are: %tags', ['%tags' => implode(', ', $allowed_tags)]);
 
@@ -308,9 +332,9 @@ class Table extends ViewsTable {
    * {@inheritdoc}
    *
    * Note that this class being a views_plugin, rather than a views_handler,
-   * it does not have a post_execute() function.
+   * it does not have a postExecute() method.
    *
-   * This function applies to the currently visible page only. If paging is
+   * This method applies to the currently visible page only. If paging is
    * enabled for this display view->result may only contain part of the entire
    * result set.
    */
@@ -371,12 +395,8 @@ class Table extends ViewsTable {
     unset($groups['column']);
 
     // Prepare for aggregation based on selected option.
-    if (isset($this->options['group_aggregation']['group_aggregation_results'])) {
-      $group_aggregation_results = $this->options['group_aggregation']['group_aggregation_results'];
-    }
-    else {
-      $group_aggregation_results = 0;
-    }
+    $group_aggregation_results = $this->options['group_aggregation']['group_aggregation_results'];
+
     // Normal aggregation selected - write the results and compress the groups.
     if ($group_aggregation_results == 0) {
       // Write group aggregation results into the View results.
@@ -447,7 +467,8 @@ class Table extends ViewsTable {
   /**
    * Filters out rows from the table based on a field cell matching a regexp.
    */
-  protected function applyRowFilters() {
+  protected function applyRowFilters(): void {
+    /** @var \Drupal\views\Plugin\views\field\FieldHandlerInterface[] $field_handlers */
     $field_handlers = $this->view->field;
     foreach ($this->options['info'] as $field_name => $options) {
       if (!empty($options['has_aggr']) && in_array('views_aggregator_row_filter', $options['aggr'])) {
@@ -462,7 +483,8 @@ class Table extends ViewsTable {
    * @return array
    *   An array of aggregated groups.
    */
-  protected function aggregateGroups() {
+  protected function aggregateGroups(): array {
+    /** @var \Drupal\views\Plugin\views\field\FieldHandlerInterface[] $field_handlers */
     $field_handlers = $this->view->field;
     // Find the one column to group by and execute the grouping.
     foreach ($this->options['info'] as $field_name => $options) {
@@ -487,7 +509,7 @@ class Table extends ViewsTable {
    * @return array
    *   Functions used for aggregation.
    */
-  protected function collectAggregationFunctions() {
+  protected function collectAggregationFunctions(): array {
     $functions = [];
     foreach ($this->options['info'] as $field_name => $options) {
       // Make a list of the group and column functions to call for this field.
@@ -522,7 +544,8 @@ class Table extends ViewsTable {
    * @return array
    *   Function return values.
    */
-  protected function executeAggregationFunctions(array $groups, array $functions) {
+  protected function executeAggregationFunctions(array $groups, array $functions): array {
+    /** @var \Drupal\views\Plugin\views\field\FieldHandlerInterface[] $field_handlers */
     $field_handlers = $this->view->field;
     $values = [];
     foreach ($functions as $field_name => $field_functions) {
@@ -537,7 +560,7 @@ class Table extends ViewsTable {
         // $aggr_values is indexed by group value and/or 'column'.
         // 'column' is the last evaluated value for the field.
         if (isset($aggr_values['column'])) {
-          $field_handlers[$field_name]->last_render = $aggr_values['column'];
+          $field_handlers[$field_name]->last_render = (string) $aggr_values['column'];
         }
         foreach ($aggr_values as $group => $value) {
           // 'column' function is last so may override earlier value.
@@ -577,6 +600,7 @@ class Table extends ViewsTable {
     $this->view->result = array_values(array_filter($this->view->result));
 
     // Used for Views Bulk Operations to rename the checkboxes.
+    /** @var \Drupal\views\Plugin\views\field\FieldHandlerInterface[] $field_handlers */
     $field_handlers = $this->view->field;
     $moduleHandler = \Drupal::service('module_handler');
     foreach ($field_handlers as $field_name => $handler) {
@@ -593,7 +617,7 @@ class Table extends ViewsTable {
   /**
    * Returns the raw or rendered result at the intersection of column and row.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The handler associated with the result column being requested.
    * @param int $row_num
    *   The result row number.
@@ -603,7 +627,7 @@ class Table extends ViewsTable {
    * @return string
    *   Returns empty string if there are no results for the requested row_num.
    */
-  public function getCell($field_handler, $row_num, $render = FALSE) {
+  public function getCell(FieldHandlerInterface $field_handler, int $row_num, bool $render = FALSE): string {
     // Some functions need rendered values (e.g. enumerate).
     // For the rendered_fields array we need id, otherwise take entity_field.
     if (isset($field_handler->options['entity_field']) && $render == FALSE) {
@@ -615,6 +639,7 @@ class Table extends ViewsTable {
     if (isset($this->rendered_fields[$row_num][$field_name])) {
       // Special handling of rendered fields, "Global: Custom text",
       // "Global: View" and custom plugin fields.
+      // @phpcs:ignore Drupal.Arrays.Array.LongLineDeclaration
       if ($render === TRUE || $this->isCustomTextField($field_handler) || $this->isViewsFieldView($field_handler) || !in_array($field_handler->getProvider(), ['views', 'webform_views'])) {
         return trim((string) $this->rendered_fields[$row_num][$field_name]);
       }
@@ -637,9 +662,9 @@ class Table extends ViewsTable {
    * Should normally not be called, especially not for
    * "Global: Custom text" fields.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The handler associated with the result column being requested.
-   * @param object $result_row
+   * @param \Drupal\views\ResultRow $result_row
    *   The result row.
    * @param bool $compressed
    *   If the result is a (nested) array, return the first primitive value.
@@ -647,7 +672,7 @@ class Table extends ViewsTable {
    * @return string
    *   The raw contents of the cell.
    */
-  private function getCellRaw($field_handler, $result_row, $compressed = TRUE) {
+  private function getCellRaw(FieldHandlerInterface $field_handler, ResultRow $result_row, bool $compressed = TRUE): string {
     if (isset($field_handler->options['entity_field'])) {
       $field_name = $field_handler->options['entity_field'];
     }
@@ -688,11 +713,11 @@ class Table extends ViewsTable {
       }
     }
 
-    // Get the commerce number.
+    // Get the Commerce number.
     if (isset($field->number)) {
       $value = $field->number;
     }
-    // Get the commerce value.
+    // Get the Commerce value.
     elseif (isset($field->value)) {
       $value = $field->value;
     }
@@ -732,14 +757,14 @@ class Table extends ViewsTable {
   /**
    * This is needed.
    */
-  public function getFormats() {
+  public function getFormats(): array {
     return [];
   }
 
   /**
    * Render and set a raw value on the table cell in specified column and row.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The field handler associated with the table column being requested.
    * @param int $row_num
    *   The result row number. Must be specified.
@@ -752,7 +777,7 @@ class Table extends ViewsTable {
    * @return mixed
    *   The rendered value.
    */
-  public function setCell($field_handler, $row_num, $new_values, $separator) {
+  public function setCell(FieldHandlerInterface $field_handler, int $row_num, $new_values, string $separator) {
     $rendered_value = FALSE;
 
     if (isset($field_handler->options['entity_field'])) {
@@ -760,14 +785,6 @@ class Table extends ViewsTable {
     }
     else {
       $field_name = $field_handler->options['id'];
-    }
-
-    // Check, whether we need to aggregate and compress or not.
-    if (isset($this->options['group_aggregation']['group_aggregation_results'])) {
-      $group_aggregation_results = $this->options['group_aggregation']['group_aggregation_results'];
-    }
-    else {
-      $group_aggregation_results = 0;
     }
 
     // The webform submission id comes in as views_handler_field_numeric, so all
@@ -792,7 +809,8 @@ class Table extends ViewsTable {
       $rendered_value = is_array($new_values) ? implode($separator, $new_values) : $new_values;
     }
 
-    if ($group_aggregation_results == 0) {
+    // Check, whether we need to aggregate and compress or not.
+    if ($this->options['group_aggregation']['group_aggregation_results'] == 0) {
       return $this->rendered_fields[$row_num][$field_handler->options['id']] = $rendered_value;
     }
     else {
@@ -803,9 +821,9 @@ class Table extends ViewsTable {
   /**
    * Returns the rendered value for a new (raw) value of a table cell.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The handler associated with the field/table-column being requested.
-   * @param int $row_num
+   * @param int|null $row_num
    *   The result row number.
    * @param mixed $new_values
    *   The raw value or array of raw values to render.
@@ -815,7 +833,7 @@ class Table extends ViewsTable {
    * @return mixed
    *   The rendered new value or FALSE if the value could not be rendered.
    */
-  protected function renderNewValue($field_handler, $row_num, $new_values, $separator) {
+  protected function renderNewValue(FieldHandlerInterface $field_handler, ?int $row_num, $new_values, string $separator) {
     $new_values = is_array($new_values) ? $new_values : [$new_values];
 
     // If the field_handler belongs to an entity Field (as in the field module),
@@ -894,78 +912,78 @@ class Table extends ViewsTable {
   /**
    * Returns whether the supplied field is a standard Views field.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The object belonging to the View result field.
    *
    * @return bool
    *   TRUE if the field is a standard Views field.
    */
-  protected function isStandardField($field_handler) {
+  protected function isStandardField(FieldHandlerInterface $field_handler): bool {
     return ($field_handler->getPluginId() === 'field');
   }
 
   /**
    * Checks if the field is a Views field of type "Global: Custom text".
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The object belonging to the View result field.
    *
    * @return bool
    *   TRUE if the field is of type "Global: Custom text".
    */
-  protected function isCustomTextField($field_handler) {
+  protected function isCustomTextField(FieldHandlerInterface $field_handler): bool {
     return ($field_handler->getPluginId() === 'custom');
   }
 
   /**
    * Checks if the field is a Views field of type "Global: Custom text".
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The object belonging to the View result field.
    *
    * @return bool
    *   TRUE if the field is of type "Global: Custom text".
    */
-  protected function isViewsFieldView($field_handler) {
+  protected function isViewsFieldView(FieldHandlerInterface $field_handler): bool {
     return ($field_handler->getPluginId() === 'view');
   }
 
   /**
    * Checks if the field is a Webform Submission Data Numeric field.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The object belonging to the View result field.
    *
    * @return bool
    *   TRUE if the field is a Webform Submission Data Numeric field.
    */
-  protected function isWebformNumeric($field_handler) {
+  protected function isWebformNumeric(FieldHandlerInterface $field_handler): bool {
     return ($field_handler->getPluginId() === 'webform_submission_field_numeric');
   }
 
   /**
    * Checks if the field is a Webform Submission Data field.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The object belonging to the View result field.
    *
    * @return bool
    *   TRUE if the field is a Webform Submission Data field.
    */
-  protected function isWebformField($field_handler) {
+  protected function isWebformField(FieldHandlerInterface $field_handler): bool {
     return ($field_handler->getPluginId() === 'webform_submission_field');
   }
 
   /**
    * Checks if the field comes from a Commerce entity.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The object belonging to the View result field.
    *
    * @return bool
    *   TRUE if the field is from a Commerce entity.
    */
-  protected function isCommerceField($field_handler) {
+  protected function isCommerceField(FieldHandlerInterface $field_handler): bool {
     if (isset($field_handler->definition['entity_type'])) {
       return (substr($field_handler->definition['entity_type'], 0, 9) === 'commerce_');
     }
@@ -977,7 +995,7 @@ class Table extends ViewsTable {
   /**
    * Returns the rendered representation for a new webform value.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The webform handler associated with the
    *   field/table-column being requested.
    * @param int $row_num
@@ -990,7 +1008,7 @@ class Table extends ViewsTable {
    * @return string
    *   The rendered value.
    */
-  protected function renderNewWebformValue($field_handler, $row_num, array $new_values, $separator) {
+  protected function renderNewWebformValue(FieldHandlerInterface $field_handler, int $row_num, array $new_values, string $separator) {
     $result_row = isset($row_num) ? $field_handler->view->result[$row_num] : reset($field_handler->view->result);
     $nid = $field_handler->options['id'];
     if (isset($field_handler->options['entity_field'])) {
@@ -1034,7 +1052,7 @@ class Table extends ViewsTable {
     }
 
     $rendered_value = implode(empty($separator) ? ' - ' : $separator, $rendered_values);
-    return is_array($rendered_value) ? $this->getRenderer()->renderPlain($rendered_value) : $rendered_value;
+    return is_array($rendered_value) ? $this->getRenderer()->renderInIsolation($rendered_value) : $rendered_value;
   }
 
   /**
@@ -1042,9 +1060,9 @@ class Table extends ViewsTable {
    *
    * The field will be rendered with appropriate CSS classes, without label.
    *
-   * @param object $field_handler
+   * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
    *   The views_handler_field_field object belonging to the View result field.
-   * @param int $row_num
+   * @param int|null $row_num
    *   The view result row number to change. Pass NULL to simply render
    *   $raw_value outside the context of a View, without affecting any rows.
    * @param mixed $raw_value
@@ -1052,10 +1070,10 @@ class Table extends ViewsTable {
    *   If NULL the row value of the field is re-rendered using its current
    *   (raw) value.
    *
-   * @return string
+   * @return string|false
    *   The rendered value or FALSE, if the type of field is not supported.
    */
-  protected function renderFromRaw($field_handler, $row_num = NULL, $raw_value = NULL) {
+  protected function renderFromRaw(FieldHandlerInterface $field_handler, ?int $row_num = NULL, $raw_value = NULL): string|false {
     if (isset($field_handler->options['entity_field'])) {
       $field_name = $field_handler->options['entity_field'];
     }
@@ -1122,7 +1140,7 @@ class Table extends ViewsTable {
     }
 
     $render_array = $field->view($display);
-    $rendered_value = $this->getRenderer()->renderPlain($render_array);
+    $rendered_value = $this->getRenderer()->renderInIsolation($render_array);
 
     return strip_tags((string) $rendered_value);
   }
@@ -1137,7 +1155,7 @@ class Table extends ViewsTable {
    * @param int $group_aggregation_results
    *   Options flag, whether to aggregate the values or not.
    */
-  protected function setAggregatedGroupValues(array $groups, array $values, $group_aggregation_results) {
+  protected function setAggregatedGroupValues(array $groups, array $values, int $group_aggregation_results): void {
     $subtotals = [];
     $label_prefix = ($this->options['group_aggregation']['result_label_prefix']) ? $this->options['group_aggregation']['result_label_prefix'] : '';
     $label_suffix = ($this->options['group_aggregation']['result_label_suffix']) ? $this->options['group_aggregation']['result_label_suffix'] : '';
@@ -1167,6 +1185,7 @@ class Table extends ViewsTable {
                 $insert_row = $insert_row + $current_row;
                 if (isset($field_label)) {
                   $field_value = $this->getCell($field_handlers[$field_label], $num, TRUE);
+                  // @phpcs:ignore Drupal.Semantics.FunctionT.NotLiteralString
                   $subtotals[$insert_row][$field_label] = $this->t($label_prefix) . trim($field_value) . $this->t($label_suffix);
                 }
                 $subtotals[$insert_row][$field_name] = $this->setCell($field_handlers[$field_name], NULL, $values[$field_name][$group], $separator);
@@ -1190,8 +1209,13 @@ class Table extends ViewsTable {
    *
    * @param array $values
    *   An array of field value arrays, indexed by field name and 'column'.
+   *
+   * @return array
+   *   An array of totals indexed by field name.
+   *
+   * @todo The return value description is just a guess.
    */
-  protected function setTotalsRow(array $values) {
+  protected function setTotalsRow(array $values): array {
     $totals = [];
     foreach ($values as $field_name => $group) {
       if (!empty($this->options['info'][$field_name]['has_aggr_column']) && isset($group['column'])) {
@@ -1223,13 +1247,13 @@ class Table extends ViewsTable {
           $totals[$field_name] = ['#markup' => $total];
         }
 
-        // Calculate proper totals for commerce fields with
-        // multiple currencies in one column (results per currency).
+        // Calculate proper totals for Commerce fields with multiple currencies
+        // in one column (results per currency).
         // Conditions:
-        // 1. the commerce_values array is set AND
-        // 2. the field has more than one currency AND
-        // 3. more than one entry per currency AND
-        // 4. it is a math function (sum, min, max average, median)
+        // 1. The commerce_values array is set AND
+        // 2. The field has more than one currency AND
+        // 3. More than one entry per currency AND
+        // 4. It is a math function (sum, min, max average, median).
         if (isset($this->commerce_field_values)) {
           if (array_key_exists($field_name, $this->commerce_field_values)) {
             if (in_array($col_operation, $commerce_operations)) {
@@ -1257,15 +1281,15 @@ class Table extends ViewsTable {
                       // Total numbers in array.
                       $count = count($number);
                       // Find the middle value, or the lowest middle value.
-                      $middleval = floor(($count - 1) / 2);
+                      $midlevel = floor(($count - 1) / 2);
                       // Odd number, middle is the median.
                       if ($count % 2) {
-                        $new_value = $number[$middleval];
+                        $new_value = $number[$midlevel];
                       }
                       // Even number, calculate avg of 2 medians.
                       else {
-                        $low = $number[$middleval];
-                        $high = $number[$middleval + 1];
+                        $low = $number[$midlevel];
+                        $high = $number[$midlevel + 1];
                         $new_value = (($low + $high) / 2);
                       }
                     }
@@ -1307,7 +1331,7 @@ class Table extends ViewsTable {
    * @return bool
    *   TRUE, if the field is renderable through its native function.
    */
-  public function isRenderable($field_name, $is_column = FALSE) {
+  public function isRenderable(string $field_name, bool $is_column = FALSE): bool {
     if (empty($this->options['info'][$field_name][$is_column ? 'has_aggr_column' : 'has_aggr'])) {
       return TRUE;
     }
@@ -1330,7 +1354,7 @@ class Table extends ViewsTable {
     $query = $this->view->getRequest()->query;
     $order = $query->get('order');
     if (!isset($order)) {
-      // Check for a 'default' clicksort. If there isn't one, exit gracefully.
+      // Check for a 'default' clickSort. If there isn't one, exit gracefully.
       if (empty($this->options['default'])) {
         return;
       }
@@ -1361,9 +1385,11 @@ class Table extends ViewsTable {
     // Store the $sort for later use.
     $this->active = $sort;
 
-    // Tell the field to click-sort, but only if it is a standard Views field or
-    // a field not aggregated, in which cases sorting will be dealt with in
-    // $this->pre_render().
+    // The above code should be identical to parent::buildSortPost().
+    // The difference comes here. The parent will always add clickSort(), but
+    // we don't want to do that. We want the field to click-sort only if it is
+    // a standard Views field or a field that is not aggregated. In these two
+    // cases, we will deal with sorting in $this->preRender().
     $plugin_id = $this->view->field[$sort]->getPluginId();
     if (!in_array($plugin_id, [
       'addressfield',
@@ -1372,7 +1398,7 @@ class Table extends ViewsTable {
       'view',
       'webform_submission_field_numeric',
       'webform_submission_field',
-    ]) && ($this->options['info'][$sort]['has_aggr'] == 0)) {
+    ]) && empty($this->options['info'][$sort]['has_aggr'])) {
       $this->view->field[$sort]->clickSort($this->order);
     }
   }
@@ -1389,7 +1415,7 @@ class Table extends ViewsTable {
    *   The compare code indicating whether $row1 is smaller than (-1), equal
    *   to (0) or greater than (1) $row2.
    */
-  protected function compareResultRows(ResultRow $row1, ResultRow $row2) {
+  protected function compareResultRows(ResultRow $row1, ResultRow $row2): int {
 
     // The sorting data may be raw or rendered, while the sorting style may be
     // alphabetical or numeric.
@@ -1400,6 +1426,8 @@ class Table extends ViewsTable {
     //
     // Columns that need to be sorted using rendered, post-aggregated values:
     // o Custom: Text field, Views Field View, addresses, taxonomy terms.
+    //
+    // @phpcs:ignore Drupal.Commenting.InlineComment.SpacingAfter
 
     // When no default column sort is set, $this->active will equal -1.
     if (empty($this->active) || $this->active == -1) {
@@ -1461,7 +1489,7 @@ class Table extends ViewsTable {
   /**
    * Set correct counter field order after sorting.
    */
-  private function fixCounterFields() {
+  private function fixCounterFields(): void {
     // Get the list of counter fields.
     $fields = [];
     foreach ($this->view->field as $field_name => $properties) {
@@ -1479,6 +1507,7 @@ class Table extends ViewsTable {
     // Update fields and use the offset of previous pages.
     foreach ($fields as $field_name => $start) {
       foreach ($this->view->result as $key => $value) {
+        // @phpcs:ignore Drupal.Formatting.SpaceUnaryOperator.PlusMinus
         $this->rendered_fields[$key][$field_name] = $start++ + $counter_offset;
       }
     }

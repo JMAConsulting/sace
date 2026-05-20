@@ -19,6 +19,8 @@ class StatuspageController {
 
   use StringTranslationTrait;
 
+  /**
+   * @var \Drupal\Core\Config\Config  */
   private $config;
 
   public function __construct() {
@@ -46,12 +48,12 @@ class StatuspageController {
     $request_code = $_SERVER['HTTP_USER_AGENT'];
 
     // Check if HTTP GET variable "unique_id" is used and the usage is allowed.
-    if (isset($_GET['unique_id']) && $this->config->get('nagios.statuspage.getparam') == TRUE) {
+    if (isset($_GET['unique_id']) && $this->config->get('nagios.statuspage.getparam')) {
       $request_code = $_GET['unique_id'];
     }
 
     if ($request_code == $ua || \Drupal::currentUser()
-        ->hasPermission('administer site configuration')) {
+      ->hasPermission('administer site configuration')) {
       // Authorized, so go ahead calling all modules:
       $nagios_data = $module_name ?
         [$module_name => call_user_func($module_name . '_nagios', $id_for_hook)] :
@@ -77,7 +79,7 @@ class StatuspageController {
 
     // Disable browser cache:
     $response->setMaxAge(0);
-    $response->setExpires();
+    $response->setExpires(NULL);
 
     return $response;
   }
@@ -85,13 +87,13 @@ class StatuspageController {
   /**
    * Belongs to nagios_check_requirements() function.
    *
-   * TODO: compare with functions in nagios.drush.inc; remove repeated code,
-   * if possible.
-   *
    * @param string $tmp_state
    * @param int $max_severity
    *
    * @return string[] Outdated module names
+   *
+   * @todo compare with functions in nagios.drush.inc; remove repeated code,
+   * if possible.
    */
   public function calculateOutdatedModuleAndThemeNames(&$tmp_state, int $max_severity): array {
     static $cache;
@@ -104,9 +106,13 @@ class StatuspageController {
       $tmp_modules = trim($tmp_modules);
       $tmp_state .= " ($tmp_modules)";
     }
+
     return $module_list;
   }
 
+  /**
+   * Collect problem categories for module updates.
+   */
   private function buildModuleList(int $max_severity): array {
     $tmp_projects = _nagios_get_projects_with_updates($this->config);
     $tmp_modules = '';
@@ -137,13 +143,14 @@ class StatuspageController {
         $module_list[] = $project_name;
       }
     }
+
     return [$tmp_modules, $module_list];
   }
 
   /**
    * Route callback to allow for user-defined URL of status page.
    *
-   * @return Route[]
+   * @return \Symfony\Component\Routing\Route[]
    */
   public function routes() {
     $config = \Drupal::config('nagios.settings');
@@ -165,6 +172,7 @@ class StatuspageController {
         '_custom_access' => '\Drupal\nagios\Controller\StatuspageController::access',
       ]
     );
+
     return $routes;
   }
 
@@ -175,18 +183,19 @@ class StatuspageController {
    */
   public function access() {
     $config = \Drupal::config('nagios.settings');
+
     return AccessResult::allowedIf($config->get('nagios.statuspage.enabled'));
   }
 
   /**
-   * For backwards compatibility, this module uses defines to set levels.
+   * For backwards compatibility, this module uses “define” calls to set levels.
    *
    * This function is called globally in nagios.module.
    *
    * @param \Drupal\Core\Config\ImmutableConfig|null $config
-   *   Config to read the values from
+   *   Config to read the values from.
    */
-  public static function setNagiosStatusConstants(ImmutableConfig $config = NULL) {
+  public static function setNagiosStatusConstants(?ImmutableConfig $config = NULL): void {
     // Defines to be used by this module and others that use its hook_nagios().
     if (!$config) {
       $config = \Drupal::config('nagios.settings');
@@ -207,7 +216,7 @@ class StatuspageController {
    * @return array{
    *   0: string,
    *   1: int
-   * }
+   *   }
    */
   public function getStringFromNagiosData(array $nagios_data) {
     // Find the highest level to be the overall status:
@@ -220,11 +229,15 @@ class StatuspageController {
     $codes = nagios_status();
     foreach ($nagios_data as $module_name => $module_data) {
       foreach ($module_data as $key => $value) {
+        if (!is_array($value)) {
+          throw new \Exception("The hook_nagios implementation {$module_name}_nagios() returned an unexpected data type. Check the example in nagios.api.php for guidance.");
+        }
+
         // Check status and set global severity:
-        if (is_array($value) && array_key_exists('status', $value) && $value['status'] >= $min_severity) {
+        if (array_key_exists('status', $value) && $value['status'] >= $min_severity) {
           $severity = max($severity, $value['status']);
         }
-        switch ($value['type']) {
+        switch ($value['type'] ?? '') {
           case 'state':
             // Complain only if status is larger than minimum severity:
             if ($value['status'] >= $min_severity) {
@@ -244,6 +257,9 @@ class StatuspageController {
           case 'perf':
             $output_perf[] = $key . '=' . $value['text'];
             break;
+
+          default:
+            throw new \Exception("The hook_nagios implementation {$module_name}_nagios() returned an invalid or missing array key 'type'. Check the example in nagios.api.php for guidance.");
         }
       }
     }
@@ -252,6 +268,7 @@ class StatuspageController {
     $output = "\n" . 'nagios=' . $codes[$severity] . ', ';
 
     $output .= implode(', ', $output_state) . ' | ' . implode('; ', $output_perf) . "\n";
+
     return [$output, $severity];
   }
 

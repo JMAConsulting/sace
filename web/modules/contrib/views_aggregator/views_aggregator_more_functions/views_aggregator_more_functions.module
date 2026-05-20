@@ -5,12 +5,16 @@
  * views_aggregator_more_functions.module
  *
  * Defines additional aggregation functions for Views Aggregator Plus.
+ *
+ * @phpcs:disable Drupal.NamingConventions.ValidFunctionName.InvalidPrefix
  */
+
+use Drupal\views\Plugin\views\field\FieldHandlerInterface;
 
 /**
  * Implements hook_views_aggregation_functions_info().
  */
-function views_aggregator_more_functions_views_aggregation_functions_info() {
+function views_aggregator_more_functions_views_aggregation_functions_info(): array {
   $functions = [
     // By edc1, see https://www.drupal.org/node/2299055
     'views_aggregator_group_seq_number' => [
@@ -39,19 +43,18 @@ function views_aggregator_more_functions_views_aggregation_functions_info() {
  *
  * @param array $groups
  *   An array of groups of rows, each group indexed by group value.
- * @param object $field_handler
+ * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
  *   Not used.
  * @param int $start_value
- *   Number at which to start the sequence, defaults to 1.
+ *   (optional) Number at which to start the sequence, defaults to 1.
  *
  * @return array
  *   An array of values, one for each group and one for the column.
  */
-function views_aggregator_group_seq_number(array $groups, $field_handler = NULL, $start_value = NULL) {
+function views_aggregator_group_seq_number(array $groups, FieldHandlerInterface $field_handler, int $start_value = 1): array {
   $values = [];
-  $count = (!isset($start_value) || $start_value == '') ? 1 : (int) $start_value;
   foreach ($groups as $group => $rows) {
-    $values['column'] = $values[$group] = $count++;
+    $values['column'] = $values[$group] = $start_value++;
   }
   return $values;
 }
@@ -63,13 +66,13 @@ function views_aggregator_group_seq_number(array $groups, $field_handler = NULL,
  *
  * @param array $groups
  *   An array of groups of rows, each group indexed by group value.
- * @param object $field_handler
+ * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
  *   The handler for the view column.
  *
  * @return array
  *   An array of values, one for each group, plus the 'column' group.
  */
-function views_aggregator_range_diff(array $groups, $field_handler) {
+function views_aggregator_range_diff(array $groups, FieldHandlerInterface $field_handler): array {
   $values = [];
   foreach ($groups as $group => $rows) {
     $is_first = TRUE;
@@ -103,14 +106,14 @@ function views_aggregator_range_diff(array $groups, $field_handler) {
  *
  * @param array $groups
  *   An array of groups of rows, each group indexed by group value.
- * @param object $field_handler
+ * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
  *   The handler for the view column to calculate percentages in.
  *
  * @return array
  *   An array of values, one for each group and one for the column
  *   (always 100%).
  */
-function views_aggregator_percentage(array $groups, $field_handler, $arg_group, $arg_column) {
+function views_aggregator_percentage(array $groups, FieldHandlerInterface $field_handler): array {
   $values = [];
   $sum_column = 0.0;
   foreach ($groups as $group => $rows) {

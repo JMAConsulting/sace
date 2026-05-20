@@ -498,13 +498,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   protected $hasAnonymousSubmissionTrackingHandler;
 
   /**
-   * Track if the webform has message handler.
-   *
-   * @var bool
-   */
-  private $hasMessagehandler;
-
-  /**
    * {@inheritdoc}
    */
   public function getLangcode() {
@@ -2033,7 +2026,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   /**
    * {@inheritdoc}
    */
-  public function getPages($operation = 'default', WebformSubmissionInterface $webform_submission = NULL) {
+  public function getPages($operation = 'default', ?WebformSubmissionInterface $webform_submission = NULL) {
     $pages = $this->buildPages($operation);
     if ($this->getSetting('wizard_progress_states') && $webform_submission) {
       /** @var \Drupal\webform\WebformSubmissionConditionsValidatorInterface $constraint_validator */
@@ -2471,7 +2464,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     }
 
     $path_alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
-    $query = $path_alias_storage->getQuery('OR')->accessCheck();
+    $query = $path_alias_storage->getQuery('OR')->accessCheck(TRUE);
 
     // Delete webform base, confirmation, submissions and drafts paths.
     $path_suffixes = ['', '/confirmation', '/submissions', '/drafts'];
@@ -2553,20 +2546,20 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    * {@inheritdoc}
    */
   public function hasMessageHandler() {
-    if (isset($this->hasMessagehandler)) {
-      $this->hasMessagehandler;
+    if (isset($this->hasMessageHandler)) {
+      $this->hasMessageHandler;
     }
 
-    $this->hasMessagehandler = FALSE;
+    $this->hasMessageHandler = FALSE;
     $handlers = $this->getHandlers();
     foreach ($handlers as $handler) {
       if ($handler instanceof WebformHandlerMessageInterface) {
-        $this->hasMessagehandler = TRUE;
+        $this->hasMessageHandler = TRUE;
         break;
       }
     }
 
-    return $this->hasMessagehandler;
+    return $this->hasMessageHandler;
   }
 
   /**
@@ -2722,7 +2715,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $handlers = $this->getHandlers();
 
     switch ($method) {
-      case 'overrideSettings';
+      case 'overrideSettings':
         // If webform submission and alter settings, make sure to completely
         // reset all settings to their original values.
         $this->resetSettings();
@@ -2780,7 +2773,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    * @return bool
    *   TRUE if a webform handler is enabled.
    */
-  protected function isHandlerEnabled(WebformHandlerInterface $handler, WebformSubmissionInterface $webform_submission = NULL) {
+  protected function isHandlerEnabled(WebformHandlerInterface $handler, ?WebformSubmissionInterface $webform_submission = NULL) {
     // Check if the handler is disabled.
     if ($handler->isDisabled()) {
       return FALSE;
@@ -2950,7 +2943,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   /**
    * {@inheritdoc}
    */
-  public function applyVariants(WebformSubmissionInterface $webform_submission = NULL, array $variants = [], $force = FALSE) {
+  public function applyVariants(?WebformSubmissionInterface $webform_submission = NULL, array $variants = [], $force = FALSE) {
     // Get variants from webform submission.
     if ($webform_submission) {
       // Make sure webform submission is associated with this webform.

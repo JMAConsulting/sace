@@ -14,19 +14,21 @@ class LayoutBuilderModalTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['layout_builder', 'layout_builder_modal'];
+  protected static $modules = [
+    'field',
+    'layout_builder',
+    'layout_builder_modal',
+  ];
 
   /**
-   * Specify the theme to be used in testing.
-   *
-   * @var string
+   * {@inheritdoc}
    */
   protected $defaultTheme = 'olivero';
 
   /**
    * Tests the Layout Builder Modal settings form.
    */
-  public function testSettingsForm() {
+  public function testSettingsForm(): void {
     $assert_session = $this->assertSession();
 
     // Test access is denied for user without administer permission.

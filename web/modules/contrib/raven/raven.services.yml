@@ -50,6 +50,7 @@ services:
     class: Drupal\raven\Config\SecKitOverrides
     arguments:
       - '@config.factory'
+      - '%kernel.environment%'
     tags:
       - { name: config.factory.override }
 

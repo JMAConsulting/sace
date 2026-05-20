@@ -14,12 +14,22 @@ final class RateLimiter
     /**
      * @var string
      */
+    public const DATA_CATEGORY_PROFILE = 'profile';
+
+    /**
+     * @var string
+     */
     private const DATA_CATEGORY_ERROR = 'error';
 
     /**
      * @var string
      */
-    private const DATA_CATEGORY_METRIC_BUCKET = 'metric_bucket';
+    private const DATA_CATEGORY_LOG_ITEM = 'log_item';
+
+    /**
+     * @var string
+     */
+    private const DATA_CATEGORY_CHECK_IN = 'monitor';
 
     /**
      * The name of the header to look at to know the rate limits for the events
@@ -72,29 +82,10 @@ final class RateLimiter
                 $retryAfter = $now + (ctype_digit($parameters[0]) ? (int) $parameters[0] : self::DEFAULT_RETRY_AFTER_SECONDS);
 
                 foreach (explode(';', $parameters[1]) as $category) {
-                    switch ($category) {
-                        case self::DATA_CATEGORY_METRIC_BUCKET:
-                            $namespaces = [];
-                            if (isset($parameters[4])) {
-                                $namespaces = explode(';', $parameters[4]);
-                            }
-
-                            /**
-                             * As we do not support setting any metric namespaces in the SDK,
-                             * checking for the custom namespace suffices.
-                             * In case the namespace was ommited in the response header,
-                             * we'll also back off.
-                             */
-                            if ($namespaces === [] || \in_array('custom', $namespaces)) {
-                                $this->rateLimits[self::DATA_CATEGORY_METRIC_BUCKET] = $retryAfter;
-                            }
-                            break;
-                        default:
-                            $this->rateLimits[$category ?: 'all'] = $retryAfter;
-                    }
+                    $this->rateLimits[$category ?: 'all'] = $retryAfter;
 
                     $this->logger->warning(
-                        sprintf('Rate limited exceeded for category "%s", backing off until "%s".', $category, gmdate(\DATE_ATOM, $retryAfter))
+                        \sprintf('Rate limited exceeded for category "%s", backing off until "%s".', $category, gmdate(\DATE_ATOM, $retryAfter))
                     );
                 }
             }
@@ -108,7 +99,7 @@ final class RateLimiter
             $this->rateLimits['all'] = $retryAfter;
 
             $this->logger->warning(
-                sprintf('Rate limited exceeded for all categories, backing off until "%s".', gmdate(\DATE_ATOM, $retryAfter))
+                \sprintf('Rate limited exceeded for all categories, backing off until "%s".', gmdate(\DATE_ATOM, $retryAfter))
             );
 
             return true;
@@ -117,26 +108,30 @@ final class RateLimiter
         return false;
     }
 
-    public function isRateLimited(EventType $eventType): bool
+    /**
+     * @param string|EventType $eventType
+     */
+    public function isRateLimited($eventType): bool
     {
-        $disabledUntil = $this->getDisabledUntil($eventType);
-
-        return $disabledUntil > time();
+        return $this->getDisabledUntil($eventType) > time();
     }
 
-    public function getDisabledUntil(EventType $eventType): int
+    /**
+     * @param string|EventType $eventType
+     */
+    public function getDisabledUntil($eventType): int
     {
-        $category = (string) $eventType;
+        $eventType = $eventType instanceof EventType ? (string) $eventType : $eventType;
 
-        if ($eventType === EventType::event()) {
-            $category = self::DATA_CATEGORY_ERROR;
+        if ($eventType === 'event') {
+            $eventType = self::DATA_CATEGORY_ERROR;
+        } elseif ($eventType === 'log') {
+            $eventType = self::DATA_CATEGORY_LOG_ITEM;
+        } elseif ($eventType === 'check_in') {
+            $eventType = self::DATA_CATEGORY_CHECK_IN;
         }
 
-        if ($eventType === EventType::metrics()) {
-            $category = self::DATA_CATEGORY_METRIC_BUCKET;
-        }
-
-        return max($this->rateLimits['all'] ?? 0, $this->rateLimits[$category] ?? 0);
+        return max($this->rateLimits['all'] ?? 0, $this->rateLimits[$eventType] ?? 0);
     }
 
     private function parseRetryAfterHeader(int $currentTime, string $header): int

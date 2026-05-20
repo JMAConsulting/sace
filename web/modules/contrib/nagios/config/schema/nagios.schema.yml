@@ -26,7 +26,7 @@ nagios.settings:
               label: 'STATUS UNKNOWN'
         min_report_severity:
           type: integer
-          label: 'Mininum report severity'
+          label: 'Minimum report severity'
         ua:
           type: string
           label: 'Unique ID for HTTP status page'

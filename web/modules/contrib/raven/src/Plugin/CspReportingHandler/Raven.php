@@ -26,7 +26,7 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
    *
    * @phpstan-ignore-next-line CSP doesn't yet document the configuration array.
    */
-  final public function __construct(array $configuration, $plugin_id, $plugin_definition, protected ConfigFactoryInterface $configFactory) {
+  final public function __construct(array $configuration, $plugin_id, $plugin_definition, protected ConfigFactoryInterface $configFactory, protected $environment) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -39,8 +39,10 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
     return new static(
       $configuration,
       $plugin_id,
+      // @phpstan-ignore-next-line CSP doesn't yet document the plugin_definition type.
       $plugin_definition,
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->getParameter('kernel.environment'),
     );
   }
 
@@ -50,7 +52,7 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
   public function alterPolicy(Csp $policy): void {
     $config = $this->configFactory->get('raven.settings');
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-    if (NULL === $dsn) {
+    if (!is_string($dsn)) {
       return;
     }
     try {
@@ -60,10 +62,7 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
       // Raven is incorrectly configured.
       return;
     }
-    $query = [];
-    if ($environment = empty($_SERVER['SENTRY_ENVIRONMENT']) ? $config->get('environment') : $_SERVER['SENTRY_ENVIRONMENT']) {
-      $query['sentry_environment'] = $environment;
-    }
+    $query['sentry_environment'] = empty($_SERVER['SENTRY_ENVIRONMENT']) ? ($config->get('environment') ?: $this->environment) : $_SERVER['SENTRY_ENVIRONMENT'];
     if ($release = empty($_SERVER['SENTRY_RELEASE']) ? $config->get('release') : $_SERVER['SENTRY_RELEASE']) {
       $query['sentry_release'] = $release;
     }

@@ -64,12 +64,12 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Enable HTTP status page'),
       '#default_value' => $config->get('nagios.statuspage.enabled'),
       '#description' =>
-        $this->t(
+      $this->t(
           'Even when the status page is ' .
           'disabled, you can use `$ drush nagios` to get the status from the ' .
           'command line.'
-        ) . ' ' .
-        $this->t('This integrates well with NRPE.'),
+      ) . ' ' .
+      $this->t('This integrates well with NRPE.'),
     ];
     $only_enabled_if_page = ['visible' => ['#edit-nagios-enable-status-page' => ['checked' => TRUE]]];
     $form['nagios_status_page']['nagios_page_path'] = [
@@ -90,8 +90,8 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'hidden',
       '#title' => $this->t('Nagios page controller'),
       '#description' =>
-        $this->t('Enter the name of the controller and function to be used by the Nagios status page.') . ' ' .
-        $this->t('Take care and be sure this function exists before submitting this form!'),
+      $this->t('Enter the name of the controller and function to be used by the Nagios status page.') . ' ' .
+      $this->t('Take care and be sure this function exists before submitting this form!'),
       '#default_value' => $config->get('nagios.statuspage.controller'),
     ];
 
@@ -154,11 +154,19 @@ class SettingsForm extends ConfigFormBase {
         '#default_value' => self::getModuleHookEnabled($module, $config),
       ];
     }
-    if (count($modules) < 2) {
+    $no_other_modules_supply_a_check = count($modules) < 2;
+    if ($no_other_modules_supply_a_check) {
+      // No point in allowing to disable the nagios module.
       $form[$group]['#access'] = FALSE;
     }
 
     if (\Drupal::moduleHandler()->loadInclude('dblog', 'admin.inc')) {
+      $states = [
+        '#edit-nagios #edit-nagios-func-watchdog' => ['checked' => TRUE],
+      ];
+      if (!$no_other_modules_supply_a_check) {
+        $states['#edit-nagios-enable-nagios'] = ['checked' => TRUE];
+      }
       $form['watchdog'] = [
         '#type' => 'fieldset',
         '#collapsible' => TRUE,
@@ -166,10 +174,7 @@ class SettingsForm extends ConfigFormBase {
         '#title' => $this->t('Watchdog settings'),
         '#description' => $this->t('Controls how watchdog messages are retrieved and displayed when watchdog checking is set.'),
         '#states' => [
-          'visible' => [
-            '#edit-nagios #edit-nagios-func-watchdog' => ['checked' => TRUE],
-            '#edit-nagios-enable-nagios' => ['checked' => TRUE],
-          ],
+          'visible' => $states,
         ],
         '#weight' => 5,
       ];
@@ -196,8 +201,8 @@ class SettingsForm extends ConfigFormBase {
       $form['watchdog']['channel_filter_group']['channel_filter'] = [
         '#type' => 'select',
         '#title' => $negate ?
-          $this->t('Message types to include') :
-          $this->t('Message types to ignore'),
+        $this->t('Message types to include') :
+        $this->t('Message types to ignore'),
         '#default_value' => $channel_filter,
         '#options' => $options,
         '#multiple' => TRUE,
@@ -229,12 +234,12 @@ class SettingsForm extends ConfigFormBase {
       foreach ($module_settings as $element => $data) {
         $form[$module][$element] = $data;
 
-        // Set #defaultvalue from #configname for first level form elements:
+        // Set #default_value from #configname for first level form elements:
         if (!isset($data['#default_value']) && isset($data['#configname'])) {
           $form[$module][$element]['#default_value'] = $config->get($module . '.' . $data['#configname']);
         }
 
-        // Set #defaultvalue from #configname for second level form elements:
+        // Set #default_value from #configname for second level form elements:
         if (isset($data['#type']) && $data['#type'] == 'fieldset') {
           foreach ($data as $fieldset_element => $fieldset_data) {
             if (is_array($fieldset_data) && !isset($fieldset_data['#default_value']) && isset($fieldset_data['#configname'])) {

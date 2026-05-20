@@ -1,14 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\migrate_plus\Kernel;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+
 /**
  * Verifies all tests pass with batching enabled, uneven batches.
- *
- * @group migrate
  */
+#[Group('migrate_plus')]
+#[RunTestsInSeparateProcesses]
 final class MigrateTableIncrementBatchTest extends MigrateTableIncrementTest {
 
   /**
@@ -16,6 +19,6 @@ final class MigrateTableIncrementBatchTest extends MigrateTableIncrementTest {
    *
    * @var int
    */
-  protected int $batchSize = 2;
+  protected static int $batchSize = 2;
 
 }

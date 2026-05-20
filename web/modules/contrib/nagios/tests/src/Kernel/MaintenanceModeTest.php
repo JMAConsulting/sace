@@ -37,6 +37,9 @@ class MaintenanceModeTest extends EntityKernelTestBase {
     StatuspageController::setNagiosStatusConstants();
   }
 
+  /**
+   * Check if status page is accessible during maintenance.
+   */
   public function testSubscriber() {
     $subscriber = new MaintenanceModeSubscriber();
     $get_response_event = $this->prophesize(RequestEvent::class);
@@ -77,6 +80,9 @@ class MaintenanceModeTest extends EntityKernelTestBase {
     self::assertSame("\nnagios=OK,  | \n", $content);
   }
 
+  /**
+   * Check if nagios reports maintenance mode.
+   */
   public function testMaintenanceModeCheck() {
     self::assertSame(NAGIOS_STATUS_OK, nagios_check_maintenance()['data']['status']);
     $form_object = SiteMaintenanceModeForm::create(\Drupal::getContainer());

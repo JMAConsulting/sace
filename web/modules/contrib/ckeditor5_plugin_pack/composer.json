@@ -23,6 +23,6 @@
     "require": {
         "php": "^8.0",
         "drupal/core": "^10.3 || ^11.0",
-        "drupal/ckeditor5_premium_features": "^1.5"
+        "drupal/ckeditor5_premium_features": "^1.6.4 || ^1.7"
     }
 }

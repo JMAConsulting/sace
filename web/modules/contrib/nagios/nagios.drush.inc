@@ -54,9 +54,9 @@ function drush_nagios_list() {
  *   Function name to execute.
  */
 function drush_nagios_check($check = NULL) {
-  $moduleHandler = \Drupal::service('module_handler');
   if ($check !== NULL) {
-    foreach ($moduleHandler->getImplementations('nagios_checks') as $module) {
+    [$moduleHandler, $modules] = get_hook_implementations('nagios_checks');
+    foreach ($modules as $module) {
       if (array_key_exists($check, $moduleHandler->invoke($module, 'nagios_checks'))) {
         nagios_check($module, $check);
         return;

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\migrate_tools\Kernel;
 
@@ -29,6 +29,11 @@ final class MigrateImportTest extends MigrateTestBase {
     'user',
     'system',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $collectMessages = TRUE;
 
   /**
    * {@inheritdoc}
@@ -73,7 +78,14 @@ final class MigrateImportTest extends MigrateTestBase {
     $vocabulary_id_map = $vocabulary_migration->getIdMap();
 
     // Test id list import.
-    $executable = new MigrateExecutable($vocabulary_migration, $this, ['idlist' => 2]);
+    $executable = new MigrateExecutable(
+      $vocabulary_migration,
+      $this,
+      $this->container->get('keyvalue'),
+      $this->container->get('datetime.time'),
+      $this->container->get('string_translation'),
+      ['idlist' => 2],
+    );
     $executable->import();
 
     /** @var \Drupal\taxonomy\Entity\Vocabulary $vocabulary */

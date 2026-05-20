@@ -6,7 +6,7 @@ use Drupal\Tests\BrowserTestBase;
 use Drush\TestTraits\DrushTestTrait;
 
 /**
- * @coversDefaultClass \Drupal\raven\Commands\RavenCommands
+ * @coversDefaultClass \Drupal\raven\Drush\Commands\RavenCommands
  *
  * @group raven
  */

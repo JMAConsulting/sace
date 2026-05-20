@@ -244,6 +244,15 @@ class CalendarLinkTwigExtension extends AbstractExtension {
       return $date->getPhpDateTime();
     }
 
+    // Drupal date range field instance. E.g. `node.field_date_range.end_value`.
+    if (is_string($date)) {
+      // Attempt to parse the input string as a date and time.
+      $parsed_date = date_create($date);
+      if ($parsed_date !== false) {
+        return $parsed_date;
+      }
+    }
+
     // Attempt to parse an HTML `time` element (Views default behavior). Only
     // the default formatter is supported as other formatters do not guarantee
     // accurate timezone data.
@@ -256,7 +265,8 @@ class CalendarLinkTwigExtension extends AbstractExtension {
       }
     }
 
-    throw new CalendarLinkException('Could not get date and time from input value ' . $date . ' (' . get_class($date) . ').');
+    throw new CalendarLinkException('Could not get date and time from input value ' . $date . '.');
   }
 
 }
+

@@ -18,8 +18,7 @@ use Sentry\Severity;
 /**
  * Implements hook_page_attachments().
  *
- * @phpstan-ignore-next-line Hook implementations should not duplicate @param
- *   documentation.
+ * @phpstan-ignore missingType.iterableValue
  */
 function raven_page_attachments(array &$page): void {
   $config = \Drupal::config('raven.settings');
@@ -55,8 +54,7 @@ function raven_page_attachments(array &$page): void {
   }
   $page['#attached']['library'][] = 'raven/raven';
   // Add meta tag placeholders for attaching traces to errors.
-  $random = Crypt::randomBytesBase64(45);
-  $placeholders = [substr($random, 0, 20), substr($random, 20, 20), substr($random, 40, 20)];
+  $placeholders = str_split(Crypt::randomBytesBase64(45), 20);
   $page['#attached']['html_head'][] = [
     [
       '#tag' => 'meta',
@@ -113,8 +111,7 @@ function raven_page_attachments(array &$page): void {
 /**
  * Implements hook_form_system_logging_settings_alter().
  *
- * @phpstan-ignore-next-line Hook implementations should not duplicate @param
- *   documentation.
+ * @phpstan-ignore missingType.iterableValue
  */
 function raven_form_system_logging_settings_alter(array &$form): void {
   RavenConfigForm::buildForm($form);
@@ -123,8 +120,7 @@ function raven_form_system_logging_settings_alter(array &$form): void {
 /**
  * Implements hook_help().
  *
- * @phpstan-ignore-next-line Hook implementations should not duplicate @return
- *   documentation.
+ * @phpstan-ignore missingType.iterableValue
  */
 function raven_help(?string $route_name): array {
   $output = [];
@@ -137,7 +133,7 @@ function raven_help(?string $route_name): array {
       ]);
     }
     $output[] = t('Documentation');
-    $output[] = t('Raven module documentation is available in the <a href="https://git.drupalcode.org/project/raven/-/blob/4.x/README.md" rel="noreferrer">README</a>. See also documentation for the <a href="https://docs.sentry.io/platforms/javascript/" rel="noreferrer">Sentry JavaScript SDK</a> and the <a href="https://docs.sentry.io/platforms/php/" rel="noreferrer">Sentry PHP SDK</a>.');
+    $output[] = t('Raven module documentation is available in the <a href="https://git.drupalcode.org/project/raven/-/blob/5.x/README.md" rel="noreferrer">README</a>. See also documentation for the <a href="https://docs.sentry.io/platforms/javascript/" rel="noreferrer">Sentry JavaScript SDK</a> and the <a href="https://docs.sentry.io/platforms/php/" rel="noreferrer">Sentry PHP SDK</a>.');
     $output[] = t('Support');
     $output[] = t('Visit the <a href="https://www.drupal.org/project/issues/raven" rel="noreferrer">issue queue</a> to file bug reports, feature requests and support requests.');
     array_walk($output, function (&$value, $key) {
@@ -163,7 +159,7 @@ function raven_cron(): void {
     return;
   }
   $options = $client->getOptions();
-  $checkIn = new CheckIn($slug, CheckInStatus::inProgress(), NULL, $options->getEnvironment(), $options->getRelease(), \Drupal::time()->getCurrentMicroTime() - \Drupal::time()->getRequestMicroTime());
+  $checkIn = new CheckIn($slug, CheckInStatus::inProgress(), NULL, $options->getRelease(), $options->getEnvironment(), \Drupal::time()->getCurrentMicroTime() - \Drupal::time()->getRequestMicroTime());
   $event = Event::createCheckIn();
   $event->setCheckIn($checkIn);
   $hub->captureEvent($event);
@@ -179,8 +175,7 @@ function raven_cron(): void {
 /**
  * Implements hook_monitoring_run_sensors().
  *
- * @phpstan-ignore-next-line Hook implementations should not duplicate @param
- *   documentation.
+ * @phpstan-ignore missingType.iterableValue
  */
 function raven_monitoring_run_sensors(array $results): void {
   if (!\Drupal::config('raven.settings')->get('send_monitoring_sensor_status_changes')) {

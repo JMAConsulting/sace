@@ -78,6 +78,12 @@ raven.settings:
       sequence:
         type: string
         label: 'Log channel'
+    ignored_messages:
+      type: sequence
+      label: 'Log messages that should be ignored'
+      sequence:
+        type: string
+        label: 'Log message'
     send_user_data:
       type: boolean
       label: 'Send user data'

@@ -6,14 +6,14 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\nagios\Controller\StatuspageController;
 
 /**
- * Tests if external module's hook is executed
+ * Tests if external module's hook is executed.
  *
  * @group nagios
  */
 class CustomHookCheckTest extends KernelTestBase {
 
   /**
-   * Prevent errors due to incomplete schema
+   * Prevent errors due to incomplete schema.
    */
   protected $strictConfigSchema = FALSE;
 
@@ -25,7 +25,7 @@ class CustomHookCheckTest extends KernelTestBase {
   protected static $modules = ['nagios', 'nagios_hook_test_module'];
 
   /**
-   * Perform any initial set up tasks that run before every test method
+   * Perform any initial set up tasks that run before every test method.
    */
   protected function setUp(): void {
     parent::setUp();
@@ -33,6 +33,9 @@ class CustomHookCheckTest extends KernelTestBase {
     StatuspageController::setNagiosStatusConstants();
   }
 
+  /**
+   * Does the hook support still work?
+   */
   public function testHooksInAnotherModule() {
     $results = nagios_invoke_all();
 
@@ -50,4 +53,5 @@ class CustomHookCheckTest extends KernelTestBase {
     /** @noinspection PhpUnitTestsInspection */
     self::assertTrue(empty($results['nagios_hook_test_module']));
   }
+
 }

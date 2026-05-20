@@ -159,10 +159,10 @@ display:
             grouping_field_class: ''
           column_aggregation:
             totals_row_position:
-              1: '1'
-              2: '2'
-            totals_per_page: '1'
-            precision: '2'
+              1: 1
+              2: 2
+            totals_per_page: 1
+            precision: 2
             totals_row_class: 'va-totals-test-class'
       row:
         type: fields

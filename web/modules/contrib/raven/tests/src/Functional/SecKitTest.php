@@ -47,13 +47,13 @@ class SecKitTest extends BrowserTestBase {
       'seckit_xss[csp][checkbox]' => '1',
       'seckit_xss[csp][report-only]' => '1',
     ], 'Save configuration');
-    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "report-uri https://domain.test/api/1/security/?sentry_key=a");
+    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "report-uri https://domain.test/api/1/security/?sentry_key=a&sentry_environment=prod");
 
     $this->drupalGet('admin/config/system/seckit');
     $this->submitForm([
       'seckit_xss[csp][default-src]' => "'self'",
     ], 'Save configuration');
-    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "default-src 'self'; connect-src 'self' https://domain.test/api/1/envelope/; report-uri https://domain.test/api/1/security/?sentry_key=a");
+    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "default-src 'self'; connect-src 'self' https://domain.test/api/1/envelope/; report-uri https://domain.test/api/1/security/?sentry_key=a&sentry_environment=prod");
   }
 
 }

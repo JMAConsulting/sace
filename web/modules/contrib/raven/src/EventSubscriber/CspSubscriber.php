@@ -17,7 +17,7 @@ class CspSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     if (!class_exists(CspEvents::class)) {
       return [];
     }
@@ -45,7 +45,7 @@ class CspSubscriber implements EventSubscriberInterface {
       return;
     }
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-    if (NULL === $dsn) {
+    if (!is_string($dsn)) {
       return;
     }
     try {

@@ -5,7 +5,7 @@ namespace Drupal\Tests\nagios\Functional;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Tests the settings form functionality
+ * Tests the settings form functionality.
  *
  * @covers \Drupal\nagios\Form\SettingsForm
  * @group nagios
@@ -27,31 +27,31 @@ class SettingsFormTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * A simple user with 'administer site configuration' permission
+   * A simple user with 'administer site configuration' permission.
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
   private $settingsUser;
 
   /**
-   * A user with 'administer nagios ignore' permission
+   * A user with 'administer nagios ignore' permission.
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
   private $modulesUser;
 
   /**
-   * Url to the settings page
+   * Url to the settings page.
    */
   private const SETTINGS_PATH = 'admin/config/system/nagios';
 
   /**
-   * Url to the ignored modules page
+   * Url to the ignored modules page.
    */
   private const IGNORED_MODULES_PATH = 'admin/config/system/nagios/ignored_modules';
 
   /**
-   * Perform any initial set up tasks that run before every test method
+   * Perform any initial set up tasks that run before every test method.
    */
   protected function setUp(): void {
     parent::setUp();
@@ -60,7 +60,7 @@ class SettingsFormTest extends BrowserTestBase {
   }
 
   /**
-   * Tests that the 'admin/config/system/nagios' path returns the right content
+   * Tests that the 'admin/config/system/nagios' path returns the right content.
    */
   public function testSettingsPageExists() {
     $this->drupalLogin($this->settingsUser);

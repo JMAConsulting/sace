@@ -6,8 +6,8 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
-use Drupal\raven\Logger\Raven;
 use Drupal\Tests\UnitTestCase;
+use Drupal\raven\Logger\Raven;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -69,7 +69,7 @@ class ProxyConfigTest extends UnitTestCase {
    * @return mixed[]
    *   Data for the proxy configuration test.
    */
-  public function proxyConfigurationData(): array {
+  public static function proxyConfigurationData(): array {
     return [
       // HTTP DSN, Empty proxy white-list.
       [

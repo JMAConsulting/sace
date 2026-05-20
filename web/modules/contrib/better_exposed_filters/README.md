@@ -34,8 +34,6 @@ Submit bug reports and feature suggestions, or track changes in the
 - [System](https://www.drupal.org/project/system)
 - [jQuery UI](https://www.drupal.org/project/jquery_ui)
 - [jQuery UI Slider](https://www.drupal.org/project/jquery_ui_slider)
-- [jQuery UI TouchPunch](https://www.drupal.org/project/jquery_ui_touch_punch)
-- [jQuery UI Datepicker](https://www.drupal.org/project/jquery_ui_datepicker)
 
 
 ## Installation
@@ -43,6 +41,9 @@ Submit bug reports and feature suggestions, or track changes in the
 Install as you would normally install a contributed Drupal module. For further
 information, see
 [Installing Drupal Modules](https://www.drupal.org/docs/extending-drupal/installing-drupal-modules).
+
+For Slider functionality if wanting to use internal library place
+https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js into `libraries/noUiSlider`
 
 
 ## Configuration

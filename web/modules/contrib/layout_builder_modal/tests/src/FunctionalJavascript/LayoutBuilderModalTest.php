@@ -86,7 +86,7 @@ class LayoutBuilderModalTest extends WebDriverTestBase {
     $this->drupalGet($layout_url);
     $this->click('.layout-builder__add-block .layout-builder__link');
     $assert_session->assertWaitOnAjaxRequest();
-    $this->clickLink('Create custom block');
+    $this->clickLink('Create content block');
     $assert_session->assertWaitOnAjaxRequest();
 
     // Verify that the add block has been opened in the modal.
@@ -135,7 +135,7 @@ class LayoutBuilderModalTest extends WebDriverTestBase {
     $this->drupalGet($layout_url);
     $this->click('.layout-builder__add-block .layout-builder__link');
     $assert_session->assertWaitOnAjaxRequest();
-    $this->clickLink('Create custom block');
+    $this->clickLink('Create content block');
     $assert_session->assertWaitOnAjaxRequest();
 
     // Verify that back button works.
@@ -143,7 +143,7 @@ class LayoutBuilderModalTest extends WebDriverTestBase {
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->elementNotExists('css', '#layout-builder-modal');
 
-    $this->clickLink('Create custom block');
+    $this->clickLink('Create content block');
     $assert_session->assertWaitOnAjaxRequest();
 
     $this->clickLink('Foo block');
@@ -267,7 +267,7 @@ class LayoutBuilderModalTest extends WebDriverTestBase {
     $this->drupalGet($layout_url);
     $this->click('.layout-builder__add-block .layout-builder__link');
     $assert_session->assertWaitOnAjaxRequest();
-    $this->clickLink('Create custom block');
+    $this->clickLink('Create content block');
     $assert_session->assertWaitOnAjaxRequest();
 
     // Verify there is a 'primary' class.
@@ -280,7 +280,7 @@ class LayoutBuilderModalTest extends WebDriverTestBase {
     $this->drupalGet($layout_url);
     $this->click('.layout-builder__add-block .layout-builder__link');
     $assert_session->assertWaitOnAjaxRequest();
-    $this->clickLink('Create custom block');
+    $this->clickLink('Create content block');
     $assert_session->assertWaitOnAjaxRequest();
 
     // Verify there seven background attribute is present.

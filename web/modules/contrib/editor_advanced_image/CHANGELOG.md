@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.3] - 2026-03-13
+### Fixed
+- fix invalid CKEditor plugin registration - Issue #3577482 by arturs.v, rhayun, teebo, riaan burger, wengerk, lisotton, thomas kaisuka: Advanced image plugin breaks CKEditor after Drupal core 11.3.4 update
+- fix a null check for `viewElement` - Issue #3576084 by lazzyvn, nickolaj, wengerk: Cannot read properties of undefined (reading 'getChildren')
+
 ## [3.1.2] - 2026-01-26
 ### Added
 - add official support of drupal 11.3
@@ -147,7 +152,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - First draft.
 
-[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.2...HEAD
+[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.3...HEAD
+[3.1.3]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.2...3.1.3
 [3.1.2]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.1...3.1.2
 [3.1.1]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.0.1...3.1.0

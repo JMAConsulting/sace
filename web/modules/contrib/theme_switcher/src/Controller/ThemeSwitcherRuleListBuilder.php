@@ -4,13 +4,13 @@ namespace Drupal\theme_switcher\Controller;
 
 use Drupal\Core\Config\Entity\DraggableListBuilder;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Session\AccountInterface;
 
 /**
  * Provides a listing of theme_switcher_rule.

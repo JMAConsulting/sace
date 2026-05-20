@@ -2,6 +2,8 @@
 
 namespace Drupal\entity_reference_revisions\Plugin\diff\Field;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\diff\Attribute\FieldDiffBuilder;
 use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\diff\FieldReferenceInterface;
@@ -17,12 +19,17 @@ use Drupal\diff\FieldReferenceInterface;
  *   },
  * )
  */
+#[FieldDiffBuilder(
+  id: 'entity_reference_revisions_field_diff_builder',
+  label: new TranslatableMarkup('Field Diff for Paragraphs'),
+  field_types: ['entity_reference_revisions'],
+)]
 class EntityReferenceRevisionsFieldDiffBuilder extends FieldDiffBuilderBase implements FieldReferenceInterface {
 
   /**
    * {@inheritdoc}
    */
-  public function build(FieldItemListInterface $field_items) {
+  public function build(FieldItemListInterface $field_items): mixed {
     $result_text = array();
     $item_counter = 0;
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $field_item */
@@ -45,7 +52,7 @@ class EntityReferenceRevisionsFieldDiffBuilder extends FieldDiffBuilderBase impl
   /**
    * {@inheritdoc}
    */
-  public function getEntitiesToDiff(FieldItemListInterface $field_items) {
+  public function getEntitiesToDiff(FieldItemListInterface $field_items): array {
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $field_item */
     $entities = [];
     foreach ($field_items as $field_key => $field_item) {

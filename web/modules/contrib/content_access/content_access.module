@@ -5,18 +5,18 @@
  * Content access module file.
  */
 
-use Drupal\Core\Session\AccountInterface;
-use Drupal\node\NodeInterface;
-use Drupal\node\NodeTypeInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Cache\Cache;
-use Drupal\user\RoleInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Url;
-use Drupal\user\Entity\Role;
-use Drupal\node\Entity\Node;
 use Drupal\content_access\ContentAccessInterface;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
+use Drupal\node\NodeInterface;
+use Drupal\user\Entity\Role;
+use Drupal\user\RoleInterface;
 
 /**
  * Implements hook_help().
@@ -31,7 +31,7 @@ function content_access_help($route_name, RouteMatchInterface $route_match) {
         $hint_service = \Drupal::service('advanced_help_hint.gethint');
       }
       $output = '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The <strong>Content Access</strong> module let you content manage access permission in a flexible and transparant way.') . '</p>';
+      $output .= '<p>' . t('The <strong>Content Access</strong> module lets you content manage access permission in a flexible and transparent way.') . '</p>';
       $output .= '<h3>' . t('Use') . '</h3>';
       $output .= '<p>' . t('It provides two new permissions: <em>view all</em> (allows anyone to view the content) and <em>view own</em> (allows  only the content creator to see his/her own content). It also gives access to the existing core permissions <em>edit</em> and <em>delete</em> on the same settings page.') . '</p>';
       $output .= '<p>' . t('It provides the following modalities:') . '</p><ul>';
@@ -67,8 +67,18 @@ function content_access_user_update(EntityInterface $account) {
   $roles_removed = array_diff($account->original->getRoles(), $account->getRoles());
 
   if (!empty($roles_added) || !empty($roles_removed)) {
-    \Drupal::messenger()->addMessage(t('Your changes have been saved. You may have to <a href=":rebuild">rebuild permissions</a> for your changes to take effect.',
-      [':rebuild' => Url::fromRoute('node.configure_rebuild_confirm')->toString()]));
+    // Reset the per-owner role cache so that any subsequent call to
+    // content_access_own_op() (e.g. during node_access_rebuild()) picks up
+    // the updated role assignments instead of stale cached data.
+    drupal_static_reset('content_access_own_op');
+
+    // Check if the user has 'access administration pages' permissions.
+    $account = \Drupal::currentUser();
+    if ($account->hasPermission('access administration pages')) {
+      // Rebuild the permissions.
+      \Drupal::messenger()->addMessage(t('Your changes have been saved. You may have to <a href=":rebuild">rebuild permissions</a> for your changes to take effect.',
+        [':rebuild' => Url::fromRoute('node.configure_rebuild_confirm')->toString()]));
+    }
   }
 }
 
@@ -117,7 +127,7 @@ function content_access_node_access_records(NodeInterface $node) {
           }
         }
         foreach ($grants_translation as $gid => $grant) {
-          $grants_translation[$gid] = content_access_proccess_grant($grant, $gid, $translated_node);
+          $grants_translation[$gid] = content_access_process_grant($grant, $gid, $translated_node);
         }
 
         // Care for the author grant.
@@ -132,7 +142,7 @@ function content_access_node_access_records(NodeInterface $node) {
         }
         if (array_filter($grant)) {
           $grant['realm'] = 'content_access_author';
-          $grants_translation[] = content_access_proccess_grant($grant, $translated_node->getOwnerId(), $translated_node);
+          $grants_translation[] = content_access_process_grant($grant, $translated_node->getOwnerId(), $translated_node);
         }
       }
       else {
@@ -142,7 +152,7 @@ function content_access_node_access_records(NodeInterface $node) {
 
       if (empty($grants_translation)) {
         // This means we grant no access.
-        $grants[] = content_access_proccess_grant([], 0, $translated_node);
+        $grants[] = content_access_process_grant([], 0, $translated_node);
       }
       else {
         content_access_optimize_grants($grants_translation, $translated_node);
@@ -249,15 +259,18 @@ function content_access_disabling($set = NULL) {
  * @return mixed
  *   The value of the given setting or an array of all settings.
  */
-function content_access_get_settings($setting, $type_name) {
-  $config = \Drupal::configFactory()->getEditable('content_access.settings');
-  $settings = unserialize($config->get('content_access_node_type.' . $type_name) ?? '', ['allowed_classes' => FALSE]);
+function content_access_get_settings(string $setting, string $type_name): mixed {
+  $node_type = NodeType::load($type_name);
+  if ($node_type === NULL) {
+    throw new \RuntimeException(sprintf('Node type %s was not found.', $type_name));
+  }
+  $settings = $node_type->getThirdPartySettings('content_access');
   if (empty($settings)) {
     $settings = [];
   }
   $settings += content_access_get_setting_defaults($type_name);
 
-  if ($setting == 'all') {
+  if ($setting === 'all') {
     return $settings;
   }
 
@@ -266,10 +279,14 @@ function content_access_get_settings($setting, $type_name) {
 
 /**
  * Save content_access settings of a content type.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function content_access_set_settings($settings, $type_name) {
-  $config = \Drupal::configFactory()->getEditable('content_access.settings');
-
+function content_access_set_settings($settings, $type_name): void {
+  $node_type = NodeType::load($type_name);
+  if ($node_type === NULL) {
+    throw new \RuntimeException(sprintf('Node type %s was not found.', $type_name));
+  }
   // Do not store default values so we do not have to care about syncing our
   // settings with the permissions.
   foreach (content_access_get_setting_defaults($type_name) as $setting => $default_value) {
@@ -277,8 +294,18 @@ function content_access_set_settings($settings, $type_name) {
       unset($settings[$setting]);
     }
   }
-  $config->set('content_access_node_type.' . $type_name, serialize($settings));
-  $config->save();
+  // Unset all the keys before updating settings so if some option like
+  // "per_node" is unchecked now -> it won't be left as is.
+  if (!empty($existing_settings = $node_type->getThirdPartySettings('content_access'))) {
+    foreach (array_keys($existing_settings) as $setting) {
+      $node_type->unsetThirdPartySetting('content_access', $setting);
+    }
+  }
+  foreach ($settings as $key => $setting_value) {
+    $node_type->setThirdPartySetting('content_access', $key, $setting_value);
+  }
+  $node_type->save();
+  drupal_static_reset('content_access_get_type_grant');
 }
 
 /**
@@ -364,7 +391,7 @@ function content_access_get_permission_by_op($op, $type) {
  */
 function content_access_get_type_grant(NodeInterface $node) {
   // Cache per type default grants in a static array.
-  static $defaults = [];
+  $defaults = &drupal_static(__FUNCTION__, []);
 
   $node_type = $node->getType();
   $node_lang = $node->language()->getId();
@@ -377,7 +404,7 @@ function content_access_get_type_grant(NodeInterface $node) {
     foreach (content_access_get_settings('view', $node_type) as $rid) {
       $gid = content_access_get_role_gid($rid);
       $grant['grant_view'] = 1;
-      $grants[] = content_access_proccess_grant($grant, $gid, $node);
+      $grants[] = content_access_process_grant($grant, $gid, $node);
     }
     $defaults[$node_type][$node_lang] = $grants;
   }
@@ -392,7 +419,7 @@ function content_access_get_type_grant(NodeInterface $node) {
   if ($grant['grant_view']) {
     $grant['realm'] = 'content_access_author';
     $grants = [
-      'author' => content_access_proccess_grant($grant, $node->getOwnerId(), $node),
+      'author' => content_access_process_grant($grant, $node->getOwnerId(), $node),
     ];
   }
 
@@ -401,8 +428,21 @@ function content_access_get_type_grant(NodeInterface $node) {
 
 /**
  * Process a grant, which means add priority, realm and other properties.
+ *
+ * @deprecated in content_access:2.1.0 and is removed from content_access:3.0.0.
+ * Use content_access_process_grant instead.
+ *
+ * @see https://www.drupal.org/node/3558317
  */
-function content_access_proccess_grant($grant, $gid, NodeInterface $node) {
+function content_access_proccess_grant($grant, $gid, NodeInterface $node): array {
+  @trigger_error('content_access_proccess_grant() is deprecated in content_access:2.1.0 and is removed from content_access:3.0.0. Use content_access_process_grant() instead. See https://www.drupal.org/node/3558317', E_USER_DEPRECATED);
+  return content_access_process_grant($grant, $gid, $node);
+}
+
+/**
+ * Process a grant, which means add priority, realm and other properties.
+ */
+function content_access_process_grant($grant, $gid, NodeInterface $node): array {
   $grant += [
     'grant_view' => 0,
     'grant_update' => 0,
@@ -428,7 +468,7 @@ function content_access_proccess_grant($grant, $gid, NodeInterface $node) {
  *   Returns 0 if permission is granted, otherwise 1.
  */
 function content_access_own_op(NodeInterface $node, array $any_roles, array $own_roles) {
-  static $roles = [];
+  $roles = &drupal_static(__FUNCTION__, []);
 
   $owner = $node->getOwner();
   if (!isset($roles[$owner->id()])) {
@@ -502,7 +542,7 @@ function content_access_get_rids_per_node_op($op, NodeInterface $node) {
  * @return array
  *   An array of role ids which have access.
  */
-function content_access_per_node_setting($op, NodeInterface $node, array $settings = NULL) {
+function content_access_per_node_setting($op, NodeInterface $node, ?array $settings = NULL) {
   static $grants = [];
 
   if (isset($settings)) {
@@ -584,7 +624,6 @@ function content_access_delete_per_node_settings(NodeInterface $node) {
 
   // Delete possible acl settings.
   if (\Drupal::moduleHandler()->moduleExists('acl')) {
-    \Drupal::modulehandler()->loadInclude('content_access', 'inc', 'content_access.admin');
     foreach (['view', 'update', 'delete'] as $op) {
       $acl_id = content_access_get_acl_id($node, $op);
       acl_delete_acl($acl_id);
@@ -653,42 +692,13 @@ function content_access_optimize_grants(&$grants, NodeInterface $node) {
 }
 
 /**
- * Implements hook_node_type_delete().
- */
-function content_access_node_type_delete(NodeTypeInterface $info) {
-  $config = \Drupal::configFactory()->getEditable('content_access.settings');
-
-  $config
-    ->clear('content_access_node_type.' . $info->id())
-    ->save();
-}
-
-/**
- * Implements hook_node_type_update().
- *
- * Updates settings on node type name change.
- */
-function content_access_node_type_update(NodeTypeInterface $info) {
-  $config = \Drupal::configFactory()->getEditable('content_access.settings');
-
-  $original_id = $info->getOriginalId();
-  if (!empty($original_id) && $info->getOriginalId() != $info->id()) {
-    $settings = content_access_get_settings('all', $info->getOriginalId());
-    content_access_set_settings($settings, $info->id());
-    $config
-      ->clear('content_access_node_type.' . $info->getOriginalId())
-      ->save();
-  }
-}
-
-/**
  * Implements hook_node_access_explain().
  */
 function content_access_node_access_explain($row) {
   static $roles;
 
   if (!isset($roles)) {
-    $roles = user_roles();
+    $roles = Role::loadMultiple();
   }
 
   if (!$row->gid && $row->realm == 'content_access_roles') {
@@ -831,13 +841,21 @@ function content_access_user_admin_perm_submit($form, FormStateInterface $form_s
   // Check for each content type, which has per node access activated
   // whether permissions have been changed.
   $types = [];
+  $entity_type_bundle_info = \Drupal::service('entity_type.bundle.info');
+  if (method_exists($entity_type_bundle_info, 'getBundleLabels')) {
+    $node_bundles_labels = $entity_type_bundle_info->getBundleLabels('node');
+  }
+  else {
+    $node_bundles_labels = node_type_get_names();
+  }
   foreach (array_filter(content_access_get_settings('per_node', 'all')) as $type => $value) {
     foreach (_content_access_get_node_permissions($type) as $perm) {
-      foreach (user_roles() as $rid => $role) {
+      $user_roles = Role::loadMultiple();
+      foreach ($user_roles as $rid => $role) {
         $values = $form_state->getValues();
         if (isset($values[$rid]) && in_array($perm, $form['checkboxes'][$rid]['#default_value']) != in_array($perm, $values[$rid])) {
           // Permission changed.
-          $types[$type] = node_type_get_names();
+          $types[$type] = $node_bundles_labels;
           continue 2;
 
         }

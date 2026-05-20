@@ -29,6 +29,6 @@
         "source": "http://cgit.drupalcode.org/layout_builder_modal"
     },
     "require": {
-        "drupal/core": "^9.2|^10.0"
+        "drupal/core": "^9.5 || ^10.2 || ^11"
     }
 }

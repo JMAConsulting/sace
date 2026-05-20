@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\migrate_plus;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\migrate_plus\DataParserPluginManager
  * @see plugin_api
  */
-abstract class DataParserPluginBase extends PluginBase implements DataParserPluginInterface {
+abstract class DataParserPluginBase extends PluginBase implements DataParserPluginInterface, ContainerFactoryPluginInterface {
 
   /**
    * List of source urls.
@@ -53,10 +54,12 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
    */
   protected DataFetcherPluginInterface $dataFetcher;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    protected DataFetcherPluginManager $fetcherPluginManager,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->urls = $configuration['urls'];
     $this->itemSelector = $configuration['item_selector'] ?? '';
@@ -66,7 +69,12 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
-    return new static($configuration, $plugin_id, $plugin_definition);
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('plugin.manager.migrate_plus.data_fetcher'),
+    );
   }
 
   /**
@@ -74,7 +82,7 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
    */
   public function getDataFetcherPlugin(): DataFetcherPluginInterface {
     if (!isset($this->dataFetcher)) {
-      $this->dataFetcher = \Drupal::service('plugin.manager.migrate_plus.data_fetcher')->createInstance($this->configuration['data_fetcher_plugin'], $this->configuration);
+      $this->dataFetcher = $this->fetcherPluginManager->createInstance($this->configuration['data_fetcher_plugin'], $this->configuration);
     }
     return $this->dataFetcher;
   }
@@ -82,8 +90,7 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
   /**
    * {@inheritdoc}
    */
-  #[\ReturnTypeWillChange]
-  public function rewind() {
+  public function rewind(): void {
     $this->activeUrl = NULL;
     $this->next();
   }
@@ -91,8 +98,7 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
   /**
    * {@inheritdoc}
    */
-  #[\ReturnTypeWillChange]
-  public function next() {
+  public function next(): void {
     $this->currentItem = $this->currentId = NULL;
     if (is_null($this->activeUrl)) {
       if (!$this->nextSource()) {
@@ -153,6 +159,9 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
       }
 
       if ($this->openSourceUrl($this->urls[$this->activeUrl])) {
+        if (!empty($this->configuration['pager'])) {
+          $this->addNextUrls($this->activeUrl);
+        }
         // We have a valid source.
         return TRUE;
       }
@@ -162,10 +171,39 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
   }
 
   /**
+   * Add next page of source data following the active URL.
+   *
+   * @param int $activeUrl
+   *   The index within the source URL array to insert the next URL resource.
+   *   This is parameterized to enable custom plugins to control the ordering of
+   *   next URLs injected into the source URL backlog.
+   */
+  protected function addNextUrls(int $activeUrl = 0): void {
+    $next_urls = $this->getNextUrls($this->urls[$this->activeUrl]);
+
+    if (!empty($next_urls)) {
+      array_splice($this->urls, $activeUrl + 1, 0, $next_urls);
+      $this->urls = array_values(array_unique($this->urls));
+    }
+  }
+
+  /**
+   * Collected the next urls from a paged response.
+   *
+   * @param string $url
+   *   URL of the currently active source.
+   *
+   * @return array
+   *   Array of URLs representing next paged resources.
+   */
+  protected function getNextUrls(string $url): array {
+    return $this->getDataFetcherPlugin()->getNextUrls($url);
+  }
+
+  /**
    * {@inheritdoc}
    */
-  #[\ReturnTypeWillChange]
-  public function current() {
+  public function current(): mixed {
     return $this->currentItem;
   }
 
@@ -181,24 +219,21 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
   /**
    * {@inheritdoc}
    */
-  #[\ReturnTypeWillChange]
-  public function key() {
+  public function key(): ?array {
     return $this->currentId;
   }
 
   /**
    * {@inheritdoc}
    */
-  #[\ReturnTypeWillChange]
-  public function valid() {
+  public function valid(): bool {
     return !empty($this->currentItem);
   }
 
   /**
    * {@inheritdoc}
    */
-  #[\ReturnTypeWillChange]
-  public function count() {
+  public function count(): int {
     return iterator_count($this);
   }
 

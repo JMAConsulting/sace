@@ -32,7 +32,13 @@ class Client implements ClientInterface
     /**
      * The version of the SDK.
      */
-    public const SDK_VERSION = '4.7.0';
+    public const SDK_VERSION = '4.27.0';
+
+    /**
+     * Regex pattern to detect if a string is a regex pattern (starts and ends with / optionally followed by flags).
+     * Supported flags: i (case-insensitive), m (multiline), s (dotall), u (unicode).
+     */
+    private const REGEX_PATTERN_DETECTION = '/^\/.*\/[imsu]*$/';
 
     /**
      * @var Options The client options
@@ -52,7 +58,7 @@ class Client implements ClientInterface
     /**
      * @var array<string, IntegrationInterface> The stack of integrations
      *
-     * @psalm-var array<class-string<IntegrationInterface>, IntegrationInterface>
+     * @phpstan-var array<class-string<IntegrationInterface>, IntegrationInterface>
      */
     private $integrations;
 
@@ -149,7 +155,7 @@ class Client implements ClientInterface
     public function captureException(\Throwable $exception, ?Scope $scope = null, ?EventHint $hint = null): ?EventId
     {
         $className = \get_class($exception);
-        if ($this->isIgnoredException($className)) {
+        if ($this->shouldIgnoreException($className)) {
             $this->logger->info(
                 'The exception will be discarded because it matches an entry in "ignore_exceptions".',
                 ['className' => $className]
@@ -172,7 +178,10 @@ class Client implements ClientInterface
      */
     public function captureEvent(Event $event, ?EventHint $hint = null, ?Scope $scope = null): ?EventId
     {
-        $event = $this->prepareEvent($event, $hint, $scope);
+        // Client reports don't need to be augmented in the prepareEvent pipeline.
+        if ($event->getType() !== EventType::clientReport()) {
+            $event = $this->prepareEvent($event, $hint, $scope);
+        }
 
         if ($event === null) {
             return null;
@@ -188,7 +197,7 @@ class Client implements ClientInterface
             }
         } catch (\Throwable $exception) {
             $this->logger->error(
-                sprintf('Failed to send the event to Sentry. Reason: "%s".', $exception->getMessage()),
+                \sprintf('Failed to send the event to Sentry. Reason: "%s".', $exception->getMessage()),
                 ['exception' => $exception, 'event' => $event]
             );
         }
@@ -215,11 +224,11 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      *
-     * @psalm-template T of IntegrationInterface
+     * @phpstan-template T of IntegrationInterface
      */
     public function getIntegration(string $className): ?IntegrationInterface
     {
-        /** @psalm-var T|null */
+        /** @phpstan-var T|null */
         return $this->integrations[$className] ?? null;
     }
 
@@ -255,6 +264,16 @@ class Client implements ClientInterface
         return $this->transport;
     }
 
+    public function getSdkIdentifier(): string
+    {
+        return $this->sdkIdentifier;
+    }
+
+    public function getSdkVersion(): string
+    {
+        return $this->sdkVersion;
+    }
+
     /**
      * Assembles an event and prepares it to be sent of to Sentry.
      *
@@ -280,6 +299,7 @@ class Client implements ClientInterface
 
         $event->setSdkIdentifier($this->sdkIdentifier);
         $event->setSdkVersion($this->sdkVersion);
+
         $event->setTags(array_merge($this->options->getTags(), $event->getTags()));
 
         if ($event->getServerName() === null) {
@@ -294,7 +314,7 @@ class Client implements ClientInterface
             $event->setEnvironment($this->options->getEnvironment() ?? Event::DEFAULT_ENVIRONMENT);
         }
 
-        $eventDescription = sprintf(
+        $eventDescription = \sprintf(
             '%s%s [%s]',
             $event->getLevel() !== null ? $event->getLevel() . ' ' : '',
             (string) $event->getType(),
@@ -306,7 +326,7 @@ class Client implements ClientInterface
 
         // only sample with the `sample_rate` on errors/messages
         if ($isEvent && $sampleRate < 1 && mt_rand(1, 100) / 100.0 > $sampleRate) {
-            $this->logger->info(sprintf('The %s will be discarded because it has been sampled.', $eventDescription), ['event' => $event]);
+            $this->logger->info(\sprintf('The %s will be discarded because it has been sampled.', $eventDescription), ['event' => $event]);
 
             return null;
         }
@@ -323,7 +343,7 @@ class Client implements ClientInterface
 
             if ($event === null) {
                 $this->logger->info(
-                    sprintf('The %s will be discarded because one of the event processors returned "null".', $eventDescription),
+                    \sprintf('The %s will be discarded because one of the event processors returned "null".', $eventDescription),
                     ['event' => $beforeEventProcessors]
                 );
 
@@ -336,7 +356,7 @@ class Client implements ClientInterface
 
         if ($event === null) {
             $this->logger->info(
-                sprintf(
+                \sprintf(
                     'The %s will be discarded because the "%s" callback returned "null".',
                     $eventDescription,
                     $this->getBeforeSendCallbackName($beforeSendCallback)
@@ -348,11 +368,64 @@ class Client implements ClientInterface
         return $event;
     }
 
-    private function isIgnoredException(string $className): bool
+    /**
+     * Checks if an exception should be ignored based on configured patterns.
+     * Supports both class hierarchy matching and regex patterns.
+     * Patterns starting and ending with '/' are treated as regex patterns.
+     */
+    private function shouldIgnoreException(string $className): bool
     {
-        foreach ($this->options->getIgnoreExceptions() as $ignoredException) {
-            if (is_a($className, $ignoredException, true)) {
-                return true;
+        foreach ($this->options->getIgnoreExceptions() as $pattern) {
+            // Check for regex pattern (starts with / and ends with / optionally followed by flags)
+            if (preg_match(self::REGEX_PATTERN_DETECTION, $pattern)) {
+                try {
+                    if (preg_match($pattern, $className)) {
+                        return true;
+                    }
+                } catch (\Throwable $e) {
+                    // Invalid regex pattern, log and skip
+                    $this->logger->warning(
+                        \sprintf('Invalid regex pattern in ignore_exceptions: "%s". Error: %s', $pattern, $e->getMessage())
+                    );
+                    continue;
+                }
+            } else {
+                // Class hierarchy check
+                if (is_a($className, $pattern, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a transaction should be ignored based on configured patterns.
+     * Supports both exact string matching and regex patterns.
+     * Patterns starting and ending with '/' are treated as regex patterns.
+     */
+    private function shouldIgnoreTransaction(string $transactionName): bool
+    {
+        foreach ($this->options->getIgnoreTransactions() as $pattern) {
+            // Check for regex pattern (starts with / and ends with / optionally followed by flags)
+            if (preg_match(self::REGEX_PATTERN_DETECTION, $pattern)) {
+                try {
+                    if (preg_match($pattern, $transactionName)) {
+                        return true;
+                    }
+                } catch (\Throwable $e) {
+                    // Invalid regex pattern, log and skip
+                    $this->logger->warning(
+                        \sprintf('Invalid regex pattern in ignore_transactions: "%s". Error: %s', $pattern, $e->getMessage())
+                    );
+                    continue;
+                }
+            } else {
+                // Exact string match
+                if ($transactionName === $pattern) {
+                    return true;
+                }
             }
         }
 
@@ -369,9 +442,9 @@ class Client implements ClientInterface
             }
 
             foreach ($exceptions as $exception) {
-                if ($this->isIgnoredException($exception->getType())) {
+                if ($this->shouldIgnoreException($exception->getType())) {
                     $this->logger->info(
-                        sprintf('The %s will be discarded because it matches an entry in "ignore_exceptions".', $eventDescription),
+                        \sprintf('The %s will be discarded because it matches an entry in "ignore_exceptions".', $eventDescription),
                         ['event' => $event]
                     );
 
@@ -387,9 +460,9 @@ class Client implements ClientInterface
                 return $event;
             }
 
-            if (\in_array($transactionName, $this->options->getIgnoreTransactions(), true)) {
+            if ($this->shouldIgnoreTransaction($transactionName)) {
                 $this->logger->info(
-                    sprintf('The %s will be discarded because it matches a entry in "ignore_transactions".', $eventDescription),
+                    \sprintf('The %s will be discarded because it matches a entry in "ignore_transactions".', $eventDescription),
                     ['event' => $event]
                 );
 
@@ -409,8 +482,6 @@ class Client implements ClientInterface
                 return ($this->options->getBeforeSendTransactionCallback())($event, $hint);
             case EventType::checkIn():
                 return ($this->options->getBeforeSendCheckInCallback())($event, $hint);
-            case EventType::metrics():
-                return ($this->options->getBeforeSendMetricsCallback())($event, $hint);
             default:
                 return $event;
         }
@@ -423,8 +494,6 @@ class Client implements ClientInterface
                 return 'before_send_transaction';
             case EventType::checkIn():
                 return 'before_send_check_in';
-            case EventType::metrics():
-                return 'before_send_metrics';
             default:
                 return 'before_send';
         }

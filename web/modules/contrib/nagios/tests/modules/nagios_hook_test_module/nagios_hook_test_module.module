@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * This module allows testing if hook_nagios still works.
+ */
+
 use Drupal\Core\Url;
 
 /**
@@ -7,7 +12,7 @@ use Drupal\Core\Url;
  *
  * For more details please read the section 'API' section within README.txt.
  */
-function nagios_hook_test_module_nagios_info() {
+function nagios_hook_test_module_nagios_info(): array {
   return [
     'name' => 'nagios_hook_test_module',
     'id' => 'NAGIOS_CHECK_KEY',
@@ -17,10 +22,11 @@ function nagios_hook_test_module_nagios_info() {
 /**
  * Implements hook_nagios().
  */
-function nagios_hook_test_module_nagios() {
+function nagios_hook_test_module_nagios(): array {
   return [
     'NAGIOS_CHECK_KEY' => [
-      'status' => 1, // NAGIOS_STATUS_WARNING
+      // 1 means NAGIOS_STATUS_WARNING.
+      'status' => 1,
       'type' => 'state',
       'text' => 'Text description for the problem',
     ],
@@ -30,9 +36,10 @@ function nagios_hook_test_module_nagios() {
 /**
  * Implements hook_requirements().
  */
-function nagios_hook_test_module_requirements() {
+function nagios_hook_test_module_requirements(): array {
   $url = Url::fromRoute('nagios.ignored_modules');
   $url->setAbsolute();
+
   return [
     'big_example_problem' => [
       'title' => 'Nagios Hook Test Module',

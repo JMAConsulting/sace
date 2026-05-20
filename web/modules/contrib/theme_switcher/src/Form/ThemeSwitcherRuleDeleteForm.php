@@ -3,10 +3,10 @@
 namespace Drupal\theme_switcher\Form;
 
 use Drupal\Core\Entity\EntityConfirmFormBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

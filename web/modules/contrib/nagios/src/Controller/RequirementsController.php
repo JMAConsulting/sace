@@ -2,7 +2,6 @@
 
 namespace Drupal\nagios\Controller;
 
-use Drupal;
 use Drupal\Core\Config\Config;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\update\UpdateFetcherInterface;
@@ -40,12 +39,12 @@ class RequirementsController {
    */
   public function collectRequirements(array $enabled_modules, array $update_status, $project_data) {
     /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
-    $moduleHandler = Drupal::service('module_handler');
+    $moduleHandler = \Drupal::service('module_handler');
 
     foreach ($enabled_modules as $module_name) {
       $requirements_data = $moduleHandler->invoke($module_name, 'requirements', ['runtime']);
       if ($requirements_data && is_array($requirements_data)) {
-        // Intercept the Update Status module to respect our Ignore behaviour.
+        // Intercept the Update Status module to respect our Ignore behavior.
         // Note, if $data is empty then there's no available update data and Update Status will handle that for us.
         if ($module_name == 'update' && !empty($update_status)) {
           $this->massageRequirementsFromUpdateModule($requirements_data, $enabled_modules, $project_data['drupal']['includes'], $update_status);
@@ -53,8 +52,12 @@ class RequirementsController {
         $this->reqs += $requirements_data;
       }
     }
+    \Drupal::moduleHandler()->alter('requirements', $this->reqs);
   }
 
+  /**
+   * Sort requirement failures by severity.
+   */
   public function findMostSevereProblem(): array {
     $descriptions = [];
     $min_severity = $this->config->get('nagios.min_report_severity');
@@ -63,8 +66,8 @@ class RequirementsController {
     $deprecated_themes = $this->config->get('nagios.deprecated_themes');
     foreach ($this->reqs as $key => $requirement) {
       if (isset($requirement['severity'])) {
-        if (($key == 'experimental_modules' && !$experimental_modules) 
-        || ($key == 'deprecated_modules' && !$deprecated_modules) 
+        if (($key == 'experimental_modules' && !$experimental_modules)
+        || ($key == 'deprecated_modules' && !$deprecated_modules)
         || ($key == 'deprecated_themes' && !$deprecated_themes)) {
           continue;
         }
@@ -90,6 +93,9 @@ class RequirementsController {
     return [$this->severity, $desc];
   }
 
+  /**
+   * Change the array structure.
+   */
   private function massageRequirementsFromUpdateModule(&$requirements, array $enabled_modules, $includes, array $update_status): void {
     // Don't want the 'update_contrib' section reported by 'update' module,
     // because that one contains *ALL* modules, even the ones ignored by
@@ -109,9 +115,7 @@ class RequirementsController {
           $contrib_req['severity'] = -1;
         }
         // Build an array of required contrib updates.
-        if ($contrib_req) {
-          $module_data[] = $contrib_req;
-        }
+        $module_data[] = $contrib_req;
       }
     }
 

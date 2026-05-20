@@ -11,8 +11,7 @@ use Sentry\SentrySdk;
 /**
  * Implements hook_requirements().
  *
- * @phpstan-ignore-next-line Hook implementations should not duplicate @return
- *   documentation.
+ * @phpstan-ignore missingType.iterableValue
  */
 function raven_requirements(string $phase): array {
   $requirements['raven_curl'] = [

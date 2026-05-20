@@ -3,6 +3,7 @@
 namespace Drupal\nagios\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
@@ -10,6 +11,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Allows site owners to exclude modules from nagios checks.
+ * This is useful for irrelevant or unfixable problems.
+ */
 class IgnoredModulesForm extends ConfigFormBase {
 
   /**
@@ -26,20 +31,23 @@ class IgnoredModulesForm extends ConfigFormBase {
    *   The module handler.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    */
-  public function __construct(ModuleHandlerInterface $module_handler, ConfigFactoryInterface $config_factory) {
+  public function __construct(ModuleHandlerInterface $module_handler, ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager) {
     $this->moduleHandler = $module_handler;
-    parent::__construct($config_factory);
+    parent::__construct($config_factory, $typed_config_manager);
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  final public static function create(ContainerInterface $container) {
     /** @noinspection PhpParamsInspection */
-    return new static(
+    return new self(
       $container->get('module_handler'),
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('config.typed')
     );
   }
 
@@ -101,7 +109,7 @@ class IgnoredModulesForm extends ConfigFormBase {
   }
 
   /**
-   * Build the list of modules
+   * Build the list of modules.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
@@ -113,12 +121,12 @@ class IgnoredModulesForm extends ConfigFormBase {
   }
 
   /**
-   * Build the list of modules
+   * Build the list of modules.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
-   * @param boolean $enabled
-   *   Enable the check boxes
+   * @param bool $enabled
+   *   Enable the check boxes.
    */
   protected function buildTable(array &$form, $enabled) {
     $config = $this->config('nagios.settings');
@@ -135,15 +143,15 @@ class IgnoredModulesForm extends ConfigFormBase {
 
     // Sort all modules by their names.
     $modules = \Drupal::service('extension.list.module')->getList();
-    // Drupal 8,9
+    // Drupal 8, 9.
     $callback = 'system_sort_modules_by_info_name';
     if (!function_exists($callback)) {
-      // Drupal 10
+      // Drupal 10, 11.
       $callback = '\Drupal\Core\Extension\ExtensionList::sortByName';
     }
     uasort($modules, $callback);
 
-    // Build the rows
+    // Build the rows.
     foreach ($modules as $filename => $module) {
       if (empty($module->info['hidden'])) {
         $options[$filename] = $this->buildRow($module);
@@ -164,18 +172,19 @@ class IgnoredModulesForm extends ConfigFormBase {
   }
 
   /**
-   * Build one row in the list of modules
+   * Build one row in the list of modules.
    *
-   * @param Extension $module
-   *  The module that the row is build for
+   * @param \Drupal\Core\Extension\Extension $module
+   *   The module that the row is build for.
    *
    * @return array
-   *  The row data for the table select element
+   *   The row data for the table select element
    */
   protected function buildRow(Extension $module) {
     $row = [];
     $row['title'] = $module->info['name'];
     $row['description'] = $this->t($module->info['description']);
+
     return $row;
   }
 
@@ -185,7 +194,7 @@ class IgnoredModulesForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('nagios.settings');
     $ignored_modules = array_filter($form_state->getValue('modules'));
-    foreach(array_keys($ignored_modules) as $name) {
+    foreach (array_keys($ignored_modules) as $name) {
       $ignored_modules[$name] = TRUE;
     }
     $config->set('nagios.ignored_modules', $ignored_modules);

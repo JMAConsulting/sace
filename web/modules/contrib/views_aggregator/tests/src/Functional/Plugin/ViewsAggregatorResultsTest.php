@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\views_aggregator\Functional\Plugin;
 
 use Drupal\Tests\views\Functional\ViewTestBase;
@@ -8,7 +10,7 @@ use Drupal\views\Entity\View;
 /**
  * Tests the views aggregator results.
  *
- * @group views_agregator
+ * @group views_aggregator
  */
 class ViewsAggregatorResultsTest extends ViewTestBase {
 
@@ -34,13 +36,9 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Set to TRUE to strict check all configuration saved.
-   *
-   * @var bool
-   *
-   * @see \Drupal\Core\Config\Development\ConfigSchemaChecker
+   * {@inheritdoc}
    */
-  protected $strictConfigSchema = FALSE;
+  protected $strictConfigSchema = TRUE;
 
   /**
    * {@inheritdoc}
@@ -51,7 +49,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
   }
 
   /**
-   * Test the pager and how it works with totals.
+   * Tests the pager and how it works with totals.
    */
   public function testPagerSettings(): void {
     $this->drupalGet('va-test-style-table');
@@ -84,7 +82,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
   }
 
   /**
-   * Test the positioning of the column aggregation results (totals).
+   * Tests the positioning of the column aggregation results (totals).
    */
   public function testTotalsSettings(): void {
     $this->drupalGet('va-test-style-table');
@@ -119,7 +117,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
   }
 
   /**
-   * Test the group functions.
+   * Tests the group functions.
    */
   public function testGroupResultFunctions(): void {
     $this->drupalGet('va-test-style-table');
@@ -188,7 +186,7 @@ class ViewsAggregatorResultsTest extends ViewTestBase {
   }
 
   /**
-   * Test the column functions.
+   * Tests the column functions.
    */
   public function testColumnResultFunctions(): void {
     $this->drupalGet('va-test-style-table');

@@ -2,11 +2,14 @@
 
 namespace Drupal\nagios\EventSubscriber;
 
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Drupal\nagios\Controller\StatuspageController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Allow access to status page on maintenance mode.
+ */
 class MaintenanceModeSubscriber implements EventSubscriberInterface {
 
   /**
@@ -30,7 +33,7 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events[KernelEvents::REQUEST][] = ['onKernelRequestMaintenance', 35];
     return $events;
   }

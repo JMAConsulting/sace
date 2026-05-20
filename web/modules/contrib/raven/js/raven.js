@@ -4,6 +4,11 @@
  */
 
 ((drupalSettings, Sentry) => {
+  // If Sentry SDK is disabled, nothing to do.
+  if (drupalSettings.raven === undefined) {
+    return;
+  }
+
   // Add the browser performance tracing integration.
   drupalSettings.raven.options.integrations.push(
     // Additional browser tracing options can be applied by modifying

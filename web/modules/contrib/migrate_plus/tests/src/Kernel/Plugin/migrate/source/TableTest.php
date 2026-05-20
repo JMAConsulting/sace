@@ -1,19 +1,23 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate\source;
 
 use Drupal\migrate\Exception\RequirementsException;
+use Drupal\migrate_plus\Plugin\migrate\source\Table;
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests Table source plugin.
- *
- * @covers \Drupal\migrate_plus\Plugin\migrate\source\Table
- *
- * @group migrate_plus
  */
+#[CoversClass(Table::class)]
+#[Group('migrate_plus')]
+#[RunTestsInSeparateProcesses]
 final class TableTest extends MigrateDrupal7TestBase {
 
   /**
@@ -31,7 +35,7 @@ final class TableTest extends MigrateDrupal7TestBase {
   /**
    * Definition of a test migration.
    */
-  protected ?array $migrationDefinition;
+  protected ?array $migrationDefinition = NULL;
 
   /**
    * {@inheritdoc}
@@ -68,11 +72,12 @@ final class TableTest extends MigrateDrupal7TestBase {
   }
 
   /**
-   * Test 'Table' source plugin constructor with invalid configuration.
+   * Test 'table' source plugin constructor with invalid configuration.
    *
    * @dataProvider badConfigurationProvider
    */
-  public function testTableBadConfiguration($configuration, string $message): void {
+  #[DataProvider('badConfigurationProvider')]
+  public function testTableBadConfiguration(array $configuration, string $message): void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);
     $configuration['plugin'] = 'table';
@@ -86,7 +91,7 @@ final class TableTest extends MigrateDrupal7TestBase {
    *
    *   Plugin configurations and messages.
    */
-  public function badConfigurationProvider(): array {
+  public static function badConfigurationProvider(): array {
     return [
       'Missing table_name' => [
         [],

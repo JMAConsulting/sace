@@ -68,7 +68,7 @@ class TestController extends ControllerBase {
       /**
        * {@inheritdoc}
        */
-      public function log($level, string|\Stringable $message, array $context = []): void {
+      public function log(mixed $level, string|\Stringable $message, array $context = []): void {
         $this->log[] = compact('level', 'message');
       }
 

@@ -19,7 +19,9 @@ class RavenConfigForm {
    */
   public static function buildForm(array &$form): void {
     $config = \Drupal::configFactory()->getEditable('raven.settings');
-    assert(!isset($form['#attached']) || is_array($form['#attached']));
+    if (isset($form['#attached']) && !is_array($form['#attached'])) {
+      throw new \InvalidArgumentException('Form #attached key should either not exist, or be an array.');
+    }
     $form['#attached']['library'][] = 'raven/admin';
     $form['raven'] = [
       '#type'           => 'details',
@@ -41,7 +43,7 @@ class RavenConfigForm {
       '#default_value'  => $config->get('javascript_error_handler'),
     ];
     $form['raven']['js']['public_dsn'] = [
-      '#type'           => 'textfield',
+      '#type'           => 'url',
       '#title'          => t('Sentry DSN'),
       '#default_value'  => $config->get('public_dsn'),
       '#description'    => t('Sentry client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
@@ -130,7 +132,7 @@ class RavenConfigForm {
       '#open'           => TRUE,
     ];
     $form['raven']['php']['client_key'] = [
-      '#type'           => 'textfield',
+      '#type'           => 'url',
       '#title'          => t('Sentry DSN'),
       '#default_value'  => $config->get('client_key'),
       '#description'    => t('Sentry client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
@@ -154,6 +156,14 @@ class RavenConfigForm {
       '#title'          => t('Ignored channels'),
       '#description'    => t('A list of log channels for which messages will not be sent to Sentry (one channel per line). Commonly-configured log channels include <em>access denied</em> for 403 errors and <em>page not found</em> for 404 errors.'),
       '#default_value'  => implode("\n", $ignored_channels),
+    ];
+    $ignored_messages = $config->get('ignored_messages') ?: [];
+    assert(is_array($ignored_messages));
+    $form['raven']['php']['ignored_messages'] = [
+      '#type'           => 'textarea',
+      '#title'          => t('Ignored messages'),
+      '#description'    => t('A list of log messages for which messages will not be sent to Sentry (one message per line). Message does not have placeholders replaced, e.g. <em>During rendering of embedded media: the media item with UUID "@uuid" does not exist.</em>'),
+      '#default_value'  => implode("\n", $ignored_messages),
     ];
     $form['raven']['php']['fatal_error_handler'] = [
       '#type'           => 'checkbox',
@@ -326,6 +336,8 @@ class RavenConfigForm {
   public static function submitForm(array &$form, FormStateInterface $form_state): void {
     $ignored_channels = $form_state->getValue(['raven', 'php', 'ignored_channels']);
     assert(is_string($ignored_channels));
+    $ignored_messages = $form_state->getValue(['raven', 'php', 'ignored_messages']);
+    assert(is_string($ignored_messages));
     $trace_propagation_targets_backend = $form_state->getValue([
       'raven',
       'php',
@@ -421,6 +433,8 @@ class RavenConfigForm {
         ]))
       ->set('ignored_channels',
         static::extractListFromString($ignored_channels))
+      ->set('ignored_messages',
+        static::extractListFromString($ignored_messages))
       ->set('cron_monitor_id',
         $form_state->getValue(['raven', 'php', 'cron_monitor_id']))
       ->set('javascript_error_handler',
