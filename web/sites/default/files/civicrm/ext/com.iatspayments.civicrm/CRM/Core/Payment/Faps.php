@@ -516,11 +516,13 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       try {
         $result = civicrm_api3('Country', 'get', [
           'sequential' => 1,
-          'return' => ['name'],
-	  'id' => $params['country_id'],
+          'return' => ['iso_code'],
+          'id' => $params['country_id'],
           'options' => ['limit' => 1],
         ]);
-	$params['country'] = $result['values'][0]['name'];
+        // FAPS/1stPay expects the 2-letter ISO country code (e.g. "CA"), not
+        // the full name ("Canada"), otherwise it rejects with "Invalid Address Format".
+        $params['country'] = $result['values'][0]['iso_code'];
       }
       catch (CRM_Core_Exception $e) {
         Civi::log()->info('Unexpected error from api3 looking up countries/states/provinces');
@@ -530,11 +532,13 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       try {
         $result = civicrm_api3('StateProvince', 'get', [
           'sequential' => 1,
-          'return' => ['name'],
-	  'id' => $params['state_province_id'],
+          'return' => ['abbreviation'],
+          'id' => $params['state_province_id'],
           'options' => ['limit' => 1],
         ]);
-	$params['state_province'] = $result['values'][0]['name'];
+        // FAPS/1stPay expects the 2-letter state/province code (e.g. "YT"), not
+        // the full name ("Yukon Territory"), otherwise it rejects with "Invalid Address Format".
+        $params['state_province'] = $result['values'][0]['abbreviation'];
       }
       catch (CRM_Core_Exception $e) {
         Civi::log()->info('Unexpected error from api3 looking up countries/states/provinces');
