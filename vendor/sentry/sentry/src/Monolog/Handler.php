@@ -16,6 +16,11 @@ use Sentry\State\Scope;
  * This Monolog handler logs every message to a Sentry's server using the given
  * hub instance.
  *
+ * @deprecated since version 4.24. To be removed in version 5.0. Use {@see LogsHandler}
+ *             with the `enable_logs` SDK option for Sentry logs, {@see ExceptionToSentryIssueHandler}
+ *             to send Monolog exceptions to Sentry issues, and {@see LogToSentryIssueHandler}
+ *             to send Monolog log messages to Sentry issues.
+ *
  * @author Stefano Arlandini <sarlandini@alice.it>
  */
 final class Handler extends AbstractProcessingHandler
@@ -55,7 +60,7 @@ final class Handler extends AbstractProcessingHandler
         $event = Event::createEvent();
         $event->setLevel(self::getSeverityFromLevel($record['level']));
         $event->setMessage($record['message']);
-        $event->setLogger(sprintf('monolog.%s', $record['channel']));
+        $event->setLogger(\sprintf('monolog.%s', $record['channel']));
 
         $hint = new EventHint();
 

@@ -7,16 +7,16 @@ The Nagios Monitoring module integrates your Drupal site with the Nagios monitor
 Nagios' successors, Icinga and Icinga 2 can also be used with this module.
 
 Nagios is a network and host monitoring application. For more information about
-Nagios, see http://www.nagios.org
+Nagios, see https://www.nagios.org
 
 The module reports to Nagios that the site is up and running normally,
 including:
 - PHP is parsing scripts and modules correctly
 - The database is accessible from Drupal
 - Whether there are configuration issues with the site, such as:
-  * pending Drupal version update
-  * pending Drupal module updates
-  * unwritable 'files' directory
+  * Pending Drupal version update
+  * Pending Drupal module updates
+  * The "files" directory is not writable.
   * Pending updates to the database schema
   * Cron not running for a specified period
 
@@ -279,8 +279,8 @@ https://www.drupal.org/project/issues/nagios?version=8.x
 
 Authors
 -------
-Khalid Baheyeldin (http://baheyeldin.com/khalid and http://2bits.com)
-Greg Harvey (http://www.codeenigma.com)
+Khalid Baheyeldin (https://baheyeldin.com/khalid and https://2bits.com)
+Greg Harvey (https://www.codeenigma.com)
 Christian Bläul (https://www.linkedin.com/in/blaeul)
 
 The authors can also be contacted for paid customizations of this

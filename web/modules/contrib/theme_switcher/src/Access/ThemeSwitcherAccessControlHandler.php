@@ -15,7 +15,7 @@ class ThemeSwitcherAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
-  public function checkAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL) {
+  public function checkAccess(EntityInterface $entity, $operation, ?AccountInterface $account = NULL) {
     $account = $this->prepareUser($account);
 
     // Check the global permission.

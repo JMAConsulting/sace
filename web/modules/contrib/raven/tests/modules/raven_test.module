@@ -13,8 +13,7 @@ use Sentry\State\Scope;
 /**
  * Implements hook_page_attachments().
  *
- * @phpstan-ignore-next-line Hook implementations should not duplicate @param
- *   documentation.
+ * @phpstan-ignore missingType.iterableValue
  */
 function raven_test_page_attachments(array &$attachments): void {
   $client = \Drupal::service('logger.raven')->getClient();

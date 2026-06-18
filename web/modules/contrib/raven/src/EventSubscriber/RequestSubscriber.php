@@ -64,6 +64,7 @@ class RequestSubscriber implements EventSubscriberInterface, TrustedCallbackInte
     // This name will later be replaced with the route path, if possible.
     $transactionContext->setName($request->getMethod() . ' ' . $request->getUri())
       ->setSource(TransactionSource::url())
+      ->setOrigin('auto.http.server')
       ->setOp('http.server')
       ->setData([
         'http.request.method' => $request->getMethod(),
@@ -101,7 +102,7 @@ class RequestSubscriber implements EventSubscriberInterface, TrustedCallbackInte
    * @return mixed[]
    *   An array of event listener definitions.
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events[KernelEvents::REQUEST][] = ['onRequest', 222];
     $events[KernelEvents::TERMINATE][] = ['onTerminate', 222];
     return $events;
@@ -157,6 +158,7 @@ class RequestSubscriber implements EventSubscriberInterface, TrustedCallbackInte
    *   Renderable array.
    */
   public function getW3cTraceparent(): array {
+    // @phpstan-ignore function.deprecated
     return ['#markup' => \Sentry\getW3CTraceparent()];
   }
 

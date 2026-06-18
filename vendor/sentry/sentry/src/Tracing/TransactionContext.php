@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Sentry\Tracing;
 
+use Sentry\Tracing\Traits\TraceHeaderParserTrait;
+
 final class TransactionContext extends SpanContext
 {
-    private const SENTRY_TRACEPARENT_HEADER_REGEX = '/^[ \\t]*(?<trace_id>[0-9a-f]{32})?-?(?<span_id>[0-9a-f]{16})?-?(?<sampled>[01])?[ \\t]*$/i';
-
-    private const W3C_TRACEPARENT_HEADER_REGEX = '/^[ \\t]*(?<version>[0]{2})?-?(?<trace_id>[0-9a-f]{32})?-?(?<span_id>[0-9a-f]{16})?-?(?<sampled>[01]{2})?[ \\t]*$/i';
+    use TraceHeaderParserTrait;
 
     public const DEFAULT_NAME = '<unlabeled transaction>';
 
@@ -149,53 +149,30 @@ final class TransactionContext extends SpanContext
     private static function parseTraceAndBaggage(string $sentryTrace, string $baggage): self
     {
         $context = new self();
-        $hasSentryTrace = false;
+        $parsedData = self::parseTraceAndBaggageHeaders($sentryTrace, $baggage);
 
-        if (preg_match(self::SENTRY_TRACEPARENT_HEADER_REGEX, $sentryTrace, $matches)) {
-            if (!empty($matches['trace_id'])) {
-                $context->traceId = new TraceId($matches['trace_id']);
-                $hasSentryTrace = true;
-            }
-
-            if (!empty($matches['span_id'])) {
-                $context->parentSpanId = new SpanId($matches['span_id']);
-                $hasSentryTrace = true;
-            }
-
-            if (isset($matches['sampled'])) {
-                $context->parentSampled = $matches['sampled'] === '1';
-                $hasSentryTrace = true;
-            }
-        } elseif (preg_match(self::W3C_TRACEPARENT_HEADER_REGEX, $sentryTrace, $matches)) {
-            if (!empty($matches['trace_id'])) {
-                $context->traceId = new TraceId($matches['trace_id']);
-                $hasSentryTrace = true;
-            }
-
-            if (!empty($matches['span_id'])) {
-                $context->parentSpanId = new SpanId($matches['span_id']);
-                $hasSentryTrace = true;
-            }
-
-            if (isset($matches['sampled'])) {
-                $context->parentSampled = $matches['sampled'] === '01';
-                $hasSentryTrace = true;
-            }
+        if ($parsedData['traceId'] !== null) {
+            $context->traceId = $parsedData['traceId'];
         }
 
-        $samplingContext = DynamicSamplingContext::fromHeader($baggage);
-
-        if ($hasSentryTrace && !$samplingContext->hasEntries()) {
-            // The request comes from an old SDK which does not support Dynamic Sampling.
-            // Propagate the Dynamic Sampling Context as is, but frozen, even without sentry-* entries.
-            $samplingContext->freeze();
-            $context->getMetadata()->setDynamicSamplingContext($samplingContext);
+        if ($parsedData['parentSpanId'] !== null) {
+            $context->parentSpanId = $parsedData['parentSpanId'];
         }
 
-        if ($hasSentryTrace && $samplingContext->hasEntries()) {
-            // The baggage header contains Dynamic Sampling Context data from an upstream SDK.
-            // Propagate this Dynamic Sampling Context.
-            $context->getMetadata()->setDynamicSamplingContext($samplingContext);
+        if ($parsedData['parentSampled'] !== null) {
+            $context->parentSampled = $parsedData['parentSampled'];
+        }
+
+        if ($parsedData['dynamicSamplingContext'] !== null) {
+            $context->getMetadata()->setDynamicSamplingContext($parsedData['dynamicSamplingContext']);
+        }
+
+        if ($parsedData['parentSamplingRate'] !== null) {
+            $context->getMetadata()->setParentSamplingRate($parsedData['parentSamplingRate']);
+        }
+
+        if ($parsedData['sampleRand'] !== null) {
+            $context->getMetadata()->setSampleRand($parsedData['sampleRand']);
         }
 
         return $context;

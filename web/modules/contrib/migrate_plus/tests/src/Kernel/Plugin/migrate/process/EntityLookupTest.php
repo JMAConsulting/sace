@@ -1,20 +1,26 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate\process;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\Row;
+use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the entity_lookup plugin.
- *
- * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\EntityLookup
- * @group migrate_plus
  */
+#[CoversClass(EntityLookup::class)]
+#[Group('migrate_plus')]
+#[RunTestsInSeparateProcesses]
 final class EntityLookupTest extends KernelTestBase {
 
   use UserCreationTrait;
@@ -44,12 +50,11 @@ final class EntityLookupTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installSchema('system', ['sequences']);
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installConfig(['filter']);
 
-    $this->migrateExecutable = $this->getMockBuilder('Drupal\migrate\MigrateExecutable')
+    $this->migrateExecutable = $this->getMockBuilder(MigrateExecutable::class)
       ->disableOriginalConstructor()
       ->getMock();
 
@@ -69,8 +74,6 @@ final class EntityLookupTest extends KernelTestBase {
    *
    * Using user entity as destination entity without bundles as example for
    * testing.
-   *
-   * @covers ::transform
    */
   public function testLookupEntityWithoutBundles(): void {
     $migration = \Drupal::service('plugin.manager.migration')
@@ -104,6 +107,45 @@ final class EntityLookupTest extends KernelTestBase {
   }
 
   /**
+   * Lookup an entity on an entity_reference field.
+   */
+  public function testLookupEntityOnEntityReferenceField(): void {
+    $migration = \Drupal::service('plugin.manager.migration')
+      ->createStubMigration([
+        'id' => 'test',
+        'source' => [],
+        'process' => [],
+        'destination' => [
+          'plugin' => 'entity:node',
+        ],
+      ]);
+
+    // Create a user.
+    $known_user = $this->createUser([], 'lucuma');
+    // Create a node owned by this user.
+    $known_node = $this->createNode([
+      'title' => 'Node test',
+      'uid' => $known_user->id(),
+    ]);
+
+    $configuration = [
+      'entity_type' => 'node',
+      'value_key' => 'uid',
+    ];
+    $plugin = \Drupal::service('plugin.manager.migrate.process')
+      ->createInstance('entity_lookup', $configuration, $migration);
+    $row = new Row();
+
+    // Check the known node is found.
+    $value = $plugin->transform($known_user->id(), $this->migrateExecutable, $row, 'nid');
+    $this->assertSame($known_node->id(), $value);
+
+    // Check an unknown node is not found.
+    $value = $plugin->transform('not-an-id', $this->migrateExecutable, $row, 'nid');
+    $this->assertNull($value);
+  }
+
+  /**
    * Tests a lookup of config entity.
    */
   public function testConfigEntityLookup(): void {
@@ -131,10 +173,10 @@ final class EntityLookupTest extends KernelTestBase {
   /**
    * Tests lookup with different operators.
    *
-   * @covers ::transform
    * @dataProvider providerTestLookupOperators
    */
-  public function testLookupOperators($configuration, $lookup_value, $expected_value): void {
+  #[DataProvider('providerTestLookupOperators')]
+  public function testLookupOperators(array $configuration, mixed $lookup_value, mixed $expected_value): void {
     $migration = \Drupal::service('plugin.manager.migration')
       ->createStubMigration([
         'id' => 'test',
@@ -157,7 +199,7 @@ final class EntityLookupTest extends KernelTestBase {
    * @return array[]
    *   The test cases.
    */
-  public function providerTestLookupOperators(): array {
+  public static function providerTestLookupOperators(): array {
     return [
       'Default operator' => [
         [

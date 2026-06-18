@@ -35,7 +35,7 @@ views.style.views_aggregator_plugin_style_table:
       label: 'Group aggregation'
       mapping:
         group_aggregation_results:
-          type: string
+          type: integer
           label: 'Group aggregation results'
         grouping_field_class:
           type: string
@@ -60,10 +60,10 @@ views.style.views_aggregator_plugin_style_table:
             type: integer
             label: 'Position'
         totals_per_page:
-          type: string
+          type: integer
           label: 'Totals per page'
         precision:
-          type: string
+          type: integer
           label: 'Precision'
         totals_row_class:
           type: string

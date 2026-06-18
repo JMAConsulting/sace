@@ -17,7 +17,7 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
   /**
    * Constructs the Security Kit config overrider.
    */
-  public function __construct(protected ConfigFactoryInterface $configFactory) {
+  public function __construct(protected ConfigFactoryInterface $configFactory, protected ?string $environment = NULL) {
   }
 
   /**
@@ -32,7 +32,7 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
     }
     $config = $this->configFactory->get('raven.settings');
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-    if (NULL === $dsn) {
+    if (!is_string($dsn)) {
       return $overrides;
     }
     try {
@@ -43,10 +43,7 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
       return $overrides;
     }
     if ($config->get('seckit_set_report_uri')) {
-      $query = [];
-      if ($environment = empty($_SERVER['SENTRY_ENVIRONMENT']) ? $config->get('environment') : $_SERVER['SENTRY_ENVIRONMENT']) {
-        $query['sentry_environment'] = $environment;
-      }
+      $query['sentry_environment'] = empty($_SERVER['SENTRY_ENVIRONMENT']) ? ($config->get('environment') ?: $this->environment) : $_SERVER['SENTRY_ENVIRONMENT'];
       if ($release = empty($_SERVER['SENTRY_RELEASE']) ? $config->get('release') : $_SERVER['SENTRY_RELEASE']) {
         $query['sentry_release'] = $release;
       }
@@ -68,13 +65,17 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
           $overrides['seckit.settings']['seckit_xss']['csp']['script-src'] = implode(' ', array_merge([$script_src], $src));
         }
         if ($img_src = $seckitConfig->get('seckit_xss.csp.img-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
-          assert(is_string($img_src));
+          if (!is_string($img_src)) {
+            throw new \UnexpectedValueException('Non-string Security Kit CSP rule encountered.');
+          }
           $img = explode(' ', $img_src);
           $img[] = 'data:';
           $overrides['seckit.settings']['seckit_xss']['csp']['img-src'] = implode(' ', array_unique($img));
         }
         if ($style_src = $seckitConfig->get('seckit_xss.csp.style-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
-          assert(is_string($style_src));
+          if (!is_string($style_src)) {
+            throw new \UnexpectedValueException('Non-string Security Kit CSP rule encountered.');
+          }
           $style = explode(' ', $style_src);
           $style[] = "'unsafe-inline'";
           $overrides['seckit.settings']['seckit_xss']['csp']['style-src'] = implode(' ', array_unique($style));

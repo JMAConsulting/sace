@@ -18,6 +18,9 @@ use Sentry\Tracing\SpanStatus;
  */
 class HttpClientMiddleware {
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(protected ?RequestSubscriber $requestSubscriber = NULL) {
   }
 
@@ -27,8 +30,6 @@ class HttpClientMiddleware {
   public function __invoke(): callable {
     return function ($handler) {
       return function (RequestInterface $request, array $options) use ($handler) {
-        $span = NULL;
-        $parent = NULL;
         // Build URI without username/password.
         $partialUri = Uri::fromParts([
           'scheme' => $request->getUri()->getScheme(),
@@ -37,8 +38,11 @@ class HttpClientMiddleware {
           'path' => $request->getUri()->getPath(),
         ]);
         $hub = SentrySdk::getCurrentHub();
-        if ($parent = $hub->getSpan()) {
+        $span = NULL;
+        $parent = $hub->getSpan();
+        if ($parent && $parent->getSampled()) {
           $context = SpanContext::make()
+            ->setOrigin('auto.http.client')
             ->setOp('http.client')
             ->setDescription($request->getMethod() . ' ' . (string) $partialUri)
             ->setData([
@@ -55,6 +59,7 @@ class HttpClientMiddleware {
           if ($targets === NULL || in_array($request->getUri()->getHost(), $targets)) {
             $request = $request
               ->withHeader('sentry-trace', \Sentry\getTraceparent())
+              // @phpstan-ignore function.deprecated
               ->withHeader('traceparent', \Sentry\getW3CTraceparent());
           }
           if ($targets !== NULL && in_array($request->getUri()->getHost(), $targets) && $this->requestSubscriber) {

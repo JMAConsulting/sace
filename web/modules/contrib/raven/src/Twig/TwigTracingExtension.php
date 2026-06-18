@@ -50,11 +50,12 @@ class TwigTracingExtension extends AbstractExtension {
     }
 
     $parent = SentrySdk::getCurrentHub()->getSpan();
-    if (NULL === $parent) {
+    if (!$parent || !$parent->getSampled()) {
       return;
     }
 
     $spanContext = SpanContext::make()
+      ->setOrigin('auto.template')
       ->setOp('template.render')
       ->setDescription($this->getSpanDescription($profile));
 

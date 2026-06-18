@@ -185,8 +185,6 @@ class LinkAttributes extends CKEditor5PluginDefault implements CKEditor5PluginCo
       $decoratorTitle = $this->convertToCamelCase($attribute['label']);
       $parsedAttributes = $this->getParsedAttributes($attribute['attributes']);
 
-
-
       $static_plugin_config['link']['decorators'][$decoratorTitle] = array_merge([
         'mode' => 'manual',
         'label' => $attribute['label'],
@@ -245,7 +243,7 @@ class LinkAttributes extends CKEditor5PluginDefault implements CKEditor5PluginCo
         }
       }
       else {
-        $attributes['attributes'][$attributeKey] = $attributeValue[1];
+        $attributes['attributes'][$attributeKey] = $attributeValue;
       }
 
     }

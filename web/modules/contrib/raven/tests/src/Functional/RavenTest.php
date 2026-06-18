@@ -67,6 +67,11 @@ class RavenTest extends BrowserTestBase {
     $this->submitForm($config, 'Save configuration');
     $this->assertNull($this->getSession()->getResponseHeader('X-Logged'));
 
+    // Test ignored messages.
+    $config = ['raven[php][ignored_channels]' => '', 'raven[php][ignored_messages]' => 'Logged'];
+    $this->submitForm($config, 'Save configuration');
+    $this->assertNull($this->getSession()->getResponseHeader('X-Logged'));
+
     // Test that logger can be serialized.
     serialize($this->container->get('logger.raven'));
   }

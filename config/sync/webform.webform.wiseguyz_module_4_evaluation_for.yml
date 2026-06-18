@@ -16,6 +16,32 @@ title: 'WiseGuyz Module 4 Evaluation Form'
 description: ''
 categories: {  }
 elements: |-
+  civicrm_1_contact_1_fieldset_fieldset:
+    '#type': fieldset
+    '#title': Client
+    '#title_display': invisible
+    '#description_display': invisible
+    '#states':
+      invisible:
+        '':
+          '': ''
+    '#form_key': civicrm_1_contact_1_fieldset_fieldset
+    civicrm_1_contact_1_contact_existing:
+      '#type': civicrm_contact
+      '#title': 'Existing Contact'
+      '#widget': hidden
+      '#none_prompt': '- None Found -'
+      '#results_display':
+        display_name: display_name
+      '#states':
+        invisible:
+          '':
+            '': ''
+      '#default': user
+      '#contact_type': individual
+      '#form_key': civicrm_1_contact_1_contact_existing
+      '#parent': civicrm_1_contact_1_fieldset_fieldset
+      '#extra': {  }
   civicrm_2_contact_1_fieldset_fieldset:
     '#type': fieldset
     '#title': Organization/School
@@ -600,7 +626,7 @@ handlers:
       1_webform_label: 'Contact 1'
       civicrm_1_contact_1_contact_contact_sub_type:
         '': ''
-      civicrm_1_contact_1_contact_existing: 0
+      civicrm_1_contact_1_contact_existing: create_civicrm_webform_element
       civicrm_1_contact_1_contact_prefix_id: 0
       civicrm_1_contact_1_contact_first_name: 0
       civicrm_1_contact_1_contact_middle_name: 0

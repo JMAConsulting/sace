@@ -21,4 +21,5 @@ Traceparent
 traceparent
 ttfb
 Uninterpolated
+webrtc
 winjs

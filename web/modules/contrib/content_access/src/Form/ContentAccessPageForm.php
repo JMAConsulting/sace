@@ -8,9 +8,9 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
 use Drupal\node\NodeGrantDatabaseStorageInterface;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -80,7 +80,7 @@ class ContentAccessPageForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?NodeInterface $node = NULL) {
     $defaults = [];
 
     foreach (_content_access_get_operations() as $op => $label) {
@@ -176,13 +176,16 @@ class ContentAccessPageForm extends FormBase {
       foreach (['view', 'update', 'delete'] as $op) {
         acl_save_form($values['acl'][$op]);
       }
-      $this->moduleHandler->invokeAll('user_acl', $settings);
+      $this->moduleHandler->invokeAllDeprecated('Use hook_content_access_user_acl() instead. See https://www.drupal.org/node/3586991.', 'user_acl', $settings);
+      $this->moduleHandler->invokeAll('content_access_user_acl', $settings);
     }
 
     // Apply new settings.
     $grants = $this->entityTypeManager->getAccessControlHandler('node')->acquireGrants($node);
     $this->grantStorage->write($node, $grants);
-    $this->moduleHandler->invokeAll('per_node', [$settings, $node]);
+    // phpcs:ignore Drupal.Arrays.Array.LongLineDeclaration
+    $this->moduleHandler->invokeAllDeprecated('Use hook_content_access_per_node() instead. See https://www.drupal.org/node/3586991.', 'per_node', [$settings, $node]);
+    $this->moduleHandler->invokeAll('content_access_per_node', [$settings, $node]);
 
     foreach (Cache::getBins() as $cache_backend) {
       $cache_backend->deleteAll();
@@ -210,7 +213,7 @@ class ContentAccessPageForm extends FormBase {
   /**
    * Checkboxes access for content.
    *
-   * Formapi #process callback, that disables checkboxes for roles without
+   * Form API #process callback, that disables checkboxes for roles without
    * access to content.
    */
   public function forcePermissions($element, FormStateInterface $form_state, &$complete_form) {

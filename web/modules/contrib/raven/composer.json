@@ -16,13 +16,13 @@
         "source": "https://git.drupalcode.org/project/raven"
     },
     "require": {
-        "sentry/sentry": "^4.4"
+        "sentry/sentry": "^4.9"
     },
     "require-dev": {
-        "drupal/csp": "^1.17",
+        "drupal/csp": "^1.17 || ^2.0",
         "drupal/monitoring": "^1.13",
         "drupal/seckit": "^2.0",
-        "drush/drush": "^11.0 || ^12.0"
+        "drush/drush": "^11.0 || ^12.0 || ^13.0"
     },
     "funding": [
         {

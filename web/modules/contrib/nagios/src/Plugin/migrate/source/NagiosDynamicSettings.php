@@ -59,6 +59,7 @@ class NagiosDynamicSettings extends DrupalSqlBase {
     $module_name = str_replace('nagios_enable_', '', $var_name);
     $value = unserialize($row->getSourceProperty('value'), ['allowed_classes' => FALSE]);
     $row->setDestinationProperty('nagios/enable/' . $module_name, $value);
+    return TRUE;
   }
 
 }

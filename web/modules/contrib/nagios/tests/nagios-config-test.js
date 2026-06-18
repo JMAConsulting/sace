@@ -18,7 +18,7 @@ require('modules/drush')('en nagios nagios_hook_test_module --quiet');
 casper.thenOpen('http://localhost/admin/config/system/nagios/ignored_modules');
 casper.then(function () {
   casper.test.assertTitle('Ignored modules | Drush Site-Install');
-  var attr = casper.getElementAttribute('#edit-modules-update', 'disabled');
+  const attr = casper.getElementAttribute('#edit-modules-update', 'disabled');
   casper.test.assert(!attr, 'The checkbox is enabled');
 });
 
@@ -30,19 +30,23 @@ casper.thenClick('#edit-submit');
 // Checkboxes should now be disabled.
 casper.thenOpen('http://localhost/admin/config/system/nagios/ignored_modules');
 casper.then(function () {
-  var attr = casper.getElementAttribute('#edit-modules-update', 'disabled');
-  casper.test.assertEquals(attr, "disabled", "The checkbox is disabled");
+  const attr = casper.getElementAttribute('#edit-modules-update', 'disabled');
+  casper.test.assertEquals(attr, 'disabled', 'The checkbox is disabled');
 });
 
 // Enable status page over HTTP
 casper.thenOpen('http://localhost/admin/config/system/nagios');
 casper.then(function () {
-  casper.fill('#nagios-settings', {
-    'nagios_ua': 'ForOurTest',
-    'nagios_enable_status_page': true,
-    'nagios_enable_status_page_get': 1,
-    'nagios_enable_nagios': 1
-  }, false);
+  casper.fill(
+    '#nagios-settings',
+    {
+      nagios_ua: 'ForOurTest',
+      nagios_enable_status_page: true,
+      nagios_enable_status_page_get: 1,
+      nagios_enable_nagios: 1,
+    },
+    false,
+  );
 });
 casper.thenClick('#edit-submit');
 casper.waitForText('The configuration options have been saved.');
@@ -58,9 +62,13 @@ casper.then(function () {
 // Add 'Nagios Hook Test Module' to the list of ignored modules.
 casper.thenOpen('http://localhost/admin/config/system/nagios/ignored_modules');
 casper.then(function () {
-  casper.fill('#nagios-ignored-modules', {
-    'modules[nagios_hook_test_module]': 'nagios_hook_test_module',
-  }, false);
+  casper.fill(
+    '#nagios-ignored-modules',
+    {
+      'modules[nagios_hook_test_module]': 'nagios_hook_test_module',
+    },
+    false,
+  );
 });
 casper.thenClick('#edit-submit');
 casper.waitForText('The configuration options have been saved.');
@@ -69,5 +77,8 @@ casper.waitForText('The configuration options have been saved.');
 casper.thenOpen('http://localhost/nagios?unique_id=ForOurTest');
 casper.waitForText('NAGIOS_CHECK_KEY:WARNING=Text description for the problem');
 casper.then(function () {
-  casper.test.assertTextDoesntExist('Nagios Hook Test Module', 'Test module requirements are ignored');
+  casper.test.assertTextDoesntExist(
+    'Nagios Hook Test Module',
+    'Test module requirements are ignored',
+  );
 });

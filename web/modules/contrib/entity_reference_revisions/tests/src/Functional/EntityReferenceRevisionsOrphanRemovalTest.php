@@ -8,12 +8,16 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\BrowserTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests orphan composite revisions are properly removed.
  *
  * @group entity_reference_revisions
  */
+#[RunTestsInSeparateProcesses]
+#[Group('entity_reference_revisions')]
 class EntityReferenceRevisionsOrphanRemovalTest extends BrowserTestBase {
 
   /**
@@ -121,7 +125,7 @@ class EntityReferenceRevisionsOrphanRemovalTest extends BrowserTestBase {
    */
   public function runDeleteForm() {
     $this->drupalGet('admin/config/system/delete-orphans');
-    $this->submitForm([], t('Delete orphaned composite revisions'));
+    $this->submitForm([], 'Delete orphaned composite revisions');
     $this->checkForMetaRefresh();
   }
 

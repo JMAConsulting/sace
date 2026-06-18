@@ -2,6 +2,7 @@
 
 namespace Drupal\content_access\Form;
 
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -32,16 +33,30 @@ class ContentAccessAdminSettingsForm extends FormBase {
   protected $moduleHandler;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected EntityTypeBundleInfoInterface $entityTypeBundleInfo;
+
+  /**
    * Constructs a new ContentAccessAdminSettingsForm.
    *
    * @param \Drupal\user\PermissionHandlerInterface $permission_handler
    *   The permission handler.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler service.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(PermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler) {
+  public function __construct(
+    PermissionHandlerInterface $permission_handler,
+    ModuleHandlerInterface $module_handler,
+    EntityTypeBundleInfoInterface $entity_type_bundle_info,
+  ) {
     $this->permissionHandler = $permission_handler;
     $this->moduleHandler = $module_handler;
+    $this->entityTypeBundleInfo = $entity_type_bundle_info;
   }
 
   /**
@@ -50,7 +65,8 @@ class ContentAccessAdminSettingsForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('user.permissions'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('entity_type.bundle.info'),
     );
   }
 
@@ -181,8 +197,13 @@ class ContentAccessAdminSettingsForm extends FormBase {
       }
 
       if (content_access_mass_update([$node_type])) {
-        $node_types = node_type_get_names();
-        // This does not gurantee a rebuild.
+        if (method_exists($this->entityTypeBundleInfo, 'getBundleLabels')) {
+          $node_types = $this->entityTypeBundleInfo->getBundleLabels('node');
+        }
+        else {
+          $node_types = node_type_get_names();
+        }
+        // This does not guarantee a rebuild.
         $this->messenger()->addMessage($this->t('Permissions have been changed for the content type @types.<br />You may have to <a href=":rebuild">rebuild permissions</a> for your changes to take effect.',
         [
           '@types' => $node_types[$node_type],

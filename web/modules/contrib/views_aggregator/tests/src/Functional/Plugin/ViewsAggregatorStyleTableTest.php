@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\views_aggregator\Functional\Plugin;
 
-use Drupal\dynamic_page_cache\EventSubscriber\DynamicPageCacheSubscriber;
 use Drupal\Tests\views\Functional\ViewTestBase;
+use Drupal\dynamic_page_cache\EventSubscriber\DynamicPageCacheSubscriber;
 use Drupal\views\Entity\View;
 
 /**
@@ -11,7 +13,7 @@ use Drupal\views\Entity\View;
  *
  * Based on Drupal\Tests\views\Functional\Plugin\StyleTableTest.php.
  *
- * @group views_agregator
+ * @group views_aggregator
  */
 class ViewsAggregatorStyleTableTest extends ViewTestBase {
 
@@ -38,13 +40,9 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Set to TRUE to strict check all configuration saved.
-   *
-   * @var bool
-   *
-   * @see \Drupal\Core\Config\Development\ConfigSchemaChecker
+   * {@inheritdoc}
    */
-  protected $strictConfigSchema = FALSE;
+  protected $strictConfigSchema = TRUE;
 
   /**
    * {@inheritdoc}
@@ -55,7 +53,7 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   }
 
   /**
-   * Test table caption/summary.
+   * Tests table caption/summary.
    */
   public function testAccessibilitySettings(): void {
     $this->drupalGet('va-test-style-table');
@@ -89,7 +87,7 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   }
 
   /**
-   * Test table fields in columns.
+   * Tests table fields in columns.
    */
   public function testFieldInColumns(): void {
     $this->drupalGet('va-test-style-table');
@@ -121,7 +119,7 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   }
 
   /**
-   * Test that a number with the value of "0" is displayed in the table.
+   * Tests that a number with the value of "0" is displayed in the table.
    */
   public function testNumericFieldVisible(): void {
     // Adds a new datapoint in the views_test_data table to have a person with
@@ -149,7 +147,7 @@ class ViewsAggregatorStyleTableTest extends ViewTestBase {
   }
 
   /**
-   * Test that empty columns are hidden when empty_column is set.
+   * Tests that empty columns are hidden when empty_column is set.
    */
   public function testEmptyColumn(): void {
     // Empty the 'job' data.

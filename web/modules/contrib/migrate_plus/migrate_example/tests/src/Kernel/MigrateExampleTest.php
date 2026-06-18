@@ -1,17 +1,19 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\migrate_example\Kernel;
 
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\migrate_drupal\Kernel\MigrateDrupalTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests migrate_example migrations.
- *
- * @group migrate_plus
  */
+#[Group('migrate_plus')]
+#[RunTestsInSeparateProcesses]
 final class MigrateExampleTest extends MigrateDrupalTestBase {
 
   /**
@@ -38,7 +40,6 @@ final class MigrateExampleTest extends MigrateDrupalTestBase {
       'migrate_example',
     ]);
 
-    $this->installSchema('system', ['sequences']);
     $this->installSchema('comment', ['comment_entity_statistics']);
     $this->installSchema('node', ['node_access']);
     $this->installSchema('user', ['users_data']);
@@ -46,6 +47,8 @@ final class MigrateExampleTest extends MigrateDrupalTestBase {
     // Install the module via installer to trigger hook_install.
     \Drupal::service('module_installer')->install(['migrate_example_setup']);
     $this->installConfig(['migrate_example_setup']);
+
+    $this->startCollectingMessages();
 
     // Execute "beer" migrations from 'migrate_example' module.
     $this->executeMigration('beer_user');

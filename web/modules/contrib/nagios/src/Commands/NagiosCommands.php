@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file Used by Drush 9 and beyond.
- */
-
 namespace Drupal\nagios\Commands;
 
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
@@ -13,7 +9,7 @@ use Drush\Commands\DrushCommands;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
- * Drush command file for Nagios
+ * Drush command file for Nagios.
  */
 class NagiosCommands extends DrushCommands {
 
@@ -25,6 +21,7 @@ class NagiosCommands extends DrushCommands {
    *   If missing, all checks are executed.
    *
    * @command nagios
+   *
    * @return int
    *   Defaults:
    *   NAGIOS_STATUS_OK: 0
@@ -84,6 +81,7 @@ class NagiosCommands extends DrushCommands {
    *   module: Module
    * @default-fields check,description
    * @filter-output
+   *
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    */
   public function nagios_list() {
@@ -97,8 +95,7 @@ class NagiosCommands extends DrushCommands {
       ];
     }
 
-    $moduleHandler = \Drupal::moduleHandler();
-    $module_names = $moduleHandler->getImplementations('nagios');
+    [$moduleHandler, $module_names] = get_hook_implementations('nagios');
     foreach ($module_names as $name) {
       $info = $moduleHandler->invoke($name, 'nagios_info');
       $description = !empty($info['name']) && is_string($info['name']) ? $info['name'] : '';
@@ -135,7 +132,8 @@ class NagiosCommands extends DrushCommands {
     $logger = $this->logger;
     try {
       \Drupal::service('update.manager');
-    } catch (ServiceNotFoundException $e) {
+    }
+    catch (ServiceNotFoundException $e) {
       $logger->error(dt('This Drush command is only available if Core’s update module is enabled.'));
       $logger->error(dt('Run `drush en update` to enable it.'));
       return NAGIOS_STATUS_UNKNOWN;

@@ -198,6 +198,12 @@ You can also create an event processor to enrich each Sentry event with context.
 See the various integrations included with Sentry PHP SDK and Raven module for
 examples.
 
+To call Sentry JavaScript API functions (e.g. `Sentry.setTag('tag', 'value');`),
+your JavaScript library must depend on the `raven/raven` library, which ensures
+that the Sentry JavaScript SDK has been loaded and initialized.  However, as it
+is possible that the Sentry JavaScript SDK is not configured to load, you will
+need to wrap your code with `if (Sentry) { }`.
+
 
 ## Troubleshooting
 

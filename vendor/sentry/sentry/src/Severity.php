@@ -73,7 +73,7 @@ final class Severity implements \Stringable
     public function __construct(string $value = self::INFO)
     {
         if (!\in_array($value, self::ALLOWED_SEVERITIES, true)) {
-            throw new \InvalidArgumentException(sprintf('The "%s" is not a valid enum value.', $value));
+            throw new \InvalidArgumentException(\sprintf('The "%s" is not a valid enum value.', $value));
         }
 
         $this->value = $value;
@@ -104,7 +104,7 @@ final class Severity implements \Stringable
                 return self::error();
             case \E_NOTICE:
             case \E_USER_NOTICE:
-            case \E_STRICT:
+            case 2048: // This is \E_STRICT which has been deprecated in PHP 8.4 so we should not reference it directly to prevent deprecation notices
                 return self::info();
             default:
                 return self::error();

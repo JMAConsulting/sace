@@ -39,16 +39,19 @@ class TunnelController extends ControllerBase {
   public function doTunnel(Request $request) {
     $config = $this->config('raven.settings');
     $configured_dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
+    if (!is_string($configured_dsn)) {
+      return new Response(NULL, Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
     $configured_dsn = Dsn::createFromString($configured_dsn);
 
     $envelope = $request->getContent();
 
     $pieces = explode("\n", $envelope, 2);
     $header = json_decode($pieces[0], TRUE);
-    if (!is_array($header) || !isset($header["dsn"])) {
+    if (!is_array($header) || !isset($header['dsn']) || !is_string($header['dsn'])) {
       return new Response(NULL, Response::HTTP_BAD_REQUEST);
     }
-    $dsn = Dsn::createFromString($header["dsn"]);
+    $dsn = Dsn::createFromString($header['dsn']);
 
     if (!hash_equals((string) $configured_dsn, (string) $dsn)) {
       return new Response(NULL, Response::HTTP_BAD_REQUEST);
@@ -78,10 +81,12 @@ class TunnelController extends ControllerBase {
       $response = $this->httpClient->request('POST', $url, $options);
     }
     catch (ClientException $e) {
-      return $e->getResponse();
+      $response = $e->getResponse();
     }
 
-    return $response;
+    return $response
+      ->withoutHeader('Alt-Svc')
+      ->withoutHeader('Transfer-Encoding');
   }
 
 }

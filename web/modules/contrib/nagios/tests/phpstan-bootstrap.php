@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Helper for phpstan.
+ */
+
 define('NAGIOS_STATUS_OK', 0);
 define('NAGIOS_STATUS_WARNING', 1);
 define('NAGIOS_STATUS_CRITICAL', 2);

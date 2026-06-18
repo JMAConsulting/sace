@@ -30,37 +30,46 @@ class NagiosCheckTest extends EntityKernelTestBase {
     StatuspageController::setNagiosStatusConstants();
   }
 
+  /**
+   * Test if nagios_check_elysia_cron works.
+   */
   public function testElysiaCronCheck() {
     $conn = Database::getConnection();
     $conn->query('CREATE TABLE {elysia_cron} (last_aborted bigint, name varchar(8), last_abort_function varchar(8))');
     $status = nagios_check_elysia_cron()['data']['status'];
     self::assertEquals(NAGIOS_STATUS_OK, $status);
 
-    $conn->query("INSERT INTO {elysia_cron} VALUES (1, 'toad', 'toadcron')");
+    $conn->query("INSERT INTO {elysia_cron} VALUES (1, 'toad', 'toad')");
     $status = nagios_check_elysia_cron()['data']['status'];
     self::assertEquals(NAGIOS_STATUS_CRITICAL, $status);
 
     $conn->query('DROP TABLE {elysia_cron}');
   }
 
+  /**
+   * Test if last cron run is reported.
+   */
   public function testCronCheck() {
-    // set last run to an old date
+    // Set last run to an old date.
     \Drupal::state()->set('system.cron_last', 0);
 
-    // run check function, expect warning
+    // Run check function, expect warning.
     $result1 = nagios_check_cron();
     self::assertSame(2, $result1['data']['status'], "Check critical response");
 
-    // run cron
+    // Run cron.
     /** @var \Drupal\Core\CronInterface $cron */
     $cron = \Drupal::service('cron');
     $cron->run();
 
-    // run check function, expect no warning
+    // Run check function, expect no warning.
     $result2 = nagios_check_cron();
     self::assertSame(0, $result2['data']['status'], "Check ok response");
   }
 
+  /**
+   * Test if status page works.
+   */
   public function testStatuspage() {
     $statuspage_controller = new StatuspageController();
     $_SERVER['HTTP_USER_AGENT'] = 'Test';
@@ -98,6 +107,9 @@ class NagiosCheckTest extends EntityKernelTestBase {
     self::assertTrue($statuspage_controller->access()->isAllowed());
   }
 
+  /**
+   * Test what happens if watchdog module is not active, but nagios attempts to check it.
+   */
   public function testWatchdogIfNotEnabled() {
     $expected = [
       'status' => 3,
@@ -106,4 +118,5 @@ class NagiosCheckTest extends EntityKernelTestBase {
     ];
     self::assertEquals($expected, nagios_check_watchdog()['data']);
   }
+
 }

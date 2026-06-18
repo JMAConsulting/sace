@@ -1,17 +1,20 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate_plus\data_parser;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate_plus\DataParserPluginManager;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Test of the data_parser Json migrate_plus plugin.
- *
- * @group migrate_plus
  */
+#[Group('migrate_plus')]
+#[RunTestsInSeparateProcesses]
 final class JsonTest extends KernelTestBase {
 
   /**
@@ -22,7 +25,7 @@ final class JsonTest extends KernelTestBase {
   /**
    * Path for the module.
    */
-  protected ?string $path;
+  protected ?string $path = NULL;
 
   /**
    * The plugin manager.
@@ -55,11 +58,9 @@ final class JsonTest extends KernelTestBase {
    *   Expected array from json decoded file.
    *
    * @dataProvider providerTestMissingProperties
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
-   * @throws \Exception
    */
-  public function testMissingProperties($file, array $ids, array $fields, array $expected): void {
+  #[DataProvider('providerTestMissingProperties')]
+  public function testMissingProperties(string $file, array $ids, array $fields, array $expected): void {
     $url = $this->path . '/tests/data/' . $file;
 
     $conf = [
@@ -88,7 +89,7 @@ final class JsonTest extends KernelTestBase {
    * @return array
    *   The test cases.
    */
-  public function providerTestMissingProperties(): array {
+  public static function providerTestMissingProperties(): array {
     return [
       'missing properties' => [
         'file' => 'missing_properties.json',
@@ -136,7 +137,8 @@ final class JsonTest extends KernelTestBase {
    *
    * @dataProvider providerItemSelector
    */
-  public function testItemSelector($item_selector, $fields, $expected): void {
+  #[DataProvider('providerItemSelector')]
+  public function testItemSelector(mixed $item_selector, array $fields, array $expected): void {
     $url = $this->path . '/tests/data/item_selector.json';
 
     $conf = [
@@ -165,7 +167,7 @@ final class JsonTest extends KernelTestBase {
    * @return array
    *   The test cases.
    */
-  public function providerItemSelector(): array {
+  public static function providerItemSelector(): array {
     $fields = [
       [
         'name' => 'id',
@@ -202,16 +204,7 @@ final class JsonTest extends KernelTestBase {
       'item_selector not available' => [
         'item_selector' => '/data_unavailable',
         'fields' => $fields,
-        'expected' => [
-          [
-            'id' => '',
-            'title' => '',
-          ],
-          [
-            'id' => '',
-            'title' => '',
-          ],
-        ],
+        'expected' => [],
       ],
       'item_selector 2nd level' => [
         'item_selector' => '/data/0/items',

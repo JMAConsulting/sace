@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface as DrushContainer;
 use Sentry\SentrySdk;
 use Sentry\Severity;
 use Sentry\Tracing\SpanContext;
+use Sentry\Tracing\SpanStatus;
 use Sentry\Tracing\TransactionContext;
 use Sentry\Tracing\TransactionSource;
 use Symfony\Component\Console\ConsoleEvents;
@@ -80,7 +81,8 @@ class RavenCommands extends DrushCommands {
     $transactionContext = TransactionContext::make()
       ->setName('drush ' . $commandData->input()->getArgument('command'))
       ->setSource(TransactionSource::task())
-      ->setOp('drush.command');
+      ->setOrigin('auto.console')
+      ->setOp('console.command');
     $this->startTransaction($transactionContext);
   }
 
@@ -98,7 +100,8 @@ class RavenCommands extends DrushCommands {
     if (!$this->transaction) {
       return;
     }
-    $this->transaction->setTags(['drush.command.exit_code' => (string) $event->getExitCode()])
+    $this->transaction->setStatus($event->getExitCode() ? SpanStatus::internalError() : SpanStatus::ok())
+      ->setTags(['drush.command.exit_code' => (string) $event->getExitCode()])
       ->finish();
   }
 
@@ -124,9 +127,12 @@ class RavenCommands extends DrushCommands {
    * @usage drush raven:captureMessage 'Mic check.'
    *   Send "Mic check" message to Sentry.
    */
-  public function captureMessage(string $message = 'Test message from Drush.', array $options = [
-    'level' => 'info',
-  ]): void {
+  public function captureMessage(
+    string $message = 'Test message from Drush.',
+    array $options = [
+      'level' => 'info',
+    ],
+  ): void {
     $logger = $this->logger();
     // Force invalid configuration to throw an exception.
     $client = $this->ravenLogger->getClient(FALSE, TRUE);
@@ -137,15 +143,19 @@ class RavenCommands extends DrushCommands {
       $logger->warning(dt('Sentry client key is not configured. No events will be sent to Sentry.'));
     }
 
-    assert(is_string($options['level']));
+    if (!is_string($options['level'])) {
+      throw new \InvalidArgumentException('Level must be a string.');
+    }
     $severity = new Severity($options['level']);
 
     $start = microtime(TRUE);
 
     $id = \Sentry\captureMessage($message, $severity);
 
-    if ($parent = SentrySdk::getCurrentHub()->getSpan()) {
+    $parent = SentrySdk::getCurrentHub()->getSpan();
+    if ($parent && $parent->getSampled()) {
       $span = SpanContext::make()
+        ->setOrigin('auto.console')
         ->setOp('sentry.capture')
         ->setDescription("$severity: $message")
         ->setStartTimestamp($start)

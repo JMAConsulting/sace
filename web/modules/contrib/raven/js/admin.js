@@ -5,7 +5,7 @@
 
 ((Drupal, Sentry) => {
   const jsButton = document.getElementById('edit-raven-js-test');
-  if (Sentry && jsButton) {
+  if (Sentry && Sentry.isInitialized() && jsButton) {
     jsButton.disabled = false;
     jsButton.classList.remove('is-disabled');
     jsButton.addEventListener('click', (event) => {

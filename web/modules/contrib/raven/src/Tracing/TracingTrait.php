@@ -27,12 +27,12 @@ trait TracingTrait {
     $config = $this->configFactory->get('raven.settings');
     $transactionContext->setStartTimestamp($this->time->getRequestMicroTime());
     $transaction = \Sentry\startTransaction($transactionContext);
+    SentrySdk::getCurrentHub()->setSpan($transaction);
     // If this transaction is not sampled, we can stop here.
     if (!$transaction->getSampled()) {
       return;
     }
     $this->transaction = $transaction;
-    SentrySdk::getCurrentHub()->setSpan($this->transaction);
     if ($config->get('database_tracing')) {
       foreach (Database::getAllConnectionInfo() as $key => $info) {
         Database::startLog('raven', $key);
@@ -70,6 +70,7 @@ trait TracingTrait {
       }
     }
     $context = SpanContext::make()
+      ->setOrigin('auto.db')
       ->setOp('db.sql.query')
       ->setDescription($event->queryString)
       ->setTags([

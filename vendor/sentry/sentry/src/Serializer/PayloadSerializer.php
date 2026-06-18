@@ -8,7 +8,9 @@ use Sentry\Event;
 use Sentry\EventType;
 use Sentry\Options;
 use Sentry\Serializer\EnvelopItems\CheckInItem;
+use Sentry\Serializer\EnvelopItems\ClientReportItem;
 use Sentry\Serializer\EnvelopItems\EventItem;
+use Sentry\Serializer\EnvelopItems\LogsItem;
 use Sentry\Serializer\EnvelopItems\MetricsItem;
 use Sentry\Serializer\EnvelopItems\ProfileItem;
 use Sentry\Serializer\EnvelopItems\TransactionItem;
@@ -38,51 +40,59 @@ final class PayloadSerializer implements PayloadSerializerInterface
      */
     public function serialize(Event $event): string
     {
-        // @see https://develop.sentry.dev/sdk/envelopes/#envelope-headers
-        $envelopeHeader = [
-            'event_id' => (string) $event->getId(),
-            'sent_at' => gmdate('Y-m-d\TH:i:s\Z'),
-            'dsn' => (string) $this->options->getDsn(),
-            'sdk' => [
-                'name' => $event->getSdkIdentifier(),
-                'version' => $event->getSdkVersion(),
-            ],
-        ];
+        $envelopeHeader = null;
+        if ($event->getType() !== EventType::clientReport()) {
+            // @see https://develop.sentry.dev/sdk/envelopes/#envelope-headers
+            $envelopeHeader = [
+                'sent_at' => gmdate('Y-m-d\TH:i:s\Z'),
+                'dsn' => (string) $this->options->getDsn(),
+                'sdk' => $event->getSdkPayload(),
+            ];
 
-        $dynamicSamplingContext = $event->getSdkMetadata('dynamic_sampling_context');
-        if ($dynamicSamplingContext instanceof DynamicSamplingContext) {
-            $entries = $dynamicSamplingContext->getEntries();
+            if ($event->getType()->requiresEventId()) {
+                $envelopeHeader['event_id'] = (string) $event->getId();
+            }
 
-            if (!empty($entries)) {
-                $envelopeHeader['trace'] = $entries;
+            $dynamicSamplingContext = $event->getSdkMetadata('dynamic_sampling_context');
+            if ($dynamicSamplingContext instanceof DynamicSamplingContext) {
+                $entries = $dynamicSamplingContext->getEntries();
+
+                if (!empty($entries)) {
+                    $envelopeHeader['trace'] = $entries;
+                }
             }
         }
 
-        $items = '';
+        $items = [];
 
         switch ($event->getType()) {
             case EventType::event():
-                $items = EventItem::toEnvelopeItem($event);
+                $items[] = EventItem::toEnvelopeItem($event);
                 break;
             case EventType::transaction():
-                $transactionItem = TransactionItem::toEnvelopeItem($event);
+                $items[] = TransactionItem::toEnvelopeItem($event);
                 if ($event->getSdkMetadata('profile') !== null) {
-                    $profileItem = ProfileItem::toEnvelopeItem($event);
-                    if ($profileItem !== '') {
-                        $items = sprintf("%s\n%s", $transactionItem, $profileItem);
-                        break;
-                    }
+                    $items[] = ProfileItem::toEnvelopeItem($event);
                 }
-                $items = $transactionItem;
                 break;
             case EventType::checkIn():
-                $items = CheckInItem::toEnvelopeItem($event);
+                $items[] = CheckInItem::toEnvelopeItem($event);
+                break;
+            case EventType::logs():
+                $items[] = LogsItem::toEnvelopeItem($event);
                 break;
             case EventType::metrics():
-                $items = MetricsItem::toEnvelopeItem($event);
+                $items[] = MetricsItem::toEnvelopeItem($event);
+                break;
+            case EventType::clientReport():
+                $items[] = ClientReportItem::toEnvelopeItem($event);
                 break;
         }
 
-        return sprintf("%s\n%s", JSON::encode($envelopeHeader), $items);
+        if ($envelopeHeader === null) {
+            return \sprintf("{}\n%s", implode("\n", array_filter($items)));
+        }
+
+        return \sprintf("%s\n%s", JSON::encode($envelopeHeader), implode("\n", array_filter($items)));
     }
 }

@@ -6,7 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Config\Config;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,8 +15,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\nagios\Controller\RequirementsController;
 use Drupal\nagios\Controller\StatuspageController;
 use Drupal\nagios\Form\SettingsForm;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
-if (class_exists(StatuspageController::class)) {
+if (class_exists(StatuspageController::class) && \Drupal::hasContainer()) {
   // Class won't exist during the installation.
   StatuspageController::setNagiosStatusConstants();
 }
@@ -49,7 +50,7 @@ function nagios_functions() {
   ];
   $moduleHandler = Drupal::moduleHandler();
   if ($moduleHandler->moduleExists('update')) {
-    $functions['requirements'] = t('Checking of hook_requirements. This includes the following: module updates, database schema, files directory writability, update.php protected, Lots of other good stuff ...');
+    $functions['requirements'] = t('Checking of hook_requirements. This includes the following: module updates, database schema, files directory write permissions, update.php protected, Lots of other good stuff ...');
   }
   if ($moduleHandler->moduleExists('node')) {
     $functions['nodes'] = t('Check the number of nodes for nagios performance data');
@@ -57,6 +58,7 @@ function nagios_functions() {
   if ($moduleHandler->moduleExists('elysia_cron')) {
     $functions['elysia_cron'] = t('Check whether elysia cron has been running regularly');
   }
+
   return $functions;
 }
 
@@ -83,11 +85,12 @@ function _nagios_update_os_user(): array {
     $current_user = getenv('UID') ?: getenv('USERNAME');
   }
   if (isset($os_user[PHP_SAPI]) && $os_user[PHP_SAPI] == $current_user) {
-    // Already up-to-date
+    // Already up-to-date.
     return $os_user;
   }
   $os_user[PHP_SAPI] = $current_user;
   $state->set('nagios.os_user', $os_user);
+
   return $os_user;
 }
 
@@ -102,19 +105,8 @@ function _nagios_update_os_user(): array {
 function nagios_invoke_all($hook = 'nagios') {
   $return = [];
   $args = func_get_args();
-  $moduleHandler = Drupal::moduleHandler();
+  [$moduleHandler, $modules] = get_hook_implementations($hook);
   $config = Drupal::config('nagios.settings');
-  if (method_exists($moduleHandler, 'getImplementations')) {
-    // Drupal 8,9
-    $modules = $moduleHandler->getImplementations($hook);
-  }
-  else {
-    // Drupal 10
-    $modules = [];
-    $moduleHandler->invokeAllWith($hook, function (callable $hook, string $module) use (&$modules) {
-      $modules[] = $module;
-    });
-  }
   foreach ($modules as $module) {
     // If we're running the checks, see if the checks for that module
     // are enabled, otherwise just continue:
@@ -126,6 +118,28 @@ function nagios_invoke_all($hook = 'nagios') {
   }
 
   return $return;
+}
+
+/**
+ * @param string $hook
+ *
+ * @return array{0: \Drupal\Core\Extension\ModuleHandlerInterface, 1: string[]}
+ */
+function get_hook_implementations(string $hook): array {
+  $moduleHandler = Drupal::moduleHandler();
+  if (method_exists($moduleHandler, 'getImplementations')) {
+    // Drupal 8, 9.
+    $modules = $moduleHandler->getImplementations($hook);
+  }
+  else {
+    // Drupal 10, 11.
+    $modules = [];
+    $moduleHandler->invokeAllWith($hook, function (callable $hook, string $module) use (&$modules) {
+      $modules[] = $module;
+    });
+  }
+
+  return [$moduleHandler, $modules];
 }
 
 /**
@@ -151,13 +165,13 @@ function nagios_nagios_settings() {
 
   foreach (nagios_functions() as $function => $description) {
     $var = 'nagios_func_' . $function;
-    $cfgname = 'function.' . $function;
+    $configname = 'function.' . $function;
     $form[$var] = [
       '#type' => 'checkbox',
       '#title' => $function,
-      '#default_value' => (bool) $config->get('nagios.' . $cfgname),
+      '#default_value' => (bool) $config->get('nagios.' . $configname),
       '#description' => $description,
-      '#configname' => $cfgname,
+      '#configname' => $configname,
     ];
   }
 
@@ -219,7 +233,7 @@ function nagios_nagios_settings() {
 
   $form[$group]['nagios_min_report_severity'] = [
     '#type' => 'select',
-    '#title' => t('Mininum report severity'),
+    '#title' => t('Minimum report severity'),
     '#options' => nagios_status(),
     '#description' => t('Issue an alert only for this minimum severity, not for lower severities.'),
     '#configname' => 'min_report_severity',
@@ -234,20 +248,20 @@ function nagios_nagios_settings() {
  * Add a checkbox to all themes’ settings pages to ignore in Nagios monitoring.
  *
  * @param array $form
- * @param FormStateInterface $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  */
 function nagios_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
   if (isset($form['confirm']) || !Drupal::currentUser()
-      ->hasPermission('administer nagios ignore')) {
+    ->hasPermission('administer nagios ignore')) {
     return;
   }
 
   // Grab the name of the theme.
-  $buildinfo = $form_state->getBuildInfo();
-  if (empty($buildinfo['args'][0])) {
+  $build_info = $form_state->getBuildInfo();
+  if (empty($build_info['args'][0])) {
     return;
   }
-  $theme_name = Html::escape($buildinfo['args'][0]);
+  $theme_name = Html::escape($build_info['args'][0]);
 
   $config = Drupal::config('nagios.settings');
   $nagios_ignored_themes = $config->get('nagios.ignored_themes') ?: [];
@@ -255,11 +269,13 @@ function nagios_form_system_theme_settings_alter(&$form, FormStateInterface $for
   // Check to see if the theme is provided by core, or if it's contrib/custom.
   try {
     $projects_data = Drupal::service('update.manager')->getProjects();
-  } catch (Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException $e) {
+  }
+  catch (ServiceNotFoundException $e) {
     // Core’s update manager module is optional, and not a dependency of the Nagios module.
     return;
   }
-  unset($projects_data['drupal']); // Only show checkbox for non-core themes
+  // Only show checkbox for non-core themes.
+  unset($projects_data['drupal']);
 
   foreach ($projects_data as $details) {
     if (array_key_exists($theme_name, $details['includes'])) {
@@ -289,17 +305,19 @@ function nagios_form_system_theme_settings_alter(&$form, FormStateInterface $for
  * 'theme_machine_name' => TRUE.
  *
  * @param array $form
- * @param FormStateInterface $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  */
 function nagios_system_theme_settings_form_submit(
-  /** @noinspection PhpUnusedParameterInspection */
+  /**
+   * @noinspection PhpUnusedParameterInspection
+   */
   &$form,
-  FormStateInterface $form_state
+  FormStateInterface $form_state,
 ) {
-  $buildinfo = $form_state->getBuildInfo();
+  $build_info = $form_state->getBuildInfo();
   // Grab the name of the theme.
-  if (!empty($buildinfo['args'][0])) {
-    $theme_name = Html::escape($buildinfo['args'][0]);
+  if (!empty($build_info['args'][0])) {
+    $theme_name = Html::escape($build_info['args'][0]);
     $config = Drupal::config('nagios.settings');
     $nagios_ignored_themes = $config->get('nagios.ignored_themes') ?: [];
 
@@ -335,11 +353,12 @@ function nagios_system_theme_settings_form_submit(
 function nagios_nagios(string $id = '') {
   $config = Drupal::config('nagios.settings');
   $status = [];
-  /** @var callable $func */
   if ($id && $config->get('nagios.function.' . $id)) {
+    /** @var callable $func */
     $func = 'nagios_check_' . $id;
     $result = $func();
     $status[$result['key']] = $result['data'];
+
     return $status;
   }
 
@@ -373,7 +392,7 @@ function nagios_nagios(string $id = '') {
  *   An array of installed projects with current update status information.
  *   Keyed by project name; module and theme names are in the include section.
  */
-function _nagios_get_projects_with_updates(ImmutableConfig $config): array {
+function _nagios_get_projects_with_updates(Config $config): array {
   $available = update_get_available(TRUE);
   if (!$available) {
     return [];
@@ -386,8 +405,8 @@ function _nagios_get_projects_with_updates(ImmutableConfig $config): array {
   $nagios_ignored_extensions = $nagios_ignored_modules + $nagios_ignored_themes;
   $installed_extensions = _nagios_extensions_to_check($nagios_ignored_extensions);
 
-  foreach($projects as $name => $details) {
-    // Remove ignored extensions from project
+  foreach ($projects as $name => $details) {
+    // Remove ignored extensions from project.
     foreach (array_keys($nagios_ignored_extensions) as $key) {
       unset($details['includes'][$key]);
     }
@@ -395,7 +414,7 @@ function _nagios_get_projects_with_updates(ImmutableConfig $config): array {
     // Does this project still contain installed extensions?
     $remaining_extensions_in_project = array_intersect_key($details['includes'], $installed_extensions);
     if (!$remaining_extensions_in_project) {
-      // contains no further installed extensions.
+      // Contains no further installed extensions.
       unset($projects[$name]);
     }
   }
@@ -432,6 +451,7 @@ function _nagios_extensions_to_check(array $nagios_ignored_extensions): array {
     if ($module instanceof Extension) {
       return $module->getName();
     }
+
     return $module;
   }, $modules_to_check + $themes_to_check);
 
@@ -439,7 +459,7 @@ function _nagios_extensions_to_check(array $nagios_ignored_extensions): array {
 }
 
 /**
- * Check is all Drupal requirenemts are satisfied.
+ * Check is all Drupal requirements are satisfied.
  *
  * Calls hook_requirements on all modules to gather info.
  *
@@ -522,15 +542,13 @@ function nagios_check_requirements() {
 /**
  * Check Drupal {watchdog} table recent entries.
  *
- * Corrensponds to opening the admin/reports/dblog page in the browser.
+ * Corresponds to opening the admin/reports/dblog page in the browser.
  *
  * @return array
  */
 function nagios_check_watchdog() {
-  // @TODO Allow multi-value 'type' and/or 'severity' inputs for filtering
-  // @TODO Allow datetime ranges
-
-  // Constuct base select query.
+  // @todo Allow multi-value 'type' and/or 'severity' inputs for filtering
+  // @todo Allow datetime ranges
   $conn = Database::getConnection();
   $query = $conn->select('watchdog', 'w');
   $query->fields('w', [
@@ -592,7 +610,8 @@ function nagios_check_watchdog() {
   // Execute query.
   try {
     $result = $query->execute();
-  } catch (Exception $e) {
+  }
+  catch (Exception $e) {
     $result = FALSE;
   }
   if (!$result) {
@@ -605,7 +624,6 @@ function nagios_check_watchdog() {
       ],
     ];
   }
-
 
   // Maximize this across the result set:
   $severity = NAGIOS_STATUS_OK;
@@ -630,8 +648,7 @@ function nagios_check_watchdog() {
 
     // Create error message.
     $message = "$row[type] $row[message]";
-    // @TODO Untangle l(truncate_utf8(_dblog_format_message($dblog), 56, TRUE, TRUE), 'admin/reports/event/'. $dblog->wid, array('html' => TRUE)) and use it here
-
+    // @todo Untangle l(truncate_utf8(_dblog_format_message($dblog), 56, TRUE, TRUE), 'admin/reports/event/'. $dblog->wid, array('html' => TRUE)) and use it here
     try {
       /** @noinspection SuspiciousBinaryOperationInspection */
       if (PHP_VERSION_ID >= 70000) {
@@ -642,8 +659,9 @@ function nagios_check_watchdog() {
         /** @noinspection UnserializeExploitsInspection */
         $variables = unserialize($row['variables']);
       }
-    } catch (Throwable $exception) {
-      // ignore "Object of class __PHP_Incomplete_Class could not be converted to string"
+    }
+    catch (Throwable $exception) {
+      // Ignore "Object of class __PHP_Incomplete_Class could not be converted to string".
       $variables = FALSE;
     }
 
@@ -665,12 +683,11 @@ function nagios_check_watchdog() {
       continue;
     }
 
-    // Prepend the timestamp onto the front of the message.
-    $message = date('Y-m-d H:i:s', $row['timestamp']) . " " . $message;
+    // Prepend the timestamp and the message id onto the front of the message.
+    $message = date('Y-m-d H:i:s', $row['timestamp']) . " wid=$row[wid] $message";
 
     // Add message to descriptions array.
     $descriptions[] = $message;
-
   }
 
   // Join all descriptions together into a string.
@@ -770,7 +787,8 @@ function nagios_check_elysia_cron() {
  * @return array
  */
 function nagios_check_session_anon() {
-  $interval = Drupal::time()->getRequestTime() - 900; // Last 15 minutes
+  // Last 15 minutes.
+  $interval = Drupal::time()->getRequestTime() - 900;
   $count = nagios_session_count($interval, TRUE);
 
   $data = [
@@ -791,7 +809,8 @@ function nagios_check_session_anon() {
  * @return array with performance data
  */
 function nagios_check_session_auth() {
-  $interval = Drupal::time()->getRequestTime() - 900; // Last 15 minutes
+  // Last 15 minutes.
+  $interval = Drupal::time()->getRequestTime() - 900;
   $count = nagios_session_count($interval, FALSE);
 
   $data = [
@@ -878,6 +897,10 @@ function nagios_check_users() {
   ];
 }
 
+/**
+ * Called during hook_nagios operation.
+ * Reports number of enabled modules.
+ */
 function nagios_check_modules() {
   $config = Drupal::config('core.extension');
   $modules = $config->get('module');
@@ -916,6 +939,7 @@ function nagios_nagios_check($function) {
   $func = 'nagios_check_' . $function;
   $result = $func();
   $status[$result['key']] = $result['data'];
+
   return $status;
 }
 
@@ -965,14 +989,17 @@ function nagios_session_count($timestamp = 0, $anonymous = TRUE) {
   $query->addExpression('COUNT(sid)', 'count');
   $query->condition('timestamp', $timestamp, '>=');
   $query->condition('uid', 0, $anonymous ? '=' : '>');
+
   return (int) $query->execute()->fetchField();
 }
 
 /**
  * Helper function to sort modules by severity with usort().
  *
- * @param array $a module data
- * @param array $b module data
+ * @param array $a
+ *   module data.
+ * @param array $b
+ *   module data.
  *
  * @return int
  */
@@ -981,8 +1008,10 @@ function _nagios_updates_sort_by_severity($a, $b) {
     if ($a['severity'] == $b['severity']) {
       return 0;
     }
+
     return ($a['severity'] < $b['severity']) ? -1 : 1;
   }
+
   return 0;
 }
 
@@ -992,7 +1021,7 @@ function _nagios_updates_sort_by_severity($a, $b) {
 function nagios_post_update_rename_config_key____() {
   $config = Drupal::configFactory()->getEditable('nagios.settings');
   $new = 'nagios.limit_watchdog.channel_filter';
-  $old = 'nagios.limit_watchdog.channel_blacklist';
+  $old = 'nagios.limit_watchdog.channel_black' . 'list';
   $config->set($new, $config->get($old));
   $config->clear($old);
   $config->save();

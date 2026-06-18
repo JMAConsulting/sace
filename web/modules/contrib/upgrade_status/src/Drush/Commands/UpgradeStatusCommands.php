@@ -6,14 +6,15 @@ use Consolidation\AnnotatedCommand\CommandResult;
 use Drupal\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Extension\Extension;
+use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\upgrade_status\DeprecationAnalyzer;
 use Drupal\upgrade_status\ProjectCollector;
 use Drupal\upgrade_status\ScanResultFormatter;
 use Drush\Commands\DrushCommands;
-use Drush\Drupal\DrupalUtil;
+use Drush\Exceptions\CommandFailedException;
 
 /**
- * Upgrade Status Drush command
+ * Upgrade Status Drush command.
  */
 class UpgradeStatusCommands extends DrushCommands {
 
@@ -46,6 +47,13 @@ class UpgradeStatusCommands extends DrushCommands {
   protected $dateFormatter;
 
   /**
+   * The key/value storage factory.
+   *
+   * @var \Drupal\Core\KeyValueStore\KeyValueFactoryInterface
+   */
+  protected $keyValueFactory;
+
+  /**
    * Constructs a new UpgradeStatusCommands object.
    *
    * @param \Drupal\upgrade_status\ScanResultFormatter $result_formatter
@@ -56,16 +64,21 @@ class UpgradeStatusCommands extends DrushCommands {
    *   The codebase analyzer service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date formatter service.
+   * @param \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $key_value_factory
+   *   The key/value storage factory.
    */
   public function __construct(
     ScanResultFormatter $result_formatter,
     ProjectCollector $project_collector,
     DeprecationAnalyzer $deprecation_analyzer,
-    DateFormatterInterface $date_formatter) {
+    DateFormatterInterface $date_formatter,
+    KeyValueFactoryInterface $key_value_factory,
+  ) {
     $this->projectCollector = $project_collector;
     $this->resultFormatter = $result_formatter;
     $this->deprecationAnalyzer = $deprecation_analyzer;
     $this->dateFormatter = $date_formatter;
+    $this->keyValueFactory = $key_value_factory;
   }
 
   /**
@@ -76,7 +89,8 @@ class UpgradeStatusCommands extends DrushCommands {
       $container->get('upgrade_status.result_formatter'),
       $container->get('upgrade_status.project_collector'),
       $container->get('upgrade_status.deprecation_analyzer'),
-      $container->get('date.formatter')
+      $container->get('date.formatter'),
+      $container->get('keyvalue'),
     );
   }
 
@@ -87,7 +101,8 @@ class UpgradeStatusCommands extends DrushCommands {
    *   List of projects to analyze.
    * @param array $options
    *   Additional options for the command.
-   * @return \Consolidation\AnnotatedCommand\CommandResult;
+   *
+   * @return \Consolidation\AnnotatedCommand\CommandResult
    *   Exit code of self::EXIT_SUCCESS if no errors found,
    *   self::EXIT_FAILURE_WITH_CLARITY if at least one error found.
    *
@@ -97,14 +112,28 @@ class UpgradeStatusCommands extends DrushCommands {
    * @option ignore-uninstalled Ignore uninstalled projects.
    * @option ignore-contrib Ignore contributed projects.
    * @option ignore-custom Ignore custom projects.
+   * @option ignore-list Ignore a list of comma-separated projects.
    * @option phpstan-memory-limit Set memory limit for PHPStan.
    * @option format Set the format: plain, checkstyle or codeclimate.
    * @aliases us-a
    *
    * @throws \InvalidArgumentException
-   *   Thrown when one of the passed arguments is invalid or no arguments were provided.
+   *   Thrown when one of the passed arguments is invalid or
+   *   no arguments were provided.
    */
-  public function analyze(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE, 'phpstan-memory-limit' => '1500M', 'format' => 'plain']) {
+  public function analyze(
+    array $projects,
+    array $options = [
+      'all' => FALSE,
+      'skip-existing' => FALSE,
+      'ignore-uninstalled' => FALSE,
+      'ignore-contrib' => FALSE,
+      'ignore-custom' => FALSE,
+      'ignore-list' => '',
+      'phpstan-memory-limit' => '1500M',
+      'format' => 'plain',
+    ],
+  ) {
     $extensions = $this->doAnalyze($projects, $options);
 
     $found_issue = FALSE;
@@ -112,9 +141,11 @@ class UpgradeStatusCommands extends DrushCommands {
       case 'checkstyle':
         $found_issue = $this->formatAllAsCheckStyle($extensions);
         break;
+
       case 'codeclimate':
         $found_issue = $this->formatAllAsCodeClimate($extensions);
         break;
+
       default:
         $found_issue = $this->formatAllAsPlain($extensions);
     }
@@ -136,13 +167,26 @@ class UpgradeStatusCommands extends DrushCommands {
    * @option ignore-uninstalled Ignore uninstalled projects.
    * @option ignore-contrib Ignore contributed projects.
    * @option ignore-custom Ignore custom projects.
+   * @option ignore-list Ignore a list of comma-separated projects.
    * @option phpstan-memory-limit Set memory limit for PHPStan.
    * @aliases us-cs
    *
    * @throws \InvalidArgumentException
-   *   Thrown when one of the passed arguments is invalid or no arguments were provided.
+   *   Thrown when one of the passed arguments is invalid or no arguments
+   *   were provided.
    */
-  public function checkstyle(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE, 'phpstan-memory-limit' => '1500M']) {
+  public function checkstyle(
+    array $projects,
+    array $options = [
+      'all' => FALSE,
+      'skip-existing' => FALSE,
+      'ignore-uninstalled' => FALSE,
+      'ignore-contrib' => FALSE,
+      'ignore-custom' => FALSE,
+      'ignore-list' => '',
+      'phpstan-memory-limit' => '1500M',
+    ],
+  ) {
 
     $this->logger()->notice('The checkstyle (us-cs) drush command is deprecated and will be removed. Use the analyze command with --format=checkstyle instead.');
     $options['format'] = 'checkstyle';
@@ -154,6 +198,7 @@ class UpgradeStatusCommands extends DrushCommands {
    *
    * @param array $extensions
    *   Result data by extension.
+   *
    * @return bool
    *   Whether issues were found.
    */
@@ -202,6 +247,7 @@ class UpgradeStatusCommands extends DrushCommands {
    *
    * @param array $extensions
    *   Result data by extension.
+   *
    * @return bool
    *   Whether issues were found.
    */
@@ -243,11 +289,30 @@ class UpgradeStatusCommands extends DrushCommands {
    *   Additional options for the command.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when one of the passed arguments is invalid or no arguments were provided.
+   *   Thrown when one of the passed arguments is invalid
+   *   or no arguments were provided.
+   * @throws Drush\Exceptions\CommandFailedException
+   *   Thrown when the environment is not ready to run the analysis.
    */
-  protected function doAnalyze(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE, 'phpstan-memory-limit' => '1500M']) {
-    // Group by type here so we can tell loader what is type of each one of
-    // these.
+  protected function doAnalyze(
+    array $projects,
+    array $options = [
+      'all' => FALSE,
+      'skip-existing' => FALSE,
+      'ignore-uninstalled' => FALSE,
+      'ignore-contrib' => FALSE,
+      'ignore-custom' => FALSE,
+      'ignore-list' => '',
+      'phpstan-memory-limit' => '1500M',
+    ],
+  ) {
+    try {
+      $this->deprecationAnalyzer->initEnvironment();
+    }
+    catch (\Exception $e) {
+      throw new CommandFailedException($e->getMessage() . ' ' . dt('Analysis is not possible until this is resolved.'));
+    }
+
     $extensions = [];
     $invalid_names = [];
 
@@ -260,6 +325,7 @@ class UpgradeStatusCommands extends DrushCommands {
     $available_projects = $this->projectCollector->collectProjects();
 
     if ($options['all']) {
+      $projects_to_ignore = explode(',', $options['ignore-list']);
       foreach ($available_projects as $name => $project) {
         if ($options['ignore-uninstalled'] && $project->status === 0) {
           continue;
@@ -268,6 +334,9 @@ class UpgradeStatusCommands extends DrushCommands {
           continue;
         }
         if ($options['ignore-custom'] && $project->info['upgrade_status_type'] == ProjectCollector::TYPE_CUSTOM) {
+          continue;
+        }
+        if (in_array($name, $projects_to_ignore)) {
           continue;
         }
         $extensions[$project->getType()][$name] = $project;
@@ -315,7 +384,7 @@ class UpgradeStatusCommands extends DrushCommands {
     foreach ($extensions as $list) {
       foreach ($list as $name => $extension) {
         if ($options['skip-existing']) {
-          $scan_result = \Drupal::service('keyvalue')->get('upgrade_status_scan_results')->get($name);
+          $scan_result = $this->keyValueFactory->get('upgrade_status_scan_results')->get($name);
           if (!empty($scan_result)) {
             $this->logger()->info(dt('Using previous results for @name.', ['@name' => $name]));
             continue;
@@ -418,11 +487,6 @@ class UpgradeStatusCommands extends DrushCommands {
 
       $table[] = str_pad('', 80, '-');
     }
-
-    if (!empty($result['plans'])) {
-      $table[] = '';
-      $table[] = DrupalUtil::drushRender($result['plans']);
-    }
     $table[] = '';
 
     return ['table' => $table, 'found_issue' => TRUE];
@@ -433,6 +497,7 @@ class UpgradeStatusCommands extends DrushCommands {
    *
    * @param array $extensions
    *   Result data by extension.
+   *
    * @return bool
    *   Whether issues were found.
    */

@@ -19,7 +19,7 @@ class WordCountAdapter {
       return;
     }
     this.wordCountId = this.elementId + '-ck-word-count';
-    const formItem = this.editor.sourceElement.closest(".form-item");
+    const formItem = this.editor.sourceElement.closest('.form-item') ?? this.editor.sourceElement;
     this.wordCountWrapper = document.createElement("div");
     this.wordCountWrapper.setAttribute("class", "ck-word-count-container");
     this.wordCountWrapper.setAttribute("id", this.wordCountId);

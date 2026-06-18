@@ -32,10 +32,16 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     StatuspageController::setNagiosStatusConstants();
   }
 
+  /**
+   * No records in dblog table.
+   */
   public function testEmptyWatchdog() {
     $this->assertAllGreen();
   }
 
+  /**
+   * Helper.
+   */
   private function assertAllGreen() {
     $expected = [
       'status' => 0,
@@ -45,12 +51,18 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     self::expectWatchdog($expected);
   }
 
+  /**
+   * Helper.
+   */
   private static function expectWatchdog($expected) {
     $actual = nagios_check_watchdog()['data'];
     $actual['text'] = preg_replace('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} /', '', $actual['text']);
     self::assertEquals($expected, $actual);
   }
 
+  /**
+   * Minimum level “warning” is the default.
+   */
   public function testWithLevelWarning() {
     $this->getLogger('test')->info('info');
     $this->assertAllGreen();
@@ -59,7 +71,7 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     $expected = [
       'status' => NAGIOS_STATUS_WARNING,
       'type' => 'state',
-      'text' => 'test warning',
+      'text' => 'wid=2 test warning',
     ];
     self::expectWatchdog($expected);
 
@@ -67,12 +79,16 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     $expected = [
       'status' => NAGIOS_STATUS_CRITICAL,
       'type' => 'state',
-      'text' => 'test error, test warning',
+      'text' => 'wid=3 test error, wid=2 test warning',
     ];
     self::expectWatchdog($expected);
   }
 
-  public function testFilter() {
+  /**
+   * Negate false: ignore 'onion' channel.
+   * Negate true: ignore 'garlic' channel.
+   */
+  public function testChannelFilter() {
     $config = \Drupal::configFactory()->getEditable('nagios.settings');
     $config->set('nagios.limit_watchdog.channel_filter', ['onion']);
     $config->set('nagios.limit_watchdog.negate', FALSE /* Ignore */);
@@ -84,7 +100,7 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     $expected = [
       'status' => NAGIOS_STATUS_CRITICAL,
       'type' => 'state',
-      'text' => 'garlic error',
+      'text' => 'wid=2 garlic error',
     ];
     self::expectWatchdog($expected);
 
@@ -94,11 +110,14 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     $expected = [
       'status' => NAGIOS_STATUS_CRITICAL,
       'type' => 'state',
-      'text' => 'onion error',
+      'text' => 'wid=1 onion error',
     ];
     self::expectWatchdog($expected);
   }
 
+  /**
+   * Show more recent problems first.
+   */
   public function testOrder() {
     $this->getLogger('test')->warning('warning 1');
     sleep(2);
@@ -106,11 +125,14 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     $expected = [
       'status' => NAGIOS_STATUS_WARNING,
       'type' => 'state',
-      'text' => 'test warning 2, test warning 1',
+      'text' => 'wid=2 test warning 2, wid=1 test warning 1',
     ];
     self::expectWatchdog($expected);
   }
 
+  /**
+   * Minimum level “error” should ignore warnings.
+   */
   public function testWithLevelError() {
     $config = \Drupal::configFactory()->getEditable('nagios.settings');
     $config->set('nagios.min_report_severity', NAGIOS_STATUS_CRITICAL);
@@ -126,7 +148,7 @@ class WatchdogCheckTest extends EntityKernelTestBase {
     $expected = [
       'status' => NAGIOS_STATUS_CRITICAL,
       'type' => 'state',
-      'text' => 'test error',
+      'text' => 'wid=3 test error',
     ];
     self::expectWatchdog($expected);
   }

@@ -1,10 +1,11 @@
 <?php
 
 /**
- * @file Module file for Migrate Tools.
+ * @file
+ * Module file for Migrate Tools.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * @file
@@ -54,7 +55,7 @@ function migrate_tools_entity_type_build(array &$entity_types): void {
 /**
  * Implements hook_menu_links_discovered_alter().
  */
-function migrate_tools_menu_links_discovered_alter(&$links) {
+function migrate_tools_menu_links_discovered_alter(&$links): void {
   if (\Drupal::moduleHandler()->moduleExists('migrate_plus')) {
     $links['migrate_tools.menu'] = [
       'title' => 'Migrations',
@@ -81,19 +82,50 @@ function migrate_tools_migration_plugins_alter(array &$migrations): void {
 /**
  * Implements hook_migrate_prepare_row().
  *
+ * @throws \Exception
+ *
  * @see \Drupal\migrate_tools\EventSubscriber\MigrationImportSync
  * @see \Drupal\migrate\Plugin\migrate\source\SourcePluginBase::next()
  */
-function migrate_tools_migrate_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration) {
-
-  if (!empty($migration->syncSource)) {
+function migrate_tools_migrate_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration): void {
+  /** @var \Drupal\migrate_tools\MigrateTools $migrateTools */
+  $migrateTools = \Drupal::service('migrate_tools.migrate_tools');
+  // Act on migrations that have a Sync source, and that are currently in the
+  // phase of Syncing their IDs.
+  if (!empty($migration->syncSource) && $migrateTools->isMigrationSyncing($migration->getPluginId())) {
     // Keep track of all source rows here, as SourcePluginBase::next() might
     // skip some rows, and we need them all to detect missing items in source to
     // delete in destination.
-    $source_id_values = \Drupal::state()->get('migrate_tools_sync', []);
+    $migrateTools->addToSyncSourceIds($migration, $row->getSourceIdValues());
+  }
+}
 
-    $source_id_values[] = $row->getSourceIdValues();
+/**
+ * Implements hook_entity_type_alter().
+ */
+function migrate_tools_entity_type_alter(array &$entity_types): void {
+  /** @var \Drupal\Core\Config\Entity\ConfigEntityType $entity_type */
+  if (isset($entity_types['migration']) && ($entity_type = $entity_types['migration'])) {
+    $entity_type->set(
+      'config_export',
+      array_merge($entity_type->get('config_export'), ['include'])
+    );
+  }
+}
 
-    \Drupal::state()->set('migrate_tools_sync', $source_id_values);
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function migrate_tools_config_schema_info_alter(array &$definitions): void {
+  if (isset($definitions['migrate_plus.migration.*'])) {
+    $definitions['migrate_plus.migration.*']['mapping']['include'] = [
+      'type' => 'sequence',
+      'label' => 'Included migration configuration',
+      'nullable' => TRUE,
+      'sequences' => [
+        'type' => 'string',
+        'label' => 'Included shared configuration entry',
+      ],
+    ];
   }
 }

@@ -46,7 +46,7 @@ class CspTest extends BrowserTestBase {
       'report-only[reporting][handler]' => 'raven',
     ], 'Save configuration');
 
-    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "object-src 'none'; script-src 'self'; style-src 'self'; frame-ancestors 'self'; report-uri https://domain.test/api/1/security/?sentry_key=a");
+    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "object-src 'none'; script-src 'self' 'report-sample'; style-src 'self' 'report-sample'; webrtc 'block'; worker-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri https://domain.test/api/1/security/?sentry_key=a&sentry_environment=prod");
 
     $this->drupalGet('admin/config/system/csp');
     $this->submitForm([
@@ -54,7 +54,7 @@ class CspTest extends BrowserTestBase {
       'report-only[directives][connect-src][base]' => 'self',
     ], 'Save configuration');
 
-    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "connect-src 'self' https://domain.test/api/1/envelope/; object-src 'none'; script-src 'self'; style-src 'self'; frame-ancestors 'self'; report-uri https://domain.test/api/1/security/?sentry_key=a");
+    $this->assertSession()->responseHeaderEquals('Content-Security-Policy-Report-Only', "connect-src 'self' https://domain.test/api/1/envelope/; object-src 'none'; script-src 'self' 'report-sample'; style-src 'self' 'report-sample'; webrtc 'block'; worker-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri https://domain.test/api/1/security/?sentry_key=a&sentry_environment=prod");
   }
 
 }

@@ -7,10 +7,10 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\EventSubscriber\ExceptionLoggingSubscriber;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\LogMessageParserInterface;
-use Drupal\Core\Logger\RfcLoggerTrait;
+use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\RfcLogLevel;
+use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
@@ -130,13 +130,13 @@ class Raven implements LoggerInterface, RavenInterface {
     $options['profiles_sample_rate'] = $config->get('profiles_sample_rate');
 
     // Proxy configuration (DSN is null before install).
-    $parsed_dsn = parse_url($options['dsn'] ?? '');
+    $parsed_dsn = parse_url(is_string($options['dsn']) ? $options['dsn'] : '');
     if (!empty($parsed_dsn['host']) && !empty($parsed_dsn['scheme'])) {
       $http_client_config = $this->settings->get('http_client_config', []);
-      if (is_array($http_client_config) && !empty($http_client_config['proxy'][$parsed_dsn['scheme']])) {
+      if (is_array($http_client_config) && isset($http_client_config['proxy']) && is_array($http_client_config['proxy']) && !empty($http_client_config['proxy'][$parsed_dsn['scheme']])) {
         $no_proxy = $http_client_config['proxy']['no'] ?? [];
         // No need to configure proxy if Sentry host is on proxy bypass list.
-        if (!in_array($parsed_dsn['host'], $no_proxy, TRUE)) {
+        if (is_array($no_proxy) && !in_array($parsed_dsn['host'], $no_proxy, TRUE)) {
           $options['http_proxy'] = $http_client_config['proxy'][$parsed_dsn['scheme']];
         }
       }
@@ -148,6 +148,7 @@ class Raven implements LoggerInterface, RavenInterface {
     }
     $this->eventDispatcher->dispatch(new OptionsAlter($options), OptionsAlter::class);
     try {
+      // @phpstan-ignore argument.type
       \Sentry\init($options);
     }
     catch (\InvalidArgumentException $e) {
@@ -174,92 +175,100 @@ class Raven implements LoggerInterface, RavenInterface {
   /**
    * {@inheritdoc}
    */
-  public function log($level, string|\Stringable $message, array $context = []): void {
+  public function log(mixed $level, string|\Stringable $message, array $context = []): void {
     static $counter = 0;
     $client = $this->getClient();
     if (!$client) {
       return;
     }
     $config = $this->configFactory->get('raven.settings');
-    $event = Event::createEvent();
-    $levels = [
-      RfcLogLevel::EMERGENCY => Severity::FATAL,
-      RfcLogLevel::ALERT => Severity::FATAL,
-      RfcLogLevel::CRITICAL => Severity::FATAL,
-      RfcLogLevel::ERROR => Severity::ERROR,
-      RfcLogLevel::WARNING => Severity::WARNING,
-      RfcLogLevel::NOTICE => Severity::INFO,
-      RfcLogLevel::INFO => Severity::INFO,
-      RfcLogLevel::DEBUG => Severity::DEBUG,
-    ];
-    $event->setLevel(new Severity($levels[$level] ?? Severity::INFO));
-
+    $log_levels = $config->get('log_levels');
+    if (!is_array($log_levels)) {
+      $log_levels = [];
+    }
+    $ignored_channels = $config->get('ignored_channels');
+    if (!is_array($ignored_channels)) {
+      $ignored_channels = [];
+    }
+    // Preserve the original $message argument for debugging purposes.
+    $unformatted_message = $message;
     // Remove backtrace string from the message, as it is redundant with Sentry
     // stack traces, and could leak function calling arguments to Sentry
     // (depending on the configuration of zend.exception_ignore_args and
     // zend.exception_string_param_max_len).
     if (isset($context['@backtrace_string'])) {
-      $message = str_replace(' @backtrace_string', '', $message);
+      $unformatted_message = str_replace(' @backtrace_string', '', $unformatted_message);
       unset($context['@backtrace_string']);
     }
-    $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
-    $formatted_message = empty($message_placeholders) ? $message : strtr($message, $message_placeholders);
-    $event->setMessage($message, $message_placeholders, $formatted_message)
-      ->setTimestamp($context['timestamp'])
-      ->setLogger($context['channel']);
-    $extra = ['request_uri' => $context['request_uri']];
-    if ($context['referer']) {
-      $extra['referer'] = $context['referer'];
+    $message_placeholders = $this->parser->parseMessagePlaceholders($unformatted_message, $context);
+    $formatted_message = empty($message_placeholders) ? $unformatted_message : strtr($unformatted_message, $message_placeholders);
+    $ignored_messages = $config->get('ignored_messages');
+    if (!is_array($ignored_messages)) {
+      $ignored_messages = [];
     }
-    if ($context['link']) {
-      $extra['link'] = MailFormatHelper::htmlToText($context['link']);
-    }
-    $event->setExtra($extra);
-    $user = UserDataBag::createFromUserIdentifier($context['uid']);
-    $user->setIpAddress($context['ip'] ?: NULL);
-    if ($this->currentUser->id() == $context['uid'] && $config->get('send_user_data')) {
-      $user->setEmail($this->currentUser->getEmail())
-        ->setUsername($this->currentUser->getAccountName());
-    }
-    $event->setUser($user);
-    if ($client->getOptions()->shouldAttachStacktrace()) {
-      if (isset($context['backtrace'])) {
-        $backtrace = $context['backtrace'];
-        if (!$config->get('trace')) {
-          foreach ($backtrace as &$frame) {
-            unset($frame['args']);
+    if (is_numeric($level) && !empty($log_levels[$level + 1]) && !in_array($context['channel'], $ignored_channels) && !in_array($unformatted_message, $ignored_messages)) {
+      $levels = [
+        RfcLogLevel::EMERGENCY => Severity::FATAL,
+        RfcLogLevel::ALERT => Severity::FATAL,
+        RfcLogLevel::CRITICAL => Severity::FATAL,
+        RfcLogLevel::ERROR => Severity::ERROR,
+        RfcLogLevel::WARNING => Severity::WARNING,
+        RfcLogLevel::NOTICE => Severity::INFO,
+        RfcLogLevel::INFO => Severity::INFO,
+        RfcLogLevel::DEBUG => Severity::DEBUG,
+      ];
+      $event = Event::createEvent()
+        ->setLevel(new Severity($levels[$level] ?? Severity::INFO))
+        ->setMessage($unformatted_message, $message_placeholders, $formatted_message)
+        ->setTimestamp($context['timestamp'])
+        ->setLogger($context['channel']);
+      $extra = ['request_uri' => $context['request_uri']];
+      if ($context['referer']) {
+        $extra['referer'] = $context['referer'];
+      }
+      if ($context['link']) {
+        $extra['link'] = MailFormatHelper::htmlToText($context['link']);
+      }
+      $event->setExtra($extra);
+      $user = UserDataBag::createFromUserIdentifier($context['uid']);
+      $user->setIpAddress($context['ip'] ?: NULL);
+      if ($this->currentUser->id() == $context['uid'] && $config->get('send_user_data')) {
+        $user->setEmail($this->currentUser->getEmail())
+          ->setUsername($this->currentUser->getAccountName());
+      }
+      $event->setUser($user);
+      if ($client->getOptions()->shouldAttachStacktrace()) {
+        if (isset($context['backtrace'])) {
+          $backtrace = $context['backtrace'];
+          if (!$config->get('trace')) {
+            foreach ($backtrace as &$frame) {
+              unset($frame['args']);
+            }
           }
         }
-      }
-      else {
-        $backtrace = debug_backtrace($config->get('trace') ? 0 : DEBUG_BACKTRACE_IGNORE_ARGS);
-        // Remove any logger stack frames.
-        $finder = new ClassFinder();
-        $class_file = $finder->findFile(LoggerChannel::class);
-        if ($class_file && isset($backtrace[0]['file']) && $backtrace[0]['file'] === realpath($class_file)) {
-          array_shift($backtrace);
-          $class_file = $finder->findFile(LoggerTrait::class);
+        else {
+          $backtrace = debug_backtrace($config->get('trace') ? 0 : DEBUG_BACKTRACE_IGNORE_ARGS);
+          // Remove any logger stack frames.
+          $finder = new ClassFinder();
+          $class_file = $finder->findFile(LoggerChannel::class);
           if ($class_file && isset($backtrace[0]['file']) && $backtrace[0]['file'] === realpath($class_file)) {
             array_shift($backtrace);
+            $class_file = $finder->findFile(LoggerTrait::class);
+            if ($class_file && isset($backtrace[0]['file']) && $backtrace[0]['file'] === realpath($class_file)) {
+              array_shift($backtrace);
+            }
           }
         }
-      }
-      $stacktrace = $client->getStacktraceBuilder()->buildFromBacktrace($backtrace, '', 0);
-      $stacktrace->removeFrame(count($stacktrace->getFrames()) - 1);
-      $event->setStacktrace($stacktrace);
-    }
-
-    $log_levels = $config->get('log_levels');
-    $ignored_channels = $config->get('ignored_channels') ?: [];
-    if (is_array($log_levels) && !empty($log_levels[$level + 1]) && is_array($ignored_channels) && !in_array($context['channel'], $ignored_channels)) {
-      $eventHint['extra'] = [
-        'level' => $level,
-        'message' => $message,
-        'context' => $context,
-      ];
-      if (isset($stacktrace)) {
+        $stacktrace = $client->getStacktraceBuilder()->buildFromBacktrace($backtrace, '', 0);
+        $stacktrace->removeFrame(count($stacktrace->getFrames()) - 1);
+        $event->setStacktrace($stacktrace);
         $eventHint['stacktrace'] = $stacktrace;
       }
+      $eventHint['extra'] = [
+        'level' => $level,
+        'message' => $unformatted_message,
+        'context' => $context,
+      ];
       if (isset($context['exception']) && $context['exception'] instanceof \Throwable) {
         $eventHint['exception'] = $context['exception'];
         // Capture "critical" uncaught exceptions logged by
@@ -281,8 +290,10 @@ class Raven implements LoggerInterface, RavenInterface {
         \Sentry\captureException(new RateLimitException('Log event discarded due to rate limit exceeded; future log events will not be captured by Sentry.'));
       }
       $counter++;
-      if ($parent = SentrySdk::getCurrentHub()->getSpan()) {
+      $parent = SentrySdk::getCurrentHub()->getSpan();
+      if ($parent && $parent->getSampled()) {
         $span = SpanContext::make()
+          ->setOrigin('auto.app')
           ->setOp('sentry.capture')
           ->setDescription($context['channel'] . ': ' . $formatted_message)
           ->setStartTimestamp($start)
@@ -294,7 +305,7 @@ class Raven implements LoggerInterface, RavenInterface {
     // Record a breadcrumb.
     $breadcrumb = [
       'category' => $context['channel'],
-      'message' => isset($formatted_message) ? (string) $formatted_message : NULL,
+      'message' => (string) $formatted_message,
       'level' => $levels[$level] ?? Breadcrumb::LEVEL_INFO,
     ];
     foreach (['%line', '%file', '%type', '%function'] as $key) {

@@ -1,16 +1,16 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\migrate_tools\EventSubscriber;
 
-use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Event\MigrateRollbackEvent;
 use Drupal\migrate\Event\MigrateRowDeleteEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_plus\Event\MigrateEvents as MigratePlusEvents;
+use Drupal\migrate_tools\MigrateTools;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,28 +19,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class MigrationImportSync implements EventSubscriberInterface {
 
-  protected EventDispatcherInterface $dispatcher;
-
-  /**
-   * The state key/value store.
-   *
-   * @var \Drupal\Core\State\StateInterface
-   */
-  protected StateInterface $state;
-
-  /**
-   * MigrationImportSync constructor.
-   *
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-   *   The event dispatcher.
-   * @param Drupal\Core\State\StateInterface $state
-   *   The Key/Value Store to use for tracking synced source rows.
-   */
-  public function __construct(EventDispatcherInterface $dispatcher, StateInterface $state) {
-    $this->dispatcher = $dispatcher;
-    $this->state = $state;
-    $this->state->set('migrate_tools_sync', []);
-  }
+  public function __construct(
+    protected EventDispatcherInterface $dispatcher,
+    protected MigrateTools $migrateTools,
+  ) {}
 
   /**
    * {@inheritdoc}
@@ -48,6 +30,7 @@ class MigrationImportSync implements EventSubscriberInterface {
   public static function getSubscribedEvents(): array {
     $events = [];
     $events[MigrateEvents::PRE_IMPORT][] = ['sync'];
+    $events[MigrateEvents::POST_IMPORT][] = ['cleanSyncData'];
     return $events;
   }
 
@@ -56,10 +39,18 @@ class MigrationImportSync implements EventSubscriberInterface {
    *
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migration import event.
+   *
+   * @throws \Exception
    */
   public function sync(MigrateImportEvent $event): void {
     $migration = $event->getMigration();
     if (!empty($migration->syncSource)) {
+      $migrationId = $migration->getPluginId();
+      // Clear Sync IDs for this migration before starting preparing rows.
+      $this->migrateTools->clearSyncSourceIds($migrationId);
+      // Activate the syncing state for this migration, so
+      // migrate_tools_migrate_prepare_row() can record all IDs.
+      $this->migrateTools->setMigrationSyncingState($migrationId, TRUE);
 
       // Loop through the source to register existing source ids.
       // @see migrate_tools_migrate_prepare_row().
@@ -71,7 +62,12 @@ class MigrationImportSync implements EventSubscriberInterface {
         $source->next();
       }
 
-      $source_id_values = $this->state->get('migrate_tools_sync', []);
+      // Deactivate the syncing state for this migration, so
+      // migrate_tools_migrate_prepare_row() does not record any further IDs
+      // during the actual migration process.
+      $this->migrateTools->setMigrationSyncingState($migrationId, FALSE);
+
+      $source_id_values = $this->migrateTools->getSyncSourceIds($migrationId);
 
       $id_map = $migration->getIdMap();
       $id_map->rewind();
@@ -105,6 +101,18 @@ class MigrationImportSync implements EventSubscriberInterface {
       }
       $this->dispatcher->dispatch(new MigrateRollbackEvent($migration), MigrateEvents::POST_ROLLBACK);
     }
+  }
+
+  /**
+   * Cleans Sync data after a migration is complete.
+   *
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
+   *   The migration import event.
+   */
+  public function cleanSyncData(MigrateImportEvent $event): void {
+    $migration = $event->getMigration();
+    $migrationId = $migration->getPluginId();
+    $this->migrateTools->clearSyncSourceIds($migrationId);
   }
 
   /**

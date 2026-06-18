@@ -64,7 +64,7 @@ IT (2)      |AcquiB, PreviousBest|  $30,000,000 |
 Totals      |                  5 | $695,000,000 |
 ------------------------------------------------
 
-You can also use all available formulas for group and comlumn aggregation
+You can also use all available formulas for group and column aggregation
 without aggregation! If in the setting "Aggregation results per group" you
 will select the second option (no aggregation), then the results will be shown
 after each group (like subtotals). You can choose the prefix and/or suffix (in

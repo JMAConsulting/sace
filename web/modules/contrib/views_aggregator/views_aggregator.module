@@ -6,16 +6,17 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
 use Drupal\bootstrap\Bootstrap;
+use Drupal\views\Plugin\views\field\FieldHandlerInterface;
 
 require_once __DIR__ . '/views_aggregator_functions.inc';
 
 /**
  * Implements hook_help().
  */
-function views_aggregator_help($route_name, RouteMatchInterface $route_match) {
+function views_aggregator_help(string $route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.views_aggregator':
       $module_handler = \Drupal::service('module_handler');
@@ -32,7 +33,7 @@ function views_aggregator_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function views_aggregator_theme() {
+function views_aggregator_theme(): array {
   return [
     'views_aggregator_plugin_style_table' => [
       'render element' => 'form',
@@ -50,7 +51,7 @@ function views_aggregator_theme() {
  * @return array
  *   An array of aggregation function info.
  */
-function views_aggregator_get_aggregation_functions_info($name = NULL) {
+function views_aggregator_get_aggregation_functions_info(?string $name = NULL): array {
 
   $aggregation_functions = &drupal_static(__FUNCTION__);
 
@@ -76,7 +77,7 @@ function views_aggregator_get_aggregation_functions_info($name = NULL) {
 /**
  * Returns the result value at the intersection of column and row.
  *
- * @param object $field_handler
+ * @param \Drupal\views\Plugin\views\field\FieldHandlerInterface $field_handler
  *   The handler associated with the table column being requested.
  * @param int $row_num
  *   Index into the View result rows array.
@@ -86,10 +87,11 @@ function views_aggregator_get_aggregation_functions_info($name = NULL) {
  * @return string
  *   The content of the cell
  */
-function views_aggregator_get_cell($field_handler, $row_num, $rendered = FALSE) {
+function views_aggregator_get_cell(FieldHandlerInterface $field_handler, int $row_num, bool $rendered = FALSE): string {
   if (isset($field_handler->view->style_plugin)) {
     return $field_handler->view->style_plugin->getCell($field_handler, $row_num, $rendered);
   }
+  return '';
 }
 
 /**

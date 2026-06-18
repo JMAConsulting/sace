@@ -12,8 +12,8 @@
     "require": {
         "php": ">=8.0",
         "ext-dom": "*",
-        "drupal/core": "^9 || ^10",
-        "spatie/calendar-links": "^1.7.0"
+        "drupal/core": "^9.5 || ^10 || ^11",
+        "spatie/calendar-links": "^1.11.0"
     },
     "authors": [
         {

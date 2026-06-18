@@ -5,13 +5,13 @@ namespace Drupal\theme_switcher\Theme;
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Component\Plugin\Exception\MissingValueContextException;
 use Drupal\Core\Condition\ConditionAccessResolverTrait;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\Context\ContextRepositoryInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
+use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
-use Drupal\Core\Routing\AdminContext;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Negotiate the current theme based on theme_switcher_rules rules.
@@ -107,7 +107,7 @@ class ThemeSwitcherNegotiator implements ThemeNegotiatorInterface {
               // access without disabling caching. For example the node type
               // condition will have a missing context on any non-node route
               // like the frontpage.
-              return FALSE;
+              continue 2;
             }
           }
           $conditions[$condition_id] = $condition;
