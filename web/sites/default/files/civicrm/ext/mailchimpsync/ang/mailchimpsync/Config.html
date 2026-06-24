@@ -79,6 +79,26 @@
       </table>
       <a href ng-click="accountEdit()" >{{ts('Add new account')}}</a>
 
+      <h2>Logs</h2>
+      <p>{{ts('How long to keep logs? Logs can help you figure out what is going wrong, but they can take up a lot of storage and serve no other long term purpose.')}}</p>
+
+      <div class="row">
+        <label class="" crm-ui-for="editData.apiKey" >{{ts('Log retention')}}</label>
+        <select
+          crm-ui-id="mcsConfig-retention"
+          ng-model="mcsConfig.retention"
+          crm-ui-select="{allowClear:false}"
+          name="retention"
+          class="crm-form-text"
+          ng-change="saveRetention()"
+          >
+          <option value=ever >{{ts('Forever')}}</option>
+          <option value=days7 >{{ts('%1 Days', {1: '7'})}}</option>
+          <option value=days31 >{{ts('%1 Days', {1: '31'})}}</option>
+          <option value=days90 >{{ts('%1 Days', {1: '90'})}}</option>
+        </select>
+      </div>
+
     </div><!-- ends main overview-->
 
     <!-- Edit account ========================================================== -->

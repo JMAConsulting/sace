@@ -1,9 +1,12 @@
 <?php
 namespace Civi\Cdntaxreceipts\Tests\Mink;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+
 /**
  * @group mink
  */
+#[RunTestsInSeparateProcesses]
 class ReceiptsIssuedReportTest extends CdntaxreceiptsBase {
 
   /**
@@ -40,7 +43,7 @@ class ReceiptsIssuedReportTest extends CdntaxreceiptsBase {
     $this->assertPageHasNoErrorMessages();
 
     // click the button
-    $this->getSession()->getPage()->pressButton('_qf_ReceiptsIssued_submit');
+    $this->pressButtonOverride('_qf_ReceiptsIssued_submit');
     $this->htmlOutput();
     $this->assertPageHasNoErrorMessages();
 
@@ -73,7 +76,7 @@ class ReceiptsIssuedReportTest extends CdntaxreceiptsBase {
     $this->htmlOutput();
 
     // click the button
-    $this->getSession()->getPage()->pressButton('_qf_ReceiptsIssued_submit');
+    $this->pressButtonOverride('_qf_ReceiptsIssued_submit');
     $this->htmlOutput();
     $this->assertPageHasNoErrorMessages();
 
@@ -101,7 +104,7 @@ class ReceiptsIssuedReportTest extends CdntaxreceiptsBase {
     $this->getSession()->getPage()->checkField('fields_payment_instrument_id');
 
     // click the button
-    $this->getSession()->getPage()->pressButton('_qf_ReceiptsIssued_submit');
+    $this->pressButtonOverride('_qf_ReceiptsIssued_submit');
     $this->htmlOutput();
     $this->assertPageHasNoErrorMessages();
 
@@ -128,10 +131,10 @@ class ReceiptsIssuedReportTest extends CdntaxreceiptsBase {
     $this->assertPageHasNoErrorMessages();
 
     // click the tax receipt button
-    $this->getSession()->getPage()->pressButton('Tax Receipt');
+    $this->pressButtonOverride('Tax Receipt');
     $this->assertPageHasNoErrorMessages();
     $this->assertSession()->waitForElementVisible('css', '.crm-button_qf_ViewTaxReceipt_next');
-    $this->getSession()->getPage()->pressButton('_qf_ViewTaxReceipt_next-bottom');
+    $this->pressButtonOverride('_qf_ViewTaxReceipt_next-bottom');
     $this->assertPageHasNoErrorMessages();
   }
 

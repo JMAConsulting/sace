@@ -1,9 +1,12 @@
 <?php
 namespace Civi\Cdntaxreceipts\Tests\Mink;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+
 /**
  * @group mink
  */
+#[RunTestsInSeparateProcesses]
 class AggregateTest extends CdntaxreceiptsBase {
 
   /**
@@ -63,7 +66,7 @@ class AggregateTest extends CdntaxreceiptsBase {
 
     // Pick the receipt year and issue receipt
     $this->getSession()->getPage()->selectFieldOption('receipt_year', "issue_2020");
-    $this->getSession()->getPage()->pressButton('_qf_IssueAggregateTaxReceipts_next');
+    $this->pressButtonOverride('_qf_IssueAggregateTaxReceipts_next');
     $this->assertPageHasNoErrorMessages();
 
     // check logs
@@ -71,7 +74,7 @@ class AggregateTest extends CdntaxreceiptsBase {
     $expecteds = array(
       0 => array(
         'id' => '1',
-        'issued_on' => (string) strtotime($mock_time),
+        'issued_on' => $mock_time,
         'location_issued' => 'Toronto',
         'receipt_no' => 'C-00000003',
         'contact_id' => (string) $contact2['id'],
@@ -83,7 +86,7 @@ class AggregateTest extends CdntaxreceiptsBase {
       ),
       1 => array(
         'id' => '2',
-        'issued_on' => (string) strtotime($mock_time),
+        'issued_on' => $mock_time,
         'location_issued' => 'Toronto',
         'receipt_no' => 'C-00000002',
         'contact_id' => (string) $this->contact['id'],

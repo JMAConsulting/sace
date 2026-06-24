@@ -2,14 +2,18 @@
   "singlePR": {
     "include": [
       {
-        "php-versions": "8.2",
-        "drupal": "CIVICARROT_DRUPAL_PRIOR",
-        "civicrm": "dev-master"
+        "php-versions": "CIVICARROT_PHP_SENSIBLE",
+        "drupal": "^10",
+        "civicrm": "dev-master",
+        "phpunit-xml": "phpunit9.xml.dist",
+        "phpunit-mink-xml": "phpunit9.mink.xml.dist"
       },
       {
-        "php-versions": "7.4",
-        "drupal": "9.5.*",
-        "civicrm": "5.69.*"
+        "php-versions": "8.3",
+        "drupal": "CIVICARROT_DRUPAL_PRIOR",
+        "civicrm": "dev-master",
+        "phpunit-xml": "phpunit10.xml.dist",
+        "phpunit-mink-xml": "phpunit10.mink.xml.dist"
       }
     ]
   },
@@ -20,24 +24,32 @@
       "matrix": {
         "include": [
           {
+            "php-versions": "8.3",
+            "drupal": "CIVICARROT_DRUPAL_PRIOR",
+            "civicrm": "dev-master",
+            "phpunit-xml": "phpunit10.xml.dist",
+            "phpunit-mink-xml": "phpunit10.mink.xml.dist"
+          },
+          {
+            "php-versions": "8.3",
+            "drupal": "^10",
+            "civicrm": "CIVICARROT_CIVI_RELEASECANDIDATE",
+            "phpunit-xml": "phpunit9.xml.dist",
+            "phpunit-mink-xml": "phpunit9.mink.xml.dist"
+          },
+          {
             "php-versions": "CIVICARROT_PHP_SENSIBLE",
-            "drupal": "CIVICARROT_DRUPAL_PRIOR",
-            "civicrm": "dev-master"
+            "drupal": "^10",
+            "civicrm": "CIVICARROT_CIVI_LATEST",
+            "phpunit-xml": "phpunit9.xml.dist",
+            "phpunit-mink-xml": "phpunit9.mink.xml.dist"
           },
           {
-            "php-versions": "8.1",
-            "drupal": "CIVICARROT_DRUPAL_PRIOR",
-            "civicrm": "CIVICARROT_CIVI_RELEASECANDIDATE"
-          },
-          {
-            "php-versions": "8.1",
-            "drupal": "CIVICARROT_DRUPAL_PRIOR",
-            "civicrm": "CIVICARROT_CIVI_LATEST"
-          },
-          {
-            "php-versions": "7.4",
-            "drupal": "~9.5.11",
-            "civicrm": "~5.69.0"
+            "php-versions": "8.2",
+            "drupal": "^10",
+            "civicrm": "6.10.*",
+            "phpunit-xml": "phpunit9.xml.dist",
+            "phpunit-mink-xml": "phpunit9.mink.xml.dist"
           }
         ]
       }

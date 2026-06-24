@@ -8,6 +8,9 @@
     if (!(('accounts' in config) && !Array.isArray(config.accounts))) {
       config.accounts = {};
     }
+    if (!('retention' in config)) {
+      config.retention = 'ever';
+    }
     for (const listID in config.lists) {
       if (Array.isArray(config.lists[listID].trustOverride ?? '')) {
         config.lists[listID].trustOverride = {};
@@ -249,6 +252,9 @@
 
         return saveConfig('Deleting...', 'Deleted');
       }
+    };
+    $scope.saveRetention = function saveRetention() {
+      return saveConfig('Saving...', 'Saved', true);
     };
     $scope.accountSave = function accountSave() {
       // Check we can use that API key.
