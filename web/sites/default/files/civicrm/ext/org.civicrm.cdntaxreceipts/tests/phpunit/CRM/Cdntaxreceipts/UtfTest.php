@@ -9,8 +9,9 @@ class CRM_Cdntaxreceipts_UtfTest extends \CiviUnitTestCase {
    *
    * @dataProvider utfDataProvider
    * @param string $charset
+   * @param string $charsetExpected
    */
-  public function testInstallCharsets(string $charset) {
+  public function testInstallCharsets(string $charset, string $charsetExpected) {
     // When run as part of a whole suite, the extension is already installed
     // by tests that come before us. For whatever reason it doesn't reset the
     // extensions table in between classes when it repopulates the db:
@@ -42,7 +43,7 @@ class CRM_Cdntaxreceipts_UtfTest extends \CiviUnitTestCase {
     // Check if we have the same charset/collation as core.
     $dao = CRM_Core_DAO::executeQuery("SHOW TABLE STATUS LIKE 'cdntaxreceipts_log'");
     $dao->fetch();
-    $this->assertStringStartsWith("{$charset}_", $dao->Collation);
+    $this->assertStringStartsWith("{$charsetExpected}_", $dao->Collation);
 
     // This doesn't seem to actually uninstall it? So use api instead.
     //\Civi\Test::headless()->uninstallMe(__DIR__)->apply();
@@ -54,10 +55,11 @@ class CRM_Cdntaxreceipts_UtfTest extends \CiviUnitTestCase {
    * Data Provider for testInstallCharsets
    * @return array
    */
-  public function utfDataProvider():array {
+  public static function utfDataProvider():array {
     return [
-      ['utf8'],
-      ['utf8mb4'],
+      // In mysql 8 and mariadb the returned value for utf8 is its real name utf8mb3. In earlier versions it was utf8.
+      ['utf8', 'utf8mb3'],
+      ['utf8mb4', 'utf8mb4'],
     ];
   }
 

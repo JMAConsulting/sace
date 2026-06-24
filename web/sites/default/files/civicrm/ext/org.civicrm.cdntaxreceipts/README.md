@@ -1,10 +1,10 @@
-CDNTaxReceipts
-==============
+# CDNTaxReceipts
 
 Canadian Tax Receipts extension for CiviCRM
 
-To set up the extension:
-------------
+<img src="./img/taxreceipt.png" width="800" alt="Tax Receipt">
+
+# To set up the extension
 
 1. Make sure your CiviCRM Extensions directory is set (Administer > System Settings > Directories).
 2. Make sure your CiviCRM Extensions Resource URL is set (Administer > System Settings > Resource URLs).
@@ -37,41 +37,117 @@ is defined:
     }
 
 
-Operations
-------------
-**Individual or Single Tax Receipts**
+# Usage
+
+There are a few concepts at the start that are important to understand.
+
++ Separate Tax Receipts: This refers to sending a _separate receipts_ for **each Contribution** that was made. This task can be performed one contribution at a time, or in bulk from contribution search results.
++ Combined Tax Receipts: This refers to sending _one receipt_ **per Contact**, combining selected contributions into one total. This may be different from the contact's total annual donations depending on your search criteria and selections.
++ Annual Receipts: This refers to sending the **Total Annual** donations for a selected annual year. You _cannot_ manually select which contributions are included, only which year they should come from.
+
+## Separate Tax Receipts One at a Time
 
 These are receipts issued as one receipt to one contribution.
-- To issue an individual receipt, pull up the contact record, go to 'contributions' tab, view the contribution, and click the "Tax Receipt" button. Follow on-screen instructions from there.
-Single receipts can be issued in bulk for multiple contributions. This process issues one receipt per contribution.
-- To issue bulk-issue receipts, go to Contributions > Find Contributions, run a search, select one or more search results, and select "Issue Tax Receipts" in the actions drop-down. Follow on-screen instructions from there.
 
-**Annual Tax Receipts**
+1. Go to a specific Contact Record who has made a Contribution with a Donation
+2. Click on the `Contribution` tab
+3. Click on `View` for a specific Contribution with the donation
+4. Click the `Tax Receipt` button
+5. Follow on-screen instructions on the following screen
 
-These are receipts that collect all outstanding contributions for the year into one receipt. If some contributions have already been sent a receipt they will not be included in the total.
-Since there are multiple contributions on one receipt there are some differences in the template. In-kind fields are not shown, contribution type and source are also not shown since the collected contributions over the year could be of multiple types and from multiple sources.
+<img src="./img/contribution-example.png" width="400" alt="Contribution example">
 
-- To issue Annual Tax Receipts, go to Search > Find Contacts (or Search > Advanced Search), run a search for contacts, select one or more contacts, and select "Issue Annual Tax Receipts" in the actions drop-down. Follow on-screen instructions from there.
+## Separate Tax Receipts In Bulk
 
-**Reports**
+1. Go to `Contributions > Find Contributions`
+2. Filter your search criteria by specific factors (i.e. You might want to choose a particular calendar quarter)
+3. Click `Search`
+4. Choose multiple `Contributions` you would like to generate a Tax Receipt for
+5. From the dropdown choose `Issue Tax Receipts (Separate Receipt for Each Contribution)` (see image below)
+6. Follow the instructions on the following screen
 
-The extension also enables two CiviReport templates, found under `Reports - Contribution Reports - New Contribution Report`, which can be used to see a list of receipts issued and receipts outstanding.
+<img src="./img/contribution-dropdown-separate.png" width="400" alt="Contribution dropdown separate">
 
-- Tax Receipts - Receipts Issued
-- Tax Receipts - Receipts Not Issued
+**Note:** This will send separate receipts for each Contribution made.
 
-**Testing Tax Receipts**
+**FYI:** In the steps above, it is safe to choose all the Contributions that appear as this extension _will not_ generate
+Tax Receipts for contributions that have no eligible line items, and will only receipt the eligible amount.
 
-- To test your template settings and view a receipt without e-mailing the contact or making a database record, follow the directions for bulk-issueing of receipts: go to Contributions > Find Contributions, run a search, select a search result, and select "Issue Tax Receipts" in the actions drop-down. On the next screen, make sure to select 'Run in preview mode?', and follow on-screen instructions for other options, a pdf will be generated.
+## Combined Tax Receipts per Contact
 
-**Tracking Email openings**
+1. Go to `Contributions > Find Contributions`
+2. Filter your search criteria by specific factors (i.e. You might want to choose a particular calendar quarter)
+3. Click `Search`
+4. Choose multiple `Contributions` you would like to generate a Tax Receipt for
+5. From the dropdown choose `Issue Tax Receipts (Combined Receipt with Total Contributed)` (see image below)
+6. Follow the instructions on the following screen
 
-- Earlier versions of this Extension required a permission -> "CiviCRM CDN Tax Receipts: Open Tracking". That's no longer required - but make sure that $openTracking parameter is in the message template!
+<img src="./img/contribution-dropdown.png" width="400" alt="Contribution dropdown combined">
 
-hook_cdntaxreceipts_eligible()
-------------
+**Note:** Combined Receipts will add all the Contributions for each Individual's Contributions that you have selected
+into one receipt, but this may not be the same as the _Total_ donations you would produce annually.
 
-You may be in a situation where certain Contributions are eligible for tax receipts and others are not (e.g. donations are receiptable, but only for individuals, and event fees are not receiptable). If this is the case, there is a PHP hook hook_cdntaxreceipts_eligible($contribution) that can be used for complex eligibility criteria. Hook implementations should return one of TRUE or FALSE, wrapped in an array.
+**FYI:** In the steps above, it is safe to choose all the Contributions that appear as this extension _will not_
+generate Tax Receipts for contributions that have no eligible line items, and will only receipt the eligible amount.
+
+**Important:** These are receipts that collect all outstanding contributions from the selected results into one receipt.
+If some contributions have already been sent a receipt they will not be included in the total.
+
+## Annual Receipts
+
+1. Go to `Search > Find Contacts` (or `Search > Advanced Search`)
+2. Filter as desired
+3. Click `Search`
+4. Select one or more contacts from the results.
+5. Select `Issue Annual Tax Receipts` in the actions drop-down.
+6. Follow the instructions on the following screen. You will be able to choose which year.
+
+<img src="./img/contribution-annual.png" width="400" alt="Contribution Annual">
+
+# Priceset with Donation fields
+
+You do not need to do any special filtering for financial type, and doing so may miss some contributions if the contribution-level
+financial type is different from the eligible line item financial type. The extension will determine if there are any eligible line
+items (created by the Priceset) associated to a contribution and generate the receipts appropriately.
+
+# Testing Tax Receipts
+
+You can easily follow any of the instructions above for generating a `Total Receipt` or `Separate Receipt` even after you have made this extension live.
+
+1. Follow the instructions in `Total Receipt` or `Separate Receipt`
+2. Go to the `Issue Tax Receipts` screen
+3. Choose `Run in preview mode`, which will simply generate a special `Preview` of the Contribution that is automatically downloaded (see image below)
+
+<img src="./img/receipt-preview.png" width="400" alt="Receipt preview">
+
+# Reports
+
+The extension also enables two CiviReport templates, found under `Reports - Contribution Reports - New Contribution Report`, which can be
+used to see a list of receipts issued and receipts outstanding.
+
++ Tax Receipts - Receipts Issued
++ Tax Receipts - Receipts Not Issued
+
+There is also a SearchKit-based report under Packaged Searches
+
++ Tax Receipts - Receipts Issued
+
+# Tracking Emails Opened
+
+To be able to track whether people have opened their Receipts please ensure you have included the `$openTracking` token parameter within
+your message template.
+
+**Note:** Earlier versions of this Extension required a permission -> "CiviCRM CDN Tax Receipts: Open Tracking". That's no longer required
+
+# Hooks
+
+## hook_cdntaxreceipts_eligible()
+
+You may be in a situation where certain Contributions are eligible for tax receipts and others are not (e.g. donations are receiptable, but
+only for individuals, and event fees are not receiptable). If this is the case, there is a PHP hook hook_cdntaxreceipts_eligible($contribution)
+that can be used for complex eligibility criteria. Hook implementations should return one of TRUE or FALSE, wrapped in an array.
+
+By default, a contribution is eligible for tax receipting if it is completed, and if its Financial Type is deductible.
 
 ```php
     // Example hook implementation:
@@ -98,12 +174,9 @@ You may be in a situation where certain Contributions are eligible for tax recei
     }
 ```
 
-By default, a contribution is eligible for tax receipting if it is completed, and if its Financial Type is deductible.
+## hook_cdntaxreceipts_eligibleAmount()
 
-hook_cdntaxreceipts_eligibleAmount()
-------------
-
-If you need to customize the amount that is tax-deductible on a receipt, use this hook.
+Use this hook, if you need to customize the amount that is tax-deductible on a receipt.
 
 ```php
     // Example hook implementation:
@@ -118,8 +191,7 @@ If you need to customize the amount that is tax-deductible on a receipt, use thi
     }
 ```
 
-hook_cdntaxreceipts_alter_receipt()
------------
+## hook_cdntaxreceipts_alter_receipt()
 
 If you need to customize the variables that are passed to the receipt e.g. display name
 
@@ -157,7 +229,9 @@ function mymodule_cdntaxreceipts_alter_receipt(&$receipt) {
   }
 ```
 
-Disclaimer
-------------
+# Disclaimer
 
-This extension has been developed in consultation with a number of non-profits and with the help of a senior accountant. The maintainers have made every reasonable effort to ensure compliance with CRA guidelines and best practices. However, it is the reponsibility of each organization using this extension to do their own due diligence in ensuring compliance with CRA guidelines and with their organizational policies.
+This extension has been developed in consultation with a number of non-profits and with the help of a senior accountant.
+The maintainers have made every reasonable effort to ensure compliance with CRA guidelines and best practices. However,
+it is the reponsibility of each organization using this extension to do their own due diligence in ensuring compliance
+with CRA guidelines and with their organizational policies.

@@ -35,6 +35,54 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
           ),
         ),
       ),
+      'civicrm_address' =>
+      array(
+        'dao' => 'CRM_Core_DAO_Address',
+        'fields' =>
+        array(
+          'street_address' =>
+          array('default' => FALSE),
+          'supplemental_address_1' =>
+          array('default' => FALSE),
+          'city' =>
+          array('default' => FALSE),
+          'postal_code' =>
+          array('default' => FALSE),
+          'state_province_id' =>
+          array('title' => E::ts('State/Province'),
+            'default' => FALSE),
+        ),
+      ),
+      'civicrm_address_billing' => array(
+        'dao' => 'CRM_Core_DAO_Address',
+        'fields' => array(
+          'billing_street_address' => array(
+            'title' => E::ts('Billing Street Address'),
+            'default' => FALSE,
+            'dbAlias' => 'address_billing_civireport.street_address',
+          ),
+          'billing_supplemental_address_1' => array(
+            'title' => E::ts('Billing Supplemental Address 1'),
+            'default' => FALSE,
+            'dbAlias' => 'address_billing_civireport.supplemental_address_1',
+          ),
+          'billing_city' => array(
+            'title' => E::ts('Billing City'),
+            'default' => FALSE,
+            'dbAlias' => 'address_billing_civireport.city',
+          ),
+          'billing_postal_code' => array(
+            'title' => E::ts('Billing Postal Code'),
+            'default' => FALSE,
+            'dbAlias' => 'address_billing_civireport.postal_code',
+          ),
+          'billing_state_province_id' => array(
+            'title' => E::ts('Billing State/Province'),
+            'default' => FALSE,
+            'dbAlias' => 'address_billing_civireport.state_province_id',
+          ),
+        ),
+      ),
       'civicrm_cdntaxreceipts_log' =>
       array(
         'dao' => 'CRM_Contribute_DAO_Contribution',
@@ -183,12 +231,12 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
     foreach ($this->_columns as $tableName => $table) {
       if (array_key_exists('fields', $table)) {
         foreach ($table['fields'] as $fieldName => $field) {
-          if (CRM_Utils_Array::value('required', $field) ||
-            CRM_Utils_Array::value($fieldName, $this->_params['fields'])
+          if (!empty($field['required']) ||
+            !empty($this->_params['fields'][$fieldName])
           ) {
             $alias = "{$tableName}_{$fieldName}";
             $select[] = "{$field['dbAlias']} as {$alias}";
-            $this->_columnHeaders["{$tableName}_{$fieldName}"]['type'] = CRM_Utils_Array::value('type', $field);
+            $this->_columnHeaders["{$tableName}_{$fieldName}"]['type'] = $field['type'] ?? NULL;
             $this->_columnHeaders["{$tableName}_{$fieldName}"]['title'] = $field['title'];
             // @todo The right fix is probably in core in Table.tpl
             $this->_columnHeaders["{$tableName}_{$fieldName}"]['group_by'] = NULL;
@@ -217,7 +265,13 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
         LEFT  JOIN civicrm_contribution {$this->_aliases['civicrm_contribution']}
                 ON {$this->_aliases['civicrm_contribution']}.id = {$this->_aliases['civicrm_cdntaxreceipts_log_contributions']}.contribution_id
         LEFT  JOIN civicrm_line_item {$this->_aliases['civicrm_line_item']}
-                ON {$this->_aliases['civicrm_line_item']}.contribution_id = {$this->_aliases['civicrm_cdntaxreceipts_log_contributions']}.contribution_id";
+                ON {$this->_aliases['civicrm_line_item']}.contribution_id = {$this->_aliases['civicrm_cdntaxreceipts_log_contributions']}.contribution_id
+        LEFT  JOIN civicrm_address {$this->_aliases['civicrm_address']}
+                ON {$this->_aliases['civicrm_address']}.contact_id = {$this->_aliases['civicrm_cdntaxreceipts_log']}.contact_id
+               AND {$this->_aliases['civicrm_address']}.is_primary = 1
+        LEFT  JOIN civicrm_address {$this->_aliases['civicrm_address_billing']}
+		ON {$this->_aliases['civicrm_address_billing']}.contact_id = {$this->_aliases['civicrm_cdntaxreceipts_log']}.contact_id
+               AND {$this->_aliases['civicrm_address_billing']}.is_billing = 1";
   }
 
   function where() {
@@ -228,35 +282,35 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
           $clause = NULL;
           if (CRM_Utils_Array::value('type', $field) & (CRM_Utils_Type::T_DATE | CRM_Utils_Type::T_TIMESTAMP)) {
             if (CRM_Utils_Array::value('operatorType', $field) == CRM_Report_Form::OP_MONTH) {
-              $op = CRM_Utils_Array::value("{$fieldName}_op", $this->_params);
-              $value = CRM_Utils_Array::value("{$fieldName}_value", $this->_params);
+              $op = $this->_params["{$fieldName}_op"] ?? NULL;
+              $value = $this->_params["{$fieldName}_value"] ?? NULL;
               if (is_array($value) && !empty($value)) {
                 $clause = "(month({$field['dbAlias']}) $op (" . implode(', ', $value) . '))';
               }
             }
             else {
-              $relative = CRM_Utils_Array::value("{$fieldName}_relative", $this->_params);
-              $from     = CRM_Utils_Array::value("{$fieldName}_from", $this->_params);
-              $to       = CRM_Utils_Array::value("{$fieldName}_to", $this->_params);
-              $fromTime = CRM_Utils_Array::value("{$fieldName}_from_time", $this->_params);
-              $toTime   = CRM_Utils_Array::value("{$fieldName}_to_time", $this->_params);
+              $relative = $this->_params["{$fieldName}_relative"] ?? NULL;
+              $from     = $this->_params["{$fieldName}_from"] ?? NULL;
+              $to       = $this->_params["{$fieldName}_to"] ?? NULL;
+              $fromTime = $this->_params["{$fieldName}_from_time"] ?? NULL;
+              $toTime   = $this->_params["{$fieldName}_to_time"] ?? NULL;
               $clause   = $this->dateClause($field['dbAlias'], $relative, $from, $to, $field['type'], $fromTime, $toTime);
             }
           }
           else {
-            $op = CRM_Utils_Array::value("{$fieldName}_op", $this->_params);
+            $op = $this->_params["{$fieldName}_op"] ?? NULL;
             if ($op) {
               $clause = $this->whereClause($field,
                 $op,
-                CRM_Utils_Array::value("{$fieldName}_value", $this->_params),
-                CRM_Utils_Array::value("{$fieldName}_min", $this->_params),
-                CRM_Utils_Array::value("{$fieldName}_max", $this->_params)
+                $this->_params["{$fieldName}_value"] ?? NULL,
+                $this->_params["{$fieldName}_min"] ?? NULL,
+                $this->_params["{$fieldName}_max"] ?? NULL
               );
             }
           }
 
           if (!empty($clause)) {
-            if (CRM_Utils_Array::value('having', $field)) {
+            if (!empty($field['having'])) {
               $havingClauses[] = $clause;
             }
             else {
@@ -346,8 +400,8 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
   function alterDisplay(&$rows) {
     // custom code to alter rows
     $entryFound = FALSE;
-    $defined_financial_types = CRM_Contribute_BAO_Contribution::buildOptions('financial_type_id', 'validate');
-    $defined_payment_methods = CRM_Contribute_BAO_Contribution::buildOptions('payment_instrument_id', 'validate');
+    $defined_financial_types = CRM_Contribute_BAO_Contribution::buildOptions('financial_type_id', 'get');
+    $defined_payment_methods = CRM_Contribute_BAO_Contribution::buildOptions('payment_instrument_id', 'get');
 
     foreach ($rows as $rowNum => $row) {
 
@@ -399,7 +453,7 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
       }
 
       if (array_key_exists('civicrm_cdntaxreceipts_log_issued_on', $row)) {
-        $rows[$rowNum]['civicrm_cdntaxreceipts_log_issued_on'] = date('Y-m-d', $rows[$rowNum]['civicrm_cdntaxreceipts_log_issued_on']);
+        $rows[$rowNum]['civicrm_cdntaxreceipts_log_issued_on'] = date('Y-m-d', strtotime($rows[$rowNum]['civicrm_cdntaxreceipts_log_issued_on']));
         $entryFound = TRUE;
       }
 
@@ -411,8 +465,22 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
         }
       }
 
+      if (array_key_exists('civicrm_address_state_province_id', $row)) {
+        if ($value = $row['civicrm_address_state_province_id']) {
+          $rows[$rowNum]['civicrm_address_state_province_id'] = CRM_Core_PseudoConstant::stateProvinceAbbreviation($value, FALSE);
+        }
+	$entryFound = TRUE;
+      }
+
+      if (array_key_exists('civicrm_address_billing_billing_state_province_id', $row)) {
+	if ($value = $row['civicrm_address_billing_billing_state_province_id']) {
+          $rows[$rowNum]['civicrm_address_billing_billing_state_province_id'] = CRM_Core_PseudoConstant::stateProvinceAbbreviation($value, FALSE);
+        }
+        $entryFound = TRUE;
+      }
+
       if (array_key_exists('civicrm_line_item_financial_type_id', $row)) {
-        $financial_types = explode(',', $row['civicrm_line_item_financial_type_id']);
+        $financial_types = explode(',', $row['civicrm_line_item_financial_type_id'] ?? '');
         $financial_types = array_map(function($t) use ($defined_financial_types) {
           return $defined_financial_types[$t] ?? E::ts('Unknown');
         }, $financial_types);
@@ -421,7 +489,7 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsIssued extends CRM_Report_Form {
       }
 
       if (array_key_exists('civicrm_contribution_payment_instrument_id', $row)) {
-        $payment_methods = explode(',', $row['civicrm_contribution_payment_instrument_id']);
+        $payment_methods = explode(',', $row['civicrm_contribution_payment_instrument_id'] ?? '');
         $payment_methods = array_map(function($t) use ($defined_payment_methods) {
           return $defined_payment_methods[$t] ?? E::ts('Unknown');
         }, $payment_methods);

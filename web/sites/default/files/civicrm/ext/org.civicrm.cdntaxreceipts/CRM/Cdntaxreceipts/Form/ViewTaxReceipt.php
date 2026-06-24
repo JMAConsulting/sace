@@ -28,8 +28,8 @@ class CRM_Cdntaxreceipts_Form_ViewTaxReceipt extends CRM_Core_Form {
 
     parent::preProcess();
 
-    $contributionId = CRM_Utils_Array::value('id', $_GET);
-    $contactId = CRM_Utils_Array::value('cid', $_GET);
+    $contributionId = $_GET['id'] ?? NULL;
+    $contactId = $_GET['cid'] ?? NULL;
 
     if ( isset($contributionId) && isset($contactId) ) {
       $this->set('contribution_id', $contributionId);
@@ -43,12 +43,12 @@ class CRM_Cdntaxreceipts_Form_ViewTaxReceipt extends CRM_Core_Form {
     _cdntaxreceipts_check_lineitems($contributionId);
 
     // might be callback to retrieve the downloadable PDF file
-    $download = CRM_Utils_Array::value('download', $_GET);
+    $download = $_GET['download'] ?? NULL;
     if ( $download == 1 ) {
       $this->sendFile($contributionId, $contactId); // exits
     }
 
-    list($issuedOn, $receiptId) = cdntaxreceipts_issued_on($contributionId);
+    list(, $receiptId) = cdntaxreceipts_issued_on($contributionId);
 
     if (isset($receiptId)) {
       $existingReceipt = cdntaxreceipts_load_receipt($receiptId);
@@ -123,7 +123,9 @@ class CRM_Cdntaxreceipts_Form_ViewTaxReceipt extends CRM_Core_Form {
       'name' => ts('Done', array('domain' => 'org.civicrm.cdntaxreceipts')),
     );
 
+    $this->assign('canIssueReceipts', FALSE);
     if (CRM_Core_Permission::check( 'issue cdn tax receipts' ) ) {
+      $this->assign('canIssueReceipts', TRUE);
       $buttons[] = array(
         'type' => 'next',
         'name' => $buttonLabel,
@@ -186,7 +188,7 @@ class CRM_Cdntaxreceipts_Form_ViewTaxReceipt extends CRM_Core_Form {
     if ($buttonName == '_qf_ViewTaxReceipt_submit') {
 
       // Get the Tax Receipt that has already been issued previously for this Contribution
-      list($issued_on, $receipt_id) = cdntaxreceipts_issued_on($contribution->id);
+      list(, $receipt_id) = cdntaxreceipts_issued_on($contribution->id);
 
       $cancelResult = cdntaxreceipts_cancel($receipt_id);
 

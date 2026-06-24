@@ -19,10 +19,10 @@ class CRM_Cdntaxreceipts_Task_IssueAggregateTaxReceipts extends CRM_Contribute_F
    * @return void
    * @access public
    */
-  function preProcess() {
+  public function preProcess() {
 
     //check for permission to edit contributions
-    if ( ! CRM_Core_Permission::check('issue cdn tax receipts') ) {
+    if (!CRM_Core_Permission::check('issue cdn tax receipts')) {
       CRM_Core_Error::fatal(ts('You do not have permission to access this page', array('domain' => 'org.civicrm.cdntaxreceipts')));
     }
 
@@ -56,7 +56,7 @@ class CRM_Cdntaxreceipts_Task_IssueAggregateTaxReceipts extends CRM_Contribute_F
       $this->_years[$contrib_status['receive_year']] = $contrib_status['receive_year'];
     }
 
-    foreach ( $this->_years as $year ) {
+    foreach ($this->_years as $year) {
       foreach ($this->_issue_type as $issue_type) {
         $receipts[$issue_type][$year] = array(
           'total_contrib' => 0,
@@ -120,7 +120,6 @@ class CRM_Cdntaxreceipts_Task_IssueAggregateTaxReceipts extends CRM_Contribute_F
     }
 
     $this->_receipts = $receipts;
-
   }
 
   /**
@@ -130,7 +129,7 @@ class CRM_Cdntaxreceipts_Task_IssueAggregateTaxReceipts extends CRM_Contribute_F
    *
    * @return void
    */
-  function buildQuickForm() {
+  public function buildQuickForm() {
 
     CRM_Utils_System::setTitle(ts('Issue Aggregate Tax Receipts', array('domain' => 'org.civicrm.cdntaxreceipts')));
 
@@ -166,33 +165,25 @@ class CRM_Cdntaxreceipts_Task_IssueAggregateTaxReceipts extends CRM_Contribute_F
       ),
     );
     $this->addButtons($buttons);
-
   }
 
-  function setDefaultValues() {
+  public function setDefaultValues() {
     // TODO: Handle case where year -1 was not an option
-    return array('receipt_year' => 'issue_' . (date("Y") - 1),);
+    return array('receipt_year' => 'issue_' . (date("Y") - 1));
   }
 
   /**
    * process the form after the input has been submitted and validated
    *
    * @access public
-   *
-   * @return None
    */
-
-  function postProcess() {
-
-    // lets get around the time limit issue if possible
-    if ( ! ini_get( 'safe_mode' ) ) {
-      set_time_limit( 0 );
-    }
+  public function postProcess() {
 
     $params = $this->controller->exportValues($this->_name);
     $year = $params['receipt_year'];
     if ( $year ) {
-      $year = substr($year, strlen('issue_')); // e.g. issue_2012
+      // e.g. issue_2012
+      $year = substr($year, strlen('issue_'));
     }
 
     $previewMode = FALSE;
@@ -200,74 +191,54 @@ class CRM_Cdntaxreceipts_Task_IssueAggregateTaxReceipts extends CRM_Contribute_F
       $previewMode = TRUE;
     }
 
-    // start a PDF to collect receipts that cannot be emailed
-    $receiptsForPrintingPDF = cdntaxreceipts_openCollectedPDF();
-
-    $emailCount = 0;
-    $printCount = 0;
-    $dataCount = 0;
-    $failCount = 0;
-
-    foreach ($this->_receipts['original'][$year]['contact_ids'] as $contact_id => $contribution_status) {
-      if ( $emailCount + $printCount + $failCount >= self::MAX_RECEIPT_COUNT ) {
-        // limit email, print receipts as the pdf generation and email-to-archive consume
-        // server resources. don't limit data-type receipts.
-        $status = ts('Maximum of %1 tax receipt(s) were sent. Please repeat to continue processing.',
-          array(1=>self::MAX_RECEIPT_COUNT, 'domain' => 'org.civicrm.cdntaxreceipts'));
-        CRM_Core_Session::setStatus($status, '', 'info');
-        break;
-      }
-
+    $tasks = [];
+    foreach ($this->_receipts['original'][$year]['contact_ids'] as $contactId => $contribution_status) {
       $contributions = $contribution_status['contributions'];
       $method = $contribution_status['issue_method'];
 
-      if ( empty($issuedOn) && count($contributions) > 0 ) {
-        $ret = cdntaxreceipts_issueAggregateTaxReceipt($contact_id, $year, $contributions, $method,
-          $receiptsForPrintingPDF, $previewMode);
-
-        if ( $ret == 0 ) {
-          $failCount++;
-        }
-        elseif ( $method == 'email' ) {
-          $emailCount++;
-        }
-        elseif ( $method == 'print' ) {
-          $printCount++;
-        }
-        elseif ( $method == 'data' ) {
-          $dataCount++;
-        }
+      if (empty($issuedOn) && count($contributions) > 0) {
+        $tasks[] = new CRM_Queue_Task(
+          // callback
+          ['CRM_Cdntaxreceipts_Utils_Queue', 'processOneAggregateReceipt'],
+          // arguments
+          [$contactId, $year, $previewMode, $contribution_status],
+          // title
+          "Contact $contactId"
+        );
       }
     }
 
-    // 3. Set session status
-    if ( $previewMode ) {
-      $status = ts('%1 tax receipt(s) have been previewed.  No receipts have been issued.', array(1=>$printCount, 'domain' => 'org.civicrm.cdntaxreceipts'));
-      CRM_Core_Session::setStatus($status, '', 'success');
+    $queue = CRM_Cdntaxreceipts_Utils_Queue::createQueue($year, $previewMode, $tasks, 'contact');
+
+    // get queue for transfer id in url of page end
+    $queueId = CRM_Cdntaxreceipts_Utils_Queue::getQueueId($queue);
+
+    if (defined('CIVICRM_TEST')) {
+      $runner = new CRM_Queue_Runner([
+        'title' => ts('Generating Receipts'),
+        'queue' => $queue,
+        'onEnd' => [__CLASS__, 'endQueue'],
+      ]);
+      $runner->runAll();
     }
     else {
-      if ($emailCount > 0) {
-        $status = ts('%1 tax receipt(s) were sent by email.', array(1=>$emailCount, 'domain' => 'org.civicrm.cdntaxreceipts'));
-        CRM_Core_Session::setStatus($status, '', 'success');
-      }
-      if ($printCount > 0) {
-        $status = ts('%1 tax receipt(s) need to be printed.', array(1=>$printCount, 'domain' => 'org.civicrm.cdntaxreceipts'));
-        CRM_Core_Session::setStatus($status, '', 'success');
-      }
-      if ($dataCount > 0) {
-        $status = ts('Data for %1 tax receipt(s) is available in the Tax Receipts Issued report.', array(1=>$dataCount, 'domain' => 'org.civicrm.cdntaxreceipts'));
-        CRM_Core_Session::setStatus($status, '', 'success');
-      }
+      $runner = new CRM_Queue_Runner([
+        'title' => ts('Generating Receipts'),
+        'queue' => $queue,
+        // Deprecated; only works on AJAX runner // 'onEnd' => ['CRM_Demoqueue_Page_DemoQueue', 'onEnd'],
+        'onEndUrl' => CRM_Utils_System::url('civicrm/cdntaxreceipts/queue-done?queue=' . $queueId),
+      ]);
+      // redirect to a specific queue page
+      $runner->runAllInteractive();
     }
-
-    if ( $failCount > 0 ) {
-      $status = ts('%1 tax receipt(s) failed to process.', array(1=>$failCount, 'domain' => 'org.civicrm.cdntaxreceipts'));
-      CRM_Core_Session::setStatus($status, '', 'error');
-    }
-
-    // 4. send the collected PDF for download
-    // NB: This exits if a file is sent.
-    cdntaxreceipts_sendCollectedPDF($receiptsForPrintingPDF, CRM_Utils_File::makeFilenameWithUnicode(ts('Receipts-To-Print-%1', [1 => CRM_Cdntaxreceipts_Utils_Time::time(), 'domain' => 'org.civicrm.cdntaxreceipts'])) . '.pdf');
   }
-}
 
+  /**
+   * Callback when running under tests, since the interactive doesn't work well.
+   */
+  public static function endQueue($ctx) {
+    $queueId = CRM_Cdntaxreceipts_Utils_Queue::getQueueId($ctx->queue);
+    CRM_Cdntaxreceipts_Page_QueuePrint::getAllCollectedPdf($queueId);
+  }
+
+}

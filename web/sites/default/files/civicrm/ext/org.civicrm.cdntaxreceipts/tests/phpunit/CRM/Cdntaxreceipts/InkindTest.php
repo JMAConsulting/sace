@@ -57,6 +57,7 @@ class CRM_Cdntaxreceipts_InkindTest extends CRM_Cdntaxreceipts_Base {
     $custom_field_ids = \Civi\Api4\CustomField::get(FALSE)
       ->addSelect('id')
       ->addWhere('custom_group_id', '=', $this->groupId)
+      ->addOrderBy('id')
       ->execute();
     $custom_fields = [];
     foreach ($custom_field_ids as $id) {

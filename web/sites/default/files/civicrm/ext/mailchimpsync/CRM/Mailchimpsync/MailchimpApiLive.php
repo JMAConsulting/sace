@@ -1,19 +1,21 @@
 <?php
 
-use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Client;
 
 /**
  * This provides a thin wrapper arount the actual Mailchimp API, connected to an actual account.
  *
  */
-
-class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_MailchimpApiInterface
-{
-  /** @var string */
+class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiBase implements CRM_Mailchimpsync_MailchimpApiInterface {
+  /**
+   * @param string
+   */
   protected $api_key;
 
-  /** string URL set in __contruct */
+  /**
+   * @param string
+   *    URL set in __contruct
+   */
   protected $api_endpoint;
 
   /**
@@ -50,7 +52,7 @@ class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiB
    *
    * @return array
    */
-  protected function request(string $method, string $path, array $options=[]) {
+  protected function request(string $method, string $path, array $options = []) {
     $params = [];
     if (!empty($options['query'])) {
       $params['query'] = $options['query'];
@@ -76,6 +78,12 @@ class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiB
       throw new CRM_Mailchimpsync_NetworkErrorException($e->getMessage(), $e->getCode());
     }
 
+    if (204 == $response->getStatusCode()) {
+      // OK, no data is fine.
+      // Note there's no content type in this case.
+      return [];
+    }
+
     // was JSON returned, as expected?
     $json_returned = ($response->hasHeader('Content-Type')
       && preg_match(
@@ -85,6 +93,10 @@ class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiB
     if (!$json_returned) {
       // According to Mailchimp docs it may return non-JSON in event of a
       // timeout.
+      Civi::log()->debug("Non-json from mailchimp", [
+        'status' => $response->getStatusCode(),
+        'body' => $response->getBody(),
+      ]);
       throw new CRM_Mailchimpsync_NetworkErrorException('Non-JSON response received from Mailchimp. This suggests a network timeout.');
     }
 
@@ -95,15 +107,17 @@ class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiB
   /**
    * Returns a Guzzle Client with base_uri set to our api endpoint URL.
    *
-   * @return Client
+   * @return \GuzzleHttp\Client
    */
   protected function getGuzzleClient() {
     $guzzleClient = new Client([
       'base_uri'    => $this->api_endpoint,
-      'http_errors' => TRUE, // Get exceptions from guzzle requests.
+    // Get exceptions from guzzle requests.
+      'http_errors' => TRUE,
     ]);
     return $guzzleClient;
   }
+
   /**
    * Download the resource URL to an uncompressed tar file.
    */
@@ -112,13 +126,13 @@ class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiB
     $filename = CRM_Utils_File::tempnam('mailchimsync-batch-response-');
     try {
       $guzzleClient = new Client([
-        'http_errors' => TRUE, // Get exceptions from guzzle requests.
+        'http_errors' => TRUE, /* Get exceptions from guzzle requests. */
       ]);
       // Note: Mailchimp's response file is gzipped.
       // but this is separate to whether the HTTP response is gzip encoded.
 
       $guzzleClient->request('get', $url, [
-        'decode_content' => 'gzip', // Decode stream if gzip encoded.
+        'decode_content' => 'gzip', /* Decode stream if gzip encoded.*/
         'sink'           => $filename,
       ]);
 
@@ -135,4 +149,3 @@ class CRM_Mailchimpsync_MailchimpApiLive extends CRM_Mailchimpsync_MailchimpApiB
   }
 
 }
-

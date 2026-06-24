@@ -96,6 +96,8 @@ This is used by the Config screen to submit changes to the config.
 
 N.b. this is not free of side effects; Various checks and data changes go on based on the config updates. e.g. if you remove a sync connection (or an account) it will delete records that related to that from this extension's tables.
 
+See [Configuration JSON](config.md)
+
 ## Mailchimpsync.updatewebhook
 
 This is used by the Config screen to change webhooks at Mailchimp. There are two types: Audience Webhooks and Batch Webhooks. There is only one batch webhook per account; but audiences have one each. Mailchimp supports there being several webhooks in each case (but only one will be relevant to us).

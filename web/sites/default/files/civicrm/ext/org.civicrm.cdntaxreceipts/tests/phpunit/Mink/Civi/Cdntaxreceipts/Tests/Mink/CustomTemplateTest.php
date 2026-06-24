@@ -1,9 +1,12 @@
 <?php
 namespace Civi\Cdntaxreceipts\Tests\Mink;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+
 /**
  * @group mink
  */
+#[RunTestsInSeparateProcesses]
 class CustomTemplateTest extends CdntaxreceiptsBase {
 
   /**
@@ -45,12 +48,12 @@ class CustomTemplateTest extends CdntaxreceiptsBase {
     $this->assertPageHasNoErrorMessages();
 
     // click the tax receipt button
-    $this->getSession()->getPage()->pressButton('Tax Receipt');
+    $this->pressButtonOverride('Tax Receipt');
     $this->assertSession()->pageTextContains('A tax receipt has not been issued for this contribution.');
     $this->assertPageHasNoErrorMessages();
 
     $this->assertSession()->waitForElementVisible('css', '.crm-button_qf_ViewTaxReceipt_next');
-    $this->getSession()->getPage()->pressButton('_qf_ViewTaxReceipt_next-bottom');
+    $this->pressButtonOverride('_qf_ViewTaxReceipt_next-bottom');
     $this->assertSession()->pageTextContains("C-00000001");
     $this->assertSession()->pageTextContains('Re-Issue Tax Receipt');
     $this->assertPageHasNoErrorMessages();

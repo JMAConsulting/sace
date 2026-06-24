@@ -1,5 +1,6 @@
 <?php
 
+require_once 'CRM/Core/Form.php';
 use CRM_Activityical_ExtensionUtil as E;
 
 /**

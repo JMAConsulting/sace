@@ -117,7 +117,7 @@ function cdntaxreceipts_load_receipt($receipt_id) {
     $receipt = array(
       'id' => $dao->id,
       'receipt_no' => $dao->receipt_no,
-      'issued_on' => date('Y-m-d H:i:s', $dao->issued_on),
+      'issued_on' => $dao->issued_on,
       'location_issued' => $dao->location_issued,
       'contact_id' => $dao->contact_id,
       'receipt_amount' => $dao->total_receipt,
@@ -159,6 +159,9 @@ function cdntaxreceipts_load_receipt($receipt_id) {
  //TODO: Should return success or failure
 function cdntaxreceipts_log($receipt) {
 
+  // @todo Make this better because in unit tests this returns null even if
+  // you've called createLoggedInUser, and then it doesn't have a real uf_match
+  // when it's retrieved later, e.g. in load_receipt.
   $uid = CRM_Utils_System::getLoggedInUfID();
   $uid = empty($uid) ? 1 : $uid;
   $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
@@ -167,7 +170,7 @@ function cdntaxreceipts_log($receipt) {
   // create the main entry
   $params = array(
     1 => array( $receipt['receipt_no'], 'String' ),
-    2 => array( $receipt['issued_on'], 'Integer' ),
+    2 => array( CRM_Utils_Date::processDate($receipt['issued_on']), 'Timestamp' ),
     3 => array( $receipt['contact_id'], 'Integer' ),
     4 => array( $receipt['receipt_amount'], 'Money' ),
     5 => array( $receipt['is_duplicate'], 'Boolean' ),

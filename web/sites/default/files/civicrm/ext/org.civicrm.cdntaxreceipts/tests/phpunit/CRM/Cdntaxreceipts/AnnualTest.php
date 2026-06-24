@@ -70,7 +70,7 @@ class CRM_Cdntaxreceipts_AnnualTest extends CRM_Cdntaxreceipts_Base {
     // but the expected should match a subset of them.
     foreach ($expected as $eid => $expectedContributionLog) {
       $realExpected = array(
-        'issued_on' => (string) strtotime($mock_time),
+        'issued_on' => $mock_time,
         'contact_id' => (string) $contact[$expectedContributionLog['contact_index']],
 
         'id' => $expectedContributionLog['id'],
@@ -93,7 +93,7 @@ class CRM_Cdntaxreceipts_AnnualTest extends CRM_Cdntaxreceipts_Base {
    * Dataprovider for testAnnual.
    * @return array
    */
-  public function annualProvider(): array {
+  public static function annualProvider(): array {
     return [
       0 => [
         'input' => [
