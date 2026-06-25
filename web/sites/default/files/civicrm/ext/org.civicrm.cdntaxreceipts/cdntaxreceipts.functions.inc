@@ -9,9 +9,20 @@ require_once('FPDI/src/autoload.php');
     var $_tplIdx;
 
     /**
+     * @var bool
+     * When making a combined pdf at the end, the custom template is already
+     * in each one, so we don't need it to get added again on each page. It
+     * makes no visual difference, but can double the size of the pdf.
+     */
+    protected bool $suppressHeader = FALSE;
+
+    /**
      * include a background template for every page
      */
     function Header() {
+      if ($this->suppressHeader) {
+        return;
+      }
       $pdf_template_file = _cdntaxreceipts_get_image_filepath('receipt_pdftemplate');
       if (!empty($pdf_template_file)) {
 
@@ -24,6 +35,10 @@ require_once('FPDI/src/autoload.php');
     }
 
     function Footer() {}
+
+    public function setSuppressHeader(bool $suppress): void {
+      $this->suppressHeader = $suppress;
+    }
   }
 
 
@@ -136,14 +151,14 @@ function cdntaxreceipts_processTaxReceipt($receipt, &$collectedPdf = NULL, $mode
       }
 
       // send a copy (without open tracking) to the tax archive
-      $sendTemplateParams['toEmail'] = $email_archive;
-      $sendTemplateParams['tplParams']['archive_extra'] = ['is_archive' => TRUE, 'contact_email' => $contact['email']];
+      $sendTemplateParams['toEmail'] = trim($email_archive);
+      $sendTemplateParams['tplParams']['archive_extra'] = ['is_archive' => TRUE, 'contact_email' => ($contact['email'] ?: $contact['sort_name'])];
       list($sent, $subject, $message, $html) = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
 
       // send a copy (with open tracking) to the donor
       if ($sent && $receipt['issue_method'] == 'email' && $mode != CDNTAXRECEIPTS_MODE_WORKFLOW) {
         $sendTemplateParams['tplParams']['archive_extra']['is_archive'] = FALSE;
-        $sendTemplateParams['toEmail'] = $contact['email'];
+        $sendTemplateParams['toEmail'] = trim($contact['email']);
         $sendTemplateParams['tplParams']['openTracking'] = "<img src=\"" . CRM_Utils_System::baseURL() .
           "civicrm/cdntaxreceipts/open?r={$receipt['email_tracking_id']}\" width='1' height='1' alt='' border='0'>";
         list($sent, $subject, $message, $html) = CRM_Core_BAO_MessageTemplate::sendTemplate($sendTemplateParams);
@@ -182,7 +197,7 @@ function cdntaxreceipts_generateFormattedReceipt($receipt, &$collectedPdf = NULL
 
   $pdf_img_files_path = dirname(__FILE__) . '/img/';
 
-  $address = cdntaxreceipts_getAddress($receipt['contact_id']);
+  $address = $receipt['address'] ?? cdntaxreceipts_getAddress($receipt['contact_id']);
 
   $address_line_1 = isset($address['street_address']) ? $address['street_address'] : '';
   $parts = array();
@@ -258,6 +273,17 @@ function cdntaxreceipts_generateFormattedReceipt($receipt, &$collectedPdf = NULL
 
   $pdf->SetAutoPageBreak('', $margin=0);
 
+  $postal_greeting = civicrm_api3('Contact', 'getsingle', [
+    'id' => $receipt['contact_id'],
+    // This causes it to return postal_greeting_id, postal_greeting_display,
+    // postal_greeting_custom, and postal_greeting. The display one is the one
+    // we want because it also takes into account if the greeting is
+    // customized. The _custom and _greeting ones are the original token code.
+    // For some reason if we ask for just postal_greeting_display it's always
+    // blank.
+    'return.postal_greeting' => 1,
+  ]);
+
   $pdf_variables = array(
     "mode" => $mode,
     "mymargin_left" => $mymargin_left,
@@ -269,7 +295,7 @@ function cdntaxreceipts_generateFormattedReceipt($receipt, &$collectedPdf = NULL
     "amount" => $receipt['receipt_amount'],
     "display_date" => $display_date,
     "display_year" => $display_year,
-    "issued_on" => date('Y-m-d', $receipt['issued_on']),
+    "issued_on" => date('Y-m-d', strtotime($receipt['issued_on'])),
     "location_issued" => _cdntaxreceipts_get_location(),
     "issue_type" => $receipt['issue_type'],
     "receipt_number" => $receipt['receipt_no'],
@@ -281,6 +307,7 @@ function cdntaxreceipts_generateFormattedReceipt($receipt, &$collectedPdf = NULL
     "inkind_values" => isset($receipt['inkind_values']) ? $receipt['inkind_values'] : array(),
     "receipt_contributions" => $receipt['contributions'],
     "receipt_status" => $receipt['receipt_status'],
+    "postal_greeting" => $postal_greeting['postal_greeting_display'] ?? '',
   );
 
   $output_files = array($pdf);
@@ -288,6 +315,8 @@ function cdntaxreceipts_generateFormattedReceipt($receipt, &$collectedPdf = NULL
     $output_files[] = $collectedPdf;
   }
 
+  // @todo when using queues this is inefficient because both these files
+  // are identical files.
   foreach ( $output_files as $f ) {
     $f->AddPage();
     _cdntaxreceipts_writePage($f, $pdf_variables, $receipt);
@@ -670,7 +699,7 @@ function cdntaxreceipts_issueTaxReceipt($contribution, &$collectedPdf = NULL, $m
     if ( $receipt['issue_type'] == 'annual' ) {
       $contactId = $receipt['contact_id'];
       $year = substr($receipt['contributions'][0]['receive_date'], 0, 4);
-      return cdntaxreceipts_issueAnnualTaxReceipt($contactId, $year, $collectedPdf, $mode);
+      return cdntaxreceipts_issueAnnualTaxReceipt($contactId, $year, $collectedPdf, $mode, $printOverride);
     }
     else if ( $receipt['issue_type'] == 'aggregate' ) {
       $contactId = $receipt['contact_id'];
@@ -743,7 +772,7 @@ function cdntaxreceipts_issueTaxReceipt($contribution, &$collectedPdf = NULL, $m
 
   $receipt = array(
     'receipt_no' => $receipt_no,
-    'issued_on' => CRM_Cdntaxreceipts_Utils_Time::time(),
+    'issued_on' => CRM_Cdntaxreceipts_Utils_Time::date('Y-m-d H:i:s'),
     'location_issued' => _cdntaxreceipts_get_location(),
     'contact_id' => $contribution->contact_id,
     'receipt_amount' => cdntaxreceipts_eligibleAmount($contribution->id),
@@ -904,10 +933,10 @@ function cdntaxreceipts_eligibleAmount( $contributionId ) {
  * Issues an annual tax receipt for a given year.
  * Detects if the receipt is a duplicate and reacts appropriately.
  */
-function cdntaxreceipts_issueAnnualTaxReceipt( $contactId, $year, &$collectedPdf = NULL, $mode = CDNTAXRECEIPTS_MODE_BACKOFFICE ) {
+function cdntaxreceipts_issueAnnualTaxReceipt( $contactId, $year, &$collectedPdf = NULL, $mode = CDNTAXRECEIPTS_MODE_BACKOFFICE, $printOverride = NULL) {
 
   // determine the send method
-  list( $method, $email ) = cdntaxreceipts_sendMethodForContact($contactId);
+  list( $method, $email ) = cdntaxreceipts_sendMethodForContact($contactId, $printOverride);
 
   // query for duplicate receipt
   list( $issued_on, $receipt_id ) = cdntaxreceipts_annual_issued_on($contactId, $year);
@@ -925,7 +954,7 @@ function cdntaxreceipts_issueAnnualTaxReceipt( $contactId, $year, &$collectedPdf
     if ($receipt['receipt_status'] == 'cancelled' && $method != 'data') {
       $method = 'print';
     }
-    $receipt['issued_on'] = CRM_Cdntaxreceipts_Utils_Time::time();
+    $receipt['issued_on'] = CRM_Cdntaxreceipts_Utils_Time::date('Y-m-d H:i:s');
     $receipt['location_issued'] = _cdntaxreceipts_get_location();
     $receipt['is_duplicate'] = 1;
     $receipt['receive_date'] = $year;
@@ -959,7 +988,7 @@ function cdntaxreceipts_issueAnnualTaxReceipt( $contactId, $year, &$collectedPdf
 
     $receipt = array(
       'receipt_no' => $receiptNo,
-      'issued_on' => CRM_Cdntaxreceipts_Utils_Time::time(),
+      'issued_on' => CRM_Cdntaxreceipts_Utils_Time::date('Y-m-d H:i:s'),
       'location_issued' => _cdntaxreceipts_get_location(),
       'contact_id' => $contactId,
       'receipt_amount' => $totalReceipt,
@@ -1035,7 +1064,7 @@ function cdntaxreceipts_issueAggregateTaxReceipt($contactId, $year, $contributio
     if ($receipt['receipt_status'] == 'cancelled' && $method != 'data') {
       $method = 'print';
     }
-    $receipt['issued_on'] = CRM_Cdntaxreceipts_Utils_Time::time();
+    $receipt['issued_on'] = CRM_Cdntaxreceipts_Utils_Time::date('Y-m-d H:i:s');
     $receipt['location_issued'] = _cdntaxreceipts_get_location();
     $receipt['is_duplicate'] = 1;
     $receipt['issue_method'] = $method;
@@ -1061,7 +1090,7 @@ function cdntaxreceipts_issueAggregateTaxReceipt($contactId, $year, $contributio
 
     $receipt = array(
       'receipt_no' => $receiptNo,
-      'issued_on' => CRM_Cdntaxreceipts_Utils_Time::time(),
+      'issued_on' => CRM_Cdntaxreceipts_Utils_Time::date('Y-m-d H:i:s'),
       'location_issued' => _cdntaxreceipts_get_location(),
       'contact_id' => $contactId,
       'receipt_amount' => $totalReceipt,
@@ -1135,30 +1164,37 @@ function cdntaxreceipts_sendMethodForContribution( $contributionId ) {
   return cdntaxreceipts_sendMethodForContact( $contribution->contact_id );
 }
 
+/**
+ * Kept for backwards compatibility with external callers.
+ * When using queues, we don't want this because we write out the file each
+ * time and "collect" at the end, and the act of writing out the file
+ * "closes" the pdf so reusing the object can cause problems.
+ */
 function cdntaxreceipts_openCollectedPDF() {
-
   static $pdf;
 
-  if ( ! isset($pdf) ) {
-    //define ('K_PATH_IMAGES', '');
-
-    $pdf = new PDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', TRUE, 'UTF-8', FALSE);
-    $pdf->Open();
-
-    $pdf->SetAuthor(Civi::settings()->get('org_name'));
-
-    $mymargin_left = 12;
-    $mymargin_top = 6;
-    $mymargin_right = 12;
-    $pdf->SetMargins($mymargin_left, $mymargin_top, $mymargin_right);
-
-    $pdf->setJPEGQuality('100');
-
-    $pdf->SetAutoPageBreak('', $margin=0);
+  if (!isset($pdf)) {
+    $pdf = cdntaxreceipts_createNewPDF();
   }
+  return $pdf;
+}
+
+function cdntaxreceipts_createNewPDF() {
+  $pdf = new PDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', TRUE, 'UTF-8', FALSE);
+  $pdf->Open();
+
+  $pdf->SetAuthor(Civi::settings()->get('org_name'));
+
+  $mymargin_left = 12;
+  $mymargin_top = 6;
+  $mymargin_right = 12;
+  $pdf->SetMargins($mymargin_left, $mymargin_top, $mymargin_right);
+
+  $pdf->setJPEGQuality('100');
+
+  $pdf->SetAutoPageBreak('', $margin=0);
 
   return $pdf;
-
 }
 
 function cdntaxreceipts_sendCollectedPDF(&$pdf, $filename) {

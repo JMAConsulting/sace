@@ -35,4 +35,5 @@ nav:
     - 'API Reference': reference/api.md
     - 'Table Reference': reference/tables.md
     - 'Sync Details': reference/sync-detail.md
+    - 'Config JSON': reference/config.md
 

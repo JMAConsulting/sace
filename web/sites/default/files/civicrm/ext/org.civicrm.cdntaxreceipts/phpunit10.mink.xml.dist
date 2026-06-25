@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO set checkForUnintentionallyCoveredCode="true" once https://www.drupal.org/node/2626832 is resolved. -->
+<!-- PHPUnit expects functional tests to be run with either a privileged user
+ or your current system user. See core/tests/README.md and
+ https://www.drupal.org/node/2116263 for details.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="tests/phpunit/bootstrap.mink.php"
+         colors="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         failOnWarning="true"
+         failOnNotice="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         cacheResult="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
+  <php>
+    <!-- Set error reporting to E_ALL. -->
+    <ini name="error_reporting" value="32767"/>
+    <!-- Do not limit the amount of memory tests take to run. -->
+    <ini name="memory_limit" value="-1"/>
+    <env name="DEV_EXTENSION_DIR" value="full_path_to_extension_dir"/>
+    <!-- Example SIMPLETEST_BASE_URL value: http://localhost -->
+    <env name="SIMPLETEST_BASE_URL" value="http://localhost.mink"/>
+    <!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
+    <env name="SIMPLETEST_DB" value="mysql://user:pass@localhost/db"/>
+    <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
+    <!-- You may have to manually create this directory: DRUPAL_ROOT . '/sites/simpletest/browser_output'; -->
+    <!-- Details here: https://www.drupal.org/project/drupal/issues/2992069 -->
+    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="../sites/default/browseroutput"/>
+    <!-- To have browsertest output use an alternative base URL. For example if
+     SIMPLETEST_BASE_URL is an internal DDEV URL, you can set this to the
+     external DDev URL so you can follow the links directly.
+    -->
+    <env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>
+    <!-- To disable deprecation testing completely uncomment the next line. -->
+    <!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->
+    <!-- Example for changing the driver class for mink tests MINK_DRIVER_CLASS value: 'Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver' -->
+    <env name="MINK_DRIVER_CLASS" value=""/>
+    <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
+    <env name="MINK_DRIVER_ARGS" value=""/>
+    <!-- Example for changing the driver args to webdriver tests MINK_DRIVER_ARGS_WEBDRIVER value: '["chrome", { "goog:chromeOptions": { "w3c": false } }, "http://localhost:4444/wd/hub"]' For using the Firefox browser, replace "chrome" with "firefox" -->
+    <env name="MINK_DRIVER_ARGS_WEBDRIVER" value=""/>
+  </php>
+  <extensions>
+    <!-- Functional tests HTML output logging. -->
+    <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
+      <!-- The directory where the browser output will be stored. If a relative
+        path is specified, it will be relative to the current working directory
+        of the process running the PHPUnit CLI. In CI environments, this can be
+        overridden by the value set for the "BROWSERTEST_OUTPUT_DIRECTORY"
+        environment variable.
+      <parameter name="outputDirectory" value="sites/simpletest/browser_output"/>
+      -->
+      <!-- By default browser tests print the individual links in the test run
+        report. To avoid overcrowding the output in CI environments, you can
+        set the "verbose" parameter or the "BROWSERTEST_OUTPUT_VERBOSE"
+        environment variable to "false". In GitLabCI, the output is saved
+        anyway as an artifact that can be browsed or downloaded from Gitlab.
+      <parameter name="verbose" value="true"/>
+      -->
+    </bootstrap>
+  </extensions>
+  <testsuites>
+    <testsuite name="unit">
+      <directory>tests/Drupal/Tests</directory>
+      <directory>modules/**/tests/src/Unit</directory>
+      <directory>profiles/**/tests/src/Unit</directory>
+      <directory>themes/**/tests/src/Unit</directory>
+      <directory>../modules/**/tests/src/Unit</directory>
+      <directory>../profiles/**/tests/src/Unit</directory>
+      <directory>../themes/**/tests/src/Unit</directory>
+    </testsuite>
+    <testsuite name="kernel">
+      <directory>tests/Drupal/KernelTests</directory>
+      <directory>modules/**/tests/src/Kernel</directory>
+      <directory>recipes/*/tests/src/Kernel</directory>
+      <directory>profiles/**/tests/src/Kernel</directory>
+      <directory>themes/**/tests/src/Kernel</directory>
+      <directory>../modules/**/tests/src/Kernel</directory>
+      <directory>../profiles/**/tests/src/Kernel</directory>
+      <directory>../themes/**/tests/src/Kernel</directory>
+    </testsuite>
+    <testsuite name="functional">
+      <directory>tests/Drupal/FunctionalTests</directory>
+      <directory>modules/**/tests/src/Functional</directory>
+      <directory>profiles/**/tests/src/Functional</directory>
+      <directory>recipes/*/tests/src/Functional</directory>
+      <directory>themes/**/tests/src/Functional</directory>
+      <directory>../modules/**/tests/src/Functional</directory>
+      <directory>../profiles/**/tests/src/Functional</directory>
+      <directory>../themes/**/tests/src/Functional</directory>
+    </testsuite>
+    <testsuite name="functional-javascript">
+      <directory>tests/Drupal/FunctionalJavascriptTests</directory>
+      <directory>modules/**/tests/src/FunctionalJavascript</directory>
+      <directory>recipes/*/tests/src/FunctionalJavascript</directory>
+      <directory>profiles/**/tests/src/FunctionalJavascript</directory>
+      <directory>themes/**/tests/src/FunctionalJavascript</directory>
+      <directory>../modules/**/tests/src/FunctionalJavascript</directory>
+      <directory>../profiles/**/tests/src/FunctionalJavascript</directory>
+      <directory>../themes/**/tests/src/FunctionalJavascript</directory>
+    </testsuite>
+    <testsuite name="build">
+      <directory>tests/Drupal/BuildTests</directory>
+    </testsuite>
+  </testsuites>
+  <!-- Settings for coverage reports. -->
+  <source ignoreSuppressionOfDeprecations="true">
+    <include>
+      <directory>./includes</directory>
+      <directory>./lib</directory>
+      <directory>./modules</directory>
+      <directory>../modules</directory>
+      <directory>../sites</directory>
+    </include>
+    <exclude>
+      <directory>./modules/*/src/Tests</directory>
+      <directory>./modules/*/tests</directory>
+      <directory>../modules/*/src/Tests</directory>
+      <directory>../modules/*/tests</directory>
+      <directory>../modules/*/*/src/Tests</directory>
+      <directory>../modules/*/*/tests</directory>
+      <directory suffix=".api.php">./lib/**</directory>
+      <directory suffix=".api.php">./modules/**</directory>
+      <directory suffix=".api.php">../modules/**</directory>
+    </exclude>
+  </source>
+</phpunit>

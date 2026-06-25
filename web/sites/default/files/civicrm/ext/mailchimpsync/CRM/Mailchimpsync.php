@@ -163,8 +163,9 @@ class CRM_Mailchimpsync {
           $bao->errored_operations = $batch['errored_operations'];
           $bao->total_operations = $batch['total_operations'];
           $bao->save();
+          // Get an array copy of the $bao fields.
           $_ = [];
-          $bao->storeValues($bao, $_);
+          CRM_Core_DAO::storeValues($bao, $_);
           $batches[$bao->mailchimp_list_id][$bao->mailchimp_batch_id] = $_;
 
           // If the process has completed, process it now instead of waiting for the webhook.

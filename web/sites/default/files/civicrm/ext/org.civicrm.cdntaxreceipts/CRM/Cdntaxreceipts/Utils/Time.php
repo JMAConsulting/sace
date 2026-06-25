@@ -22,6 +22,13 @@ class CRM_Cdntaxreceipts_Utils_Time {
   }
 
   /**
+   * Same as CRM_Utils_Time::date
+   */
+  public static function date($format, $timestamp = NULL) {
+    return date($format, $timestamp ?: self::time());
+  }
+
+  /**
    * Set the mock time.
    * @param string A string parseable by strtotime().
    */

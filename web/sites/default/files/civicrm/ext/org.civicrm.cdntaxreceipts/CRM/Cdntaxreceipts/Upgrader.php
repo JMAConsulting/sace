@@ -74,7 +74,7 @@ Attached please find your official tax receipt for income tax purposes.
     CRM_Core_DAO::executeQuery("CREATE TABLE cdntaxreceipts_log (
 id int(11) NOT NULL AUTO_INCREMENT COMMENT 'The internal id of the issuance.',
 receipt_no varchar(128) NOT NULL  COMMENT 'Receipt Number.',
-issued_on int(11) NOT NULL COMMENT 'Unix timestamp of when the receipt was issued, or re-issued.',
+issued_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of when the receipt was issued, or re-issued.',
 contact_id int(10) unsigned NOT NULL COMMENT 'CiviCRM contact id to whom the receipt is issued.',
 receipt_amount decimal(10,2) NOT NULL COMMENT 'Receiptable amount, total minus non-receiptable portion.',
 is_duplicate tinyint(4) NOT NULL COMMENT 'Boolean indicating whether this is a re-issue.',
@@ -89,7 +89,7 @@ location_issued varchar(32) NOT NULL DEFAULT '' COMMENT 'City where receipt was 
 PRIMARY KEY (id),
 INDEX contact_id (contact_id),
 INDEX receipt_no (receipt_no)
-) ENGINE=InnoDB DEFAULT CHARSET={$character_settings['charset']} COLLATE {$character_settings['collation']} COMMENT='Log file of tax receipt issuing.'");
+) ENGINE=InnoDB DEFAULT CHARSET={$character_settings['charset']} COLLATE {$character_settings['collation']} COMMENT='Log of tax receipts issued.'");
 
     // The contribution_id is *deliberately* not a foreign key to civicrm_contribution.
     // We don't want to destroy audit records if contributions are deleted.
@@ -103,7 +103,7 @@ receive_date datetime NOT NULL COMMENT 'Date on which the contribution was recei
 PRIMARY KEY (id),
 FOREIGN KEY (receipt_id) REFERENCES cdntaxreceipts_log(id),
 INDEX contribution_id (contribution_id)
-) ENGINE=InnoDB DEFAULT CHARSET={$character_settings['charset']} COLLATE {$character_settings['collation']} COMMENT='Contributions for each tax reciept issuing.'");
+) ENGINE=InnoDB DEFAULT CHARSET={$character_settings['charset']} COLLATE {$character_settings['collation']} COMMENT='Contribution(s) for each tax receipt issued.'");
   }
 
   /**
@@ -227,6 +227,47 @@ AND COLUMN_NAME = 'receipt_status'");
       2 => ['{if $archive_extra.is_archive}[Archive Copy for {$archive_extra.contact_email}] {/if}Your tax receipt {$receipt.receipt_no}', 'String'],
     ];
     CRM_Core_DAO::executeQuery("UPDATE civicrm_msg_template SET msg_subject=%2 WHERE msg_subject=%1 AND workflow_name IN ('cdntaxreceipts_receipt_single', 'cdntaxreceipts_receipt_aggregate')", $params);
+    return TRUE;
+  }
+
+  /**
+   * Convert issued_on to timestamp.
+   * Note this suffers from the same DST issues as elsewhere in civi, but we
+   * aren't going to think too much about it. While it converts properly,
+   * because internally it's all UTC, the problem will be during retrieval of a
+   * timestamp field even for new ones. We currently don't display the time of
+   * day anywhere because for the tax receipt recipient it doesn't matter
+   * much.
+   */
+  public function upgrade_1416() {
+    // Want to query the information_schema so need the db name, so get a DAO.
+    $dao = new CRM_Core_DAO();
+    $data_type = $dao->singleValueQuery('select DATA_TYPE from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME=%1 AND TABLE_SCHEMA=%2 AND COLUMN_NAME=%3', [
+      1 => ['cdntaxreceipts_log', 'String'],
+      2 => [$dao->_database, 'String'],
+      3 => ['issued_on', 'String'],
+    ]);
+    if (strtolower($data_type) == 'timestamp') {
+      // already a timestamp
+      return TRUE;
+    }
+
+    $table_exists = $dao->singleValueQuery('select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_NAME=%1 AND TABLE_SCHEMA=%2', [
+      1 => ['cdntaxreceipts_log_upgrade_1416', 'String'],
+      2 => [$dao->_database, 'String'],
+    ]);
+    if ($table_exists) {
+      // upgrade probably being re-run - do nothing
+      \Civi::log()->debug('cdntaxreceipts_log_upgrade_1416 already exists, skipping. If you really want to re-run this step, drop that table but then make sure cdntaxreceipts_log has the original integer issued_on values, not the already converted timestamp values, otherwise they will be lost.');
+      return TRUE;
+    }
+
+    CRM_Core_DAO::executeQuery("CREATE TABLE cdntaxreceipts_log_upgrade_1416 AS SELECT id, issued_on FROM cdntaxreceipts_log");
+    // need to drop first since existing data is invalid for new data type
+    CRM_Core_DAO::executeQuery("ALTER TABLE cdntaxreceipts_log DROP COLUMN issued_on");
+    CRM_Core_DAO::executeQuery("ALTER TABLE cdntaxreceipts_log ADD COLUMN issued_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of when the receipt was issued, or re-issued.' AFTER receipt_no");
+    CRM_Core_DAO::executeQuery("UPDATE cdntaxreceipts_log l INNER JOIN cdntaxreceipts_log_upgrade_1416 u ON u.id = l.id SET l.issued_on = FROM_UNIXTIME(u.issued_on)");
+
     return TRUE;
   }
 

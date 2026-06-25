@@ -126,6 +126,22 @@ function civicrm_api3_mailchimpsync_Fetchandreconcile($params) {
     $default_params['with_data'] = 1;
   }
 
+  // Jump in to do some cleanup of old records.
+  $config = CRM_Mailchimpsync::getConfig();
+  if (preg_match('/^days(\d+)$/', $config['retention'] ?? 'ever', $m)) {
+    // There is a retention policy.
+    $days = (int) $m[1];
+    if ($days) {
+      $dao = CRM_Core_DAO::executeQuery(<<<SQL
+        DELETE batch, up
+        FROM civicrm_mailchimpsync_batch batch
+        LEFT JOIN civicrm_mailchimpsync_update up ON batch.id = up.mailchimpsync_batch_id
+        WHERE batch.completed_at < CURRENT_DATE - INTERVAL $days DAY
+      SQL);
+      $dao->free();
+    }
+  }
+
   $returnValues = [];
   while ($audiences && time() < $stop_time) {
     $audience = CRM_Mailchimpsync_Audience::newFromListId(array_shift($audiences));

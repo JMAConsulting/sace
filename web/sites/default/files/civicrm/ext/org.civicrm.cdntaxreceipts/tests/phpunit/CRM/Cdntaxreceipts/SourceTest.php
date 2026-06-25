@@ -65,7 +65,7 @@ class CRM_Cdntaxreceipts_SourceTest extends CRM_Cdntaxreceipts_Base {
     $this->assertEquals($expected, _cdntaxreceipts_get_contribution_source($contribution));
   }
 
-  public function sourceData(): array {
+  public static function sourceData(): array {
     return [
       [
         [

@@ -151,4 +151,23 @@ class CRM_Mailchimpsync_Upgrader extends CRM_Extension_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Add indexes.
+   *
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_0003() {
+    $this->ctx->log->info('Applying update 0003: adding indexes.');
+
+    // The updates table can get big, but the number of not-completed rows
+    // (which we care about) is small, so an index here helps a lot.
+    $this->executeSql(<<<SQL
+      ALTER TABLE civicrm_mailchimpsync_update 
+      ADD INDEX IF NOT EXISTS completed (completed)
+    SQL);
+
+    return TRUE;
+  }
+
 }

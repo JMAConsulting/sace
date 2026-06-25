@@ -358,6 +358,12 @@ class FullcalendarViewPreprocess {
                   // Drupal store date time in UTC timezone.
                   // So we need to convert it into user timezone.
                   $entry['end'] = $timezone_service->utcToLocal($end_date, $timezone);
+                  $startDateObject = new DateTime($start_date_value);
+                  $endDateObject = new DateTime($end_date);
+                  $difference = $startDateObject->diff($endDateObject);
+                  if ($difference->days > 0 || $difference->m > 0 || $difference->y > 0) {
+                    $entry['allDay'] = TRUE;
+                  }
                 }
               }
             }

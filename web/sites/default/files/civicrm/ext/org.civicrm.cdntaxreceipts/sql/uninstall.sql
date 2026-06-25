@@ -1,8 +1,8 @@
 -- CDN Tax Receipts Extension
--- last change: 0.9.beta1
 
 DROP TABLE IF EXISTS cdntaxreceipts_log_contributions;
 DROP TABLE IF EXISTS cdntaxreceipts_log;
+DROP TABLE IF EXISTS cdntaxreceipts_log_upgrade_1416;
 
 -- Delete message template and respective option group and option values
 DELETE civicrm_msg_template.*

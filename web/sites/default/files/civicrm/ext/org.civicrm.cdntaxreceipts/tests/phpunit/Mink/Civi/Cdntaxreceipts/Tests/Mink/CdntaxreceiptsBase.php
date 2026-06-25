@@ -2,10 +2,12 @@
 namespace Civi\Cdntaxreceipts\Tests\Mink;
 
 use Drupal\Tests\civicrm\FunctionalJavascript\CiviCrmTestBase;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * @group mink
  */
+#[RunTestsInSeparateProcesses]
 class CdntaxreceiptsBase extends CiviCrmTestBase {
 
   use \Drupal\Tests\mink_civicrm_helpers\Traits\Utils;
@@ -32,7 +34,7 @@ class CdntaxreceiptsBase extends CiviCrmTestBase {
 
     // Temporarily turn off version_check for older versions since it pops up a
     // box about a security release which the tests interpret as an error box.
-    if (!\CRM_Core_BAO_Domain::isDBVersionAtLeast('5.64.4')) {
+    if (!\CRM_Core_BAO_Domain::isDBVersionAtLeast('6.12.2')) {
       $versioncheck = civicrm_api3('Job', 'get', ['api_action' => 'version_check', 'return' => ['id']]);
       foreach ($versioncheck['values'] as $vcheck) {
         civicrm_api3('Job', 'create', ['id' => $vcheck['id'], 'is_active' => 0]);
@@ -180,11 +182,6 @@ class CdntaxreceiptsBase extends CiviCrmTestBase {
     $s = preg_replace('/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\+\d\d/', date('Y-m-d\TH:i:s', \CRM_Cdntaxreceipts_Utils_Time::time()) . '+10', $s);
     $s = preg_replace('/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/', '9e7bde6b-2ad3-c6ba-6656-86ba3cf7b7a2', $s);
     $s = preg_replace('/<[a-f0-9]{32}>/', '<9e7bde6b2ad3c6ba665686ba3cf7b7a2>', $s);
-    // temporary until the versions catch up - pretend using v6.7.5
-    if (!\CRM_Core_BAO_Domain::isDBVersionAtLeast('5.72.2')) {
-      $s = str_replace('6.4.4', '6.7.5', $s);
-      $s = str_replace('6' . chr(0) . '.' . chr(0) . '4' . chr(0) . '.' . chr(0) . '4', '6' . chr(0) . '.' . chr(0) . '7' . chr(0) . '.' . chr(0) . '5', $s);
-    }
     $this->assertGreaterThan(0, file_put_contents($filename, $s));
   }
 
