@@ -1,0 +1,23 @@
+{
+    "type": "search",
+    "title": "Tax Receipts - Receipts Issued",
+    "icon": "fa-list-alt",
+    "server_route": "civicrm/cdntaxreceipts/receiptsissued",
+    "permission": "issue cdn tax receipts",
+    "navigation": {
+        "parent": "Contributions",
+        "label": "Tax Receipts - Receipts Issued",
+        "weight": 50
+    },
+    "requires": [],
+    "description": "",
+    "is_dashlet": false,
+    "is_public": false,
+    "is_token": false,
+    "entity_type": null,
+    "join_entity": null,
+    "contact_summary": null,
+    "summary_contact_type": null,
+    "redirect": null,
+    "create_submission": null
+}

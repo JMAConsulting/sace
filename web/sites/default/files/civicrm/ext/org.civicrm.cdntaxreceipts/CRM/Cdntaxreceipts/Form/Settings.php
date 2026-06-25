@@ -1,7 +1,8 @@
 <?php
 
+use CRM_Cdntaxreceipts_ExtensionUtil as E;
 require_once 'CRM/Core/Form.php';
-require_once 'cdntaxreceipts.functions.inc';
+require_once E::path('cdntaxreceipts.functions.inc');
 
 /**
  * Form controller class

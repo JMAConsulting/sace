@@ -53,7 +53,7 @@ class functionsTest extends \CiviUnitTestCase implements HeadlessInterface {
    * DataProvider for textCustomFieldExists().
    * @return array
    */
-  public function customFieldProvider(): array {
+  public static function customFieldProvider(): array {
     return [
       [
         [

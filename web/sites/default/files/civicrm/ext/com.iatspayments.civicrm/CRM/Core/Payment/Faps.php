@@ -23,7 +23,6 @@
  */
 
 use Civi\Payment\Exception\PaymentProcessorException;
-use CRM_Iats_ExtensionUtil as E;
 
 class CRM_Core_Payment_Faps extends CRM_Core_Payment {
 
@@ -278,7 +277,7 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       return _iats_payment_status_complete();
     }
 
-    $isRecur = CRM_Utils_Array::value('is_recur', $params);
+    $isRecur = $params['is_recur'] ?? NULL;
     if ($isRecur && empty($params['contributionRecurID'])) {
       return self::error('Invalid call to doPayment with is_recur and no contributionRecurID');
     }
@@ -351,11 +350,11 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
           // Test for admin setting that limits allowable transaction days
           $allow_days = $this->getSettings('days');
           // Test for a specific receive date request and convert to a timestamp, default now
-          $receive_date = CRM_Utils_Array::value('receive_date', $params);
+          $receive_date = $params['receive_date'] ?? NULL;
           // my front-end addition to will get stripped out of the params, do a
           // work-around
           if (empty($receive_date)) {
-            $receive_date = CRM_Utils_Array::value('receive_date', $_POST);
+            $receive_date = $_POST['receive_date'] ?? NULL;
           }
           $receive_ts = empty($receive_date) ? time() : strtotime($receive_date);
           // If the admin setting is in force, ensure it's compatible.
@@ -515,13 +514,11 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       try {
         $result = civicrm_api3('Country', 'get', [
           'sequential' => 1,
-          'return' => ['iso_code'],
-          'id' => $params['country_id'],
+          'return' => ['name'],
+	  'id' => $params['country_id'],
           'options' => ['limit' => 1],
         ]);
-        // FAPS/1stPay expects the 2-letter ISO country code (e.g. "CA"), not
-        // the full name ("Canada"), otherwise it rejects with "Invalid Address Format".
-        $params['country'] = $result['values'][0]['iso_code'];
+	$params['country'] = $result['values'][0]['name'];
       }
       catch (CRM_Core_Exception $e) {
         Civi::log()->info('Unexpected error from api3 looking up countries/states/provinces');
@@ -531,13 +528,11 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       try {
         $result = civicrm_api3('StateProvince', 'get', [
           'sequential' => 1,
-          'return' => ['abbreviation'],
-          'id' => $params['state_province_id'],
+          'return' => ['name'],
+	  'id' => $params['state_province_id'],
           'options' => ['limit' => 1],
         ]);
-        // FAPS/1stPay expects the 2-letter state/province code (e.g. "YT"), not
-        // the full name ("Yukon Territory"), otherwise it rejects with "Invalid Address Format".
-        $params['state_province'] = $result['values'][0]['abbreviation'];
+	$params['state_province'] = $result['values'][0]['name'];
       }
       catch (CRM_Core_Exception $e) {
         Civi::log()->info('Unexpected error from api3 looking up countries/states/provinces');
@@ -579,7 +574,7 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
           $request[$r] = $matches[0];
         }
         else {
-          $request[$r] = htmlspecialchars($params[$p]);
+          $request[$r] = str_replace(';','',$params[$p]);
         }
       }
     }
@@ -591,7 +586,6 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
         $request['ownerEmail'] = $params['email-Primary'];
       }
     }
-
     // additional method-specific values (none!)
     //CRM_Core_Error::debug_var('params for conversion', $params);
     //CRM_Core_Error::debug_var('method', $method);

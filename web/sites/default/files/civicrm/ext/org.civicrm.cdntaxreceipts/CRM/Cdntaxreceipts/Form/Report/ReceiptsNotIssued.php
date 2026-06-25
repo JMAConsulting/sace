@@ -121,15 +121,15 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsNotIssued extends CRM_Report_Form {
     foreach ($this->_columns as $tableName => $table) {
       if (array_key_exists('fields', $table)) {
         foreach ($table['fields'] as $fieldName => $field) {
-          if (CRM_Utils_Array::value('required', $field) ||
-            CRM_Utils_Array::value($fieldName, $this->_params['fields'])
+          if (!empty($field['required']) ||
+            !empty($this->_params['fields'][$fieldName])
           ) {
             if ( $fieldName == 'total_amount' && $this->_useEligibilityHooks) {
               $field['dbAlias'] = "cdntax_t.eligible_amount";
             }
             $alias = "{$tableName}_{$fieldName}";
             $select[] = "{$field['dbAlias']} as {$alias}";
-            $this->_columnHeaders["{$tableName}_{$fieldName}"]['type'] = CRM_Utils_Array::value('type', $field);
+            $this->_columnHeaders["{$tableName}_{$fieldName}"]['type'] = $field['type'] ?? NULL;
             $this->_columnHeaders["{$tableName}_{$fieldName}"]['title'] = $field['title'];
             $this->_selectAliases[] = $alias;
           }
@@ -278,5 +278,27 @@ CREATE TEMPORARY TABLE cdntaxreceipts_temp_civireport_eligible (
       }
     }
   }
+
+  /**
+   * Override
+   */
+  public function addOptions() {
+    parent::addOptions();
+    if (!isset($this->tabs['ReportOptions'])) {
+      // The parent is a little over-restrictive and more or less requires
+      // administer civireport. Let's relax that a little since this affects
+      // the output of things like exporting to csv after viewing the report.
+      // We can simplify the parent's `if` because we're only here if the
+      // parent didn't already allow it.
+      if ($this->_id && CRM_Core_Permission::check('issue cdn tax receipts')) {
+        $this->tabs['ReportOptions'] = [
+          'title' => ts('Display Options'),
+          'tpl' => 'ReportOptions',
+          'div_label' => 'other-options',
+        ];
+      }
+    }
+  }
+
 }
 

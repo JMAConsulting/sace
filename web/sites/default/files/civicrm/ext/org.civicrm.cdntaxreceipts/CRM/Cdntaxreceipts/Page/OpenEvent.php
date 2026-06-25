@@ -6,7 +6,7 @@ class CRM_Cdntaxreceipts_Page_OpenEvent extends CRM_Core_Page {
 
   function run() {
     
-    $tracking_id = CRM_Utils_Array::value('r', $_GET);
+    $tracking_id = $_GET['r'] ?? NULL;
     if (!$tracking_id) {
       echo "Missing input parameters\n";
       exit();

@@ -1975,11 +1975,12 @@ class CRM_Mailchimpsync_Audience {
 
     $contactIsInGroup = (bool) Contact::get(FALSE)
       ->addWhere('id', '=', $contactID)
-      ->addWhere('in_group', '=', $this->getSubscriptionGroup())
+      ->addWhere('groups', 'IN', $this->getSubscriptionGroup())
       ->execute()->countFetched();
 
     // (1) find member_id and ensure cache_entry --------------------
     $member_id = '';
+    $email = '';
 
     $cache_entry = civicrm_api3('MailchimpsyncCache', 'get', [
       'sequential' => 1,
@@ -1988,6 +1989,7 @@ class CRM_Mailchimpsync_Audience {
     ])['values'][0] ?? NULL;
     if ($cache_entry) {
       $member_id = $data['mailchimp_member_id'] ?? '';
+      $email = $data['mailchimp_email'] ?? '';
     }
     else {
       // No cache entry yet. Make a minimal one like addCiviOnly does.
@@ -2008,17 +2010,22 @@ class CRM_Mailchimpsync_Audience {
       $email = $this->getBestEmailForNewContact($contactID);
       $member_id = $api->getMailchimpMemberIdFromEmail($email);
     }
-    // ------------------ ok, got cache entry and a $member_id
+    Civi::log()->debug("syncSingleContact", compact('email', 'contactID', 'member_id'));
+    // ------------------ ok, got cache entry and a $member_id and an $email
 
     // Find if subscriber exists at Mailchimp. ---------------
     try {
       $member = $api->get("lists/$this->mailchimp_list_id/members/$member_id");
     }
     catch (CRM_Mailchimpsync_RequestErrorException $e) {
+
+      Civi::log()->notice("syncSingleContact GET request failed, will create subscriber next.");
       // Not found. Create now?
       $member = $api->post("lists/$this->mailchimp_list_id/members", [
-        'email_address' => $email,
-        'status' => $contactIsInGroup ? 'subscribed' : 'unsubscribed',
+        'body' => [
+          'email_address' => $email,
+          'status' => $contactIsInGroup ? 'subscribed' : 'unsubscribed',
+        ],
       ]);
       $member_id = $member['id'];
       $email = $member['email_address'];
@@ -2326,9 +2333,16 @@ class CRM_Mailchimpsync_Audience {
       }
     }
 
-    $sql = 'SELECT COUNT(*) c FROM civicrm_mailchimpsync_update up
-      INNER JOIN civicrm_mailchimpsync_cache c ON c.mailchimp_list_id = %1 AND up.mailchimpsync_cache_id = c.id
-      WHERE up.completed = 0';
+    $sql = <<<SQL
+      SELECT COUNT(*) c FROM civicrm_mailchimpsync_update up
+      WHERE up.completed = 0
+        AND EXISTS (
+          SELECT c.id
+          FROM civicrm_mailchimpsync_cache c
+          WHERE c.mailchimp_list_id = %1
+            AND up.mailchimpsync_cache_id = c.id
+          );
+      SQL;
     $stats['mailchimp_updates_pending'] = (int) CRM_Core_DAO::executeQuery($sql, $params)->fetchValue();
 
     $sql = 'SELECT COUNT(*) c FROM civicrm_mailchimpsync_update up INNER JOIN civicrm_mailchimpsync_cache c ON c.mailchimp_list_id = %1 AND up.mailchimpsync_cache_id = c.id
