@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.4] - 2026-06-08
+### Changed
+- update CI and Dockerfile versions
+
+### Security
+- upgrade all javascript dependencies
+
+### Added
+- feat: add logo.png for project browser
+
 ## [3.1.3] - 2026-03-13
 ### Fixed
 - fix invalid CKEditor plugin registration - Issue #3577482 by arturs.v, rhayun, teebo, riaan burger, wengerk, lisotton, thomas kaisuka: Advanced image plugin breaks CKEditor after Drupal core 11.3.4 update
@@ -152,7 +162,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - First draft.
 
-[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.3...HEAD
+[Unreleased]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.4...HEAD
+[3.1.4]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.3...3.1.4
 [3.1.3]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.2...3.1.3
 [3.1.2]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.1...3.1.2
 [3.1.1]: https://github.com/antistatique/drupal-editor-advanced-image/compare/3.1.0...3.1.1
