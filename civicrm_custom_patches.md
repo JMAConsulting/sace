@@ -14,6 +14,7 @@ details with First Pay Credit Card Payment Processor
 8. ActivityIcal [#7ca595d3314a14b52531fc6f5e1d7762223c9acd](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/7ca595d3314a14b52531fc6f5e1d7762223c9acd) Re-apply necessary patches for SACE
 9. ActivityIcal [#47aa3cde805488e446937d177a561f144b5c2433](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/47aa3cde805488e446937d177a561f144b5c2433) Remove activity status filtering from ICAL feed
 10. ActivityIcal [#f937fa177cca3b381b32fffbfd6251ce16d9a452](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/f937fa177cca3b381b32fffbfd6251ce16d9a452) Remove some uncessary require onces
+11. ActivityIcal [#a6bba54a3](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/a6bba54a3) Added outlook safe handling
 
 **NOTE: In future, please update this file with the commit link whenever a new core or extension customisation is added.**
 
