@@ -10,7 +10,7 @@ SUMMARY:{$activity.activity_subject|crmICalText}
 DESCRIPTION:{$activity.description|crmICalText}
 {/if}
 {if $activity.activity_type}
-CATEGORIES:{$activity.activity_type|crmICalText}
+CATEGORIES:{$activity.activity_type|replace:',':''|crmICalText}
 {/if}
 CALSCALE:GREGORIAN
 DTSTAMP;VALUE=DATE-TIME:{$smarty.now|date_format:'%Y-%m-%d %H:%M:%S'|crmICalDate}
