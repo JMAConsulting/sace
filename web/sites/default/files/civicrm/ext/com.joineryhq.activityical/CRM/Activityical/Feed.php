@@ -397,11 +397,50 @@ class CRM_Activityical_Feed {
     // Reference: http://icalendar.org/iCalendar-RFC-5545/3-1-content-lines.html
     $lines = explode("\r\n", $output);
     foreach ($lines as &$line) {
-      $line = implode("\r\n ", str_split($line, 74));
+      $line = self::foldLine($line);
     }
     $output = implode("\r\n", $lines);
 
     return $output;
+  }
+
+  /**
+   * Fold a single content line per RFC 5545 section 3.1, wrapping at 74 octets
+   * without splitting a multi-octet UTF-8 character across the fold.
+   *
+   * str_split() would split on byte boundaries, cutting a multibyte character
+   * (accented names, en-dashes, emoji in a subject, etc.) in half and producing
+   * invalid UTF-8.
+   *
+   * Reference: http://icalendar.org/iCalendar-RFC-5545/3-1-content-lines.html
+   *
+   * @param string $line
+   *
+   * @return string
+   */
+  protected static function foldLine($line) {
+    if (strlen($line) <= 74) {
+      return $line;
+    }
+    // Split into UTF-8 characters. If the line isn't valid UTF-8, preg_split
+    // returns NULL; fall back to the byte-based split rather than dropping data.
+    $chars = preg_split('//u', $line, -1, PREG_SPLIT_NO_EMPTY);
+    if ($chars === NULL || $chars === FALSE) {
+      return implode("\r\n ", str_split($line, 74));
+    }
+    $folded = '';
+    $current = '';
+    foreach ($chars as $char) {
+      // strlen() counts octets, not characters, so we respect the RFC's octet
+      // limit while never breaking mid-character.
+      if (strlen($current) + strlen($char) > 74) {
+        $folded .= ($folded === '' ? '' : "\r\n ") . $current;
+        $current = '';
+      }
+      $current .= $char;
+    }
+    $folded .= ($folded === '' ? '' : "\r\n ") . $current;
+    return $folded;
   }
 
   public static function getBlockedStatuses() {
