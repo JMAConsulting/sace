@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <version>
+<<<<<<< HEAD
   <version_no>6.15.5</version_no>
   <releaseDate>2026-06-23</releaseDate>
+=======
+  <version_no>6.17.1</version_no>
+  <releaseDate>2026-08-05</releaseDate>
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
 </version>

@@ -15,10 +15,15 @@ Other resources for identifying changes are:
     * https://github.com/civicrm/civicrm-joomla
     * https://github.com/civicrm/civicrm-wordpress
 
+<<<<<<< HEAD
 ## CiviCRM 6.15.5
+=======
+## CiviCRM 6.17.1
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
 
 Released June 23, 2026
 
+<<<<<<< HEAD
 - **[Synopsis](release-notes/6.15.5.md#synopsis)**
 - **[Bugs resolved](release-notes/6.15.5.md#bugs)**
 - **[Credits](release-notes/6.15.5.md#credits)**
@@ -59,6 +64,12 @@ Released June 10, 2026
 - **[Bugs resolved](release-notes/6.15.1.md#bugs)**
 - **[Credits](release-notes/6.15.1.md#credits)**
 - **[Feedback](release-notes/6.15.1.md#feedback)**
+=======
+- **[Synopsis](release-notes/6.17.1.md#synopsis)**
+- **[Security advisories](release-notes/6.17.1.md#security)**
+- **[Credits](release-notes/6.17.1.md#credits)**
+- **[Feedback](release-notes/6.17.1.md#feedback)**
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
 
 ## CiviCRM 6.1.0
 

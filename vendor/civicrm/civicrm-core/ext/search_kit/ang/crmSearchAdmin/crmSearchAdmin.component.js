@@ -553,8 +553,8 @@
       return false;
     }
 
-    // Returns true if a clause contains one of the
-    function clauseUsesFields(clause, fields) {
+    // Returns true if a clause contains any of the given fields
+    const clauseUsesFields = (clause, fields) => {
       if (!fields || !fields.length) {
         return false;
       }
@@ -562,12 +562,10 @@
         return true;
       }
       if (Array.isArray(clause[1])) {
-        return clause[1].some(function(subClause) {
-          return clauseUsesField(subClause, fields);
-        });
+        return clause[1].some((subClause) => clauseUsesFields(subClause, fields));
       }
       return false;
-    }
+    };
 
     function validate() {
       const errors = [];

@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "433e00355606da6a842c62cf7a326901",
+=======
+    "content-hash": "54c6279d50acd60e3ec6d39a960649ec",
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
     "packages": [
         {
             "name": "adrienrn/php-mimetyper",
@@ -388,6 +392,7 @@
         },
         {
             "name": "civicrm/civicrm-core",
+<<<<<<< HEAD
             "version": "6.15.5",
             "source": {
                 "type": "git",
@@ -398,6 +403,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/civicrm/civicrm-core/zipball/632c64c2a5d4d9b1403adbd8622c6b283b324073",
                 "reference": "632c64c2a5d4d9b1403adbd8622c6b283b324073",
+=======
+            "version": "6.17.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/civicrm/civicrm-core.git",
+                "reference": "8f9eed07f892f0d68d33493f0160e2b0ce70af7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/civicrm/civicrm-core/zipball/8f9eed07f892f0d68d33493f0160e2b0ce70af7e",
+                "reference": "8f9eed07f892f0d68d33493f0160e2b0ce70af7e",
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
                 "shasum": ""
             },
             "require": {
@@ -899,7 +916,11 @@
             ],
             "description": "Open source constituent relationship management for non-profits, NGOs and advocacy organizations.",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/civicrm/civicrm-core/tree/6.15.5"
+=======
+                "source": "https://github.com/civicrm/civicrm-core/tree/6.17.1"
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             },
             "funding": [
                 {
@@ -907,11 +928,19 @@
                     "type": "custom"
                 }
             ],
+<<<<<<< HEAD
             "time": "2026-06-24T00:38:28+00:00"
         },
         {
             "name": "civicrm/civicrm-drupal-8",
             "version": "6.15.5",
+=======
+            "time": "2026-08-06T01:57:00+00:00"
+        },
+        {
+            "name": "civicrm/civicrm-drupal-8",
+            "version": "6.17.1",
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-drupal-8.git",
@@ -960,7 +989,11 @@
             ],
             "description": "Open source constituent relationship management for non-profits, NGOs and advocacy organizations.",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/civicrm/civicrm-drupal-8/tree/6.15.5"
+=======
+                "source": "https://github.com/civicrm/civicrm-drupal-8/tree/6.17.1"
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             },
             "funding": [
                 {
@@ -972,7 +1005,11 @@
         },
         {
             "name": "civicrm/civicrm-packages",
+<<<<<<< HEAD
             "version": "6.15.5",
+=======
+            "version": "6.17.1",
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-packages.git",
@@ -988,7 +1025,11 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "Legacy third party dependencies for CiviCRM",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/civicrm/civicrm-packages/tree/6.15.5"
+=======
+                "source": "https://github.com/civicrm/civicrm-packages/tree/6.17.1"
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             },
             "time": "2026-04-22T18:15:32+00:00"
         },

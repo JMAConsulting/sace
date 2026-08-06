@@ -4,9 +4,30 @@
 #civicrm-dashboard > .crm-flex-box {
   display: grid;
   grid-template-columns: var(--crm-dashlet-columns);
+<<<<<<< HEAD
   gap: var(--crm-l-reg);
   /* avoid total collapse else no droppable area if all widgets removed */
   min-height: var(--crm-l-reg);
+=======
+  gap: var(--crm-padding-reg);
+}
+#civicrm-dashboard:is(.crm-dashboard-editing,.crm-dashboard-dragging) .crm-dashboard-droppable {
+  /* avoid total collapse else no droppable area if all widgets removed */
+  min-height: 10rem;
+}
+#civicrm-dashboard:has(.crm-inactive-dashlet-fieldset[open]) .crm-dashboard-droppable {
+  border: 3px dashed var(--crm-c-gray-400);
+  padding: var(--crm-padding-reg);
+}
+#civicrm-dashboard:has(.crm-inactive-dashlet-fieldset[open]) .crm-dashlet {
+  max-height: 15rem;
+  overflow: hidden;
+}
+#civicrm-dashboard:has(.crm-inactive-dashlet-fieldset[open]) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--crm-padding-reg);
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
 }
 .crm-container .crm-dashlet {
   border-radius: var(--crm-dashlet-radius);
@@ -166,6 +187,7 @@ crm-dashlet[is-fullscreen=true] > .crm-dashlet-content {
   border: 0 solid transparent;
 }
 
+<<<<<<< HEAD
 /* Add dashlet */
 fieldset.crm-inactive-dashlet-fieldset {
   padding: 0;
@@ -180,6 +202,33 @@ fieldset.crm-inactive-dashlet-fieldset > div {
   flex-wrap: wrap;
   gap: var(--crm-l-reg);
   padding: var(--crm-l-reg);
+=======
+/* Available (inactive) dashlets */
+#civicrm-dashboard .crm-inactive-dashlet-fieldset {
+  background-color: var(--crm-dashlet-dashlets-bg-color);
+  border-radius: var(--crm-dashlet-radius);
+  margin-bottom: var(--crm-padding-reg);
+}
+#civicrm-dashboard .crm-inactive-dashlet-fieldset[open] {
+  box-shadow: var(--crm-dashlet-box-shadow);
+}
+#civicrm-dashboard .crm-inactive-dashlet-fieldset summary {
+  background-color: var(--crm-dashlet-dashlets-bg-color);
+  color: var(--crm-dashlet-dashlets-color);
+}
+#civicrm-dashboard .crm-inactive-dashlet-fieldset summary input {
+  margin-left: var(--crm-padding-reg);
+}
+#civicrm-dashboard .crm-inactive-dashlet-fieldset > .crm-accordion-body {
+  padding: var(--crm-padding-reg);
+}
+#civicrm-dashboard .crm-inactive-dashlet-fieldset > .crm-accordion-body > .crm-dashboard-droppable {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--crm-padding-reg);
+  padding: 0;
+  border: 0;
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
 }
 fieldset.crm-inactive-dashlet-fieldset legend {
   background-color: transparent;
@@ -191,6 +240,14 @@ fieldset.crm-inactive-dashlet-fieldset legend .crm-hover-button {
   padding: var(--crm-btn-large-padding);
   margin-right: var(--crm-l-reg);
 }
+<<<<<<< HEAD
+=======
+.crm-container .crm-inactive-dashlet .crm-dashlet-header h3 {
+  font-size: var(--crm-font-small-size);
+  padding-left: var(--crm-padding-small);
+}
+
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
 /* Searchkit Dashlets */
 
 .crm-dashlet .crm-search-display .form-inline {

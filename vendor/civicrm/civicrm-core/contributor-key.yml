@@ -1913,7 +1913,7 @@
 
 - github      : wintermoor
   name        : Torben Bertram
-  organization: Civiservice.de GmbH
+  organization: civiservice.de GmbH
 
 - github      : wmortada
   name        : William Mortada
@@ -2026,3 +2026,14 @@
 - github      : kernie
   name        : Maarten Becker
   organization: Ingenieurbüro Dr. Maarten Becker
+<<<<<<< HEAD
+=======
+
+- github      : yf-zhou
+  name        : Yifei Zhou
+  organization: JMA Consulting
+
+- github      : yorkshirerose
+  name        : Rose
+  organization: Ruza Solutions
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)

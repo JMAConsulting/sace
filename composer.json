@@ -16,9 +16,15 @@
     ],
     "require": {
         "civicrm/civicrm-asset-plugin": "~1.1",
+<<<<<<< HEAD
         "civicrm/civicrm-core": "6.15.5",
         "civicrm/civicrm-drupal-8": "6.15.5",
         "civicrm/civicrm-packages": "6.15.5",
+=======
+        "civicrm/civicrm-core": "6.17.1",
+        "civicrm/civicrm-drupal-8": "6.17.1",
+        "civicrm/civicrm-packages": "6.17.1",
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
         "composer/installers": "^1.2",
         "drupal/admin_toolbar": "^3.4",
         "drupal/antibot": "^2.0",

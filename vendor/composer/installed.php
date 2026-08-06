@@ -3,7 +3,7 @@
         'name' => 'drupal/recommended-project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '10f3b2fcb39e1838f25117783745379eb7debe7f',
+        'reference' => '63089cd32ca93975329d19878cefe4e78d58924d',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -74,27 +74,45 @@
             'dev_requirement' => false,
         ),
         'civicrm/civicrm-core' => array(
+<<<<<<< HEAD
             'pretty_version' => '6.15.5',
             'version' => '6.15.5.0',
             'reference' => '632c64c2a5d4d9b1403adbd8622c6b283b324073',
+=======
+            'pretty_version' => '6.17.1',
+            'version' => '6.17.1.0',
+            'reference' => '8f9eed07f892f0d68d33493f0160e2b0ce70af7e',
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             'type' => 'library',
             'install_path' => __DIR__ . '/../civicrm/civicrm-core',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'civicrm/civicrm-drupal-8' => array(
+<<<<<<< HEAD
             'pretty_version' => '6.15.5',
             'version' => '6.15.5.0',
             'reference' => '0922536730a627d1e03fc052368235e7f4d2ca76',
+=======
+            'pretty_version' => '6.17.1',
+            'version' => '6.17.1.0',
+            'reference' => 'bd2f633f95614fe3e1bfbe5d39e11656b29260b8',
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             'type' => 'drupal-module',
             'install_path' => __DIR__ . '/../../web/modules/contrib/civicrm',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'civicrm/civicrm-packages' => array(
+<<<<<<< HEAD
             'pretty_version' => '6.15.5',
             'version' => '6.15.5.0',
             'reference' => '4d2bdff9aeb5aa7cf0c4a7a2697510e05c65c61e',
+=======
+            'pretty_version' => '6.17.1',
+            'version' => '6.17.1.0',
+            'reference' => 'a9f70f2f1212546d5bad2f87a35726423b2f478d',
+>>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
             'type' => 'library',
             'install_path' => __DIR__ . '/../civicrm/civicrm-packages',
             'aliases' => array(),
@@ -940,7 +958,7 @@
         'drupal/recommended-project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '10f3b2fcb39e1838f25117783745379eb7debe7f',
+            'reference' => '63089cd32ca93975329d19878cefe4e78d58924d',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
