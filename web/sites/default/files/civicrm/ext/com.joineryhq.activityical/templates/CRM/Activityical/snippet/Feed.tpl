@@ -10,7 +10,7 @@ SUMMARY:{$activity.activity_subject|crmICalText}
 DESCRIPTION:{$activity.description|crmICalText}
 {/if}
 {if $activity.activity_type}
-CATEGORIES:{$activity.activity_type|replace:',':''|crmICalText}
+CATEGORIES:{$activity.activity_type|crmICalText}
 {/if}
 CALSCALE:GREGORIAN
 DTSTAMP;VALUE=DATE-TIME:{$smarty.now|date_format:'%Y-%m-%d %H:%M:%S'|crmICalDate}
@@ -30,7 +30,9 @@ DTEND;VALUE=DATE-TIME:{$activity.activity_date_time|crmICalDate}Z
 {if $activity.contact_email}
 ORGANIZER:MAILTO:{$activity.contact_email|crmICalText}
 {/if}
+{if $include_url}
 URL:{$activity.url}
+{/if}
 CONTACT;ALTREP={$base_url}/civicrm/contact/view?reset=1&cid={$activity.source_id}:{$activity.source_display_name}
 X-ALT-DESC;FMTTYPE=text/html: {$activity.description|activityicalHtml}
 END:VEVENT
