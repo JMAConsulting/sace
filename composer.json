@@ -16,15 +16,9 @@
     ],
     "require": {
         "civicrm/civicrm-asset-plugin": "~1.1",
-<<<<<<< HEAD
-        "civicrm/civicrm-core": "6.15.5",
-        "civicrm/civicrm-drupal-8": "6.15.5",
-        "civicrm/civicrm-packages": "6.15.5",
-=======
-        "civicrm/civicrm-core": "6.17.1",
-        "civicrm/civicrm-drupal-8": "6.17.1",
-        "civicrm/civicrm-packages": "6.17.1",
->>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
+        "civicrm/civicrm-core": "6.17.2",
+        "civicrm/civicrm-drupal-8": "6.17.2",
+        "civicrm/civicrm-packages": "6.17.2",
         "composer/installers": "^1.2",
         "drupal/admin_toolbar": "^3.4",
         "drupal/antibot": "^2.0",
@@ -40,10 +34,10 @@
         "drupal/colorbutton": "^1.2",
         "drupal/config_ignore": "^3.3",
         "drupal/content_access": "^2.0",
-        "drupal/core": "10.6.13",
-        "drupal/core-composer-scaffold": "10.6.13",
-        "drupal/core-project-message": "10.6.13",
-        "drupal/core-recommended": "10.6.13",
+        "drupal/core": "10.6.14",
+        "drupal/core-composer-scaffold": "10.6.14",
+        "drupal/core-project-message": "10.6.14",
+        "drupal/core-recommended": "10.6.14",
         "drupal/ctools": "^4.1",
         "drupal/editor_advanced_image": "^3.1",
         "drupal/fontawesome": "^2.17",
@@ -87,9 +81,7 @@
         "drupal/views_ical": "^1.0@alpha",
         "drupal/viewsreference": "^2.0@beta",
         "drupal/webform": "^6.3",
-        "drush/drush": "^12",
-        "guzzlehttp/guzzle": "7.15.1 as 7.12.1",
-        "guzzlehttp/psr7": "2.13.0 as 2.12.1"
+        "drush/drush": "^12"
     },
     "conflict": {
         "drupal/drupal": "*"

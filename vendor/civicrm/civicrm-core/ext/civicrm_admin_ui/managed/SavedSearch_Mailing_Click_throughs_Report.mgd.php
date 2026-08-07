@@ -90,7 +90,7 @@ return [
             [
               'type' => 'field',
               'key' => 'display_name',
-              'label' => E::ts('Display Name'),
+              'label' => 'Display Name',
               'sortable' => TRUE,
               'link' => [
                 'path' => '',
@@ -100,12 +100,12 @@ return [
                 'target' => '',
                 'task' => '',
               ],
-              'title' => E::ts('View Contact'),
+              'title' => 'View Contact',
             ],
             [
               'type' => 'field',
               'key' => 'GROUP_CONCAT_Contact_MailingEventQueue_contact_id_01_MailingEventQueue_MailingEventTrackableURLOpen_event_queue_id_01_MailingEventTrackableURLOpen_MailingTrackableURL_trackable_url_id_01_url',
-              'label' => E::ts('URL'),
+              'label' => 'URL',
               'sortable' => TRUE,
               'link' => [
                 'path' => '[GROUP_CONCAT_Contact_MailingEventQueue_contact_id_01_MailingEventQueue_MailingEventTrackableURLOpen_event_queue_id_01_MailingEventTrackableURLOpen_MailingTrackableURL_trackable_url_id_01_url]',
@@ -119,7 +119,7 @@ return [
             [
               'type' => 'field',
               'key' => 'GROUP_CONCAT_Contact_MailingEventQueue_contact_id_01_MailingEventQueue_MailingEventTrackableURLOpen_event_queue_id_01_time_stamp',
-              'label' => E::ts('Date'),
+              'label' => 'Date',
               'sortable' => TRUE,
             ],
           ],

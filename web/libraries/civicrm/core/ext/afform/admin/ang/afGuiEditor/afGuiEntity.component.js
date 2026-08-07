@@ -25,8 +25,6 @@
         return ctrl.entity.type;
       };
 
-<<<<<<< HEAD
-=======
       $scope.getUnsuffixedName = function(fieldName) {
         const parts = fieldName.split(':');
         const baseName = parts[0];
@@ -80,7 +78,6 @@
         };
       };
 
->>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
       $scope.getMeta = () => {
         return afGui.meta.entities[ctrl.getEntityType()];
       };
@@ -212,12 +209,11 @@
         // normalise to unsuffixed for all checks
         fieldName = $scope.getUnsuffixedName(fieldName);
         const data = ctrl.entity.data || {};
+        const unsuffixedDataKeys = Object.keys(data).map(key => {
+          return $scope.getUnsuffixedName(key);
+        });
         if (!joinEntity) {
-<<<<<<< HEAD
-          return (fieldName in data) || check(ctrl.editor.layout['#children'], {'#tag': 'af-field', name: fieldName});
-=======
           return unsuffixedDataKeys.includes(fieldName) || check(ctrl.editor.layout['#children'], (item) => item['#tag'] === 'af-field' && $scope.getUnsuffixedName(item.name) === fieldName);
->>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
         }
         // Joins might support multiple instances per entity; first fetch them all
         const afJoinContainers = afGui.getFormElements(ctrl.editor.layout['#children'], {'af-join': joinEntity}, (item) => {

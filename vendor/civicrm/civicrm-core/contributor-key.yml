@@ -399,6 +399,8 @@
 
 - name        : Andy Clarke
 
+- github      : davemoreton
+
 - github      : dbwells
   name        : Dan Wells
   organization: Calvin Theological Seminary
@@ -1679,6 +1681,8 @@
   name        : Sunil Pawar
   organization: Skvare
 
+- github      : sushant-cividesk
+
 - github      : swastikpareek
   name        : Swastik Pareek
   organization: QED42
@@ -2026,8 +2030,6 @@
 - github      : kernie
   name        : Maarten Becker
   organization: Ingenieurbüro Dr. Maarten Becker
-<<<<<<< HEAD
-=======
 
 - github      : yf-zhou
   name        : Yifei Zhou
@@ -2036,4 +2038,3 @@
 - github      : yorkshirerose
   name        : Rose
   organization: Ruza Solutions
->>>>>>> eb38982286 (CiviCRM 6.17.1 upgrade)
