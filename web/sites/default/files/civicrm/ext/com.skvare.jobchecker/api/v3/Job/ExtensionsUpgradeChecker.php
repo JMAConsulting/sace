@@ -112,7 +112,7 @@ function civicrm_api3_job_extensions_upgrade_checker($params) {
            ]);
          }
          elseif (!empty($remotes[$key]) && version_compare($row['version'], $remotes[$key]->version, '<')) {
-           $updates[] = $row['label'] . ': ' . $mapper->getUpgradeLink($remotes[$key], $row);
+           $updates[] = $row['label'] . ': ' . $mapper->getUpgradeLink($remotes[$key], $row, CRM_Extension_System::singleton()->getDownloader()->extensionDirectoryWritable());
          }
          break;
      }
