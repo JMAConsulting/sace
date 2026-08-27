@@ -1,6 +1,6 @@
 
 patch:
-    stage: patches
+    stage: build
     script:
         - /bin/bash patches.sh
     rules:
