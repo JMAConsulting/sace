@@ -1,0 +1,25 @@
+uuid: 2f7dfba5-9b61-4743-be6f-6d307088962e
+langcode: en
+status: true
+dependencies:
+  module:
+    - sace_custom
+    - system
+  theme:
+    - oliverolocal
+id: oliverolocal_activityicalfeed
+theme: oliverolocal
+region: content
+weight: 0
+provider: null
+plugin: user_activity_ical_feed
+settings:
+  id: user_activity_ical_feed
+  label: 'My Calendar Feed'
+  label_display: visible
+  provider: sace_custom
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/user/*'
