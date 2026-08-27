@@ -1,0 +1,7 @@
+
+patch:
+    stage: patches
+    script:
+        - /bin/bash patches.sh
+    rules:
+        - if: $CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "staging" && $CI_COMMIT_BRANCH != "uat"
