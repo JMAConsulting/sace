@@ -20,7 +20,7 @@ fi
 FAILED=false
 FAILED_PATCHES=''
 APPLIED_PATCHES=''
-for PATCH in "$PATCH_DIR"/*.patch; do 
+for PATCH in "$PATCH_DIR"/*.patch; do
     echo "Applying patch $PATCH"
 
     if git apply -R --check "$PATCH" &> /dev/null; then
@@ -28,7 +28,7 @@ for PATCH in "$PATCH_DIR"/*.patch; do
         echo "Patch $PATCH has already been applied"
         continue
     fi
-    
+
     # Patch has not yet been applied
     if git apply "$PATCH"; then
         echo "Applied patch $PATCH"
@@ -58,9 +58,10 @@ fi
 #else
 #    echo "No files committed; all patches already applied"
 #fi
-if [ "$APPLIED_PATCHES" == '' ]; then 
+if [ "$APPLIED_PATCHES" == '' ]; then
   echo 'No Patches need applying'
   exit 0
 else
   echo "Patches not previously applied {$APPLIED_PATCHES}"
+  exit 1
 fi
