@@ -1,0 +1,222 @@
+<?php
+
+namespace Drupal\devel_mail_logger\Controller;
+
+use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\StringTranslation\TranslationInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * Class DevelMailLoggerController.
+ */
+class DevelMailLoggerController extends ControllerBase {
+
+  /**
+   * Drupal\Core\Database\Connection definition.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+  /**
+   * Drupal\Core\Datetime\DateFormatterInterface definition.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected $dateFormatter;
+  /**
+   * Drupal\Core\Form\FormBuilderInterface definition.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+  /**
+   * Drupal\Core\Mail\MailManagerInterface definition.
+   *
+   * @var \Drupal\Core\Mail\MailManagerInterface
+   */
+  protected $pluginManagerMail;
+
+  /**
+   * Current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Constructs a new DevelMailLoggerController object.
+   */
+  public function __construct(
+    Connection $database,
+    DateFormatterInterface $date_formatter,
+    FormBuilderInterface $form_builder,
+    MailManagerInterface $plugin_manager_mail,
+    AccountProxyInterface $current_user
+  ) {
+    $this->database = $database;
+    $this->dateFormatter = $date_formatter;
+    $this->formBuilder = $form_builder;
+    $this->pluginManagerMail = $plugin_manager_mail;
+    $this->currentUser = $current_user;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('database'),
+      $container->get('date.formatter'),
+      $container->get('form_builder'),
+      $container->get('plugin.manager.mail'),
+      $container->get('current_user')
+    );
+  }
+
+  /**
+   * Show a list of mails from db.
+   */
+  public function listMails() {
+
+    $header = [
+      [
+        'data' => $this->t('Date'),
+        'field' => 'm.timestamp',
+        'sort' => 'desc',
+        'class' => [RESPONSIVE_PRIORITY_MEDIUM],
+      ],
+      [
+        'data' => $this->t('To'),
+        'field' => 'm.recipient',
+        'class' => [RESPONSIVE_PRIORITY_MEDIUM],
+      ],
+      [
+        'data' => $this->t('Subject'),
+        'field' => 'm.subject',
+        'class' => [RESPONSIVE_PRIORITY_LOW],
+      ],
+    ];
+
+    $query = $this->database->select('devel_mail_logger', 'm')
+      ->extend('Drupal\Core\Database\Query\PagerSelectExtender')
+      ->extend('\Drupal\Core\Database\Query\TableSortExtender');
+    $results = $query->fields('m', ['id', 'timestamp', 'subject', 'recipient'])
+      ->limit(50)
+      ->orderByHeader($header)
+      ->execute();
+
+    $rows = [];
+
+    foreach ($results as $result) {
+      $rows[] = [
+        'data' => [
+          $this->t($this->dateFormatter->format($result->timestamp, 'short')),
+          $result->recipient,
+          Link::createFromRoute($result->subject, 'devel_mail_logger.mail', ['id' => $result->id]),
+        ],
+      ];
+    }
+
+    $build = [
+      'form' => $this->formBuilder->getForm('Drupal\devel_mail_logger\Form\DevelMailLoggerDeleteForm'),
+      'mail_table' => [
+        '#type' => 'table',
+        '#header' => $header,
+        '#rows' => $rows,
+        '#attributes' => ['id' => 'admin-dblog', 'class' => ['admin-dblog']],
+        '#empty' => $this->t('No debug mails available.'),
+      ],
+      'pager' => [
+        '#type' => 'pager',
+      ],
+    ];
+
+    return $build;
+  }
+
+  /**
+   * Show a single mail.
+   */
+  public function showMail($id) {
+
+    $build = [];
+
+    $mail_log = $this->database->query('SELECT * FROM {devel_mail_logger} m WHERE m.id = :id', [':id' => $id])->fetchObject();
+    $mail = json_decode($mail_log->message);
+
+    $rows = [];
+    foreach ($mail->headers as $key => $value) {
+      $rows[] = [
+        ['data' => $key, 'header' => TRUE],
+        $value,
+      ];
+    }
+
+    $build['headers'] = [
+      '#type' => 'details',
+      '#title' => 'Headers',
+    ];
+    $build['headers']['table'] = [
+      '#type' => 'table',
+      '#rows' => $rows,
+      '#attributes' => [
+        'class' => ['table table__header'],
+      ],
+    ];
+
+    $rows = [
+      [
+        ['data' => $this->t('To: '), 'header' => TRUE],
+        $mail->to,
+      ],
+      [
+        ['data' => $this->t('Subject: '), 'header' => TRUE],
+        $mail->subject,
+      ],
+      [
+        ['data' => $this->t('Body: '), 'header' => TRUE],
+        Markup::create(nl2br(is_array($mail->body) ? implode('', $mail->body) : $mail->body)),
+      ],
+    ];
+
+    $build['mail_table'] = [
+      '#type' => 'table',
+      '#rows' => $rows,
+      '#attributes' => [
+        'class' => ['table table__content'],
+      ],
+    ];
+
+    return $build;
+  }
+
+  /**
+   * Send a test mail to current user.
+   *
+   * @return [type] [description]
+   */
+  public function sendMail() {
+    $module = 'devel_mail_logger';
+    $key = 'send_test';
+    $to = $this->currentUser->getEmail();
+    $params['message'] = 'body';
+    $params['subject'] = 'subject';
+    $langcode = $this->currentUser->getPreferredLangcode();
+    $send = TRUE;
+
+    $result = $this->pluginManagerMail->mail($module, $key, $to, $langcode, $params, NULL, $send);
+
+    return [
+      '#markup' => $this->t('Mail sent.'),
+    ];
+  }
+
+}
