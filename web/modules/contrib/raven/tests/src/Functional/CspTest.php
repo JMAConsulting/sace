@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\raven\Functional;
 
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -32,7 +31,6 @@ class CspTest extends BrowserTestBase {
       'administer site configuration',
       'send javascript errors to sentry',
     ]);
-    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
 
     $this->drupalGet('admin/config/development/logging');

@@ -56,13 +56,13 @@ class HttpClientMiddleware {
         }
         if ($client = $hub->getClient()) {
           $targets = $client->getOptions()->getTracePropagationTargets();
-          if ($targets === NULL || in_array($request->getUri()->getHost(), $targets)) {
+          if ($targets === NULL || \in_array($request->getUri()->getHost(), $targets)) {
             $request = $request
               ->withHeader('sentry-trace', \Sentry\getTraceparent())
               // @phpstan-ignore function.deprecated
               ->withHeader('traceparent', \Sentry\getW3CTraceparent());
           }
-          if ($targets !== NULL && in_array($request->getUri()->getHost(), $targets) && $this->requestSubscriber) {
+          if ($targets !== NULL && \in_array($request->getUri()->getHost(), $targets) && $this->requestSubscriber) {
             $this->requestSubscriber->sanitizeBaggage();
             $request = $request->withHeader('baggage', \Sentry\getBaggage());
           }

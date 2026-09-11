@@ -14,14 +14,11 @@ class RavenConfigForm {
   /**
    * Builds Raven config form.
    *
-   * @param mixed[] $form
+   * @param array{'#attached'?: array{library?: mixed[]}, '#submit'?: mixed[]} $form
    *   The logging and errors config form.
    */
   public static function buildForm(array &$form): void {
     $config = \Drupal::configFactory()->getEditable('raven.settings');
-    if (isset($form['#attached']) && !is_array($form['#attached'])) {
-      throw new \InvalidArgumentException('Form #attached key should either not exist, or be an array.');
-    }
     $form['#attached']['library'][] = 'raven/admin';
     $form['raven'] = [
       '#type'           => 'details',
@@ -58,7 +55,8 @@ class RavenConfigForm {
       '#step'           => 0.000001,
     ];
     $trace_propagation_targets_frontend = $config->get('trace_propagation_targets_frontend') ?: [];
-    assert(is_array($trace_propagation_targets_frontend));
+    \assert(\is_array($trace_propagation_targets_frontend));
+    $trace_propagation_targets_frontend = array_filter($trace_propagation_targets_frontend, 'is_string');
     $form['raven']['js']['trace_propagation_targets_frontend'] = [
       '#type'           => 'textarea',
       '#title'          => t('Trace propagation targets'),
@@ -150,7 +148,8 @@ class RavenConfigForm {
       '#options'        => $log_levels,
     ];
     $ignored_channels = $config->get('ignored_channels') ?: [];
-    assert(is_array($ignored_channels));
+    \assert(\is_array($ignored_channels));
+    $ignored_channels = array_filter($ignored_channels, 'is_string');
     $form['raven']['php']['ignored_channels'] = [
       '#type'           => 'textarea',
       '#title'          => t('Ignored channels'),
@@ -158,7 +157,8 @@ class RavenConfigForm {
       '#default_value'  => implode("\n", $ignored_channels),
     ];
     $ignored_messages = $config->get('ignored_messages') ?: [];
-    assert(is_array($ignored_messages));
+    \assert(\is_array($ignored_messages));
+    $ignored_messages = array_filter($ignored_messages, 'is_string');
     $form['raven']['php']['ignored_messages'] = [
       '#type'           => 'textarea',
       '#title'          => t('Ignored messages'),
@@ -282,7 +282,8 @@ class RavenConfigForm {
       '#step'           => 0.000001,
     ];
     $trace_propagation_targets_backend = $config->get('trace_propagation_targets_backend') ?: [];
-    assert(is_array($trace_propagation_targets_backend));
+    \assert(\is_array($trace_propagation_targets_backend));
+    $trace_propagation_targets_backend = array_filter($trace_propagation_targets_backend, 'is_string');
     $form['raven']['php']['performance']['trace_propagation_targets_backend'] = [
       '#type'           => 'textarea',
       '#title'          => t('Trace propagation targets'),
@@ -335,22 +336,22 @@ class RavenConfigForm {
    */
   public static function submitForm(array &$form, FormStateInterface $form_state): void {
     $ignored_channels = $form_state->getValue(['raven', 'php', 'ignored_channels']);
-    assert(is_string($ignored_channels));
+    \assert(\is_string($ignored_channels));
     $ignored_messages = $form_state->getValue(['raven', 'php', 'ignored_messages']);
-    assert(is_string($ignored_messages));
+    \assert(\is_string($ignored_messages));
     $trace_propagation_targets_backend = $form_state->getValue([
       'raven',
       'php',
       'performance',
       'trace_propagation_targets_backend',
     ]);
-    assert(is_string($trace_propagation_targets_backend));
+    \assert(\is_string($trace_propagation_targets_backend));
     $trace_propagation_targets_frontend = $form_state->getValue([
       'raven',
       'js',
       'trace_propagation_targets_frontend',
     ]);
-    assert(is_string($trace_propagation_targets_frontend));
+    \assert(\is_string($trace_propagation_targets_frontend));
     \Drupal::configFactory()->getEditable('raven.settings')
       ->set('client_key',
         $form_state->getValue(['raven', 'php', 'client_key']))
@@ -490,7 +491,7 @@ class RavenConfigForm {
    */
   public static function extractListFromString(string $string): array {
     $ignored_channels = preg_split('/\R/', $string, -1, PREG_SPLIT_NO_EMPTY);
-    assert(is_array($ignored_channels));
+    \assert(\is_array($ignored_channels));
     return array_map('trim', $ignored_channels);
   }
 

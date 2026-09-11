@@ -143,7 +143,7 @@ class RavenCommands extends DrushCommands {
       $logger->warning(dt('Sentry client key is not configured. No events will be sent to Sentry.'));
     }
 
-    if (!is_string($options['level'])) {
+    if (!\is_string($options['level'])) {
       throw new \InvalidArgumentException('Level must be a string.');
     }
     $severity = new Severity($options['level']);

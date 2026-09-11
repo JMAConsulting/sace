@@ -17,8 +17,10 @@ function ckeditor5_plugin_pack_media_embed_install($is_syncing): void {
 /**
  * Implements hook_uninstall().
  */
-function ckeditor5_plugin_pack_media_embed_uninstall($is_syncing) {
-  ckeditor5_plugin_pack_remove_ckeditor_plugins(['mediaEmbed']);
+function ckeditor5_plugin_pack_media_embed_uninstall($is_syncing): void {
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins(['mediaEmbed']);
+  }
 }
 
 /**

@@ -27,7 +27,9 @@ function ckeditor5_plugin_pack_restricted_editing_install($is_syncing): void {
  * Implements hook_uninstall().
  */
 function ckeditor5_plugin_pack_restricted_editing_uninstall($is_syncing): void {
-  ckeditor5_plugin_pack_remove_ckeditor_plugins(['restrictedEditing']);
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins(['restrictedEditing']);
+  }
 }
 
 /**

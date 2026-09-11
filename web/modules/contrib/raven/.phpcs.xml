@@ -12,4 +12,9 @@
   <rule ref="Drupal.Files.EndFileNewline.NoneFound">
     <exclude-pattern>./composer.json</exclude-pattern>
   </rule>
+  <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions">
+    <properties>
+      <property name="includeSpecialFunctions" value="true"/>
+    </properties>
+  </rule>
 </ruleset>
