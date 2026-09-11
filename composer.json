@@ -118,6 +118,9 @@
             "civicrm/civicrm-core": {
                 "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
             },
+        "drupal/fullcalendar_view": {
+            "Fix DateTime class not found in FullcalendarViewPreprocess": "./patches/fullcalendar_view-datetime-fix.patch"
+        },
             "drupal/blazy": {
                 "Apply patch to ensure that jquery is loaded when blazy is": "./blazy_jquery.patch"
             }

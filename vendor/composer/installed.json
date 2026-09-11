@@ -4720,7 +4720,9 @@
                         "message": "Covered by Drupal's security advisory policy"
                     }
                 },
-                "patches_applied": []
+                "patches_applied": {
+                    "Fix DateTime class not found in FullcalendarViewPreprocess": "./patches/fullcalendar_view-datetime-fix.patch"
+                }
             },
             "installation-source": "dist",
             "notification-url": "https://packages.drupal.org/8/downloads",
