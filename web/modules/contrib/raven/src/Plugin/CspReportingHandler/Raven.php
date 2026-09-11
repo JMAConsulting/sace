@@ -24,7 +24,7 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    *
-   * @phpstan-ignore-next-line CSP doesn't yet document the configuration array.
+   * @phpstan-ignore missingType.parameter,missingType.iterableValue
    */
   final public function __construct(array $configuration, $plugin_id, $plugin_definition, protected ConfigFactoryInterface $configFactory, protected $environment) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -33,13 +33,13 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    *
-   * @phpstan-ignore-next-line CSP doesn't yet document the configuration array.
+   * @phpstan-ignore missingType.iterableValue
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     return new static(
       $configuration,
       $plugin_id,
-      // @phpstan-ignore-next-line CSP doesn't yet document the plugin_definition type.
+      // @phpstan-ignore argument.type
       $plugin_definition,
       $container->get('config.factory'),
       $container->getParameter('kernel.environment'),
@@ -52,7 +52,7 @@ class Raven extends ReportingHandlerBase implements ContainerFactoryPluginInterf
   public function alterPolicy(Csp $policy): void {
     $config = $this->configFactory->get('raven.settings');
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-    if (!is_string($dsn)) {
+    if (!\is_string($dsn)) {
       return;
     }
     try {

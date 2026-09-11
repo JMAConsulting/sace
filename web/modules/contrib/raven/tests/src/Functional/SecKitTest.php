@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\raven\Functional;
 
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -32,7 +31,6 @@ class SecKitTest extends BrowserTestBase {
       'send javascript errors to sentry',
       'administer seckit',
     ]);
-    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
 
     $this->drupalGet('admin/config/development/logging');

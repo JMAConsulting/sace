@@ -45,7 +45,7 @@ class CspSubscriber implements EventSubscriberInterface {
       return;
     }
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-    if (!is_string($dsn)) {
+    if (!\is_string($dsn)) {
       return;
     }
     try {
@@ -66,7 +66,7 @@ class CspSubscriber implements EventSubscriberInterface {
         $dsn->getEnvelopeApiEndpointUrl()
       );
       $script[] = $initial_url;
-      if (($final_url = $config->get('error_embed_url')) && is_string($final_url)) {
+      if (($final_url = $config->get('error_embed_url')) && \is_string($final_url)) {
         $connect[] = $script[] = "$final_url/api/embed/error-page/";
       }
       else {

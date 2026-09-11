@@ -1,12 +1,12 @@
 raven:
-  version: 4.2.1
+  version: 4.2.2
   js:
     js/raven.js: {}
   dependencies:
     - raven/sentry-browser
     - core/drupalSettings
 admin:
-  version: 5.0.1
+  version: 5.0.2
   js:
     js/admin.js: {}
   dependencies:

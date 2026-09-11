@@ -26,8 +26,10 @@ function ckeditor5_plugin_pack_highlight_install($is_syncing): void {
 /**
  * Implements hook_uninstall().
  */
-function ckeditor5_plugin_pack_highlight_uninstall($is_syncing) {
-  ckeditor5_plugin_pack_remove_ckeditor_plugins(['highlight'], ['ckeditor5_plugin_pack_highlight__highlight']);
+function ckeditor5_plugin_pack_highlight_uninstall($is_syncing): void {
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins(['highlight'], ['ckeditor5_plugin_pack_highlight__highlight']);
+  }
 }
 
 function ckeditor5_plugin_pack_highlight_build_style_library(): array {

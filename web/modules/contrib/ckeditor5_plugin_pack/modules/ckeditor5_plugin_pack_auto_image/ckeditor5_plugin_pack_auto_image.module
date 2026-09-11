@@ -17,6 +17,8 @@ function ckeditor5_plugin_pack_auto_image_install($is_syncing): void {
 /**
  * Implements hook_uninstall().
  */
-function ckeditor5_plugin_pack_auto_image_uninstall($is_syncing) {
-  ckeditor5_plugin_pack_remove_ckeditor_plugins([], ['ckeditor5_plugin_pack_auto_image__auto_image']);
+function ckeditor5_plugin_pack_auto_image_uninstall($is_syncing): void {
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins([], ['ckeditor5_plugin_pack_auto_image__auto_image']);
+  }
 }

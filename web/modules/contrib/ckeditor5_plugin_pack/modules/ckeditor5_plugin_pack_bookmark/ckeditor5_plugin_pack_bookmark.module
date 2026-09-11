@@ -57,6 +57,8 @@ function ckeditor5_plugin_pack_bookmark_install($is_syncing): void {
 /**
  * Implements hook_uninstall().
  */
-function ckeditor5_plugin_pack_bookmark_uninstall($is_syncing) {
-  ckeditor5_plugin_pack_remove_ckeditor_plugins(['bookmark']);
+function ckeditor5_plugin_pack_bookmark_uninstall($is_syncing): void {
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins(['bookmark']);
+  }
 }

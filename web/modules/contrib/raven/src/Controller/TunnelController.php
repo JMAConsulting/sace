@@ -39,7 +39,7 @@ class TunnelController extends ControllerBase {
   public function doTunnel(Request $request) {
     $config = $this->config('raven.settings');
     $configured_dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-    if (!is_string($configured_dsn)) {
+    if (!\is_string($configured_dsn)) {
       return new Response(NULL, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     $configured_dsn = Dsn::createFromString($configured_dsn);
@@ -48,7 +48,7 @@ class TunnelController extends ControllerBase {
 
     $pieces = explode("\n", $envelope, 2);
     $header = json_decode($pieces[0], TRUE);
-    if (!is_array($header) || !isset($header['dsn']) || !is_string($header['dsn'])) {
+    if (!\is_array($header) || !isset($header['dsn']) || !\is_string($header['dsn'])) {
       return new Response(NULL, Response::HTTP_BAD_REQUEST);
     }
     $dsn = Dsn::createFromString($header['dsn']);
