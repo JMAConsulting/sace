@@ -70,7 +70,7 @@ function raven_test_page_attachments(array &$attachments): void {
   $attachments['#cache']['contexts'][] = 'url.query_args';
   if ($memory_limit = \Drupal::request()->query->get('memory_limit')) {
     ini_set('memory_limit', $memory_limit);
-    // @phpstan-ignore-next-line Yes, while loop condition is always true :)
+    // @phpstan-ignore while.alwaysTrue
     while (TRUE) {
       $attachments[] = 1;
     }
@@ -81,7 +81,7 @@ function raven_test_page_attachments(array &$attachments): void {
   if (\Drupal::request()->query->get('fatal')) {
     // phpcs:ignore
     define('SIMPLETEST_COLLECT_ERRORS', FALSE);
-    // @phpstan-ignore-next-line Break things intentionally.
+    // @phpstan-ignore class.notFound
     new \NoSuchClass();
   }
   if (\Drupal::request()->query->get('error')) {

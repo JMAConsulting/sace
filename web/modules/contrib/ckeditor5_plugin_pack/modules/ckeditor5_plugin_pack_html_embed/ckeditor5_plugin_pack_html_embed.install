@@ -63,6 +63,8 @@ function ckeditor5_plugin_pack_html_embed_runtime_requirements(): array {
 /**
  * Implements hook_uninstall().
  */
-function ckeditor5_plugin_pack_html_embed_uninstall($is_syncing) {
-  //ckeditor5_plugin_pack_remove_ckeditor_plugins(['htmlEmbed'], ['ckeditor5_plugin_pack_html_embed__html_embed']);
+function ckeditor5_plugin_pack_html_embed_uninstall($is_syncing): void {
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins(['htmlEmbed'], ['ckeditor5_plugin_pack_html_embed__html_embed']);
+  }
 }

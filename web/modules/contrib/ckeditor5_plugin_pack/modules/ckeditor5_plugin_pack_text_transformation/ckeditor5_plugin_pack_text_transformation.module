@@ -24,6 +24,8 @@ function ckeditor5_plugin_pack_text_transformation_install($is_syncing): void {
 /**
  * Implements hook_uninstall().
  */
-function ckeditor5_plugin_pack_text_transformation_uninstall($is_syncing) {
-  ckeditor5_plugin_pack_remove_ckeditor_plugins([], ['ckeditor5_plugin_pack_text_transformation__text_transformation']);
+function ckeditor5_plugin_pack_text_transformation_uninstall($is_syncing): void {
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins([], ['ckeditor5_plugin_pack_text_transformation__text_transformation']);
+  }
 }

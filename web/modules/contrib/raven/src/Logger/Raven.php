@@ -66,7 +66,7 @@ class Raven implements LoggerInterface, RavenInterface {
   ) {
     $config = $this->configFactory->get('raven.settings');
     $configured_environment = $config->get('environment');
-    if (is_string($configured_environment) && '' !== $configured_environment) {
+    if (\is_string($configured_environment) && '' !== $configured_environment) {
       $this->environment = $configured_environment;
     }
     // We cannot lazily initialize Sentry, because we want the scope to be
@@ -130,13 +130,13 @@ class Raven implements LoggerInterface, RavenInterface {
     $options['profiles_sample_rate'] = $config->get('profiles_sample_rate');
 
     // Proxy configuration (DSN is null before install).
-    $parsed_dsn = parse_url(is_string($options['dsn']) ? $options['dsn'] : '');
+    $parsed_dsn = parse_url(\is_string($options['dsn']) ? $options['dsn'] : '');
     if (!empty($parsed_dsn['host']) && !empty($parsed_dsn['scheme'])) {
       $http_client_config = $this->settings->get('http_client_config', []);
-      if (is_array($http_client_config) && isset($http_client_config['proxy']) && is_array($http_client_config['proxy']) && !empty($http_client_config['proxy'][$parsed_dsn['scheme']])) {
+      if (\is_array($http_client_config) && isset($http_client_config['proxy']) && \is_array($http_client_config['proxy']) && !empty($http_client_config['proxy'][$parsed_dsn['scheme']])) {
         $no_proxy = $http_client_config['proxy']['no'] ?? [];
         // No need to configure proxy if Sentry host is on proxy bypass list.
-        if (is_array($no_proxy) && !in_array($parsed_dsn['host'], $no_proxy, TRUE)) {
+        if (\is_array($no_proxy) && !\in_array($parsed_dsn['host'], $no_proxy, TRUE)) {
           $options['http_proxy'] = $http_client_config['proxy'][$parsed_dsn['scheme']];
         }
       }
@@ -183,11 +183,11 @@ class Raven implements LoggerInterface, RavenInterface {
     }
     $config = $this->configFactory->get('raven.settings');
     $log_levels = $config->get('log_levels');
-    if (!is_array($log_levels)) {
+    if (!\is_array($log_levels)) {
       $log_levels = [];
     }
     $ignored_channels = $config->get('ignored_channels');
-    if (!is_array($ignored_channels)) {
+    if (!\is_array($ignored_channels)) {
       $ignored_channels = [];
     }
     // Preserve the original $message argument for debugging purposes.
@@ -203,10 +203,11 @@ class Raven implements LoggerInterface, RavenInterface {
     $message_placeholders = $this->parser->parseMessagePlaceholders($unformatted_message, $context);
     $formatted_message = empty($message_placeholders) ? $unformatted_message : strtr($unformatted_message, $message_placeholders);
     $ignored_messages = $config->get('ignored_messages');
-    if (!is_array($ignored_messages)) {
+    if (!\is_array($ignored_messages)) {
       $ignored_messages = [];
     }
-    if (is_numeric($level) && !empty($log_levels[$level + 1]) && !in_array($context['channel'], $ignored_channels) && !in_array($unformatted_message, $ignored_messages)) {
+    // @phpstan-ignore offsetAccess.invalidOffset
+    if (is_numeric($level) && !empty($log_levels[$level + 1]) && !\in_array($context['channel'], $ignored_channels) && !\in_array($unformatted_message, $ignored_messages)) {
       $levels = [
         RfcLogLevel::EMERGENCY => Severity::FATAL,
         RfcLogLevel::ALERT => Severity::FATAL,
@@ -218,6 +219,7 @@ class Raven implements LoggerInterface, RavenInterface {
         RfcLogLevel::DEBUG => Severity::DEBUG,
       ];
       $event = Event::createEvent()
+        // @phpstan-ignore offsetAccess.invalidOffset
         ->setLevel(new Severity($levels[$level] ?? Severity::INFO))
         ->setMessage($unformatted_message, $message_placeholders, $formatted_message)
         ->setTimestamp($context['timestamp'])
@@ -260,7 +262,7 @@ class Raven implements LoggerInterface, RavenInterface {
           }
         }
         $stacktrace = $client->getStacktraceBuilder()->buildFromBacktrace($backtrace, '', 0);
-        $stacktrace->removeFrame(count($stacktrace->getFrames()) - 1);
+        $stacktrace->removeFrame(\count($stacktrace->getFrames()) - 1);
         $event->setStacktrace($stacktrace);
         $eventHint['stacktrace'] = $stacktrace;
       }
@@ -306,6 +308,7 @@ class Raven implements LoggerInterface, RavenInterface {
     $breadcrumb = [
       'category' => $context['channel'],
       'message' => (string) $formatted_message,
+      // @phpstan-ignore offsetAccess.invalidOffset
       'level' => $levels[$level] ?? Breadcrumb::LEVEL_INFO,
     ];
     foreach (['%line', '%file', '%type', '%function'] as $key) {

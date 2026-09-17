@@ -9,6 +9,11 @@
     return;
   }
 
+  // If Sentry SDK was blocked by a privacy extension, nothing to do.
+  if (typeof Sentry === 'undefined') {
+    return;
+  }
+
   // Add the browser performance tracing integration.
   drupalSettings.raven.options.integrations.push(
     // Additional browser tracing options can be applied by modifying

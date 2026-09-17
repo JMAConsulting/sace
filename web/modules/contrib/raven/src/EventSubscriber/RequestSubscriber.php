@@ -56,7 +56,7 @@ class RequestSubscriber implements EventSubscriberInterface, TrustedCallbackInte
     $request = $event->getRequest();
     $trace = $request->headers->get('sentry-trace') ?? $request->headers->get('traceparent', '');
     $baggage = $request->headers->get('baggage', '');
-    assert(is_string($trace) && is_string($baggage));
+    \assert(\is_string($trace) && \is_string($baggage));
     $transactionContext = \Sentry\continueTrace($trace, $baggage);
     if (!$config->get('request_tracing')) {
       return;

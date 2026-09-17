@@ -17,6 +17,8 @@ function ckeditor5_plugin_pack_empty_block_install($is_syncing): void {
 /**
  * Implements hook_uninstall().
  */
-function ckeditor5_plugin_pack_empty_block_uninstall($is_syncing) {
-  ckeditor5_plugin_pack_remove_ckeditor_plugins([], ['ckeditor5_plugin_pack_empty_block__empty_block']);
+function ckeditor5_plugin_pack_empty_block_uninstall($is_syncing): void {
+  if (!$is_syncing) {
+    ckeditor5_plugin_pack_remove_ckeditor_plugins([], ['ckeditor5_plugin_pack_empty_block__empty_block']);
+  }
 }

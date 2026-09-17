@@ -23,16 +23,16 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
   /**
    * {@inheritdoc}
    *
-   * @phpstan-ignore-next-line Core doesn't yet document the param or return arrays.
+   * @phpstan-ignore missingType.iterableValue,missingType.iterableValue
    */
   public function loadOverrides($names) {
     $overrides = [];
-    if (!in_array('seckit.settings', $names)) {
+    if (!\in_array('seckit.settings', $names)) {
       return $overrides;
     }
     $config = $this->configFactory->get('raven.settings');
     $dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
-    if (!is_string($dsn)) {
+    if (!\is_string($dsn)) {
       return $overrides;
     }
     try {
@@ -58,14 +58,17 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
           ['/embed/', '/error-page/'],
           $dsn->getEnvelopeApiEndpointUrl()
         );
-        if (($url = $config->get('error_embed_url')) && is_string($url)) {
+        if (($url = $config->get('error_embed_url')) && \is_string($url)) {
           $src[] = "$url/api/embed/error-page/";
         }
         if ($script_src = $seckitConfig->get('seckit_xss.csp.script-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
+          if (!\is_string($script_src)) {
+            throw new \UnexpectedValueException('Non-string Security Kit CSP rule encountered.');
+          }
           $overrides['seckit.settings']['seckit_xss']['csp']['script-src'] = implode(' ', array_merge([$script_src], $src));
         }
         if ($img_src = $seckitConfig->get('seckit_xss.csp.img-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
-          if (!is_string($img_src)) {
+          if (!\is_string($img_src)) {
             throw new \UnexpectedValueException('Non-string Security Kit CSP rule encountered.');
           }
           $img = explode(' ', $img_src);
@@ -73,7 +76,7 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
           $overrides['seckit.settings']['seckit_xss']['csp']['img-src'] = implode(' ', array_unique($img));
         }
         if ($style_src = $seckitConfig->get('seckit_xss.csp.style-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
-          if (!is_string($style_src)) {
+          if (!\is_string($style_src)) {
             throw new \UnexpectedValueException('Non-string Security Kit CSP rule encountered.');
           }
           $style = explode(' ', $style_src);
@@ -82,6 +85,9 @@ class SecKitOverrides implements ConfigFactoryOverrideInterface {
         }
       }
       if ($connect_src = $seckitConfig->get('seckit_xss.csp.connect-src') ?: $seckitConfig->get('seckit_xss.csp.default-src')) {
+        if (!\is_string($connect_src)) {
+          throw new \UnexpectedValueException('Non-string Security Kit CSP rule encountered.');
+        }
         $connect = [$connect_src];
         if (!$config->get('tunnel')) {
           $connect[] = $dsn->getEnvelopeApiEndpointUrl();

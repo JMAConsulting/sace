@@ -5,7 +5,8 @@
 
 ((Drupal, Sentry) => {
   const jsButton = document.getElementById('edit-raven-js-test');
-  if (Sentry && Sentry.isInitialized() && jsButton) {
+  // If Sentry SDK was blocked by a privacy extension, nothing to do.
+  if (typeof Sentry !== 'undefined' && Sentry.isInitialized() && jsButton) {
     jsButton.disabled = false;
     jsButton.classList.remove('is-disabled');
     jsButton.addEventListener('click', (event) => {

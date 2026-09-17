@@ -34,10 +34,10 @@
         "drupal/colorbutton": "^1.2",
         "drupal/config_ignore": "^3.3",
         "drupal/content_access": "^2.0",
-        "drupal/core": "10.6.14",
-        "drupal/core-composer-scaffold": "10.6.14",
-        "drupal/core-project-message": "10.6.14",
-        "drupal/core-recommended": "10.6.14",
+        "drupal/core": "10.6.17",
+        "drupal/core-composer-scaffold": "10.6.17",
+        "drupal/core-project-message": "10.6.17",
+        "drupal/core-recommended": "10.6.17",
         "drupal/ctools": "^4.1",
         "drupal/editor_advanced_image": "^3.1",
         "drupal/fontawesome": "^2.17",
@@ -118,6 +118,9 @@
             "civicrm/civicrm-core": {
                 "Apply patch to swap sharing from linkedIn to Instagram": "./patches/civicrm-core-share-instagram.patch"
             },
+        "drupal/fullcalendar_view": {
+            "Fix DateTime class not found in FullcalendarViewPreprocess": "./patches/fullcalendar_view-datetime-fix.patch"
+        },
             "drupal/blazy": {
                 "Apply patch to ensure that jquery is loaded when blazy is": "./blazy_jquery.patch"
             }

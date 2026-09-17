@@ -105,7 +105,7 @@ class TwigTracingExtension extends AbstractExtension {
         return $profile->getTemplate();
 
       default:
-        return sprintf('%s::%s(%s)', $profile->getTemplate(), $profile->getType(), $profile->getName());
+        return \sprintf('%s::%s(%s)', $profile->getTemplate(), $profile->getType(), $profile->getName());
     }
   }
 

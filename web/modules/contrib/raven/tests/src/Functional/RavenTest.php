@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\raven\Functional;
 
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -27,7 +26,6 @@ class RavenTest extends BrowserTestBase {
    */
   public function testRavenConfigAndHooks(): void {
     $admin_user = $this->drupalCreateUser(['administer site configuration']);
-    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
     $config['raven[php][client_key]'] = 'https://user@sentry.test/123456';
     $config['raven[php][fatal_error_handler]'] = 1;
@@ -81,7 +79,6 @@ class RavenTest extends BrowserTestBase {
    */
   public function testRavenTracing(): void {
     $admin_user = $this->drupalCreateUser(['administer site configuration']);
-    assert($admin_user instanceof AccountInterface);
     $this->drupalLogin($admin_user);
     $this->drupalGet('admin/config/development/logging');
     $config['raven[php][client_key]'] = 'https://user@sentry.test/123456';

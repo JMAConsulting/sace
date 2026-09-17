@@ -7,7 +7,7 @@ test_dependencies:
   - csp:csp
   - seckit:seckit
 
-# Information added by Drupal.org packaging script on 2025-08-15
-version: '5.0.24'
+# Information added by Drupal.org packaging script on 2026-08-06
+version: '5.0.25'
 project: 'raven'
-datestamp: 1755300253
+datestamp: 1786049844
