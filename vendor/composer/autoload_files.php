@@ -24,6 +24,7 @@ return array(
     'f844ccf1d25df8663951193c3fc307c8' => $vendorDir . '/twig/twig/src/Resources/string_loader.php',
     'def43f6c87e4f8dfd0c9e1b1bab14fe8' => $vendorDir . '/symfony/polyfill-iconv/bootstrap.php',
     '2f69d3914119f042cca9e44442d5ce95' => $baseDir . '/web/core/includes/bootstrap.inc',
+    '38a4a83ee9437fa4c0c7a481bbf0d2a0' => $baseDir . '/web/core/includes/guzzle_file_cookie_jar_shim.php',
     '72243e5536b63e298acb6476f01f1aff' => $vendorDir . '/thecodingmachine/safe/lib/special_cases.php',
     '3f648889e687f31c52f949ba8a9d0873' => $vendorDir . '/thecodingmachine/safe/generated/apache.php',
     'eeb4581d958421a4244aaa4167c6a575' => $vendorDir . '/thecodingmachine/safe/generated/apcu.php',
@@ -119,5 +120,5 @@ return array(
     '59969633dcdb4ee3e2fec945065028d6' => $vendorDir . '/civicrm/civicrm-core/guzzle_php81_shim.php',
     '801c31d8ed748cfa537fa45402288c95' => $vendorDir . '/psy/psysh/src/functions.php',
     'fb4ca2d97fe7ba6af750497425204e70' => $vendorDir . '/sentry/sentry/src/functions.php',
-    'afa317e1865e7c5d19212dd1a2439c6b' => $vendorDir . '/composer/autoload_civicrm_asset.php',
+    '1073e2832bfb96e3459defda2112f8bc' => $vendorDir . '/composer/autoload_civicrm_asset.php',
 );
