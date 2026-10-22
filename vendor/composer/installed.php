@@ -758,9 +758,9 @@
             'dev_requirement' => false,
         ),
         'drupal/fullcalendar_view' => array(
-            'pretty_version' => '5.2.5',
-            'version' => '5.2.5.0',
-            'reference' => '5.2.5',
+            'pretty_version' => '5.2.6',
+            'version' => '5.2.6.0',
+            'reference' => '5.2.6',
             'type' => 'drupal-module',
             'install_path' => __DIR__ . '/../../web/modules/contrib/fullcalendar_view',
             'aliases' => array(),
