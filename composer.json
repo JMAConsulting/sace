@@ -16,9 +16,9 @@
     ],
     "require": {
         "civicrm/civicrm-asset-plugin": "~1.1",
-        "civicrm/civicrm-core": "6.17.2",
-        "civicrm/civicrm-drupal-8": "6.17.2",
-        "civicrm/civicrm-packages": "6.17.2",
+        "civicrm/civicrm-core": "6.19.3.1",
+        "civicrm/civicrm-drupal-8": "6.19.3",
+        "civicrm/civicrm-packages": "6.19.3",
         "composer/installers": "^1.2",
         "drupal/admin_toolbar": "^3.4",
         "drupal/antibot": "^2.0",
@@ -91,7 +91,15 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": true,
-        "platform-check": false
+        "platform-check": false,
+        "audit": {
+          "ignore": {
+            "PKSA-r15m-kszr-8n8q": "manually patched",
+            "PKSA-dxd5-wy68-pq29": "manually patched",
+            "PKSA-96jv-mtjg-g2v8": "manually patched",
+            "PKSA-zb3c-6qhx-m249": "manually patched"
+          }
+       }
     },
     "scripts": {
        "post-drupal-scaffold-cmd": [
