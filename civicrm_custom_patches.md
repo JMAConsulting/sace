@@ -11,10 +11,11 @@ details with First Pay Credit Card Payment Processor
 5. IatsPayments [#c9e8db49841bdd3b60229a446d6cfe6b04554702](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/c9e8db49841bdd3b60229a446d6cfe6b04554702) (re-applied for iATS 1.12.0 as 95bcb9360) Resolve IATS FAPS notices as per upstream PR
 6. IatsPayments [#2f0a483e37dff22a754ae12cd21eaf4d203013c5](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/2f0a483e37dff22a754ae12cd21eaf4d203013c5) (re-applied for iATS 1.12.0 as fb63ea70c) Update Faps utf8 encoding to match upstream PR
 7. IatsPayments [#403347846e2123ad1496c8ddd15b08170e8d7fa5](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/403347846e2123ad1496c8ddd15b08170e8d7fa5) (re-applied for iATS 1.12.0 as 15cdc857b) Switched country and state to use two-letter notation
-8. ActivityIcal [#7ca595d3314a14b52531fc6f5e1d7762223c9acd](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/7ca595d3314a14b52531fc6f5e1d7762223c9acd) Re-apply necessary patches for SACE
-9. ActivityIcal [#47aa3cde805488e446937d177a561f144b5c2433](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/47aa3cde805488e446937d177a561f144b5c2433) Remove activity status filtering from ICAL feed
-10. ActivityIcal [#f937fa177cca3b381b32fffbfd6251ce16d9a452](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/f937fa177cca3b381b32fffbfd6251ce16d9a452) Remove some uncessary require onces
-11. ActivityIcal [#a6bba54a3](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/a6bba54a3) Added outlook safe handling
+8. IatsPayments [#f9ec4f488](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/f9ec4f488951d66081b95d1cccdae29b94af58f2) (re-applied for iATS 1.12.0 as 6c6bafde4) Remove FAPS request debug logging
+9. ActivityIcal [#7ca595d3314a14b52531fc6f5e1d7762223c9acd](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/7ca595d3314a14b52531fc6f5e1d7762223c9acd) Re-apply necessary patches for SACE
+10. ActivityIcal [#47aa3cde805488e446937d177a561f144b5c2433](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/47aa3cde805488e446937d177a561f144b5c2433) Remove activity status filtering from ICAL feed
+11. ActivityIcal [#f937fa177cca3b381b32fffbfd6251ce16d9a452](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/f937fa177cca3b381b32fffbfd6251ce16d9a452) Remove some uncessary require onces
+12. ActivityIcal [#a6bba54a3](https://lab.jmaconsulting.biz/jma/sace/sace-civicrm-site/-/commit/a6bba54a3) Added outlook safe handling
 
 **NOTE: In future, please update this file with the commit link whenever a new core or extension customisation is added.**
 
