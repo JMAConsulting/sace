@@ -15,9 +15,9 @@ function cdntaxreceipts_issued_on($contribution_id) {
 
   $sql = "SELECT issued_on, l.id as receipt_id FROM cdntaxreceipts_log l
     INNER JOIN cdntaxreceipts_log_contributions c ON l.id = c.receipt_id
-    WHERE is_duplicate = 0 AND contribution_id = $contribution_id";
+    WHERE is_duplicate = 0 AND contribution_id = %1";
 
-  $dao = CRM_Core_DAO::executeQuery($sql);
+  $dao = CRM_Core_DAO::executeQuery($sql, [1 => [$contribution_id, 'Integer']]);
   if ( $dao->fetch() ) {
     return array($dao->issued_on, $dao->receipt_id);
   }
@@ -38,10 +38,13 @@ function cdntaxreceipts_annual_issued_on($contactId, $year) {
 
   $sql = "SELECT issued_on, l.id as receipt_id FROM cdntaxreceipts_log l
     INNER JOIN cdntaxreceipts_log_contributions c ON l.id = c.receipt_id
-    WHERE is_duplicate = 0 AND issue_type = 'annual' AND contact_id = $contactId
-      AND year(receive_date) = $year";
+    WHERE is_duplicate = 0 AND issue_type = 'annual' AND contact_id = %1
+      AND year(receive_date) = %2";
 
-  $dao = CRM_Core_DAO::executeQuery($sql);
+  $dao = CRM_Core_DAO::executeQuery($sql, [
+    1 => [$contactId, 'Integer'],
+    2 => [$year, 'Integer'],
+  ]);
   if ( $dao->fetch() ) {
     return array($dao->issued_on, $dao->receipt_id);
   }
@@ -56,7 +59,11 @@ function cdntaxreceipts_contributions_not_receipted($contactId, $year) {
   // In-kind are excluded because in order to print the related fields on the
   // receipt it needs to be receipted on its own and can't be grouped.
   $financial_type_id = \Civi::settings()->get('cdntaxreceipts_inkind') ?? 0;
-  $sqlParams = array(1 => array($financial_type_id, 'Integer'));
+  $sqlParams = [
+    1 => [$financial_type_id, 'Integer'],
+    2 => [$contactId, 'Integer'],
+    3 => [$year, 'Integer'],
+  ];
   $sql = "SELECT contrib.id as contribution_id, contrib.total_amount,
         ifnull(contrib.non_deductible_amount, 0) as non_deductible_amount, contrib.receive_date
     FROM civicrm_contribution contrib
@@ -66,7 +73,7 @@ function cdntaxreceipts_contributions_not_receipted($contactId, $year) {
             ON contrib.id = cdntax_c.contribution_id
     WHERE cdntax_c.receipt_id IS NULL "
     . (empty($financial_type_id) ? '' : " AND contrib_type.id <> %1 ")
-    . " AND contrib.contact_id = $contactId AND YEAR(contrib.receive_date) = $year
+    . " AND contrib.contact_id = %2 AND YEAR(contrib.receive_date) = %3
     ORDER BY contrib.id";
 
   $dao = CRM_Core_DAO::executeQuery($sql, $sqlParams);
@@ -108,9 +115,9 @@ function cdntaxreceipts_load_receipt($receipt_id) {
         c.contribution_id, c.contribution_amount, c.receipt_amount, c.receive_date
     FROM cdntaxreceipts_log l
     INNER JOIN cdntaxreceipts_log_contributions c ON l.id = c.receipt_id
-    WHERE is_duplicate = 0 AND l.id = {$receipt_id}";
+    WHERE is_duplicate = 0 AND l.id = %1";
 
-  $dao = CRM_Core_DAO::executeQuery($sql);
+  $dao = CRM_Core_DAO::executeQuery($sql, [1 => [$receipt_id, 'Integer']]);
 
   if ( $dao->fetch() ) {
     $issued_by = CRM_Core_BAO_UFMatch::getUFValues($dao->uid);
@@ -256,7 +263,7 @@ function cdntaxreceipts_cancel($receipt_id) {
 function cdntaxreceipts_contributions_get_status($contributionIds = array()) {
   $contributions = array();
 
-  $ids = implode(',', $contributionIds);
+  $ids = implode(',', array_filter(array_map('intval', $contributionIds)));
 
   if (!empty($contributionIds)) {
     $financial_type_id = \Civi::settings()->get('cdntaxreceipts_inkind') ?? 0;

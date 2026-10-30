@@ -19,21 +19,15 @@
  *   category: 'Transactions', 'Ach', or 'Vault'
  *   test: set to anything non-empty for testing
  * $result = $faps->request($credentials, $request_params)
- *
+ * 
  **/
 
 /**
- * Define a utility class required by FapsRequest
+ * Define a utility class required by FapsRequest 
  * Should likely be in a namespace.
  */
 
 class Faps_Transaction implements JsonSerializable {
-
-  /**
-   * Transaction Data
-   */
-  public $array;
-
   /**
   * Transaction class: Ties into the PHP JSON Functions & makes them easily available to the CRM_Iats_FapsRequest class.
   * Using the class like so: $a = json_encode(new Faps_Transaction($txnarray), JSON_PRETTY_PRINT)
@@ -41,8 +35,6 @@ class Faps_Transaction implements JsonSerializable {
   */
   public function __construct(array $array) {
     $this->array = $array;
-
-
   }
   public function jsonSerialize(): array {
     return $this->array;
@@ -55,12 +47,10 @@ class Faps_Transaction implements JsonSerializable {
 class CRM_Iats_FapsRequest {
 
   const DEBUG = false;
-  public $result = array();
+  public $result = [];
   public $status = "";
   private $liveUrl = "https://secure.1stpaygateway.net/secure/RestGW/Gateway/Transaction/";
   private $testUrl = "https://secure-v.goemerchant.com/secure/RestGW/Gateway/Transaction/";
-  private $action = '';
-  private $apiRequest = '';
 
   /**
    *
@@ -83,57 +73,55 @@ class CRM_Iats_FapsRequest {
     $data = array_merge($credentials, $request_params);
     try {
       if ($data == NULL) {
-        $data = array();
+        $data = [];
       }
       $url = $this->apiRequest;
-      $this->result = array();
-      $data = array_map(function($item) {
-        return mb_convert_encoding($item, 'UTF-8', mb_detect_encoding($item));
-      }, $data);
+      $this->result = [];
       $jsondata = json_encode(new Faps_Transaction($data), JSON_PRETTY_PRINT);
+      $jsondata = utf8_encode($jsondata);
       // CRM_Core_Error::debug_var('jsondata', $jsondata);
       $curl_handle = curl_init();
       curl_setopt($curl_handle, CURLOPT_URL, $url);
       curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, "POST");
       curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $jsondata);
       curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($curl_handle, CURLOPT_HTTPHEADER, array(
+      curl_setopt($curl_handle, CURLOPT_HTTPHEADER, [
         "Content-type: application/json; charset-utf-8",
         "Content-Length: " . strlen($jsondata)
-      ));
+      ]);
       curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
-      $response = curl_exec($curl_handle);
+      $this->response = curl_exec($curl_handle);
       if (self::DEBUG) {
-        CRM_Core_Error::debug_var('JSON Response', $response);
+        CRM_Core_Error::debug_var('JSON Response', $this->response);
       }
       $this->status = curl_getinfo($curl_handle,CURLINFO_HTTP_CODE);
       if (connection_aborted()) {
         // handle aborted requests that PHP can detect, returning a result that indicates POST was aborted.
-        $this->result = array(
+        $this->result = [
           "isError" => TRUE,
           "errorMessages" => "Request Aborted",
           "isValid" => FALSE,
-          "validations" => array(),
+          "validations" => [],
           "action" => "gatewayError"
-        );
+        ];
       }
       elseif (curl_errno($curl_handle) == 28 ){
         //This will handle timeouts as per cURL error definitions.
-        $this->result = array(
+        $this->result = [
           "isError" => TRUE,
           "errorMessages" => "Request Timed Out",
           "isValid" => FALSE,
-          "validations" => array(),
+          "validations" => [],
           "action" => "gatewayError"
-        );
+        ];
       }
       else {
-        // CRM_Core_Error::debug_var('Response', $response);
-        $this->result = json_decode($response, TRUE);
+        // CRM_Core_Error::debug_var('Response', $this->response);
+        $this->result = json_decode($this->response, TRUE);
         if (empty($this->result['isSuccess'])  && $log_failure) {
           CRM_Core_Error::debug_var('FAPS transaction failure result', $this->result);
           // $this->result['errorMessages'] = $this->result['data']['authResponse'];
-        }
+        } 
       }
       return $this->result;
     }
@@ -142,15 +130,4 @@ class CRM_Iats_FapsRequest {
       return $e->getMessage();
     }
   }
-
-  public static function credentials($payment_processor_id) {
-    static $credentials = [];
-    if (empty($credentials[$payment_processor_id])) {
-      $credentials[$payment_processor_id] = civicrm_api3('PaymentProcessor', 'get', [
-        'id' => $payment_processor_id,
-      ])['values'][$payment_processor_id];
-    }
-    return $credentials[$payment_processor_id];
-  }
-
 }
