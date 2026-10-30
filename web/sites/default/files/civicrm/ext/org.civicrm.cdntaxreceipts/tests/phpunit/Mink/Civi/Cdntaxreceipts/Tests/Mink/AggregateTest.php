@@ -71,8 +71,8 @@ class AggregateTest extends CdntaxreceiptsBase {
 
     // check logs
     $records = \CRM_Core_DAO::executeQuery("SELECT * FROM cdntaxreceipts_log")->fetchAll();
-    $expecteds = array(
-      0 => array(
+    $expecteds = [
+      0 => [
         'id' => '1',
         'issued_on' => $mock_time,
         'location_issued' => 'Toronto',
@@ -83,8 +83,8 @@ class AggregateTest extends CdntaxreceiptsBase {
         'issue_type' => 'aggregate',
         'issue_method' => 'print',
         'receipt_status' => 'issued',
-      ),
-      1 => array(
+      ],
+      1 => [
         'id' => '2',
         'issued_on' => $mock_time,
         'location_issued' => 'Toronto',
@@ -95,8 +95,8 @@ class AggregateTest extends CdntaxreceiptsBase {
         'issue_type' => 'aggregate',
         'issue_method' => 'print',
         'receipt_status' => 'issued',
-      ),
-    );
+      ],
+    ];
     // There's other fields we either can't reliably know or don't care about,
     // but the expected should match a subset of them.
     foreach ($expecteds as $eid => $expected) {

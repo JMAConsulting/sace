@@ -285,10 +285,10 @@ class CRM_Cdntaxreceipts_Utils_Queue {
 
           // create a page (landscape or portrait depending on the imported page size)
           if ($size['width'] > $size['height']) {
-            $pdf->AddPage('L', array($size['width'], $size['height']));
+            $pdf->AddPage('L', [$size['width'], $size['height']]);
           }
           else {
-            $pdf->AddPage('P', array($size['width'], $size['height']));
+            $pdf->AddPage('P', [$size['width'], $size['height']]);
           }
 
           // use the imported page
