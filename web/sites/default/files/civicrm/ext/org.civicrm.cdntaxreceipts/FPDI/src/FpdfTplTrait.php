@@ -79,7 +79,7 @@ trait FpdfTplTrait
             $this->CurOrientation = $orientation;
             $this->CurPageSize = $size;
 
-            $this->PageInfo[$this->page]['size'] = array($this->wPt, $this->hPt);
+            $this->PageInfo[$this->page]['size'] = [$this->wPt, $this->hPt];
         }
     }
 

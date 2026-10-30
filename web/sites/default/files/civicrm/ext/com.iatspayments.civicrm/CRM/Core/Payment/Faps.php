@@ -23,7 +23,6 @@
  */
 
 use Civi\Payment\Exception\PaymentProcessorException;
-use CRM_Iats_ExtensionUtil as E;
 
 class CRM_Core_Payment_Faps extends CRM_Core_Payment {
 
@@ -63,7 +62,7 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    */
   function checkConfig( ) {
 
-    $error = array();
+    $error = [];
 
     if (empty($this->_paymentProcessor['user_name'])) {
       $error[] = ts('Processor Id is not set in the Administer CiviCRM &raquo; System Settings &raquo; Payment Processors.');
@@ -90,17 +89,17 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    * Mangle the days settings to make it easier to test if it is set.
    */
   protected function getSettings($key = '') {
-    static $settings = array();
+    static $settings = [];
     if (empty($settings)) {
       try {
         $settings = CRM_Iats_Utils::getSettings();
         if (empty($settings['days'])) {
-          $settings['days'] = array('-1');
+          $settings['days'] = ['-1'];
         }
       }
       catch (CRM_Core_Exception $e) {
         // Assume no settings exist, use safest fallback.
-        $settings = array('days' => array('-1'));
+        $settings = ['days' => ['-1']];
       }
     }
     return (empty($key) ? $settings : (empty($settings[$key]) ? '' : $settings[$key]));
@@ -114,7 +113,7 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    */
 
   protected function getCreditCardFormFields() {
-    $fields =  $this->disable_cryptogram ? parent::getCreditCardFormFields() : array('cryptogram');
+    $fields =  $this->disable_cryptogram ? parent::getCreditCardFormFields() : ['cryptogram'];
     return $fields;
   }
 
@@ -129,19 +128,19 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
   public function getPaymentFormFieldsMetadata() {
     $metadata = parent::getPaymentFormFieldsMetadata();
     if (!$this->disable_cryptogram) {
-      $metadata['cryptogram'] = array(
+      $metadata['cryptogram'] = [
         'htmlType' => 'text',
         'cc_field' => TRUE,
         'name' => 'cryptogram',
         'title' => ts('Cryptogram'),
-        'attributes' => array(
+        'attributes' => [
           'class' => 'cryptogram',
           'size' => 30,
           'maxlength' => 60,
           'autocomplete' => 'off',
-        ),
+        ],
         'is_required' => TRUE,
-      );
+      ];
     }
     return $metadata;
   }
@@ -195,18 +194,18 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
     $resources = CRM_Core_Resources::singleton();
     $cryptoCss = $resources->getUrl('com.iatspayments.civicrm', 'css/crypto.css');
     $markup = '<link type="text/css" rel="stylesheet" href="'.$cryptoCss.'" media="all" />'; // <script type="text/javascript" src="'.$cryptojs.'"></script>';
-    CRM_Core_Region::instance('billing-block')->add(array(
+    CRM_Core_Region::instance('billing-block')->add([
       'markup' => $markup,
-    ));
+    ]);
     // the cryptojs above is the one on the 1pay server, now I load and invoke the extension's crypto.js
     $myCryptoJs = $resources->getUrl('com.iatspayments.civicrm', 'js/crypto.js');
     // after manually doing what addVars('iats', $jsVariables) would normally do
     $script = 'var iatsSettings = ' . json_encode($jsVariables) . ';';
     $script .= 'var cryptoJs = "'.$myCryptoJs.'";';
     $script .= 'CRM.$(function ($) { $.getScript(cryptoJs); });';
-    CRM_Core_Region::instance('billing-block')->add(array(
+    CRM_Core_Region::instance('billing-block')->add([
       'script' => $script,
-    ));
+    ]);
     return FALSE;
 
   }
@@ -275,9 +274,9 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
   public function doPayment(&$params, $component = 'contribute') {
     // CRM_Core_Error::debug_var('doPayment params', $params);
     if (empty($params['amount'])) {
-      return _iats_payment_status_complete();
+      return CRM_Iats_Utils::paymentStatus('Completed');
     }
-
+    CRM_Iats_Utils::checkInvoiceId($params);
     $isRecur = $params['is_recur'] ?? NULL;
     if ($isRecur && empty($params['contributionRecurID'])) {
       return self::error('Invalid call to doPayment with is_recur and no contributionRecurID');
@@ -285,18 +284,18 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
     $usingCrypto = !empty($params['cryptogram']);
     // FAPS only allows ipv4 addresses
     $ipAddress = CRM_Iats_Transaction::remote_ip_address(FILTER_FLAG_IPV4);
-    $credentials = array(
+    $credentials = [
       'merchantKey' => $this->_paymentProcessor['signature'],
       'processorId' => $this->_paymentProcessor['user_name']
-    );
+    ];
     $vault_key = $vault_id = '';
     if ($isRecur) {
       // Store the params in a vault before attempting payment
       // I first have to convert the Auth crypto into a token.
-      $options = array(
+      $options = [
         'action' => 'GenerateTokenFromCreditCard',
         'test' => $this->is_test,
-      );
+      ];
       $token_request = new CRM_Iats_FapsRequest($options);
       $request = $this->convertParams($params, $options['action']);
       $request['ipAddress'] = $ipAddress;
@@ -315,10 +314,10 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       else {
         return self::error($result);
       }
-      $options = array(
+      $options = [
         'action' => 'VaultCreateCCRecord',
         'test' => $this->is_test,
-      );
+      ];
       $vault_request = new CRM_Iats_FapsRequest($options);
       // auto-generate a compliant vault key
       $vault_key = self::generateVaultKey($request['ownerEmail']);
@@ -369,10 +368,8 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
           // create a pending contribution and adjust the next scheduled date.
           if ($receive_date !== $today) {
             // set the receieve time to 3:00 am for a better admin experience
-            $update = array(
-              'payment_status_id' => 2,
-              'receive_date' => date('Ymd', $receive_ts) . '030000',
-            );
+            $update = CRM_Iats_Utils::paymentStatus('Pending')
+              + ['receive_date' => date('Ymd', $receive_ts) . '030000'];
             // update the recurring and contribution records with the receive date,
             // i.e. make up for what core doesn't do
             $this->updateRecurring($params, $update);
@@ -390,16 +387,16 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
         return self::error($result);
       }
       // now set the options for taking the money
-      $options = array(
+      $options = [
         'action' => 'SaleUsingVault',
         'test' => $this->is_test,
-      );
+      ];
     }
     else { // not recurring, use the simple sale option for taking the money
-      $options = array(
+      $options = [
         'action' => 'Sale',
         'test' => $this->is_test,
-      );
+      ];
     }
     // now take the money
     $payment_request = new CRM_Iats_FapsRequest($options);
@@ -409,17 +406,13 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       $request['vaultKey'] = $vault_key;
       $request['vaultId'] = $vault_id;
     }
-    \Civi::log()->debug('L412 Faps request', ['request' => $request, 'params' => $params]);
     // Make the request.
     // CRM_Core_Error::debug_var('payment request', $request);
     $result = $payment_request->request($credentials, $request);
     // CRM_Core_Error::debug_var('result', $result);
     $success = (!empty($result['isSuccess']));
     if ($success) {
-      // put the old version of the return param in just to be sure
-      $params['contribution_status_id'] = 1;
-      // For versions >= 4.6.6, the proper key.
-      $params['payment_status_id'] = 1;
+      $params += CRM_Iats_Utils::paymentStatus('Completed');
       $params['trxn_id'] = trim($result['data']['referenceNumber']).':'.time();
       return $params;
     }
@@ -431,14 +424,14 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
   /**
    * Support corresponding CiviCRM method
    */
-  public function changeSubscriptionAmount(&$message = '', $params = array()) {
+  public function changeSubscriptionAmount(&$message = '', $params = []) {
     return TRUE;
   }
 
   /**
    * Support corresponding CiviCRM method
    */
-  public function cancelSubscription(&$message = '', $params = array()) {
+  public function cancelSubscription(&$message = '', $params = []) {
     $userAlert = ts('You have cancelled this recurring contribution.');
     CRM_Core_Session::setStatus($userAlert, ts('Warning'), 'alert');
     return TRUE;
@@ -452,13 +445,13 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    * e.g. the commented out fields below don't work properly here.
    */
   public function getEditableRecurringScheduleFields() {
-    return array('amount',
+    return ['amount',
          'installments',
          'next_sched_contribution_date',
 //         'contribution_status_id',
 //         'start_date',
          'is_email_receipt',
-       );
+       ];
   }
 
   /*
@@ -477,52 +470,15 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    * @return array
    */
   protected function convertParams($params, $method) {
-    $convert = [
-      'ownerEmail' => 'email',
-      'ownerStreet' => 'street_address',
-      'ownerCity' => 'city',
-      'ownerState' => 'state_province',
-      'ownerZip' => 'postal_code',
-      'ownerCountry' => 'country',
-      'orderId' => 'invoiceID',
-      'cardNumber' => 'credit_card_number',
-      'cardExpYear' => 'year',
-      'cardExpMonth' => 'month',
-      'cVV' => 'cvv2',
-      'transactionAmount' => 'amount',
-      'creditCardCryptogram' => 'cryptogram',
-      'ownerName' => [
-        'billing_first_name',
-        'billing_last_name',
-      ],
-    ];
-    if ($method == 'VaultCreateCCRecord') {
-      $convert = array_merge($convert, [
-        'cardType' => 'cardtype',
-        'creditCardToken' => 'creditCardToken',
-        'cardExpMonth' => 'cardExpMonth',
-        'cardExpYear' => 'cardExpYear',
-        'ownerName' => [
-          'first_name',
-          'middle_name',
-          'last_name',
-        ],
-        'defaultAccount' => 'defaultAccount',
-        'vaultKey' => 'token',
-      ]);
-    }
-
     if (empty($params['country']) && !empty($params['country_id'])) {
       try {
         $result = civicrm_api3('Country', 'get', [
           'sequential' => 1,
-          'return' => ['iso_code'],
+          'return' => ['name'],
           'id' => $params['country_id'],
           'options' => ['limit' => 1],
         ]);
-        // FAPS/1stPay expects the 2-letter ISO country code (e.g. "CA"), not
-        // the full name ("Canada"), otherwise it rejects with "Invalid Address Format".
-        $params['country'] = $result['values'][0]['iso_code'];
+        $params['country'] = $result['values'][0]['name'];
       }
       catch (CRM_Core_Exception $e) {
         Civi::log()->info('Unexpected error from api3 looking up countries/states/provinces');
@@ -532,56 +488,33 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       try {
         $result = civicrm_api3('StateProvince', 'get', [
           'sequential' => 1,
-          'return' => ['abbreviation'],
+          'return' => ['name'],
           'id' => $params['state_province_id'],
           'options' => ['limit' => 1],
         ]);
-        // FAPS/1stPay expects the 2-letter state/province code (e.g. "YT"), not
-        // the full name ("Yukon Territory"), otherwise it rejects with "Invalid Address Format".
-        $params['state_province'] = $result['values'][0]['abbreviation'];
+        $params['state_province'] = $result['values'][0]['name'];
       }
       catch (CRM_Core_Exception $e) {
         Civi::log()->info('Unexpected error from api3 looking up countries/states/provinces');
       }
     }
     $request = [];
+    $convert = [
+      'ownerEmail' => 'email',
+      'ownerStreet' => 'street_address',
+      'ownerCity' => 'city',
+      'ownerState' => 'state_province',
+      'ownerZip' => 'postal_code',
+      'ownerCountry' => 'country',
+      'orderId' => 'invoiceID',
+      'cardNumber' => 'credit_card_number',
+//      'cardtype' => 'credit_card_type',
+      'cVV' => 'cvv2',
+      'creditCardCryptogram' => 'cryptogram',
+    ];
     foreach ($convert as $r => $p) {
-      if ($r == 'ownerName') {
-        $request[$r] = '';
-        foreach ($p as $namePart) {
-          $request[$r] .= !empty($params[$namePart]) ? $params[$namePart] . ' ' : '';
-        }
-        continue;
-      }
       if (isset($params[$p])) {
-        if ($r == 'transactionAmount') {
-          $request[$r] = sprintf('%01.2f', CRM_Utils_Rule::cleanMoney($params[$p]));
-        }
-        elseif ($r == 'cardExpYear') {
-          $request[$r] = sprintf('%02d', $params[$p] % 100);
-        }
-        elseif ($r == 'cardExpMonth') {
-          $request[$r] =  sprintf('%02d', $params[$p]);
-        }
-        elseif ($r == 'cardtype') {
-          $mop = [
-            'Visa' => 'VISA',
-            'MasterCard' => 'MC',
-            'Amex' => 'AMX',
-            'Discover' => 'DSC',
-          ];
-          $request[$r] = $mop[$params[$p]];
-        }
-        elseif($r == 'defaultAccount') {
-          $request[$r] = true;
-        }
-        elseif ($r == 'vaultKey') {
-          $matches = explode(':', $params[$p]);
-          $request[$r] = $matches[0];
-        }
-        else {
-          $request[$r] = str_replace(';','',$params[$p]);
-        }
+        $request[$r] = str_replace(';','',$params[$p]);
       }
     }
     if (empty($params['email'])) {
@@ -592,6 +525,14 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
         $request['ownerEmail'] = $params['email-Primary'];
       }
     }
+    $request['ownerName'] = $params['billing_first_name'].' '.$params['billing_last_name'];
+    if (!empty($params['month'])) {
+      $request['cardExpMonth'] = sprintf('%02d', $params['month']);
+    }
+    if (!empty($params['year'])) {
+      $request['cardExpYear'] = sprintf('%02d', $params['year'] % 100);
+    }
+    $request['transactionAmount'] = sprintf('%01.2f', CRM_Utils_Rule::cleanMoney($params['amount']));
     // additional method-specific values (none!)
     //CRM_Core_Error::debug_var('params for conversion', $params);
     //CRM_Core_Error::debug_var('method', $method);
@@ -612,7 +553,7 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       throw new PaymentProcessorException(ts('Error %1', [1 => $this->errorString($error)]), $error_code);
     }
     elseif (is_array($error)) {
-      $errors = array();
+      $errors = [];
       if ($error['isError']) {
         foreach($error['errorMessages'] as $message) {
           $errors[] = $message;
@@ -644,17 +585,18 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    * This function will alter the recurring schedule as an intended side effect.
    * and return the modified the params.
    */
-  protected function updateRecurring($params, $update = array()) {
+  protected function updateRecurring($params, $update = []) {
     // If the recurring record already exists, let's fix the next contribution and start dates,
     // in case core isn't paying attention.
     // We also set the schedule to 'in-progress' (even for ACH/EFT when the first one hasn't been verified),
     // because we want the recurring job to run for this schedule.
     if (!empty($params['contributionRecurID'])) {
       $recur_id = $params['contributionRecurID'];
-      $recur_update = array(
+      $recur_update = [
         'id' => $recur_id,
         'contribution_status_id' => 'In Progress',
-      );
+        'contribution_status' => 'In Progress',
+      ];
       // use the receive date to set the next sched contribution date.
       // By default, it's empty, unless we've got a future start date.
       if (empty($update['receive_date'])) {
@@ -675,7 +617,7 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       catch (CRM_Core_Exception $e) {
         // Not a critical error, just log and continue.
         $error = $e->getMessage();
-        Civi::log()->info('Unexpected error updating the next scheduled contribution date for id {id}: {error}', array('id' => $recur_id, 'error' => $error));
+        Civi::log()->info('Unexpected error updating the next scheduled contribution date for id {id}: {error}', ['id' => $recur_id, 'error' => $error]);
       }
     }
     else {
@@ -690,13 +632,13 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
    * This function will alter the civi contribution record.
    * Implemented only to update the receive date.
    */
-  protected function updateContribution($params, $update = array()) {
+  protected function updateContribution($params, $update = []) {
     if (!empty($params['contributionID'])  && !empty($update['receive_date'])) {
       $contribution_id = $params['contributionID'];
-      $update = array(
+      $update = [
         'id' => $contribution_id,
         'receive_date' => $update['receive_date']
-      );
+      ];
       try {
         $result = civicrm_api3('Contribution', 'create', $update);
         return $result;
@@ -704,101 +646,10 @@ class CRM_Core_Payment_Faps extends CRM_Core_Payment {
       catch (CRM_Core_Exception $e) {
         // Not a critical error, just log and continue.
         $error = $e->getMessage();
-        Civi::log()->info('Unexpected error updating the contribution date for id {id}: {error}', array('id' => $contribution_id, 'error' => $error));
+        Civi::log()->info('Unexpected error updating the contribution date for id {id}: {error}', ['id' => $contribution_id, 'error' => $error]);
       }
     }
     return false;
-  }
-
-  /*
-   * Implement the ability to update the billing info for recurring contributions,
-   * This functionality will apply to back-end and front-end,
-   * so it's only enabled when configured as on via the iATS admin settings.
-   * The default isSupported method is overridden above to achieve this.
-   *
-   * Return TRUE on success or an error.
-   */
-  public function updateSubscriptionBillingInfo(&$message = '', $params = array()) {
-    // Fix billing form update bug https://github.com/iATSPayments/com.iatspayments.civicrm/issues/252 by getting crid from _POST
-    $postValues = \Drupal::request()->request->all();
-    $getValues = \Drupal::request()->query->all();
-    if (empty($params['crid'])) {
-      $params['crid'] = !empty($postValues['crid']) ? (int) $postValues['crid'] : (!empty($getValues['crid']) ? (int) $getValues['crid'] : 0);
-      if (empty($params['crid']) && !empty($params['entryURL'])) {
-        $components = parse_url($params['entryURL']);
-        parse_str(html_entity_decode($components['query']), $entryURLquery);
-        $params['crid'] = $entryURLquery['crid'];
-      }
-    }
-    // updatedBillingInfo array changed sometime after 4.7.27
-    $crid = !empty($params['crid']) ? $params['crid'] : $params['recur_id'];
-    if (empty($crid)) {
-      $alert = E::ts('This system is unable to perform self-service updates to credit cards. Please contact the administrator of this site.');
-      throw new Exception($alert);
-    }
-    $contribution_recur = civicrm_api3('ContributionRecur', 'getsingle', ['id' => $crid]);
-    $payment_token = civicrm_api3('PaymentToken', 'getsingle', ['id' => $contribution_recur['payment_token_id']]);
-    $params['token'] = $payment_token['token'];
-    $params['defaultAccount'] = true;
-    $result = CRM_Iats_FapsRequest::credentials($contribution_recur['payment_processor_id']);
-    $credentials = [
-      'merchantKey' => $result['signature'],
-      'processorId' => $result['user_name'],
-    ];
-    // Generate token from creditcardcryptogram
-    $options = array(
-      'action' => 'GenerateTokenFromCreditCard',
-    );
-    $token_request = new CRM_Iats_FapsRequest($options);
-    $request = $this->convertParams($params, $options['action']);
-    // Make the request.
-    // CRM_Core_Error::debug_var('token request', $request);
-    $result = $token_request->request($credentials, $request);
-    // CRM_Core_Error::debug_var('token result', $result);
-    // unset the cryptogram request values, we can't use the cryptogram again and don't want to return it anyway.
-    unset($params['cryptogram']);
-    unset($request['creditCardCryptogram']);
-    unset($token_request);
-    if (!empty($result['isSuccess'])) {
-      // some of the result[data] is not useful, we're assuming it's not harmful to include in future requests here.
-      $params = array_merge($params, $result['data']);
-    }
-    else {
-      return self::error($result);
-    }
-
-    // construct the array of data that I'll submit to the iATS Payments server.
-    $options = [
-      'action' => 'VaultCreateCCRecord',
-    ];
-    $vault_request = new CRM_Iats_FapsRequest($options);
-
-    $request = $this->convertParams($params, $options['action']);
-
-    // Make the soap request.
-    try {
-      $response = $vault_request->request($credentials, $request);
-      // note: don't log this to the iats_response table.
-      // CRM_Core_Error::debug_var('faps result', $response);
-      if (empty($response['isError'])) {
-        if (!empty($response['data']['id'])) {
-          // We update the payment token.
-          $newToken = $request['vaultKey'] . ":" . $response['data']['id'];
-          civicrm_api3('PaymentToken', 'create', [
-            'id' => $contribution_recur['payment_token_id'],
-            'token' => $newToken,
-          ]);
-        }
-        return TRUE;
-      }
-      else {
-        return self::error($response);
-      }
-    }
-    catch (Exception $error) { // what could go wrong?
-      $message = $error->getMessage();
-      throw new PaymentProcessorException($message, '9002');
-    }
   }
 
 

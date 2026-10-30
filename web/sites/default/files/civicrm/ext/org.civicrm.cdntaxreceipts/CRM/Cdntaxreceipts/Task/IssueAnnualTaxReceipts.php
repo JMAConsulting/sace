@@ -21,7 +21,7 @@ class CRM_Cdntaxreceipts_Task_IssueAnnualTaxReceipts extends CRM_Contact_Form_Ta
 
     //check for permission to edit contributions
     if (!CRM_Core_Permission::check('issue cdn tax receipts')) {
-      CRM_Core_Error::fatal(ts('You do not have permission to access this page', array('domain' => 'org.civicrm.cdntaxreceipts')));
+      CRM_Core_Error::fatal(ts('You do not have permission to access this page', ['domain' => 'org.civicrm.cdntaxreceipts']));
     }
 
     _cdntaxreceipts_check_requirements();
@@ -29,11 +29,11 @@ class CRM_Cdntaxreceipts_Task_IssueAnnualTaxReceipts extends CRM_Contact_Form_Ta
     parent::preProcess();
 
     $thisYear = date("Y");
-    $this->_years = array($thisYear, $thisYear - 1, $thisYear - 2);
+    $this->_years = [$thisYear, $thisYear - 1, $thisYear - 2];
 
-    $receipts = array();
+    $receipts = [];
     foreach ( $this->_years as $year ) {
-      $receipts[$year] = array('email' => 0, 'print' => 0, 'data' => 0, 'total' => 0, 'contrib' => 0);
+      $receipts[$year] = ['email' => 0, 'print' => 0, 'data' => 0, 'total' => 0, 'contrib' => 0];
     }
 
     // count and categorize contributions
@@ -64,7 +64,7 @@ class CRM_Cdntaxreceipts_Task_IssueAnnualTaxReceipts extends CRM_Contact_Form_Ta
    */
   public function buildQuickForm() {
 
-    CRM_Utils_System::setTitle(ts('Issue Annual Tax Receipts', array('domain' => 'org.civicrm.cdntaxreceipts')));
+    CRM_Utils_System::setTitle(ts('Issue Annual Tax Receipts', ['domain' => 'org.civicrm.cdntaxreceipts']));
 
     CRM_Core_Resources::singleton()->addStyleFile('org.civicrm.cdntaxreceipts', 'css/civicrm_cdntaxreceipts.css');
 
@@ -86,30 +86,30 @@ class CRM_Cdntaxreceipts_Task_IssueAnnualTaxReceipts extends CRM_Contact_Form_Ta
     foreach ( $this->_years as $year ) {
       $this->addElement('radio', 'receipt_year', NULL, $year, 'issue_' . $year);
     }
-    $this->addRule('receipt_year', ts('Selection required', array('domain' => 'org.civicrm.cdntaxreceipts')), 'required');
+    $this->addRule('receipt_year', ts('Selection required', ['domain' => 'org.civicrm.cdntaxreceipts']), 'required');
 
     if ($delivery_method != CDNTAX_DELIVERY_DATA_ONLY) {
-      $this->add('checkbox', 'is_preview', ts('Run in preview mode?', array('domain' => 'org.civicrm.cdntaxreceipts')));
+      $this->add('checkbox', 'is_preview', ts('Run in preview mode?', ['domain' => 'org.civicrm.cdntaxreceipts']));
     }
 
-    $buttons = array(
-      array(
+    $buttons = [
+      [
         'type' => 'cancel',
-        'name' => ts('Back', array('domain' => 'org.civicrm.cdntaxreceipts')),
-      ),
-      array(
+        'name' => ts('Back', ['domain' => 'org.civicrm.cdntaxreceipts']),
+      ],
+      [
         'type' => 'next',
         'name' => 'Issue Tax Receipts',
         'isDefault' => TRUE,
         'submitOnce' => TRUE,
-      ),
-    );
+      ],
+    ];
     $this->addButtons($buttons);
 
   }
 
   public function setDefaultValues() {
-    return array('receipt_year' => 'issue_' . (date("Y") - 1));
+    return ['receipt_year' => 'issue_' . (date("Y") - 1)];
   }
 
   /**
@@ -155,7 +155,7 @@ class CRM_Cdntaxreceipts_Task_IssueAnnualTaxReceipts extends CRM_Contact_Form_Ta
       'title' => ts('Generating Receipts'),
       'queue' => $queue,
       // Deprecated; only works on AJAX runner // 'onEnd' => ['CRM_Demoqueue_Page_DemoQueue', 'onEnd'],
-      'onEndUrl' => CRM_Utils_System::url('civicrm/cdntaxreceipts/queue-done?queue=' . $queueId),
+      'onEndUrl' => CRM_Utils_System::url('civicrm/cdntaxreceipts/queue-done', 'queue=' . $queueId, FALSE, NULL, FALSE),
     ]);
     // redirect to a specific queue page
     // We don't have any UI tests on this feature but see IssueAggregateTaxReceipts for how to deal with this.

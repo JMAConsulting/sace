@@ -20,15 +20,15 @@ class CRM_Cdntaxreceipts_Task_IssueSingleTaxReceipts extends CRM_Contribute_Form
 
     //check for permission to edit contributions
     if (!CRM_Core_Permission::check('issue cdn tax receipts')) {
-      CRM_Core_Error::fatal(ts('You do not have permission to access this page', array('domain' => 'org.civicrm.cdntaxreceipts')));
+      CRM_Core_Error::fatal(ts('You do not have permission to access this page', ['domain' => 'org.civicrm.cdntaxreceipts']));
     }
 
     _cdntaxreceipts_check_requirements();
 
     parent::preProcess();
 
-    $receipts = array( 'original'  => array('email' => 0, 'print' => 0, 'data' => 0),
-                       'duplicate' => array('email' => 0, 'print' => 0, 'data' => 0), );
+    $receipts = [ 'original'  => ['email' => 0, 'print' => 0, 'data' => 0],
+                       'duplicate' => ['email' => 0, 'print' => 0, 'data' => 0], ];
 
     // count and categorize contributions
     foreach ( $this->_contributionIds as $id ) {
@@ -54,7 +54,7 @@ class CRM_Cdntaxreceipts_Task_IssueSingleTaxReceipts extends CRM_Contribute_Form
    */
   public function buildQuickForm() {
 
-    CRM_Utils_System::setTitle(ts('Issue Tax Receipts', array('domain' => 'org.civicrm.cdntaxreceipts')));
+    CRM_Utils_System::setTitle(ts('Issue Tax Receipts', ['domain' => 'org.civicrm.cdntaxreceipts']));
 
     // assign the counts
     $receipts = $this->_receipts;
@@ -70,31 +70,31 @@ class CRM_Cdntaxreceipts_Task_IssueSingleTaxReceipts extends CRM_Contribute_Form
     $this->assign('deliveryMethod', $delivery_method);
 
     // add radio buttons
-    $this->addElement('radio', 'receipt_option', NULL, ts('Issue tax receipts for the %1 unreceipted contributions only.', array(1=>$originalTotal, 'domain' => 'org.civicrm.cdntaxreceipts')), 'original_only');
-    $this->addElement('radio', 'receipt_option', NULL, ts('Issue tax receipts for all %1 contributions. Previously-receipted contributions will be marked \'duplicate\'.', array(1=>$receiptTotal, 'domain' => 'org.civicrm.cdntaxreceipts')), 'include_duplicates');
-    $this->addRule('receipt_option', ts('Selection required', array('domain' => 'org.civicrm.cdntaxreceipts')), 'required');
+    $this->addElement('radio', 'receipt_option', NULL, ts('Issue tax receipts for the %1 unreceipted contributions only.', [1=>$originalTotal, 'domain' => 'org.civicrm.cdntaxreceipts']), 'original_only');
+    $this->addElement('radio', 'receipt_option', NULL, ts('Issue tax receipts for all %1 contributions. Previously-receipted contributions will be marked \'duplicate\'.', [1=>$receiptTotal, 'domain' => 'org.civicrm.cdntaxreceipts']), 'include_duplicates');
+    $this->addRule('receipt_option', ts('Selection required', ['domain' => 'org.civicrm.cdntaxreceipts']), 'required');
 
     if ($delivery_method != CDNTAX_DELIVERY_DATA_ONLY) {
-      $this->add('checkbox', 'is_preview', ts('Run in preview mode?', array('domain' => 'org.civicrm.cdntaxreceipts')));
+      $this->add('checkbox', 'is_preview', ts('Run in preview mode?', ['domain' => 'org.civicrm.cdntaxreceipts']));
     }
 
-    $buttons = array(
-      array(
+    $buttons = [
+      [
         'type' => 'cancel',
-        'name' => ts('Back', array('domain' => 'org.civicrm.cdntaxreceipts')),
-      ),
-      array(
+        'name' => ts('Back', ['domain' => 'org.civicrm.cdntaxreceipts']),
+      ],
+      [
         'type' => 'next',
         'name' => 'Issue Tax Receipts',
         'isDefault' => TRUE,
         'submitOnce' => TRUE,
-      ),
-    );
+      ],
+    ];
     $this->addButtons($buttons);
   }
 
   public function setDefaultValues() {
-    return array('receipt_option' => 'original_only');
+    return ['receipt_option' => 'original_only'];
   }
 
   /**
@@ -137,7 +137,7 @@ class CRM_Cdntaxreceipts_Task_IssueSingleTaxReceipts extends CRM_Contribute_Form
       'title' => ts('Generating Receipts'),
       'queue' => $queue,
       // Deprecated; only works on AJAX runner // 'onEnd' => ['CRM_Demoqueue_Page_DemoQueue', 'onEnd'],
-      'onEndUrl' => CRM_Utils_System::url('civicrm/cdntaxreceipts/queue-done?queue=' . $queueId),
+      'onEndUrl' => CRM_Utils_System::url('civicrm/cdntaxreceipts/queue-done', 'queue=' . $queueId, FALSE, NULL, FALSE),
     ]);
     // redirect to a specific queue page
     // We don't have any UI tests on this feature but see IssueAggregateTaxReceipts for how to deal with this.

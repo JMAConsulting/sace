@@ -1385,7 +1385,7 @@ function _cdntaxreceipts_setReceiptanguage($language) {
  * @return string file path or NULL
  */
 function _cdntaxreceipts_get_image_filepath($imageSettingName) {
-  $fileName = Civi::settings()->get($imageSettingName);
+  $fileName = basename(Civi::settings()->get($imageSettingName) ?? '');
   if ($fileName) {
     $fileNameWithPath = CRM_Core_Config::singleton()->customFileUploadDir . $fileName;
     if (file_exists($fileNameWithPath)) {
