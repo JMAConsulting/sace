@@ -99,9 +99,9 @@ class CRM_Iats_FapsRequest {
         "Content-Length: " . strlen($jsondata)
       ]);
       curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
-      $this->response = curl_exec($curl_handle);
+      $response = curl_exec($curl_handle);
       if (self::DEBUG) {
-        CRM_Core_Error::debug_var('JSON Response', $this->response);
+        CRM_Core_Error::debug_var('JSON Response', $response);
       }
       $this->status = curl_getinfo($curl_handle,CURLINFO_HTTP_CODE);
       if (connection_aborted()) {
@@ -125,8 +125,8 @@ class CRM_Iats_FapsRequest {
         ];
       }
       else {
-        // CRM_Core_Error::debug_var('Response', $this->response);
-        $this->result = json_decode($this->response, TRUE);
+        // CRM_Core_Error::debug_var('Response', $response);
+        $this->result = json_decode($response, TRUE);
         if (empty($this->result['isSuccess'])  && $log_failure) {
           CRM_Core_Error::debug_var('FAPS transaction failure result', $this->result);
           // $this->result['errorMessages'] = $this->result['data']['authResponse'];
