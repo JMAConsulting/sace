@@ -69,7 +69,12 @@ class CRM_Cdntaxreceipts_AnnualTest extends CRM_Cdntaxreceipts_Base {
     // There's other fields we either can't reliably know or don't care about,
     // but the expected should match a subset of them.
     foreach ($expected as $eid => $expectedContributionLog) {
-      $realExpected = array(
+      // the AUTOINCREMENT on the table is now semi-random, so we have to add
+      // that to our expected contribution id
+      $id_it_used_to_be = substr($expectedContributionLog['receipt_no'], 2);
+      $expectedContributionLog['receipt_no'] = substr($expectedContributionLog['receipt_no'], 0, 2) . str_pad($id_it_used_to_be + $createdContributions[0] - 1, 8, '0', STR_PAD_LEFT);
+
+      $realExpected = [
         'issued_on' => $mock_time,
         'contact_id' => (string) $contact[$expectedContributionLog['contact_index']],
 
@@ -80,7 +85,7 @@ class CRM_Cdntaxreceipts_AnnualTest extends CRM_Cdntaxreceipts_Base {
         'issue_type' => $expectedContributionLog['issue_type'],
         'issue_method' => $expectedContributionLog['issue_method'],
         'receipt_status' => $expectedContributionLog['receipt_status'],
-      );
+      ];
       $intersect = array_intersect_key($records[$eid], $realExpected);
       $this->assertNotEmpty($intersect);
       $this->assertEquals($realExpected, $intersect);

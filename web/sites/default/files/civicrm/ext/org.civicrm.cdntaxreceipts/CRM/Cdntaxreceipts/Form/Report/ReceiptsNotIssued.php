@@ -12,96 +12,96 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsNotIssued extends CRM_Report_Form {
 
   function __construct() {
 
-    $this->_customGroupExtends = array('Contact', 'Individual', 'Organization');
+    $this->_customGroupExtends = ['Contact', 'Individual', 'Organization'];
     $this->_autoIncludeIndexedFieldsAsOrderBys = TRUE;
 
-    $this->_columns = array(
+    $this->_columns = [
       'civicrm_contact' =>
-      array(
+      [
         'dao' => 'CRM_Contact_DAO_Contact',
         'fields' =>
-        array(
+        [
           'sort_name' =>
-          array('title' => ts('Contact Name', array('domain' => 'org.civicrm.cdntaxreceipts')),
+          ['title' => ts('Contact Name', ['domain' => 'org.civicrm.cdntaxreceipts']),
             'required' => TRUE,
-          ),
+          ],
           'id' =>
-          array(
+          [
             'no_display' => TRUE,
             'required' => TRUE,
-          ),
-        ),
+          ],
+        ],
         'grouping' => 'tax-fields',
         'order_bys' =>
-        array(
+        [
           'sort_name' =>
-          array(
-            'title' => ts('Last Name, First Name', array('domain' => 'org.civicrm.cdntaxreceipts')),
-          ),
-        ),
-      ),
+          [
+            'title' => ts('Last Name, First Name', ['domain' => 'org.civicrm.cdntaxreceipts']),
+          ],
+        ],
+      ],
       'civicrm_financial_type' =>
-      array(
+      [
         'dao' => 'CRM_Financial_DAO_FinancialType',
         'fields' =>
-        array(
-          'financial_type' => array('default' => TRUE),
-        ),
+        [
+          'financial_type' => ['default' => TRUE],
+        ],
         'grouping' => 'tax-fields',
-      ),
+      ],
       'civicrm_contribution' =>
-      array(
+      [
         'dao' => 'CRM_Contribute_DAO_Contribution',
         'fields' =>
-        array(
-          'receive_date' => array('default' => TRUE),
-          'total_amount' => array('default' => TRUE),
-          'contribution_source' => array('default' => TRUE),
-          'id' => array('title' => 'Contribution ID', 'default' => TRUE),
-        ),
+        [
+          'receive_date' => ['default' => TRUE],
+          'total_amount' => ['default' => TRUE],
+          'contribution_source' => ['default' => TRUE],
+          'id' => ['title' => 'Contribution ID', 'default' => TRUE],
+        ],
         'filters' =>
-        array(
+        [
           'receive_date' =>
-          array(
-            'operatorType' => CRM_Report_Form::OP_DATE),
+          [
+            'operatorType' => CRM_Report_Form::OP_DATE],
 	  'contribution_source' =>
-	  array(
+	  [
 	    'title' => ts('Contribution Source'),
 	    'operator' => 'like',
 	    'type' => CRM_Utils_Type::T_STRING,
-	  ),
+	  ],
           'financial_type_id' =>
-          array('title' => ts('Financial Type', array('domain' => 'org.civicrm.cdntaxreceipts')),
+          ['title' => ts('Financial Type', ['domain' => 'org.civicrm.cdntaxreceipts']),
             'operatorType' => CRM_Report_Form::OP_MULTISELECT,
             'options' => CRM_Contribute_PseudoConstant::financialType(),
             'type' => CRM_Utils_Type::T_INT,
-          ),
-        ),
+          ],
+        ],
         'grouping' => 'tax-fields',
         'order_bys' =>
-        array(
+        [
           'total_amount' => NULL,
           'receive_date' =>
-          array(
+          [
             'default' => '1', 'default_weight' => '0', 'default_order' => 'DESC',
-          ),
-        ),
-      ),
-    );
+          ],
+        ],
+      ],
+    ];
 
     if (Civi::settings()->get('enable_advanced_eligibility_report') == 1) {
-      $enable_options = array( 1 => ts('Yes'), 0 => ts('No'));
+      $enable_options = [ 1 => ts('Yes'), 0 => ts('No')];
     }
     elseif (Civi::settings()->get('enable_advanced_eligibility_report') == 0) {
-      $enable_options = array( 0 => ts('No'), 1 => ts('Yes'));
+      $enable_options = [ 0 => ts('No'), 1 => ts('Yes')];
     }
     $this->_options =
-      array(
-        'use_advanced_eligibility' => array('title' => ts('Use Advanced Eligibility (Hooks - Memory Intensive)', array('domain' => 'org.civicrm.cdntaxreceipts')),
+      [
+        'use_advanced_eligibility' => ['title' => ts('Use Advanced Eligibility (Hooks - Memory Intensive)', ['domain' => 'org.civicrm.cdntaxreceipts']),
           'type' => 'select',
           'options' => $enable_options,
-        ),
-    );
+        ],
+    ];
     parent::__construct();
   }
 
@@ -111,13 +111,13 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsNotIssued extends CRM_Report_Form {
     //check for permission to edit contributions
     if ( ! CRM_Core_Permission::check('access CiviContribute') ) {
       require_once('CRM/Core/Error.php');
-      CRM_Core_Error::fatal(ts('You do not have permission to access this page', array('domain' => 'org.civicrm.cdntaxreceipts')));
+      CRM_Core_Error::fatal(ts('You do not have permission to access this page', ['domain' => 'org.civicrm.cdntaxreceipts']));
     }
   }
 
   function select() {
-    $select = array();
-    $this->_columnHeaders = array();
+    $select = [];
+    $this->_columnHeaders = [];
     foreach ($this->_columns as $tableName => $table) {
       if (array_key_exists('fields', $table)) {
         foreach ($table['fields'] as $fieldName => $field) {
@@ -142,7 +142,7 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsNotIssued extends CRM_Report_Form {
 
   static
   function formRule($fields, $files, $self) {
-    $errors = $grouping = array();
+    $errors = $grouping = [];
     return $errors;
   }
 
@@ -203,7 +203,7 @@ class CRM_Cdntaxreceipts_Form_Report_ReceiptsNotIssued extends CRM_Report_Form {
 
     $sql = $this->buildQuery(TRUE);
 
-    $rows = $graphRows = array();
+    $rows = $graphRows = [];
     $this->buildRows($sql, $rows);
 
     $this->formatDisplay($rows);

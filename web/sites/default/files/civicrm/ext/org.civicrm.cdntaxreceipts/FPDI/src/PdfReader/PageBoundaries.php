@@ -73,13 +73,13 @@ abstract class PageBoundaries
      *
      * @var array
      */
-    public static $all = array(
+    public static $all = [
         self::MEDIA_BOX,
         self::CROP_BOX,
         self::BLEED_BOX,
         self::TRIM_BOX,
         self::ART_BOX
-    );
+    ];
 
     /**
      * Checks if a name is a valid page boundary name.

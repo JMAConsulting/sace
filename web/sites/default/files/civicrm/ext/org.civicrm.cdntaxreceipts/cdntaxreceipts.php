@@ -168,6 +168,23 @@ function cdntaxreceipts_civicrm_install() {
 }
 
 /**
+ * Implements hook_civicrm_postInstall().
+ */
+function cdntaxreceipts_civicrm_postInstall() {
+  // Work around core bug where you can't have a non-blank default string value for a setting if it's declared in a settings file if blank is also a legit value for it (since then it will still end up returning the default when retrieved). But if you don't declare the setting in a settings file then you get log warnings that it's not declared. So we declare it with default blank, and then set it to non-blank here.
+  \Civi::settings()->set('cdntaxreceipts_source_field', '{contribution.source}');
+  $locales = CRM_Core_I18n::getMultilingual();
+  if (!$locales) {
+    $locales = ['en_US', 'en_CA', 'fr_CA'];
+  }
+  foreach ($locales as $locale) {
+    // This a little silly since E::ts() is going to use whatever the current locale is right now, so these will all get the same translation.
+    // The space in "Source: " is not a typo
+    \Civi::settings()->set('cdntaxreceipts_source_label_' . $locale, E::ts('Source: '));
+  }
+}
+
+/**
  * Implements hook_civicrm_enable().
  */
 function cdntaxreceipts_civicrm_enable() {
@@ -204,7 +221,7 @@ function cdntaxreceipts_civicrm_navigationMenu(&$params) {
         if ('CiviContribute' == $child_value['attributes']['name']) {
           $params[$parent_key]['child'][$child_key]['child'][$navId] = [
             'attributes' => [
-              'label' => ts('CDN Tax Receipts',array('domain' => 'org.civicrm.cdntaxreceipts')),
+              'label' => ts('CDN Tax Receipts',['domain' => 'org.civicrm.cdntaxreceipts']),
               'name' => 'CDN Tax Receipts',
               'url' => 'civicrm/cdntaxreceipts/settings?reset=1',
               'permission' => 'access CiviContribute,administer CiviCRM',

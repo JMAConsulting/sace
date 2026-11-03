@@ -24,7 +24,7 @@
       "matrix": {
         "include": [
           {
-            "php-versions": "8.3",
+            "php-versions": "8.4",
             "drupal": "CIVICARROT_DRUPAL_PRIOR",
             "civicrm": "dev-master",
             "phpunit-xml": "phpunit10.xml.dist",
@@ -45,9 +45,9 @@
             "phpunit-mink-xml": "phpunit9.mink.xml.dist"
           },
           {
-            "php-versions": "8.2",
+            "php-versions": "8.3",
             "drupal": "^10",
-            "civicrm": "6.10.*",
+            "civicrm": "6.16.*",
             "phpunit-xml": "phpunit9.xml.dist",
             "phpunit-mink-xml": "phpunit9.mink.xml.dist"
           }

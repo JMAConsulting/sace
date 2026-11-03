@@ -23,7 +23,6 @@ Attached please find your official tax receipt for income tax purposes.
     $email_subject = '{if $archive_extra.is_archive}[Archive Copy for {$archive_extra.contact_email}] {/if}Your tax receipt {$receipt.receipt_no}';
 
     $this->_create_message_template($email_message, $email_subject);
-    $this->_setSourceDefaults();
   }
 
   /**
@@ -177,7 +176,7 @@ AND COLUMN_NAME = 'receipt_status'");
    */
   public function upgrade_1411() {
     $this->ctx->log->info('Applying update 1411: uploaded file paths');
-    foreach (array('receipt_logo', 'receipt_signature', 'receipt_watermark', 'receipt_pdftemplate') as $fileSettingName) {
+    foreach (['receipt_logo', 'receipt_signature', 'receipt_watermark', 'receipt_pdftemplate'] as $fileSettingName) {
       $path = Civi::settings()->get($fileSettingName);
       if (!empty($path)) {
         Civi::settings()->set($fileSettingName, basename($path));
@@ -306,35 +305,35 @@ AND COLUMN_NAME = 'receipt_status'");
 </html>';
 
     // create message template for email that accompanies tax receipts
-    $params = array(
+    $params = [
       'sequential' => 1,
       'name' => 'msg_tpl_workflow_cdntaxreceipts',
       'title' => 'Message Template Workflow for CDN Tax Receipts',
       'description' => 'Message Template Workflow for CDN Tax Receipts',
       'is_reserved' => 1,
       'is_active' => 1,
-      'api.OptionValue.create' => array(
-        '0' => array(
+      'api.OptionValue.create' => [
+        '0' => [
           'label' => 'CDN Tax Receipts - Email Single Receipt',
           'value' => 1,
           'name' => 'cdntaxreceipts_receipt_single',
           'is_reserved' => 1,
           'is_active' => 1,
           'format.only_id' => 1,
-        ),
-        '1' => array(
+        ],
+        '1' => [
           'label' => 'CDN Tax Receipts - Email Annual/Aggregate Receipt',
           'value' => 2,
           'name' => 'cdntaxreceipts_receipt_aggregate',
           'is_reserved' => 1,
           'is_active' => 1,
           'format.only_id' => 1,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
     $result = civicrm_api3('OptionGroup', 'create', $params);
 
-    $params = array(
+    $params = [
       'msg_title' => 'CDN Tax Receipts - Email Single Receipt',
       'msg_subject' => $email_subject,
       'msg_text' => $email_message,
@@ -342,13 +341,13 @@ AND COLUMN_NAME = 'receipt_status'");
       'workflow_id' => $result['values'][0]['api.OptionValue.create'][0],
       'is_default' => 1,
       'is_reserved' => 0,
-    );
+    ];
     civicrm_api3('MessageTemplate', 'create', $params);
     $params['is_default'] = 0;
     $params['is_reserved'] = 1;
     civicrm_api3('MessageTemplate', 'create', $params);
 
-    $params = array(
+    $params = [
       'msg_title' => 'CDN Tax Receipts - Email Annual/Aggregate Receipt',
       'msg_subject' => $email_subject,
       'msg_text' => $email_message,
@@ -356,28 +355,13 @@ AND COLUMN_NAME = 'receipt_status'");
       'workflow_id' => $result['values'][0]['api.OptionValue.create'][1],
       'is_default' => 1,
       'is_reserved' => 0,
-    );
+    ];
     civicrm_api3('MessageTemplate', 'create', $params);
     $params['is_default'] = 0;
     $params['is_reserved'] = 1;
     civicrm_api3('MessageTemplate', 'create', $params);
 
     return TRUE;
-  }
-
-  private function _setSourceDefaults() {
-    \Civi::settings()->set('cdntaxreceipts_source_field', '{contribution.source}');
-    $locales = CRM_Core_I18n::getMultilingual();
-    if ($locales) {
-      foreach ($locales as $locale) {
-        // The space in "Source: " is not a typo.
-        \Civi::settings()->set('cdntaxreceipts_source_label_' . $locale, ts('Source: ', array('domain' => 'org.civicrm.cdntaxreceipts')));
-      }
-    }
-    else {
-      // The space in "Source: " is not a typo.
-      \Civi::settings()->set('cdntaxreceipts_source_label_' . CRM_Core_I18n::getLocale(), ts('Source: ', array('domain' => 'org.civicrm.cdntaxreceipts')));
-    }
   }
 
   /**

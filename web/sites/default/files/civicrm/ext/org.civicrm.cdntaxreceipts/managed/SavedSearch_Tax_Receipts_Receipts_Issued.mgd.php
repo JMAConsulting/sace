@@ -1,5 +1,4 @@
 <?php
-
 use CRM_Cdntaxreceipts_ExtensionUtil as E;
 
 return [
@@ -34,9 +33,7 @@ return [
           ],
           'orderBy' => [],
           'where' => [],
-          'groupBy' => [
-            'id',
-          ],
+          'groupBy' => ['id'],
           'join' => [
             [
               'CdntaxreceiptsLogContributions AS CdntaxreceiptsLog_CdntaxreceiptsLogContributions_receipt_id_01',
@@ -53,9 +50,7 @@ return [
         'expires_date' => NULL,
         'description' => NULL,
       ],
-      'match' => [
-        'name',
-      ],
+      'match' => ['name'],
     ],
   ],
   [
@@ -81,7 +76,7 @@ return [
               'type' => 'field',
               'key' => 'contact_id.display_name',
               'dataType' => 'String',
-              'label' => E::ts('Contact Name'),
+              'label' => 'Contact Name',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => NULL,
@@ -91,7 +86,7 @@ return [
               'type' => 'field',
               'key' => 'issued_on',
               'dataType' => 'Timestamp',
-              'label' => E::ts('Issued On'),
+              'label' => 'Issued On',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => NULL,
@@ -104,7 +99,7 @@ return [
               'type' => 'field',
               'key' => 'receipt_amount',
               'dataType' => 'Money',
-              'label' => E::ts('Receipt Amount'),
+              'label' => 'Receipt Amount',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => 'SUM',
@@ -114,7 +109,7 @@ return [
               'type' => 'field',
               'key' => 'receipt_no',
               'dataType' => 'String',
-              'label' => E::ts('Receipt Number'),
+              'label' => 'Receipt Number',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => NULL,
@@ -124,7 +119,7 @@ return [
               'type' => 'field',
               'key' => 'issue_type',
               'dataType' => 'String',
-              'label' => E::ts('Issue Type'),
+              'label' => 'Issue Type',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => NULL,
@@ -134,7 +129,7 @@ return [
               'type' => 'field',
               'key' => 'issue_method',
               'dataType' => 'String',
-              'label' => E::ts('Issue Method'),
+              'label' => 'Issue Method',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => NULL,
@@ -144,7 +139,7 @@ return [
               'type' => 'field',
               'key' => 'uid',
               'dataType' => 'Integer',
-              'label' => E::ts('Issued By (UID)'),
+              'label' => 'Issued By (UID)',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => '',
@@ -154,7 +149,7 @@ return [
               'type' => 'field',
               'key' => 'receipt_status',
               'dataType' => 'String',
-              'label' => E::ts('Receipt Status'),
+              'label' => 'Receipt Status',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => NULL,
@@ -164,7 +159,7 @@ return [
               'type' => 'field',
               'key' => 'email_opened',
               'dataType' => 'Timestamp',
-              'label' => E::ts('Email Opened Date'),
+              'label' => 'Email Opened Date',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => NULL,
@@ -174,7 +169,7 @@ return [
               'type' => 'field',
               'key' => 'GROUP_CONCAT_CdntaxreceiptsLog_CdntaxreceiptsLogContributions_receipt_id_01_contribution_id',
               'dataType' => 'Integer',
-              'label' => E::ts('Contribution ID'),
+              'label' => 'Contribution ID',
               'sortable' => TRUE,
               'tally' => [
                 'fn' => 'COUNT',
@@ -182,10 +177,7 @@ return [
             ],
           ],
           'actions' => TRUE,
-          'classes' => [
-            'table',
-            'table-striped',
-          ],
+          'classes' => ['table', 'table-striped'],
           'headerCount' => TRUE,
           'tally' => [
             'label' => E::ts('Total'),

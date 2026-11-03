@@ -27,17 +27,17 @@ class CRM_Cdntaxreceipts_Form_ImageDelete extends CRM_Core_Form {
     $this->add('hidden', 'imagetype', $type);
     $this->assign('imagetype', $typeLabels[$type]);
 
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'submit',
         'name' => E::ts('Delete'),
         'isDefault' => TRUE,
-      ),
-      array(
+      ],
+      [
         'type' => 'cancel',
         'name' => E::ts('Cancel'),
-      ),
-    ));
+      ],
+    ]);
   }
 
   public function postProcess() {
@@ -48,8 +48,13 @@ class CRM_Cdntaxreceipts_Form_ImageDelete extends CRM_Core_Form {
       CRM_Core_Error::statusBounce(E::ts('Missing type'));
       return;
     }
+    $typeLabels = $this->getTypeLabels();
+    if (!isset($typeLabels[$type])) {
+      CRM_Core_Error::statusBounce(E::ts('Unknown type'));
+      return;
+    }
 
-    $filename = Civi::settings()->get($type);
+    $filename = basename(Civi::settings()->get($type) ?? '');
     if (empty($filename)) {
       CRM_Core_Error::statusBounce(E::ts('Setting does not exist'));
       return;
@@ -59,9 +64,12 @@ class CRM_Cdntaxreceipts_Form_ImageDelete extends CRM_Core_Form {
     if (file_exists($filename)) {
       Civi::settings()->set($type, NULL);
       unlink($filename);
+      CRM_Core_Session::setStatus(E::ts('The %1 file has been deleted.', [1 => basename($filename)]), '', 'success');
+    }
+    else {
+      CRM_Core_Error::statusBounce(E::ts('File does not exist'));
     }
 
-    CRM_Core_Session::setStatus(E::ts('The %1 file has been deleted.', array(1 => basename($filename))), '', 'success');
     CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/cdntaxreceipts/settings', 'reset=1'));
   }
 
@@ -70,12 +78,12 @@ class CRM_Cdntaxreceipts_Form_ImageDelete extends CRM_Core_Form {
    * @return array
    */
   private function getTypeLabels(): array {
-    return array(
+    return [
       'receipt_logo' => E::ts('Logo'),
       'receipt_signature' => E::ts('Signature'),
       'receipt_watermark' => E::ts('Watermark'),
       'receipt_pdftemplate' => E::ts('PDF Template'),
-    );
+    ];
   }
 
 }

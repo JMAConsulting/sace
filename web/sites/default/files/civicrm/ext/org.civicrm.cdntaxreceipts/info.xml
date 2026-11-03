@@ -12,11 +12,11 @@
     <author>KarinG and DaveD</author>
     <email>frontdesk@semper-it.com</email>
   </maintainer>
-  <releaseDate>2026-06-10</releaseDate>
-  <version>1.11.0</version>
+  <releaseDate>2026-10-28</releaseDate>
+  <version>1.11.2</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>6.10</ver>
+    <ver>6.16</ver>
   </compatibility>
   <urls>
     <url desc="Documentation">https://lab.civicrm.org/extensions/cdntaxreceipts/blob/master/README.md</url>
@@ -32,7 +32,7 @@
   </requires>
   <civix>
     <namespace>CRM/Cdntaxreceipts</namespace>
-    <format>25.10.2</format>
+    <format>26.10.3</format>
   </civix>
   <mixins>
     <mixin>menu-xml@1.0.0</mixin>
@@ -40,6 +40,7 @@
     <mixin>scan-classes@1.0.0</mixin>
     <mixin>entity-types-php@2.0.0</mixin>
     <mixin>smarty@1.0.3</mixin>
+    <mixin>setting-php@1.0.0</mixin>
   </mixins>
   <classloader>
     <psr0 prefix="CRM_" path="."/>

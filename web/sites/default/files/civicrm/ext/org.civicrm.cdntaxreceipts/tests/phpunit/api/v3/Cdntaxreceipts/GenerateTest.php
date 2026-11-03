@@ -17,7 +17,8 @@ class api_v3_Cdntaxreceipts_GenerateTest extends CRM_Cdntaxreceipts_Base {
     $this->assertAPISuccess($result);
     $this->assertEquals($contribution_id, $result['values'][0]['contribution_id']);
     $this->assertEquals('email', $result['values'][0]['issue_method']);
-    $mut->checkMailLog(['From: CDN Tax Org <cdntaxorg@example.org>', 'Subject: Your tax receipt C-00000001', 'Tim Horton', 'timmys@civicrm.org']);
+    $receipt_no = 'C-' . str_pad($contribution_id, 8, '0', STR_PAD_LEFT);
+    $mut->checkMailLog(['From: CDN Tax Org <cdntaxorg@example.org>', 'Subject: Your tax receipt ' . $receipt_no, 'Tim Horton', 'timmys@civicrm.org']);
   }
 
   public function testIneligibleContribution() {
