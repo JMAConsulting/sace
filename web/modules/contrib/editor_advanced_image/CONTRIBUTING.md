@@ -32,7 +32,7 @@ on your environment:
 
 Once run, you will be able to access to your fresh installed Drupal on `localhost::8888`.
 
-    docker compose build --pull --build-arg BASE_IMAGE_TAG=11.3 drupal
+    docker compose build --pull --build-arg BASE_IMAGE_TAG=11.4 drupal
     (get a coffee, this will take some time...)
     docker compose up -d drupal chrome
     docker compose exec -u www-data drupal drush site-install standard --db-url="mysql://drupal:drupal@db/drupal" -y
@@ -99,7 +99,7 @@ The following Analyzer will be downloaded & installed as PHAR:
 
 #### Running Code Sniffer Drupal & DrupalPractice
 
-https://github.com/squizlabs/PHP_CodeSniffer
+https://github.com/PHPCSStandards/PHP_CodeSniffer
 
 PHP_CodeSniffer is a set of two PHP scripts; the main `phpcs` script that tokenizes PHP, JavaScript and CSS files to
 detect violations of a defined coding standard, and a second `phpcbf` script to automatically correct coding standard

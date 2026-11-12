@@ -1,0 +1,4 @@
+services:
+  ckeditor5_plugin_pack_font.migration:
+    class: Drupal\ckeditor5_plugin_pack_font\MigrationHelper
+    arguments: ['@module_handler', '@entity_type.manager', '@messenger']

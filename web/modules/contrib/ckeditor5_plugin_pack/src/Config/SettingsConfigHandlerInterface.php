@@ -50,4 +50,15 @@ interface SettingsConfigHandlerInterface {
    */
   public function isCdnBlocked(): bool;
 
+  /**
+   * Checks if the given library file exists locally.
+   *
+   * @param string $library
+   *   The library name.
+   *
+   * @return bool
+   *   TRUE if the library exists, FALSE otherwise.
+   */
+  public function libraryExists(string $library): bool;
+
 }
