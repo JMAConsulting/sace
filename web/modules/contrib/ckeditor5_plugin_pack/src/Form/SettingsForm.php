@@ -44,7 +44,7 @@ class SettingsForm extends ConfigFormBase {
 
     $dll_location_description = $this->t('
     <b>If the field is empty, the DLL path is set to the CKEditor CDN server by default.</b></br>
-    Recent Drupal core versions include plugins that are used by Plugin Pack in the vendor directory.
+    Recent Drupal core versions include plugins that are used by Plugin Pack (except for the Templates plugin) in the vendor directory.
     If possible local source will be used. The user specified path will always have the highest priority.</br></br>
     Specify the path to the directory with plugins e.g.
     /libraries/ckeditor5_plugins/@token/dll </br>
