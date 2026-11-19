@@ -75,7 +75,7 @@ class api_v3_Mailchimpsync_UpdateconfigTest extends \PHPUnit\Framework\TestCase 
   }
 
   public function testInvalidJsonRejected() {
-    $this->expectException(CiviCRM_API3_Exception::class);
+    $this->expectException(CRM_Core_Exception::class);
     $this->expectExceptionMessage("Failed to parse JSON in 'config' parameter.");
     civicrm_api3('Mailchimpsync', 'updateconfig', ['config' => 'invalid json']);
   }

@@ -18,7 +18,7 @@ function _civicrm_api3_mailchimpsync_batch_create_spec(&$spec) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_batch_create($params) {
   return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
@@ -29,7 +29,7 @@ function civicrm_api3_mailchimpsync_batch_create($params) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_batch_delete($params) {
   return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
@@ -40,7 +40,7 @@ function civicrm_api3_mailchimpsync_batch_delete($params) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_batch_get($params) {
   return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
@@ -65,22 +65,22 @@ function civicrm_api3_mailchimpsync_batch_processcompleted_spec(&$spec) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_batch_processcompleted($params) {
   if (empty($params['id'])) {
-    throw new API_Exception('MailchimpsyncBatch.processCompleted requires id parameter');
+    throw new CRM_Core_Exception('MailchimpsyncBatch.processCompleted requires id parameter');
   }
   $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncBatch();
   $bao->id= $params['id'];
   if (!$bao->find(1)) {
-    throw new API_Exception('MailchimpsyncBatch.processCompleted given id not found');
+    throw new CRM_Core_Exception('MailchimpsyncBatch.processCompleted given id not found');
   }
   try {
     $returnValues = $bao->processCompletedBatch(NULL, (!empty($params['force'])));
   }
   catch (InvalidArgumentException $e) {
-    throw new API_Exception($e->getMessage());
+    throw new CRM_Core_Exception($e->getMessage());
   }
   return civicrm_api3_create_success($returnValues, $params, 'MailchimpsyncBatch', 'processCompleted');
 }

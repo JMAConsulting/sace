@@ -1,4 +1,4 @@
-(function(angular, $, _) {
+(function(angular, $) {
 
   function convertConfigFromApiResult(config) {
     // PHP converts empty array to json array but we need an objects.
@@ -362,4 +362,4 @@
 
   });
 
-})(angular, CRM.$, CRM._);
+})(angular, CRM.$);

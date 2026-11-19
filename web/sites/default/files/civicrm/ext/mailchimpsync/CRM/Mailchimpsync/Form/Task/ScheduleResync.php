@@ -10,13 +10,13 @@ use CRM_Mailchimpsync_ExtensionUtil as E;
 class CRM_Mailchimpsync_Form_Task_ScheduleResync extends CRM_Contact_Form_Task {
   public function buildQuickForm() {
 
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'submit',
         'name' => E::ts('Schedule Re-sync'),
         'isDefault' => TRUE,
-      ),
-    ));
+      ],
+    ]);
     // export form elements
     // $this->assign('elementNames', $this->getRenderableElementNames());
     $this->assign('contactsCount', count($this->_contactIds));
@@ -45,7 +45,7 @@ class CRM_Mailchimpsync_Form_Task_ScheduleResync extends CRM_Contact_Form_Task {
     // auto-rendered in the loop -- such as "qfKey" and "buttons".  These
     // items don't have labels.  We'll identify renderable by filtering on
     // the 'label'.
-    $elementNames = array();
+    $elementNames = [];
     foreach ($this->_elements as $element) {
       /** @var HTML_QuickForm_Element $element */
       $label = $element->getLabel();

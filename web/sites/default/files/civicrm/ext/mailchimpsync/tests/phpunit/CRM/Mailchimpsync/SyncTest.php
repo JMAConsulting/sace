@@ -1096,15 +1096,19 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'mcs_names' => ['previous' => ['first_name' => 'test1', 'last_name' => 'noname']],
     ], $data, "CiviCRM data not as expected (did hook fire?).");
 
-    // We expect one update.
+    // We expect two updates.
     $update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
     $update->mailchimpsync_cache_id = $cache_id;
-    $count = $update->find();
-    $this->assertEquals(1, $count, "Expected one update.");
+			$count = $update->find();
+			$this->assertEquals(2, $count, "Expected two updates. First the merge_fields then the tags.");
+    $update->delete();
+    $update->fetch();
+    $data = json_decode($update->data, TRUE);
+    $this->assertEquals(['merge_fields' => ['FNAME' => 'test1', 'LNAME' => 'noname']], $data);
+			
     $update->fetch();
     $data = json_decode($update->data, TRUE);
     $this->assertEquals([
-      'merge_fields' => ['FNAME' => 'test1', 'LNAME' => 'noname'],
       'tags' => [
           ['name' => 'CiviCRM: Major_Donor', 'status' => 'active'],
           ['name' => 'CiviCRM: Volunteer', 'status' => 'active'],
@@ -1114,6 +1118,19 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     // ok for testing purposes let's just delete that update now.
     $update->delete();
 
+			// Need to mock how 
+    $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
+    $bao->id = $cache_id;
+		$bao->fetch(TRUE);
+
+		// Mock the mailchimp update having been done.
+		$mailchimp_data = $bao->getMailchimpData();
+		$mailchimp_data['first_name'] = 'test1';
+		$mailchimp_data['last_name'] = 'noname';
+		$bao->setMailchimpData($mailchimp_data);
+		$bao->save();
+
+			
     // ---------------------------------------------------------------
     // 2nd test.
     //
@@ -1123,6 +1140,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'entity_table' => 'civicrm_contact',
       'entity_id' => $contact_1,
     ]);
+			
     $audience->checkForDataUpdates(NULL);
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;
@@ -1141,10 +1159,12 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
       'mcs_tags' => ['previous' => '4'],
     ], $data, "CiviCRM data not as expected (did hook fire?).");
 
-    // We expect one update.
+			// We expect one update, the tags one only
     $update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
-    $update->mailchimpsync_cache_id = $cache_id;
-    $this->assertEquals(1, $update->find(), "Expected one update.");
+		$update->mailchimpsync_cache_id = $cache_id;
+		$count = $update->find();
+    $this->assertEquals(1, $count, "Expected one update.");
+			
     $update->fetch();
     $data = json_decode($update->data, TRUE);
     $this->assertEquals([
@@ -1158,7 +1178,7 @@ class CRM_Mailchimpsync_SyncTest extends \PHPUnit\Framework\TestCase implements 
     $update->delete();
 
     // ---------------------------------------------------------------
-    // 3rd test: if no change to tags, should be no updates.
+    // 3rd test: if no change to tags, should be only the contact update.
     $audience->checkForDataUpdates(NULL);
     $bao = new CRM_Mailchimpsync_BAO_MailchimpsyncCache();
     $bao->id = $cache_id;

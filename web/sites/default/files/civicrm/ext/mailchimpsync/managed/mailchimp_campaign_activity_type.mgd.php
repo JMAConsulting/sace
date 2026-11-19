@@ -12,9 +12,7 @@ return [
       'values' => [
         'option_group_id.name' => 'activity_type',
         'label' => E::ts('Mailchimp Campaign Sent'),
-        'value' => '52',
         'name' => 'mailchimp_campaign_sent',
-        'weight' => 52,
         'description' => E::ts('<p>A Mailchimp &quot;Campaign&quot; (email) was sent.</p>'),
         'icon' => 'fa-mailchimp',
       ],

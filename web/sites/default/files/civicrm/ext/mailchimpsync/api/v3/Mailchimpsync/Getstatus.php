@@ -22,7 +22,7 @@ function _civicrm_api3_mailchimpsync_Getstatus_spec(&$spec) {
  * @return array API result descriptor
  * @see civicrm_api3_create_success
  * @see civicrm_api3_create_error
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_Getstatus($params) {
 
@@ -139,5 +139,5 @@ function civicrm_api3_mailchimpsync_Getstatus($params) {
   }
 
   return civicrm_api3_create_success($returnValues, $params, 'Mailchimpsync', 'Getstatus');
-  //throw new API_Exception(/*errorMessage*/ 'Everyone knows that the magicword is "sesame"', /*errorCode*/ 1234);
+  //throw new CRM_Core_Exception(/*errorMessage*/ 'Everyone knows that the magicword is "sesame"', /*errorCode*/ 1234);
 }
