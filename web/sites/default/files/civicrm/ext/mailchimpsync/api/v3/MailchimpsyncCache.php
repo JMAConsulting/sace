@@ -18,7 +18,7 @@ function _civicrm_api3_mailchimpsync_cache_create_spec(&$spec) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_cache_create($params) {
   return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
@@ -29,7 +29,7 @@ function civicrm_api3_mailchimpsync_cache_create($params) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_cache_delete($params) {
   return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
@@ -49,7 +49,7 @@ function _civicrm_api3_mailchimpsync_cache_get_spec(&$spec) {
  *
  * @param array $params
  * @return array API result descriptor
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_cache_get($params) {
   $returnValues = CRM_Mailchimpsync_BAO_MailchimpsyncCache::apiSearch($params);

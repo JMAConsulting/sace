@@ -20,13 +20,13 @@ function _civicrm_api3_mailchimpsync_Updateconfig_spec(&$spec) {
  * @return array API result descriptor
  * @see civicrm_api3_create_success
  * @see civicrm_api3_create_error
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_Updateconfig($params) {
 
   $config = json_decode($params['config'], TRUE);
   if (!$config) {
-    throw new API_Exception("Failed to parse JSON in 'config' parameter.");
+    throw new CRM_Core_Exception("Failed to parse JSON in 'config' parameter.");
   }
 
   CRM_Mailchimpsync::setConfig($config);

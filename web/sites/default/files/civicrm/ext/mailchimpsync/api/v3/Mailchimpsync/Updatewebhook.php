@@ -33,12 +33,12 @@ function _civicrm_api3_mailchimpsync_Updatewebhook_spec(&$spec) {
  * @return array API result descriptor
  * @see civicrm_api3_create_success
  * @see civicrm_api3_create_error
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_Updatewebhook($params) {
   $config = CRM_Mailchimpsync::getConfig();
   if (!isset($config['accounts'][$params['api_key']])) {
-    throw new API_Exception('Given API Key is not configured.');
+    throw new CRM_Core_Exception('Given API Key is not configured.');
   }
   $api = CRM_Mailchimpsync::getMailchimpApi($params['api_key']);
   $list_id = $params['list_id'] ?? NULL;
@@ -54,7 +54,7 @@ function civicrm_api3_mailchimpsync_Updatewebhook($params) {
     // Delete a batch webhook.
     $type = 'batch';
     if (empty($params['id'])) {
-      throw new API_Exception('ID missing');
+      throw new CRM_Core_Exception('ID missing');
     }
     $result = $api->delete('batch-webhooks/' . $params['id']);
   }
@@ -62,7 +62,7 @@ function civicrm_api3_mailchimpsync_Updatewebhook($params) {
     // Add a webhook to a list
     $type = 'audience';
     if (!$list_id) {
-      throw new API_Exception("Missing list_id");
+      throw new CRM_Core_Exception("Missing list_id");
     }
     $url = CRM_Mailchimpsync::getWebhookUrl($params['api_key']);
     $result = $api->post("lists/$list_id/webhooks",
@@ -82,15 +82,15 @@ function civicrm_api3_mailchimpsync_Updatewebhook($params) {
     // delete a webhook from an audience
     $type = 'audience';
     if (!$list_id) {
-      throw new API_Exception("Missing list_id");
+      throw new CRM_Core_Exception("Missing list_id");
     }
     if (empty($params['id'])) {
-      throw new API_Exception('ID missing');
+      throw new CRM_Core_Exception('ID missing');
     }
     $result = $api->delete("lists/$list_id/webhooks/$params[id]");
   }
   else {
-    throw new API_Exception('process must be add_batch_webhook|delete_batch_webhook|add_webhook|delete_webhook');
+    throw new CRM_Core_Exception('process must be add_batch_webhook|delete_batch_webhook|add_webhook|delete_webhook');
   }
 
   // Now re-read and store the webhooks.

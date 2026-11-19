@@ -21,7 +21,7 @@ function _civicrm_api3_mailchimpsync_Fetchaccountinfo_spec(&$spec) {
  * @return array API result descriptor
  * @see civicrm_api3_create_success
  * @see civicrm_api3_create_error
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_Fetchaccountinfo($params) {
 
@@ -76,10 +76,10 @@ function civicrm_api3_mailchimpsync_Fetchaccountinfo($params) {
     $result['batchWebhookFound'] = in_array($result['batchWebhook'], array_column($result['batchWebhooks'], 'url'));
   }
   catch (CRM_Mailchimpsync_RequestErrorException $e) {
-    throw new API_Exception('Failed to access Mailchimp API (4xx error) with given key. Error: ' . $e->getMessage());
+    throw new CRM_Core_Exception('Failed to access Mailchimp API (4xx error) with given key. Error: ' . $e->getMessage());
   }
   catch (Exception $e) {
-    throw new API_Exception('Failed to access Mailchimp API (other error). Error: ' . $e->getMessage());
+    throw new CRM_Core_Exception('Failed to access Mailchimp API (other error). Error: ' . $e->getMessage());
   }
 
   return civicrm_api3_create_success($result, $params, 'Mailchimpsync', 'Fetchaccountinfo');

@@ -1,4 +1,4 @@
-(function(angular, $, _) {
+(function(angular, $) {
 
   angular.module('mailchimpsync').config(function($routeProvider) {
       $routeProvider.when('/mailchimpsync', {
@@ -198,5 +198,5 @@
     };
   });
 
-})(angular, CRM.$, CRM._);
+})(angular, CRM.$);
 
