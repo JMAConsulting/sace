@@ -924,6 +924,7 @@ JS;
     var expected_value = $json_value;
     var result = 0;
     var trigger_change = true;
+    var change_element = element;
     var last_value = element.value;
     element.scrollIntoViewIfNeeded();
     element.focus();
@@ -937,6 +938,7 @@ JS;
                 if (field.value == expected_value) {
                     field.checked = true;
                     field.click();
+                    change_element = field;
                 } else {
                     field.checked = false;
                 }
@@ -964,15 +966,15 @@ JS;
         element.value = expected_value
     }
     if (trigger_change) {
-        var event = new Event("change", { target: element, bubbles: true });
+        var event = new Event("change", { bubbles: true });
         // React 15
         event.simulated = true;
         // React 16
-        var tracker = element._valueTracker;
+        var tracker = change_element._valueTracker;
         if (tracker) {
             tracker.setValue(last_value);
         }
-        element.dispatchEvent(event);
+        change_element.dispatchEvent(event);
     }
     element.blur();
     null
@@ -1735,6 +1737,10 @@ JS;
 
         foreach ($windows as $window) {
             if ($window['id'] == $window_id) {
+                try {
+                    $this->page?->close();
+                } catch (ExceptionInterface | DriverException) {
+                }
                 $this->page = new ChromePage(
                     $window['webSocketDebuggerUrl'],
                     $this->options['socketTimeout'] ?? self::$socketTimeoutDefault

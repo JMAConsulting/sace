@@ -97,7 +97,7 @@ abstract class DevToolsConnection
     }
 
     /**
-     * Send a command to the client.
+     * Send a command to the client, return result.
      *
      * @param string $command
      * @return null|string|string[][]
@@ -118,6 +118,24 @@ abstract class DevToolsConnection
         );
 
         return $data['result'] ?? ['result' => ['type' => 'undefined']];
+    }
+
+    /**
+     * Send a command to the client, ignore result.
+     *
+     * Waiting for a reply in processResponse() could consume messages an
+     * outer waitFor() is expecting. Eventual reply is ignored.
+     *
+     * @throws \Exception
+     */
+    protected function sendWithoutWaiting(string $command, array $parameters = []): void
+    {
+        $payload = ['id' => $this->command_id++, 'method' => $command];
+        if (!empty($parameters)) {
+            $payload['params'] = $parameters;
+        }
+
+        $this->client->text(json_encode($payload));
     }
 
     /**
