@@ -3,6 +3,15 @@ Changelog
 
 ## Unreleased
 
+## 2.11.2
+
+* Fix Page.frameNavigated to not toggle page_ready state (Chrome v155, !252)
+* Fix 401 after bad creds basic auth challenge shows blank Chrome error page instead of response body (#154)
+* Fix dispatch of change event to selected radio button (!122, !238)
+* Fix incorrect response details for reloads and iframes (#61)
+* Test against current full Chromium in CI (!254)
+* Test custom web fixtures from minkphp/driver-testsuite directory (#180)
+
 ## 2.11.1
 
 * Test improvements (web fixtures URL !242, !247)

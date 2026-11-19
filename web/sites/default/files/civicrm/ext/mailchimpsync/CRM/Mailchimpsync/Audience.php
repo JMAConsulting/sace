@@ -43,6 +43,11 @@ class CRM_Mailchimpsync_Audience {
   protected $status_cache;
 
   /**
+   * Store the names of the temp tables to use across functions in this class.
+   */
+  protected array $tempTableNames;
+
+  /**
    * Create an Audience object.
    *
    * Nb. you can call this with a list that is not yet configured. To know
@@ -422,7 +427,7 @@ class CRM_Mailchimpsync_Audience {
         // - store a 'since' date that will persist through multiple calls
         //   of fetchAndReconcile
         if (!empty($params['since'])) {
-          $query['since_last_changed'] = date(DATE_ISO8601, $params['since']);
+          $query['since_last_changed'] = date(DATE_ISO8601, strtotime($params['since']));
         }
 
         $overrides = [];
@@ -752,8 +757,8 @@ class CRM_Mailchimpsync_Audience {
     // Remaining contacts are new to CiviCRM.
 
     // Drop the temporary table (phases 1, 4)
-    CRM_Core_DAO::executeQuery('DROP TEMPORARY TABLE IF EXISTS mcs_undeleted_emails;');
-    CRM_Core_DAO::executeQuery('DROP TEMPORARY TABLE mcs_emails_needing_matches;');
+    CRM_Core_DAO::executeQuery("DROP TEMPORARY TABLE IF EXISTS {$this->tempTableNames['mcs_undeleted_emails']};");
+    CRM_Core_DAO::executeQuery("DROP TEMPORARY TABLE IF EXISTS {$this->tempTableNames['mcs_emails_needing_matches']};");
 
     // Create them now.
     return $stats;
@@ -767,46 +772,46 @@ class CRM_Mailchimpsync_Audience {
    */
   protected function populateMissingContactIdsPhase1() {
 
+    $tempTable['mcs_emails_needing_matches'] = CRM_Utils_SQL_TempTable::build()->createWithColumns('email VARCHAR(255) PRIMARY KEY');
+    $tempTable['mcs_undeleted_emails'] = CRM_Utils_SQL_TempTable::build()->createWithColumns('contact_id INT(10) UNSIGNED, email VARCHAR(255), KEY (email, contact_id)');
+    $tempTable['mcs_phase_1'] = CRM_Utils_SQL_TempTable::build()->createWithColumns('email VARCHAR(255) PRIMARY KEY, contact_id INT(10) UNSIGNED');
+    $this->tempTableNames['mcs_emails_needing_matches'] = $tempTable['mcs_emails_needing_matches']->getName();
+    $this->tempTableNames['mcs_undeleted_emails'] = $tempTable['mcs_undeleted_emails']->getName();
+    $this->tempTableNames['mcs_phase_1'] = $tempTable['mcs_phase_1']->getName();
     CRM_Core_DAO::executeQuery(
-      'CREATE TEMPORARY TABLE mcs_emails_needing_matches (email VARCHAR(255) PRIMARY KEY)
-        SELECT mailchimp_email email FROM civicrm_mailchimpsync_cache mc
-        WHERE mc.civicrm_contact_id IS NULL AND mc.mailchimp_list_id = %1 AND mailchimp_email IS NOT NULL;',
+      "INSERT INTO {$this->tempTableNames['mcs_emails_needing_matches']}
+      SELECT mailchimp_email email FROM civicrm_mailchimpsync_cache mc
+      WHERE mc.civicrm_contact_id IS NULL AND mc.mailchimp_list_id = %1 AND mailchimp_email IS NOT NULL;",
       [1 => [$this->mailchimp_list_id, 'String']]);
 
     // We need a table of emails from Civi that aren't deleted.
     CRM_Core_DAO::executeQuery(
-      'CREATE TEMPORARY TABLE mcs_undeleted_emails (
-        contact_id INT(10) UNSIGNED,
-        email VARCHAR(255),
-        KEY (email, contact_id))
+      "INSERT INTO {$this->tempTableNames['mcs_undeleted_emails']}
       SELECT contact_id, e.email
       FROM civicrm_email e
-      INNER JOIN mcs_emails_needing_matches me ON me.email = e.email
-      WHERE EXISTS (SELECT 1 FROM civicrm_contact WHERE id = contact_id AND is_deleted = 0);');
+      INNER JOIN {$this->tempTableNames['mcs_emails_needing_matches']} me ON me.email = e.email
+      WHERE EXISTS (SELECT 1 FROM civicrm_contact WHERE id = contact_id AND is_deleted = 0);");
 
     // Create table of emails that only belong to one contact.
     CRM_Core_DAO::executeQuery(
-      'CREATE TEMPORARY TABLE mcs_phase_1 (
-        email VARCHAR(255) PRIMARY KEY,
-        contact_id INT(10) UNSIGNED
-      )
+      "INSERT INTO {$this->tempTableNames['mcs_phase_1']}
       SELECT email, MIN(contact_id) contact_id
-      FROM mcs_undeleted_emails ue
+      FROM {$this->tempTableNames['mcs_undeleted_emails']} ue
       GROUP BY email
-      HAVING COUNT(DISTINCT contact_id) = 1;');
+      HAVING COUNT(DISTINCT contact_id) = 1;");
 
     // Now update our main table where there's only one.
     $dao = CRM_Core_DAO::executeQuery(
-      'UPDATE civicrm_mailchimpsync_cache mc
-              INNER JOIN mcs_phase_1 ue1 ON ue1.email = mc.mailchimp_email
+      "UPDATE civicrm_mailchimpsync_cache mc
+              INNER JOIN {$this->tempTableNames['mcs_phase_1']} ue1 ON ue1.email = mc.mailchimp_email
        SET mc.civicrm_contact_id = ue1.contact_id
-       WHERE mc.civicrm_contact_id IS NULL AND mc.mailchimp_list_id = %1;',
+       WHERE mc.civicrm_contact_id IS NULL AND mc.mailchimp_list_id = %1;",
       [1 => [$this->mailchimp_list_id, 'String']]);
 
     $updated = $dao->affectedRows();
 
     // Drop temporary table that was just for this phase
-    CRM_Core_DAO::executeQuery('DROP TEMPORARY TABLE mcs_phase_1;');
+    $tempTable['mcs_phase_1']->drop();
 
     return $updated;
   }
@@ -872,27 +877,26 @@ class CRM_Mailchimpsync_Audience {
   protected function populateMissingContactIdsPhase4() {
 
     // Create table with the first contact owner of each email.
+    $tempTable['mcs_emails_phase_4'] = CRM_Utils_SQL_TempTable::build()->createWithColumns('email VARCHAR(255) PRIMARY KEY, contact_id INT(10) UNSIGNED');
+    $this->tempTableNames['mcs_emails_phase_4'] = $tempTable['mcs_emails_phase_4']->getName();
     CRM_Core_DAO::executeQuery(
-      'CREATE TEMPORARY TABLE mcs_emails_phase_4 (
-        email VARCHAR(255) PRIMARY KEY,
-        contact_id INT(10) UNSIGNED
-      )
+      "INSERT INTO {$this->tempTableNames['mcs_emails_phase_4']}
       SELECT email, MIN(contact_id) contact_id
-      FROM mcs_undeleted_emails ue
-      GROUP BY email;');
+      FROM {$this->tempTableNames['mcs_undeleted_emails']} ue
+      GROUP BY email");
 
     // Now update our main table where there's only one.
     $dao = CRM_Core_DAO::executeQuery(
-      'UPDATE civicrm_mailchimpsync_cache mc
-              INNER JOIN mcs_emails_phase_4 ue1 ON ue1.email = mc.mailchimp_email
+      "UPDATE civicrm_mailchimpsync_cache mc
+              INNER JOIN {$this->tempTableNames['mcs_emails_phase_4']} ue1 ON ue1.email = mc.mailchimp_email
        SET mc.civicrm_contact_id = ue1.contact_id
-       WHERE mc.civicrm_contact_id IS NULL AND mc.mailchimp_list_id = %1;',
+       WHERE mc.civicrm_contact_id IS NULL AND mc.mailchimp_list_id = %1;",
       [1 => [$this->mailchimp_list_id, 'String']]);
 
     $updated = $dao->affectedRows();
 
     // Drop temporary tables.
-    CRM_Core_DAO::executeQuery('DROP TEMPORARY TABLE mcs_emails_phase_4;');
+    $tempTable['mcs_emails_phase_4']->drop();
 
     return $updated;
   }
@@ -1006,7 +1010,7 @@ class CRM_Mailchimpsync_Audience {
           ROW_NUMBER() OVER (
             PARTITION BY contact_id
             ORDER BY is_bulkmail DESC, is_primary DESC
-          ) rank
+          ) `rank`
           FROM civicrm_email e
           WHERE on_hold = 0 AND email IS NOT NULL AND email <> ''
       )
@@ -1014,7 +1018,7 @@ class CRM_Mailchimpsync_Audience {
       SELECT mc.id, mc.mailchimp_email, mc.civicrm_contact_id, rankedEmails.email
       FROM civicrm_mailchimpsync_cache mc
       INNER JOIN rankedEmails ON mc.civicrm_contact_id = rankedEmails.contact_id
-                  AND rankedEmails.rank = 1
+                  AND rankedEmails.`rank` = 1
       WHERE
         mc.mailchimp_email IS NOT NULL
         AND mc.mailchimp_list_id = %1
@@ -1260,7 +1264,7 @@ class CRM_Mailchimpsync_Audience {
       'andLog' => "checkForDataUpdates: calling hooks",
     ]);
 
-    // xxx @todo we should be stop-and-startable not a monolytic process.
+    // xxx @todo we should be stop-and-startable not a monolythic process.
     $complete = TRUE;
     $stop_time = time() + ($remaining_time ?? 60 * 60 * 24 * 7);
 
@@ -1511,6 +1515,10 @@ class CRM_Mailchimpsync_Audience {
           // Queue a mailchimp member update.
           $update = new CRM_Mailchimpsync_BAO_MailchimpsyncUpdate();
           $update->mailchimpsync_cache_id = $cache_entry->id;
+          // Issue 33: do not send empty merge_fields object.
+          if (empty($mailchimp_updates['merge_fields'])) {
+            unset($mailchimp_updates['merge_fields']);
+          }
           $update->data = json_encode($mailchimp_updates);
           $update->save();
         }

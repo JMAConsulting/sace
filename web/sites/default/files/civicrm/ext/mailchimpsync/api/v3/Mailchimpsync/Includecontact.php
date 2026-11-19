@@ -23,7 +23,7 @@ function _civicrm_api3_mailchimpsync_Includecontact_spec(&$spec) {
  *
  * @see civicrm_api3_create_success
  *
- * @throws API_Exception
+ * @throws CRM_Core_Exception
  */
 function civicrm_api3_mailchimpsync_Includecontact($params) {
 
@@ -32,7 +32,7 @@ function civicrm_api3_mailchimpsync_Includecontact($params) {
     foreach ($params['contact_id'] as $given) {
       $_ = (int) $given;
       if (!($_ > 0)) {
-        throw new API_Exception('At least one contact ID was not positive integer.');
+        throw new CRM_Core_Exception('At least one contact ID was not positive integer.');
       }
       $contact_ids[$_] = 1;
     }
@@ -40,7 +40,7 @@ function civicrm_api3_mailchimpsync_Includecontact($params) {
   else {
     $_ = (int) $params['contact_id'];
     if (!($_ > 0)) {
-      throw new API_Exception('At contact ID was not positive integer.');
+      throw new CRM_Core_Exception('At contact ID was not positive integer.');
     }
     $contact_ids[$_] = 1;
   }

@@ -23,7 +23,16 @@ class ChromePage extends DevToolsConnection
     private $has_javascript_dialog = false;
 
     /**
-     * @var array https://chromedevtools.github.io/devtools-protocol/tot/Network/#type-Response
+     * @var string|null ID of the top-level frame.
+     *
+     * @see https://chromedevtools.github.io/devtools-protocol/#/Page.FrameId
+     */
+    private $main_frame_id;
+
+    /**
+     * @var array the top-level response.
+     *
+     * @see https://chromedevtools.github.io/devtools-protocol/tot/Network/#type-Response
      */
     private $response;
 
@@ -43,8 +52,14 @@ class ChromePage extends DevToolsConnection
         $this->send('Page.enable');
         $this->send('DOM.enable');
         $this->send('Network.enable');
+        // @see https://gitlab.com/behat-chrome/chrome-mink-driver/-/merge_requests/253
+        $this->send('Fetch.enable', [
+            'handleAuthRequests' => true,
+            'patterns' => [['urlPattern' => '*', 'resourceType' => 'Document']],
+        ]);
         $this->send('Animation.setPlaybackRate', ['playbackRate' => 100000]);
         $this->send('Console.enable');
+        $this->main_frame_id = $this->send('Page.getFrameTree')['frameTree']['frame']['id'] ?? null;
     }
 
     /**
@@ -81,6 +96,7 @@ class ChromePage extends DevToolsConnection
      */
     public function reload()
     {
+        $this->response = null;
         $this->page_ready = false;
         $this->send('Page.reload');
     }
@@ -195,6 +211,15 @@ class ChromePage extends DevToolsConnection
                 case 'Page.javascriptDialogClosed':
                     $this->has_javascript_dialog = false;
                     break;
+                case 'Fetch.requestPaused':
+                    $this->sendWithoutWaiting('Fetch.continueRequest', ['requestId' => $data['params']['requestId']]);
+                    break;
+                case 'Fetch.authRequired':
+                    $this->sendWithoutWaiting('Fetch.continueWithAuth', [
+                        'requestId' => $data['params']['requestId'],
+                        'authChallengeResponse' => ['response' => 'CancelAuth'],
+                    ]);
+                    break;
                 case 'Network.requestWillBeSent':
                     if ($data['params']['type'] == 'Document') {
                         $this->pending_requests[$data['params']['requestId']] = true;
@@ -203,7 +228,10 @@ class ChromePage extends DevToolsConnection
                 case 'Network.responseReceived':
                     if ($data['params']['type'] == 'Document') {
                         unset($this->pending_requests[$data['params']['requestId']]);
-                        $this->response = $data['params']['response'];
+                        $frame_id = $data['params']['frameId'] ?? null;
+                        if ($this->main_frame_id === null || $frame_id === $this->main_frame_id) {
+                            $this->response = $data['params']['response'];
+                        }
                     }
                     break;
                 case 'Network.loadingFailed':
@@ -211,7 +239,6 @@ class ChromePage extends DevToolsConnection
                         unset($this->pending_requests[$data['params']['requestId']]);
                     }
                     break;
-                case 'Page.frameNavigated':
                 case 'Page.loadEventFired':
                 case 'Page.frameStartedLoading':
                     $this->page_ready = false;
