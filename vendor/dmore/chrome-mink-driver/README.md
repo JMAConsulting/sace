@@ -89,6 +89,11 @@ Test execution requires a webserver configured to serve fixtures from
 [minkphp/driver-testsuite](https://github.com/minkphp/driver-testsuite/), which the Docker Compose environment below
 provides via its `mink-fixtures` service.
 
+Additional tests and web fixtures are included in this project. These supplement tests from minkphp/driver-testsuite -
+if a test case applies to other drivers, it's encouraged to upstream tests there. Web fixtures are copied from this
+project into Mink driver-testsuite's fixtures directory before execution in Gitlab CI and `make copy-fixtures` here. See
+https://gitlab.com/behat-chrome/chrome-mink-driver/-/work_items/180 for details.
+
 Tests are executed on each merge request via Gitlab CI. New functionality or bugfixes should seek to expand
 test or at least maintain existing coverage.
 
@@ -223,9 +228,16 @@ Screenshots are supported using the Mink driver interface method `getScreenshot(
 
 To use this driver with [Behat](https://docs.behat.org/en/latest/), try [the `dmore/behat-chrome-extension` Behat extension](https://gitlab.com/behat-chrome/behat-chrome-extension).
 
-### Related projects
+### Containers and related projects
 
-This component uses the following Chrome containers for testing:
+For project tests, development and CI, there are a few containers used. PHP images with development components are built
+and pushed to the project's Gitlab Container Registry. These cover the various PHP versions which are tested in CI, and
+can be pulled to use for local development.
+
+This project also uses the following containers from external projects in development and CI:
 
 - [zenika/alpine-chrome](https://github.com/zenika/alpine-chrome)
 - [chromedp/headless-shell](https://github.com/chromedp/docker-headless-shell)
+
+The primary test suite applied is Mink's [driver-testsuite](https://github.com/minkphp/driver-testsuite/), extended with
+additional tests and fixtures from this project.

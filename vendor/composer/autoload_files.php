@@ -41,5 +41,5 @@ return array(
     '59969633dcdb4ee3e2fec945065028d6' => $vendorDir . '/civicrm/civicrm-core/guzzle_php81_shim.php',
     '801c31d8ed748cfa537fa45402288c95' => $vendorDir . '/psy/psysh/src/functions.php',
     'fb4ca2d97fe7ba6af750497425204e70' => $vendorDir . '/sentry/sentry/src/functions.php',
-    'afa317e1865e7c5d19212dd1a2439c6b' => $vendorDir . '/composer/autoload_civicrm_asset.php',
+    '63a2e14242cc8a44c54d226227117544' => $vendorDir . '/composer/autoload_civicrm_asset.php',
 );
